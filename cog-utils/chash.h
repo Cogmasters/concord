@@ -1,7 +1,7 @@
 #ifndef CWARE_LIBCHASH_H
 #define CWARE_LIBCHASH_H
 
-#define CWARE_LIBCHASH_VERSION  "1.0.5"
+#define CWARE_LIBCHASH_VERSION  "2.0.0"
 
 /* How big heap-allocated hashtables are by default */
 #ifndef CHASH_INITIAL_SIZE
@@ -27,6 +27,36 @@
 #define CHASH_COUNTER_TYPE  int
 #endif
 
+/* The name of the key field */
+#ifndef CHASH_KEY_FIELD
+#define CHASH_KEY_FIELD key
+#endif
+
+/* The name of the value field */
+#ifndef CHASH_VALUE_FIELD
+#define CHASH_VALUE_FIELD value
+#endif
+
+/* The name of the state field */
+#ifndef CHASH_STATE_FIELD
+#define CHASH_STATE_FIELD state
+#endif
+
+/* The name of the buckets field */
+#ifndef CHASH_BUCKETS_FIELD
+#define CHASH_BUCKETS_FIELD buckets
+#endif
+
+/* The name of the length field */
+#ifndef CHASH_LENGTH_FIELD
+#define CHASH_LENGTH_FIELD length
+#endif
+
+/* The name of the capacity field */
+#ifndef CHASH_CAPACITY_FIELD
+#define CHASH_CAPACITY_FIELD capacity
+#endif
+
 /* State enums */
 #define CHASH_UNFILLED  0
 #define CHASH_FILLED    1
@@ -49,8 +79,8 @@
     (strcmp((cmp_a), (cmp_b)) == 0)
 
 #define chash_default_init(bucket, _key, _value) \
-    (bucket).key = (_key);                       \
-    (bucket).value = _value
+    (bucket).CHASH_KEY_FIELD = (_key);           \
+    (bucket).CHASH_VALUE_FIELD = _value
 
 
 
@@ -82,83 +112,90 @@
     __CHASH_HASH = __chash_abs(__CHASH_HASH);
 
 #define __chash_probe(hashtable, _key, namespace)                             \
-  while(__CHASH_INDEX < (hashtable)->capacity) {                              \
-    if((hashtable)->buckets[__CHASH_HASH].state == CHASH_UNFILLED)            \
+  while(__CHASH_INDEX < (hashtable)->CHASH_CAPACITY_FIELD) {                  \
+    if((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD ==    \
+                                                      CHASH_UNFILLED)         \
       break;                                                                  \
                                                                               \
     if((namespace ## _COMPARE((_key),                                         \
-                             (hashtable)->buckets[__CHASH_HASH].key)) == 1) { \
+     (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_KEY_FIELD)) == 1) { \
+                                                                              \
       __CHASH_INDEX = -1;                                                     \
       break;                                                                  \
     }                                                                         \
                                                                               \
-    __CHASH_HASH = (__CHASH_HASH + 1) % (hashtable)->capacity;                \
+    __CHASH_HASH = (__CHASH_HASH + 1) % (hashtable)->CHASH_CAPACITY_FIELD;    \
     __CHASH_INDEX++;                                                          \
   }                                                                           \
 
-#define __chash_probe_to_unfilled(mod, _key, buffer, namespace)         \
-  while(1) {                                                            \
-    if(buffer[__CHASH_HASH].state != CHASH_FILLED)                      \
-      break;                                                            \
-                                                                        \
-    if((namespace ## _COMPARE((_key), buffer[__CHASH_HASH].key)) == 1)  \
-      break;                                                            \
-                                                                        \
-    __CHASH_HASH = (__CHASH_HASH + 1) % mod;                            \
-  }                                                                     \
+#define __chash_probe_to_unfilled(mod, _key, buffer, namespace)              \
+  while(1) {                                                                 \
+    if(buffer[__CHASH_HASH].CHASH_STATE_FIELD != CHASH_FILLED)               \
+      break;                                                                 \
+                                                                             \
+    if((namespace ## _COMPARE((_key), buffer[__CHASH_HASH].CHASH_KEY_FIELD)) \
+                                                                      == 1)  \
+      break;                                                                 \
+                                                                             \
+    __CHASH_HASH = (__CHASH_HASH + 1) % mod;                                 \
+  }                                                                          \
 
-#define __chash_resize(hashtable, namespace)                                \
-do {                                                                        \
-  CHASH_COUNTER_TYPE __CHASH_INDEX = 0;                                     \
-  namespace ## _BUCKET *__CHASH_BUCKETS = NULL;                             \
-  CHASH_COUNTER_TYPE __CHASH_NEXT_SIZE = (CHASH_COUNTER_TYPE)               \
-                          CHASH_RESIZE((hashtable)->capacity);              \
-                                                                            \
-  if((namespace ## _HEAP) == 0) {                                           \
-    if((hashtable)->length != (hashtable)->capacity) {                      \
-        break;                                                              \
-    }                                                                       \
-                                                                            \
-    fprintf(stderr, "__chash_resize: hashtable is full. could not resize"   \
-                    " (%s:%i)\n", __FILE__, __LINE__);                      \
-    abort();                                                                \
-  }                                                                         \
-                                                                            \
-  if((double) (hashtable)->length /                                         \
-     (double) (hashtable)->capacity < CHASH_LOAD_THRESHOLD)                 \
-    break;                                                                  \
-                                                                            \
-  __CHASH_BUCKETS = malloc((size_t) (__CHASH_NEXT_SIZE                      \
-                           * ((CHASH_COUNTER_TYPE)                          \
-                               sizeof(namespace ## _BUCKET))));             \
-  memset(__CHASH_BUCKETS, 0, ((size_t) (__CHASH_NEXT_SIZE                   \
-                           * ((CHASH_COUNTER_TYPE)                          \
-                           sizeof(namespace ## _BUCKET)))));                \
-                                                                            \
-  for(__CHASH_INDEX = 0; __CHASH_INDEX < (hashtable)->capacity;             \
-                                                         __CHASH_INDEX++) { \
-    namespace ## _BUCKET __CHASH_NEW_KEY_BUCKET;                            \
-    namespace ## _INIT(__CHASH_NEW_KEY_BUCKET,                              \
-                      (hashtable)->buckets[__CHASH_INDEX].key,              \
-                      (hashtable)->buckets[__CHASH_INDEX].value);           \
-                                                                            \
-    if((hashtable)->buckets[__CHASH_INDEX].state != CHASH_FILLED)           \
-      continue;                                                             \
-                                                                            \
-    __chash_hash(__CHASH_NEXT_SIZE, __CHASH_NEW_KEY_BUCKET.key, namespace); \
-    __chash_probe_to_unfilled(__CHASH_NEXT_SIZE,                            \
-                              (hashtable)->buckets[__CHASH_INDEX].key,      \
-                              __CHASH_BUCKETS, namespace)                   \
-                                                                            \
-    __CHASH_BUCKETS[__CHASH_HASH] = __CHASH_NEW_KEY_BUCKET;                 \
-    __CHASH_BUCKETS[__CHASH_HASH].state = CHASH_FILLED;                     \
-    __CHASH_HASH = 0;                                                       \
-  }                                                                         \
-                                                                            \
-  free((hashtable)->buckets);                                               \
-  (hashtable)->buckets = __CHASH_BUCKETS;                                   \
-  (hashtable)->capacity = __CHASH_NEXT_SIZE;                                \
-  __CHASH_HASH = 0;                                                         \
+#define __chash_resize(hashtable, namespace)                                  \
+do {                                                                          \
+  CHASH_COUNTER_TYPE __CHASH_INDEX = 0;                                       \
+  namespace ## _BUCKET *__CHASH_BUCKETS = NULL;                               \
+  CHASH_COUNTER_TYPE __CHASH_NEXT_SIZE = (CHASH_COUNTER_TYPE)                 \
+                          CHASH_RESIZE((hashtable)->CHASH_CAPACITY_FIELD);    \
+                                                                              \
+  if((namespace ## _HEAP) == 0) {                                             \
+    if((hashtable)->CHASH_LENGTH_FIELD !=                                     \
+                                       (hashtable)->CHASH_CAPACITY_FIELD) {   \
+        break;                                                                \
+    }                                                                         \
+                                                                              \
+    fprintf(stderr, "__chash_resize: hashtable is full. could not resize"     \
+                    " (%s:%i)\n", __FILE__, __LINE__);                        \
+    abort();                                                                  \
+  }                                                                           \
+                                                                              \
+  if((double) (hashtable)->CHASH_LENGTH_FIELD /                               \
+     (double) (hashtable)->CHASH_CAPACITY_FIELD  < CHASH_LOAD_THRESHOLD)      \
+    break;                                                                    \
+                                                                              \
+  __CHASH_BUCKETS = malloc((size_t) (__CHASH_NEXT_SIZE                        \
+                           * ((CHASH_COUNTER_TYPE)                            \
+                               sizeof(namespace ## _BUCKET))));               \
+  memset(__CHASH_BUCKETS, 0, ((size_t) (__CHASH_NEXT_SIZE                     \
+                           * ((CHASH_COUNTER_TYPE)                            \
+                           sizeof(namespace ## _BUCKET)))));                  \
+                                                                              \
+  for(__CHASH_INDEX = 0; __CHASH_INDEX < (hashtable)->CHASH_CAPACITY_FIELD;   \
+                                                         __CHASH_INDEX++) {   \
+    namespace ## _BUCKET __CHASH_NEW_KEY_BUCKET;                              \
+    memset(&__CHASH_NEW_KEY_BUCKET, 0, sizeof(namespace ## _BUCKET));         \
+    namespace ## _INIT(__CHASH_NEW_KEY_BUCKET,                                \
+        (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_INDEX].CHASH_KEY_FIELD,      \
+        (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_INDEX].CHASH_VALUE_FIELD);   \
+                                                                              \
+    if((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_INDEX].CHASH_STATE_FIELD      \
+                                                             != CHASH_FILLED) \
+      continue;                                                               \
+                                                                              \
+    __chash_hash(__CHASH_NEXT_SIZE, __CHASH_NEW_KEY_BUCKET.CHASH_KEY_FIELD,   \
+                 namespace);                                                  \
+    __chash_probe_to_unfilled(__CHASH_NEXT_SIZE,                              \
+           (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_INDEX].CHASH_KEY_FIELD,   \
+           __CHASH_BUCKETS, namespace)                                        \
+                                                                              \
+    __CHASH_BUCKETS[__CHASH_HASH] = __CHASH_NEW_KEY_BUCKET;                   \
+    __CHASH_BUCKETS[__CHASH_HASH].CHASH_STATE_FIELD = CHASH_FILLED;           \
+    __CHASH_HASH = 0;                                                         \
+  }                                                                           \
+                                                                              \
+  free((hashtable)->CHASH_BUCKETS_FIELD);                                     \
+  (hashtable)->CHASH_BUCKETS_FIELD = __CHASH_BUCKETS;                         \
+  (hashtable)->CHASH_CAPACITY_FIELD = __CHASH_NEXT_SIZE;                      \
+  __CHASH_HASH = 0;                                                           \
 } while(0)
 
 #define __chash_assert_nonnull(func, ptr)                            \
@@ -191,12 +228,12 @@ do {                                                                 \
     NULL;                                                             \
                                                                       \
     (hashtable) = malloc(sizeof((*(hashtable))));                     \
-    (hashtable)->length = 0;                                          \
-    (hashtable)->capacity = CHASH_INITIAL_SIZE;                       \
-    (hashtable)->buckets = malloc(CHASH_INITIAL_SIZE                  \
-                                  * sizeof(*((hashtable)->buckets))); \
-    memset((hashtable)->buckets, 0,                                   \
-                sizeof(*((hashtable)->buckets)) * CHASH_INITIAL_SIZE)
+    (hashtable)->CHASH_LENGTH_FIELD = 0;                              \
+    (hashtable)->CHASH_CAPACITY_FIELD = CHASH_INITIAL_SIZE;           \
+    (hashtable)->CHASH_BUCKETS_FIELD = malloc(CHASH_INITIAL_SIZE      \
+                      * sizeof(*((hashtable)->CHASH_BUCKETS_FIELD))); \
+    memset((hashtable)->CHASH_BUCKETS_FIELD, 0,                       \
+    sizeof(*((hashtable)->CHASH_BUCKETS_FIELD)) * CHASH_INITIAL_SIZE)
 
 #define chash_init_stack(hashtable, buffer, _length, namespace)               \
     (*(hashtable));                                                           \
@@ -209,98 +246,107 @@ do {                                                                 \
                                                                               \
     __chash_assert_nonnull(chash_init_stack, buffer);                         \
                                                                               \
-    (hashtable)->length = 0;                                                  \
-    (hashtable)->capacity = _length;                                          \
-    (hashtable)->buckets = buffer 
+    (hashtable)->CHASH_LENGTH_FIELD = 0;                                      \
+    (hashtable)->CHASH_CAPACITY_FIELD = _length;                              \
+    (hashtable)->CHASH_BUCKETS_FIELD  = buffer 
 
-#define chash_assign(hashtable, _key, _value, namespace)                 \
-do {                                                                     \
-  long __CHASH_HASH = 0;                                                 \
-  namespace ## _BUCKET __CHASH_KEY_BUCKET;                               \
-  namespace ## _INIT(__CHASH_KEY_BUCKET, _key, _value);                  \
-                                                                         \
-  __chash_assert_nonnull(chash_assign, hashtable);                       \
-  __chash_assert_nonnull(chash_assign, (hashtable)->buckets);            \
-  __chash_resize(hashtable, namespace);                                  \
-  __chash_hash((hashtable)->capacity, _key, namespace);                  \
-  __chash_probe_to_unfilled((hashtable)->capacity,                       \
-                            (_key), (hashtable)->buckets, namespace)     \
-                                                                         \
-  if((hashtable)->buckets[__CHASH_HASH].state == CHASH_FILLED) {         \
-     namespace ## _FREE_VALUE((hashtable)->buckets[__CHASH_HASH].value); \
-  } else {                                                               \
-     (hashtable)->length++;                                              \
-  }                                                                      \
-                                                                         \
-  (hashtable)->buckets[__CHASH_HASH] = __CHASH_KEY_BUCKET;               \
-  (hashtable)->buckets[__CHASH_HASH].state = CHASH_FILLED;               \
+#define chash_assign(hashtable, _key, _value, namespace)                     \
+do {                                                                         \
+  long __CHASH_HASH = 0;                                                     \
+  namespace ## _BUCKET __CHASH_KEY_BUCKET;                                   \
+  memset(&__CHASH_KEY_BUCKET, 0, sizeof(namespace ## _BUCKET));              \
+  namespace ## _INIT(__CHASH_KEY_BUCKET, _key, _value);                      \
+                                                                             \
+  __chash_assert_nonnull(chash_assign, hashtable);                           \
+  __chash_assert_nonnull(chash_assign, (hashtable)->CHASH_BUCKETS_FIELD);    \
+  __chash_resize(hashtable, namespace);                                      \
+  __chash_hash((hashtable)->CHASH_CAPACITY_FIELD, _key, namespace);          \
+  __chash_probe_to_unfilled((hashtable)->CHASH_CAPACITY_FIELD,               \
+                (_key), (hashtable)->CHASH_BUCKETS_FIELD, namespace)         \
+                                                                             \
+  if((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD ==     \
+                                                             CHASH_FILLED) { \
+     namespace ## _FREE_VALUE(                                               \
+          (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_VALUE_FIELD); \
+  } else {                                                                   \
+     (hashtable)->CHASH_LENGTH_FIELD++;                                      \
+  }                                                                          \
+                                                                             \
+  (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH] = __CHASH_KEY_BUCKET;       \
+  (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD =         \
+                                                               CHASH_FILLED; \
 } while(0)
 
-#define chash_lookup(hashtable, _key, storage, namespace)                   \
-storage;                                                                    \
+#define chash_lookup(hashtable, _key, storage, namespace)                     \
+storage;                                                                      \
+                                                                              \
+do {                                                                          \
+  int __CHASH_INDEX = 0;                                                      \
+  long __CHASH_HASH = 0;                                                      \
+  namespace ## _BUCKET __CHASH_KEY_BUCKET;                                    \
+  memset(&__CHASH_KEY_BUCKET, 0, sizeof(namespace ## _BUCKET));               \
+  namespace ## _INIT(__CHASH_KEY_BUCKET, _key,                                \
+                     __CHASH_KEY_BUCKET.CHASH_VALUE_FIELD);                   \
+                                                                              \
+  (void) __CHASH_KEY_BUCKET;                                                  \
+                                                                              \
+  __chash_assert_nonnull(chash_lookup, hashtable);                            \
+  __chash_assert_nonnull(chash_lookup, (hashtable)->CHASH_BUCKETS_FIELD);     \
+  __chash_hash((hashtable)->CHASH_CAPACITY_FIELD, _key, namespace);           \
+  __chash_probe(hashtable, _key, namespace)                                   \
+                                                                              \
+  if(((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD !=     \
+              CHASH_FILLED) || __CHASH_INDEX != -1) {                         \
+    fprintf(stderr, "chash_lookup: failed to find key in hashtable (%s:%i)"   \
+                    "\n", __FILE__, __LINE__);                                \
+    abort();                                                                  \
+  }                                                                           \
+                                                                              \
+  storage = (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_VALUE_FIELD; \
+} while(0)
+
+#define chash_delete(hashtable, _key, namespace)                             \
+do {                                                                         \
+  int __CHASH_INDEX = 0;                                                     \
+  long __CHASH_HASH = 0;                                                     \
+                                                                             \
+  __chash_assert_nonnull(chash_delete, hashtable);                           \
+  __chash_assert_nonnull(chash_delete, (hashtable)->CHASH_BUCKETS_FIELD);    \
+  __chash_hash((hashtable)->CHASH_CAPACITY_FIELD, _key, namespace);          \
+  __chash_probe(hashtable, _key, namespace)                                  \
+                                                                             \
+  if(((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD !=    \
+                                    CHASH_FILLED) || __CHASH_INDEX != -1) {  \
+    fprintf(stderr, "chash_delete: failed to find key in hashtable (%s:%i)"  \
+                    "\n", __FILE__, __LINE__);                               \
+    abort();                                                                 \
+  }                                                                          \
+                                                                             \
+  namespace ## _FREE_KEY((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH]      \
+                         .CHASH_KEY_FIELD);                                  \
+  namespace ## _FREE_VALUE(                                                  \
+          (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_VALUE_FIELD); \
+  (hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD =         \
+                                                        CHASH_TOMBSTONE;     \
+  (hashtable)->CHASH_LENGTH_FIELD--;                                         \
+} while(0)
+
+#define chash_contains(hashtable, _key, storage, namespace)                 \
+1;                                                                          \
                                                                             \
 do {                                                                        \
   int __CHASH_INDEX = 0;                                                    \
   long __CHASH_HASH = 0;                                                    \
-  namespace ## _BUCKET __CHASH_KEY_BUCKET;                                  \
-  namespace ## _INIT(__CHASH_KEY_BUCKET, _key, __CHASH_KEY_BUCKET.value);   \
                                                                             \
-  (void) __CHASH_KEY_BUCKET;                                                \
-                                                                            \
-  __chash_assert_nonnull(chash_lookup, hashtable);                          \
-  __chash_assert_nonnull(chash_lookup, (hashtable)->buckets);               \
-  __chash_hash((hashtable)->capacity, _key, namespace);                     \
+  __chash_assert_nonnull(chash_contents, hashtable);                        \
+  __chash_assert_nonnull(chash_contents, (hashtable)->CHASH_BUCKETS_FIELD); \
+  __chash_hash((hashtable)->CHASH_CAPACITY_FIELD, _key, namespace);         \
   __chash_probe(hashtable, _key, namespace)                                 \
                                                                             \
-  if(((hashtable)->buckets[__CHASH_HASH].state != CHASH_FILLED) ||          \
-                                                    __CHASH_INDEX != -1) {  \
-    fprintf(stderr, "chash_lookup: failed to find key in hashtable (%s:%i)" \
-                    "\n", __FILE__, __LINE__);                              \
-    abort();                                                                \
+  if(((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD !=   \
+                                    CHASH_FILLED) || __CHASH_INDEX != -1) { \
+    storage = 0;                                                            \
   }                                                                         \
-                                                                            \
-  storage = (hashtable)->buckets[__CHASH_HASH].value;                       \
-} while(0)
-
-#define chash_delete(hashtable, _key, namespace)                            \
-do {                                                                        \
-  int __CHASH_INDEX = 0;                                                    \
-  long __CHASH_HASH = 0;                                                    \
-                                                                            \
-  __chash_assert_nonnull(chash_delete, hashtable);                          \
-  __chash_assert_nonnull(chash_delete, (hashtable)->buckets);               \
-  __chash_hash((hashtable)->capacity, _key, namespace);                     \
-  __chash_probe(hashtable, _key, namespace)                                 \
-                                                                            \
-  if(((hashtable)->buckets[__CHASH_HASH].state != CHASH_FILLED) ||          \
-                                                  __CHASH_INDEX != -1) {    \
-    fprintf(stderr, "chash_delete: failed to find key in hashtable (%s:%i)" \
-                    "\n", __FILE__, __LINE__);                              \
-    abort();                                                                \
-  }                                                                         \
-                                                                            \
-  namespace ## _FREE_KEY((hashtable)->buckets[__CHASH_HASH].key);           \
-  namespace ## _FREE_VALUE((hashtable)->buckets[__CHASH_HASH].value);       \
-  (hashtable)->buckets[__CHASH_HASH].state = CHASH_TOMBSTONE;               \
-  (hashtable)->length--;                                                    \
-} while(0)
-
-#define chash_contains(hashtable, _key, storage, namespace)              \
-1;                                                                       \
-                                                                         \
-do {                                                                     \
-  int __CHASH_INDEX = 0;                                                 \
-  long __CHASH_HASH = 0;                                                 \
-                                                                         \
-  __chash_assert_nonnull(chash_contents, hashtable);                     \
-  __chash_assert_nonnull(chash_contents, (hashtable)->buckets);          \
-  __chash_hash((hashtable)->capacity, _key, namespace);                  \
-  __chash_probe(hashtable, _key, namespace)                              \
-                                                                         \
-  if(((hashtable)->buckets[__CHASH_HASH].state != CHASH_FILLED)          \
-                                               || __CHASH_INDEX != -1) { \
-    storage = 0;                                                         \
-  }                                                                      \
 } while(0)
 
 #define chash_lookup_bucket(hashtable, _key, storage, namespace)           \
@@ -310,53 +356,59 @@ do {                                                                       \
   CHASH_COUNTER_TYPE __CHASH_INDEX = 0;                                    \
   long __CHASH_HASH = 0;                                                   \
   namespace ## _BUCKET __CHASH_KEY_BUCKET;                                 \
-  namespace ## _INIT(__CHASH_KEY_BUCKET, _key, __CHASH_KEY_BUCKET.value);  \
+  memset(&__CHASH_KEY_BUCKET, 0, sizeof(namespace ## _BUCKET));            \
+  namespace ## _INIT(__CHASH_KEY_BUCKET, _key,                             \
+                                  __CHASH_KEY_BUCKET.CHASH_VALUE_FIELD);   \
                                                                            \
   (void) __CHASH_KEY_BUCKET;                                               \
                                                                            \
   __chash_assert_nonnull(chash_lookup_bucket, hashtable);                  \
-  __chash_assert_nonnull(chash_lookup_bucket, (hashtable)->buckets);       \
-  __chash_hash((hashtable)->capacity, _key, namespace);                    \
+  __chash_assert_nonnull(chash_lookup_bucket,                              \
+                                  (hashtable)->CHASH_BUCKETS_FIELD);       \
+  __chash_hash((hashtable)->CHASH_CAPACITY_FIELD, _key, namespace);        \
   __chash_probe(hashtable, _key, namespace)                                \
                                                                            \
-  if(((hashtable)->buckets[__CHASH_HASH].state != CHASH_FILLED) ||         \
-                                                    __CHASH_INDEX != -1) { \
+  if(((hashtable)->CHASH_BUCKETS_FIELD[__CHASH_HASH].CHASH_STATE_FIELD !=  \
+                                   CHASH_FILLED) || __CHASH_INDEX != -1) { \
     fprintf(stderr, "chash_lookup_bucket: failed to find key in hashtable" \
                     "(%s:%i) \n", __FILE__, __LINE__);                     \
     abort();                                                               \
   }                                                                        \
                                                                            \
-  storage = ((hashtable)->buckets + __CHASH_HASH);                         \
+  storage = ((hashtable)->CHASH_BUCKETS_FIELD + __CHASH_HASH);             \
 } while(0)
 
 #define chash_free(hashtable, namespace)                                    \
 do {                                                                        \
   __chash_assert_nonnull(chash_free, hashtable);                            \
-  __chash_assert_nonnull(chash_free, (hashtable)->buckets);                 \
-  (hashtable)->capacity--;                                                  \
+  __chash_assert_nonnull(chash_free, (hashtable)->CHASH_BUCKETS_FIELD);     \
+  (hashtable)->CHASH_CAPACITY_FIELD--;                                      \
                                                                             \
-  while((hashtable)->capacity != -1) {                                      \
-    if((hashtable)->buckets[(hashtable)->capacity].state != CHASH_FILLED) { \
-      (hashtable)->capacity--;                                              \
+  while((hashtable)->CHASH_CAPACITY_FIELD != -1) {                          \
+    if((hashtable)->CHASH_BUCKETS_FIELD[(hashtable)->CHASH_CAPACITY_FIELD]  \
+                                      .CHASH_STATE_FIELD != CHASH_FILLED) { \
+      (hashtable)->CHASH_CAPACITY_FIELD--;                                  \
       continue;                                                             \
     }                                                                       \
                                                                             \
     namespace ##_FREE_KEY(                                                  \
-                    (hashtable)->buckets[(hashtable)->capacity].key);       \
+      (hashtable)->CHASH_BUCKETS_FIELD[(hashtable)->CHASH_CAPACITY_FIELD]   \
+            .CHASH_KEY_FIELD);                                              \
     namespace ##_FREE_VALUE(                                                \
-                    (hashtable)->buckets[(hashtable)->capacity].value);     \
-    (hashtable)->capacity--;                                                \
-    (hashtable)->length--;                                                  \
+      (hashtable)->CHASH_BUCKETS_FIELD[(hashtable)->CHASH_CAPACITY_FIELD]   \
+            .CHASH_VALUE_FIELD);                                            \
+    (hashtable)->CHASH_CAPACITY_FIELD--;                                    \
+    (hashtable)->CHASH_LENGTH_FIELD--;                                      \
   }                                                                         \
                                                                             \
   if((namespace ## _HEAP) == 1) {                                           \
-    free((hashtable)->buckets);                                             \
+    free((hashtable)->CHASH_BUCKETS_FIELD);                                 \
     free((hashtable));                                                      \
   }                                                                         \
 } while(0);
 
 #define chash_is_full(hashtable, namespace) \
-    (((hashtable)->length) == ((hashtable)->capacity))
+    (((hashtable)->CHASH_LENGTH_FIELD) == ((hashtable)->CHASH_CAPACITY_FIELD))
 
 
 
@@ -367,18 +419,20 @@ do {                                                                        \
 
 
 /* Iterator logic */
-#define chash_iter(hashtable, index, _key, _value)                 \
-	for((index) = 0, (_key) = (hashtable)->buckets[index].key,     \
-                     (_value) = (hashtable)->buckets[index].value; \
-                     (index) < (hashtable)->capacity;              \
-                     (index) = ((index) < (hashtable)->capacity)   \
-                                        ? ((index) + 1) : index,   \
-                     (_key) = (hashtable)->buckets[index].key,     \
-                     (_value) = (hashtable)->buckets[index].value, \
-                     (index) = (hashtable)->capacity)
+#define chash_iter(hashtable, index, _key, _value)                           \
+	for((index) = 0, (_key) = (hashtable)->CHASH_BUCKETS_FIELD[index].       \
+                                                        CHASH_KEY_FIELD,     \
+       (_value) = (hashtable)->CHASH_BUCKETS_FIELD[index].CHASH_VALUE_FIELD; \
+       (index) < (hashtable)->CHASH_CAPACITY_FIELD;                          \
+       (index) = ((index) < (hashtable)->CHASH_CAPACITY_FIELD)               \
+                          ? ((index) + 1) : index,                           \
+       (_key) = (hashtable)->CHASH_BUCKETS_FIELD[index].CHASH_KEY_FIELD,     \
+       (_value) = (hashtable)->CHASH_BUCKETS_FIELD[index].CHASH_VALUE_FIELD, \
+       (index) = (hashtable)->CHASH_CAPACITY_FIELD)
 
-#define chash_skip(hashtable, index)                      \
-    if((hashtable)->buckets[index].state != CHASH_FILLED) \
+#define chash_skip(hashtable, index)                                        \
+    if((hashtable)->CHASH_BUCKETS_FIELD[index].                             \
+                                         CHASH_STATE_FIELD != CHASH_FILLED) \
         continue;
 
 #endif
