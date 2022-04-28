@@ -4,8 +4,6 @@
 
 /* OS name detection macros */
 
-#define OSNAME "POSIX"
-
 #if defined _AIX 
 #define OSNAME "AIX"
 #endif
@@ -185,6 +183,10 @@
 #if not defined __VM__ || not defined __MVS__
 #define OSNAME "VSE"
 #endif
+#endif
+
+#ifndef OSNAME
+#define OSNAME "POSIX"
 #endif
 
 #endif
