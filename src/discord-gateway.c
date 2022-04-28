@@ -6,6 +6,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
+#include "osname.h"
 
 /* shorten event callback for maintainability purposes */
 #define ON(event, ...) gw->cmds.cbs.on_##event(CLIENT(gw, gw), __VA_ARGS__)
@@ -1436,7 +1437,7 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* connection identify properties */
     gw->id.properties = calloc(1, sizeof *gw->id.properties);
-    gw->id.properties->os = "POSIX";
+    gw->id.properties->os = OSNAME;
     gw->id.properties->browser = "concord";
     gw->id.properties->device = "concord";
 
