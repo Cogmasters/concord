@@ -63,8 +63,9 @@ _discord_timer_ctl(struct discord *client,
         if (!priority_queue_get(timers->q, timer.id, &key, NULL)) return 0;
 
         if (timer.flags & DISCORD_TIMER_GET) {
-            priority_queue_get(timers->q, timer.id, NULL, timer_ret);
-            if (timer.flags == DISCORD_TIMER_GET) return timer.id;
+            timer_ret->id =
+                priority_queue_get(timers->q, timer.id, NULL, timer_ret);
+            if (timer.flags == DISCORD_TIMER_GET) return timer_ret->id;
         }
     }
 
@@ -229,7 +230,8 @@ discord_timer_get(struct discord *client,
                   struct discord_timer *timer)
 {
     if (!id) return 0;
-    return priority_queue_get(client->timers.user.q, id, NULL, timer);
+    timer->id = priority_queue_get(client->timers.user.q, id, NULL, timer);
+    return timer->id;
 }
 
 static void

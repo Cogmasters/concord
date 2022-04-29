@@ -116,8 +116,9 @@ discord_run(struct discord *client)
                 }
                 else {
                     poll_time = discord_timer_get_next_trigger(
-                        timers, sizeof timers / sizeof *timers, now, 999);
-                    if (poll_time) cog_sleep_us(poll_time);
+                        timers, sizeof timers / sizeof *timers, now, 1000);
+                    if (poll_time > 0 && poll_time < 1000)
+                        cog_sleep_us(poll_time);
                 }
             }
 
