@@ -123,12 +123,12 @@ echo:
 	@ echo -e 'OBJS: $(OBJS)\n'
 
 clean: 
-	rm -rf $(GENCODECS_OBJS) $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
+	@ $(RM) $(GENCODECS_OBJS) $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean
 
 purge: clean
-	rm -rf $(LIBDIR)
+	@ $(RM) -r $(LIBDIR)
 	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: test examples install echo clean purge docs gencodecs
