@@ -197,20 +197,36 @@ on_ping(struct discord *client, const struct discord_message *msg)
 
 enum discord_event_scheduler
 scheduler(struct discord *client,
-          struct sized_buffer *data,
+          const char data[],
+          size_t size,
           enum discord_gateway_events event)
 {
     if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
         char cmd[1024] = "";
-        jsmnf *root = jsmnf_init();
 
-        if (jsmnf_start(root, data->start, data->size) >= 0) {
-            jsmnf *f = jsmnf_find(root, "content", sizeof("content") - 1);
-            if (f)
-                snprintf(cmd, sizeof(cmd), "%.*s", f->val->end - f->val->start,
-                         data->start + f->val->start);
+        jsmntok_t *tokens = NULL;
+        unsigned ntokens = 0;
+        jsmn_parser parser;
+
+        jsmn_init(&parser);
+        if (0 < jsmn_parse_auto(&parser, data, size, &tokens, &ntokens)) {
+            jsmnf_pair *pairs = NULL;
+            unsigned npairs = 0;
+            jsmnf_loader loader;
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load_auto(&loader, data, tokens, parser.toknext,
+                                    &pairs, &npairs))
+            {
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, data, "content", 7)))
+                    snprintf(cmd, sizeof(cmd), "%.*s", (int)f->v.len,
+                             data + f->v.pos);
+                free(pairs);
+            }
+            free(tokens);
         }
-        jsmnf_cleanup(root);
 
         if (0 == strcmp(PREFIX "ping", cmd)
             || 0 == strcmp(PREFIX "spam-block", cmd)) {
@@ -219,7 +235,7 @@ scheduler(struct discord *client,
         else if (0 == strncmp("No", cmd, 2)) {
             struct discord_message msg = { 0 };
 
-            discord_message_from_json(data->start, data->size, &msg);
+            discord_message_from_json(data, size, &msg);
             on_spam_block_continue(client, &msg);
             discord_message_cleanup(&msg);
 

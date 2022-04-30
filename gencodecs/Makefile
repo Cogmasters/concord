@@ -4,9 +4,6 @@ CC  = cc
 PP    := ./gencodecs-pp
 PPOBJ := gencodecs-pp.o
 
-# On some systems, "cpp" is the C++ compiler.
-CPP = cc -E
-
 API_DIR      = api
 INCLUDE_DIR  = $(TOP)/include
 COGUTILS_DIR = $(TOP)/cog-utils
@@ -100,7 +97,7 @@ echo:
 	@ echo 'OUT_C: $(OUT_C)'
 	@ echo 'OUT_O: $(OUT_O)'
 
-.PHONY: clean docs
-
 clean:
-	rm -rf $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(PPOBJ) $(DOCS_DIR)/$(API_DIR)/*.h *.dSYM
+	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(PPOBJ) $(DOCS_DIR)/$(API_DIR)/*.h *.dSYM
+
+.PHONY: clean docs

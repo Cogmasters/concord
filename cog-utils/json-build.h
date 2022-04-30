@@ -19,10 +19,16 @@ extern "C" {
 #define JSONB_API extern
 #endif
 
-/* if necessary should be increased to avoid segfault */
 #ifndef JSONB_MAX_DEPTH
-#define JSONB_MAX_DEPTH 512
-#endif
+/** 
+ * Maximum JSON nesting depth, if default value is unwanted then it should be
+ *      defined before json-build.h is included:
+ *
+ * #define JSONB_MAX_DEPTH 256
+ * #include "json-build.h"
+ * */  
+#define JSONB_MAX_DEPTH 128
+#endif /* JSONB_MAX_DEPTH */
 
 /** @brief json-builder return codes */
 typedef enum jsonbcode {
@@ -246,7 +252,7 @@ _jsonb_eval_state(enum jsonbstate state)
         (buf)[(b)->pos + (_pos)] = '\0';                                      \
     } while (0)
 
-void
+JSONB_API void
 jsonb_init(jsonb *b)
 {
     static jsonb empty_builder;
@@ -254,7 +260,7 @@ jsonb_init(jsonb *b)
     b->top = b->stack;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_object(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbstate new_state;
@@ -287,7 +293,7 @@ jsonb_object(jsonb *b, char buf[], size_t bufsize)
     return JSONB_OK;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_object_pop(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbcode code;
@@ -372,7 +378,7 @@ second_iter:
     goto second_iter;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_key(jsonb *b, char buf[], size_t bufsize, const char key[], size_t len)
 {
     size_t pos = 0;
@@ -398,7 +404,7 @@ jsonb_key(jsonb *b, char buf[], size_t bufsize, const char key[], size_t len)
     return JSONB_OK;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_array(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbstate new_state;
@@ -431,7 +437,7 @@ jsonb_array(jsonb *b, char buf[], size_t bufsize)
     return JSONB_OK;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_array_pop(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbcode code;
@@ -454,7 +460,7 @@ jsonb_array_pop(jsonb *b, char buf[], size_t bufsize)
     return code;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_token(
     jsonb *b, char buf[], size_t bufsize, const char token[], size_t len)
 {
@@ -490,20 +496,20 @@ jsonb_token(
     return code;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_bool(jsonb *b, char buf[], size_t bufsize, int boolean)
 {
     if (boolean) return jsonb_token(b, buf, bufsize, "true", 4);
     return jsonb_token(b, buf, bufsize, "false", 5);
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_null(jsonb *b, char buf[], size_t bufsize)
 {
     return jsonb_token(b, buf, bufsize, "null", 4);
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_string(
     jsonb *b, char buf[], size_t bufsize, const char str[], size_t len)
 {
@@ -542,7 +548,7 @@ jsonb_string(
     return code;
 }
 
-jsonbcode
+JSONB_API jsonbcode
 jsonb_number(jsonb *b, char buf[], size_t bufsize, double number)
 {
     char token[32];

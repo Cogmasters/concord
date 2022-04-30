@@ -21,40 +21,42 @@ print_usage(void)
            "\nTYPE ANY KEY TO START BOT\n");
 }
 
-char JSON[] =
-    "{\n"
-    "  \"title\": \"Concord\",\n"
-    "  \"description\": \"Discord API library\",\n"
-    "  \"url\": \"https://github.com/Cogmasters/concord\",\n"
-    "  \"color\": 3447003,\n"
-    "  \"footer\": {\n"
-    "    \"text\": \"github.com/Cogmasters/concord\",\n"
-    "    \"icon_url\": "
-    "\"https://raw.githubusercontent.com/cogmasters/concord/master/docs/"
-    "logo.svg\"\n"
-    "  },\n"
-    "  \"image\": {\n"
-    "    \"url\": "
-    "\"https://github.com/Cogmasters/concord-docs/blob/master/docs/source/"
-    "images/social-preview.png?raw=true\"\n"
-    "  },\n"
-    "  \"author\": {\n"
-    "    \"name\": \"Cogmasters\",\n"
-    "    \"url\": \"https://github.com/Cogmasters\",\n"
-    "  },\n"
-    "  \"fields\": [\n"
-    "    {\n"
-    "      \"name\":\"Want to learn more?\", \n"
-    "      \"value\":\"Read our "
-    "[documentation](https://cogmasters.github.io/concord/)!\"\n"
-    "    },\n"
-    "    {\n"
-    "      \"name\":\"Looking for support?\", \n"
-    "      \"value\":\"Join our server "
-    "[here](https://discord.gg/Y7Xa6MA82v)!\"\n"
-    "    }\n"
-    "  ]\n"
-    "}";
+#define ICON_URL                                                              \
+    "https://github.com/Cogmasters/concord/blob/master/docs/static/"          \
+    "concord-small.png?raw=true"
+#define IMAGE_URL                                                             \
+    "https://github.com/Cogmasters/concord/blob/master/docs/static/"          \
+    "social-preview.png?raw=true"
+
+char JSON[] = "{\n"
+              "  \"title\": \"Concord\",\n"
+              "  \"description\": \"Discord API library\",\n"
+              "  \"url\": \"https://github.com/Cogmasters/concord\",\n"
+              "  \"color\": 3447003,\n"
+              "  \"footer\": {\n"
+              "    \"text\": \"github.com/Cogmasters/concord\",\n"
+              "    \"icon_url\": \"" ICON_URL "\"\n"
+              "  },\n"
+              "  \"image\": {\n"
+              "    \"url\": \"" IMAGE_URL "\"\n"
+              "  },\n"
+              "  \"author\": {\n"
+              "    \"name\": \"Cogmasters\",\n"
+              "    \"url\": \"https://github.com/Cogmasters\",\n"
+              "  },\n"
+              "  \"fields\": [\n"
+              "    {\n"
+              "      \"name\":\"Want to learn more?\", \n"
+              "      \"value\":\"Read our "
+              "[documentation](https://cogmasters.github.io/concord/)!\"\n"
+              "    },\n"
+              "    {\n"
+              "      \"name\":\"Looking for support?\", \n"
+              "      \"value\":\"Join our server "
+              "[here](https://discord.gg/Y7Xa6MA82v)!\"\n"
+              "    }\n"
+              "  ]\n"
+              "}";
 
 void
 on_ready(struct discord *client)
@@ -118,14 +120,11 @@ on_static(struct discord *client, const struct discord_message *msg)
             .footer =
                 &(struct discord_embed_footer){
                     .text = "github.com/Cogmasters/concord",
-                    .icon_url = "https://raw.githubusercontent.com/cogmasters/"
-                                "concord/master/docs/logo.svg",
+                    .icon_url = ICON_URL,
                 },
             .image =
                 &(struct discord_embed_image){
-                    .url = "https://github.com/Cogmasters/concord-docs/blob/"
-                           "master/docs/"
-                           "source/images/social-preview.png?raw=true",
+                    .url = IMAGE_URL,
                 },
             .author =
                 &(struct discord_embed_author){
@@ -164,15 +163,9 @@ on_builder(struct discord *client, const struct discord_message *msg)
     discord_embed_set_description(&embed, "Discord API library");
     discord_embed_set_url(&embed, "https://github.com/Cogmasters/concord");
 
-    discord_embed_set_footer(&embed, "github.com/Cogmasters/concord",
-                             "https://raw.githubusercontent.com/cogmasters/"
-                             "concord/master/docs/logo.svg",
+    discord_embed_set_footer(&embed, "github.com/Cogmasters/concord", ICON_URL,
                              NULL);
-    discord_embed_set_image(&embed,
-                            "https://github.com/Cogmasters/concord-docs/blob/"
-                            "master/docs/"
-                            "source/images/social-preview.png?raw=true",
-                            NULL, 0, 0);
+    discord_embed_set_image(&embed, IMAGE_URL, NULL, 0, 0);
     discord_embed_set_author(&embed, "Cogmasters",
                              "https://github.com/Cogmasters", NULL, NULL);
     discord_embed_add_field(

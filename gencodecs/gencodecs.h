@@ -38,6 +38,7 @@
 #   ifdef GENCODECS_DATA
 GENCODECS_PP_INCLUDE(<stdio.h>)
 GENCODECS_PP_INCLUDE(<stdlib.h>)
+GENCODECS_PP_INCLUDE(<string.h>)
 #       ifdef GENCODECS_INIT
 GENCODECS_PP_INCLUDE("carray.h")
 #       endif

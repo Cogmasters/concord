@@ -37,7 +37,8 @@ typedef enum discord_event_scheduler {
  */
 typedef enum discord_event_scheduler (*discord_ev_scheduler)(
     struct discord *client,
-    struct sized_buffer *event_data,
+    const char data[],
+    size_t size,
     enum discord_gateway_events event);
 
 /**
