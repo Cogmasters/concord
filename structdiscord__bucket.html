@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('structdiscord__bucket.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p>The bucket struct for handling ratelimiting.  
+<p>The Discord bucket for handling per-group ratelimits.  
  <a href="structdiscord__bucket.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-internal_8h_source.html">discord-internal.h</a>&gt;</code></p>
@@ -118,11 +118,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:a0966c2079f2043878d948aacd3208007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a268f5f36225ae82f4640704eea74adf2"><td class="memItemLeft" align="right" valign="top">pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a268f5f36225ae82f4640704eea74adf2">lock</a></td></tr>
 <tr class="separator:a268f5f36225ae82f4640704eea74adf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53523eeac146fe4f8e0aaea713b3ca1d"><td class="memItemLeft" align="right" valign="top">UT_hash_handle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a53523eeac146fe4f8e0aaea713b3ca1d">hh</a></td></tr>
-<tr class="separator:a53523eeac146fe4f8e0aaea713b3ca1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >The bucket struct for handling ratelimiting. </p>
+<div class="textblock"><p >The Discord bucket for handling per-group ratelimits. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0067cc8cd3d71f6380535cf6d552e388" name="a0067cc8cd3d71f6380535cf6d552e388"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0067cc8cd3d71f6380535cf6d552e388">&#9670;&nbsp;</a></span>QUEUE() <span class="overload">[1/2]</span></h2>
@@ -174,7 +172,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >the hash associated with this bucket </p>
+<p >the hash associated with the bucket's ratelimiting group </p>
 
 </div>
 </div>
@@ -235,21 +233,6 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >synchronize ratelimiting between threads </p>
-
-</div>
-</div>
-<a id="a53523eeac146fe4f8e0aaea713b3ca1d" name="a53523eeac146fe4f8e0aaea713b3ca1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53523eeac146fe4f8e0aaea713b3ca1d">&#9670;&nbsp;</a></span>hh</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">UT_hash_handle discord_bucket::hh</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >makes this structure hashable </p>
 
 </div>
 </div>

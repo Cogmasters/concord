@@ -9,7 +9,7 @@ var structdiscord =
     [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
     [ "cb", "structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810", null ],
     [ "id", "structdiscord.html#a168c138bf57beb4e5a824dbe805519ca", null ],
-    [ "wakeup_timer", "structdiscord.html#a52ccd3bffd8de992f1ff725bad1d916e", null ],
+    [ "wakeup_timer", "structdiscord.html#a5b105a54d4ec5756e6c6ef405be80ed4", null ],
     [ "on_idle", "structdiscord.html#a8b6ddc9583333027193256369e5600e5", null ],
     [ "on_cycle", "structdiscord.html#aec30edafaaff8f151616190450101eab", null ],
     [ "data", "structdiscord.html#ad36541f87b8997a57c0467d29627e8d1", null ]

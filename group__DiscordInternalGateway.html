@@ -120,9 +120,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html">discord_gateway</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handle used for establishing a WebSockets connection.  <a href="structdiscord__gateway.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__event.html">discord_event</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Context in case event is scheduled to be triggered from concord's worker threads.  <a href="structdiscord__event.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -190,7 +187,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gw</td><td>the gateway handle to be initialized </td></tr>
-    <tr><td class="paramname">conf</td><td>optional pointer to a initialized logconf </td></tr>
+    <tr><td class="paramname">conf</td><td>optional pointer to a parent logconf </td></tr>
     <tr><td class="paramname">token</td><td>the bot token </td></tr>
   </table>
   </dd>

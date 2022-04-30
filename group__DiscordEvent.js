@@ -2,7 +2,7 @@ var group__DiscordEvent =
 [
     [ "Callback types", "group__DiscordEventCallbackTypes.html", "group__DiscordEventCallbackTypes" ],
     [ "discord_event_scheduler_t", "group__DiscordEvent.html#ga863c695c73cb5efe372a0a1b6af56097", null ],
-    [ "discord_ev_scheduler", "group__DiscordEvent.html#gad81345672401df8df2e7bae2cf6aabe9", null ],
+    [ "discord_ev_scheduler", "group__DiscordEvent.html#gae0a25d76096eb35fb3f093e345fef8b9", null ],
     [ "discord_event_scheduler", "group__DiscordEvent.html#gad871630e69eb4355566dc8c1031bae76", [
       [ "DISCORD_EVENT_IGNORE", "group__DiscordEvent.html#ggad871630e69eb4355566dc8c1031bae76aa592f84b7c8c98d876e01f6370eaa9bf", null ],
       [ "DISCORD_EVENT_MAIN_THREAD", "group__DiscordEvent.html#ggad871630e69eb4355566dc8c1031bae76a37aa110da76890681fbeec022ec8a29f", null ],

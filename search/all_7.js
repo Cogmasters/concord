@@ -17,5 +17,5 @@ var searchData=
   ['guild_5fscheduled_5fevent_5fid_14',['guild_scheduled_event_id',['../structdiscord__get__invite.html#a2a061b3d4ee611bba9c883680db13d3f',1,'discord_get_invite::guild_scheduled_event_id()'],['../structdiscord__guild__scheduled__event__user.html#a4c109c9fe338396dc7a81234369814f2',1,'discord_guild_scheduled_event_user::guild_scheduled_event_id()']]],
   ['guild_5fscheduled_5fevents_15',['guild_scheduled_events',['../structdiscord__guild.html#a012c9c21c9a867c3020dc290b0779ee1',1,'discord_guild::guild_scheduled_events()'],['../structdiscord__audit__log.html#a37c3e203604abc345bbf25b8ff5e75bf',1,'discord_audit_log::guild_scheduled_events()']]],
   ['guild_5ftemplate_2eh_16',['guild_template.h',['../include_2guild__template_8h.html',1,'(Global Namespace)'],['../docs_2api_2guild__template_8h.html',1,'(Global Namespace)']]],
-  ['gw_17',['gw',['../structdiscord__event.html#a348778e4e78a675568e53eb3d9a03389',1,'discord_event::gw()'],['../structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5',1,'discord::gw()']]]
+  ['gw_17',['gw',['../structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5',1,'discord']]]
 ];

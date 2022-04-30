@@ -1,7 +1,7 @@
 var discord_events_8h =
 [
     [ "discord_event_scheduler_t", "group__DiscordEvent.html#ga863c695c73cb5efe372a0a1b6af56097", null ],
-    [ "discord_ev_scheduler", "group__DiscordEvent.html#gad81345672401df8df2e7bae2cf6aabe9", null ],
+    [ "discord_ev_scheduler", "group__DiscordEvent.html#gae0a25d76096eb35fb3f093e345fef8b9", null ],
     [ "discord_ev_idle", "group__DiscordEventCallbackTypes.html#ga18532f61da11c561bd286b0ecabab97e", null ],
     [ "discord_ev_application_command", "group__DiscordEventCallbackTypes.html#ga9d8deebb49ce5bfe29bd3b01fcf0c025", null ],
     [ "discord_ev_channel", "group__DiscordEventCallbackTypes.html#ga9b41cdd3e0f87d2bcd7b8426724045e0", null ],

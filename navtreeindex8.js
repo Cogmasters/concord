@@ -1,5 +1,14 @@
 var NAVTREEINDEX8 =
 {
+"structdiscord__ret__invite.html":[5,2,7,0],
+"structdiscord__ret__invite.html#a4c1969820a77f466eb971f5418a686f9":[5,2,7,0,0],
+"structdiscord__ret__invite.html#a6d003974e4d686419c108d014fe064f7":[5,2,7,0,3],
+"structdiscord__ret__invite.html#a94bcea526545dc835152811295e3d60e":[5,2,7,0,4],
+"structdiscord__ret__invite.html#a95e9882ecc78cceb70cdae96fcc3984c":[5,2,7,0,2],
+"structdiscord__ret__invite.html#ae03f1d176fad0aec5522da19ee6d9109":[5,2,7,0,1],
+"structdiscord__ret__invite.html#aee552d4712d381a4c77c138284d204e1":[5,2,7,0,5],
+"structdiscord__ret__invites.html":[5,2,7,1],
+"structdiscord__ret__invites.html#a2a2923c2a4c0d1cbb0993ddcfcc56510":[5,2,7,1,4],
 "structdiscord__ret__invites.html#a31bd31a085bed267ea030d00b4c01135":[5,2,7,1,2],
 "structdiscord__ret__invites.html#a6952c2a89744f4f7ecb65640600c86ce":[5,2,7,1,1],
 "structdiscord__ret__invites.html#a94ddff82bddb7ec8e27fc942f9650789":[5,2,7,1,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX8 =
 "structdiscord__voice__state.html#aaf8ec96506115f8bcef4ea5dc64c200a":[6,0,236,9],
 "structdiscord__voice__state.html#ab095fd362850063d4b88ffae65df1e65":[6,0,236,4],
 "structdiscord__voice__state.html#acdf3d617e113f93e350a7c6231990628":[6,0,236,3],
-"structdiscord__voice__state.html#ae2957dbad86a3db12db2600050d6b9c9":[6,0,236,0],
-"structdiscord__voice__state__status.html":[6,0,237],
-"structdiscord__voice__state__status.html#a38c185dc83f407b3f45c0ff7f96261f3":[6,0,237,1],
-"structdiscord__voice__state__status.html#abae385a955254c1194138bc1e3e03bb0":[6,0,237,3],
-"structdiscord__voice__state__status.html#acffac0020e7cf5a5236b30762fc5e4af":[6,0,237,2],
-"structdiscord__voice__state__status.html#af01fa7b89de0a9676f59e2d7a070a2c1":[6,0,237,0],
-"structdiscord__voice__states.html":[6,0,238],
-"structdiscord__webhook.html":[6,0,239],
-"structdiscord__webhook.html#a1271fe941b4dd55efcbc224955f2ccab":[6,0,239,4],
-"structdiscord__webhook.html#a232b3bd47b4251e301f1437f1a6643c8":[6,0,239,9]
+"structdiscord__voice__state.html#ae2957dbad86a3db12db2600050d6b9c9":[6,0,236,0]
 };

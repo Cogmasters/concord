@@ -1,0 +1,4 @@
+<map id="discord_ratelimiter" name="discord_ratelimiter">
+<area shape="rect" id="node1" title="The ratelimiter struct for handling ratelimiting." alt="" coords="5,109,151,136"/>
+<area shape="rect" id="node2" href="$structdiscord__bucket.html" title="The Discord bucket for handling per&#45;group ratelimits." alt="" coords="19,5,137,32"/>
+</map>

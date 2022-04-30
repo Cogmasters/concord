@@ -106,108 +106,47 @@ Collaboration diagram for Ratelimiting:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html">discord_bucket</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bucket struct for handling ratelimiting.  <a href="structdiscord__bucket.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord bucket for handling per-group ratelimits.  <a href="structdiscord__bucket.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ratelimiter struct for handling ratelimiting.  <a href="structdiscord__ratelimiter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gab9ec7dc3d4004dc6aea7c9846edd6dbb"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gab9ec7dc3d4004dc6aea7c9846edd6dbb">discord_bucket_init</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, const struct sized_buffer *hash, const long limit)</td></tr>
-<tr class="memdesc:gab9ec7dc3d4004dc6aea7c9846edd6dbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a individual bucket and assign it to <code>adapter</code>  <a href="group__DiscordInternalAdapterRatelimit.html#gab9ec7dc3d4004dc6aea7c9846edd6dbb">More...</a><br /></td></tr>
-<tr class="separator:gab9ec7dc3d4004dc6aea7c9846edd6dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaed725e74b163eff80be830bb3fd9f42d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gaed725e74b163eff80be830bb3fd9f42d">discord_buckets_cleanup</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter)</td></tr>
-<tr class="memdesc:gaed725e74b163eff80be830bb3fd9f42d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all buckets allocated.  <a href="group__DiscordInternalAdapterRatelimit.html#gaed725e74b163eff80be830bb3fd9f42d">More...</a><br /></td></tr>
-<tr class="separator:gaed725e74b163eff80be830bb3fd9f42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga756457c0229f889e6a7690ac53b23f73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga756457c0229f889e6a7690ac53b23f73">discord_bucket_get_timeout</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *b)</td></tr>
-<tr class="memdesc:ga756457c0229f889e6a7690ac53b23f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return bucket timeout timestamp.  <a href="group__DiscordInternalAdapterRatelimit.html#ga756457c0229f889e6a7690ac53b23f73">More...</a><br /></td></tr>
-<tr class="separator:ga756457c0229f889e6a7690ac53b23f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad0e05b03afa8e70e7bdc046e5a4e117c"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gad0e05b03afa8e70e7bdc046e5a4e117c">discord_bucket_get_wait</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket)</td></tr>
-<tr class="memdesc:gad0e05b03afa8e70e7bdc046e5a4e117c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get bucket pending cooldown time in milliseconds.  <a href="group__DiscordInternalAdapterRatelimit.html#gad0e05b03afa8e70e7bdc046e5a4e117c">More...</a><br /></td></tr>
-<tr class="separator:gad0e05b03afa8e70e7bdc046e5a4e117c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf11786b1970b42385e819867a5a2d5f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gaf11786b1970b42385e819867a5a2d5f6">discord_bucket_get_route</a> (enum http_method method, char route[256], const char endpoint_fmt[], va_list args)</td></tr>
-<tr class="memdesc:gaf11786b1970b42385e819867a5a2d5f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <code>route</code> from HTTP method and endpoint.  <a href="group__DiscordInternalAdapterRatelimit.html#gaf11786b1970b42385e819867a5a2d5f6">More...</a><br /></td></tr>
-<tr class="separator:gaf11786b1970b42385e819867a5a2d5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga24d7433ea082d601a83b6e42293b43c9"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga24d7433ea082d601a83b6e42293b43c9">discord_bucket_get</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, const char route[256])</td></tr>
-<tr class="memdesc:ga24d7433ea082d601a83b6e42293b43c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a <code>struct <a class="el" href="structdiscord__bucket.html" title="The bucket struct for handling ratelimiting.">discord_bucket</a></code> assigned to <code>route</code>  <a href="group__DiscordInternalAdapterRatelimit.html#ga24d7433ea082d601a83b6e42293b43c9">More...</a><br /></td></tr>
-<tr class="separator:ga24d7433ea082d601a83b6e42293b43c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacd6ab0f41367259b7ae7a3c0456ba2ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gacd6ab0f41367259b7ae7a3c0456ba2ca">discord_bucket_build</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket, const char route[256], struct ua_info *info)</td></tr>
-<tr class="memdesc:gacd6ab0f41367259b7ae7a3c0456ba2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the bucket with response header data.  <a href="group__DiscordInternalAdapterRatelimit.html#gacd6ab0f41367259b7ae7a3c0456ba2ca">More...</a><br /></td></tr>
-<tr class="separator:gacd6ab0f41367259b7ae7a3c0456ba2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7022e3f4a4db02d65e557b02a22db7e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga7022e3f4a4db02d65e557b02a22db7e3">discord_bucket_get_timeout</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket)</td></tr>
+<tr class="memdesc:ga7022e3f4a4db02d65e557b02a22db7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return bucket timeout timestamp.  <a href="group__DiscordInternalAdapterRatelimit.html#ga7022e3f4a4db02d65e557b02a22db7e3">More...</a><br /></td></tr>
+<tr class="separator:ga7022e3f4a4db02d65e557b02a22db7e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a6badf96bee8d590560b7303d5f8785"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga1a6badf96bee8d590560b7303d5f8785">discord_bucket_try_sleep</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket)</td></tr>
+<tr class="memdesc:ga1a6badf96bee8d590560b7303d5f8785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sleep for bucket's cooldown time.  <a href="group__DiscordInternalAdapterRatelimit.html#ga1a6badf96bee8d590560b7303d5f8785">More...</a><br /></td></tr>
+<tr class="separator:ga1a6badf96bee8d590560b7303d5f8785"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7890dbed5eb8b7b1e78b5ca3112e0af4"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga7890dbed5eb8b7b1e78b5ca3112e0af4">discord_bucket_get</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, const char key[256])</td></tr>
+<tr class="memdesc:ga7890dbed5eb8b7b1e78b5ca3112e0af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a <code>struct <a class="el" href="structdiscord__bucket.html" title="The Discord bucket for handling per-group ratelimits.">discord_bucket</a></code> assigned to <code>key</code>  <a href="group__DiscordInternalAdapterRatelimit.html#ga7890dbed5eb8b7b1e78b5ca3112e0af4">More...</a><br /></td></tr>
+<tr class="separator:ga7890dbed5eb8b7b1e78b5ca3112e0af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d19ed585f561a8e9be501503d88a582"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582">discord_ratelimiter_init</a> (struct logconf *conf)</td></tr>
+<tr class="memdesc:ga4d19ed585f561a8e9be501503d88a582"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ratelimiter handle.  <a href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582">More...</a><br /></td></tr>
+<tr class="separator:ga4d19ed585f561a8e9be501503d88a582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">discord_ratelimiter_cleanup</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
+<tr class="memdesc:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all buckets that have been discovered.  <a href="group__DiscordInternalAdapterRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">More...</a><br /></td></tr>
+<tr class="separator:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga211a03378444c347e728a993f89772b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga211a03378444c347e728a993f89772b9">discord_ratelimiter_foreach</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, void(*iter)(struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *b))</td></tr>
+<tr class="memdesc:ga211a03378444c347e728a993f89772b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate known buckets.  <a href="group__DiscordInternalAdapterRatelimit.html#ga211a03378444c347e728a993f89772b9">More...</a><br /></td></tr>
+<tr class="separator:ga211a03378444c347e728a993f89772b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga49ec800dbd53a216de0a860a2d9238d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga49ec800dbd53a216de0a860a2d9238d7">discord_ratelimiter_build_key</a> (enum http_method method, char key[256], const char endpoint_fmt[], va_list args)</td></tr>
+<tr class="memdesc:ga49ec800dbd53a216de0a860a2d9238d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build unique key formed from the HTTP method and endpoint.  <a href="group__DiscordInternalAdapterRatelimit.html#ga49ec800dbd53a216de0a860a2d9238d7">More...</a><br /></td></tr>
+<tr class="separator:ga49ec800dbd53a216de0a860a2d9238d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeeafec287431b9c28778348d26e00290"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gaeeafec287431b9c28778348d26e00290">discord_ratelimiter_get_global_wait</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
+<tr class="memdesc:gaeeafec287431b9c28778348d26e00290"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get global timeout timestamp.  <a href="group__DiscordInternalAdapterRatelimit.html#gaeeafec287431b9c28778348d26e00290">More...</a><br /></td></tr>
+<tr class="separator:gaeeafec287431b9c28778348d26e00290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadfdebbf9862ac748cb210bd8ac34e721"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html#gadfdebbf9862ac748cb210bd8ac34e721">discord_ratelimiter_build</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket, const char key[256], struct ua_info *info)</td></tr>
+<tr class="memdesc:gadfdebbf9862ac748cb210bd8ac34e721"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the bucket with response header data.  <a href="group__DiscordInternalAdapterRatelimit.html#gadfdebbf9862ac748cb210bd8ac34e721">More...</a><br /></td></tr>
+<tr class="separator:gadfdebbf9862ac748cb210bd8ac34e721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Enforce ratelimiting per the official Discord Documentation. </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gab9ec7dc3d4004dc6aea7c9846edd6dbb" name="gab9ec7dc3d4004dc6aea7c9846edd6dbb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab9ec7dc3d4004dc6aea7c9846edd6dbb">&#9670;&nbsp;</a></span>discord_bucket_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> * discord_bucket_init </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const struct sized_buffer *&#160;</td>
-          <td class="paramname"><em>hash</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const long&#160;</td>
-          <td class="paramname"><em>limit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialize a individual bucket and assign it to <code>adapter</code> </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-    <tr><td class="paramname">hash</td><td>the bucket's hash (for identification purposes) </td></tr>
-    <tr><td class="paramname">limit</td><td>the bucket's request threshold </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="gaed725e74b163eff80be830bb3fd9f42d" name="gaed725e74b163eff80be830bb3fd9f42d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaed725e74b163eff80be830bb3fd9f42d">&#9670;&nbsp;</a></span>discord_buckets_cleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_buckets_cleanup </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Cleanup all buckets allocated. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga756457c0229f889e6a7690ac53b23f73" name="ga756457c0229f889e6a7690ac53b23f73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga756457c0229f889e6a7690ac53b23f73">&#9670;&nbsp;</a></span>discord_bucket_get_timeout()</h2>
+<a id="ga7022e3f4a4db02d65e557b02a22db7e3" name="ga7022e3f4a4db02d65e557b02a22db7e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7022e3f4a4db02d65e557b02a22db7e3">&#9670;&nbsp;</a></span>discord_bucket_get_timeout()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,46 +154,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_bucket_get_timeout </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return bucket timeout timestamp. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-    <tr><td class="paramname">b</td><td>the bucket to be checked for time out </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the timeout timestamp </dd></dl>
-
-</div>
-</div>
-<a id="gad0e05b03afa8e70e7bdc046e5a4e117c" name="gad0e05b03afa8e70e7bdc046e5a4e117c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad0e05b03afa8e70e7bdc046e5a4e117c">&#9670;&nbsp;</a></span>discord_bucket_get_wait()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int64_t discord_bucket_get_wait </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -270,26 +171,200 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get bucket pending cooldown time in milliseconds. </p>
+<p>Return bucket timeout timestamp. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-    <tr><td class="paramname">the</td><td>bucket to wait on cooldown </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">bucket</td><td>the bucket to be checked for time out </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>amount to sleep for in milliseconds </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the timeout timestamp </dd></dl>
 
 </div>
 </div>
-<a id="gaf11786b1970b42385e819867a5a2d5f6" name="gaf11786b1970b42385e819867a5a2d5f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf11786b1970b42385e819867a5a2d5f6">&#9670;&nbsp;</a></span>discord_bucket_get_route()</h2>
+<a id="ga1a6badf96bee8d590560b7303d5f8785" name="ga1a6badf96bee8d590560b7303d5f8785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a6badf96bee8d590560b7303d5f8785">&#9670;&nbsp;</a></span>discord_bucket_try_sleep()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void discord_bucket_get_route </td>
+          <td class="memname">void discord_bucket_try_sleep </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td>
+          <td class="paramname"><em>bucket</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sleep for bucket's cooldown time. </p>
+<dl class="section note"><dt>Note</dt><dd>this <b>WILL</b> block the bucket's execution thread</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">bucket</td><td>the bucket to wait on cooldown </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga7890dbed5eb8b7b1e78b5ca3112e0af4" name="ga7890dbed5eb8b7b1e78b5ca3112e0af4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7890dbed5eb8b7b1e78b5ca3112e0af4">&#9670;&nbsp;</a></span>discord_bucket_get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> * discord_bucket_get </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>key</em>[256]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get a <code>struct <a class="el" href="structdiscord__bucket.html" title="The Discord bucket for handling per-group ratelimits.">discord_bucket</a></code> assigned to <code>key</code> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">key</td><td>obtained from discord_ratelimiter_get_key() </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bucket matched to <code>key</code> </dd></dl>
+
+</div>
+</div>
+<a id="ga4d19ed585f561a8e9be501503d88a582" name="ga4d19ed585f561a8e9be501503d88a582"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d19ed585f561a8e9be501503d88a582">&#9670;&nbsp;</a></span>discord_ratelimiter_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> * discord_ratelimiter_init </td>
+          <td>(</td>
+          <td class="paramtype">struct logconf *&#160;</td>
+          <td class="paramname"><em>conf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize ratelimiter handle. </p>
+<p >A hashtable shall be used for storage and retrieval of discovered buckets </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">conf</td><td>optional pointer to a parent logconf </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the ratelimiter handle </dd></dl>
+
+</div>
+</div>
+<a id="ga89ceb5153dd3e0f0323254c0213aa91f" name="ga89ceb5153dd3e0f0323254c0213aa91f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga89ceb5153dd3e0f0323254c0213aa91f">&#9670;&nbsp;</a></span>discord_ratelimiter_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_ratelimiter_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cleanup all buckets that have been discovered. </p>
+<dl class="section note"><dt>Note</dt><dd>pending requests will be moved to <code>adapter.idleq</code> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga211a03378444c347e728a993f89772b9" name="ga211a03378444c347e728a993f89772b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga211a03378444c347e728a993f89772b9">&#9670;&nbsp;</a></span>discord_ratelimiter_foreach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_ratelimiter_foreach </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
+          <td class="paramname"><em>adapter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void(*)(struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *b)&#160;</td>
+          <td class="paramname"><em>iter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Iterate known buckets. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
+    <tr><td class="paramname">iter</td><td>the user callback to be called per bucket </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga49ec800dbd53a216de0a860a2d9238d7" name="ga49ec800dbd53a216de0a860a2d9238d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga49ec800dbd53a216de0a860a2d9238d7">&#9670;&nbsp;</a></span>discord_ratelimiter_build_key()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_ratelimiter_build_key </td>
           <td>(</td>
           <td class="paramtype">enum http_method&#160;</td>
           <td class="paramname"><em>method</em>, </td>
@@ -298,7 +373,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char&#160;</td>
-          <td class="paramname"><em>route</em>[256], </td>
+          <td class="paramname"><em>key</em>[256], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -320,68 +395,58 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get <code>route</code> from HTTP method and endpoint. </p>
+<p>Build unique key formed from the HTTP method and endpoint. </p>
+<dl class="section see"><dt>See also</dt><dd><a href="https://discord.com/developers/docs/topics/rate-limits">https://discord.com/developers/docs/topics/rate-limits</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">method</td><td>the request method </td></tr>
-    <tr><td class="paramname">route</td><td>buffer filled with generated route </td></tr>
-    <tr><td class="paramname">endpoint_fmt</td><td>the printf-like endpoint formatting string </td></tr>
-    <tr><td class="paramname">args</td><td>variadic arguments matched to <code>endpoint_fmt</code> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">method</td><td>the request method </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">key</td><td>unique key for matching to buckets </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">endpoint_fmt</td><td>the printf-like endpoint formatting string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">args</td><td>variadic arguments matched to <code>endpoint_fmt</code> </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ga24d7433ea082d601a83b6e42293b43c9" name="ga24d7433ea082d601a83b6e42293b43c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga24d7433ea082d601a83b6e42293b43c9">&#9670;&nbsp;</a></span>discord_bucket_get()</h2>
+<a id="gaeeafec287431b9c28778348d26e00290" name="gaeeafec287431b9c28778348d26e00290"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeeafec287431b9c28778348d26e00290">&#9670;&nbsp;</a></span>discord_ratelimiter_get_global_wait()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> * discord_bucket_get </td>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_ratelimiter_get_global_wait </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>route</em>[256]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get a <code>struct <a class="el" href="structdiscord__bucket.html" title="The bucket struct for handling ratelimiting.">discord_bucket</a></code> assigned to <code>route</code> </p>
+<p>Get global timeout timestamp. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-    <tr><td class="paramname">route</td><td>route obtained from <a class="el" href="group__DiscordInternalAdapterRatelimit.html#gaf11786b1970b42385e819867a5a2d5f6" title="Get route from HTTP method and endpoint.">discord_bucket_get_route()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bucket assigned to <code>route</code> or <code>adapter-&gt;b_null</code> if no match found </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the most recent global timeout timestamp </dd></dl>
 
 </div>
 </div>
-<a id="gacd6ab0f41367259b7ae7a3c0456ba2ca" name="gacd6ab0f41367259b7ae7a3c0456ba2ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacd6ab0f41367259b7ae7a3c0456ba2ca">&#9670;&nbsp;</a></span>discord_bucket_build()</h2>
+<a id="gadfdebbf9862ac748cb210bd8ac34e721" name="gadfdebbf9862ac748cb210bd8ac34e721"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadfdebbf9862ac748cb210bd8ac34e721">&#9670;&nbsp;</a></span>discord_ratelimiter_build()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void discord_bucket_build </td>
+          <td class="memname">void discord_ratelimiter_build </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
+          <td class="paramname"><em>rl</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -393,7 +458,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>route</em>[256], </td>
+          <td class="paramname"><em>key</em>[256], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -412,9 +477,9 @@ Functions</h2></td></tr>
 <p>Update the bucket with response header data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapterRatelimit.html#ga4d19ed585f561a8e9be501503d88a582" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">bucket</td><td>NULL when bucket is first discovered </td></tr>
-    <tr><td class="paramname">route</td><td>route obtained from <a class="el" href="group__DiscordInternalAdapterRatelimit.html#gaf11786b1970b42385e819867a5a2d5f6" title="Get route from HTTP method and endpoint.">discord_bucket_get_route()</a> </td></tr>
+    <tr><td class="paramname">key</td><td>obtained from discord_ratelimiter_get_key() </td></tr>
     <tr><td class="paramname">info</td><td>informational struct containing details on the current transfer </td></tr>
   </table>
   </dd>

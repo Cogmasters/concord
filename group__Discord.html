@@ -127,9 +127,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a> (const char config_file[])</td></tr>
 <tr class="memdesc:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by a bot.config file.  <a href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb">More...</a><br /></td></tr>
 <tr class="separator:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8dce62a982ad40031ec5e772e2a076a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gaf8dce62a982ad40031ec5e772e2a076a">discord_clone</a> (const struct <a class="el" href="structdiscord.html">discord</a> *orig_client)</td></tr>
-<tr class="memdesc:gaf8dce62a982ad40031ec5e772e2a076a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone a discord client.  <a href="group__Discord.html#gaf8dce62a982ad40031ec5e772e2a076a">More...</a><br /></td></tr>
-<tr class="separator:gaf8dce62a982ad40031ec5e772e2a076a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c811f8a8aac3dc37a2027ffbeb13cf5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga3c811f8a8aac3dc37a2027ffbeb13cf5">discord_clone</a> (const struct <a class="el" href="structdiscord.html">discord</a> *orig)</td></tr>
+<tr class="memdesc:ga3c811f8a8aac3dc37a2027ffbeb13cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone a discord client.  <a href="group__Discord.html#ga3c811f8a8aac3dc37a2027ffbeb13cf5">More...</a><br /></td></tr>
+<tr class="separator:ga3c811f8a8aac3dc37a2027ffbeb13cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga009d0e352a30c00f8b4765712fcfa5a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga009d0e352a30c00f8b4765712fcfa5a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a Discord Client handle.  <a href="group__Discord.html#ga009d0e352a30c00f8b4765712fcfa5a9">More...</a><br /></td></tr>
 <tr class="separator:ga009d0e352a30c00f8b4765712fcfa5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,8 +232,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gaf8dce62a982ad40031ec5e772e2a076a" name="gaf8dce62a982ad40031ec5e772e2a076a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf8dce62a982ad40031ec5e772e2a076a">&#9670;&nbsp;</a></span>discord_clone()</h2>
+<a id="ga3c811f8a8aac3dc37a2027ffbeb13cf5" name="ga3c811f8a8aac3dc37a2027ffbeb13cf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3c811f8a8aac3dc37a2027ffbeb13cf5">&#9670;&nbsp;</a></span>discord_clone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,21 +242,20 @@ Functions</h2></td></tr>
           <td class="memname">struct <a class="el" href="structdiscord.html">discord</a> * discord_clone </td>
           <td>(</td>
           <td class="paramtype">const struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
-          <td class="paramname"><em>orig_client</em></td><td>)</td>
+          <td class="paramname"><em>orig</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Clone a discord client. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>this function will be removed in the future</dd></dl>
 <p >Should be called before entering a thread, to ensure each thread has its own client instance with unique buffers, url and headers </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">orig_client</td><td>the original client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">orig</td><td>the original client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the original client clone </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the client clone </dd></dl>
 
 </div>
 </div>

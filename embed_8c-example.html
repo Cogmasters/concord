@@ -114,40 +114,42 @@ $(document).ready(function(){initNavTree('embed_8c-example.html',''); initResiza
 <div class="line">           <span class="stringliteral">&quot;\nTYPE ANY KEY TO START BOT\n&quot;</span>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">char</span> JSON[] =</div>
-<div class="line">    <span class="stringliteral">&quot;{\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;title\&quot;: \&quot;Concord\&quot;,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;description\&quot;: \&quot;Discord API library\&quot;,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;url\&quot;: \&quot;https://github.com/Cogmasters/concord\&quot;,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;color\&quot;: 3447003,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;footer\&quot;: {\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    \&quot;text\&quot;: \&quot;github.com/Cogmasters/concord\&quot;,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    \&quot;icon_url\&quot;: &quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;\&quot;https://raw.githubusercontent.com/cogmasters/concord/master/docs/&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;logo.svg\&quot;\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  },\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;image\&quot;: {\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    \&quot;url\&quot;: &quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;\&quot;https://github.com/Cogmasters/concord-docs/blob/master/docs/source/&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;images/social-preview.png?raw=true\&quot;\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  },\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;author\&quot;: {\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    \&quot;name\&quot;: \&quot;Cogmasters\&quot;,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    \&quot;url\&quot;: \&quot;https://github.com/Cogmasters\&quot;,\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  },\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  \&quot;fields\&quot;: [\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    {\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;      \&quot;name\&quot;:\&quot;Want to learn more?\&quot;, \n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;      \&quot;value\&quot;:\&quot;Read our &quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;[documentation](https://cogmasters.github.io/concord/)!\&quot;\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    },\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    {\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;      \&quot;name\&quot;:\&quot;Looking for support?\&quot;, \n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;      \&quot;value\&quot;:\&quot;Join our server &quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;[here](https://discord.gg/Y7Xa6MA82v)!\&quot;\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;    }\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;  ]\n&quot;</span></div>
-<div class="line">    <span class="stringliteral">&quot;}&quot;</span>;</div>
+<div class="line"><span class="preprocessor">#define ICON_URL                                                              \</span></div>
+<div class="line"><span class="preprocessor">    &quot;https://github.com/Cogmasters/concord/blob/master/docs/static/&quot;</span>          \</div>
+<div class="line">    &quot;concord-small.png?raw=true&quot;</div>
+<div class="line"><span class="preprocessor">#define IMAGE_URL                                                             \</span></div>
+<div class="line"><span class="preprocessor">    &quot;https://github.com/Cogmasters/concord/blob/master/docs/static/&quot;</span>          \</div>
+<div class="line">    &quot;social-preview.png?raw=true&quot;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">char</span> JSON[] = <span class="stringliteral">&quot;{\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;title\&quot;: \&quot;Concord\&quot;,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;description\&quot;: \&quot;Discord API library\&quot;,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;url\&quot;: \&quot;https://github.com/Cogmasters/concord\&quot;,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;color\&quot;: 3447003,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;footer\&quot;: {\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    \&quot;text\&quot;: \&quot;github.com/Cogmasters/concord\&quot;,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    \&quot;icon_url\&quot;: \&quot;&quot;</span> ICON_URL <span class="stringliteral">&quot;\&quot;\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  },\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;image\&quot;: {\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    \&quot;url\&quot;: \&quot;&quot;</span> IMAGE_URL <span class="stringliteral">&quot;\&quot;\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  },\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;author\&quot;: {\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    \&quot;name\&quot;: \&quot;Cogmasters\&quot;,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    \&quot;url\&quot;: \&quot;https://github.com/Cogmasters\&quot;,\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  },\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  \&quot;fields\&quot;: [\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    {\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;      \&quot;name\&quot;:\&quot;Want to learn more?\&quot;, \n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;      \&quot;value\&quot;:\&quot;Read our &quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;[documentation](https://cogmasters.github.io/concord/)!\&quot;\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    },\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    {\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;      \&quot;name\&quot;:\&quot;Looking for support?\&quot;, \n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;      \&quot;value\&quot;:\&quot;Join our server &quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;[here](https://discord.gg/Y7Xa6MA82v)!\&quot;\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;    }\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;  ]\n&quot;</span></div>
+<div class="line">              <span class="stringliteral">&quot;}&quot;</span>;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span></div>
 <div class="line">on_ready(<span class="keyword">struct</span> <a id="_a0" name="_a0"></a><a class="code hl_struct" href="structdiscord.html">discord</a> *client)</div>
@@ -211,14 +213,11 @@ $(document).ready(function(){initNavTree('embed_8c-example.html',''); initResiza
 <div class="line">            .footer =</div>
 <div class="line">                &amp;(<span class="keyword">struct </span><a id="_a17" name="_a17"></a><a class="code hl_struct" href="structdiscord__embed__footer.html">discord_embed_footer</a>){</div>
 <div class="line">                    .text = <span class="stringliteral">&quot;github.com/Cogmasters/concord&quot;</span>,</div>
-<div class="line">                    .icon_url = <span class="stringliteral">&quot;https://raw.githubusercontent.com/cogmasters/&quot;</span></div>
-<div class="line">                                <span class="stringliteral">&quot;concord/master/docs/logo.svg&quot;</span>,</div>
+<div class="line">                    .icon_url = ICON_URL,</div>
 <div class="line">                },</div>
 <div class="line">            .image =</div>
 <div class="line">                &amp;(<span class="keyword">struct </span><a id="_a18" name="_a18"></a><a class="code hl_struct" href="structdiscord__embed__image.html">discord_embed_image</a>){</div>
-<div class="line">                    .url = <span class="stringliteral">&quot;https://github.com/Cogmasters/concord-docs/blob/&quot;</span></div>
-<div class="line">                           <span class="stringliteral">&quot;master/docs/&quot;</span></div>
-<div class="line">                           <span class="stringliteral">&quot;source/images/social-preview.png?raw=true&quot;</span>,</div>
+<div class="line">                    .url = IMAGE_URL,</div>
 <div class="line">                },</div>
 <div class="line">            .author =</div>
 <div class="line">                &amp;(<span class="keyword">struct </span><a id="_a19" name="_a19"></a><a class="code hl_struct" href="structdiscord__embed__author.html">discord_embed_author</a>){</div>
@@ -257,15 +256,9 @@ $(document).ready(function(){initNavTree('embed_8c-example.html',''); initResiza
 <div class="line">    <a id="a25" name="a25"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#ga7eeccf76be405c92889dc66794d7a5cc">discord_embed_set_description</a>(&amp;embed, <span class="stringliteral">&quot;Discord API library&quot;</span>);</div>
 <div class="line">    <a id="a26" name="a26"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#ga276884ac67681d970c2112736859329a">discord_embed_set_url</a>(&amp;embed, <span class="stringliteral">&quot;https://github.com/Cogmasters/concord&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line">    <a id="a27" name="a27"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#ga52f5dd61b9b425ff86c369e31517abfd">discord_embed_set_footer</a>(&amp;embed, <span class="stringliteral">&quot;github.com/Cogmasters/concord&quot;</span>,</div>
-<div class="line">                             <span class="stringliteral">&quot;https://raw.githubusercontent.com/cogmasters/&quot;</span></div>
-<div class="line">                             <span class="stringliteral">&quot;concord/master/docs/logo.svg&quot;</span>,</div>
+<div class="line">    <a id="a27" name="a27"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#ga52f5dd61b9b425ff86c369e31517abfd">discord_embed_set_footer</a>(&amp;embed, <span class="stringliteral">&quot;github.com/Cogmasters/concord&quot;</span>, ICON_URL,</div>
 <div class="line">                             NULL);</div>
-<div class="line">    <a id="a28" name="a28"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#gabf8b562a89f81232fed3d0edcc81e994">discord_embed_set_image</a>(&amp;embed,</div>
-<div class="line">                            <span class="stringliteral">&quot;https://github.com/Cogmasters/concord-docs/blob/&quot;</span></div>
-<div class="line">                            <span class="stringliteral">&quot;master/docs/&quot;</span></div>
-<div class="line">                            <span class="stringliteral">&quot;source/images/social-preview.png?raw=true&quot;</span>,</div>
-<div class="line">                            NULL, 0, 0);</div>
+<div class="line">    <a id="a28" name="a28"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#gabf8b562a89f81232fed3d0edcc81e994">discord_embed_set_image</a>(&amp;embed, IMAGE_URL, NULL, 0, 0);</div>
 <div class="line">    <a id="a29" name="a29"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#gaa2b36b3810b48f4d225d4277bb144670">discord_embed_set_author</a>(&amp;embed, <span class="stringliteral">&quot;Cogmasters&quot;</span>,</div>
 <div class="line">                             <span class="stringliteral">&quot;https://github.com/Cogmasters&quot;</span>, NULL, NULL);</div>
 <div class="line">    <a id="a30" name="a30"></a><a class="code hl_function" href="group__DiscordAPIChannelEmbed.html#gab038095175d60499df67139b6e7f8852">discord_embed_add_field</a>(</div>
@@ -356,7 +349,7 @@ $(document).ready(function(){initNavTree('embed_8c-example.html',''); initResiza
 <div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:226</div></div>
 <div class="ttc" id="astructdiscord__user_html"><div class="ttname"><a href="structdiscord__user.html">discord_user</a></div><div class="ttdef"><b>Definition:</b> user.h:104</div></div>
 <div class="ttc" id="astructdiscord__user_html_a5490343b03395b90c31987fae992b0c7"><div class="ttname"><a href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">discord_user::bot</a></div><div class="ttdeci">bool bot</div><div class="ttdef"><b>Definition:</b> user.h:114</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:757</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:807</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

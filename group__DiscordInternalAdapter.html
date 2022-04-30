@@ -101,12 +101,15 @@ $(document).ready(function(){initNavTree('group__DiscordInternalAdapter.html',''
 <div class="dynheader">
 Collaboration diagram for REST API:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordInternalAdapter.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordInternalAdapter.svg" width="508" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
 Modules</h2></td></tr>
+<tr class="memitem:group__DiscordInternalAdapterRefcount"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRefcount.html">Reference counter</a></td></tr>
+<tr class="memdesc:group__DiscordInternalAdapterRefcount"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle automatic cleanup of user's data. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__DiscordInternalAdapterRatelimit"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapterRatelimit.html">Ratelimiting</a></td></tr>
 <tr class="memdesc:group__DiscordInternalAdapterRatelimit"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforce ratelimiting per the official Discord Documentation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,9 +130,6 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__adapter.html">discord_adapter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handle used for performing HTTP Requests.  <a href="structdiscord__adapter.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__refcount.html">discord_refcount</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Naive garbage collector to cleanup user arbitrary data.  <a href="structdiscord__refcount.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -153,18 +153,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gad2a47d32783b93abef14212bf21f5806"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html#gad2a47d32783b93abef14212bf21f5806">discord_adapter_perform</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter)</td></tr>
 <tr class="memdesc:gad2a47d32783b93abef14212bf21f5806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check and manage on-going, pending and timed-out requests.  <a href="group__DiscordInternalAdapter.html#gad2a47d32783b93abef14212bf21f5806">More...</a><br /></td></tr>
 <tr class="separator:gad2a47d32783b93abef14212bf21f5806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga941a462b5ff1a97bfe5e8424c4ff261b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html#ga941a462b5ff1a97bfe5e8424c4ff261b">discord_adapter_get_global_wait</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter)</td></tr>
-<tr class="memdesc:ga941a462b5ff1a97bfe5e8424c4ff261b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get global timeout timestamp.  <a href="group__DiscordInternalAdapter.html#ga941a462b5ff1a97bfe5e8424c4ff261b">More...</a><br /></td></tr>
-<tr class="separator:ga941a462b5ff1a97bfe5e8424c4ff261b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf560bd04b8e184325f7fd2a9da65a2b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html#gaf560bd04b8e184325f7fd2a9da65a2b0">discord_adapter_stop_all</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter)</td></tr>
-<tr class="memdesc:gaf560bd04b8e184325f7fd2a9da65a2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop all on-going, pending and timed-out requests.  <a href="group__DiscordInternalAdapter.html#gaf560bd04b8e184325f7fd2a9da65a2b0">More...</a><br /></td></tr>
-<tr class="separator:gaf560bd04b8e184325f7fd2a9da65a2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga65057d88473e0161e7ccc0c3c324cbf9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html#ga65057d88473e0161e7ccc0c3c324cbf9">discord_refcount_incr</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, void *data, void(*cleanup)(void *data))</td></tr>
-<tr class="memdesc:ga65057d88473e0161e7ccc0c3c324cbf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the reference counter for <code>ret-&gt;data</code>  <a href="group__DiscordInternalAdapter.html#ga65057d88473e0161e7ccc0c3c324cbf9">More...</a><br /></td></tr>
-<tr class="separator:ga65057d88473e0161e7ccc0c3c324cbf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee4f5d486729aaad51e0a4a31e683b68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html#gaee4f5d486729aaad51e0a4a31e683b68">discord_refcount_decr</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter, void *data)</td></tr>
-<tr class="memdesc:gaee4f5d486729aaad51e0a4a31e683b68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the reference counter for <code>data</code>  <a href="group__DiscordInternalAdapter.html#gaee4f5d486729aaad51e0a4a31e683b68">More...</a><br /></td></tr>
-<tr class="separator:gaee4f5d486729aaad51e0a4a31e683b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8da9776d085cc8c8104b094d1085e5f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html#ga8da9776d085cc8c8104b094d1085e5f3">discord_adapter_stop_buckets</a> (struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *adapter)</td></tr>
+<tr class="memdesc:ga8da9776d085cc8c8104b094d1085e5f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop all bucket's on-going, pending and timed-out requests.  <a href="group__DiscordInternalAdapter.html#ga8da9776d085cc8c8104b094d1085e5f3">More...</a><br /></td></tr>
+<tr class="separator:ga8da9776d085cc8c8104b094d1085e5f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Wrapper to the Discord REST API. </p>
@@ -195,7 +186,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Bucket's route threshold length </p>
+<p >Route's unique key threshold length </p>
 
 </div>
 </div>
@@ -235,8 +226,8 @@ Functions</h2></td></tr>
 <p>Initialize the fields of a Discord Adapter handle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">adapter</td><td>a pointer to the http handle </td></tr>
-    <tr><td class="paramname">conf</td><td>optional pointer to a pre-initialized logconf </td></tr>
+    <tr><td class="paramname">adapter</td><td>the adapter handle to be initialized </td></tr>
+    <tr><td class="paramname">conf</td><td>optional pointer to a parent logconf </td></tr>
     <tr><td class="paramname">token</td><td>the bot token </td></tr>
   </table>
   </dd>
@@ -363,14 +354,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga941a462b5ff1a97bfe5e8424c4ff261b" name="ga941a462b5ff1a97bfe5e8424c4ff261b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga941a462b5ff1a97bfe5e8424c4ff261b">&#9670;&nbsp;</a></span>discord_adapter_get_global_wait()</h2>
+<a id="ga8da9776d085cc8c8104b094d1085e5f3" name="ga8da9776d085cc8c8104b094d1085e5f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8da9776d085cc8c8104b094d1085e5f3">&#9670;&nbsp;</a></span>discord_adapter_stop_buckets()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_adapter_get_global_wait </td>
+          <td class="memname">void discord_adapter_stop_buckets </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
           <td class="paramname"><em>adapter</em></td><td>)</td>
@@ -379,118 +370,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get global timeout timestamp. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the most recent global timeout timestamp </dd></dl>
-
-</div>
-</div>
-<a id="gaf560bd04b8e184325f7fd2a9da65a2b0" name="gaf560bd04b8e184325f7fd2a9da65a2b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf560bd04b8e184325f7fd2a9da65a2b0">&#9670;&nbsp;</a></span>discord_adapter_stop_all()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_adapter_stop_all </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Stop all on-going, pending and timed-out requests. </p>
+<p>Stop all bucket's on-going, pending and timed-out requests. </p>
 <p >The requests will be moved over to client's 'idleq' queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ga65057d88473e0161e7ccc0c3c324cbf9" name="ga65057d88473e0161e7ccc0c3c324cbf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga65057d88473e0161e7ccc0c3c324cbf9">&#9670;&nbsp;</a></span>discord_refcount_incr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_refcount_incr </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void(*)(void *data)&#160;</td>
-          <td class="paramname"><em>cleanup</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Increment the reference counter for <code>ret-&gt;data</code> </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-    <tr><td class="paramname">data</td><td>the user arbitrary data to have its reference counter </td></tr>
-    <tr><td class="paramname">cleanup</td><td>user-defined function for cleaning <code>data</code> resources once its no longer referenced </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="gaee4f5d486729aaad51e0a4a31e683b68" name="gaee4f5d486729aaad51e0a4a31e683b68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaee4f5d486729aaad51e0a4a31e683b68">&#9670;&nbsp;</a></span>discord_refcount_decr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_refcount_decr </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__adapter.html">discord_adapter</a> *&#160;</td>
-          <td class="paramname"><em>adapter</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Decrement the reference counter for <code>data</code> </p>
-<p >If the count reaches zero then <code>data</code> shall be cleanup up with its user-defined cleanup function </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">adapter</td><td>the handle initialized with <a class="el" href="group__DiscordInternalAdapter.html#ga46c94ff9654f12d6ce50f707ea19ca3c" title="Initialize the fields of a Discord Adapter handle.">discord_adapter_init()</a> </td></tr>
-    <tr><td class="paramname">data</td><td>the user arbitrary data to have its reference counter decremented </td></tr>
   </table>
   </dd>
 </dl>

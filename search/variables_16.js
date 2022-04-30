@@ -1,8 +1,8 @@
 var searchData=
 [
   ['wait_0',['wait',['../structdiscord__execute__webhook.html#a76b5f2ef3f98a989dd5d117ffe4b6edd',1,'discord_execute_webhook::wait()'],['../structdiscord__create__followup__message.html#a4851d137903e7f9a78224d3c2ac9b588',1,'discord_create_followup_message::wait()']]],
-  ['wait_5fms_1',['wait_ms',['../structdiscord__adapter.html#ac8553135740a099439be90e391be7035',1,'discord_adapter']]],
-  ['wakeup_5ftimer_2',['wakeup_timer',['../structdiscord.html#a52ccd3bffd8de992f1ff725bad1d916e',1,'discord']]],
+  ['wait_5fms_1',['wait_ms',['../structdiscord__ratelimiter.html#a1e8f418d7424a167b2e739bfee440b6b',1,'discord_ratelimiter']]],
+  ['wakeup_5ftimer_2',['wakeup_timer',['../structdiscord.html#a5b105a54d4ec5756e6c6ef405be80ed4',1,'discord']]],
   ['webhook_5fchannel_5fid_3',['webhook_channel_id',['../structdiscord__follow__news__channel.html#ab01f1a65d883a807b79b51abf624c268',1,'discord_follow_news_channel']]],
   ['webhook_5fid_4',['webhook_id',['../structdiscord__message.html#a9830f4465293c4af71e569f897319a19',1,'discord_message::webhook_id()'],['../structdiscord__followed__channel.html#a07034ee040cff82b5962928406f0efe1',1,'discord_followed_channel::webhook_id()']]],
   ['webhooks_5',['webhooks',['../structdiscord__audit__log.html#a95dbd77a77341ccd7a46eeb00603a192',1,'discord_audit_log']]],

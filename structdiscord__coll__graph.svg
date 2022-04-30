@@ -26,18 +26,18 @@
 <text text-anchor="middle" x="218" y="-92" font-family="Helvetica,sans-Serif" font-size="10.00">on_cycle</text>
 <text text-anchor="middle" x="218" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">on_idle</text>
 </g>
-<!-- Node5 -->
+<!-- Node6 -->
 <g id="node3" class="node">
-<title>Node5</title>
+<title>Node6</title>
 <g id="a_node3"><a xlink:href="structdiscord__gateway.html" target="_top" xlink:title="The handle used for establishing a WebSockets connection.">
 <polygon fill="none" stroke="red" points="103,-0.5 103,-19.5 202,-19.5 202,-0.5 103,-0.5"/>
 <text text-anchor="middle" x="152.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_gateway</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node5 -->
+<!-- Node1&#45;&gt;Node6 -->
 <g id="edge3" class="edge">
-<title>Node1&#45;&gt;Node5</title>
+<title>Node1&#45;&gt;Node6</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M129.55,-78.74C123.52,-73.6 117.78,-67.27 114.5,-60 110.48,-51.09 110.02,-46.69 114.5,-38 118.58,-30.09 126.17,-23.99 133.5,-19.61"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="127.68,-81.71 137.75,-84.98 131.91,-76.14 127.68,-81.71"/>
 <text text-anchor="middle" x="138.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00"> cb</text>
@@ -59,41 +59,41 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="63.46,-160.1 58.01,-169.18 67.93,-165.48 63.46,-160.1"/>
 <text text-anchor="middle" x="128" y="-137.5" font-family="Helvetica,sans-Serif" font-size="10.00"> adapter</text>
 </g>
-<!-- Node5&#45;&gt;Node1 -->
+<!-- Node6&#45;&gt;Node1 -->
 <g id="edge2" class="edge">
-<title>Node5&#45;&gt;Node1</title>
+<title>Node6&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M163.1,-28.54C164.5,-31.6 165.72,-34.82 166.5,-38 168.82,-47.5 168.42,-50.41 166.5,-60 164.72,-68.9 160.51,-78.39 157.17,-84.98"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="166.11,-26.74 158.3,-19.58 159.93,-30.04 166.11,-26.74"/>
 <text text-anchor="middle" x="176.5" y="-46.5" font-family="Helvetica,sans-Serif" font-size="10.00"> gw</text>
 </g>
-<!-- Node22 -->
+<!-- Node23 -->
 <g id="node4" class="node">
-<title>Node22</title>
+<title>Node23</title>
 <g id="a_node4"><a xlink:href="structdiscord__user.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="113.5,-169.5 113.5,-188.5 191.5,-188.5 191.5,-169.5 113.5,-169.5"/>
 <text text-anchor="middle" x="152.5" y="-176.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_user</text>
 </a>
 </g>
 </g>
-<!-- Node22&#45;&gt;Node1 -->
+<!-- Node23&#45;&gt;Node1 -->
 <g id="edge4" class="edge">
-<title>Node22&#45;&gt;Node1</title>
+<title>Node23&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M152.5,-159.43C152.5,-142.13 152.5,-117.11 152.5,-104.1"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="149,-159.48 152.5,-169.48 156,-159.48 149,-159.48"/>
 <text text-anchor="middle" x="163.5" y="-137.5" font-family="Helvetica,sans-Serif" font-size="10.00"> self</text>
 </g>
-<!-- Node23 -->
+<!-- Node24 -->
 <g id="node5" class="node">
-<title>Node23</title>
+<title>Node24</title>
 <g id="a_node5"><a xlink:href="structdiscord__timers.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="orangered" points="210,-169.5 210,-188.5 299,-188.5 299,-169.5 210,-169.5"/>
 <text text-anchor="middle" x="254.5" y="-176.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_timers</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node1 -->
+<!-- Node24&#45;&gt;Node1 -->
 <g id="edge5" class="edge">
-<title>Node23&#45;&gt;Node1</title>
+<title>Node24&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M235.97,-163.01C214.65,-145.77 180.37,-118.04 163.13,-104.1"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="233.99,-165.91 243.97,-169.48 238.39,-160.47 233.99,-165.91"/>
 <text text-anchor="middle" x="239" y="-143" font-family="Helvetica,sans-Serif" font-size="10.00"> internal</text>

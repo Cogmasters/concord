@@ -18,7 +18,7 @@ var discord_8h =
     [ "discord_strerror", "group__ConcordError.html#gada62832835a3d70782b791e0cb607cd2", null ],
     [ "discord_init", "group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d", null ],
     [ "discord_config_init", "group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb", null ],
-    [ "discord_clone", "group__Discord.html#gaf8dce62a982ad40031ec5e772e2a076a", null ],
+    [ "discord_clone", "group__Discord.html#ga3c811f8a8aac3dc37a2027ffbeb13cf5", null ],
     [ "discord_cleanup", "group__Discord.html#ga009d0e352a30c00f8b4765712fcfa5a9", null ],
     [ "discord_get_self", "group__Discord.html#ga164add107d145df966be36cef1b9b4a9", null ],
     [ "discord_run", "group__Discord.html#ga10b7d422776acf4fb67877f8f1d28af4", null ],

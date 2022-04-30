@@ -99,18 +99,18 @@
 <text text-anchor="middle" x="163.5" y="-224" font-family="Helvetica,sans-Serif" font-size="10.00">on_cycle</text>
 <text text-anchor="middle" x="163.5" y="-213" font-family="Helvetica,sans-Serif" font-size="10.00">on_idle</text>
 </g>
-<!-- Node24 -->
+<!-- Node25 -->
 <g id="node6" class="node">
-<title>Node24</title>
+<title>Node25</title>
 <g id="a_node6"><a xlink:href="structdiscord__gateway__cbs.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="#bfbfbf" points="98.5,-0.5 98.5,-19.5 219.5,-19.5 219.5,-0.5 98.5,-0.5"/>
 <text text-anchor="middle" x="159" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_gateway_cbs</text>
 </a>
 </g>
 </g>
-<!-- Node17&#45;&gt;Node24 -->
+<!-- Node17&#45;&gt;Node25 -->
 <g id="edge8" class="edge">
-<title>Node17&#45;&gt;Node24</title>
+<title>Node17&#45;&gt;Node25</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M90.19,-206.96C76.34,-170.84 52.11,-90.05 88,-38 93.91,-29.42 102.94,-23.57 112.59,-19.57"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="87.11,-208.68 94.08,-216.65 93.61,-206.07 87.11,-208.68"/>
 <text text-anchor="start" x="88" y="-184" font-family="Helvetica,sans-Serif" font-size="10.00"> on_application_command</text>
@@ -128,9 +128,9 @@
 <text text-anchor="middle" x="152.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">on_guild_create</text>
 <text text-anchor="middle" x="152.5" y="-41" font-family="Helvetica,sans-Serif" font-size="10.00">...</text>
 </g>
-<!-- Node24&#45;&gt;Node1 -->
+<!-- Node25&#45;&gt;Node1 -->
 <g id="edge7" class="edge">
-<title>Node24&#45;&gt;Node1</title>
+<title>Node25&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M202.72,-24.41C208.38,-27.95 213.43,-32.41 217,-38 253.79,-95.71 230.13,-124.83 217,-192 208.62,-234.85 207.7,-249.25 180,-283 173.73,-290.64 164.72,-296.9 156.75,-301.46"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="203.94,-21.1 193.45,-19.57 200.69,-27.31 203.94,-21.1"/>
 <text text-anchor="middle" x="223" y="-224" font-family="Helvetica,sans-Serif" font-size="10.00"> cbs</text>
