@@ -3,7 +3,10 @@
 #include <string.h>
 #include <inttypes.h>
 #include <time.h>
+
+#ifndef __MINGW32__
 #include <poll.h>
+#endif
 
 #include "io_poller.h"
 #include "cog-utils.h"
