@@ -25,105 +25,99 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Guild-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 log_on_role_create(struct discord *client,
-                   u64snowflake guild_id,
-                   const struct discord_role *role)
+                   struct discord_guild_role_create *event)
 {
-    log_warn("Role (%" PRIu64 ") created", role->id);
+    log_warn("Role (%" PRIu64 ") created", event->role->id);
 }
 
 void
 log_on_role_update(struct discord *client,
-                   u64snowflake guild_id,
-                   const struct discord_role *role)
+                   struct discord_guild_role_update *event)
 {
-    log_warn("Role (%" PRIu64 ") updated", role->id);
+    log_warn("Role (%" PRIu64 ") updated", event->role->id);
 }
 
 void
 log_on_role_delete(struct discord *client,
-                   u64snowflake guild_id,
-                   u64snowflake role_id)
+                   struct discord_guild_role_delete *event)
 {
-    log_warn("Role (%" PRIu64 ") deleted", role_id);
+    log_warn("Role (%" PRIu64 ") deleted", event->role_id);
 }
 
 void
-on_role_create(struct discord *client, const struct discord_message *msg)
+on_role_create(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     char name[128] = "";
 
-    sscanf(msg->content, "%s", name);
+    sscanf(event->content, "%s", name);
     if (!*name) {
         log_error("Couldn't create role `%s`", name);
         return;
     }
 
     struct discord_create_guild_role params = { .name = name };
-    discord_create_guild_role(client, msg->guild_id, &params, NULL);
+    discord_create_guild_role(client, event->guild_id, &params, NULL);
 }
 
 void
-on_role_delete(struct discord *client, const struct discord_message *msg)
+on_role_delete(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake role_id = 0;
 
-    sscanf(msg->content, "%" SCNu64, &role_id);
+    sscanf(event->content, "%" SCNu64, &role_id);
     if (!role_id) {
         log_error("Invalid format for `guild.role_delete <role_id>`");
         return;
     }
 
-    discord_delete_guild_role(client, msg->guild_id, role_id, NULL);
+    discord_delete_guild_role(client, event->guild_id, role_id, NULL);
 }
 
 void
-on_role_member_add(struct discord *client, const struct discord_message *msg)
+on_role_member_add(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake user_id = 0, role_id = 0;
 
-    sscanf(msg->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
+    sscanf(event->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
     if (!user_id || !role_id) {
         log_error(
             "Invalid format for `guild.role_member_add <user_id> <role_id>`");
         return;
     }
 
-    discord_add_guild_member_role(client, msg->guild_id, user_id, role_id,
+    discord_add_guild_member_role(client, event->guild_id, user_id, role_id,
                                   NULL);
 }
 
 void
-on_role_member_remove(struct discord *client,
-                      const struct discord_message *msg)
+on_role_member_remove(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake user_id = 0, role_id = 0;
 
-    sscanf(msg->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
+    sscanf(event->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
     if (!user_id || !role_id) {
         log_error("Invalid format for `guild.role_member_remove <user_id> "
                   "<role_id>`");
         return;
     }
 
-    discord_remove_guild_member_role(client, msg->guild_id, user_id, role_id,
+    discord_remove_guild_member_role(client, event->guild_id, user_id, role_id,
                                      NULL);
 }
 
@@ -164,15 +158,15 @@ fail_get_guild_roles(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_role_list(struct discord *client, const struct discord_message *msg)
+on_role_list(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_ret_roles ret = {
         .done = &done_get_guild_roles,
         .fail = &fail_get_guild_roles,
     };
-    discord_get_guild_roles(client, msg->guild_id, &ret);
+    discord_get_guild_roles(client, event->guild_id, &ret);
 }
 
 void
@@ -192,13 +186,13 @@ fail_get_guild_member(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_member_get(struct discord *client, const struct discord_message *msg)
+on_member_get(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake user_id = 0;
 
-    sscanf(msg->content, "%" SCNu64, &user_id);
+    sscanf(event->content, "%" SCNu64, &user_id);
     if (!user_id) {
         log_error("Invalid format for `guild.member_get <user_id>`");
         return;
@@ -208,7 +202,7 @@ on_member_get(struct discord *client, const struct discord_message *msg)
         .done = &done_get_guild_member,
         .fail = &fail_get_guild_member,
     };
-    discord_get_guild_member(client, msg->guild_id, user_id, &ret);
+    discord_get_guild_member(client, event->guild_id, user_id, &ret);
 }
 
 void
@@ -249,19 +243,19 @@ fail_get_guild_channels(struct discord *client, CCORDcode code, void *data)
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch guild channels: %s",
-              discord_strerror(code, client));
+             discord_strerror(code, client));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, *channel_id, &params, NULL);
 }
 
 void
-on_channels_get(struct discord *client, const struct discord_message *msg)
+on_channels_get(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    *channel_id = event->channel_id;
 
     struct discord_ret_channels ret = {
         .done = &done_get_guild_channels,
@@ -269,7 +263,7 @@ on_channels_get(struct discord *client, const struct discord_message *msg)
         .data = channel_id,
         .cleanup = &free,
     };
-    discord_get_guild_channels(client, msg->guild_id, &ret);
+    discord_get_guild_channels(client, event->guild_id, &ret);
 }
 
 int

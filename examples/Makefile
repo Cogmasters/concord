@@ -7,7 +7,8 @@ CORE_DIR      := $(TOP)/core
 INCLUDE_DIR   := $(TOP)/include
 GENCODECS_DIR := $(TOP)/gencodecs
 
-BOTS := audit-log \
+BOTS := 8ball \
+        audit-log \
         ban \
         channel \
         components \

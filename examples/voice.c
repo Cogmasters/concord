@@ -27,20 +27,18 @@ print_usage(void)
 }
 
 void
-log_on_voice_state_update(struct discord *client,
-                          const struct discord_voice_state *vs)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    log_info("User <@!%" PRIu64 "> has joined <#%" PRIu64 ">!", vs->user_id,
-             vs->channel_id);
+    log_info("Voice-Bot succesfully connected to Discord as %s#%s!",
+             event->user->username, event->user->discriminator);
 }
 
 void
-on_ready(struct discord *client)
+log_on_voice_state_update(struct discord *client,
+                          struct discord_voice_state *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
-    log_info("Voice-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+    log_info("User <@!%" PRIu64 "> has joined <#%" PRIu64 ">!", event->user_id,
+             event->channel_id);
 }
 
 void
@@ -69,13 +67,12 @@ fail_list_voice_regions(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_list_voice_regions(struct discord *client,
-                      const struct discord_message *msg)
+on_list_voice_regions(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    *channel_id = event->channel_id;
 
     struct discord_ret_voice_regions ret = {
         .done = &done_list_voice_regions,
@@ -115,17 +112,17 @@ fail_get_vchannel_position(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_voice_join(struct discord *client, const struct discord_message *msg)
+on_voice_join(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     int position = -1;
 
-    sscanf(msg->content, "%d", &position);
+    sscanf(event->content, "%d", &position);
 
     struct context *cxt = malloc(sizeof(struct context));
-    cxt->channel_id = msg->channel_id;
-    cxt->guild_id = msg->guild_id;
+    cxt->channel_id = event->channel_id;
+    cxt->guild_id = event->guild_id;
 
     struct discord_ret_channel ret = {
         .done = &done_get_vchannel_position,
@@ -134,7 +131,7 @@ on_voice_join(struct discord *client, const struct discord_message *msg)
         .cleanup = &free,
     };
 
-    discord_get_channel_at_pos(client, msg->guild_id,
+    discord_get_channel_at_pos(client, event->guild_id,
                                DISCORD_CHANNEL_GUILD_VOICE, position - 1,
                                &ret);
 }
@@ -168,23 +165,23 @@ fail_disconnect_guild_member(struct discord *client,
 }
 
 void
-on_voice_kick(struct discord *client, const struct discord_message *msg)
+on_voice_kick(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake user_id = 0;
 
-    sscanf(msg->content, "%" SCNu64, &user_id);
+    sscanf(event->content, "%" SCNu64, &user_id);
 
     if (!user_id) {
         struct discord_create_message params = { .content =
                                                      "Missing user ID" };
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
     else {
         struct context *cxt = malloc(sizeof(struct context));
-        cxt->channel_id = msg->channel_id;
-        cxt->guild_id = msg->guild_id;
+        cxt->channel_id = event->channel_id;
+        cxt->guild_id = event->guild_id;
 
         struct discord_ret_guild_member ret = {
             .done = &done_disconnect_guild_member,
@@ -193,7 +190,8 @@ on_voice_kick(struct discord *client, const struct discord_message *msg)
             .cleanup = &free,
         };
 
-        discord_disconnect_guild_member(client, msg->guild_id, user_id, &ret);
+        discord_disconnect_guild_member(client, event->guild_id, user_id,
+                                        &ret);
     }
 }
 

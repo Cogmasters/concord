@@ -16,52 +16,49 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Ban-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 log_on_guild_ban_add(struct discord *client,
-                     u64snowflake guild_id,
-                     const struct discord_user *user)
+                     struct discord_guild_ban_add *event)
 {
-    log_info("User `%s#%s` has been banned.", user->username,
-             user->discriminator);
+    log_info("User `%s#%s` has been banned.", event->user->username,
+             event->user->discriminator);
 }
 
 void
 log_on_guild_ban_remove(struct discord *client,
-                        u64snowflake guild_id,
-                        const struct discord_user *user)
+                        struct discord_guild_ban_remove *event)
 {
-    log_info("User `%s#%s` has been unbanned.", user->username,
-             user->discriminator);
+    log_info("User `%s#%s` has been unbanned.", event->user->username,
+             event->user->discriminator);
 }
 
 void
-on_ban(struct discord *client, const struct discord_message *msg)
+on_ban(struct discord *client, struct discord_message *event)
 {
     u64snowflake target_id = 0ULL;
-    sscanf(msg->content, "%" SCNu64, &target_id);
+    sscanf(event->content, "%" SCNu64, &target_id);
 
     struct discord_create_guild_ban params = {
         .delete_message_days = 1,
         .reason = "Someone really dislikes you!",
     };
-    discord_create_guild_ban(client, msg->guild_id, target_id, &params, NULL);
+    discord_create_guild_ban(client, event->guild_id, target_id, &params,
+                             NULL);
 }
 
 void
-on_unban(struct discord *client, const struct discord_message *msg)
+on_unban(struct discord *client, struct discord_message *event)
 {
     u64snowflake target_id = 0ULL;
-    sscanf(msg->content, "%" SCNu64, &target_id);
+    sscanf(event->content, "%" SCNu64, &target_id);
 
-    discord_remove_guild_ban(client, msg->guild_id, target_id, NULL);
+    discord_remove_guild_ban(client, event->guild_id, target_id, NULL);
 }
 
 int

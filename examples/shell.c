@@ -22,46 +22,43 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Shell-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
-on_cd(struct discord *client, const struct discord_message *msg)
+on_cd(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->id != g_sudo_id) return;
+    if (event->author->id != g_sudo_id) return;
 
     char path[PATH_MAX];
 
-    chdir(*msg->content ? msg->content : ".");
+    chdir(*event->content ? event->content : ".");
 
     struct discord_create_message params = {
         .content = getcwd(path, sizeof(path)),
     };
-
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-on_less_like(struct discord *client, const struct discord_message *msg)
+on_less_like(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->id != g_sudo_id) return;
+    if (event->author->id != g_sudo_id) return;
 
-    if (!msg->content || !*msg->content) {
+    if (!event->content || !*event->content) {
         struct discord_create_message params = { .content =
                                                      "No file specified" };
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
     else {
-        struct discord_embed embed = { .title = msg->content };
-        struct discord_attachment attachment = { .filename = msg->content };
+        struct discord_embed embed = { .title = event->content };
+        struct discord_attachment attachment = { .filename = event->content };
         char text[512];
 
-        snprintf(text, sizeof(text), "attachment://%s", msg->content);
+        snprintf(text, sizeof(text), "attachment://%s", event->content);
 
         struct discord_create_message params = {
             .content = text,
@@ -77,20 +74,20 @@ on_less_like(struct discord *client, const struct discord_message *msg)
                 },
         };
 
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
 }
 
 void
-on_fallback(struct discord *client, const struct discord_message *msg)
+on_fallback(struct discord *client, struct discord_message *event)
 {
     const size_t MAX_FSIZE = 5e6; // 5 mb
     const size_t MAX_CHARS = 2000;
     FILE *fp;
 
-    if (msg->author->id != g_sudo_id) return;
+    if (event->author->id != g_sudo_id) return;
 
-    if (NULL == (fp = popen(msg->content, "r"))) {
+    if (NULL == (fp = popen(event->content, "r"))) {
         perror("Failed to run command");
         return;
     }
@@ -105,7 +102,7 @@ on_fallback(struct discord *client, const struct discord_message *msg)
 
     if (fsize <= MAX_CHARS) {
         struct discord_create_message params = { .content = pathtmp };
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
     else {
         struct discord_attachment attachment = {
@@ -120,7 +117,7 @@ on_fallback(struct discord *client, const struct discord_message *msg)
                     .array = &attachment,
                 }
         };
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
 
     pclose(fp);

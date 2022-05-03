@@ -17,12 +17,10 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Emoji-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
@@ -82,12 +80,12 @@ fail_list_guild_emojis(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_list_guild_emojis(struct discord *client, const struct discord_message *msg)
+on_list_guild_emojis(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    *channel_id = event->channel_id;
 
     struct discord_ret_emojis ret = {
         .done = &done_list_guild_emojis,
@@ -95,7 +93,7 @@ on_list_guild_emojis(struct discord *client, const struct discord_message *msg)
         .data = channel_id,
         .cleanup = &free,
     };
-    discord_list_guild_emojis(client, msg->guild_id, &ret);
+    discord_list_guild_emojis(client, event->guild_id, &ret);
 }
 
 void
@@ -127,17 +125,17 @@ fail_get_guild_emoji(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_get_guild_emoji(struct discord *client, const struct discord_message *msg)
+on_get_guild_emoji(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     u64snowflake emoji_id = 0ULL;
 
-    sscanf(msg->content, "%" SCNu64, &emoji_id);
+    sscanf(event->content, "%" SCNu64, &emoji_id);
     if (!emoji_id) return;
 
     u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    *channel_id = event->channel_id;
 
     struct discord_ret_emoji ret = {
         .done = &done_get_guild_emoji,
@@ -145,7 +143,7 @@ on_get_guild_emoji(struct discord *client, const struct discord_message *msg)
         .data = channel_id,
         .cleanup = &free,
     };
-    discord_get_guild_emoji(client, msg->guild_id, emoji_id, &ret);
+    discord_get_guild_emoji(client, event->guild_id, emoji_id, &ret);
 }
 
 int

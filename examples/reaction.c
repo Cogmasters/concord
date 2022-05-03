@@ -28,12 +28,10 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Reaction-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
@@ -77,12 +75,12 @@ fail_get_users(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_get_users(struct discord *client, const struct discord_message *msg)
+on_get_users(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    if (event->author->bot || !event->referenced_message) return;
 
     u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    *channel_id = event->channel_id;
 
     struct discord_ret_users ret = {
         .done = &done_get_users,
@@ -92,61 +90,62 @@ on_get_users(struct discord *client, const struct discord_message *msg)
     };
     struct discord_get_reactions params = { .limit = 25 };
 
-    discord_get_reactions(client, msg->channel_id, msg->referenced_message->id,
-                          0, msg->content, &params, &ret);
+    discord_get_reactions(client, event->channel_id,
+                          event->referenced_message->id, 0, event->content,
+                          &params, &ret);
 }
 
 void
-on_create(struct discord *client, const struct discord_message *msg)
+on_create(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    if (event->author->bot || !event->referenced_message) return;
 
-    discord_create_reaction(client, msg->referenced_message->channel_id,
-                            msg->referenced_message->id, 0, msg->content,
+    discord_create_reaction(client, event->referenced_message->channel_id,
+                            event->referenced_message->id, 0, event->content,
                             NULL);
 }
 
 void
-on_delete(struct discord *client, const struct discord_message *msg)
+on_delete(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    if (event->author->bot || !event->referenced_message) return;
 
     discord_delete_all_reactions_for_emoji(
-        client, msg->referenced_message->channel_id,
-        msg->referenced_message->id, 0, msg->content, NULL);
+        client, event->referenced_message->channel_id,
+        event->referenced_message->id, 0, event->content, NULL);
 }
 
 void
-on_delete_all(struct discord *client, const struct discord_message *msg)
+on_delete_all(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    if (event->author->bot || !event->referenced_message) return;
 
-    discord_delete_all_reactions(client, msg->referenced_message->channel_id,
-                                 msg->referenced_message->id, NULL);
+    discord_delete_all_reactions(client, event->referenced_message->channel_id,
+                                 event->referenced_message->id, NULL);
 }
 
 void
-on_delete_self(struct discord *client, const struct discord_message *msg)
+on_delete_self(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    if (event->author->bot || !event->referenced_message) return;
 
-    discord_delete_own_reaction(client, msg->referenced_message->channel_id,
-                                msg->referenced_message->id, 0, msg->content,
-                                NULL);
+    discord_delete_own_reaction(client, event->referenced_message->channel_id,
+                                event->referenced_message->id, 0,
+                                event->content, NULL);
 }
 
 void
-on_delete_user(struct discord *client, const struct discord_message *msg)
+on_delete_user(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    if (event->author->bot || !event->referenced_message) return;
 
     u64snowflake user_id = 0;
     char emoji_name[256] = "";
 
-    sscanf(msg->content, "%" SCNu64 " %s", &user_id, emoji_name);
+    sscanf(event->content, "%" SCNu64 " %s", &user_id, emoji_name);
 
-    discord_delete_user_reaction(client, msg->referenced_message->channel_id,
-                                 msg->referenced_message->id, user_id, 0,
+    discord_delete_user_reaction(client, event->referenced_message->channel_id,
+                                 event->referenced_message->id, user_id, 0,
                                  emoji_name, NULL);
 }
 
