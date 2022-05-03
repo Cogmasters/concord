@@ -357,6 +357,9 @@ STRUCT(discord_integration)
     FIELD(revoked, bool, false)
   /** the bot/OAuth2 application for discord integrations */
     FIELD_STRUCT_PTR(application, discord_integration_application, *)
+  /** id of the guild @note extra field that may be included at
+   *    `Integration Create` or `Integration Update` */
+    FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
 LIST(discord_integrations)

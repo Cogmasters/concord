@@ -335,6 +335,8 @@ STRUCT(discord_thread_member)
     FIELD_TIMESTAMP(join_timestamp)
   /** any user-thread settings, currently only used for notifications */
     FIELD_BITMASK(flags)
+  /** the id of the guild @note used at `Thread Member Update` */
+    FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_thread_members} */

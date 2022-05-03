@@ -142,129 +142,39 @@ ENUM(discord_activity_types)
     ENUMERATOR_LAST(DISCORD_ACTIVITY_COMPETING, = 5)
 ENUM_END
 
-/** @CCORD_pub_struct{discord_identify} */
-PUB_STRUCT(discord_identify)
-  /** authentication token */
-    FIELD_PTR(token, char, *)
-  /** connection properties */
-    FIELD_STRUCT_PTR(properties, discord_identify_connection, *)
-  /** whether this connection supports compression packets */
-    FIELD(compress, bool, false)
-  /** value between 50 and 250, total number of members where the gateway
-       will stop sending offline members in the guild member list */
-    FIELD(large_threshold, int, 50)
-#if 0
-  /** array of two integers (shard_id, num_shards) */
-    FIELD_STRUCT_PTR(shard, integers, *)
-#endif
-  /** presence structure for initial presence information */
-    FIELD_STRUCT_PTR(presence, discord_presence_update, *)
-  /** the gateway intents you wish to receive
-       @see @ref DiscordInternalGatewayIntents */
-    FIELD_BITMASK(intents)
-STRUCT_END
-
-STRUCT(discord_identify_connection)
-  /** your operating system */
-    FIELD_CUSTOM(os, "$os", char, *, INIT_BLANK, CLEANUP_PTR,
-                 GENCODECS_JSON_ENCODER_PTR_char, 
-                 GENCODECS_JSON_DECODER_PTR_char, NULL)
-  /** your library name */
-    FIELD_CUSTOM(browser, "$browser", char, *, INIT_BLANK, CLEANUP_PTR,
-                 GENCODECS_JSON_ENCODER_PTR_char,
-                 GENCODECS_JSON_DECODER_PTR_char, NULL)
-  /** your library name */
-    FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
-                 GENCODECS_JSON_ENCODER_PTR_char,
-                 GENCODECS_JSON_DECODER_PTR_char, NULL)
-STRUCT_END
-
-/** @CCORD_pub_struct{discord_voice_state_status} */
-PUB_STRUCT(discord_voice_state_status)
-  /** ID of the guild */
-    FIELD_SNOWFLAKE(guild_id)
-  /** ID of the voice channel client wants to join (null if disconnecting) */
-    FIELD_SNOWFLAKE(channel_id)
-  /** is the client muted */
-    FIELD(self_mute, bool, false)
-  /** is the client deafened */
-    FIELD(self_deaf, bool, false)
-STRUCT_END
-
-/** @CCORD_pub_struct{discord_presence_update} */
-PUB_STRUCT(discord_presence_update)
-  /** unix time (in milliseconds) of when the client went idle, or null if
-       the client is not idle */
-    FIELD_TIMESTAMP(since)
-  /** the user's activities */
-    FIELD_STRUCT_PTR(activities, discord_activities, *)
-  /** the user's new status */
-    FIELD_PTR(status, char, *)
-  /** whether or not the client is afk */
-    FIELD(afk, bool, false)
-STRUCT_END
-
-LIST(discord_presence_updates)
-    LISTTYPE_STRUCT(discord_presence_update)
-LIST_END
-
 STRUCT(discord_activity)
   /** the activity's name */
-  COND_WRITE(this->name != NULL)
     FIELD_PTR(name, char, *)
-  COND_END
   /** activity type */
     FIELD_ENUM(type, discord_activity_types)
   /** stream url, is validated when type is 1 */
-  COND_WRITE(this->url != NULL)
     FIELD_PTR(url, char, *)
-  COND_END
   /** unix timestamp (in milliseconds)of when the activity was added to the
        user's session */
-  COND_WRITE(this->created_at != 0)
     FIELD_TIMESTAMP(created_at)
-  COND_END
   /** unix timestamps for start and/or end of the game */
-  COND_WRITE(this->timestamps != NULL)
     FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
-  COND_END
   /** application ID for the game */
-  COND_WRITE(this->application_id != 0)
     FIELD_SNOWFLAKE(application_id)
-  COND_END
   /** what the player is currently doing */
-  COND_WRITE(this->details != NULL)
     FIELD_PTR(details, char, *)
-  COND_END
   /** the user's current party status */
-  COND_WRITE(this->state != NULL)
     FIELD_PTR(state, char, *)
-  COND_END
   /** the emoji used for a custom status */
-  COND_WRITE(this->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_activity_emoji, *)
-  COND_END
   /** information for the current party of the player */
-  COND_WRITE(this->party != NULL)
     FIELD_STRUCT_PTR(party, discord_activity_party, *)
-  COND_END
   /** images for the presence and their hover texts */
-  COND_WRITE(this->assets != NULL)
     FIELD_STRUCT_PTR(assets, discord_activity_assets, *)
-  COND_END
   /** secrets for Rich Presence joining and spectating */
-  COND_WRITE(this->secrets != NULL)
     FIELD_STRUCT_PTR(secrets, discord_activity_secrets, *)
-  COND_END
   /** whether or not the activity is an instanced game session */
     FIELD(instance, bool, false)
   /** activity flags bitwise mask, describes what they payload includes
         @see @ref DiscordActivityFlags */
     FIELD_BITMASK(flags)
   /** the custom buttons shown in the Rich Presence (max 2) */
-  COND_WRITE(this->buttons != NULL)
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
-  COND_END
 STRUCT_END
 
 LIST(discord_activities)
@@ -282,9 +192,7 @@ STRUCT(discord_activity_emoji)
   /** the name of the emoji */
     FIELD_PTR(name, char, *)
   /** the ID of the emoji */
-  COND_WRITE(this->id != 0)
     FIELD_SNOWFLAKE(id)
-  COND_END
   /** whether this emoji is animated */
     FIELD(animated, bool, false)
 STRUCT_END
@@ -328,6 +236,483 @@ LIST(discord_activity_buttons)
     LISTTYPE_STRUCT(discord_activity_button)
 LIST_END
 
+/** @CCORD_pub_struct{discord_presence_update} */
+PUB_STRUCT(discord_presence_update)
+  /** the user presence is being updated for */
+    FIELD_STRUCT_PTR(user, discord_user, *)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** either "idle", "dnd", "online", or "offline" */
+    FIELD_PTR(status, char, *)
+  /** user's platform-dependent status */
+    FIELD_STRUCT_PTR(client_status, discord_client_status, *)
+  /** user's current activities */
+    FIELD_STRUCT_PTR(activities, discord_activities, *)
+  /** unix time (in milliseconds) of when the client went idle, or null if
+       the client is not idle */
+    FIELD_TIMESTAMP(since)
+  /** whether or not the client is afk */
+    FIELD(afk, bool, false)
+STRUCT_END
+
+STRUCT(discord_client_status)
+  /** the user's status set for an active desktop (Windows, Linux, Mac) 
+   *    application session */
+    FIELD_PTR(desktop, char, *)
+  /** the user's status set for an active mobile (iOS, Android) application
+   *    session */
+    FIELD_PTR(mobile, char, *)
+  /** the user's status set for an active web (browser, bot account)
+   *    application session */
+    FIELD_PTR(web, char, *)
+STRUCT_END
+
+LIST(discord_presence_updates)
+    LISTTYPE_STRUCT(discord_presence_update)
+LIST_END
+
+/* gateway command payloads only need to be encoded into JSON */
+#if !defined(GENCODECS_ON_JSON_DECODER)
+
+/** @CCORD_pub_struct{discord_identify} */
+PUB_STRUCT(discord_identify)
+  /** authentication token */
+    FIELD_PTR(token, char, *)
+  /** connection properties */
+    FIELD_STRUCT_PTR(properties, discord_identify_connection, *)
+  /** whether this connection supports compression packets */
+    FIELD(compress, bool, false)
+  /** value between 50 and 250, total number of members where the gateway
+       will stop sending offline members in the guild member list */
+    FIELD(large_threshold, int, 50)
+  /** array of two integers (shard_id, num_shards) */
+    FIELD_STRUCT_PTR(shard, integers, *)
+  /** presence structure for initial presence information */
+    FIELD_STRUCT_PTR(presence, discord_presence_update, *)
+  /** the gateway intents you wish to receive
+       @see @ref DiscordInternalGatewayIntents */
+    FIELD_BITMASK(intents)
+STRUCT_END
+
+STRUCT(discord_identify_connection)
+  /** your operating system */
+    FIELD_CUSTOM(os, "$os", char, *, INIT_BLANK, CLEANUP_PTR,
+                 GENCODECS_JSON_ENCODER_PTR_char, 
+                 GENCODECS_JSON_DECODER_PTR_char, NULL)
+  /** your library name */
+    FIELD_CUSTOM(browser, "$browser", char, *, INIT_BLANK, CLEANUP_PTR,
+                 GENCODECS_JSON_ENCODER_PTR_char,
+                 GENCODECS_JSON_DECODER_PTR_char, NULL)
+  /** your library name */
+    FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
+                 GENCODECS_JSON_ENCODER_PTR_char,
+                 GENCODECS_JSON_DECODER_PTR_char, NULL)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_resume} */
+PUB_STRUCT(discord_resume)
+  /** session token */
+    FIELD_PTR(token, char, *)
+  /** session id */
+    FIELD_PTR(session_id, char, *)
+  /** last sequence number received */
+    FIELD(seq, int, 0)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_request_guild_members} */
+PUB_STRUCT(discord_request_guild_members)
+  /** id of the guild to get members for */
+    FIELD_SNOWFLAKE(guild_id)
+  /** string that username starts with, or an empty string to return all
+   *    members */
+    FIELD_PTR(query, char, *)
+  /** maximum numberof members to send matching the `query`; a limit of `0`
+   *    can be used with an empty string `query` to return all members */
+  COND_WRITE(this->query != NULL)
+    FIELD(limit, int, 0)
+  COND_END
+  /** used to specify if we want the presences of the matched members */
+    FIELD(presences, bool, false)
+  /** used to specify which users you wish to fetch */
+    FIELD_STRUCT_PTR(user_ids, snowflakes, *)
+  /** nonce to identify the `Guild Members Chunk` response */
+  COND_WRITE(this->nonce != NULL)
+    FIELD_PTR(nonce, char, *)
+  COND_END
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_voice_state_status} */
+PUB_STRUCT(discord_voice_state_status)
+  /** ID of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** ID of the voice channel client wants to join (null if disconnecting) */
+    FIELD_SNOWFLAKE(channel_id)
+  /** is the client muted */
+    FIELD(self_mute, bool, false)
+  /** is the client deafened */
+    FIELD(self_deaf, bool, false)
+STRUCT_END
+
+#endif /* GENCODECS_ON_JSON_DECODER */
+
+/* event payloads only need to be decoded into structs */
+#if !defined(GENCODECS_ON_JSON_ENCODER)
+
+/** @CCORD_pub_struct{discord_ready} */
+PUB_STRUCT(discord_ready)
+  /** gateway version */
+    FIELD(v, int, 0)
+  /** information about the user including email */
+    FIELD_STRUCT_PTR(user, discord_user, *)
+  /** the guilds the user is in */
+    FIELD_STRUCT_PTR(guilds, discord_guilds, *)
+  /** used for resuming connections */
+    FIELD_PTR(session_id, char, *)
+  /** the shard information associated with this session, if sent when
+   *        identifying*/
+    FIELD_STRUCT_PTR(shard, integers, *)
+  /** contains `id` and `flags` */
+    FIELD_STRUCT_PTR(application, discord_application, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_thread_list_sync} */
+PUB_STRUCT(discord_thread_list_sync)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** 
+   * the parent channel ids whose threads are being synced. if omitted, then
+   *        threads were synced for the entire guild. This array may contain 
+   *        channel_ids that have no active threads as well, so you know to
+   *        clear data
+   */
+    FIELD_STRUCT_PTR(channel_ids, snowflakes, *)
+  /** all active threads in the given channels that the current user can access */
+    FIELD_STRUCT_PTR(threads, discord_channels, *)
+  /** all thread member objects from the synced threads for the current user,
+   *    indicating which threads the current user has been added to */
+    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+STRUCT_END
+
+/** 
+ * @CCORD_pub_struct{discord_thread_members_update}
+ * @todo `added_members` may include guild_members and presence objects
+ */
+PUB_STRUCT(discord_thread_members_update)
+  /** the id of the thread */
+    FIELD_SNOWFLAKE(id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the approximate number of members in the thread, capped at 50 */
+    FIELD(member_count, int, 0)
+  /** the users who were added to the thread */
+    FIELD_STRUCT_PTR(added_members, discord_thread_members, *)
+  /** the id of the users who were removed from the thread */
+    FIELD_STRUCT_PTR(removed_member_ids, snowflakes, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_channel_pins_update} */
+PUB_STRUCT(discord_channel_pins_update)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the time at which the most recent pinned message was pinned */
+    FIELD_TIMESTAMP(last_pin_timestamp)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_ban_add} */
+PUB_STRUCT(discord_guild_ban_add)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the banned user */
+    FIELD_STRUCT_PTR(user, discord_user, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_ban_remove} */
+PUB_STRUCT(discord_guild_ban_remove)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the unbanned user */
+    FIELD_STRUCT_PTR(user, discord_user, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_emojis_update} */
+PUB_STRUCT(discord_guild_emojis_update)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** array of emojis */
+    FIELD_STRUCT_PTR(emojis, discord_emojis, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_integrations_update} */
+PUB_STRUCT(discord_guild_integrations_update)
+  /** id of the guild whose integrations were updated */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_member_add} */
+PUB_STRUCT(discord_guild_member_add)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_member_remove} */
+PUB_STRUCT(discord_guild_member_remove)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the user who was removed */
+    FIELD_STRUCT_PTR(user, discord_user, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_member_update} */
+PUB_STRUCT(discord_guild_member_update)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** user role ids */
+    FIELD_STRUCT_PTR(roles, snowflakes, *)
+  /** the user */
+    FIELD_STRUCT_PTR(user, discord_user, *)
+  /** nickname of the user in the guild */
+    FIELD_PTR(nick, char, *)
+  /** the member's guild avatar hash */
+    FIELD_PTR(avatar, char, *)
+  /** when the user joined the guild */
+    FIELD_TIMESTAMP(joined_at)
+  /** when the user started boosting the guild */
+    FIELD_TIMESTAMP(premium_since)
+  /** whether the user is deafened in voice channels */
+    FIELD(deaf, bool, false)
+  /** whether the user is muted in voice channels */
+    FIELD(mute, bool, false)
+  /** whether the user has not yet passed the guild's `Membership Screening`
+   *    requirements */
+    FIELD(pending, bool, false)
+  /** 
+   * when the user's timeout will expire and the user will be able to
+   *    communicate in the guild again, `NULL` or a time in the past if the
+   *    user is not timed out */
+    FIELD_TIMESTAMP(communication_disabled_until)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_members_chunk} */
+PUB_STRUCT(discord_guild_members_chunk)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** set of guild members */
+    FIELD_STRUCT_PTR(members, discord_guild_members, *)
+  /** the chunk index in the expected chunks for this response
+   *  @note `0 <= chunk_index < chunk_count` */
+    FIELD(chunk_index, int, 0)
+  /** the total number of expected chunks for this response */
+    FIELD(chunk_count, int, 0)
+  /** if passing an invalid id to `REQUEST_GUILD_MEMBERS`, it will be returned
+   *    here */
+    FIELD_STRUCT_PTR(not_found, snowflakes, *)
+  /** if passing true to `REQUEST_GUILD_MEMBERS`, presences of the returned
+   *    members will be here */
+    FIELD_STRUCT_PTR(presences, discord_presence_updates, *)
+  /** the nonce used in the `Guild Members Request` */
+    FIELD_PTR(nonce, char, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_role_create} */
+PUB_STRUCT(discord_guild_role_create)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the role created */
+    FIELD_STRUCT_PTR(role, discord_role, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_role_update} */
+PUB_STRUCT(discord_guild_role_update)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the role updated */
+    FIELD_STRUCT_PTR(role, discord_role, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_guild_role_delete} */
+PUB_STRUCT(discord_guild_role_delete)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the id of the role */
+    FIELD_SNOWFLAKE(role_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_scheduled_event_user_add} */
+PUB_STRUCT(discord_guild_scheduled_event_user_add)
+  /** id of the guild scheduled event */
+    FIELD_SNOWFLAKE(guild_scheduled_event_id)
+  /** id of the user */
+    FIELD_SNOWFLAKE(user_id)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_scheduled_event_user_remove} */
+PUB_STRUCT(discord_guild_scheduled_event_user_remove)
+  /** id of the guild scheduled event */
+    FIELD_SNOWFLAKE(guild_scheduled_event_id)
+  /** id of the user */
+    FIELD_SNOWFLAKE(user_id)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_integration_delete} */
+PUB_STRUCT(discord_integration_delete)
+  /** integration id */
+    FIELD_SNOWFLAKE(id)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** id of the bot/OAuth2 application for this Discord integration */
+    FIELD_SNOWFLAKE(application_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_invite_create} */
+PUB_STRUCT(discord_invite_create)
+  /** the channel the invite is for */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the unique invite code */
+    FIELD_PTR(code, char, *)
+  /** the time at which the invite was created */
+    FIELD_TIMESTAMP(created_at)
+  /** the guild of the invite */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the user that created the invite */
+    FIELD_STRUCT_PTR(inviter, discord_user, *)
+  /** how long the inviteis valid for (in seconds) */
+    FIELD(max_age, int, 0)
+  /** the maximum number of times the invite can be used */
+    FIELD(max_uses, int, 0)
+  /** the @ref discord_invite_target_types for this voice channel invite */
+    FIELD_ENUM(target_type, discord_invite_target_types)
+  /** the user whose stream to display for this voice channel stream invite */
+    FIELD_STRUCT_PTR(target_user, discord_user, *)
+  /** the embedded application to open for this voice channel embedded 
+   *    application invite*/
+    FIELD_STRUCT_PTR(target_application, discord_application, *)
+  /** whether or not the invite is temporary (invited users will be kicked
+   *    on disconnect unless they're assigned a role) */
+    FIELD(temporary, bool, false)
+  /** how many times the invite has been used (always 0) */
+    FIELD(uses, int, 0)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_invite_delete} */
+PUB_STRUCT(discord_invite_delete)
+  /** the channel of the invite */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the guild of the invite */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the unique invite code */
+    FIELD_PTR(code, char, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_message_delete} */
+PUB_STRUCT(discord_message_delete)
+  /** the id of the message */
+    FIELD_SNOWFLAKE(id)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_message_delete_bulk} */
+PUB_STRUCT(discord_message_delete_bulk)
+  /** the ids of the messages */
+    FIELD_STRUCT_PTR(ids, snowflakes, *)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_message_reaction_add} */
+PUB_STRUCT(discord_message_reaction_add)
+  /** the id of the user */
+    FIELD_SNOWFLAKE(user_id)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of the message */
+    FIELD_SNOWFLAKE(message_id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the member who reacted if this happened in a guild */
+    FIELD_STRUCT_PTR(member, discord_guild_member, *)
+  /** the emoji used to react */
+    FIELD_STRUCT_PTR(emoji, discord_emoji, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_message_reaction_remove} */
+PUB_STRUCT(discord_message_reaction_remove)
+  /** the id of the user */
+    FIELD_SNOWFLAKE(user_id)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of the message */
+    FIELD_SNOWFLAKE(message_id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the emoji used to react */
+    FIELD_STRUCT_PTR(emoji, discord_emoji, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_message_reaction_remove_all} */
+PUB_STRUCT(discord_message_reaction_remove_all)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of the message */
+    FIELD_SNOWFLAKE(message_id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_message_reaction_remove_emoji} */
+PUB_STRUCT(discord_message_reaction_remove_emoji)
+  /** the id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the id of the message */
+    FIELD_SNOWFLAKE(message_id)
+  /** the emoji that was removed */
+    FIELD_STRUCT_PTR(emoji, discord_emoji, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_typing_start} */
+PUB_STRUCT(discord_typing_start)
+  /** id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** id of the user */
+    FIELD_SNOWFLAKE(user_id)
+  /** unix time (in seconds) of when the user started typing */
+    FIELD_TIMESTAMP(timestamp)
+  /** the member who started typing if this happened in a guild */
+    FIELD_STRUCT_PTR(member, discord_guild_member, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_voice_server_update} */
+PUB_STRUCT(discord_voice_server_update)
+  /** voice connection token */
+    FIELD_PTR(token, char, *)
+  /** the guild this voice server update is for */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the voice server host */
+    FIELD_PTR(endpoint, char, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_webhooks_update} */
+PUB_STRUCT(discord_webhooks_update)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** id of the channel */
+    FIELD_SNOWFLAKE(channel_id)
+STRUCT_END
+
 /** @CCORD_pub_struct{discord_session_start_limit} */
 PUB_STRUCT(discord_session_start_limit)
   /** the total number of session starts the current user is allowed */
@@ -339,3 +724,5 @@ PUB_STRUCT(discord_session_start_limit)
   /** the number of identify requests allowed per 5 seconds */
     FIELD(max_concurrency, int, 0)
 STRUCT_END
+
+#endif /* GENCODECS_ON_JSON_ENCODER */
