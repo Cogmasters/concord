@@ -47,7 +47,7 @@ void on_interaction(struct discord *client, struct discord_interaction *event) {
                     .data = &(struct discord_interaction_callback_data){
                           .content = "pong"
                     }
-              }
+              };
               discord_create_interaction_response(client, event->id,
                                                   event->token, &params, NULL);
         }
