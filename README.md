@@ -15,23 +15,69 @@
 
 Concord is an asynchronous C99 Discord API library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
-### Minimal example
+### Examples
+
+*The following are minimalistic examples, refer to [`examples/`](examples/) for a better overview.*
+
+#### Slash Commands (new method)
 
 ```c
 #include <string.h>
 #include <concord/discord.h>
 
-void on_ready(struct discord *client) {
-  const struct discord_user *bot = discord_get_self(client);
-  log_info("Logged in as %s!", bot->username);
+void on_ready(struct discord *client, struct discord_ready *event) {
+    struct discord_create_guild_application_command params = {
+        .name = "ping",
+        .description = "Ping command!"
+    };
+    discord_create_guild_application_command(client, event->application->id,
+                                             GUILD_ID, &params, NULL);
 }
 
-void on_message(struct discord *client, const struct discord_message *msg) {
-  if (strcmp(msg->content, "ping") != 0)
-    return; /* ignore messages that aren't 'ping' */
+void on_interaction(struct discord *client, struct discord_interaction *event) {
+    if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND)
+        return; /* return if interaction isn't a slash command */
+
+    for (int i = 0; i < event->data->options->size; ++i) {
+        char *command_name = event->data->options->array[i].name;
+
+        if (strcmp(command_name, "ping") == 0) {
+              struct discord_interaction_response params = {
+                    .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+                    .data = &(struct discord_interaction_callback_data){
+                          .content = "pong"
+                    }
+              }
+              discord_create_interaction_response(client, event->id,
+                                                  event->token, &params, NULL);
+        }
+    }
+}
+
+int main(void) {
+  struct discord *client = discord_init(BOT_TOKEN);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_interaction_create(client, &on_interaction);
+  discord_run(client);
+}
+```
+
+#### Message Commands (old method)
+
+```c
+#include <string.h>
+#include <concord/discord.h>
+
+void on_ready(struct discord *client, struct discord_ready *event) {
+  log_info("Logged in as %s!", event->user->username);
+}
+
+void on_message(struct discord *client, struct discord_message *event) {
+  if (strcmp(event->content, "ping") != 0)
+    return; /* make sure to respond to "ping" */
 
   struct discord_create_message params = { .content = "pong" };
-  discord_create_message(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 int main(void) {
@@ -41,7 +87,6 @@ int main(void) {
   discord_run(client);
 }
 ```
-*This is a minimalistic example, refer to [`examples/`](examples/) for a better overview.*
 
 ## Supported operating systems (minimum requirements)
 * GNU/Linux 4.x
