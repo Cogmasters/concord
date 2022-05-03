@@ -179,23 +179,6 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 $ CFLAGS="-pthread -lpthread" make
 ```
 
-#### Special compilation flags
-
-The following section outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities. Example:
-
-```console
-$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
-```
-
-* `-DCCORD_SIGINTCATCH`
-    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
-* `-DCCORD_VOICE`
-    * Enable experimental Voice Connection handling.
-* `-DCCORD_DEBUG_WEBSOCKETS`
-    * Enable verbose debugging for WebSockets communication.
-* `-DCCORD_DEBUG_ADAPTER`
-    * Enable verbose debugging for REST communication.
-
 ### Configuring Concord
 
 The following outlines the default fields of `config.json`
@@ -246,6 +229,31 @@ Type a message in any channel the bot is part of and the bot should send an exac
 #### Terminate Copycat-Bot
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
+
+### Configure your build
+
+The following outlines special flags and targets to override the default Makefile build with additional functionalities.
+
+#### Special compilation flags
+
+* `-DCCORD_SIGINTCATCH`
+    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
+* `-DCCORD_DEBUG_WEBSOCKETS`
+    * Enable verbose debugging for WebSockets communication.
+* `-DCCORD_DEBUG_ADAPTER`
+    * Enable verbose debugging for REST communication.
+
+*Example:*
+```console
+$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_ADAPTER" make
+```
+
+#### Special targets
+
+* `make voice`
+    * Enable experimental Voice Connection handling - not production ready.
+* `make debug`
+    * Same as enabling `-DCCORD_DEBUG_WEBSOCKETS` and `-DCCORD_DEBUG_ADAPTER`
 
 ## Installing Concord
 
