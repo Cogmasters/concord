@@ -55,10 +55,10 @@ void on_interaction(struct discord *client, struct discord_interaction *event) {
 }
 
 int main(void) {
-  struct discord *client = discord_init(BOT_TOKEN);
-  discord_set_on_ready(client, &on_ready);
-  discord_set_on_interaction_create(client, &on_interaction);
-  discord_run(client);
+    struct discord *client = discord_init(BOT_TOKEN);
+    discord_set_on_ready(client, &on_ready);
+    discord_set_on_interaction_create(client, &on_interaction);
+    discord_run(client);
 }
 ```
 
@@ -69,22 +69,22 @@ int main(void) {
 #include <concord/discord.h>
 
 void on_ready(struct discord *client, struct discord_ready *event) {
-  log_info("Logged in as %s!", event->user->username);
+    log_info("Logged in as %s!", event->user->username);
 }
 
 void on_message(struct discord *client, struct discord_message *event) {
-  if (strcmp(event->content, "ping") != 0)
-    return; /* make sure to respond to "ping" */
+    if (strcmp(event->content, "ping") != 0)
+        return; /* make sure to respond to "ping" */
 
-  struct discord_create_message params = { .content = "pong" };
-  discord_create_message(client, event->channel_id, &params, NULL);
+    struct discord_create_message params = { .content = "pong" };
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 int main(void) {
-  struct discord *client = discord_init(BOT_TOKEN);
-  discord_set_on_ready(client, &on_ready);
-  discord_set_on_message_create(client, &on_message);
-  discord_run(client);
+    struct discord *client = discord_init(BOT_TOKEN);
+    discord_set_on_ready(client, &on_ready);
+    discord_set_on_message_create(client, &on_message);
+    discord_run(client);
 }
 ```
 
