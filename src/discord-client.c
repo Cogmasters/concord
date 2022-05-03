@@ -334,14 +334,14 @@ discord_reconnect(struct discord *client, bool resume)
 }
 
 void
-discord_set_on_ready(struct discord *client, discord_ev_idle callback)
+discord_set_on_ready(struct discord *client, discord_ev_ready callback)
 {
     client->gw.cmds.cbs.on_ready = callback;
 }
 
 void
 discord_set_on_guild_role_create(struct discord *client,
-                                 discord_ev_guild_role callback)
+                                 discord_ev_guild_role_create callback)
 {
     client->gw.cmds.cbs.on_guild_role_create = callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
@@ -349,7 +349,7 @@ discord_set_on_guild_role_create(struct discord *client,
 
 void
 discord_set_on_guild_role_update(struct discord *client,
-                                 discord_ev_guild_role callback)
+                                 discord_ev_guild_role_update callback)
 {
     client->gw.cmds.cbs.on_guild_role_update = callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
@@ -373,7 +373,7 @@ discord_set_on_guild_member_add(struct discord *client,
 
 void
 discord_set_on_guild_member_update(struct discord *client,
-                                   discord_ev_guild_member callback)
+                                   discord_ev_guild_member_update callback)
 {
     client->gw.cmds.cbs.on_guild_member_update = callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
@@ -389,7 +389,7 @@ discord_set_on_guild_member_remove(struct discord *client,
 
 void
 discord_set_on_guild_ban_add(struct discord *client,
-                             discord_ev_guild_ban callback)
+                             discord_ev_guild_ban_add callback)
 {
     client->gw.cmds.cbs.on_guild_ban_add = callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_BANS);
@@ -397,7 +397,7 @@ discord_set_on_guild_ban_add(struct discord *client,
 
 void
 discord_set_on_guild_ban_remove(struct discord *client,
-                                discord_ev_guild_ban callback)
+                                discord_ev_guild_ban_remove callback)
 {
     client->gw.cmds.cbs.on_guild_ban_remove = callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_BANS);
@@ -495,8 +495,7 @@ discord_set_on_guild_update(struct discord *client, discord_ev_guild callback)
 }
 
 void
-discord_set_on_guild_delete(struct discord *client,
-                            discord_ev_guild_delete callback)
+discord_set_on_guild_delete(struct discord *client, discord_ev_guild callback)
 {
     client->gw.cmds.cbs.on_guild_delete = callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);

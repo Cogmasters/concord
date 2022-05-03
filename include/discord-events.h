@@ -90,98 +90,127 @@ void discord_set_prefix(struct discord *client, char *prefix);
 
 /** @brief Idle callback */
 typedef void (*discord_ev_idle)(struct discord *client);
+
+/** @brief Ready callback */
+typedef void (*discord_ev_ready)(struct discord *client,
+                                 struct discord_ready *event);
+
 /** @brief Application Command callback */
 typedef void (*discord_ev_application_command)(
-    struct discord *client, const struct discord_application_command *app_cmd);
+    struct discord *client, struct discord_application_command *event);
+
 /** @brief Channel callback */
 typedef void (*discord_ev_channel)(struct discord *client,
-                                   const struct discord_channel *channel);
+                                   struct discord_channel *event);
+/** @brief Thread List Sync callback */
+typedef void (*discord_ev_thread_list_sync)(
+    struct discord *client, struct discord_thread_list_sync *event);
+/** @brief Thread Members Update callback */
+typedef void (*discord_ev_thread_members_update)(
+    struct discord *client, struct discord_thread_members_update *event);
 /** @brief Channel Pins Update callback */
-typedef void (*discord_ev_channel_pins_update)(struct discord *client,
-                                               u64snowflake guild_id,
-                                               u64snowflake channel_id,
-                                               u64unix_ms last_pin_timestamp);
+typedef void (*discord_ev_channel_pins_update)(
+    struct discord *client, struct discord_channel_pins_update *event);
+
+/** @brief Guild Ban Add callback */
+typedef void (*discord_ev_guild_ban_add)(struct discord *client,
+                                         struct discord_guild_ban_add *event);
+/** @brief Guild Ban Remove callback */
+typedef void (*discord_ev_guild_ban_remove)(
+    struct discord *client, struct discord_guild_ban_remove *event);
+
 /** @brief Guild callback */
 typedef void (*discord_ev_guild)(struct discord *client,
-                                 const struct discord_guild *guild);
-/** @brief Guild Delete callback */
-typedef void (*discord_ev_guild_delete)(struct discord *client,
-                                        u64snowflake guild_id);
-/** @brief Guild Role callback */
-typedef void (*discord_ev_guild_role)(struct discord *client,
-                                      u64snowflake guild_id,
-                                      const struct discord_role *role);
-/** @brief Guild Role Delete callback */
-typedef void (*discord_ev_guild_role_delete)(struct discord *client,
-                                             u64snowflake guild_id,
-                                             u64snowflake role_id);
-/** @brief Guild Member callback */
-typedef void (*discord_ev_guild_member)(
-    struct discord *client,
-    u64snowflake guild_id,
-    const struct discord_guild_member *member);
+                                 struct discord_guild *event);
+/** @brief Guild Emojis Update callback */
+typedef void (*discord_ev_guild_emojis_update)(
+    struct discord *client, struct discord_guild_emojis_update *event);
+/** @brief Guild Integrations Update callback */
+typedef void (*discord_ev_guild_integrations_update)(
+    struct discord *client, struct discord_guild_integrations_update *event);
+/** @brief Guild Member Add callback */
+typedef void (*discord_ev_guild_member)(struct discord *client,
+                                        struct discord_guild_member *event);
 /** @brief Guild Member Remove callback */
 typedef void (*discord_ev_guild_member_remove)(
+    struct discord *client, struct discord_guild_member_remove *event);
+/** @brief Guild Member Update callback */
+typedef void (*discord_ev_guild_member_update)(
+    struct discord *client, struct discord_guild_member_update *event);
+/** @brief Guild Members Chunk callback */
+typedef void (*discord_ev_guild_members_chunk)(
+    struct discord *client, struct discord_guild_members_chunk *event);
+/** @brief Guild Role Create callback */
+typedef void (*discord_ev_guild_role_create)(
+    struct discord *client, struct discord_guild_role_create *event);
+/** @brief Guild Role Update callback */
+typedef void (*discord_ev_guild_role_update)(
+    struct discord *client, struct discord_guild_role_update *event);
+/** @brief Guild Role Delete callback */
+typedef void (*discord_ev_guild_role_delete)(
+    struct discord *client, struct discord_guild_role_delete *event);
+
+/** @brief Guild Scheduled Event User Add callback */
+typedef void (*discord_ev_guild_scheduled_event_user_add)(
     struct discord *client,
-    u64snowflake guild_id,
-    const struct discord_user *user);
-/** @brief Guild Ban callback */
-typedef void (*discord_ev_guild_ban)(struct discord *client,
-                                     u64snowflake guild_id,
-                                     const struct discord_user *user);
-/** @brief Interaction callback */
-typedef void (*discord_ev_interaction)(
-    struct discord *client, const struct discord_interaction *interaction);
+    struct discord_guild_scheduled_event_user_add *event);
+/** @brief Guild Scheduled Event User Remove callback */
+typedef void (*discord_ev_guild_scheduled_event_user_remove)(
+    struct discord *client,
+    struct discord_guild_scheduled_event_user_remove *event);
+
+/** @brief Integration Delete callback */
+typedef void (*discord_ev_integration_delete)(
+    struct discord *client, struct discord_integration_delete *event);
+
+/** @brief Invite Create Event callback */
+typedef void (*discord_ev_invite_create)(struct discord *client,
+                                         struct discord_invite_create *event);
+/** @brief Invite Delete Event callback */
+typedef void (*discord_ev_invite_delete)(struct discord *client,
+                                         struct discord_invite_delete *event);
+
 /** @brief Message callback */
 typedef void (*discord_ev_message)(struct discord *client,
-                                   const struct discord_message *message);
+                                   struct discord_message *event);
 /** @brief Message Delete callback */
-typedef void (*discord_ev_message_delete)(struct discord *client,
-                                          u64snowflake id,
-                                          u64snowflake channel_id,
-                                          u64snowflake guild_id);
+typedef void (*discord_ev_message_delete)(
+    struct discord *client, struct discord_message_delete *event);
 /** @brief Message Delete Bulk callback */
-typedef void (*discord_ev_message_delete_bulk)(struct discord *client,
-                                               const struct snowflakes *ids,
-                                               u64snowflake channel_id,
-                                               u64snowflake guild_id);
-/** @brief Message Reaction callback */
+typedef void (*discord_ev_message_delete_bulk)(
+    struct discord *client, struct discord_message_delete_bulk *event);
+/** @brief Message Reaction Add callback */
 typedef void (*discord_ev_message_reaction_add)(
-    struct discord *client,
-    u64snowflake user_id,
-    u64snowflake channel_id,
-    u64snowflake message_id,
-    u64snowflake guild_id,
-    const struct discord_guild_member *member,
-    const struct discord_emoji *emoji);
+    struct discord *client, struct discord_message_reaction_add *member);
 /** @brief Message Reaction Remove callback */
 typedef void (*discord_ev_message_reaction_remove)(
-    struct discord *client,
-    u64snowflake user_id,
-    u64snowflake channel_id,
-    u64snowflake message_id,
-    u64snowflake guild_id,
-    const struct discord_emoji *emoji);
+    struct discord *client, struct discord_message_reaction_remove *member);
 /** @brief Message Reaction Remove All callback */
-typedef void (*discord_ev_message_reaction_remove_all)(struct discord *client,
-                                                       u64snowflake channel_id,
-                                                       u64snowflake message_id,
-                                                       u64snowflake guild_id);
+typedef void (*discord_ev_message_reaction_remove_all)(
+    struct discord *client, struct discord_message_reaction_remove_all *event);
 /** @brief Message Reaction Remove callback */
 typedef void (*discord_ev_message_reaction_remove_emoji)(
     struct discord *client,
-    u64snowflake channel_id,
-    u64snowflake message_id,
-    u64snowflake guild_id,
-    const struct discord_emoji *emoji);
+    struct discord_message_reaction_remove_emoji *event);
+
+/** @brief Typing Start Remove callback */
+typedef void (*discord_ev_typing_start)(struct discord *client,
+                                        struct discord_typing_start *event);
+
 /** @brief Voice State Update callback */
 typedef void (*discord_ev_voice_state_update)(
-    struct discord *client, const struct discord_voice_state *voice_state);
+    struct discord *client, struct discord_voice_state *voice_state);
 /** @brief Voice Server Update callback */
-typedef void (*discord_ev_voice_server_update)(struct discord *client,
-                                               const char *token,
-                                               u64snowflake guild_id,
-                                               const char *endpoint);
+typedef void (*discord_ev_voice_server_update)(
+    struct discord *client, struct discord_voice_server_update *event);
+
+/** @brief Webhooks Update callback */
+typedef void (*discord_ev_webhooks_update)(
+    struct discord *client, struct discord_webhooks_update *event);
+
+/** @brief Interaction callback */
+typedef void (*discord_ev_interaction)(
+    struct discord *client, struct discord_interaction *interaction);
 
 /** @} DiscordEventCallbackTypes */
 
@@ -254,7 +283,7 @@ void discord_set_on_cycle(struct discord *client, discord_ev_idle callback);
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_ready(struct discord *client, discord_ev_idle callback);
+void discord_set_on_ready(struct discord *client, discord_ev_ready callback);
 
 /**
  * @brief Triggers when a application command is created
@@ -371,7 +400,7 @@ void discord_set_on_guild_update(struct discord *client,
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_delete(struct discord *client,
-                                 discord_ev_guild_delete callback);
+                                 discord_ev_guild callback);
 
 /**
  * @brief Triggers when a guild role is created
@@ -380,7 +409,7 @@ void discord_set_on_guild_delete(struct discord *client,
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_role_create(struct discord *client,
-                                      discord_ev_guild_role callback);
+                                      discord_ev_guild_role_create callback);
 
 /**
  * @brief Triggers when a guild role is updated
@@ -389,7 +418,7 @@ void discord_set_on_guild_role_create(struct discord *client,
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_role_update(struct discord *client,
-                                      discord_ev_guild_role callback);
+                                      discord_ev_guild_role_update callback);
 
 /**
  * @brief Triggers when a guild role is deleted
@@ -415,8 +444,8 @@ void discord_set_on_guild_member_add(struct discord *client,
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_guild_member_update(struct discord *client,
-                                        discord_ev_guild_member callback);
+void discord_set_on_guild_member_update(
+    struct discord *client, discord_ev_guild_member_update callback);
 
 /**
  * @brief Triggers when a guild member is removed
@@ -434,7 +463,7 @@ void discord_set_on_guild_member_remove(
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_ban_add(struct discord *client,
-                                  discord_ev_guild_ban callback);
+                                  discord_ev_guild_ban_add callback);
 
 /**
  * @brief Triggers when a guild ban is removed
@@ -443,7 +472,7 @@ void discord_set_on_guild_ban_add(struct discord *client,
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_ban_remove(struct discord *client,
-                                     discord_ev_guild_ban callback);
+                                     discord_ev_guild_ban_remove callback);
 
 /**
  * @brief Triggers when a interaction is created

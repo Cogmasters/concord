@@ -450,12 +450,6 @@ PUB_STRUCT(discord_guild_integrations_update)
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
-/** @CCORD_pub_struct{discord_guild_member_add} */
-PUB_STRUCT(discord_guild_member_add)
-  /** id of the guild */
-    FIELD_SNOWFLAKE(guild_id)
-STRUCT_END
-
 /** @CCORD_pub_struct{discord_guild_member_remove} */
 PUB_STRUCT(discord_guild_member_remove)
   /** id of the guild */

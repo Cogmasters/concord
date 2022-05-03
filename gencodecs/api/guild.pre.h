@@ -318,6 +318,8 @@ PUB_STRUCT(discord_guild_member)
        communicate in the guild again, null or a time in the past if the
        user is not timed out */
     FIELD_TIMESTAMP(communication_disabled_until)
+  /** the guild id @note extra field for `Guild Member Add` event */
+    FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_guild_members} */

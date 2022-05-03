@@ -358,323 +358,216 @@ get_dispatch_event(char name[])
 static void
 on_guild_create(struct discord_gateway *gw)
 {
-    struct discord_guild guild = { 0 };
-
-    discord_guild_from_jsmnf(gw->payload.data, gw->json, &guild);
-
-    ON(guild_create, &guild);
-
-    discord_guild_cleanup(&guild);
+    struct discord_guild event = { 0 };
+    discord_guild_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_create, &event);
+    discord_guild_cleanup(&event);
 }
 
 static void
 on_guild_update(struct discord_gateway *gw)
 {
-    struct discord_guild guild = { 0 };
-
-    discord_guild_from_jsmnf(gw->payload.data, gw->json, &guild);
-
-    ON(guild_update, &guild);
-
-    discord_guild_cleanup(&guild);
+    struct discord_guild event = { 0 };
+    discord_guild_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_update, &event);
+    discord_guild_cleanup(&event);
 }
 
 static void
 on_guild_delete(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "id", 2)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-
-    ON(guild_delete, guild_id);
+    struct discord_guild event = { 0 };
+    discord_guild_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_delete, &event);
+    discord_guild_cleanup(&event);
 }
 
 static void
 on_guild_role_create(struct discord_gateway *gw)
 {
-    struct discord_role role = { 0 };
-    u64snowflake guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "role", 4)))
-        discord_role_from_jsmnf(f, gw->json, &role);
-
-    ON(guild_role_create, guild_id, &role);
-
-    discord_role_cleanup(&role);
+    struct discord_guild_role_create event = { 0 };
+    discord_guild_role_create_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_role_create, &event);
+    discord_guild_role_create_cleanup(&event);
 }
 
 static void
 on_guild_role_update(struct discord_gateway *gw)
 {
-    struct discord_role role = { 0 };
-    u64snowflake guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "role", 4)))
-        discord_role_from_jsmnf(f, gw->json, &role);
-
-    ON(guild_role_update, guild_id, &role);
-
-    discord_role_cleanup(&role);
+    struct discord_guild_role_update event = { 0 };
+    discord_guild_role_update_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_role_update, &event);
+    discord_guild_role_update_cleanup(&event);
 }
 
 static void
 on_guild_role_delete(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0, role_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "role_id", 7)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &role_id);
-
-    ON(guild_role_delete, guild_id, role_id);
+    struct discord_guild_role_delete event = { 0 };
+    discord_guild_role_delete_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_role_delete, &event);
+    discord_guild_role_delete_cleanup(&event);
 }
 
 static void
 on_guild_member_add(struct discord_gateway *gw)
 {
-    struct discord_guild_member member = { 0 };
-    u64snowflake guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    discord_guild_member_from_jsmnf(gw->payload.data, gw->json, &member);
-
-    ON(guild_member_add, guild_id, &member);
-
-    discord_guild_member_cleanup(&member);
+    struct discord_guild_member event = { 0 };
+    discord_guild_member_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_member_add, &event);
+    discord_guild_member_cleanup(&event);
 }
 
 static void
 on_guild_member_update(struct discord_gateway *gw)
 {
-    struct discord_guild_member member = { 0 };
-    u64snowflake guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    discord_guild_member_from_jsmnf(gw->payload.data, gw->json, &member);
-
-    ON(guild_member_update, guild_id, &member);
-
-    discord_guild_member_cleanup(&member);
+    struct discord_guild_member_update event = { 0 };
+    discord_guild_member_update_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_member_update, &event);
+    discord_guild_member_update_cleanup(&event);
 }
 
 static void
 on_guild_member_remove(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0;
-    struct discord_user user = { 0 };
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "user", 4)))
-        discord_user_from_jsmnf(f, gw->json, &user);
-
-    ON(guild_member_remove, guild_id, &user);
-
-    discord_user_cleanup(&user);
+    struct discord_guild_member_remove event = { 0 };
+    discord_guild_member_remove_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_member_remove, &event);
+    discord_guild_member_remove_cleanup(&event);
 }
 
 static void
 on_guild_ban_add(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0;
-    struct discord_user user = { 0 };
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "user", 4)))
-        discord_user_from_jsmnf(f, gw->json, &user);
-
-    ON(guild_ban_add, guild_id, &user);
-
-    discord_user_cleanup(&user);
+    struct discord_guild_ban_add event = { 0 };
+    discord_guild_ban_add_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_ban_add, &event);
+    discord_guild_ban_add_cleanup(&event);
 }
 
 static void
 on_guild_ban_remove(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0;
-    struct discord_user user = { 0 };
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "user", 4)))
-        discord_user_from_jsmnf(f, gw->json, &user);
-
-    ON(guild_ban_remove, guild_id, &user);
-
-    discord_user_cleanup(&user);
+    struct discord_guild_ban_remove event = { 0 };
+    discord_guild_ban_remove_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(guild_ban_remove, &event);
+    discord_guild_ban_remove_cleanup(&event);
 }
 
 static void
 on_application_command_create(struct discord_gateway *gw)
 {
-    struct discord_application_command cmd = { 0 };
-
-    discord_application_command_from_jsmnf(gw->payload.data, gw->json, &cmd);
-
-    ON(application_command_create, &cmd);
-
-    discord_application_command_cleanup(&cmd);
+    struct discord_application_command event = { 0 };
+    discord_application_command_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(application_command_create, &event);
+    discord_application_command_cleanup(&event);
 }
 
 static void
 on_application_command_update(struct discord_gateway *gw)
 {
-    struct discord_application_command cmd = { 0 };
-
-    discord_application_command_from_jsmnf(gw->payload.data, gw->json, &cmd);
-
-    ON(application_command_update, &cmd);
-
-    discord_application_command_cleanup(&cmd);
+    struct discord_application_command event = { 0 };
+    discord_application_command_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(application_command_update, &event);
+    discord_application_command_cleanup(&event);
 }
 
 static void
 on_application_command_delete(struct discord_gateway *gw)
 {
-    struct discord_application_command cmd = { 0 };
-
-    discord_application_command_from_jsmnf(gw->payload.data, gw->json, &cmd);
-
-    ON(application_command_delete, &cmd);
-
-    discord_application_command_cleanup(&cmd);
+    struct discord_application_command event = { 0 };
+    discord_application_command_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(application_command_delete, &event);
+    discord_application_command_cleanup(&event);
 }
 
 static void
 on_channel_create(struct discord_gateway *gw)
 {
-    struct discord_channel channel = { 0 };
-
-    discord_channel_from_jsmnf(gw->payload.data, gw->json, &channel);
-
-    ON(channel_create, &channel);
-
-    discord_channel_cleanup(&channel);
+    struct discord_channel event = { 0 };
+    discord_channel_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(channel_create, &event);
+    discord_channel_cleanup(&event);
 }
 
 static void
 on_channel_update(struct discord_gateway *gw)
 {
-    struct discord_channel channel = { 0 };
-
-    discord_channel_from_jsmnf(gw->payload.data, gw->json, &channel);
-
-    ON(channel_update, &channel);
-
-    discord_channel_cleanup(&channel);
+    struct discord_channel event = { 0 };
+    discord_channel_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(channel_update, &event);
+    discord_channel_cleanup(&event);
 }
 
 static void
 on_channel_delete(struct discord_gateway *gw)
 {
-    struct discord_channel channel = { 0 };
-
-    discord_channel_from_jsmnf(gw->payload.data, gw->json, &channel);
-
-    ON(channel_delete, &channel);
-
-    discord_channel_cleanup(&channel);
+    struct discord_channel event = { 0 };
+    discord_channel_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(channel_delete, &event);
+    discord_channel_cleanup(&event);
 }
 
 static void
 on_channel_pins_update(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0, channel_id = 0;
-    u64unix_ms last_pin_timestamp = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "last_pin_timestamp", 18)))
-        cog_iso8601_to_unix_ms(gw->json + f->v.pos, (size_t)(f->v.len),
-                               &last_pin_timestamp);
-
-    ON(channel_pins_update, guild_id, channel_id, last_pin_timestamp);
+    struct discord_channel_pins_update event = { 0 };
+    discord_channel_pins_update_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(channel_pins_update, &event);
+    discord_channel_pins_update_cleanup(&event);
 }
 
 static void
 on_thread_create(struct discord_gateway *gw)
 {
-    struct discord_channel thread = { 0 };
-
-    discord_channel_from_jsmnf(gw->payload.data, gw->json, &thread);
-
-    ON(thread_create, &thread);
-
-    discord_channel_cleanup(&thread);
+    struct discord_channel event = { 0 };
+    discord_channel_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(thread_create, &event);
+    discord_channel_cleanup(&event);
 }
 
 static void
 on_thread_update(struct discord_gateway *gw)
 {
-    struct discord_channel thread = { 0 };
-
-    discord_channel_from_jsmnf(gw->payload.data, gw->json, &thread);
-
-    ON(thread_update, &thread);
-
-    discord_channel_cleanup(&thread);
+    struct discord_channel event = { 0 };
+    discord_channel_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(thread_update, &event);
+    discord_channel_cleanup(&event);
 }
 
 static void
 on_thread_delete(struct discord_gateway *gw)
 {
-    struct discord_channel thread = { 0 };
-
-    discord_channel_from_jsmnf(gw->payload.data, gw->json, &thread);
-
-    ON(thread_delete, &thread);
-
-    discord_channel_cleanup(&thread);
+    struct discord_channel event = { 0 };
+    discord_channel_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(thread_delete, &event);
+    discord_channel_cleanup(&event);
 }
 
 static void
 on_interaction_create(struct discord_gateway *gw)
 {
-    struct discord_interaction interaction = { 0 };
-
-    discord_interaction_from_jsmnf(gw->payload.data, gw->json, &interaction);
-
-    ON(interaction_create, &interaction);
-
-    discord_interaction_cleanup(&interaction);
+    struct discord_interaction event = { 0 };
+    discord_interaction_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(interaction_create, &event);
+    discord_interaction_cleanup(&event);
 }
 
 static void
 on_message_create(struct discord_gateway *gw)
 {
-    struct discord_message msg = { 0 };
-
-    discord_message_from_jsmnf(gw->payload.data, gw->json, &msg);
+    struct discord_message event = { 0 };
+    discord_message_from_jsmnf(gw->payload.data, gw->json, &event);
 
     if (gw->cmds.pool
-        && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
+        && !strncmp(gw->cmds.prefix.start, event.content,
+                    gw->cmds.prefix.size))
     {
-        char *cmd_start = msg.content + gw->cmds.prefix.size;
+        char *cmd_start = event.content + gw->cmds.prefix.size;
         size_t cmd_len = strcspn(cmd_start, " \n\t\r");
         discord_ev_message cmd_cb = NULL;
 
-        char *tmp = msg.content; /* hold original ptr */
+        char *tmp = event.content; /* hold original ptr */
         size_t i;
 
         /* match command to its callback */
@@ -697,209 +590,125 @@ on_message_create(struct discord_gateway *gw)
 
         if (cmd_cb) {
             /* skip blank characters after command */
-            if (msg.content) {
-                msg.content = cmd_start + cmd_len;
-                while (*msg.content && isspace((int)msg.content[0]))
-                    ++msg.content;
+            if (event.content) {
+                event.content = cmd_start + cmd_len;
+                while (*event.content && isspace((int)event.content[0]))
+                    ++event.content;
             }
 
-            cmd_cb(CLIENT(gw, gw), &msg);
+            cmd_cb(CLIENT(gw, gw), &event);
         }
 
-        msg.content = tmp; /* retrieve original ptr */
+        event.content = tmp; /* retrieve original ptr */
     }
     else if (gw->cmds.cbs.on_message_create) {
-        ON(message_create, &msg);
+        ON(message_create, &event);
     }
-
-    discord_message_cleanup(&msg);
+    discord_message_cleanup(&event);
 }
 
 static void
 on_message_update(struct discord_gateway *gw)
 {
-    struct discord_message msg = { 0 };
-
-    discord_message_from_jsmnf(gw->payload.data, gw->json, &msg);
-
-    ON(message_update, &msg);
-
-    discord_message_cleanup(&msg);
+    struct discord_message event = { 0 };
+    discord_message_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(message_update, &event);
+    discord_message_cleanup(&event);
 }
 
 static void
 on_message_delete(struct discord_gateway *gw)
 {
-    u64snowflake message_id = 0, channel_id = 0, guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "id", 2)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-
-    ON(message_delete, message_id, channel_id, guild_id);
+    struct discord_message_delete event = { 0 };
+    discord_message_delete_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(message_delete, &event);
+    discord_message_delete_cleanup(&event);
 }
 
 static void
 on_message_delete_bulk(struct discord_gateway *gw)
 {
-    struct snowflakes ids = { 0 };
-    u64snowflake channel_id = 0, guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "ids", 3)))
-        snowflakes_from_jsmnf(f, gw->json, &ids);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-
-    ON(message_delete_bulk, &ids, channel_id, guild_id);
-
-    snowflakes_cleanup(&ids);
+    struct discord_message_delete_bulk event = { 0 };
+    discord_message_delete_bulk_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(message_delete_bulk, &event);
+    discord_message_delete_bulk_cleanup(&event);
 }
 
 static void
 on_message_reaction_add(struct discord_gateway *gw)
 {
-    u64snowflake user_id = 0, message_id = 0, channel_id = 0, guild_id = 0;
-    struct discord_guild_member member = { 0 };
-    struct discord_emoji emoji = { 0 };
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "user_id", 7)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &user_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "message_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "member", 6)))
-        discord_guild_member_from_jsmnf(f, gw->json, &member);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "emoji", 5)))
-        discord_emoji_from_jsmnf(f, gw->json, &emoji);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-
-    ON(message_reaction_add, user_id, channel_id, message_id, guild_id,
-       &member, &emoji);
-
-    discord_guild_member_cleanup(&member);
-    discord_emoji_cleanup(&emoji);
+    struct discord_message_reaction_add event = { 0 };
+    discord_message_reaction_add_from_jsmnf(gw->payload.data, gw->json,
+                                            &event);
+    ON(message_reaction_add, &event);
+    discord_message_reaction_add_cleanup(&event);
 }
 
 static void
 on_message_reaction_remove(struct discord_gateway *gw)
 {
-    u64snowflake user_id = 0, message_id = 0, channel_id = 0, guild_id = 0;
-    struct discord_emoji emoji = { 0 };
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "user_id", 7)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &user_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "message_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "emoji", 5)))
-        discord_emoji_from_jsmnf(f, gw->json, &emoji);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-
-    ON(message_reaction_remove, user_id, channel_id, message_id, guild_id,
-       &emoji);
-
-    discord_emoji_cleanup(&emoji);
+    struct discord_message_reaction_remove event = { 0 };
+    discord_message_reaction_remove_from_jsmnf(gw->payload.data, gw->json,
+                                               &event);
+    ON(message_reaction_remove, &event);
+    discord_message_reaction_remove_cleanup(&event);
 }
 
 static void
 on_message_reaction_remove_all(struct discord_gateway *gw)
 {
-    u64snowflake channel_id = 0, message_id = 0, guild_id = 0;
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "message_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-
-    ON(message_reaction_remove_all, channel_id, message_id, guild_id);
+    struct discord_message_reaction_remove_all event = { 0 };
+    discord_message_reaction_remove_all_from_jsmnf(gw->payload.data, gw->json,
+                                                   &event);
+    ON(message_reaction_remove_all, &event);
+    discord_message_reaction_remove_all_cleanup(&event);
 }
 
 static void
 on_message_reaction_remove_emoji(struct discord_gateway *gw)
 {
-    u64snowflake channel_id = 0, guild_id = 0, message_id = 0;
-    struct discord_emoji emoji = { 0 };
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "channel_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "message_id", 10)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "emoji", 5)))
-        discord_emoji_from_jsmnf(f, gw->json, &emoji);
-
-    ON(message_reaction_remove_emoji, channel_id, guild_id, message_id,
-       &emoji);
-
-    discord_emoji_cleanup(&emoji);
+    struct discord_message_reaction_remove_emoji event = { 0 };
+    discord_message_reaction_remove_emoji_from_jsmnf(gw->payload.data,
+                                                     gw->json, &event);
+    ON(message_reaction_remove_emoji, &event);
+    discord_message_reaction_remove_emoji_cleanup(&event);
 }
 
 static void
 on_voice_state_update(struct discord_gateway *gw)
 {
-    struct discord_voice_state vs = { 0 };
-
-    discord_voice_state_from_jsmnf(gw->payload.data, gw->json, &vs);
-
+    struct discord_voice_state event = { 0 };
+    discord_voice_state_from_jsmnf(gw->payload.data, gw->json, &event);
 #ifdef HAS_DISCORD_VOICE
-    if (vs.user_id == CLIENT(gw, gw)->self.id) {
+    if (event.user_id == CLIENT(gw, gw)->self.id) {
         /* we only care about the voice_state_update of bot */
-        _discord_on_voice_state_update(CLIENT(gw, gw), &vs);
+        _discord_on_voice_state_update(CLIENT(gw, gw), &event);
     }
 #endif /* HAS_DISCORD_VOICE */
-
-    if (gw->cmds.cbs.on_voice_state_update) ON(voice_state_update, &vs);
-
-    discord_voice_state_cleanup(&vs);
+    if (gw->cmds.cbs.on_voice_state_update) ON(voice_state_update, &event);
+    discord_voice_state_cleanup(&event);
 }
 
 static void
 on_voice_server_update(struct discord_gateway *gw)
 {
-    u64snowflake guild_id = 0;
-    char token[512], endpoint[1024];
-    jsmnf_pair *f;
-
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "token", 5)))
-        snprintf(token, sizeof(token), "%.*s", (int)f->v.len,
-                 gw->json + f->v.pos);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "guild_id", 8)))
-        sscanf(gw->json + f->v.pos, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "endpoint", 8)))
-        snprintf(endpoint, sizeof(endpoint), "%.*s", (int)f->v.len,
-                 gw->json + f->v.pos);
-
+    struct discord_voice_server_update event = { 0 };
+    discord_voice_server_update_from_jsmnf(gw->payload.data, gw->json, &event);
 #ifdef HAS_DISCORD_VOICE
     /* this happens for everyone */
-    _discord_on_voice_server_update(CLIENT(gw, gw), guild_id, token, endpoint);
+    _discord_on_voice_server_update(CLIENT(gw, gw), &event);
 #endif /* HAS_DISCORD_VOICE */
-
-    if (gw->cmds.cbs.on_voice_server_update)
-        ON(voice_server_update, token, guild_id, endpoint);
+    if (gw->cmds.cbs.on_voice_server_update) ON(voice_server_update, &event);
+    discord_voice_server_update_cleanup(&event);
 }
 
 static void
 on_ready(struct discord_gateway *gw)
 {
-    gw->cmds.cbs.on_ready(CLIENT(gw, gw));
+    struct discord_ready event = { 0 };
+    discord_ready_from_jsmnf(gw->payload.data, gw->json, &event);
+    ON(ready, &event);
+    discord_ready_cleanup(&event);
 }
 
 static void

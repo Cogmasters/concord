@@ -457,7 +457,7 @@ void discord_ratelimiter_build(struct discord_ratelimiter *rl,
 
 struct discord_gateway_cbs {
     /** triggers when connection first establishes */
-    discord_ev_idle on_ready;
+    discord_ev_ready on_ready;
 
     /** triggers when a command is created */
     discord_ev_application_command on_application_command_create;
@@ -486,24 +486,24 @@ struct discord_gateway_cbs {
     /** triggers when a guild's information is updated */
     discord_ev_guild on_guild_update;
     /** triggers when removed from guild */
-    discord_ev_guild_delete on_guild_delete;
+    discord_ev_guild on_guild_delete;
 
     /** triggers when a ban occurs */
-    discord_ev_guild_ban on_guild_ban_add;
+    discord_ev_guild_ban_add on_guild_ban_add;
     /** triggers when a ban is removed */
-    discord_ev_guild_ban on_guild_ban_remove;
+    discord_ev_guild_ban_remove on_guild_ban_remove;
 
     /** triggers when a guild member joins a guild */
     discord_ev_guild_member on_guild_member_add;
     /** triggers when a guild member is removed from a guild */
     discord_ev_guild_member_remove on_guild_member_remove;
     /** triggers when a guild member status is updated (ex: receive role) */
-    discord_ev_guild_member on_guild_member_update;
+    discord_ev_guild_member_update on_guild_member_update;
 
     /** triggers when a guild role is created */
-    discord_ev_guild_role on_guild_role_create;
+    discord_ev_guild_role_create on_guild_role_create;
     /** triggers when a guild role is updated */
-    discord_ev_guild_role on_guild_role_update;
+    discord_ev_guild_role_update on_guild_role_update;
     /** triggers when a guild role is deleted */
     discord_ev_guild_role_delete on_guild_role_delete;
 
