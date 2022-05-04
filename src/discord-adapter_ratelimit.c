@@ -134,7 +134,6 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
         ERR("Couldn't initialize pthread mutex");
 
     QUEUE_INIT(&b->waitq);
-    QUEUE_INIT(&b->busyq);
 
     pthread_mutex_lock(&rl->global.lock);
     chash_assign(rl, key, b, RATELIMITER_TABLE);
@@ -302,20 +301,14 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
                          struct discord_bucket *b,
                          struct ua_info *info)
 {
-    struct sized_buffer remaining, reset, reset_after;
+    struct sized_buffer remaining =
+                            ua_info_get_header(info, "x-ratelimit-remaining"),
+                        reset = ua_info_get_header(info, "x-ratelimit-reset"),
+                        reset_after = ua_info_get_header(
+                            info, "x-ratelimit-reset-after");
     u64unix_ms now = cog_timestamp_ms();
-    long _remaining;
 
-    remaining = ua_info_get_header(info, "x-ratelimit-remaining");
-    _remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1L;
-
-    /* skip out of order responses */
-    if (_remaining > b->remaining && now < b->reset_tstamp) return;
-
-    b->remaining = _remaining;
-
-    reset = ua_info_get_header(info, "x-ratelimit-reset");
-    reset_after = ua_info_get_header(info, "x-ratelimit-reset-after");
+    b->remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1L;
 
     /* use X-Ratelimit-Reset-After if available, X-Ratelimit-Reset otherwise */
     if (reset_after.size) {

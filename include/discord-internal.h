@@ -317,8 +317,8 @@ struct discord_bucket {
     pthread_mutex_t lock;
     /** pending requests */
     QUEUE(struct discord_context) waitq;
-    /** busy requests */
-    QUEUE(struct discord_context) busyq;
+    /** busy performing request (`NULL` if none) */
+    struct discord_context *busy;
 };
 
 /**

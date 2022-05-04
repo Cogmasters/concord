@@ -565,45 +565,21 @@ _discord_adapter_send(struct discord_adapter *adapter,
     io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller,
                                    adapter->mhandle);
 
-    QUEUE_INSERT_TAIL(&cxt->b->busyq, &cxt->entry);
+    cxt->b->busy = cxt;
 
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
-}
-
-/* send a batch of requests */
-static CCORDcode
-_discord_adapter_send_batch(struct discord_adapter *adapter,
-                            struct discord_bucket *b)
-{
-    CCORDcode code = CCORD_OK;
-    long i;
-
-    for (i = b->remaining; i > 0; --i) {
-        if (QUEUE_EMPTY(&b->waitq)) break;
-
-        code = _discord_adapter_send(adapter, b);
-        if (code != CCORD_OK) break;
-    }
-
-    return code;
 }
 
 static void
 _discord_adapter_try_send(struct discord_adapter *adapter,
                           struct discord_bucket *b)
 {
+    /* TODO: enqueue timer */
+    if (!b->remaining);
+
     /* skip busy and non-pending buckets */
-    if (!QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
-        return;
-    }
-    /* if bucket is outdated then its necessary to send a single
-     *      request to fetch updated values */
-    if (b->reset_tstamp < NOW(adapter)) {
+    if (!b->busy && !QUEUE_EMPTY(&b->waitq))
         _discord_adapter_send(adapter, b);
-        return;
-    }
-    /* send remainder or trigger timeout */
-    _discord_adapter_send_batch(adapter, b);
 }
 
 /* TODO: redundant constant return value */
@@ -689,7 +665,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     }
 
     /* enqueue request for retry or recycle */
-    QUEUE_REMOVE(&cxt->entry);
+    cxt->b->busy = NULL;
     if (retry && cxt->retry_attempt++ < adapter->retry_limit) {
         ua_conn_reset(cxt->conn);
 
@@ -740,22 +716,18 @@ static void
 _discord_adapter_stop_bucket(struct discord_adapter *adapter,
                              struct discord_bucket *b)
 {
-    QUEUE(struct discord_context) * qelem;
-    struct discord_context *cxt;
-    CURL *ehandle;
+    /* cancel busy transfer */
+    if (b->busy) {
+        struct discord_context *cxt = b->busy;
+        CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
 
-    while (!QUEUE_EMPTY(&b->busyq)) {
-        qelem = QUEUE_HEAD(&b->busyq);
-        QUEUE_REMOVE(qelem);
-
-        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-        ehandle = ua_conn_get_easy_handle(cxt->conn);
+        b->busy = NULL;
 
         curl_multi_remove_handle(adapter->mhandle, ehandle);
 
         /* set for recycling */
         ua_conn_stop(cxt->conn);
-        QUEUE_INSERT_TAIL(adapter->idleq, qelem);
+        QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
 
     /* cancel pending tranfers */
