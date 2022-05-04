@@ -239,18 +239,30 @@ LIST_END
 /** @CCORD_pub_struct{discord_presence_update} */
 PUB_STRUCT(discord_presence_update)
   /** the user presence is being updated for */
+  COND_WRITE(this->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
+  COND_END
   /** id of the guild */
+  COND_WRITE(this->guild_id != 0)
     FIELD_SNOWFLAKE(guild_id)
+  COND_END
   /** either "idle", "dnd", "online", or "offline" */
+  COND_WRITE(this->status != NULL)
     FIELD_PTR(status, char, *)
+  COND_END
   /** user's platform-dependent status */
+  COND_WRITE(this->client_status != NULL)
     FIELD_STRUCT_PTR(client_status, discord_client_status, *)
+  COND_END
   /** user's current activities */
+  COND_WRITE(this->activities != NULL)
     FIELD_STRUCT_PTR(activities, discord_activities, *)
+  COND_END
   /** unix time (in milliseconds) of when the client went idle, or null if
        the client is not idle */
+  COND_WRITE(this->since != 0)
     FIELD_TIMESTAMP(since)
+  COND_END
   /** whether or not the client is afk */
     FIELD(afk, bool, false)
 STRUCT_END
@@ -286,9 +298,13 @@ PUB_STRUCT(discord_identify)
        will stop sending offline members in the guild member list */
     FIELD(large_threshold, int, 50)
   /** array of two integers (shard_id, num_shards) */
+  COND_WRITE(this->shard != NULL)
     FIELD_STRUCT_PTR(shard, integers, *)
+  COND_END
   /** presence structure for initial presence information */
+  COND_WRITE(this->presence != NULL)
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
+  COND_END
   /** the gateway intents you wish to receive
        @see @ref DiscordInternalGatewayIntents */
     FIELD_BITMASK(intents)
