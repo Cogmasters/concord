@@ -18,20 +18,18 @@ bool g_keep_spamming = true;
 unsigned g_thread_count;
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
-    log_info("Succesfully connected to Discord as %s#%s!", bot->username,
-             bot->discriminator);
+    log_info("Succesfully connected to Discord as %s#%s!",
+             event->user->username, event->user->discriminator);
 }
 
 void
-on_disconnect(struct discord *client, const struct discord_message *msg)
+on_disconnect(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = "Disconnecting ...",
                            },
@@ -43,11 +41,11 @@ on_disconnect(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_reconnect(struct discord *client, const struct discord_message *msg)
+on_reconnect(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = "Reconnecting ...",
                            },
@@ -59,16 +57,16 @@ on_reconnect(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_spam(struct discord *client, const struct discord_message *msg)
+on_spam(struct discord *client, struct discord_message *event)
 {
     const unsigned threadpool_size = strtol(THREADPOOL_SIZE, NULL, 10);
 
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     // prevent blocking all threads
     pthread_mutex_lock(&g_lock);
     if (g_thread_count >= threadpool_size - 1) {
-        discord_create_message(client, msg->channel_id,
+        discord_create_message(client, event->channel_id,
                                &(struct discord_create_message){
                                    .content =
                                        "Too many threads (" THREADPOOL_SIZE
@@ -96,7 +94,7 @@ on_spam(struct discord *client, const struct discord_message *msg)
         if (!keep_alive) break;
 
         snprintf(number, sizeof(number), "%d", i);
-        discord_create_message(client, msg->channel_id,
+        discord_create_message(client, event->channel_id,
                                &(struct discord_create_message){
                                    .content = number,
                                },
@@ -107,11 +105,11 @@ on_spam(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_spam_block(struct discord *client, const struct discord_message *msg)
+on_spam_block(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = "No 1",
                            },
@@ -121,19 +119,18 @@ on_spam_block(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_spam_block_continue(struct discord *client,
-                       const struct discord_message *msg)
+on_spam_block_continue(struct discord *client, struct discord_message *event)
 {
     const struct discord_user *bot = discord_get_self(client);
     char text[32];
     int number;
 
-    if (msg->author->id != bot->id) return;
+    if (event->author->id != bot->id) return;
 
-    sscanf(msg->content, "No %d", &number);
+    sscanf(event->content, "No %d", &number);
     snprintf(text, sizeof(text), "No %d", 1 + number);
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = text,
                            },
@@ -143,9 +140,9 @@ on_spam_block_continue(struct discord *client,
 }
 
 void
-on_stop(struct discord *client, const struct discord_message *msg)
+on_stop(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     pthread_mutex_lock(&g_lock);
     g_keep_spamming = false;
@@ -154,12 +151,12 @@ on_stop(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_force_error(struct discord *client, const struct discord_message *msg)
+on_force_error(struct discord *client, struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123ULL;
     CCORDcode code;
 
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     code = discord_delete_channel(client, FAUX_CHANNEL_ID,
                                   &(struct discord_ret_channel){
@@ -168,7 +165,7 @@ on_force_error(struct discord *client, const struct discord_message *msg)
     assert(code != CCORD_OK);
 
     discord_create_message(
-        client, msg->channel_id,
+        client, event->channel_id,
         &(struct discord_create_message){
             .content = (char *)discord_strerror(code, client),
         },
@@ -178,15 +175,15 @@ on_force_error(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_ping(struct discord *client, const struct discord_message *msg)
+on_ping(struct discord *client, struct discord_message *event)
 {
     char text[256];
 
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     sprintf(text, "Ping: %d", discord_get_ping(client));
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = text,
                            },

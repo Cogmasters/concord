@@ -12,12 +12,10 @@ struct user_cxt {
 };
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
-    log_info("Succesfully connected to Discord as %s#%s!", bot->username,
-             bot->discriminator);
+    log_info("Succesfully connected to Discord as %s#%s!",
+             event->user->username, event->user->discriminator);
 }
 
 void
@@ -41,11 +39,11 @@ reconnect(struct discord *client,
 }
 
 void
-on_disconnect(struct discord *client, const struct discord_message *msg)
+on_disconnect(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = "Disconnecting ...",
                            },
@@ -56,11 +54,11 @@ on_disconnect(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_reconnect(struct discord *client, const struct discord_message *msg)
+on_reconnect(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = "Reconnecting ...",
                            },
@@ -71,11 +69,11 @@ on_reconnect(struct discord *client, const struct discord_message *msg)
 }
 
 void
-on_single(struct discord *client, const struct discord_message *msg)
+on_single(struct discord *client, struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_create_message(client, msg->channel_id,
+    discord_create_message(client, event->channel_id,
                            &(struct discord_create_message){
                                .content = "Hello",
                            },
@@ -108,9 +106,9 @@ send_batch(struct discord *client,
 }
 
 void
-on_spam(struct discord *client, const struct discord_message *msg)
+on_spam(struct discord *client, struct discord_message *event)
 {
-    send_batch(client, NULL, msg);
+    send_batch(client, NULL, event);
 }
 
 void
@@ -133,9 +131,9 @@ send_msg(struct discord *client, void *data, const struct discord_message *msg)
 }
 
 void
-on_spam_ordered(struct discord *client, const struct discord_message *msg)
+on_spam_ordered(struct discord *client, struct discord_message *event)
 {
-    send_msg(client, NULL, msg);
+    send_msg(client, NULL, event);
 }
 
 void
@@ -152,12 +150,12 @@ send_err(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_force_error(struct discord *client, const struct discord_message *msg)
+on_force_error(struct discord *client, struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123;
     u64snowflake *channel_id = malloc(sizeof(u64snowflake));
 
-    memcpy(channel_id, &msg->channel_id, sizeof(u64snowflake));
+    memcpy(channel_id, &event->channel_id, sizeof(u64snowflake));
 
     discord_delete_channel(client, FAUX_CHANNEL_ID,
                            &(struct discord_ret_channel){
