@@ -73,11 +73,10 @@ void on_ready(struct discord *client, struct discord_ready *event) {
 }
 
 void on_message(struct discord *client, struct discord_message *event) {
-    if (strcmp(event->content, "ping") != 0)
-        return; /* make sure to respond to "ping" */
-
-    struct discord_create_message params = { .content = "pong" };
-    discord_create_message(client, event->channel_id, &params, NULL);
+    if (strcmp(event->content, "ping") == 0) {
+        struct discord_create_message params = { .content = "pong" };
+        discord_create_message(client, event->channel_id, &params, NULL);
+    }
 }
 
 int main(void) {
