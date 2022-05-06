@@ -8,9 +8,6 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-/* No-lock alternative to discord_timestamp() */
-#define NOW(p_adapter) (CLIENT(p_adapter, adapter)->gw.timer->now)
-
 static void
 setopt_cb(struct ua_conn *conn, void *p_token)
 {
@@ -402,10 +399,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
 /* ASYNCHRONOUS REQUEST LOGIC */
 
-/* TODO: make this kind of function gencodecs generated (optional)
- *
- * Only the fields that are required at _discord_context_to_mime()
- *        are duplicated*/
+/* Only the fields that are required at _discord_context_to_mime()
+ *        are duplicated */
 static void
 _discord_attachments_dup(struct discord_attachments *dest,
                          struct discord_attachments *src)
@@ -574,11 +569,12 @@ static void
 _discord_adapter_try_send(struct discord_adapter *adapter,
                           struct discord_bucket *b)
 {
-    /* TODO: enqueue timer */
-    if (!b->remaining);
+    /* skip if bucket is busy performing */
+    if (b->busy) return;
 
-    /* skip busy and non-pending buckets */
-    if (!b->busy && !QUEUE_EMPTY(&b->waitq))
+    if (!b->remaining)
+        discord_bucket_try_timeout(CLIENT(adapter, adapter), b);
+    else if (!QUEUE_EMPTY(&b->waitq))
         _discord_adapter_send(adapter, b);
 }
 

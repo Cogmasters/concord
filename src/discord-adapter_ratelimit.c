@@ -245,6 +245,30 @@ discord_bucket_try_sleep(struct discord_ratelimiter *rl,
     }
 }
 
+static void
+_discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
+{
+    (void)client;
+    struct discord_bucket *b = timer->data;
+
+    b->busy = NULL; /* bucket is no longer busy */
+    b->remaining = 1;
+}
+
+void
+discord_bucket_try_timeout(struct discord *client, struct discord_bucket *b)
+{
+    const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
+
+    b->busy = (void *)0xf; /* bogus value to mark as busy */
+
+    discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
+
+    logconf_info(&client->adapter.ratelimiter->conf,
+                 "[%.4s] RATELIMITING (wait %" PRId64 " ms)", b->hash,
+                 delay_ms);
+}
+
 /* attempt to find a bucket associated key */
 struct discord_bucket *
 discord_bucket_get(struct discord_ratelimiter *rl,

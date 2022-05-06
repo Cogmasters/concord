@@ -332,14 +332,24 @@ u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
                                       struct discord_bucket *bucket);
 
 /**
- * @brief Sleep for bucket's cooldown time
- * @note this **WILL** block the bucket's execution thread
+ * @brief Try to sleep bucket for pending cooldown time
+ * @note this is used for `sync` mode and **WILL** block the bucket's
+ *      execution thread
  *
  * @param rl the handle initialized with discord_ratelimiter_init()
  * @param bucket the bucket to wait on cooldown
  */
 void discord_bucket_try_sleep(struct discord_ratelimiter *rl,
                               struct discord_bucket *bucket);
+
+/**
+ * @brief Try to timeout bucket for pending cooldown time
+ *
+ * @param client the client initialized with discord_init()
+ * @param bucket the bucket to wait on cooldown
+ */
+void discord_bucket_try_timeout(struct discord *client,
+                                struct discord_bucket *b);
 
 /**
  * @brief Get a `struct discord_bucket` assigned to `key`
@@ -739,21 +749,21 @@ struct discord_timers {
 };
 
 /**
- * @brief prepare timers for usage
+ * @brief Prepare timers for usage
  *
  * @param client the client created with discord_init()
  */
 void discord_timers_init(struct discord *client);
 
 /**
- * @brief cleanup timers and call cancel any running ones
+ * @brief Cleanup timers and call cancel any running ones
  *
  * @param client the client created with discord_init()
  */
 void discord_timers_cleanup(struct discord *client);
 
 /**
- * @brief run all timers that are due
+ * @brief Run all timers that are due
  *
  * @param client the client created with discord_init()
  * @param timers the timers to run
@@ -761,7 +771,7 @@ void discord_timers_cleanup(struct discord *client);
 void discord_timers_run(struct discord *client, struct discord_timers *timers);
 
 /**
- * @brief modifies or creates a timer
+ * @brief Modifies or creates a timer
  *
  * @param client the client created with discord_init()
  * @param timers the timer group to perform this operation on
@@ -773,24 +783,24 @@ unsigned _discord_timer_ctl(struct discord *client,
                             struct discord_timer *timer);
 
 /**
- * @brief modifies or creates a timer
+ * @brief Modifies or creates a timer
  *
  * @param client the client created with discord_init()
  * @param timer the timer that should be modified
- * @return unsigned the id of the timer
+ * @return the id of the timer
  */
 unsigned discord_internal_timer_ctl(struct discord *client,
                                     struct discord_timer *timer);
 
 /**
- * @brief creates a one shot timer that automatically
- *        deletes itself upon completion
+ * @brief Creates a one shot timer that automatically deletes itself upon
+ *      completion
  *
  * @param client the client created with discord_init()
  * @param cb the callback that should be called when timer triggers
  * @param data user data
  * @param delay delay before timer should start in milliseconds
- * @return unsigned
+ * @return the id of the timer
  */
 unsigned discord_internal_timer(struct discord *client,
                                 discord_ev_timer cb,
