@@ -303,6 +303,8 @@ void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
+#define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
+
 /** @brief The Discord bucket for handling per-group ratelimits */
 struct discord_bucket {
     /** the hash associated with the bucket's ratelimiting group */
@@ -317,7 +319,10 @@ struct discord_bucket {
     pthread_mutex_t lock;
     /** pending requests */
     QUEUE(struct discord_context) waitq;
-    /** busy performing request (`NULL` if none) */
+    /**
+     * pointer to currently performing busy request (if any)
+     * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
+     */
     struct discord_context *busy;
 };
 

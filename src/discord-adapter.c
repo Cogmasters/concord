@@ -713,7 +713,7 @@ _discord_adapter_stop_bucket(struct discord_adapter *adapter,
                              struct discord_bucket *b)
 {
     /* cancel busy transfer */
-    if (b->busy) {
+    if (b->busy && b->busy != DISCORD_BUCKET_TIMEOUT) {
         struct discord_context *cxt = b->busy;
         CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
 

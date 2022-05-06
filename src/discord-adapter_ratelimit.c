@@ -260,7 +260,7 @@ discord_bucket_try_timeout(struct discord *client, struct discord_bucket *b)
 {
     const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
-    b->busy = (void *)0xf; /* bogus value to mark as busy */
+    b->busy = DISCORD_BUCKET_TIMEOUT;
 
     discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
 
