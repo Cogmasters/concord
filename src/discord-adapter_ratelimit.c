@@ -117,7 +117,7 @@ discord_ratelimiter_build_key(enum http_method method,
 /* initialize bucket and assign it to ratelimiter hashtable */
 static struct discord_bucket *
 _discord_bucket_init(struct discord_ratelimiter *rl,
-                     const char key[DISCORD_ROUTE_LEN],
+                     const char key[],
                      const struct sized_buffer *hash,
                      const long limit)
 {
@@ -190,8 +190,7 @@ discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
 }
 
 static struct discord_bucket *
-_discord_bucket_find(struct discord_ratelimiter *rl,
-                     const char key[DISCORD_ROUTE_LEN])
+_discord_bucket_find(struct discord_ratelimiter *rl, const char key[])
 {
     struct discord_bucket *b = NULL;
     int ret;
@@ -271,8 +270,7 @@ discord_bucket_try_timeout(struct discord *client, struct discord_bucket *b)
 
 /* attempt to find a bucket associated key */
 struct discord_bucket *
-discord_bucket_get(struct discord_ratelimiter *rl,
-                   const char key[DISCORD_ROUTE_LEN])
+discord_bucket_get(struct discord_ratelimiter *rl, const char key[])
 {
     struct discord_bucket *b;
 
@@ -291,7 +289,7 @@ discord_bucket_get(struct discord_ratelimiter *rl,
 
 static struct discord_bucket *
 _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
-                               const char key[DISCORD_ROUTE_LEN],
+                               const char key[],
                                struct ua_info *info)
 {
     struct discord_bucket *b;
@@ -382,7 +380,7 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
 static void
 _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
                                  struct discord_bucket *b,
-                                 const char key[DISCORD_ROUTE_LEN])
+                                 const char key[])
 {
     QUEUE(struct discord_context) queue, *qelem;
     struct discord_context *cxt;
@@ -409,7 +407,7 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
 void
 discord_ratelimiter_build(struct discord_ratelimiter *rl,
                           struct discord_bucket *b,
-                          const char key[DISCORD_ROUTE_LEN],
+                          const char key[],
                           struct ua_info *info)
 {
     /* try to match to existing, or create new bucket */

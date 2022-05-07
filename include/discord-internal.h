@@ -360,11 +360,11 @@ void discord_bucket_try_timeout(struct discord *client,
  * @brief Get a `struct discord_bucket` assigned to `key`
  *
  * @param rl the handle initialized with discord_ratelimiter_init()
- * @param key obtained from discord_ratelimiter_get_key()
+ * @param key obtained from discord_ratelimiter_build_key()
  * @return bucket matched to `key`
  */
 struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
-                                          const char key[DISCORD_ROUTE_LEN]);
+                                          const char key[]);
 
 /** @brief The ratelimiter struct for handling ratelimiting */
 struct discord_ratelimiter {
@@ -453,13 +453,13 @@ u64unix_ms discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl);
  *
  * @param rl the handle initialized with discord_ratelimiter_init()
  * @param bucket NULL when bucket is first discovered
- * @param key obtained from discord_ratelimiter_get_key()
+ * @param key obtained from discord_ratelimiter_build_key()
  * @param info informational struct containing details on the current transfer
  * @note If the bucket was just discovered it will be created here.
  */
 void discord_ratelimiter_build(struct discord_ratelimiter *rl,
                                struct discord_bucket *bucket,
-                               const char key[DISCORD_ROUTE_LEN],
+                               const char key[],
                                struct ua_info *info);
 
 /** @} DiscordInternalAdapterRatelimit */
