@@ -109,7 +109,7 @@ struct discord_voice {
     struct websockets *ws;
 
     /** @brief handle reconnect logic */
-    /* RECONNECT STRUCTURE */
+    /* reconnect structure */
     struct {
         /** will attempt reconnecting if true */
         bool enable;
@@ -125,6 +125,11 @@ struct discord_voice {
     bool is_redirect;
     /** can start sending/receiving additional events to discord */
     bool is_ready;
+
+    /** current iteration JSON string data */
+    char *json;
+    /** current iteration JSON string data length */
+    size_t length;
 
     /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
     struct {
@@ -237,26 +242,21 @@ void discord_send_speaking(struct discord_voice *vc,
  * @brief Update the voice session with a new session_id
  *
  * @param client the client created with discord_init()
- * @param vs the voice state that has been updated
+ * @param event the voice state that has been updated
  * @todo move to discord-internal.h
  */
 void _discord_on_voice_state_update(struct discord *client,
-                                    struct discord_voice_state *vs);
+                                    struct discord_voice_state *event);
 
 /**
  * @brief Update the voice session with a new token and url
  *
  * @param client the client created with discord_init()
- * @param guild_id the guild that houses the voice channel
- * @param token the unique token identifier
- * @param endpoint unique wss url received
- * @todo move to discord-internal.h
+ * @param event the event contents for server update
  * @note will prepend with "wss://" and append with "?v=4"
  */
-void _discord_on_voice_server_update(struct discord *client,
-                                     u64snowflake guild_id,
-                                     char token[],
-                                     char endpoint[]);
+void _discord_on_voice_server_update(
+    struct discord *client, struct discord_voice_server_update *event);
 
 /**
  * @brief Gracefully exits a ongoing Discord Voice connection

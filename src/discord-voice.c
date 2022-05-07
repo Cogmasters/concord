@@ -155,8 +155,8 @@ on_hello(struct discord_voice *vc)
     jsmnf_pair *f;
 
     vc->hbeat.tstamp = cog_timestamp_ms();
-    if ((f = jsmnf_find(vc->payload.data, "heartbeat_interval", 18)))
-        hbeat_interval = strtof(f->value.contents, NULL);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "heartbeat_interval", 18)))
+        hbeat_interval = strtof(vc->json + f->v.pos, NULL);
 
     vc->hbeat.interval_ms =
         (hbeat_interval < 5000.0f) ? (u64unix_ms)hbeat_interval : 5000;
@@ -199,14 +199,14 @@ on_speaking(struct discord_voice *vc)
 
     if (!client->voice_cbs.on_speaking) return;
 
-    if ((f = jsmnf_find(vc->payload.data, "user_id", 7)))
-        sscanf(f->value.contents, "%" SCNu64, &user_id);
-    if ((f = jsmnf_find(vc->payload.data, "speaking", 8)))
-        speaking = (int)strtol(f->value.contents, NULL, 10);
-    if ((f = jsmnf_find(vc->payload.data, "delay", 5)))
-        delay = (int)strtol(f->value.contents, NULL, 10);
-    if ((f = jsmnf_find(vc->payload.data, "ssrc", 4)))
-        ssrc = (int)strtol(f->value.contents, NULL, 10);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "user_id", 7)))
+        sscanf(vc->json + f->v.pos, "%" SCNu64, &user_id);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "speaking", 8)))
+        speaking = (int)strtol(vc->json + f->v.pos, NULL, 10);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "delay", 5)))
+        delay = (int)strtol(vc->json + f->v.pos, NULL, 10);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "ssrc", 4)))
+        ssrc = (int)strtol(vc->json + f->v.pos, NULL, 10);
 
     client->voice_cbs.on_speaking(client, vc, user_id, speaking, delay, ssrc);
 }
@@ -228,8 +228,8 @@ on_client_disconnect(struct discord_voice *vc)
 
     if (!client->voice_cbs.on_client_disconnect) return;
 
-    if ((f = jsmnf_find(vc->payload.data, "user_id", 7)))
-        sscanf(f->value.contents, "%" SCNu64, &user_id);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "user_id", 7)))
+        sscanf(vc->json + f->v.pos, "%" SCNu64, &user_id);
 
     client->voice_cbs.on_client_disconnect(client, vc, user_id);
 }
@@ -243,12 +243,12 @@ on_codec(struct discord_voice *vc)
 
     if (!client->voice_cbs.on_codec) return;
 
-    if ((f = jsmnf_find(vc->payload.data, "audio_codec", 11)))
-        snprintf(audio_codec, sizeof(audio_codec), "%.*s", f->value.length,
-                 f->value.contents);
-    if ((f = jsmnf_find(vc->payload.data, "video_codec", 11)))
-        snprintf(video_codec, sizeof(video_codec), "%.*s", f->value.length,
-                 f->value.contents);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "audio_codec", 11)))
+        snprintf(audio_codec, sizeof(audio_codec), "%.*s", (int)f->v.len,
+                 vc->json + f->v.pos);
+    if ((f = jsmnf_find(vc->payload.data, vc->json, "video_codec", 11)))
+        snprintf(video_codec, sizeof(video_codec), "%.*s", (int)f->v.len,
+                 vc->json + f->v.pos);
 
     client->voice_cbs.on_codec(client, vc, audio_codec, video_codec);
 }
@@ -346,6 +346,9 @@ on_text_cb(void *p_vc,
     struct discord_voice *vc = p_vc;
     jsmn_parser parser;
 
+    vc->json = (char *)text;
+    vc->length = len;
+
     jsmn_init(&parser);
     if (0 < jsmn_parse_auto(&parser, text, len, &vc->parse.tokens,
                             &vc->parse.ntokens))
@@ -359,9 +362,10 @@ on_text_cb(void *p_vc,
         {
             jsmnf_pair *f;
 
-            if ((f = jsmnf_find(vc->parse.pairs, "op", 2)))
-                vc->payload.opcode = (int)strtol(f->value.contents, NULL, 10);
-            vc->payload.data = jsmnf_find(vc->parse.pairs, "d", 1);
+            if ((f = jsmnf_find(vc->parse.pairs, vc->json, "op", 2)))
+                vc->payload.opcode =
+                    (int)strtol(vc->json + f->v.pos, NULL, 10);
+            vc->payload.data = jsmnf_find(vc->parse.pairs, vc->json, "d", 1);
         }
     }
 
@@ -621,18 +625,18 @@ discord_voice_join(struct discord *client,
  */
 void
 _discord_on_voice_state_update(struct discord *client,
-                               struct discord_voice_state *vs)
+                               struct discord_voice_state *event)
 {
     struct discord_voice *vc = NULL;
     int i;
 
     pthread_mutex_lock(&client_lock);
     for (i = 0; i < DISCORD_MAX_VCS; ++i) {
-        if (vs->guild_id == client->vcs[i].guild_id) {
+        if (event->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
-            if (vs->channel_id) {
+            if (event->channel_id) {
                 int len = snprintf(vc->session_id, sizeof(vc->session_id),
-                                   "%s", vs->session_id);
+                                   "%s", event->session_id);
                 ASSERT_NOT_OOB(len, sizeof(vc->session_id));
 
                 logconf_info(&vc->conf,
@@ -646,7 +650,7 @@ _discord_on_voice_state_update(struct discord *client,
     pthread_mutex_unlock(&client_lock);
 
     if (!vc) {
-        if (vs->channel_id) {
+        if (event->channel_id) {
             logconf_fatal(
                 &client->conf,
                 "This should not happen, cannot find a discord_voice object");
@@ -655,7 +659,7 @@ _discord_on_voice_state_update(struct discord *client,
         return;
     }
 
-    if (vs->channel_id == 0) {
+    if (event->channel_id == 0) {
         logconf_info(&vc->conf, ANSICOLOR("Bot is leaving the current vc",
                                           ANSI_BG_BRIGHT_BLUE));
         if (vc->ws && ws_is_alive(vc->ws))
@@ -745,9 +749,7 @@ _end:
  */
 void
 _discord_on_voice_server_update(struct discord *client,
-                                u64snowflake guild_id,
-                                char *token,
-                                char *endpoint)
+                                struct discord_voice_server_update *event)
 {
     struct discord_voice *vc = NULL;
     int len;
@@ -755,7 +757,7 @@ _discord_on_voice_server_update(struct discord *client,
 
     pthread_mutex_lock(&client_lock);
     for (i = 0; i < DISCORD_MAX_VCS; ++i) {
-        if (guild_id == client->vcs[i].guild_id) {
+        if (event->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
             break;
         }
@@ -767,11 +769,11 @@ _discord_on_voice_server_update(struct discord *client,
         return;
     }
 
-    len = snprintf(vc->new_token, sizeof(vc->new_token), "%s", token);
+    len = snprintf(vc->new_token, sizeof(vc->new_token), "%s", event->token);
     ASSERT_NOT_OOB(len, sizeof(vc->new_token));
 
     len = snprintf(vc->new_url, sizeof(vc->new_url),
-                   "wss://%s" DISCORD_VCS_URL_SUFFIX, endpoint);
+                   "wss://%s" DISCORD_VCS_URL_SUFFIX, event->endpoint);
     ASSERT_NOT_OOB(len, sizeof(vc->new_url));
 
     /* TODO: replace with the more reliable thread alive check */
