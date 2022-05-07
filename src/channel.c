@@ -45,7 +45,7 @@ _done_get_channels(struct discord *client,
         cxt->ret.fail(client, CCORD_BAD_PARAMETER, cxt->ret.data);
     }
 
-    discord_refcounter_decr(client->adapter.refcounter, cxt->ret.data);
+    discord_refcounter_decr(client->refcounter, cxt->ret.data);
 }
 
 CCORDcode
@@ -75,8 +75,7 @@ discord_get_channel_at_pos(struct discord *client,
     /* TODO: the following should be replaced by @ref DiscordInternalTimer
      *      implementation */
     if (ret->data) {
-        discord_refcounter_incr(client->adapter.refcounter, ret->data,
-                                ret->cleanup);
+        discord_refcounter_incr(client->refcounter, ret->data, ret->cleanup);
     }
 
     /* TODO: fetch channel via caching, and return if results are non-existent

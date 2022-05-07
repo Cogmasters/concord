@@ -678,12 +678,12 @@ on_voice_state_update(struct discord_gateway *gw)
 {
     struct discord_voice_state event = { 0 };
     discord_voice_state_from_jsmnf(gw->payload.data, gw->json, &event);
-#ifdef HAS_DISCORD_VOICE
+#ifdef CCORD_VOICE
     if (event.user_id == CLIENT(gw, gw)->self.id) {
         /* we only care about the voice_state_update of bot */
         _discord_on_voice_state_update(CLIENT(gw, gw), &event);
     }
-#endif /* HAS_DISCORD_VOICE */
+#endif
     if (gw->cmds.cbs.on_voice_state_update) ON(voice_state_update, &event);
     discord_voice_state_cleanup(&event);
 }
@@ -693,10 +693,10 @@ on_voice_server_update(struct discord_gateway *gw)
 {
     struct discord_voice_server_update event = { 0 };
     discord_voice_server_update_from_jsmnf(gw->payload.data, gw->json, &event);
-#ifdef HAS_DISCORD_VOICE
+#ifdef CCORD_VOICE
     /* this happens for everyone */
     _discord_on_voice_server_update(CLIENT(gw, gw), &event);
-#endif /* HAS_DISCORD_VOICE */
+#endif
     if (gw->cmds.cbs.on_voice_server_update) ON(voice_server_update, &event);
     discord_voice_server_update_cleanup(&event);
 }

@@ -14,13 +14,14 @@ _discord_init(struct discord *new_client)
     ccord_global_init();
     discord_timers_init(new_client);
     new_client->io_poller = io_poller_create();
+    new_client->refcounter = discord_refcounter_init(&new_client->conf);
     discord_adapter_init(&new_client->adapter, &new_client->conf,
                          &new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
                          &new_client->token);
-#ifdef HAS_DISCORD_VOICE
+#ifdef CCORD_VOICE
     discord_voice_connections_init(new_client);
-#endif /* HAS_DISCORD_VOICE */
+#endif
 
     /* fetch the client user structure */
     if (new_client->token.size) {
@@ -132,9 +133,10 @@ discord_cleanup(struct discord *client)
         discord_gateway_cleanup(&client->gw);
         discord_user_cleanup(&client->self);
         io_poller_destroy(client->io_poller);
-#ifdef HAS_DISCORD_VOICE
+        discord_refcounter_cleanup(client->refcounter);
+#ifdef CCORD_VOICE
         discord_voice_connections_cleanup(client);
-#endif /* HAS_DISCORD_VOICE */
+#endif
     }
     else {
         _discord_clone_cleanup(client);

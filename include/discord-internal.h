@@ -166,8 +166,6 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /** user's data reference counter for automatic cleanup */
-    struct discord_refcounter *refcounter;
 
     /** buckets discovered (declared at discord-adapter_ratelimit.c) */
     struct discord_ratelimiter *ratelimiter;
@@ -234,70 +232,6 @@ CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
  * @param adapter the handle initialized with discord_adapter_init()
  */
 void discord_adapter_stop_buckets(struct discord_adapter *adapter);
-
-/** @defgroup DiscordInternalAdapterRefcount Reference counter
- * @brief Handle automatic cleanup of user's data
- *  @{ */
-
-/** @brief Automatically cleanup user data
- *
- * Automatically cleanup user data that is passed around Discord event's
- *      callbacks once its reference counter reaches 0, meaning there are no
- *      more callbacks expecting the data */
-struct discord_refcounter {
-    /** DISCORD_REFCOUNT logging module */
-    struct logconf conf;
-    /** amount of individual user's data held for automatic cleanup */
-    int length;
-    /** cap before increase */
-    int capacity;
-    /**
-     * individual user's data held for automatic cleanup
-     * @note datatype declared at discord-adapter_refcount.c
-     */
-    struct _discord_ref *refs;
-};
-
-/**
- * @brief Initialize reference counter handle
- *
- * A hashtable shall be used for storage and retrieval of user data
- * @param conf optional pointer to a parent logconf
- * @return the reference counter handle
- */
-struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
-
-/**
- * @brief Cleanup refcounter and all user data currently held
- *
- * @param rc the handle initialized with discord_refcounter_init()
- */
-void discord_refcounter_cleanup(struct discord_refcounter *rc);
-
-/**
- * @brief Increment the reference counter for `ret->data`
- *
- * @param rc the handle initialized with discord_refcounter_init()
- * @param data the user arbitrary data to have its reference counter
- * @param cleanup user-defined function for cleaning `data` resources once its
- *      no longer referenced
- */
-void discord_refcounter_incr(struct discord_refcounter *rc,
-                             void *data,
-                             void (*cleanup)(void *data));
-
-/**
- * @brief Decrement the reference counter for `data`
- *
- * If the count reaches zero then `data` shall be cleanup up with its
- *      user-defined cleanup function
- * @param rc the handle initialized with discord_refcounter_init()
- * @param data the user arbitrary data to have its reference counter
- *      decremented
- */
-void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
-
-/** @} DiscordInternalAdapterRefcount */
 
 /** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
  * @brief Enforce ratelimiting per the official Discord Documentation
@@ -813,6 +747,73 @@ unsigned discord_internal_timer(struct discord *client,
                                 int64_t delay);
 
 /** @} DiscordInternalTimer */
+
+/** @defgroup DiscordInternalRefcount Reference counter
+ * @brief Handle automatic cleanup of user's data
+ *  @{ */
+
+/**
+ * @brief Automatically cleanup user data
+ *
+ * Automatically cleanup user data that is passed around Discord event's
+ *      callbacks once its reference counter reaches 0, meaning there are no
+ *      more callbacks expecting the data
+ */
+struct discord_refcounter {
+    /** DISCORD_REFCOUNT logging module */
+    struct logconf conf;
+    /** amount of individual user's data held for automatic cleanup */
+    int length;
+    /** cap before increase */
+    int capacity;
+    /**
+     * individual user's data held for automatic cleanup
+     * @note datatype declared at discord-adapter_refcount.c
+     */
+    struct _discord_ref *refs;
+};
+
+/**
+ * @brief Initialize reference counter handle
+ *
+ * A hashtable shall be used for storage and retrieval of user data
+ * @param conf optional pointer to a parent logconf
+ * @return the reference counter handle
+ */
+struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
+
+/**
+ * @brief Cleanup refcounter and all user data currently held
+ *
+ * @param rc the handle initialized with discord_refcounter_init()
+ */
+void discord_refcounter_cleanup(struct discord_refcounter *rc);
+
+/**
+ * @brief Increment the reference counter for `ret->data`
+ *
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the user arbitrary data to have its reference counter
+ * @param cleanup user-defined function for cleaning `data` resources once its
+ *      no longer referenced
+ */
+void discord_refcounter_incr(struct discord_refcounter *rc,
+                             void *data,
+                             void (*cleanup)(void *data));
+
+/**
+ * @brief Decrement the reference counter for `data`
+ *
+ * If the count reaches zero then `data` shall be cleanup up with its
+ *      user-defined cleanup function
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the user arbitrary data to have its reference counter
+ *      decremented
+ */
+void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
+
+/** @} DiscordInternalRefcount */
+
 /**
  * @brief The Discord client handler
  *
@@ -828,10 +829,12 @@ struct discord {
     struct sized_buffer token;
     /** the io poller for listening to file descriptors */
     struct io_poller *io_poller;
-    /** the HTTP adapter for performing requests */
+    /** the handle for interfacing with Discord's REST API */
     struct discord_adapter adapter;
-    /** the WebSockets handle for establishing a connection to Discord */
+    /** the handle for interfacing with Discord's Gateway API */
     struct discord_gateway gw;
+    /** user's data reference counter for automatic cleanup */
+    struct discord_refcounter *refcounter;
     /** the client's user structure */
     struct discord_user self;
 
