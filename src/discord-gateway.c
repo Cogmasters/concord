@@ -1144,8 +1144,8 @@ on_text_cb(void *p_gw,
                 if (seq) gw->payload.seq = seq;
             }
             if ((f = jsmnf_find(gw->parse.pairs, text, "op", 2)))
-                gw->payload.opcode =
-                    (int)strtol(gw->json + f->v.pos, NULL, 10);
+                gw->payload.opcode = (enum discord_gateway_opcodes)strtol(
+                    gw->json + f->v.pos, NULL, 10);
             gw->payload.data = jsmnf_find(gw->parse.pairs, text, "d", 1);
         }
     }
