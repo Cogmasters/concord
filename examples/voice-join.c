@@ -15,14 +15,14 @@ void
 print_usage(void)
 {
     printf(
-        "\n\nThis bot is a work in progress, it should demonstrate some "
-        "Voice related utilities\n"
+        "\n\nThis bot demonstrates some of the Discord Voice Connections "
+        "interface\n"
         "1. Type 'voice.list_regions' to list regions that can be used when "
         "creating servers\n"
         "2. Type 'voice.join <channel position>' to join a particular voice "
         "channel by its position\n"
         "3. Type 'voice.kick <user id>' to kick a particular user from the "
-        "voice channel he's at\n"
+        "voice channel they are at\n"
         "\nTYPE ANY KEY TO START BOT\n");
 }
 
