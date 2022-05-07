@@ -326,7 +326,8 @@ STRUCT(discord_thread_metadata)
     FIELD_TIMESTAMP(create_timestamp)
 STRUCT_END
 
-STRUCT(discord_thread_member)
+/** @CCORD_pub_struct{discord_thread_member} */
+PUB_STRUCT(discord_thread_member)
   /** the id of the thread */
     FIELD_SNOWFLAKE(id)
   /** the id of the user */

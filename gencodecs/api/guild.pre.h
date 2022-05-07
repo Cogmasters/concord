@@ -327,7 +327,8 @@ PUB_LIST(discord_guild_members)
     LISTTYPE_STRUCT(discord_guild_member)
 LIST_END
 
-STRUCT(discord_integration)
+/** @CCORD_pub_struct{discord_integration} */
+PUB_STRUCT(discord_integration)
   /** integration id */
     FIELD_SNOWFLAKE(id)
   /** integration name */

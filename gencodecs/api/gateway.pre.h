@@ -124,7 +124,8 @@ ENUM(discord_gateway_events)
     ENUMERATOR(DISCORD_GATEWAY_EVENTS_USER_UPDATE, = 50)
     ENUMERATOR(DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE, = 51)
     ENUMERATOR(DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE, = 52)
-    ENUMERATOR_LAST(DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE, = 53)
+    ENUMERATOR(DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE, = 53)
+    ENUMERATOR_LAST(DISCORD_GATEWAY_EVENTS_MAX, )
 ENUM_END
 
 ENUM(discord_activity_types)
@@ -458,6 +459,14 @@ PUB_STRUCT(discord_guild_emojis_update)
     FIELD_SNOWFLAKE(guild_id)
   /** array of emojis */
     FIELD_STRUCT_PTR(emojis, discord_emojis, *)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_stickers_update} */
+PUB_STRUCT(discord_guild_stickers_update)
+  /** id of the guild */
+    FIELD_SNOWFLAKE(guild_id)
+  /** array of stickers */
+    FIELD_STRUCT_PTR(stickers, discord_stickers, *)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_guild_integrations_update} */
