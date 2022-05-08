@@ -715,7 +715,7 @@ discord_gateway_init(struct discord_gateway *gw,
                     char prefix[64] = "";
 
                     snprintf(prefix, sizeof(prefix), "%.*s", (int)f->v.len,
-                             gw->json + f->v.pos);
+                             buf.start + f->v.pos);
                     discord_set_prefix(CLIENT(gw, gw), prefix);
                 }
             }
