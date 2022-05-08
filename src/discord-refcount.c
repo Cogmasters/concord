@@ -29,6 +29,8 @@ struct _discord_refvalue {
     void (*cleanup)(void *data);
     /** `data` references count */
     int visits;
+    /** whether `data` cleanup should also be followed by a free() */
+    bool should_free;
 };
 
 struct _discord_ref {
@@ -44,6 +46,7 @@ static void
 _discord_refvalue_cleanup(struct _discord_refvalue *value)
 {
     if (value->cleanup) value->cleanup(value->data);
+    if (value->should_free) free(value->data);
 }
 
 static struct _discord_refvalue *
@@ -91,7 +94,8 @@ discord_refcounter_cleanup(struct discord_refcounter *rc)
 void
 discord_refcounter_incr(struct discord_refcounter *rc,
                         void *data,
-                        void (*cleanup)(void *data))
+                        void (*cleanup)(void *data),
+                        bool should_free)
 {
     struct _discord_refvalue *value = NULL;
     intptr_t key = (intptr_t)data;
@@ -102,6 +106,7 @@ discord_refcounter_incr(struct discord_refcounter *rc,
         value = _discord_refvalue_find(rc, key);
     else
         value = _discord_refvalue_init(rc, key, data, cleanup);
+    value->should_free = should_free;
     ++value->visits;
 }
 

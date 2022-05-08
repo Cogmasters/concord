@@ -508,7 +508,7 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
 
     if (req->ret.data)
         discord_refcounter_incr(CLIENT(adapter, adapter)->refcounter,
-                                req->ret.data, req->ret.cleanup);
+                                req->ret.data, req->ret.cleanup, false);
 
     io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller,
                                    adapter->mhandle);

@@ -75,7 +75,8 @@ discord_get_channel_at_pos(struct discord *client,
     /* TODO: the following should be replaced by @ref DiscordInternalTimer
      *      implementation */
     if (ret->data) {
-        discord_refcounter_incr(client->refcounter, ret->data, ret->cleanup);
+        discord_refcounter_incr(client->refcounter, ret->data, ret->cleanup,
+                                false);
     }
 
     /* TODO: fetch channel via caching, and return if results are non-existent

@@ -105,6 +105,9 @@ typedef void (*discord_ev_channel)(struct discord *client,
 /** @brief Thread List Sync callback */
 typedef void (*discord_ev_thread_list_sync)(
     struct discord *client, struct discord_thread_list_sync *event);
+/** @brief Thread Member Update callback */
+typedef void (*discord_ev_thread_member)(struct discord *client,
+                                         struct discord_thread_member *event);
 /** @brief Thread Members Update callback */
 typedef void (*discord_ev_thread_members_update)(
     struct discord *client, struct discord_thread_members_update *event);
@@ -125,6 +128,9 @@ typedef void (*discord_ev_guild)(struct discord *client,
 /** @brief Guild Emojis Update callback */
 typedef void (*discord_ev_guild_emojis_update)(
     struct discord *client, struct discord_guild_emojis_update *event);
+/** @brief Guild Stickers Update callback */
+typedef void (*discord_ev_guild_stickers_update)(
+    struct discord *client, struct discord_guild_stickers_update *event);
 /** @brief Guild Integrations Update callback */
 typedef void (*discord_ev_guild_integrations_update)(
     struct discord *client, struct discord_guild_integrations_update *event);
@@ -158,6 +164,10 @@ typedef void (*discord_ev_guild_scheduled_event_user_add)(
 typedef void (*discord_ev_guild_scheduled_event_user_remove)(
     struct discord *client,
     struct discord_guild_scheduled_event_user_remove *event);
+
+/** @brief Integration Create callback */
+typedef void (*discord_ev_integration)(struct discord *client,
+                                       struct discord_integration *event);
 
 /** @brief Integration Delete callback */
 typedef void (*discord_ev_integration_delete)(
@@ -193,9 +203,21 @@ typedef void (*discord_ev_message_reaction_remove_emoji)(
     struct discord *client,
     struct discord_message_reaction_remove_emoji *event);
 
-/** @brief Typing Start Remove callback */
+/** @brief Presence Update callback */
+typedef void (*discord_ev_presence_update)(
+    struct discord *client, struct discord_presence_update *event);
+
+/** @brief Stage Instance callback */
+typedef void (*discord_ev_stage_instance)(
+    struct discord *client, struct discord_stage_instance *event);
+
+/** @brief Typing Start callback */
 typedef void (*discord_ev_typing_start)(struct discord *client,
                                         struct discord_typing_start *event);
+
+/** @brief User callback */
+typedef void (*discord_ev_user)(struct discord *client,
+                                struct discord_user *event);
 
 /** @brief Voice State Update callback */
 typedef void (*discord_ev_voice_state_update)(

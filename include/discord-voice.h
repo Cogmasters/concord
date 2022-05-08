@@ -62,7 +62,7 @@ typedef void (*discord_ev_voice_codec)(struct discord *client,
                                        const char video_codec[]);
 
 /* CALLBACKS STRUCTURE */
-struct discord_voice_cbs {
+struct discord_voice_evcallbacks {
     /** triggers on every event loop iteration */
     discord_ev_voice_idle on_idle;
     /** triggers when a user start speaking */
@@ -176,7 +176,7 @@ struct discord_voice {
         uintmax_t start_time;
     } udp_service;
 
-    struct discord_voice_cbs *p_voice_cbs;
+    struct discord_voice_evcallbacks *p_voice_cbs;
 
     /**
      * @brief Interval to divide the received packets
@@ -285,7 +285,7 @@ void discord_voice_reconnect(struct discord_voice *vc, bool resume);
  * @param callbacks the voice callbacks that will be executed
  */
 void discord_set_voice_cbs(struct discord *client,
-                           struct discord_voice_cbs *callbacks);
+                           struct discord_voice_evcallbacks *callbacks);
 
 /**
  * @brief Check if a Discord Voice connection is alive

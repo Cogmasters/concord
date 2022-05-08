@@ -404,84 +404,8 @@ void discord_ratelimiter_build(struct discord_ratelimiter *rl,
  * @brief Wrapper to the Discord Gateway API
  *  @{ */
 
-struct discord_gateway_cbs {
-    /** triggers when connection first establishes */
-    discord_ev_ready on_ready;
-
-    /** triggers when a command is created */
-    discord_ev_application_command on_application_command_create;
-    /** triggers when a command is updated */
-    discord_ev_application_command on_application_command_update;
-    /** triggers when a command is deleted */
-    discord_ev_application_command on_application_command_delete;
-
-    /** triggers when a channel is created */
-    discord_ev_channel on_channel_create;
-    /** triggers when a channel is updated */
-    discord_ev_channel on_channel_update;
-    /** triggers when a channel is deleted */
-    discord_ev_channel on_channel_delete;
-    /** triggers when a channel pinned messages updates */
-    discord_ev_channel_pins_update on_channel_pins_update;
-    /** triggers when a thread is created */
-    discord_ev_channel on_thread_create;
-    /** triggers when a thread is updated */
-    discord_ev_channel on_thread_update;
-    /** triggers when a thread is deleted */
-    discord_ev_channel on_thread_delete;
-
-    /** triggers when guild info is ready, or a guild has joined */
-    discord_ev_guild on_guild_create;
-    /** triggers when a guild's information is updated */
-    discord_ev_guild on_guild_update;
-    /** triggers when removed from guild */
-    discord_ev_guild on_guild_delete;
-
-    /** triggers when a ban occurs */
-    discord_ev_guild_ban_add on_guild_ban_add;
-    /** triggers when a ban is removed */
-    discord_ev_guild_ban_remove on_guild_ban_remove;
-
-    /** triggers when a guild member joins a guild */
-    discord_ev_guild_member on_guild_member_add;
-    /** triggers when a guild member is removed from a guild */
-    discord_ev_guild_member_remove on_guild_member_remove;
-    /** triggers when a guild member status is updated (ex: receive role) */
-    discord_ev_guild_member_update on_guild_member_update;
-
-    /** triggers when a guild role is created */
-    discord_ev_guild_role_create on_guild_role_create;
-    /** triggers when a guild role is updated */
-    discord_ev_guild_role_update on_guild_role_update;
-    /** triggers when a guild role is deleted */
-    discord_ev_guild_role_delete on_guild_role_delete;
-
-    /** triggers when a interaction is created  */
-    discord_ev_interaction on_interaction_create;
-
-    /** triggers when a message is created */
-    discord_ev_message on_message_create;
-    /** trigger when a message is updated */
-    discord_ev_message on_message_update;
-    /** triggers when a message is deleted */
-    discord_ev_message_delete on_message_delete;
-    /** triggers when a bulk of messages is deleted */
-    discord_ev_message_delete_bulk on_message_delete_bulk;
-    /** triggers when a reaction is added to a message */
-    discord_ev_message_reaction_add on_message_reaction_add;
-    /** triggers when a reaction is removed from a message */
-    discord_ev_message_reaction_remove on_message_reaction_remove;
-    /** triggers when all reactions are removed from a message */
-    discord_ev_message_reaction_remove_all on_message_reaction_remove_all;
-    /** triggers when all occurences of a specific reaction is removed from a
-     * message */
-    discord_ev_message_reaction_remove_emoji on_message_reaction_remove_emoji;
-
-    /** triggers when a voice state is updated */
-    discord_ev_voice_state_update on_voice_state_update;
-    /** triggers when a voice server is updated */
-    discord_ev_voice_server_update on_voice_server_update;
-};
+/** Generic event callback */
+typedef void (*discord_ev)(struct discord *client, void *event);
 
 /** @defgroup DiscordInternalGatewaySessionStatus Client's session status
  * @brief Client's session status
@@ -582,29 +506,25 @@ struct discord_gateway {
         jsmnf_pair *data;
     } payload;
 
-    /** user-commands structure */
+    /** the prefix expected for every command */
+    struct sized_buffer prefix;
+    /** user's command/callback pair @see discord_set_on_command() */
     struct {
-        /** the prefix expected for every command */
-        struct sized_buffer prefix;
-        /** user's command/callback pair @see discord_set_on_command() */
-        struct {
-            /** the command string contents */
-            char *start;
-            /** the command string length */
-            size_t size;
-            /** the assigned callback for the command */
-            discord_ev_message cb;
-        } * pool, fallback;
-        /** amount of command/callback pairs in pool */
-        size_t amt;
-        /** actual size of command/callback pairs in pool */
-        size_t cap;
-
-        /** the user's callbacks for Discord events */
-        struct discord_gateway_cbs cbs;
-        /** the event scheduler callback */
-        discord_ev_scheduler scheduler;
-    } cmds;
+        /** the command string contents */
+        char *start;
+        /** the command string length */
+        size_t size;
+        /** the assigned callback for the command */
+        discord_ev_message cb;
+    } * pool, fallback;
+    /** amount of command/callback pairs in pool */
+    size_t amt;
+    /** actual size of command/callback pairs in pool */
+    size_t cap;
+    /** the user's callbacks for Discord events */
+    discord_ev cbs[DISCORD_EV_MAX];
+    /** the event scheduler callback */
+    discord_ev_scheduler scheduler;
 };
 
 /**
@@ -672,6 +592,15 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  * @param gw the handle initialized with discord_gateway_init()
  */
 void discord_gateway_send_presence_update(struct discord_gateway *gw);
+
+/**
+ * @brief Dispatch user callback matched to event
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ * @param event the Discord event to be executed
+ */
+void discord_gateway_dispatch(struct discord_gateway *gw,
+                              enum discord_gateway_events event);
 
 /** @} DiscordInternalGateway */
 
@@ -796,10 +725,12 @@ void discord_refcounter_cleanup(struct discord_refcounter *rc);
  * @param data the user arbitrary data to have its reference counter
  * @param cleanup user-defined function for cleaning `data` resources once its
  *      no longer referenced
+ * @param should_free whether `data` cleanup should be followed by a free()
  */
 void discord_refcounter_incr(struct discord_refcounter *rc,
                              void *data,
-                             void (*cleanup)(void *data));
+                             void (*cleanup)(void *data),
+                             bool should_free);
 
 /**
  * @brief Decrement the reference counter for `data`
@@ -861,7 +792,7 @@ struct discord {
 
 #ifdef CCORD_VOICE
     struct discord_voice vcs[DISCORD_MAX_VCS];
-    struct discord_voice_cbs voice_cbs;
+    struct discord_voice_evcallbacks voice_cbs;
 #endif /* CCORD_VOICE */
 };
 
