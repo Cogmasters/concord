@@ -186,8 +186,9 @@ JSMN_API long jsmnf_unescape(char buf[],
 
 /* compare jsmnf keys */
 #define _jsmnf_key_compare(cmp_a, cmp_b)                                      \
-    (!strncmp(_JSMNF_STRING_B + (cmp_a).pos, _JSMNF_STRING_A + (cmp_b).pos,   \
-              (cmp_a).len))
+    ((cmp_a).len == (cmp_b).len                                               \
+     && !strncmp(_JSMNF_STRING_B + (cmp_a).pos,                               \
+                 _JSMNF_STRING_A + (cmp_b).pos, (cmp_a).len))
 
 #define _JSMNF_TABLE_HEAP   0
 #define _JSMNF_TABLE_BUCKET struct jsmnf_pair
@@ -402,6 +403,18 @@ jsmnf_find_path(const struct jsmnf_pair *head,
     return found;
 }
 
+#define RECALLOC_OR_ERROR(ptr, prev_size)                                     \
+    do {                                                                      \
+        const unsigned new_size = *prev_size * 2;                             \
+        void *tmp = realloc((ptr), new_size * sizeof *(ptr));                 \
+        if (!tmp) return JSMN_ERROR_NOMEM;                                    \
+                                                                              \
+        *prev_size = new_size;                                                \
+        memset((ptr) + *(prev_size), 0,                                       \
+               (new_size - *(prev_size)) * sizeof *(ptr));                    \
+        (ptr) = tmp;                                                          \
+    } while (0)
+
 JSMN_API int
 jsmn_parse_auto(struct jsmn_parser *parser,
                 const char *js,
@@ -412,25 +425,16 @@ jsmn_parse_auto(struct jsmn_parser *parser,
     int ret;
 
     if (NULL == *p_tokens || !*num_tokens) {
-        *p_tokens = malloc(sizeof **p_tokens);
+        *p_tokens = calloc(1, sizeof **p_tokens);
         *num_tokens = 1;
     }
 
     while (1) {
         ret = jsmn_parse(parser, js, length, *p_tokens, *num_tokens);
-        if (ret != JSMN_ERROR_NOMEM) {
+        if (ret != JSMN_ERROR_NOMEM)
             break;
-        }
-        else {
-            const unsigned new_num_tokens = *num_tokens * 2;
-            void *tmp;
-
-            tmp = realloc(*p_tokens, new_num_tokens * sizeof **p_tokens);
-            if (!tmp) return JSMN_ERROR_NOMEM;
-
-            *num_tokens = new_num_tokens;
-            *p_tokens = tmp;
-        }
+        else
+            RECALLOC_OR_ERROR(*p_tokens, num_tokens);
     }
     return ret;
 }
@@ -446,28 +450,21 @@ jsmnf_load_auto(struct jsmnf_loader *loader,
     int ret;
 
     if (NULL == *p_pairs || !*num_pairs) {
-        *p_pairs = malloc(sizeof **p_pairs);
+        *p_pairs = calloc(1, sizeof **p_pairs);
         *num_pairs = 1;
     }
 
     while (1) {
         ret = jsmnf_load(loader, js, tokens, num_tokens, *p_pairs, *num_pairs);
-        if (ret != JSMN_ERROR_NOMEM) {
+        if (ret != JSMN_ERROR_NOMEM)
             break;
-        }
-        else {
-            const unsigned new_num_pairs = *num_pairs * 2;
-            void *tmp;
-
-            tmp = realloc(*p_pairs, new_num_pairs * sizeof **p_pairs);
-            if (!tmp) return JSMN_ERROR_NOMEM;
-
-            *num_pairs = new_num_pairs;
-            *p_pairs = tmp;
-        }
+        else
+            RECALLOC_OR_ERROR(*p_pairs, num_pairs);
     }
     return ret;
 }
+
+#undef RECALLOC_OR_ERROR
 
 static int
 _jsmnf_read_4_digits(char *s, const char *end, unsigned *p_hex)
