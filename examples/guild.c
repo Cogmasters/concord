@@ -210,7 +210,7 @@ done_get_guild_channels(struct discord *client,
                         void *data,
                         const struct discord_channels *channels)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     char *cur = text;
@@ -233,20 +233,20 @@ done_get_guild_channels(struct discord *client,
     }
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail_get_guild_channels(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch guild channels: %s",
              discord_strerror(code, client));
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -254,14 +254,10 @@ on_channels_get(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_channels ret = {
         .done = &done_get_guild_channels,
         .fail = &fail_get_guild_channels,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     discord_get_guild_channels(client, event->guild_id, &ret);
 }

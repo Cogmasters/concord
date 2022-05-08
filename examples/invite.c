@@ -27,25 +27,25 @@ on_ready(struct discord *client, struct discord_ready *event)
 void
 done(struct discord *client, void *data, const struct discord_invite *invite)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Success: https://discord.gg/%s",
              invite->code);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
 
     struct discord_create_message params = {
         .content = "Couldn't perform operation."
     };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -53,14 +53,10 @@ on_invite_get(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_invite ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
 
     struct discord_get_invite params = {
@@ -75,14 +71,10 @@ on_invite_delete(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_invite ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     discord_delete_invite(client, event->content, &ret);
 }

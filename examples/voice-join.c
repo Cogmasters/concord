@@ -6,11 +6,6 @@
 
 #include "discord.h"
 
-struct context {
-    u64snowflake channel_id;
-    u64snowflake guild_id;
-};
-
 void
 print_usage(void)
 {
@@ -46,24 +41,24 @@ done_list_voice_regions(struct discord *client,
                         void *data,
                         const struct discord_voice_regions *regions)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
 
     for (int i = 0; i < regions->size; ++i) {
         struct discord_create_message params = { .content =
                                                      regions->array[i].name };
-        discord_create_message(client, cxt->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
 }
 
 void
 fail_list_voice_regions(struct discord *client, CCORDcode code, void *data)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
 
     struct discord_create_message params = {
         .content = "Could not fetch voice regions"
     };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -71,14 +66,10 @@ on_list_voice_regions(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_voice_regions ret = {
         .done = &done_list_voice_regions,
         .fail = &fail_list_voice_regions,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
 
     discord_list_voice_regions(client, &ret);
@@ -89,26 +80,26 @@ done_get_vchannel_position(struct discord *client,
                            void *data,
                            const struct discord_channel *vchannel)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
     char text[256];
 
-    discord_voice_join(client, cxt->guild_id, vchannel->id, false, false);
+    discord_voice_join(client, event->guild_id, vchannel->id, false, false);
 
     snprintf(text, sizeof(text), "Joining <@!%" PRIu64 "> to <#%" PRIu64 ">!",
              discord_get_self(client)->id, vchannel->id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail_get_vchannel_position(struct discord *client, CCORDcode code, void *data)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
 
     struct discord_create_message params = { .content =
                                                  "Invalid channel position" };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -120,15 +111,10 @@ on_voice_join(struct discord *client, struct discord_message *event)
 
     sscanf(event->content, "%d", &position);
 
-    struct context *cxt = malloc(sizeof(struct context));
-    cxt->channel_id = event->channel_id;
-    cxt->guild_id = event->guild_id;
-
     struct discord_ret_channel ret = {
         .done = &done_get_vchannel_position,
         .fail = &fail_get_vchannel_position,
-        .data = cxt,
-        .cleanup = &free,
+        .data = event,
     };
 
     discord_get_channel_at_pos(client, event->guild_id,
@@ -141,14 +127,14 @@ done_disconnect_guild_member(struct discord *client,
                              void *data,
                              const struct discord_guild_member *member)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
     char text[256];
 
     snprintf(text, sizeof(text), "<@!%" PRIu64 "> has been kicked from VC",
              member->user->id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -156,12 +142,12 @@ fail_disconnect_guild_member(struct discord *client,
                              CCORDcode code,
                              void *data)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
 
     struct discord_create_message params = {
         .content = "Couldn't disconnect user from voice channel"
     };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -179,15 +165,10 @@ on_voice_kick(struct discord *client, struct discord_message *event)
         discord_create_message(client, event->channel_id, &params, NULL);
     }
     else {
-        struct context *cxt = malloc(sizeof(struct context));
-        cxt->channel_id = event->channel_id;
-        cxt->guild_id = event->guild_id;
-
         struct discord_ret_guild_member ret = {
             .done = &done_disconnect_guild_member,
             .fail = &fail_disconnect_guild_member,
-            .data = cxt,
-            .cleanup = &free,
+            .data = event,
         };
 
         discord_disconnect_guild_member(client, event->guild_id, user_id,

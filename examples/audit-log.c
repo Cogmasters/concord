@@ -61,7 +61,7 @@ done(struct discord *client,
      void *data,
      const struct discord_audit_log *audit_log)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
 
     if (!audit_log->audit_log_entries || !audit_log->audit_log_entries->size) {
         log_warn("No audit log entries found!");
@@ -76,7 +76,7 @@ done(struct discord *client,
              entry->user_id, entry->target_id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -93,14 +93,10 @@ on_audit_channel_create(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_audit_log ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     struct discord_get_guild_audit_log params = {
         .user_id = event->author->id,

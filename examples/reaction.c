@@ -39,7 +39,7 @@ done_get_users(struct discord *client,
                void *data,
                const struct discord_users *users)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[2000];
 
     if (!users->size) {
@@ -58,20 +58,20 @@ done_get_users(struct discord *client,
     }
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail_get_users(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch reactions: %s",
              discord_strerror(code, client));
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -79,14 +79,10 @@ on_get_users(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_users ret = {
         .done = &done_get_users,
         .fail = &fail_get_users,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     struct discord_get_reactions params = { .limit = 25 };
 

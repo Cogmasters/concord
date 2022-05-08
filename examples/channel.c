@@ -102,13 +102,12 @@ done_get_channel_invites(struct discord *client,
         return;
     }
 
-    u64snowflake *channel_id = data;
-
+    struct discord_message *event = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text), "%d invite links created.", invites->size);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -124,14 +123,10 @@ on_channel_get_invites(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_invites ret = {
         .done = &done_get_channel_invites,
         .fail = &fail_get_channel_invites,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     discord_get_channel_invites(client, event->channel_id, &ret);
 }
@@ -141,24 +136,24 @@ done_create_channel_invite(struct discord *client,
                            void *data,
                            const struct discord_invite *invite)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[256];
 
     snprintf(text, sizeof(text), "https://discord.gg/%s", invite->code);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail_create_channel_invite(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
 
     struct discord_create_message params = {
         .content = "Couldn't create invite",
     };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -166,14 +161,10 @@ on_channel_create_invite(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_invite ret = {
         .done = &done_create_channel_invite,
         .fail = &fail_create_channel_invite,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     discord_create_channel_invite(client, event->channel_id, NULL, &ret);
 }
@@ -183,26 +174,27 @@ done_start_thread(struct discord *client,
                   void *data,
                   const struct discord_channel *thread)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[1024];
 
-    snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">", *channel_id);
+    snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">",
+             event->channel_id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail_start_thread(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[1024];
 
     snprintf(text, sizeof(text), "Couldn't create thread: %s",
              discord_strerror(code, client));
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -210,14 +202,10 @@ on_channel_start_thread(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_channel ret = {
         .done = &done_start_thread,
         .fail = &fail_start_thread,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
 
     if (event->message_reference) {

@@ -30,7 +30,7 @@ done(struct discord *client,
      void *data,
      const struct discord_guild_template *template)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text),
@@ -39,33 +39,29 @@ done(struct discord *client,
              template->name, template->description, template->creator_id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake *channel_id = data;
+    struct discord_message *event = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text), "Couldn't perform operation: %s",
              discord_strerror(code, client));
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_get_guild_template(struct discord *client, struct discord_message *event)
 {
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
     discord_get_guild_template(client, event->content, &ret);
 }
@@ -73,14 +69,10 @@ on_get_guild_template(struct discord *client, struct discord_message *event)
 void
 on_create_guild_template(struct discord *client, struct discord_message *event)
 {
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
 
     struct discord_create_guild_template params = {
@@ -94,14 +86,10 @@ on_create_guild_template(struct discord *client, struct discord_message *event)
 void
 on_sync_guild_template(struct discord *client, struct discord_message *event)
 {
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = event->channel_id;
-
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .data = event,
     };
 
     discord_sync_guild_template(client, event->guild_id, event->content, &ret);

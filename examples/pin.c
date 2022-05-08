@@ -62,17 +62,12 @@ on_unpin(struct discord *client, struct discord_message *event)
     discord_unpin_message(client, event->channel_id, msg_id, NULL);
 }
 
-struct context {
-    u64snowflake channel_id;
-    u64snowflake guild_id;
-};
-
 void
 done_get_pins(struct discord *client,
               void *data,
               const struct discord_messages *msgs)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
     char text[2000] = "No pins on channel";
 
     char *cur = text;
@@ -82,27 +77,27 @@ done_get_pins(struct discord *client,
         cur += snprintf(cur, end - cur,
                         "https://discord.com/channels/%" PRIu64 "/%" PRIu64
                         "/%" PRIu64 "\n",
-                        cxt->guild_id, cxt->channel_id, msgs->array[i].id);
+                        event->guild_id, event->channel_id, msgs->array[i].id);
 
         if (cur >= end) break;
     }
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 fail_get_pins(struct discord *client, CCORDcode code, void *data)
 {
-    struct context *cxt = data;
+    struct discord_message *event = data;
     char text[2000] = "";
 
     snprintf(text, sizeof(text),
              "Failed fetching pinned messages at <#%" PRIu64 ">",
-             cxt->channel_id);
+             event->channel_id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, cxt->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
@@ -110,15 +105,10 @@ on_get_pins(struct discord *client, struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct context *cxt = malloc(sizeof(struct context));
-    cxt->channel_id = event->channel_id;
-    cxt->guild_id = event->guild_id;
-
     struct discord_ret_messages ret = {
         .done = &done_get_pins,
         .fail = &fail_get_pins,
-        .data = cxt,
-        .cleanup = &free,
+        .data = event,
     };
     discord_get_pinned_messages(client, event->channel_id, &ret);
 }
