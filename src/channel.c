@@ -17,7 +17,7 @@ struct _discord_get_channel_at_pos_cxt {
 };
 
 /* XXX: placeholder until channel is obtained via cache at
- *      discord-get_channel_at_pos() */
+ *      discord_get_channel_at_pos() */
 static void
 _done_get_channels(struct discord *client,
                    void *data,
@@ -36,8 +36,6 @@ _done_get_channels(struct discord *client,
         }
     }
 
-    /* TODO: the following should be replaced by @ref DiscordInternalTimer
-     *      implementation */
     if (found_ch) {
         if (cxt->ret.done) cxt->ret.done(client, cxt->ret.data, found_ch);
     }
@@ -72,12 +70,9 @@ discord_get_channel_at_pos(struct discord *client,
     _ret.data = cxt;
     _ret.cleanup = &free;
 
-    /* TODO: the following should be replaced by @ref DiscordInternalTimer
-     *      implementation */
-    if (ret->data) {
+    if (ret->data)
         discord_refcounter_incr(client->refcounter, ret->data, ret->cleanup,
                                 false);
-    }
 
     /* TODO: fetch channel via caching, and return if results are non-existent
      */

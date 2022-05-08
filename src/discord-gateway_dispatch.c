@@ -162,7 +162,6 @@ _discord_gateway_try_command(struct discord_gateway *gw)
             if (cmd_len == gw->pool[i].size
                 && 0 == strncmp(gw->pool[i].start, cmd_start, cmd_len))
             {
-
                 callback = gw->pool[i].cb;
                 break;
             }
@@ -170,11 +169,11 @@ _discord_gateway_try_command(struct discord_gateway *gw)
 
         /* couldn't match command to callback, get fallback if available */
         if (!callback) {
-            if (!gw->prefix.size) {
+            if (!gw->prefix.size || !gw->fallback.cb) {
+                discord_message_cleanup(event);
                 free(event);
                 return false;
             }
-
             cmd_len = 0;
             callback = gw->fallback.cb;
         }
@@ -206,7 +205,7 @@ discord_gateway_dispatch(struct discord_gateway *gw,
     case DISCORD_EV_MESSAGE_CREATE:
         if (_discord_gateway_try_command(gw)) return;
     /* fall-through */
-    default: {
+    default:
         if (gw->cbs[event]) {
             struct discord *client = CLIENT(gw, gw);
             void *data = calloc(1, dispatch[event].size);
@@ -218,7 +217,12 @@ discord_gateway_dispatch(struct discord_gateway *gw,
             gw->cbs[event](client, data);
             discord_refcounter_decr(client->refcounter, data);
         }
-    } break;
+        break;
+    case DISCORD_EV_NONE:
+        logconf_warn(
+            &gw->conf,
+            "Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
+        break;
     }
 }
 
