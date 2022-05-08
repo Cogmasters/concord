@@ -198,7 +198,7 @@ scheduler(struct discord *client,
           size_t size,
           enum discord_gateway_events event)
 {
-    if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
+    if (event == DISCORD_EV_MESSAGE_CREATE) {
         char cmd[1024] = "";
 
         jsmntok_t *tokens = NULL;

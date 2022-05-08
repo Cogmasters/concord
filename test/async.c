@@ -139,10 +139,10 @@ on_spam_ordered(struct discord *client, struct discord_message *event)
 void
 send_err(struct discord *client, CCORDcode code, void *data)
 {
-    u64snowflake channel_id = *(u64snowflake *)data;
+    struct discord_message *event = data;
 
     discord_create_message(
-        client, channel_id,
+        client, event->channel_id,
         &(struct discord_create_message){
             .content = (char *)discord_strerror(code, client),
         },
@@ -153,15 +153,11 @@ void
 on_force_error(struct discord *client, struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123;
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-
-    memcpy(channel_id, &event->channel_id, sizeof(u64snowflake));
 
     discord_delete_channel(client, FAUX_CHANNEL_ID,
                            &(struct discord_ret_channel){
                                .fail = &send_err,
-                               .data = channel_id,
-                               .cleanup = &free,
+                               .data = event,
                            });
 }
 
