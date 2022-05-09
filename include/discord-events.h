@@ -80,9 +80,9 @@ void discord_remove_intents(struct discord *client, uint64_t code);
  * Example: If @a 'help' is a command and @a '!' prefix is set, the command
  *       will only be validated if @a '!help' is sent
  * @param client the client created with discord_init()
- * @param prefix the prefix that should accompany any command
+ * @param prefix the mandatory command prefix
  */
-void discord_set_prefix(struct discord *client, char *prefix);
+void discord_set_prefix(struct discord *client, const char prefix[]);
 
 /** @defgroup DiscordEventCallbackTypes Callback types
  * @brief Callback types for Discord events

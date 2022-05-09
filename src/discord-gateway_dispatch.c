@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> /* isspace() */
 
 #include "discord.h"
 #include "discord-internal.h"
@@ -127,90 +126,26 @@ static const struct {
         INIT(discord_webhooks_update, webhooks_update),
 };
 
-static void
-_discord_message_cleanup_v(void *message)
-{
-    discord_message_cleanup(message);
-    free(message);
-}
-
-/** return true in case user command has been triggered */
-static bool
-_discord_gateway_try_command(struct discord_gateway *gw)
-{
-    jsmnf_pair *f = jsmnf_find(gw->payload.data, gw->json, "content", 7);
-
-    if (gw->pool
-        && !strncmp(gw->prefix.start, gw->json + f->v.pos, gw->prefix.size))
-    {
-        struct discord_message *event = calloc(1, sizeof *event);
-        struct discord *client = CLIENT(gw, gw);
-        discord_ev_message callback = NULL;
-        char *cmd_start;
-        size_t cmd_len;
-        char *tmp;
-
-        discord_message_from_jsmnf(gw->payload.data, gw->json, event);
-
-        cmd_start = event->content + gw->prefix.size;
-        cmd_len = strcspn(cmd_start, " \n\t\r");
-
-        tmp = event->content;
-
-        /* match command to its callback */
-        for (size_t i = 0; i < gw->amt; ++i) {
-            if (cmd_len == gw->pool[i].size
-                && 0 == strncmp(gw->pool[i].start, cmd_start, cmd_len))
-            {
-                callback = gw->pool[i].cb;
-                break;
-            }
-        }
-
-        /* couldn't match command to callback, get fallback if available */
-        if (!callback) {
-            if (!gw->prefix.size || !gw->fallback.cb) {
-                discord_message_cleanup(event);
-                free(event);
-                return false;
-            }
-            cmd_len = 0;
-            callback = gw->fallback.cb;
-        }
-
-        /* skip blank characters after command */
-        if (event->content) {
-            event->content = cmd_start + cmd_len;
-            while (*event->content && isspace((int)event->content[0]))
-                ++event->content;
-        }
-
-        discord_refcounter_incr(client->refcounter, event,
-                                _discord_message_cleanup_v, false);
-        callback(client, event);
-        event->content = tmp; /* retrieve original ptr */
-        discord_refcounter_decr(client->refcounter, event);
-
-        return true;
-    }
-
-    return false;
-}
-
 void
 discord_gateway_dispatch(struct discord_gateway *gw,
                          enum discord_gateway_events event)
 {
+    struct discord *client = CLIENT(gw, gw);
+
     switch (event) {
     case DISCORD_EV_MESSAGE_CREATE:
-        if (_discord_gateway_try_command(gw)) return;
+        if (discord_message_commands_try_perform(gw->commands, &gw->payload,
+                                                 client))
+        {
+            return;
+        }
     /* fall-through */
     default:
         if (gw->cbs[event]) {
-            struct discord *client = CLIENT(gw, gw);
             void *data = calloc(1, dispatch[event].size);
 
-            dispatch[event].from_jsmnf(gw->payload.data, gw->json, data);
+            dispatch[event].from_jsmnf(gw->payload.data, gw->payload.json,
+                                       data);
 
             discord_refcounter_incr(client->refcounter, data,
                                     dispatch[event].cleanup, true);

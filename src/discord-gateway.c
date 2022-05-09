@@ -101,8 +101,9 @@ on_hello(struct discord_gateway *gw)
     gw->timer->interval = 0;
     gw->timer->hbeat = gw->timer->now;
 
-    if ((f = jsmnf_find(gw->payload.data, gw->json, "heartbeat_interval", 18)))
-        gw->timer->interval = strtoull(gw->json + f->v.pos, NULL, 10);
+    if ((f = jsmnf_find(gw->payload.data, gw->payload.json,
+                        "heartbeat_interval", 18)))
+        gw->timer->interval = strtoull(gw->payload.json + f->v.pos, NULL, 10);
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         discord_gateway_send_resume(gw, &(struct discord_resume){
@@ -222,9 +223,10 @@ on_dispatch(struct discord_gateway *gw)
 
         logconf_info(&gw->conf, "Succesfully started a Discord session!");
 
-        if ((f = jsmnf_find(gw->payload.data, gw->json, "session_id", 10)))
+        if ((f = jsmnf_find(gw->payload.data, gw->payload.json, "session_id",
+                            10)))
             snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
-                     (int)f->v.len, gw->json + f->v.pos);
+                     (int)f->v.len, gw->payload.json + f->v.pos);
         ASSERT_S(*gw->session->id, "Missing session_id from READY event");
 
         gw->session->is_ready = true;
@@ -244,7 +246,8 @@ on_dispatch(struct discord_gateway *gw)
         break;
     }
 
-    mode = gw->scheduler(CLIENT(gw, gw), gw->json + gw->payload.data->v.pos,
+    mode = gw->scheduler(CLIENT(gw, gw),
+                         gw->payload.json + gw->payload.data->v.pos,
                          gw->payload.data->v.len, event);
 
     /* user subscribed to event */
@@ -279,7 +282,7 @@ on_invalid_session(struct discord_gateway *gw)
 
     /* attempt to resume if session isn't invalid */
     if (gw->payload.data->v.len != 5
-        || strncmp("false", gw->json + gw->payload.data->v.pos, 5))
+        || strncmp("false", gw->payload.json + gw->payload.data->v.pos, 5))
     {
         gw->session->status |= DISCORD_SESSION_RESUMABLE;
         reason = "Invalid session, will attempt to resume";
@@ -409,8 +412,8 @@ on_text_cb(void *p_gw,
     struct discord_gateway *gw = p_gw;
     jsmn_parser parser;
 
-    gw->json = (char *)text;
-    gw->length = len;
+    gw->payload.json = (char *)text;
+    gw->payload.length = len;
 
     jsmn_init(&parser);
     if (0 < jsmn_parse_auto(&parser, text, len, &gw->parse.tokens,
@@ -428,17 +431,18 @@ on_text_cb(void *p_gw,
             if ((f = jsmnf_find(gw->parse.pairs, text, "t", 1))) {
                 if (JSMN_STRING == f->type)
                     snprintf(gw->payload.name, sizeof(gw->payload.name),
-                             "%.*s", (int)f->v.len, gw->json + f->v.pos);
+                             "%.*s", (int)f->v.len,
+                             gw->payload.json + f->v.pos);
                 else
                     *gw->payload.name = '\0';
             }
             if ((f = jsmnf_find(gw->parse.pairs, text, "s", 1))) {
-                int seq = (int)strtol(gw->json + f->v.pos, NULL, 10);
+                int seq = (int)strtol(gw->payload.json + f->v.pos, NULL, 10);
                 if (seq) gw->payload.seq = seq;
             }
             if ((f = jsmnf_find(gw->parse.pairs, text, "op", 2)))
                 gw->payload.opcode = (enum discord_gateway_opcodes)strtol(
-                    gw->json + f->v.pos, NULL, 10);
+                    gw->payload.json + f->v.pos, NULL, 10);
             gw->payload.data = jsmnf_find(gw->parse.pairs, text, "d", 1);
         }
     }
@@ -501,6 +505,8 @@ discord_gateway_init(struct discord_gateway *gw,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
+    struct discord *client = CLIENT(gw, gw);
+
     /* Web-Sockets callbacks */
     struct ws_callbacks cbs = { 0 };
     /* Web-Sockets custom attributes */
@@ -518,8 +524,7 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* Web-Sockets handler */
     gw->mhandle = curl_multi_init();
-    io_poller_curlm_add(CLIENT(gw, gw)->io_poller, gw->mhandle,
-                        on_io_poller_curl, gw);
+    io_poller_curlm_add(client->io_poller, gw->mhandle, on_io_poller_curl, gw);
     gw->ws = ws_init(&cbs, gw->mhandle, &attr);
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
@@ -550,6 +555,9 @@ discord_gateway_init(struct discord_gateway *gw,
     /* default callbacks */
     gw->scheduler = default_scheduler_cb;
 
+    /* user message commands */
+    gw->commands = discord_message_commands_init(&gw->conf);
+
     /* check for default prefix in config file */
     buf = logconf_get_field(conf, path, sizeof(path) / sizeof *path);
     if (buf.size) {
@@ -575,11 +583,8 @@ discord_gateway_init(struct discord_gateway *gw,
 
                 if (enable_prefix
                     && (f = jsmnf_find(pairs, buf.start, "prefix", 6))) {
-                    char prefix[64] = "";
-
-                    snprintf(prefix, sizeof(prefix), "%.*s", (int)f->v.len,
-                             buf.start + f->v.pos);
-                    discord_set_prefix(CLIENT(gw, gw), prefix);
+                    discord_message_commands_set_prefix(
+                        gw->commands, buf.start + f->v.pos, f->v.len);
                 }
             }
         }
@@ -603,12 +608,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     /* cleanup client session */
     free(gw->session);
     /* cleanup user commands */
-    if (gw->pool) {
-        for (size_t i = 0; i < gw->amt; i++)
-            free(gw->pool[i].start);
-        free(gw->pool);
-    }
-    if (gw->prefix.start) free(gw->prefix.start);
+    discord_message_commands_cleanup(gw->commands);
     if (gw->parse.pairs) free(gw->parse.pairs);
     if (gw->parse.tokens) free(gw->parse.tokens);
 }

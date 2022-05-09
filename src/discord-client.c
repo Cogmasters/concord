@@ -94,7 +94,8 @@ _discord_clone_gateway(struct discord_gateway *clone,
     memcpy(clone->payload.data, orig->payload.data,
            n * sizeof *orig->parse.pairs);
 
-    clone->length = cog_strndup(orig->json, orig->length, &clone->json);
+    clone->payload.length = cog_strndup(
+        orig->payload.json, orig->payload.length, &clone->payload.json);
 }
 
 struct discord *
@@ -114,7 +115,7 @@ static void
 _discord_clone_gateway_cleanup(struct discord_gateway *clone)
 {
     free(clone->payload.data);
-    free(clone->json);
+    free(clone->payload.json);
 }
 
 static void
@@ -231,14 +232,12 @@ discord_remove_intents(struct discord *client, uint64_t code)
 }
 
 void
-discord_set_prefix(struct discord *client, char *prefix)
+discord_set_prefix(struct discord *client, const char prefix[])
 {
     if (!prefix || !*prefix) return;
 
-    if (client->gw.prefix.start) free(client->gw.prefix.start);
-
-    client->gw.prefix.size =
-        cog_strndup(prefix, strlen(prefix), &client->gw.prefix.start);
+    discord_message_commands_set_prefix(client->gw.commands, prefix,
+                                        strlen(prefix));
 }
 
 const struct discord_user *
@@ -252,45 +251,8 @@ discord_set_on_command(struct discord *client,
                        char command[],
                        discord_ev_message callback)
 {
-    const size_t cmd_len = command ? strlen(command) : 0;
-    size_t i;
-
-    /* fallback callback if prefix is detected, but command isn't specified */
-    if (client->gw.prefix.size && !cmd_len) {
-        client->gw.fallback.cb = callback;
-        return;
-    }
-
-    /* if command is already set then modify it */
-    for (i = 0; i < client->gw.amt; i++) {
-        if (cmd_len == client->gw.pool[i].size
-            && 0 == strcmp(command, client->gw.pool[i].start))
-        {
-            goto _modify;
-        }
-    }
-
-    if (i == client->gw.cap) {
-        size_t cap = 8;
-        void *tmp;
-
-        while (cap <= i)
-            cap <<= 1;
-
-        tmp = realloc(client->gw.pool, cap * sizeof(*client->gw.pool));
-        if (!tmp) return;
-
-        client->gw.pool = tmp;
-        client->gw.cap = cap;
-    }
-
-    ++client->gw.amt;
-    client->gw.pool[i].size =
-        cog_strndup(command, cmd_len, &client->gw.pool[i].start);
-
-_modify:
-    client->gw.pool[i].cb = callback;
-
+    discord_message_commands_append(client->gw.commands, command,
+                                    strlen(command), callback);
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
