@@ -51,6 +51,8 @@ check_sync_fetch_nothing(void *data)
     u64snowflake ch_id = *(u64snowflake *)data;
     struct discord_ret ret = { 0 };
 
+    if (!ch_id) SKIPm("Missing channel_id from config.json");
+
     ret.sync = true;
     ASSERT_EQ(CCORD_OK, discord_trigger_typing_indicator(CLIENT, ch_id, &ret));
 
@@ -145,6 +147,8 @@ check_async_fetch_nothing(void *data)
     u64snowflake ch_id = *(u64snowflake *)data;
     struct discord_ret ret = { 0 };
     CCORDcode result = CCORD_OK;
+
+    if (!ch_id) SKIPm("Missing channel_id from config.json");
 
     ret.done = on_done;
     ret.fail = on_fail;
