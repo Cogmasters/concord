@@ -40,7 +40,7 @@ on_ready(struct discord *client, struct discord_ready *event)
         .since = discord_timestamp(client),
     };
 
-    discord_set_presence(client, &status);
+    discord_update_presence(client, &status);
 }
 
 int

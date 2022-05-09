@@ -606,12 +606,33 @@ discord_set_on_voice_server_update(struct discord *client,
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
 }
 
+/* deprecated, use discord_update_presence() instead */
 void
 discord_set_presence(struct discord *client,
                      struct discord_presence_update *presence)
 {
-    memcpy(client->gw.id.presence, presence, sizeof *presence);
-    discord_gateway_send_presence_update(&client->gw);
+    discord_gateway_send_presence_update(&client->gw, presence);
+}
+
+void
+discord_request_guild_members(struct discord *client,
+                              struct discord_request_guild_members *request)
+{
+    discord_gateway_send_request_guild_members(&client->gw, request);
+}
+
+void
+discord_update_voice_state(struct discord *client,
+                           struct discord_update_voice_state *update)
+{
+    discord_gateway_send_update_voice_state(&client->gw, update);
+}
+
+void
+discord_update_presence(struct discord *client,
+                        struct discord_presence_update *presence)
+{
+    discord_gateway_send_presence_update(&client->gw, presence);
 }
 
 int

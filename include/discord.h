@@ -230,14 +230,44 @@ void *discord_set_data(struct discord *client, void *data);
 void *discord_get_data(struct discord *client);
 
 /**
- * @brief Set the Client presence state
+ * @brief Set the client presence status
+ * @deprecated since v2.0.0, use discord_update_presence() instead
  * @see discord_presence_add_activity()
  *
  * @param client the client created with discord_init()
- * @param presence change the client's status to it
+ * @param presence status to update the client's to
  */
 void discord_set_presence(struct discord *client,
                           struct discord_presence_update *presence);
+
+/**
+ * @brief Request all members for a guild or a list of guilds
+ *
+ * @param client the client created with discord_init()
+ * @param request request guild members information
+ */
+void discord_request_guild_members(
+    struct discord *client, struct discord_request_guild_members *request);
+
+/**
+ * @brief Sent when a client wants to join, move or disconnect from a voice
+ *      channel
+ *
+ * @param client the client created with discord_init()
+ * @param update request guild members information
+ */
+void discord_update_voice_state(struct discord *client,
+                                struct discord_update_voice_state *update);
+
+/**
+ * @brief Update the client presence status
+ * @see discord_presence_add_activity()
+ *
+ * @param client the client created with discord_init()
+ * @param presence status to update the client's to
+ */
+void discord_update_presence(struct discord *client,
+                             struct discord_presence_update *presence);
 
 /**
  * @brief Get the client WebSockets ping

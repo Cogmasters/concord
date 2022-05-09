@@ -94,141 +94,6 @@ _discord_gateway_close_opcode_print(enum discord_gateway_close_opcodes opcode)
 }
 
 static void
-_discord_gateway_send_resume(struct discord_gateway *gw)
-{
-    struct ws_info info = { 0 };
-    char buf[1024];
-    jsonb b;
-
-    /* reset */
-    gw->session->status ^= DISCORD_SESSION_RESUMABLE;
-
-    jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
-    {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 6);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        jsonb_object(&b, buf, sizeof(buf));
-        {
-            jsonb_key(&b, buf, sizeof(buf), "token", 5);
-            jsonb_string(&b, buf, sizeof(buf), gw->id.token,
-                         strlen(gw->id.token));
-            jsonb_key(&b, buf, sizeof(buf), "session_id", 10);
-            jsonb_string(&b, buf, sizeof(buf), gw->session->id,
-                         strlen(gw->session->id));
-            jsonb_key(&b, buf, sizeof(buf), "seq", 3);
-            jsonb_number(&b, buf, sizeof(buf), gw->payload.seq);
-            jsonb_object_pop(&b, buf, sizeof(buf));
-        }
-        jsonb_object_pop(&b, buf, sizeof(buf));
-    }
-
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("SEND",
-                      ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
-    }
-    else {
-        logconf_info(&gw->conf,
-                     ANSICOLOR("FAIL SEND",
-                               ANSI_FG_RED) " RESUME (%d bytes) [@@@_%zu_@@@]",
-                     b.pos, info.loginfo.counter + 1);
-    }
-}
-
-static void
-_discord_gateway_send_identify(struct discord_gateway *gw)
-{
-    struct ws_info info = { 0 };
-    char buf[1024];
-    jsonb b;
-
-    /* Ratelimit check */
-    if (gw->timer->now - gw->timer->identify < 5) {
-        ++gw->session->concurrent;
-        VASSERT_S(gw->session->concurrent
-                      < gw->session->start_limit.max_concurrency,
-                  "Reach identify request threshold (%d every 5 seconds)",
-                  gw->session->start_limit.max_concurrency);
-    }
-    else {
-        gw->session->concurrent = 0;
-    }
-
-    jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
-    {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 2);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_identify_to_jsonb(&b, buf, sizeof(buf), &gw->id);
-        jsonb_object_pop(&b, buf, sizeof(buf));
-    }
-
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "SEND",
-                ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
-        /* get timestamp for this identify */
-        gw->timer->identify = gw->timer->now;
-    }
-    else {
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("FAIL SEND",
-                      ANSI_FG_RED) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
-    }
-}
-
-/* send heartbeat pulse to websockets server in order
- *  to maintain connection alive */
-static void
-_discord_gateway_send_heartbeat(struct discord_gateway *gw)
-{
-    struct ws_info info = { 0 };
-    char buf[64];
-    jsonb b;
-
-    jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
-    {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 1);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        jsonb_number(&b, buf, sizeof(buf), gw->payload.seq);
-        jsonb_object_pop(&b, buf, sizeof(buf));
-    }
-
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "SEND",
-                ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
-        /* update heartbeat timestamp */
-        gw->timer->hbeat = gw->timer->now;
-    }
-    else {
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("FAIL SEND",
-                      ANSI_FG_RED) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
-    }
-}
-
-static void
 on_hello(struct discord_gateway *gw)
 {
     jsmnf_pair *f;
@@ -240,9 +105,12 @@ on_hello(struct discord_gateway *gw)
         gw->timer->interval = strtoull(gw->json + f->v.pos, NULL, 10);
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
-        _discord_gateway_send_resume(gw);
+        discord_gateway_send_resume(gw, &(struct discord_resume){
+                                            .session_id = gw->session->id,
+                                            .seq = gw->payload.seq,
+                                        });
     else
-        _discord_gateway_send_identify(gw);
+        discord_gateway_send_identify(gw, &gw->id);
 }
 
 static enum discord_gateway_events
@@ -362,7 +230,7 @@ on_dispatch(struct discord_gateway *gw)
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
 
-        _discord_gateway_send_heartbeat(gw);
+        discord_gateway_send_heartbeat(gw, gw->payload.seq);
     } break;
     case DISCORD_EV_RESUMED:
         logconf_info(&gw->conf, "Succesfully resumed a Discord session!");
@@ -370,12 +238,9 @@ on_dispatch(struct discord_gateway *gw)
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
 
-        _discord_gateway_send_heartbeat(gw);
+        discord_gateway_send_heartbeat(gw, gw->payload.seq);
         break;
     default:
-        logconf_warn(
-            &gw->conf,
-            "Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
         break;
     }
 
@@ -636,13 +501,10 @@ discord_gateway_init(struct discord_gateway *gw,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
-    struct discord *client = CLIENT(gw, gw);
     /* Web-Sockets callbacks */
     struct ws_callbacks cbs = { 0 };
     /* Web-Sockets custom attributes */
     struct ws_attr attr = { 0 };
-    /* Bot default presence update */
-    struct discord_presence_update presence = { 0 };
     struct sized_buffer buf;
     /* prefix directive */
     char *path[] = { "discord", "default_prefix" };
@@ -656,7 +518,8 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* Web-Sockets handler */
     gw->mhandle = curl_multi_init();
-    io_poller_curlm_add(client->io_poller, gw->mhandle, on_io_poller_curl, gw);
+    io_poller_curlm_add(CLIENT(gw, gw)->io_poller, gw->mhandle,
+                        on_io_poller_curl, gw);
     gw->ws = ws_init(&cbs, gw->mhandle, &attr);
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
@@ -680,9 +543,9 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* the bot initial presence */
     gw->id.presence = calloc(1, sizeof *gw->id.presence);
-    presence.status = "online";
-    presence.since = cog_timestamp_ms();
-    discord_set_presence(client, &presence);
+    gw->id.presence->status = "online";
+    gw->id.presence->since = cog_timestamp_ms();
+    discord_gateway_send_presence_update(gw, gw->id.presence);
 
     /* default callbacks */
     gw->scheduler = default_scheduler_cb;
@@ -966,7 +829,7 @@ discord_gateway_perform(struct discord_gateway *gw)
     /* check if timespan since first pulse is greater than
      * minimum heartbeat interval required */
     if (gw->timer->interval < gw->timer->now - gw->timer->hbeat) {
-        _discord_gateway_send_heartbeat(gw);
+        discord_gateway_send_heartbeat(gw, gw->payload.seq);
     }
 
     return CCORD_OK;

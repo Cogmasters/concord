@@ -227,7 +227,214 @@ discord_gateway_dispatch(struct discord_gateway *gw,
 }
 
 void
-discord_gateway_send_presence_update(struct discord_gateway *gw)
+discord_gateway_send_identify(struct discord_gateway *gw,
+                              struct discord_identify *identify)
+{
+    struct ws_info info = { 0 };
+    char buf[1024];
+    jsonb b;
+
+    /* Ratelimit check */
+    if (gw->timer->now - gw->timer->identify < 5) {
+        ++gw->session->concurrent;
+        VASSERT_S(gw->session->concurrent
+                      < gw->session->start_limit.max_concurrency,
+                  "Reach identify request threshold (%d every 5 seconds)",
+                  gw->session->start_limit.max_concurrency);
+    }
+    else {
+        gw->session->concurrent = 0;
+    }
+
+    jsonb_init(&b);
+    jsonb_object(&b, buf, sizeof(buf));
+    {
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
+        jsonb_number(&b, buf, sizeof(buf), 2);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
+        discord_identify_to_jsonb(&b, buf, sizeof(buf), identify);
+        jsonb_object_pop(&b, buf, sizeof(buf));
+    }
+
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "SEND",
+                ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+        /* get timestamp for this identify */
+        gw->timer->identify = gw->timer->now;
+    }
+    else {
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("FAIL SEND",
+                      ANSI_FG_RED) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+}
+
+void
+discord_gateway_send_resume(struct discord_gateway *gw,
+                            struct discord_resume *event)
+{
+    struct ws_info info = { 0 };
+    char buf[1024];
+    jsonb b;
+
+    /* reset */
+    gw->session->status ^= DISCORD_SESSION_RESUMABLE;
+
+    jsonb_init(&b);
+    jsonb_object(&b, buf, sizeof(buf));
+    {
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
+        jsonb_number(&b, buf, sizeof(buf), 6);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
+        discord_resume_to_jsonb(&b, buf, sizeof(buf), event);
+        jsonb_object_pop(&b, buf, sizeof(buf));
+    }
+
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("SEND",
+                      ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+    else {
+        logconf_info(&gw->conf,
+                     ANSICOLOR("FAIL SEND",
+                               ANSI_FG_RED) " RESUME (%d bytes) [@@@_%zu_@@@]",
+                     b.pos, info.loginfo.counter + 1);
+    }
+}
+
+/* send heartbeat pulse to websockets server in order
+ *  to maintain connection alive */
+void
+discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
+{
+    struct ws_info info = { 0 };
+    char buf[64];
+    jsonb b;
+
+    jsonb_init(&b);
+    jsonb_object(&b, buf, sizeof(buf));
+    {
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
+        jsonb_number(&b, buf, sizeof(buf), 1);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
+        jsonb_number(&b, buf, sizeof(buf), seq);
+        jsonb_object_pop(&b, buf, sizeof(buf));
+    }
+
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "SEND",
+                ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+        /* update heartbeat timestamp */
+        gw->timer->hbeat = gw->timer->now;
+    }
+    else {
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("FAIL SEND",
+                      ANSI_FG_RED) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+}
+
+void
+discord_gateway_send_request_guild_members(
+    struct discord_gateway *gw, struct discord_request_guild_members *event)
+{
+    struct ws_info info = { 0 };
+    char buf[1024];
+    jsonb b;
+
+    jsonb_init(&b);
+    jsonb_object(&b, buf, sizeof(buf));
+    {
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
+        jsonb_number(&b, buf, sizeof(buf), 8);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
+        discord_request_guild_members_to_jsonb(&b, buf, sizeof(buf), event);
+        jsonb_object_pop(&b, buf, sizeof(buf));
+    }
+
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " REQUEST_GUILD_MEMBERS "
+                                                    "(%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+        /* update heartbeat timestamp */
+        gw->timer->hbeat = gw->timer->now;
+    }
+    else {
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "FAIL SEND",
+                ANSI_FG_RED) " REQUEST_GUILD_MEMBERS (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+}
+
+void
+discord_gateway_send_update_voice_state(
+    struct discord_gateway *gw, struct discord_update_voice_state *event)
+{
+    struct ws_info info = { 0 };
+    char buf[256];
+    jsonb b;
+
+    jsonb_init(&b);
+    jsonb_object(&b, buf, sizeof(buf));
+    {
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
+        jsonb_number(&b, buf, sizeof(buf), 4);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
+        discord_update_voice_state_to_jsonb(&b, buf, sizeof(buf), event);
+        jsonb_object_pop(&b, buf, sizeof(buf));
+    }
+
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "SEND",
+                ANSI_FG_BRIGHT_GREEN) " UPDATE_VOICE_STATE "
+                                      "(%d bytes): %s channels [@@@_%zu_@@@]",
+            b.pos, event->channel_id ? "join" : "leave",
+            info.loginfo.counter + 1);
+
+        /* update heartbeat timestamp */
+        gw->timer->hbeat = gw->timer->now;
+    }
+    else {
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "FAIL SEND",
+                ANSI_FG_RED) " UPDATE_VOICE_STATE (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+}
+
+void
+discord_gateway_send_presence_update(struct discord_gateway *gw,
+                                     struct discord_presence_update *presence)
 {
     struct ws_info info = { 0 };
     char buf[2048];
@@ -241,8 +448,7 @@ discord_gateway_send_presence_update(struct discord_gateway *gw)
         jsonb_key(&b, buf, sizeof(buf), "op", 2);
         jsonb_number(&b, buf, sizeof(buf), 3);
         jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_presence_update_to_jsonb(&b, buf, sizeof(buf),
-                                         gw->id.presence);
+        discord_presence_update_to_jsonb(&b, buf, sizeof(buf), presence);
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 

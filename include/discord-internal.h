@@ -587,11 +587,58 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
 void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
 
 /**
+ * @brief Trigger the initial handshake with the gateway
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ * @param event provide client identification information
+ */
+void discord_gateway_send_identify(struct discord_gateway *gw,
+                                   struct discord_identify *event);
+
+/**
+ * @brief Replay missed events when a disconnected client resumes
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ * @param event session resume information
+ */
+void discord_gateway_send_resume(struct discord_gateway *gw,
+                                 struct discord_resume *event);
+
+/**
+ * @brief Maintain an active gateway connection
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ * @param seq the last session sequence number
+ */
+void discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq);
+
+/**
+ * @brief Request all members for a guild or a list of guilds.
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ * @param event request guild members information
+ */
+void discord_gateway_send_request_guild_members(
+    struct discord_gateway *gw, struct discord_request_guild_members *event);
+
+/**
+ * @brief Sent when a client wants to join, move or disconnect from a voice
+ *      channel
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ * @param event request guild members information
+ */
+void discord_gateway_send_update_voice_state(
+    struct discord_gateway *gw, struct discord_update_voice_state *event);
+
+/**
  * @brief Send client's presence status update payload
  *
  * @param gw the handle initialized with discord_gateway_init()
+ * @param event the presence to be set
  */
-void discord_gateway_send_presence_update(struct discord_gateway *gw);
+void discord_gateway_send_presence_update(
+    struct discord_gateway *gw, struct discord_presence_update *event);
 
 /**
  * @brief Dispatch user callback matched to event

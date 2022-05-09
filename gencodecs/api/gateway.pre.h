@@ -359,8 +359,8 @@ PUB_STRUCT(discord_request_guild_members)
   COND_END
 STRUCT_END
 
-/** @CCORD_pub_struct{discord_voice_state_status} */
-PUB_STRUCT(discord_voice_state_status)
+/** @CCORD_pub_struct{discord_update_voice_state} */
+PUB_STRUCT(discord_update_voice_state)
   /** ID of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** ID of the voice channel client wants to join (null if disconnecting) */

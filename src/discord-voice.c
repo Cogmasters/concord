@@ -522,56 +522,6 @@ recycle_active_vc(struct discord_voice *vc,
     vc->shutdown = false;
 }
 
-static void
-send_voice_state_update(struct discord_voice *vc,
-                        u64snowflake guild_id,
-                        u64snowflake channel_id,
-                        bool self_mute,
-                        bool self_deaf)
-{
-    struct discord_gateway *gw = &vc->p_client->gw;
-    char buf[256];
-    jsonb b;
-
-    jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
-    {
-        jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
-        jsonb_number(&b, buf, sizeof(buf), 4);
-        jsonb_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
-        jsonb_object(&b, buf, sizeof(buf));
-        {
-            char tok[32];
-            int toklen = snprintf(tok, sizeof(tok), "%" PRIu64, guild_id);
-
-            jsonb_key(&b, buf, sizeof(buf), "guild_id", 8);
-            jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
-            jsonb_key(&b, buf, sizeof(buf), "channel_id", 10);
-            if (channel_id) {
-                toklen = snprintf(tok, sizeof(tok), "%" PRIu64, channel_id);
-                jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
-            }
-            else {
-                jsonb_null(&b, buf, sizeof(buf));
-            }
-            jsonb_key(&b, buf, sizeof(buf), "self_mute", 9);
-            jsonb_bool(&b, buf, sizeof(buf), self_mute);
-            jsonb_key(&b, buf, sizeof(buf), "self_deaf", 9);
-            jsonb_bool(&b, buf, sizeof(buf), self_deaf);
-            jsonb_object_pop(&b, buf, sizeof(buf));
-        }
-        jsonb_object_pop(&b, buf, sizeof(buf));
-    }
-
-    logconf_info(
-        &vc->conf,
-        ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_STATE_UPDATE (%d "
-                                                "bytes): %s channel",
-        b.pos, channel_id ? "join" : "leave");
-
-    ws_send_text(gw->ws, NULL, buf, b.pos);
-}
-
 enum discord_voice_status
 discord_voice_join(struct discord *client,
                    u64snowflake guild_id,
@@ -613,7 +563,8 @@ discord_voice_join(struct discord *client,
     }
 
     recycle_active_vc(vc, guild_id, vchannel_id);
-    send_voice_state_update(vc, guild_id, vchannel_id, self_mute, self_deaf);
+    discord_send_voice_state_update(vc, guild_id, vchannel_id, self_mute,
+                                    self_deaf);
     return DISCORD_VOICE_JOINED;
 }
 
@@ -835,9 +786,9 @@ discord_voice_shutdown(struct discord_voice *vc)
     vc->shutdown = true;
     vc->is_resumable = false;
 
-    /* TODO: check if send_voice_state_update() is not being ignored because of
-     * ws_close() */
-    send_voice_state_update(vc, vc->guild_id, 0, false, false);
+    /* TODO: check if discord_send_voice_state_update() is not being ignored
+     *      because of ws_close() */
+    discord_send_voice_state_update(vc, vc->guild_id, 0, false, false);
     ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
