@@ -290,7 +290,8 @@ discord_set_on_command(struct discord *client,
                        char command[],
                        discord_ev_message callback)
 {
-    discord_message_commands_append(client->commands, command, strlen(command),
+    size_t length = (!command || !*command) ? 0 : strlen(command);
+    discord_message_commands_append(client->commands, command, length,
                                     callback);
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);

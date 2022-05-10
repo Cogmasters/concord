@@ -88,16 +88,17 @@ discord_message_commands_append(struct discord_message_commands *cmds,
                                 size_t length,
                                 discord_ev_message callback)
 {
-    struct sized_buffer key;
-
-    key.size = cog_strndup(command, length, &key.start);
-
-    /* fallback callback if prefix is detected, but command isn't specified */
-    if (cmds->prefix.size && (!command || !*command)) {
+    /* define callback as a fallback callback if prefix is detected, but
+     *      command isn't specified */
+    if (cmds->prefix.size && !length) {
         cmds->fallback = callback;
-        return;
     }
-    chash_assign(cmds, key, callback, COMMANDS_TABLE);
+    else {
+        struct sized_buffer key;
+
+        key.size = cog_strndup(command, length, &key.start);
+        chash_assign(cmds, key, callback, COMMANDS_TABLE);
+    }
 }
 
 static void
@@ -123,7 +124,10 @@ discord_message_commands_try_perform(struct discord_gateway *gw,
                                      struct discord_message_commands *cmds,
                                      struct discord_gateway_payload *payload)
 {
-    jsmnf_pair *f = jsmnf_find(payload->data, payload->json, "content", 7);
+    jsmnf_pair *f;
+
+    if (!(f = jsmnf_find(payload->data, payload->json, "content", 7)))
+        return false;
 
     if (cmds->length
         && !strncmp(cmds->prefix.start, payload->json + f->v.pos,
