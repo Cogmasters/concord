@@ -15,6 +15,8 @@ _discord_init(struct discord *new_client)
     discord_timers_init(new_client);
     new_client->io_poller = io_poller_create();
     new_client->refcounter = discord_refcounter_init(&new_client->conf);
+    new_client->commands = discord_message_commands_init(&new_client->conf);
+
     discord_adapter_init(&new_client->adapter, &new_client->conf,
                          &new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
@@ -57,8 +59,9 @@ discord_init(const char token[])
 struct discord *
 discord_config_init(const char config_file[])
 {
+    char *path[2] = { "discord", "" };
     struct discord *new_client;
-    char *path[] = { "discord", "token" };
+    struct sized_buffer buf;
     FILE *fp;
 
     fp = fopen(config_file, "rb");
@@ -70,6 +73,7 @@ discord_config_init(const char config_file[])
 
     fclose(fp);
 
+    path[1] = "token";
     new_client->token = logconf_get_field(&new_client->conf, path,
                                           sizeof(path) / sizeof *path);
     if (!strncmp("YOUR-BOT-TOKEN", new_client->token.start,
@@ -79,6 +83,40 @@ discord_config_init(const char config_file[])
     }
 
     _discord_init(new_client);
+
+    /* check for default prefix in config file */
+    path[1] = "default_prefix";
+    buf = logconf_get_field(&new_client->conf, path,
+                            sizeof(path) / sizeof *path);
+    if (buf.size) {
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
+
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, buf.start, buf.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, buf.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                bool enable_prefix = false;
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, buf.start, "enable", 6)))
+                    enable_prefix = ('t' == buf.start[f->v.pos]);
+
+                if (enable_prefix
+                    && (f = jsmnf_find(pairs, buf.start, "prefix", 6))) {
+                    discord_message_commands_set_prefix(
+                        new_client->commands, buf.start + f->v.pos, f->v.len);
+                }
+            }
+        }
+    }
 
     return new_client;
 }
@@ -135,6 +173,7 @@ discord_cleanup(struct discord *client)
         discord_user_cleanup(&client->self);
         io_poller_destroy(client->io_poller);
         discord_refcounter_cleanup(client->refcounter);
+        discord_message_commands_cleanup(client->commands);
 #ifdef CCORD_VOICE
         discord_voice_connections_cleanup(client);
 #endif
@@ -236,7 +275,7 @@ discord_set_prefix(struct discord *client, const char prefix[])
 {
     if (!prefix || !*prefix) return;
 
-    discord_message_commands_set_prefix(client->gw.commands, prefix,
+    discord_message_commands_set_prefix(client->commands, prefix,
                                         strlen(prefix));
 }
 
@@ -251,29 +290,20 @@ discord_set_on_command(struct discord *client,
                        char command[],
                        discord_ev_message callback)
 {
-    discord_message_commands_append(client->gw.commands, command,
-                                    strlen(command), callback);
+    discord_message_commands_append(client->commands, command, strlen(command),
+                                    callback);
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
 discord_set_on_commands(struct discord *client,
-                        discord_ev_message callback,
-                        ...)
+                        char *const commands[],
+                        int amount,
+                        discord_ev_message callback)
 {
-    char *command = NULL;
-    va_list commands;
-
-    va_start(commands, callback);
-
-    command = va_arg(commands, char *);
-    while (command != NULL) {
-        discord_set_on_command(client, command, callback);
-        command = va_arg(commands, char *);
-    }
-
-    va_end(commands);
+    for (int i = 0; i < amount; ++i)
+        discord_set_on_command(client, commands[i], callback);
 }
 
 void

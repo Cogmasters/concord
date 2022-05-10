@@ -6,8 +6,6 @@
 #include "discord-internal.h"
 #include "discord-request.h"
 
-/* FIXME: when response JSON is too large, jsmn crashes on error, most likely
- * json_extract() is handling the tokens incorrectly. */
 CCORDcode
 discord_get_guild_audit_log(struct discord *client,
                             u64snowflake guild_id,

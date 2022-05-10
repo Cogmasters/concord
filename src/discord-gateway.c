@@ -511,9 +511,6 @@ discord_gateway_init(struct discord_gateway *gw,
     struct ws_callbacks cbs = { 0 };
     /* Web-Sockets custom attributes */
     struct ws_attr attr = { 0 };
-    struct sized_buffer buf;
-    /* prefix directive */
-    char *path[] = { "discord", "default_prefix" };
 
     cbs.data = gw;
     cbs.on_connect = &on_connect_cb;
@@ -554,41 +551,6 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* default callbacks */
     gw->scheduler = default_scheduler_cb;
-
-    /* user message commands */
-    gw->commands = discord_message_commands_init(&gw->conf);
-
-    /* check for default prefix in config file */
-    buf = logconf_get_field(conf, path, sizeof(path) / sizeof *path);
-    if (buf.size) {
-        jsmn_parser parser;
-        jsmntok_t tokens[16];
-
-        jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, buf.start, buf.size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
-        {
-            jsmnf_loader loader;
-            jsmnf_pair pairs[16];
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, buf.start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
-            {
-                bool enable_prefix = false;
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, buf.start, "enable", 6)))
-                    enable_prefix = ('t' == buf.start[f->v.pos]);
-
-                if (enable_prefix
-                    && (f = jsmnf_find(pairs, buf.start, "prefix", 6))) {
-                    discord_message_commands_set_prefix(
-                        gw->commands, buf.start + f->v.pos, f->v.len);
-                }
-            }
-        }
-    }
 }
 
 void
@@ -607,8 +569,6 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     free(gw->id.presence);
     /* cleanup client session */
     free(gw->session);
-    /* cleanup user commands */
-    discord_message_commands_cleanup(gw->commands);
     if (gw->parse.pairs) free(gw->parse.pairs);
     if (gw->parse.tokens) free(gw->parse.tokens);
 }

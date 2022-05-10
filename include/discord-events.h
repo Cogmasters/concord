@@ -257,14 +257,16 @@ void discord_set_on_command(struct discord *client,
  * The callback is triggered when a user types one of the assigned commands in
  *        a chat visble to the client
  * @param client the client created with discord_init()
+ * @param commands array of commands to trigger the callback
+ * @param amount amount of commands provided
  * @param callback the callback to be triggered on event
- * @param ... commands and a NULL terminator
  * @note The command and any subjacent empty space is left out of
  *       the message content
  */
 void discord_set_on_commands(struct discord *client,
-                             discord_ev_message callback,
-                             ...);
+                             char *const commands[],
+                             int amount,
+                             discord_ev_message callback);
 
 /**
  * @brief Set the time for wakeup function to be called

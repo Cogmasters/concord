@@ -434,107 +434,6 @@ struct discord_gateway_payload {
     jsmnf_pair *data;
 };
 
-/** @defgroup DiscordInternalGatewayMessageCommands Message Commands API
- * @brief The Message Commands API for registering and parsing user commands
- *  @{ */
-
-/**
- * @brief The handle for storing user's message commands
- * @see discord_set_on_command()
- */
-struct discord_message_commands {
-    /** DISCORD_MESSAGE_COMMANDS logging module */
-    struct logconf conf;
-    /** the prefix expected for every command */
-    struct sized_buffer prefix;
-    /** fallback message command @see discord_set_on_command() */
-    discord_ev_message fallback;
-    /** amount of message commands created */
-    int length;
-    /** message commands cap before increase */
-    int capacity;
-    /**
-     * message command entries
-     * @note datatype declared at discord-gateway_command.c
-     */
-    struct _discord_message_commands_entry *entries;
-};
-
-/**
- * @brief Initialize the fields of the Message Commands handle
- *
- * @param conf optional pointer to a parent logconf
- * @return the message commands handle
- */
-struct discord_message_commands *discord_message_commands_init(
-    struct logconf *conf);
-
-/**
- * @brief Free Message Commands handle
- *
- * @param cmds the handle initialized with discord_message_commands_init()
- */
-void discord_message_commands_cleanup(struct discord_message_commands *cmds);
-
-/**
- * @brief Search for a callback matching the command
- *
- * @param cmds the handle initialized with discord_message_commands_init()
- * @param command the command to be searched for
- * @param length the command length
- * @return the callback match, `NULL` in case there wasn't a match
- */
-discord_ev_message discord_message_commands_find(
-    struct discord_message_commands *cmds,
-    const char command[],
-    size_t length);
-
-/**
- * @brief Add a new command/callback pair, or update an existing command
- *
- * @param cmds the handle initialized with discord_message_commands_init()
- * @param command the message command to be matched with callback
- * @param length the command length
- * @param callback the callback to be triggered when the command is sent
- */
-void discord_message_commands_append(struct discord_message_commands *cmds,
-                                     const char command[],
-                                     size_t length,
-                                     discord_ev_message callback);
-
-/**
- * @brief Set a mandatory prefix before commands
- * @see discord_set_on_command()
- *
- * Example: If @a 'help' is a command and @a '!' prefix is set, the command
- *       will only be validated if @a '!help' is sent
- * @param cmds the handle initialized with discord_message_commands_init()
- * @param prefix the mandatory command prefix
- * @param length the prefix length
- */
-void discord_message_commands_set_prefix(struct discord_message_commands *cmds,
-                                         const char prefix[],
-                                         size_t length);
-
-/**
- * @brief Read the current `MESSAGE_CREATE` payload and attempt to perform its
- *      matching callback
- *
- * @param gw the handle initialized with discord_gateway_init()
- * @param payload the event payload to read from
- *      (assumes its from `MESSAGE_CREATE`)
- * @param client the handle initialized with discord_init()
- *      @note used for its @ref discord_refcounter and passing as a callback
- *      parameter
- * @return `true` if the callback has been performed
- */
-bool discord_message_commands_try_perform(
-    struct discord_message_commands *cmds,
-    struct discord_gateway_payload *payload,
-    struct discord *client);
-
-/** @} DiscordInternalGatewayMessageCommands */
-
 /** @brief The handle used for establishing a WebSockets connection */
 struct discord_gateway {
     /** DISCORD_GATEWAY logging module */
@@ -608,8 +507,6 @@ struct discord_gateway {
 
     /** response-payload structure */
     struct discord_gateway_payload payload;
-    /** the user's message commands @see discord_set_on_command() */
-    struct discord_message_commands *commands;
     /** the user's callbacks for Discord events */
     discord_ev cbs[DISCORD_EV_MAX];
     /** the event scheduler callback */
@@ -881,6 +778,107 @@ void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 
 /** @} DiscordInternalRefcount */
 
+/** @defgroup DiscordInternalMessageCommands Message Commands API
+ * @brief The Message Commands API for registering and parsing user commands
+ *  @{ */
+
+/**
+ * @brief The handle for storing user's message commands
+ * @see discord_set_on_command()
+ */
+struct discord_message_commands {
+    /** DISCORD_MESSAGE_COMMANDS logging module */
+    struct logconf conf;
+    /** the prefix expected for every command */
+    struct sized_buffer prefix;
+    /** fallback message command @see discord_set_on_command() */
+    discord_ev_message fallback;
+    /** amount of message commands created */
+    int length;
+    /** message commands cap before increase */
+    int capacity;
+    /**
+     * message command entries
+     * @note datatype declared at discord-gateway_command.c
+     */
+    struct _discord_message_commands_entry *entries;
+};
+
+/**
+ * @brief Initialize the fields of the Message Commands handle
+ *
+ * @param conf optional pointer to a parent logconf
+ * @return the message commands handle
+ */
+struct discord_message_commands *discord_message_commands_init(
+    struct logconf *conf);
+
+/**
+ * @brief Free Message Commands handle
+ *
+ * @param cmds the handle initialized with discord_message_commands_init()
+ */
+void discord_message_commands_cleanup(struct discord_message_commands *cmds);
+
+/**
+ * @brief Search for a callback matching the command
+ *
+ * @param cmds the handle initialized with discord_message_commands_init()
+ * @param command the command to be searched for
+ * @param length the command length
+ * @return the callback match, `NULL` in case there wasn't a match
+ */
+discord_ev_message discord_message_commands_find(
+    struct discord_message_commands *cmds,
+    const char command[],
+    size_t length);
+
+/**
+ * @brief Add a new command/callback pair, or update an existing command
+ *
+ * @param cmds the handle initialized with discord_message_commands_init()
+ * @param command the message command to be matched with callback
+ * @param length the command length
+ * @param callback the callback to be triggered when the command is sent
+ */
+void discord_message_commands_append(struct discord_message_commands *cmds,
+                                     const char command[],
+                                     size_t length,
+                                     discord_ev_message callback);
+
+/**
+ * @brief Set a mandatory prefix before commands
+ * @see discord_set_on_command()
+ *
+ * Example: If @a 'help' is a command and @a '!' prefix is set, the command
+ *       will only be validated if @a '!help' is sent
+ * @param cmds the handle initialized with discord_message_commands_init()
+ * @param prefix the mandatory command prefix
+ * @param length the prefix length
+ */
+void discord_message_commands_set_prefix(struct discord_message_commands *cmds,
+                                         const char prefix[],
+                                         size_t length);
+
+/**
+ * @brief Read the current @ref DISCORD_EV_MESSAGE_CREATE payload and attempt
+ *      to perform its matching callback
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ *      @note used for its @ref discord_refcounter and passing as a callback
+ *      parameter
+ * @param cmds the handle initialized with discord_message_commands_init()
+ * @param payload the event payload to read from
+ *      (assumes its from `MESSAGE_CREATE`)
+ * @return `true` if the callback has been performed
+ */
+bool discord_message_commands_try_perform(
+    struct discord_gateway *gw,
+    struct discord_message_commands *cmds,
+    struct discord_gateway_payload *payload);
+
+/** @} DiscordInternalMessageCommands */
+
 /**
  * @brief The Discord client handler
  *
@@ -918,10 +916,12 @@ struct discord {
         unsigned id;
     } wakeup_timer;
 
-    /** triggers when idle.  */
+    /** triggers when idle */
     discord_ev_idle on_idle;
     /** triggers once per loop cycle */
     discord_ev_idle on_cycle;
+    /** the user's message commands @see discord_set_on_command() */
+    struct discord_message_commands *commands;
 
     /** space for user arbitrary data */
     void *data;

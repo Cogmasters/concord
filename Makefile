@@ -38,7 +38,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/discord-loop.o              \
                 $(SRC_DIR)/discord-gateway.o           \
                 $(SRC_DIR)/discord-gateway_dispatch.o  \
-                $(SRC_DIR)/discord-gateway_command.o   \
+                $(SRC_DIR)/discord-messagecommands.o   \
                 $(SRC_DIR)/discord-timer.o             \
                 $(SRC_DIR)/discord-misc.o              \
                 $(SRC_DIR)/application_command.o       \
