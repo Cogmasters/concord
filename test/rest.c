@@ -73,10 +73,11 @@ check_sync_trigger_error_on_bogus_parameter(void)
 
 SUITE(synchronous)
 {
-    /* get test-channel id */
-    struct logconf *conf = discord_get_logconf(CLIENT);
     char *path[] = { "test", "channel_id" };
-    struct sized_buffer json = logconf_get_field(conf, path, 2);
+
+    /* get test-channel id */
+    struct ccord_szbuf_readonly json =
+        discord_config_get_field(CLIENT, path, 2);
     u64snowflake channel_id = strtoull(json.start, NULL, 10);
 
     RUN_TEST(check_sync_fetch_object);
@@ -181,10 +182,11 @@ check_async_trigger_error_on_bogus_parameter(void)
 
 SUITE(asynchronous)
 {
-    /* get test-channel id */
-    struct logconf *conf = discord_get_logconf(CLIENT);
     char *path[] = { "test", "channel_id" };
-    struct sized_buffer json = logconf_get_field(conf, path, 2);
+
+    /* get test-channel id */
+    struct ccord_szbuf_readonly json =
+        discord_config_get_field(CLIENT, path, 2);
     u64snowflake channel_id = strtoull(json.start, NULL, 10);
 
     RUN_TEST(check_async_fetch_object);

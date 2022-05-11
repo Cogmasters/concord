@@ -12,7 +12,7 @@ discord_create_guild(struct discord *client,
                      struct discord_ret_guild *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
@@ -63,7 +63,7 @@ discord_modify_guild(struct discord *client,
                      struct discord_ret_guild *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -115,7 +115,7 @@ discord_create_guild_channel(struct discord *client,
                              struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[2048];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -138,7 +138,7 @@ discord_modify_guild_channel_positions(
     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -251,7 +251,7 @@ discord_add_guild_member(struct discord *client,
                          struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -278,7 +278,7 @@ discord_modify_guild_member(struct discord *client,
                             struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[2048];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -301,7 +301,7 @@ discord_modify_current_member(struct discord *client,
                               struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[512];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -325,7 +325,7 @@ discord_modify_current_user_nick(
     struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[512];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -448,7 +448,7 @@ discord_create_guild_ban(struct discord *client,
                          struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[256];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -508,7 +508,7 @@ discord_create_guild_role(struct discord *client,
                           struct discord_ret_role *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -530,7 +530,7 @@ discord_modify_guild_role_positions(
     struct discord_ret_roles *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -554,7 +554,7 @@ discord_modify_guild_role(struct discord *client,
                           struct discord_ret_role *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[2048] = "{}";
     size_t len = 2;
 
@@ -599,7 +599,7 @@ discord_begin_guild_prune(struct discord *client,
                           struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096] = "{}";
     size_t len = 2;
 

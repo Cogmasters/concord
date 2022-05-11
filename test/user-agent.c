@@ -16,7 +16,6 @@ commit(char *base_url, struct logconf *conf)
     struct user_agent *ua;
 
     struct ua_resp_handle handle = { .ok_cb = load, .ok_obj = NULL };
-    struct sized_buffer body = { .start = "{ }", .size = 3 };
     struct ua_conn_attr conn_attr = { 0 };
     struct ua_info info = { 0 };
 
@@ -25,7 +24,8 @@ commit(char *base_url, struct logconf *conf)
     ua = ua_init(&ua_attr);
     ua_set_url(ua, base_url);
 
-    conn_attr.body = &body;
+    conn_attr.body = "{ }";
+    conn_attr.body_size = 3;
 
     conn_attr.method = HTTP_POST;
     conn_attr.endpoint = "/echo?m=POST";

@@ -19,12 +19,12 @@
  * @warning This function blocks the running thread
  *
  * @param client the client created with discord_init()
- * @param ret if successful, a @ref sized_buffer containing the JSON response
+ * @param ret if successful, a @ref ccord_szbuf containing the JSON response
  * @param ret a sized buffer containing the response JSON
  * @CCORD_return
  */
 CCORDcode discord_get_gateway(struct discord *client,
-                              struct sized_buffer *ret);
+                              struct ccord_szbuf *ret);
 
 /**
  * @brief Get a single valid WSS URL, and additional metadata that can help
@@ -35,12 +35,12 @@ CCORDcode discord_get_gateway(struct discord *client,
  * @warning This function blocks the running thread
  *
  * @param client the client created with discord_init()
- * @param ret if successful, a @ref sized_buffer containing the JSON response
+ * @param ret if successful, a @ref ccord_szbuf containing the JSON response
  * @param ret a sized buffer containing the response JSON
  * @CCORD_return
  */
 CCORDcode discord_get_gateway_bot(struct discord *client,
-                                  struct sized_buffer *ret);
+                                  struct ccord_szbuf *ret);
 
 /** @defgroup DiscordAPIGatewayHelper Helper functions
  * @brief Custom helper functions

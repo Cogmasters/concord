@@ -15,6 +15,14 @@
     logconf_fatal(&conn->ua->conf, "(CURLE code: %d) %s", ecode,              \
                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf)
 
+/** @brief Generic sized buffer */
+struct _ua_szbuf {
+    /** the buffer's start */
+    char *start;
+    /** the buffer's size in bytes */
+    size_t size;
+};
+
 struct user_agent {
     /**
      * queue of connection nodes for easy reuse
@@ -23,7 +31,7 @@ struct user_agent {
      */
     struct ua_conn_queue *connq;
     /** the base_url for every conn */
-    struct sized_buffer base_url;
+    struct _ua_szbuf base_url;
     /** the user agent logging module */
     struct logconf conf;
 
@@ -55,7 +63,7 @@ struct ua_conn {
     struct ua_info info;
 
     /** request URL */
-    struct sized_buffer url;
+    struct _ua_szbuf url;
     /** the conn request header */
     struct curl_slist *header;
 
@@ -444,24 +452,25 @@ _ua_info_reset(struct ua_info *info)
 static void
 _ua_info_populate(struct ua_info *info, struct ua_conn *conn)
 {
-    struct sized_buffer header = { conn->info.header.buf,
-                                   conn->info.header.len };
-    struct sized_buffer body = { conn->info.body.buf, conn->info.body.len };
+    struct logconf_szbuf logheader = { conn->info.header.buf,
+                                       conn->info.header.len };
+    struct logconf_szbuf logbody = { conn->info.body.buf,
+                                     conn->info.body.len };
     char *resp_url = NULL;
 
     memcpy(info, &conn->info, sizeof(struct ua_info));
 
-    info->body.len = cog_strndup(body.start, body.size, &info->body.buf);
+    info->body.len = cog_strndup(logbody.start, logbody.size, &info->body.buf);
     info->header.len =
-        cog_strndup(header.start, header.size, &info->header.buf);
+        cog_strndup(logheader.start, logheader.size, &info->header.buf);
 
     /* get response's code */
     curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &info->httpcode);
     /* get response's url */
     curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
-    logconf_http(&conn->ua->conf, &conn->info.loginfo, resp_url, header, body,
-                 "HTTP_RCV_%s(%d)", http_code_print(info->httpcode),
+    logconf_http(&conn->ua->conf, &conn->info.loginfo, resp_url, logheader,
+                 logbody, "HTTP_RCV_%s(%d)", http_code_print(info->httpcode),
                  info->httpcode);
 }
 
@@ -514,7 +523,7 @@ void
 ua_cleanup(struct user_agent *ua)
 {
     QUEUE(struct ua_conn)
-        * ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
+    *ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
     size_t i;
 
     /* cleanup connection queues */
@@ -562,22 +571,22 @@ ua_set_url(struct user_agent *ua, const char base_url[])
 static void
 _ua_conn_set_method(struct ua_conn *conn,
                     enum http_method method,
-                    struct sized_buffer *body)
+                    char *body,
+                    size_t body_size)
 {
-    static struct sized_buffer blank_body = { "", 0 };
-
     char logbuf[1024] = "";
-    struct sized_buffer logheader = { logbuf, sizeof(logbuf) };
+    struct logconf_szbuf logheader = { logbuf, sizeof(logbuf) };
+    struct logconf_szbuf logbody = { body, body_size };
     const char *method_str = http_method_print(method);
     struct logconf *conf = &conn->ua->conf;
 
     ua_conn_print_header(conn, logbuf, sizeof(logbuf));
 
     /* make sure body points to something */
-    if (!body) body = &blank_body;
+    if (!body) body = "";
 
-    logconf_http(conf, &conn->info.loginfo, conn->url.start, logheader, *body,
-                 "HTTP_SEND_%s", method_str);
+    logconf_http(conf, &conn->info.loginfo, conn->url.start, logheader,
+                 logbody, "HTTP_SEND_%s", method_str);
 
     logconf_trace(conf, ANSICOLOR("SEND", ANSI_FG_GREEN) " %s [@@@_%zu_@@@]",
                   method_str, conn->info.loginfo.counter);
@@ -619,8 +628,8 @@ _ua_conn_set_method(struct ua_conn *conn,
     }
 
     /* set ptr to payload that will be sent via POST/PUT/PATCH */
-    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, body->size);
-    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, body->start);
+    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, body_size);
+    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, body);
 }
 
 /* combine base url with endpoint and assign it to 'conn' */
@@ -669,7 +678,7 @@ void
 ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr)
 {
     _ua_conn_set_url(conn, attr->base_url, attr->endpoint);
-    _ua_conn_set_method(conn, attr->method, attr->body);
+    _ua_conn_set_method(conn, attr->method, attr->body, attr->body_size);
 }
 
 /* get request results */
@@ -813,15 +822,15 @@ ua_info_cleanup(struct ua_info *info)
 }
 
 /** attempt to get value from matching response header field */
-struct sized_buffer
+struct ua_szbuf_readonly
 ua_info_get_header(struct ua_info *info, char field[])
 {
     size_t len = strlen(field);
-    struct sized_buffer value;
+    struct ua_szbuf_readonly value;
     int i;
 
     for (i = 0; i < info->header.n_pairs; ++i) {
-        struct sized_buffer header = {
+        struct ua_szbuf_readonly header = {
             info->header.buf + info->header.pairs[i].field.idx,
             info->header.pairs[i].field.size,
         };
@@ -842,10 +851,10 @@ ua_info_get_header(struct ua_info *info, char field[])
     return value;
 }
 
-struct sized_buffer
+struct ua_szbuf_readonly
 ua_info_get_body(struct ua_info *info)
 {
-    struct sized_buffer body = { info->body.buf, info->body.len };
+    struct ua_szbuf_readonly body = { info->body.buf, info->body.len };
 
     return body;
 }

@@ -138,7 +138,7 @@ struct discord_context {
     /** request body handle @note buffer is kept and recycled */
     struct {
         /** the request body contents */
-        struct sized_buffer buf;
+        struct ccord_szbuf buf;
         /** the real size occupied in memory by `buf.start` */
         size_t memsize;
     } body;
@@ -186,7 +186,7 @@ struct discord_adapter {
  */
 void discord_adapter_init(struct discord_adapter *adapter,
                           struct logconf *conf,
-                          struct sized_buffer *token);
+                          struct ccord_szbuf_readonly *token);
 
 /**
  * @brief Free a Discord Adapter handle
@@ -212,7 +212,7 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  */
 CCORDcode discord_adapter_run(struct discord_adapter *adapter,
                               struct discord_request *req,
-                              struct sized_buffer *body,
+                              struct ccord_szbuf *body,
                               enum http_method method,
                               char endpoint_fmt[],
                               ...);
@@ -522,7 +522,7 @@ struct discord_gateway {
  */
 void discord_gateway_init(struct discord_gateway *gw,
                           struct logconf *conf,
-                          struct sized_buffer *token);
+                          struct ccord_szbuf_readonly *token);
 
 /**
  * @brief Free a Discord Gateway handle
@@ -790,7 +790,7 @@ struct discord_message_commands {
     /** DISCORD_MESSAGE_COMMANDS logging module */
     struct logconf conf;
     /** the prefix expected for every command */
-    struct sized_buffer prefix;
+    struct ccord_szbuf prefix;
     /** fallback message command @see discord_set_on_command() */
     discord_ev_message fallback;
     /** amount of message commands created */
@@ -891,7 +891,7 @@ struct discord {
     /** whether this is the original client or a clone */
     bool is_original;
     /** the bot token */
-    struct sized_buffer token;
+    struct ccord_szbuf_readonly token;
     /** the io poller for listening to file descriptors */
     struct io_poller *io_poller;
     /** the handle for interfacing with Discord's REST API */

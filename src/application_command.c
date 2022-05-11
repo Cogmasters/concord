@@ -31,7 +31,7 @@ discord_create_global_application_command(
     struct discord_ret_application_command *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -79,7 +79,7 @@ discord_edit_global_application_command(
     struct discord_ret_application_command *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -122,7 +122,7 @@ discord_bulk_overwrite_global_application_command(
     struct discord_ret_application_commands *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[8192];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -167,7 +167,7 @@ discord_create_guild_application_command(
     struct discord_ret_application_command *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -221,7 +221,7 @@ discord_edit_guild_application_command(
     struct discord_ret_application_command *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -270,7 +270,7 @@ discord_bulk_overwrite_guild_application_command(
     struct discord_ret_application_commands *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[8192];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -340,7 +340,7 @@ discord_edit_application_command_permissions(
     struct discord_ret_application_command_permission *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[8192];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
@@ -368,7 +368,7 @@ discord_batch_edit_application_command_permissions(
     struct discord_ret_guild_application_command_permissions *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[8192];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");

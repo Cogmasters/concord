@@ -17,7 +17,7 @@ discord_disconnect_guild_member(struct discord *client,
                                 struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[128];
     jsonb b;
 
@@ -47,15 +47,21 @@ discord_disconnect_guild_member(struct discord *client,
  * REST functions
  ******************************************************************************/
 
+static size_t
+_ccord_szbuf_from_json(const char str[], size_t len, void *p_buf)
+{
+    struct ccord_szbuf *buf = p_buf;
+    return buf->size = cog_strndup(str, len, &buf->start);
+}
+
 CCORDcode
-discord_get_gateway(struct discord *client, struct sized_buffer *ret)
+discord_get_gateway(struct discord *client, struct ccord_szbuf *ret)
 {
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.gnrc.from_json =
-        (size_t(*)(const char *, size_t, void *))cog_sized_buffer_from_json;
+    req.gnrc.from_json = &_ccord_szbuf_from_json;
     req.ret.has_type = true;
     req.ret.sync = ret;
 
@@ -64,14 +70,13 @@ discord_get_gateway(struct discord *client, struct sized_buffer *ret)
 }
 
 CCORDcode
-discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
+discord_get_gateway_bot(struct discord *client, struct ccord_szbuf *ret)
 {
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.gnrc.from_json =
-        (size_t(*)(const char *, size_t, void *))cog_sized_buffer_from_json;
+    req.gnrc.from_json = &_ccord_szbuf_from_json;
     req.ret.has_type = true;
     req.ret.sync = ret;
 

@@ -13,7 +13,7 @@ discord_get_invite(struct discord *client,
                    struct discord_ret_invite *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, NOT_EMPTY_STR(invite_code), CCORD_BAD_PARAMETER, "");

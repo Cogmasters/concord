@@ -196,8 +196,8 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 
     logconf_http(
         &ws->conf, &ws->info.loginfo, ws->base_url,
-        (struct sized_buffer){ "", 0 },
-        (struct sized_buffer){ (char *)ws_protocols, strlen(ws_protocols) },
+        (struct logconf_szbuf){ "", 0 },
+        (struct logconf_szbuf){ (char *)ws_protocols, strlen(ws_protocols) },
         "WS_RCV_CONNECT");
 
     logconf_trace(
@@ -219,8 +219,8 @@ cws_on_close_cb(void *p_ws,
                 size_t len)
 {
     struct websockets *ws = p_ws;
-    struct sized_buffer logheader = { "", 0 };
-    struct sized_buffer logbody = { (char *)reason, len };
+    struct logconf_szbuf logheader = { "", 0 };
+    struct logconf_szbuf logbody = { (char *)reason, len };
     (void)ehandle;
 
     _ws_set_status(ws, WS_DISCONNECTING);
@@ -247,8 +247,8 @@ static void
 cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
     struct websockets *ws = p_ws;
-    struct sized_buffer logheader = { "", 0 };
-    struct sized_buffer logbody = { (char *)text, len };
+    struct logconf_szbuf logheader = { "", 0 };
+    struct logconf_szbuf logbody = { (char *)text, len };
     (void)ehandle;
 
     logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
@@ -267,8 +267,8 @@ static void
 cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
     struct websockets *ws = p_ws;
-    struct sized_buffer logheader = { "", 0 };
-    struct sized_buffer logbody = { (char *)mem, len };
+    struct logconf_szbuf logheader = { "", 0 };
+    struct logconf_szbuf logbody = { (char *)mem, len };
     (void)ehandle;
 
     logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
@@ -289,8 +289,8 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     struct websockets *ws = p_ws;
     (void)ehandle;
 #if 0
-  struct sized_buffer logheader = { "", 0 };
-  struct sized_buffer logbody   = { (char *)reason, len };
+  struct logconf_szbuf logheader = { "", 0 };
+  struct logconf_szbuf logbody   = { (char *)reason, len };
 
   logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
                "WS_RCV_PING");
@@ -311,8 +311,8 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     struct websockets *ws = p_ws;
     (void)ehandle;
 #if 0
-  struct sized_buffer logheader = { "", 0 };
-  struct sized_buffer logbody   = { (char *)reason, len };
+  struct logconf_szbuf logheader = { "", 0 };
+  struct logconf_szbuf logbody   = { (char *)reason, len };
 
   logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
                "WS_RCV_PONG");
@@ -405,8 +405,8 @@ _ws_close(struct websockets *ws,
           enum ws_close_reason code,
           const char reason[])
 {
-    struct sized_buffer logheader = { "", 0 };
-    struct sized_buffer logbody = { (char *)reason, strlen(reason) };
+    struct logconf_szbuf logheader = { "", 0 };
+    struct logconf_szbuf logbody = { (char *)reason, strlen(reason) };
 
     logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
                  logbody, "WS_SEND_CLOSE(%d)", code);
@@ -547,8 +547,8 @@ ws_send_binary(struct websockets *ws,
                const char msg[],
                size_t msglen)
 {
-    struct sized_buffer logheader = { "", 0 };
-    struct sized_buffer logbody = { (char *)msg, msglen };
+    struct logconf_szbuf logheader = { "", 0 };
+    struct logconf_szbuf logbody = { (char *)msg, msglen };
 
     logconf_http(&ws->conf, NULL, ws->base_url, logheader, logbody,
                  "WS_SEND_BINARY");
@@ -585,8 +585,8 @@ ws_send_text(struct websockets *ws,
              const char text[],
              size_t len)
 {
-    struct sized_buffer logheader = { "", 0 };
-    struct sized_buffer logbody = { (char *)text, len };
+    struct logconf_szbuf logheader = { "", 0 };
+    struct logconf_szbuf logbody = { (char *)text, len };
 
     logconf_http(&ws->conf, NULL, ws->base_url, logheader, logbody,
                  "WS_SEND_TEXT");
@@ -628,8 +628,8 @@ ws_ping(struct websockets *ws,
 {
     (void)info;
 #if 0
-  struct sized_buffer logheader = { "", 0 };
-  struct sized_buffer logbody   = { (char *)reason, len };
+  struct logconf_szbuf logheader = { "", 0 };
+  struct logconf_szbuf logbody   = { (char *)reason, len };
 
   logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
                "WS_SEND_PING");
@@ -667,8 +667,8 @@ ws_pong(struct websockets *ws,
 {
     (void)info;
 #if 0
-  struct sized_buffer logheader = { "", 0 };
-  struct sized_buffer logbody   = { (char *)reason, len };
+  struct logconf_szbuf logheader = { "", 0 };
+  struct logconf_szbuf logbody   = { (char *)reason, len };
 
   logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
                "WS_SEND_PONG");

@@ -38,7 +38,7 @@ discord_modify_current_user(struct discord *client,
                             struct discord_ret_user *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
@@ -70,7 +70,7 @@ discord_leave_guild(struct discord *client,
                     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body = { "{}", 2 };
+    struct ccord_szbuf body = { "{}", 2 };
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
@@ -86,7 +86,7 @@ discord_create_dm(struct discord *client,
                   struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[128];
 
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
@@ -106,7 +106,7 @@ discord_create_group_dm(struct discord *client,
                         struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");

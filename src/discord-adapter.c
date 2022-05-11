@@ -11,7 +11,7 @@
 static void
 setopt_cb(struct ua_conn *conn, void *p_token)
 {
-    struct sized_buffer *token = p_token;
+    struct ccord_szbuf *token = p_token;
     char auth[128];
     int len;
 
@@ -37,7 +37,7 @@ on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 void
 discord_adapter_init(struct discord_adapter *adapter,
                      struct logconf *conf,
-                     struct sized_buffer *token)
+                     struct ccord_szbuf_readonly *token)
 {
     struct ua_attr attr = { 0 };
 
@@ -108,14 +108,14 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
 
 static CCORDcode _discord_adapter_run_sync(struct discord_adapter *adapter,
                                            struct discord_request *req,
-                                           struct sized_buffer *body,
+                                           struct ccord_szbuf *body,
                                            enum http_method method,
                                            char endpoint[DISCORD_ENDPT_LEN],
                                            char key[DISCORD_ROUTE_LEN]);
 
 static CCORDcode _discord_adapter_run_async(struct discord_adapter *adapter,
                                             struct discord_request *req,
-                                            struct sized_buffer *body,
+                                            struct ccord_szbuf *body,
                                             enum http_method method,
                                             char endpoint[DISCORD_ENDPT_LEN],
                                             char key[DISCORD_ROUTE_LEN]);
@@ -124,19 +124,25 @@ static CCORDcode _discord_adapter_run_async(struct discord_adapter *adapter,
 CCORDcode
 discord_adapter_run(struct discord_adapter *adapter,
                     struct discord_request *req,
-                    struct sized_buffer *body,
+                    struct ccord_szbuf *body,
                     enum http_method method,
                     char endpoint_fmt[],
                     ...)
 {
-    static struct discord_request blank_req = { 0 };
     char endpoint[DISCORD_ENDPT_LEN];
     char key[DISCORD_ROUTE_LEN];
     va_list args;
     int len;
 
     /* have it point somewhere */
-    if (!req) req = &blank_req;
+    if (!req) {
+        static struct discord_request blank = { 0 };
+        req = &blank;
+    }
+    if (!body) {
+        static struct ccord_szbuf blank = { 0 };
+        body = &blank;
+    }
 
     /* build the endpoint string */
     va_start(args, endpoint_fmt);
@@ -167,7 +173,7 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
     struct discord_attachments *atchs = &cxt->req.attachments;
-    struct sized_buffer *body = &cxt->body.buf;
+    struct ccord_szbuf *body = &cxt->body.buf;
     curl_mimepart *part;
     char name[64];
     int i;
@@ -247,7 +253,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
                       "received HTTP method");
         return false;
     case HTTP_TOO_MANY_REQUESTS: {
-        struct sized_buffer body = ua_info_get_body(info);
+        struct ua_szbuf_readonly body = ua_info_get_body(info);
         struct jsmnftok message = { 0 };
         double retry_after = 1.0;
         bool is_global = false;
@@ -300,12 +306,11 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
 static CCORDcode
 _discord_adapter_run_sync(struct discord_adapter *adapter,
                           struct discord_request *req,
-                          struct sized_buffer *body,
+                          struct ccord_szbuf *body,
                           enum http_method method,
                           char endpoint[DISCORD_ENDPT_LEN],
                           char key[DISCORD_ROUTE_LEN])
 {
-    struct ua_conn_attr conn_attr = { method, body, endpoint, NULL };
     /* throw-away for ua_conn_set_mime() */
     struct discord_context cxt = { 0 };
     struct discord_bucket *b;
@@ -328,7 +333,13 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
         ua_conn_add_header(conn, "Content-Type", "application/json");
     }
 
-    ua_conn_setup(conn, &conn_attr);
+    ua_conn_setup(conn, &(struct ua_conn_attr){
+                            .method = method,
+                            .body = body->start,
+                            .body_size = body->size,
+                            .endpoint = endpoint,
+                            .base_url = NULL,
+                        });
 
     pthread_mutex_lock(&b->lock);
     do {
@@ -338,8 +349,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
         switch (code = ua_conn_easy_perform(conn)) {
         case CCORD_OK: {
             struct discord *client = CLIENT(adapter, adapter);
+            struct ua_szbuf_readonly resp;
             struct ua_info info = { 0 };
-            struct sized_buffer resp;
             int64_t wait_ms = 0;
 
             ua_info_extract(conn, &info);
@@ -446,7 +457,7 @@ static void
 _discord_context_populate(struct discord_context *cxt,
                           struct discord_adapter *adapter,
                           struct discord_request *req,
-                          struct sized_buffer *body,
+                          struct ccord_szbuf *body,
                           enum http_method method,
                           char endpoint[DISCORD_ENDPT_LEN],
                           char key[DISCORD_ROUTE_LEN])
@@ -482,7 +493,7 @@ _discord_context_populate(struct discord_context *cxt,
 static CCORDcode
 _discord_adapter_run_async(struct discord_adapter *adapter,
                            struct discord_request *req,
-                           struct sized_buffer *body,
+                           struct ccord_szbuf *body,
                            enum http_method method,
                            char endpoint[DISCORD_ENDPT_LEN],
                            char key[DISCORD_ROUTE_LEN])
@@ -521,21 +532,18 @@ static CCORDcode
 _discord_adapter_send(struct discord_adapter *adapter,
                       struct discord_bucket *b)
 {
-    struct ua_conn_attr conn_attr = { 0 };
     struct discord_context *cxt;
     CURLMcode mcode;
     CURL *ehandle;
 
+    /** TODO: make this a discord_context_xxx() function */
     QUEUE(struct discord_context) *qelem = QUEUE_HEAD(&b->waitq);
     QUEUE_REMOVE(qelem);
     QUEUE_INIT(qelem);
 
     cxt = QUEUE_DATA(qelem, struct discord_context, entry);
     cxt->conn = ua_conn_start(adapter->ua);
-
-    conn_attr.method = cxt->method;
-    conn_attr.body = &cxt->body.buf;
-    conn_attr.endpoint = cxt->endpoint;
+    /**/
 
     if (HTTP_MIMEPOST == cxt->method) {
         ua_conn_add_header(cxt->conn, "Content-Type", "multipart/form-data");
@@ -544,7 +552,13 @@ _discord_adapter_send(struct discord_adapter *adapter,
     else {
         ua_conn_add_header(cxt->conn, "Content-Type", "application/json");
     }
-    ua_conn_setup(cxt->conn, &conn_attr);
+
+    ua_conn_setup(cxt->conn, &(struct ua_conn_attr){
+                                 .method = cxt->method,
+                                 .body = cxt->body.buf.start,
+                                 .body_size = cxt->body.buf.size,
+                                 .endpoint = cxt->endpoint,
+                             });
 
     ehandle = ua_conn_get_easy_handle(cxt->conn);
 
@@ -599,7 +613,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     switch (msg->data.result) {
     case CURLE_OK: {
         struct ua_info info = { 0 };
-        struct sized_buffer body;
+        struct ua_szbuf_readonly body;
 
         ua_info_extract(cxt->conn, &info);
         retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
@@ -667,7 +681,8 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         }
     }
     else {
-        discord_refcounter_decr(CLIENT(adapter, adapter)->refcounter, cxt->req.ret.data);
+        discord_refcounter_decr(CLIENT(adapter, adapter)->refcounter,
+                                cxt->req.ret.data);
         _discord_context_reset(cxt);
         QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }

@@ -149,12 +149,25 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 struct discord *discord_init(const char token[]);
 
 /**
- * @brief Create a Discord Client handle by a bot.config file
+ * @brief Create a Discord Client handle by a `config.json` file
  *
- * @param config_file the bot.config file name
+ * @param config_file the `config.json` file name
  * @return the newly created Discord Client handle
  */
 struct discord *discord_config_init(const char config_file[]);
+
+/**
+ * @brief Get the contents from the config file field
+ * @note only works if your bot has been initialized with discord_config_init()
+ *
+ * @param client the client created with discord_config_init()
+ * @param path the JSON key path
+ * @param depth the path depth
+ * @return a read-only sized buffer containing the field's contents
+ */
+struct ccord_szbuf_readonly discord_config_get_field(struct discord *client,
+                                                     char *const path[],
+                                                     unsigned depth);
 
 /**
  * @brief Clone a discord client

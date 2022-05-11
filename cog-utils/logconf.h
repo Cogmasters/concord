@@ -8,7 +8,6 @@ extern "C" {
 #include <stdint.h> /* uint64_t */
 
 #include "log.h"
-#include "cog-utils.h"
 
 #define __ERR(fmt, ...) log_fatal(fmt "%s", __VA_ARGS__)
 
@@ -188,6 +187,25 @@ extern "C" {
 #define LOGCONF_ID_LEN 64 + 1
 
 /**
+ * @brief The read-only `config.json` field
+ * @see logconf_get_field()
+ */
+struct logconf_field {
+    /** the buffer's start */
+    const char *start;
+    /** the buffer's size in bytes */
+    size_t size;
+};
+
+/** @brief Generic sized-buffer */
+struct logconf_szbuf {
+    /** the buffer's start */
+    char *start;
+    /** the buffer's size in bytes */
+    size_t size;
+};
+
+/**
  * @brief A stackful and modularized wrapper over the popular 'log.c'
  * facilities
  *
@@ -205,7 +223,7 @@ struct logconf {
     /** if true then logging will be ignored for this module */
     _Bool is_disabled;
     /** config file contents */
-    struct sized_buffer file;
+    struct logconf_szbuf file;
 
     /** http logging counter */
     int *counter;
@@ -274,12 +292,12 @@ void logconf_cleanup(struct logconf *conf);
  * @param conf the `struct logconf` module
  * @param path the JSON key path
  * @param depth the path depth
- * @return a read-only sized buffer containing the field's value
+ * @return a read-only sized buffer containing the field's contents
  * @see logconf_setup() for initializing `conf` with a config file
  */
-struct sized_buffer logconf_get_field(struct logconf *conf,
-                                      char *const path[],
-                                      unsigned depth);
+struct logconf_field logconf_get_field(struct logconf *conf,
+                                       char *const path[],
+                                       unsigned depth);
 
 /**
  * @brief Log HTTP transfers
@@ -297,8 +315,8 @@ struct sized_buffer logconf_get_field(struct logconf *conf,
 void logconf_http(struct logconf *conf,
                   struct loginfo *info,
                   char url[],
-                  struct sized_buffer header,
-                  struct sized_buffer body,
+                  struct logconf_szbuf header,
+                  struct logconf_szbuf body,
                   char label_fmt[],
                   ...);
 

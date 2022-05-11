@@ -105,7 +105,7 @@ discord_modify_channel(struct discord *client,
                        struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -206,7 +206,7 @@ discord_create_message(struct discord *client,
                        struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
 
@@ -486,7 +486,7 @@ discord_edit_message(struct discord *client,
                      struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[16384]; /**< @todo dynamic buffer */
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -530,7 +530,7 @@ discord_bulk_delete_messages(struct discord *client,
 {
     struct discord_request req = { 0 };
     u64unix_ms now = discord_timestamp(client);
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[4096] = "";
     int i;
 
@@ -567,7 +567,7 @@ discord_edit_channel_permissions(
     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -607,7 +607,7 @@ discord_create_channel_invite(struct discord *client,
                               struct discord_ret_invite *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024] = "{}";
     size_t len = 2;
 
@@ -650,7 +650,7 @@ discord_follow_news_channel(struct discord *client,
                             struct discord_ret_followed_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[256]; /* should be more than enough for this */
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -741,7 +741,7 @@ discord_group_dm_add_recipient(struct discord *client,
                                struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -786,7 +786,7 @@ discord_start_thread_with_message(
     struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -813,7 +813,7 @@ discord_start_thread_without_message(
     struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");

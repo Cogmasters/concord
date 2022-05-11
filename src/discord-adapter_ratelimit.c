@@ -118,7 +118,7 @@ discord_ratelimiter_build_key(enum http_method method,
 static struct discord_bucket *
 _discord_bucket_init(struct discord_ratelimiter *rl,
                      const char key[],
-                     const struct sized_buffer *hash,
+                     const struct ua_szbuf_readonly *hash,
                      const long limit)
 {
     struct discord_bucket *b = calloc(1, sizeof *b);
@@ -145,7 +145,7 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
 struct discord_ratelimiter *
 discord_ratelimiter_init(struct logconf *conf)
 {
-    const struct sized_buffer keynull = { "null", 4 }, keymiss = { "miss", 4 };
+    struct ua_szbuf_readonly keynull = { "null", 4 }, keymiss = { "miss", 4 };
     struct discord_ratelimiter *rl = chash_init(rl, RATELIMITER_TABLE);
 
     logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
@@ -296,14 +296,14 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
 
     /* create bucket if it doesn't exist yet */
     if (NULL == (b = _discord_bucket_find(rl, key))) {
-        struct sized_buffer hash =
+        struct ua_szbuf_readonly hash =
             ua_info_get_header(info, "x-ratelimit-bucket");
 
         if (!hash.size) { /* bucket is not part of a ratelimiting group */
             b = rl->miss;
         }
         else {
-            struct sized_buffer limit =
+            struct ua_szbuf_readonly limit =
                 ua_info_get_header(info, "x-ratelimit-limit");
             long _limit =
                 limit.size ? strtol(limit.start, NULL, 10) : LONG_MAX;
@@ -323,18 +323,19 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
                          struct discord_bucket *b,
                          struct ua_info *info)
 {
-    struct sized_buffer remaining =
-                            ua_info_get_header(info, "x-ratelimit-remaining"),
-                        reset = ua_info_get_header(info, "x-ratelimit-reset"),
-                        reset_after = ua_info_get_header(
-                            info, "x-ratelimit-reset-after");
+    struct ua_szbuf_readonly remaining = ua_info_get_header(
+                                 info, "x-ratelimit-remaining"),
+                             reset =
+                                 ua_info_get_header(info, "x-ratelimit-reset"),
+                             reset_after = ua_info_get_header(
+                                 info, "x-ratelimit-reset-after");
     u64unix_ms now = cog_timestamp_ms();
 
     b->remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1L;
 
     /* use X-Ratelimit-Reset-After if available, X-Ratelimit-Reset otherwise */
     if (reset_after.size) {
-        struct sized_buffer global =
+        struct ua_szbuf_readonly global =
             ua_info_get_header(info, "x-ratelimit-global");
         u64unix_ms reset_tstamp =
             now + (u64unix_ms)(1000 * strtod(reset_after.start, NULL));
@@ -351,7 +352,7 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
         }
     }
     else if (reset.size) {
-        struct sized_buffer date = ua_info_get_header(info, "date");
+        struct ua_szbuf_readonly date = ua_info_get_header(info, "date");
         /* get approximate elapsed time since request */
         struct PsnipClockTimespec ts;
         /* the Discord time in milliseconds */

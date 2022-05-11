@@ -46,7 +46,7 @@ discord_create_guild_emoji(struct discord *client,
                            struct discord_ret_emoji *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[2048];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -69,7 +69,7 @@ discord_modify_guild_emoji(struct discord *client,
                            struct discord_ret_emoji *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[2048];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");

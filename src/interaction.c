@@ -15,7 +15,7 @@ discord_create_interaction_response(
     struct discord_ret_interaction_response *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[4096];
 
@@ -71,7 +71,7 @@ discord_edit_original_interaction_response(
     struct discord_ret_interaction_response *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
 
@@ -126,7 +126,7 @@ discord_create_followup_message(struct discord *client,
                                 struct discord_ret_webhook *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
     char query[4096] = "";
@@ -191,7 +191,7 @@ discord_edit_followup_message(struct discord *client,
                               struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
 

@@ -503,7 +503,7 @@ on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 void
 discord_gateway_init(struct discord_gateway *gw,
                      struct logconf *conf,
-                     struct sized_buffer *token)
+                     struct ccord_szbuf_readonly *token)
 {
     struct discord *client = CLIENT(gw, gw);
 
@@ -664,7 +664,7 @@ CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
 {
     struct discord *client = CLIENT(gw, gw);
-    struct sized_buffer json = { 0 };
+    struct ccord_szbuf json = { 0 };
     char url[1024];
     CURL *ehandle;
 

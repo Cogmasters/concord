@@ -28,7 +28,7 @@ discord_create_guild_template(struct discord *client,
                               struct discord_ret_guild_template *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[256];
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");

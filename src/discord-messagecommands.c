@@ -38,7 +38,7 @@
 
 struct _discord_message_commands_entry {
     /** message command */
-    struct sized_buffer command;
+    struct ccord_szbuf command;
     /** the callback assigned to the command */
     discord_ev_message callback;
     /** the route state in the hashtable (see chash.h 'State enums') */
@@ -70,7 +70,7 @@ discord_message_commands_find(struct discord_message_commands *cmds,
                               const char command[],
                               size_t length)
 {
-    struct sized_buffer key = { (char *)command, length };
+    struct ccord_szbuf key = { (char *)command, length };
     discord_ev_message callback = NULL;
     int ret;
 
@@ -94,7 +94,7 @@ discord_message_commands_append(struct discord_message_commands *cmds,
         cmds->fallback = callback;
     }
     else {
-        struct sized_buffer key;
+        struct ccord_szbuf key;
 
         key.size = cog_strndup(command, length, &key.start);
         chash_assign(cmds, key, callback, COMMANDS_TABLE);
@@ -136,7 +136,7 @@ discord_message_commands_try_perform(struct discord_gateway *gw,
         struct discord *client = CLIENT(gw, gw);
         struct discord_message *event = calloc(1, sizeof *event);
         discord_ev_message callback = NULL;
-        struct sized_buffer command;
+        struct ccord_szbuf command;
         char *tmp;
 
         discord_message_from_jsmnf(payload->data, payload->json, event);

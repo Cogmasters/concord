@@ -61,7 +61,7 @@ discord_config_init(const char config_file[])
 {
     char *path[2] = { "discord", "" };
     struct discord *new_client;
-    struct sized_buffer buf;
+    struct logconf_field field;
     FILE *fp;
 
     fp = fopen(config_file, "rb");
@@ -74,45 +74,46 @@ discord_config_init(const char config_file[])
     fclose(fp);
 
     path[1] = "token";
-    new_client->token = logconf_get_field(&new_client->conf, path,
-                                          sizeof(path) / sizeof *path);
-    if (!strncmp("YOUR-BOT-TOKEN", new_client->token.start,
-                 new_client->token.size))
-    {
+    field = logconf_get_field(&new_client->conf, path,
+                              sizeof(path) / sizeof *path);
+    if (!strncmp("YOUR-BOT-TOKEN", field.start, field.size))
         memset(&new_client->token, 0, sizeof(new_client->token));
+    else {
+        new_client->token.start = field.start;
+        new_client->token.size = field.size;
     }
-
     _discord_init(new_client);
 
     /* check for default prefix in config file */
     path[1] = "default_prefix";
-    buf = logconf_get_field(&new_client->conf, path,
-                            sizeof(path) / sizeof *path);
-    if (buf.size) {
+    field = logconf_get_field(&new_client->conf, path,
+                              sizeof(path) / sizeof *path);
+    if (field.size) {
         jsmn_parser parser;
         jsmntok_t tokens[16];
 
         jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, buf.start, buf.size, tokens,
+        if (0 < jsmn_parse(&parser, field.start, field.size, tokens,
                            sizeof(tokens) / sizeof *tokens))
         {
             jsmnf_loader loader;
             jsmnf_pair pairs[16];
 
             jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, buf.start, tokens, parser.toknext,
+            if (0 < jsmnf_load(&loader, field.start, tokens, parser.toknext,
                                pairs, sizeof(pairs) / sizeof *pairs))
             {
                 bool enable_prefix = false;
                 jsmnf_pair *f;
 
-                if ((f = jsmnf_find(pairs, buf.start, "enable", 6)))
-                    enable_prefix = ('t' == buf.start[f->v.pos]);
+                if ((f = jsmnf_find(pairs, field.start, "enable", 6)))
+                    enable_prefix = ('t' == field.start[f->v.pos]);
 
                 if (enable_prefix
-                    && (f = jsmnf_find(pairs, buf.start, "prefix", 6))) {
-                    discord_message_commands_set_prefix(
-                        new_client->commands, buf.start + f->v.pos, f->v.len);
+                    && (f = jsmnf_find(pairs, field.start, "prefix", 6))) {
+                    discord_message_commands_set_prefix(new_client->commands,
+                                                        field.start + f->v.pos,
+                                                        f->v.len);
                 }
             }
         }
@@ -663,4 +664,14 @@ struct io_poller *
 discord_get_io_poller(struct discord *client)
 {
     return client->io_poller;
+}
+
+struct ccord_szbuf_readonly
+discord_config_get_field(struct discord *client,
+                         char *const path[],
+                         unsigned depth)
+{
+    struct logconf_field field = logconf_get_field(&client->conf, path, depth);
+
+    return (struct ccord_szbuf_readonly){ field.start, field.size };
 }

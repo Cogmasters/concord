@@ -13,7 +13,7 @@ discord_create_webhook(struct discord *client,
                        struct discord_ret_webhook *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
@@ -100,7 +100,7 @@ discord_modify_webhook(struct discord *client,
                        struct discord_ret_webhook *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
@@ -123,7 +123,7 @@ discord_modify_webhook_with_token(
     struct discord_ret_webhook *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     char buf[1024];
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
@@ -183,7 +183,7 @@ discord_execute_webhook(struct discord *client,
                         struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
     char query[4096] = "";
@@ -253,7 +253,7 @@ discord_edit_webhook_message(struct discord *client,
                              struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
 
