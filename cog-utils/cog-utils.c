@@ -45,12 +45,6 @@ cog_load_whole_file(const char filename[], size_t *len)
   return str;
 }
 
-size_t
-cog_sized_buffer_from_json(const char str[], size_t len, struct sized_buffer *buf)
-{
-  return buf->size = cog_strndup(str, len, &buf->start);
-}
-
 long
 cog_timezone(void)
 {
