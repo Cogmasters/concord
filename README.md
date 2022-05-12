@@ -25,7 +25,7 @@ Concord is an asynchronous C99 Discord API library. It has minimal external depe
 #include <string.h>
 #include <concord/discord.h>
 
-void on_ready(struct discord *client, struct discord_ready *event) {
+void on_ready(struct discord *client, const struct discord_ready *event) {
     struct discord_create_guild_application_command params = {
         .name = "ping",
         .description = "Ping command!"
@@ -34,7 +34,7 @@ void on_ready(struct discord *client, struct discord_ready *event) {
                                              GUILD_ID, &params, NULL);
 }
 
-void on_interaction(struct discord *client, struct discord_interaction *event) {
+void on_interaction(struct discord *client, const struct discord_interaction *event) {
     if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND)
         return; /* return if interaction isn't a slash command */
 
@@ -68,11 +68,11 @@ int main(void) {
 #include <string.h>
 #include <concord/discord.h>
 
-void on_ready(struct discord *client, struct discord_ready *event) {
+void on_ready(struct discord *client, const struct discord_ready *event) {
     log_info("Logged in as %s!", event->user->username);
 }
 
-void on_message(struct discord *client, struct discord_message *event) {
+void on_message(struct discord *client, const struct discord_message *event) {
     if (strcmp(event->content, "ping") == 0) {
         struct discord_create_message params = { .content = "pong" };
         discord_create_message(client, event->channel_id, &params, NULL);

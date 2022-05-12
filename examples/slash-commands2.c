@@ -35,7 +35,7 @@ print_help(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -43,21 +43,21 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 log_on_app_create(struct discord *client,
-                  struct discord_application_command *event)
+                  const struct discord_application_command *event)
 {
     log_info("Application Command %s created", event->name);
 }
 
 void
 log_on_app_update(struct discord *client,
-                  struct discord_application_command *event)
+                  const struct discord_application_command *event)
 {
     log_info("Application Command %s updated", event->name);
 }
 
 void
 log_on_app_delete(struct discord *client,
-                  struct discord_application_command *event)
+                  const struct discord_application_command *event)
 {
     log_info("Application Command %s deleted", event->name);
 }
@@ -70,7 +70,7 @@ fail_interaction_create(struct discord *client, CCORDcode code, void *data)
 
 void
 on_interaction_create(struct discord *client,
-                      struct discord_interaction *event)
+                      const struct discord_interaction *event)
 {
     log_info("Interaction %" PRIu64 " received", event->id);
 

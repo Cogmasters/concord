@@ -93,146 +93,149 @@ typedef void (*discord_ev_idle)(struct discord *client);
 
 /** @brief Ready callback */
 typedef void (*discord_ev_ready)(struct discord *client,
-                                 struct discord_ready *event);
+                                 const struct discord_ready *event);
 
 /** @brief Application Command callback */
 typedef void (*discord_ev_application_command)(
-    struct discord *client, struct discord_application_command *event);
+    struct discord *client, const struct discord_application_command *event);
 
 /** @brief Channel callback */
 typedef void (*discord_ev_channel)(struct discord *client,
-                                   struct discord_channel *event);
+                                   const struct discord_channel *event);
 /** @brief Thread List Sync callback */
 typedef void (*discord_ev_thread_list_sync)(
-    struct discord *client, struct discord_thread_list_sync *event);
+    struct discord *client, const struct discord_thread_list_sync *event);
 /** @brief Thread Member Update callback */
-typedef void (*discord_ev_thread_member)(struct discord *client,
-                                         struct discord_thread_member *event);
+typedef void (*discord_ev_thread_member)(
+    struct discord *client, const struct discord_thread_member *event);
 /** @brief Thread Members Update callback */
 typedef void (*discord_ev_thread_members_update)(
-    struct discord *client, struct discord_thread_members_update *event);
+    struct discord *client, const struct discord_thread_members_update *event);
 /** @brief Channel Pins Update callback */
 typedef void (*discord_ev_channel_pins_update)(
-    struct discord *client, struct discord_channel_pins_update *event);
+    struct discord *client, const struct discord_channel_pins_update *event);
 
 /** @brief Guild Ban Add callback */
-typedef void (*discord_ev_guild_ban_add)(struct discord *client,
-                                         struct discord_guild_ban_add *event);
+typedef void (*discord_ev_guild_ban_add)(
+    struct discord *client, const struct discord_guild_ban_add *event);
 /** @brief Guild Ban Remove callback */
 typedef void (*discord_ev_guild_ban_remove)(
-    struct discord *client, struct discord_guild_ban_remove *event);
+    struct discord *client, const struct discord_guild_ban_remove *event);
 
 /** @brief Guild callback */
 typedef void (*discord_ev_guild)(struct discord *client,
-                                 struct discord_guild *event);
+                                 const struct discord_guild *event);
 /** @brief Guild Emojis Update callback */
 typedef void (*discord_ev_guild_emojis_update)(
-    struct discord *client, struct discord_guild_emojis_update *event);
+    struct discord *client, const struct discord_guild_emojis_update *event);
 /** @brief Guild Stickers Update callback */
 typedef void (*discord_ev_guild_stickers_update)(
-    struct discord *client, struct discord_guild_stickers_update *event);
+    struct discord *client, const struct discord_guild_stickers_update *event);
 /** @brief Guild Integrations Update callback */
 typedef void (*discord_ev_guild_integrations_update)(
-    struct discord *client, struct discord_guild_integrations_update *event);
+    struct discord *client,
+    const struct discord_guild_integrations_update *event);
 /** @brief Guild Member Add callback */
-typedef void (*discord_ev_guild_member)(struct discord *client,
-                                        struct discord_guild_member *event);
+typedef void (*discord_ev_guild_member)(
+    struct discord *client, const struct discord_guild_member *event);
 /** @brief Guild Member Remove callback */
 typedef void (*discord_ev_guild_member_remove)(
-    struct discord *client, struct discord_guild_member_remove *event);
+    struct discord *client, const struct discord_guild_member_remove *event);
 /** @brief Guild Member Update callback */
 typedef void (*discord_ev_guild_member_update)(
-    struct discord *client, struct discord_guild_member_update *event);
+    struct discord *client, const struct discord_guild_member_update *event);
 /** @brief Guild Members Chunk callback */
 typedef void (*discord_ev_guild_members_chunk)(
-    struct discord *client, struct discord_guild_members_chunk *event);
+    struct discord *client, const struct discord_guild_members_chunk *event);
 /** @brief Guild Role Create callback */
 typedef void (*discord_ev_guild_role_create)(
-    struct discord *client, struct discord_guild_role_create *event);
+    struct discord *client, const struct discord_guild_role_create *event);
 /** @brief Guild Role Update callback */
 typedef void (*discord_ev_guild_role_update)(
-    struct discord *client, struct discord_guild_role_update *event);
+    struct discord *client, const struct discord_guild_role_update *event);
 /** @brief Guild Role Delete callback */
 typedef void (*discord_ev_guild_role_delete)(
-    struct discord *client, struct discord_guild_role_delete *event);
+    struct discord *client, const struct discord_guild_role_delete *event);
 
 /** @brief Guild Scheduled Event User Add callback */
 typedef void (*discord_ev_guild_scheduled_event_user_add)(
     struct discord *client,
-    struct discord_guild_scheduled_event_user_add *event);
+    const struct discord_guild_scheduled_event_user_add *event);
 /** @brief Guild Scheduled Event User Remove callback */
 typedef void (*discord_ev_guild_scheduled_event_user_remove)(
     struct discord *client,
-    struct discord_guild_scheduled_event_user_remove *event);
+    const struct discord_guild_scheduled_event_user_remove *event);
 
 /** @brief Integration Create callback */
-typedef void (*discord_ev_integration)(struct discord *client,
-                                       struct discord_integration *event);
+typedef void (*discord_ev_integration)(
+    struct discord *client, const struct discord_integration *event);
 
 /** @brief Integration Delete callback */
 typedef void (*discord_ev_integration_delete)(
-    struct discord *client, struct discord_integration_delete *event);
+    struct discord *client, const struct discord_integration_delete *event);
 
 /** @brief Invite Create Event callback */
-typedef void (*discord_ev_invite_create)(struct discord *client,
-                                         struct discord_invite_create *event);
+typedef void (*discord_ev_invite_create)(
+    struct discord *client, const struct discord_invite_create *event);
 /** @brief Invite Delete Event callback */
-typedef void (*discord_ev_invite_delete)(struct discord *client,
-                                         struct discord_invite_delete *event);
+typedef void (*discord_ev_invite_delete)(
+    struct discord *client, const struct discord_invite_delete *event);
 
 /** @brief Message callback */
 typedef void (*discord_ev_message)(struct discord *client,
-                                   struct discord_message *event);
+                                   const struct discord_message *event);
 /** @brief Message Delete callback */
 typedef void (*discord_ev_message_delete)(
-    struct discord *client, struct discord_message_delete *event);
+    struct discord *client, const struct discord_message_delete *event);
 /** @brief Message Delete Bulk callback */
 typedef void (*discord_ev_message_delete_bulk)(
-    struct discord *client, struct discord_message_delete_bulk *event);
+    struct discord *client, const struct discord_message_delete_bulk *event);
 /** @brief Message Reaction Add callback */
 typedef void (*discord_ev_message_reaction_add)(
-    struct discord *client, struct discord_message_reaction_add *member);
+    struct discord *client, const struct discord_message_reaction_add *member);
 /** @brief Message Reaction Remove callback */
 typedef void (*discord_ev_message_reaction_remove)(
-    struct discord *client, struct discord_message_reaction_remove *member);
+    struct discord *client,
+    const struct discord_message_reaction_remove *member);
 /** @brief Message Reaction Remove All callback */
 typedef void (*discord_ev_message_reaction_remove_all)(
-    struct discord *client, struct discord_message_reaction_remove_all *event);
+    struct discord *client,
+    const struct discord_message_reaction_remove_all *event);
 /** @brief Message Reaction Remove callback */
 typedef void (*discord_ev_message_reaction_remove_emoji)(
     struct discord *client,
-    struct discord_message_reaction_remove_emoji *event);
+    const struct discord_message_reaction_remove_emoji *event);
 
 /** @brief Presence Update callback */
 typedef void (*discord_ev_presence_update)(
-    struct discord *client, struct discord_presence_update *event);
+    struct discord *client, const struct discord_presence_update *event);
 
 /** @brief Stage Instance callback */
 typedef void (*discord_ev_stage_instance)(
-    struct discord *client, struct discord_stage_instance *event);
+    struct discord *client, const struct discord_stage_instance *event);
 
 /** @brief Typing Start callback */
-typedef void (*discord_ev_typing_start)(struct discord *client,
-                                        struct discord_typing_start *event);
+typedef void (*discord_ev_typing_start)(
+    struct discord *client, const struct discord_typing_start *event);
 
 /** @brief User callback */
 typedef void (*discord_ev_user)(struct discord *client,
-                                struct discord_user *event);
+                                const struct discord_user *event);
 
 /** @brief Voice State Update callback */
 typedef void (*discord_ev_voice_state_update)(
-    struct discord *client, struct discord_voice_state *voice_state);
+    struct discord *client, const struct discord_voice_state *event);
 /** @brief Voice Server Update callback */
 typedef void (*discord_ev_voice_server_update)(
-    struct discord *client, struct discord_voice_server_update *event);
+    struct discord *client, const struct discord_voice_server_update *event);
 
 /** @brief Webhooks Update callback */
 typedef void (*discord_ev_webhooks_update)(
-    struct discord *client, struct discord_webhooks_update *event);
+    struct discord *client, const struct discord_webhooks_update *event);
 
 /** @brief Interaction callback */
 typedef void (*discord_ev_interaction)(
-    struct discord *client, struct discord_interaction *interaction);
+    struct discord *client, const struct discord_interaction *event);
 
 /** @} DiscordEventCallbackTypes */
 

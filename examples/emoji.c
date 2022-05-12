@@ -17,7 +17,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Emoji-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -80,7 +80,8 @@ fail_list_guild_emojis(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_list_guild_emojis(struct discord *client, struct discord_message *event)
+on_list_guild_emojis(struct discord *client,
+                     const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -121,7 +122,7 @@ fail_get_guild_emoji(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_get_guild_emoji(struct discord *client, struct discord_message *event)
+on_get_guild_emoji(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

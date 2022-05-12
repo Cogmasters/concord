@@ -28,7 +28,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Reaction-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -75,7 +75,7 @@ fail_get_users(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_get_users(struct discord *client, struct discord_message *event)
+on_get_users(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
@@ -92,7 +92,7 @@ on_get_users(struct discord *client, struct discord_message *event)
 }
 
 void
-on_create(struct discord *client, struct discord_message *event)
+on_create(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
@@ -102,7 +102,7 @@ on_create(struct discord *client, struct discord_message *event)
 }
 
 void
-on_delete(struct discord *client, struct discord_message *event)
+on_delete(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
@@ -112,7 +112,7 @@ on_delete(struct discord *client, struct discord_message *event)
 }
 
 void
-on_delete_all(struct discord *client, struct discord_message *event)
+on_delete_all(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
@@ -121,7 +121,7 @@ on_delete_all(struct discord *client, struct discord_message *event)
 }
 
 void
-on_delete_self(struct discord *client, struct discord_message *event)
+on_delete_self(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
@@ -131,7 +131,7 @@ on_delete_self(struct discord *client, struct discord_message *event)
 }
 
 void
-on_delete_user(struct discord *client, struct discord_message *event)
+on_delete_user(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 

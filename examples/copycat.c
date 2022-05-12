@@ -19,7 +19,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Copycat-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -27,7 +27,7 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 on_reaction_add(struct discord *client,
-                struct discord_message_reaction_add *event)
+                const struct discord_message_reaction_add *event)
 {
     if (event->member->user->bot) return;
 
@@ -36,7 +36,7 @@ on_reaction_add(struct discord *client,
 }
 
 void
-on_message_create(struct discord *client, struct discord_message *event)
+on_message_create(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -55,7 +55,7 @@ on_message_create(struct discord *client, struct discord_message *event)
 }
 
 void
-on_message_update(struct discord *client, struct discord_message *event)
+on_message_update(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -65,7 +65,8 @@ on_message_update(struct discord *client, struct discord_message *event)
 }
 
 void
-on_message_delete(struct discord *client, struct discord_message_delete *event)
+on_message_delete(struct discord *client,
+                  const struct discord_message_delete *event)
 {
     struct discord_create_message params = {
         .content = "Did that message just disappear?"
@@ -75,7 +76,7 @@ on_message_delete(struct discord *client, struct discord_message_delete *event)
 
 void
 on_message_delete_bulk(struct discord *client,
-                       struct discord_message_delete_bulk *event)
+                       const struct discord_message_delete_bulk *event)
 {
     char text[128];
     sprintf(text, "Where did those %d messages go?", event->ids->size);

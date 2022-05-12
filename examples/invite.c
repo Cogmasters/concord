@@ -18,7 +18,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Invite-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -49,7 +49,7 @@ fail(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_invite_get(struct discord *client, struct discord_message *event)
+on_invite_get(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -67,7 +67,7 @@ on_invite_get(struct discord *client, struct discord_message *event)
 }
 
 void
-on_invite_delete(struct discord *client, struct discord_message *event)
+on_invite_delete(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

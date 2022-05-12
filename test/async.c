@@ -12,7 +12,7 @@ struct user_cxt {
 };
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -39,7 +39,7 @@ reconnect(struct discord *client,
 }
 
 void
-on_disconnect(struct discord *client, struct discord_message *event)
+on_disconnect(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -54,7 +54,7 @@ on_disconnect(struct discord *client, struct discord_message *event)
 }
 
 void
-on_reconnect(struct discord *client, struct discord_message *event)
+on_reconnect(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -69,7 +69,7 @@ on_reconnect(struct discord *client, struct discord_message *event)
 }
 
 void
-on_single(struct discord *client, struct discord_message *event)
+on_single(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -106,7 +106,7 @@ send_batch(struct discord *client,
 }
 
 void
-on_spam(struct discord *client, struct discord_message *event)
+on_spam(struct discord *client, const struct discord_message *event)
 {
     send_batch(client, NULL, event);
 }
@@ -131,7 +131,7 @@ send_msg(struct discord *client, void *data, const struct discord_message *msg)
 }
 
 void
-on_spam_ordered(struct discord *client, struct discord_message *event)
+on_spam_ordered(struct discord *client, const struct discord_message *event)
 {
     send_msg(client, NULL, event);
 }
@@ -150,7 +150,7 @@ send_err(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_force_error(struct discord *client, struct discord_message *event)
+on_force_error(struct discord *client, const struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123;
 

@@ -23,14 +23,14 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("ManualDM-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-on_dm_receive(struct discord *client, struct discord_message *event)
+on_dm_receive(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

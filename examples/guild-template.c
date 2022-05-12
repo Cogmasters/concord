@@ -19,7 +19,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Guild-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -56,7 +56,8 @@ fail(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_get_guild_template(struct discord *client, struct discord_message *event)
+on_get_guild_template(struct discord *client,
+                      const struct discord_message *event)
 {
     struct discord_ret_guild_template ret = {
         .done = &done,
@@ -67,7 +68,8 @@ on_get_guild_template(struct discord *client, struct discord_message *event)
 }
 
 void
-on_create_guild_template(struct discord *client, struct discord_message *event)
+on_create_guild_template(struct discord *client,
+                         const struct discord_message *event)
 {
     struct discord_ret_guild_template ret = {
         .done = &done,
@@ -84,7 +86,8 @@ on_create_guild_template(struct discord *client, struct discord_message *event)
 }
 
 void
-on_sync_guild_template(struct discord *client, struct discord_message *event)
+on_sync_guild_template(struct discord *client,
+                       const struct discord_message *event)
 {
     struct discord_ret_guild_template ret = {
         .done = &done,

@@ -21,7 +21,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -29,13 +29,14 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 log_on_app_create(struct discord *client,
-                  struct discord_application_command *event)
+                  const struct discord_application_command *event)
 {
     log_info("Application Command %s created", event->name);
 }
 
 void
-on_slash_command_create(struct discord *client, struct discord_message *event)
+on_slash_command_create(struct discord *client,
+                        const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -108,7 +109,7 @@ on_slash_command_create(struct discord *client, struct discord_message *event)
 
 void
 on_interaction_create(struct discord *client,
-                      struct discord_interaction *event)
+                      const struct discord_interaction *event)
 {
     /* We're only interested on slash commands */
     if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND) return;

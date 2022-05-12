@@ -67,14 +67,14 @@ char JSON[] =
     "]\n";
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Components-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-on_dynamic(struct discord *client, struct discord_message *event)
+on_dynamic(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -93,7 +93,7 @@ on_dynamic(struct discord *client, struct discord_message *event)
 }
 
 void
-on_static(struct discord *client, struct discord_message *event)
+on_static(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -169,7 +169,7 @@ on_static(struct discord *client, struct discord_message *event)
 
 void
 on_interaction_create(struct discord *client,
-                      struct discord_interaction *event)
+                      const struct discord_interaction *event)
 {
     log_info("Interaction %" PRIu64 " received", event->id);
 

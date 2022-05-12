@@ -21,7 +21,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Audit-Log-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -29,7 +29,7 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 log_on_guild_member_add(struct discord *client,
-                        struct discord_guild_member *event)
+                        const struct discord_guild_member *event)
 {
     log_info("%s#%s joined guild %" PRIu64, event->user->username,
              event->user->discriminator, event->guild_id);
@@ -37,7 +37,7 @@ log_on_guild_member_add(struct discord *client,
 
 void
 log_on_guild_member_update(struct discord *client,
-                           struct discord_guild_member_update *event)
+                           const struct discord_guild_member_update *event)
 {
     char nick[128] = "";
 
@@ -50,7 +50,7 @@ log_on_guild_member_update(struct discord *client,
 
 void
 log_on_guild_member_remove(struct discord *client,
-                           struct discord_guild_member_remove *event)
+                           const struct discord_guild_member_remove *event)
 {
     log_info("%s#%s left guild %" PRIu64, event->user->username,
              event->user->discriminator, event->guild_id);
@@ -89,7 +89,8 @@ fail(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_audit_channel_create(struct discord *client, struct discord_message *event)
+on_audit_channel_create(struct discord *client,
+                        const struct discord_message *event)
 {
     if (event->author->bot) return;
 

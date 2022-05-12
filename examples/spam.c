@@ -31,7 +31,7 @@ char *SPAM[] = {
 };
 
 void
-on_spam_async(struct discord *client, struct discord_message *event)
+on_spam_async(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -42,7 +42,7 @@ on_spam_async(struct discord *client, struct discord_message *event)
 }
 
 void
-on_spam_sync(struct discord *client, struct discord_message *event)
+on_spam_sync(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

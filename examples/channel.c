@@ -24,50 +24,56 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Channel-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-log_on_channel_create(struct discord *client, struct discord_channel *event)
+log_on_channel_create(struct discord *client,
+                      const struct discord_channel *event)
 {
     log_info("Channel %s (%" PRIu64 ") created", event->name, event->id);
 }
 
 void
-log_on_channel_update(struct discord *client, struct discord_channel *event)
+log_on_channel_update(struct discord *client,
+                      const struct discord_channel *event)
 {
     log_info("Channel %s (%" PRIu64 ") updated", event->name, event->id);
 }
 
 void
-log_on_channel_delete(struct discord *client, struct discord_channel *event)
+log_on_channel_delete(struct discord *client,
+                      const struct discord_channel *event)
 {
     log_info("Channel %s (%" PRIu64 ") deleted", event->name, event->id);
 }
 
 void
-log_on_thread_create(struct discord *client, struct discord_channel *event)
+log_on_thread_create(struct discord *client,
+                     const struct discord_channel *event)
 {
     log_info("Thread %s (%" PRIu64 ") created", event->name, event->id);
 }
 
 void
-log_on_thread_update(struct discord *client, struct discord_channel *event)
+log_on_thread_update(struct discord *client,
+                     const struct discord_channel *event)
 {
     log_info("Thread %s (%" PRIu64 ") updated", event->name, event->id);
 }
 
 void
-log_on_thread_delete(struct discord *client, struct discord_channel *event)
+log_on_thread_delete(struct discord *client,
+                     const struct discord_channel *event)
 {
     log_info("Thread %s (%" PRIu64 ") deleted", event->name, event->id);
 }
 
 void
-on_channel_create(struct discord *client, struct discord_message *event)
+on_channel_create(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -76,7 +82,8 @@ on_channel_create(struct discord *client, struct discord_message *event)
 }
 
 void
-on_channel_rename_this(struct discord *client, struct discord_message *event)
+on_channel_rename_this(struct discord *client,
+                       const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -85,7 +92,8 @@ on_channel_rename_this(struct discord *client, struct discord_message *event)
 }
 
 void
-on_channel_delete_this(struct discord *client, struct discord_message *event)
+on_channel_delete_this(struct discord *client,
+                       const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -119,7 +127,8 @@ fail_get_channel_invites(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_channel_get_invites(struct discord *client, struct discord_message *event)
+on_channel_get_invites(struct discord *client,
+                       const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -157,7 +166,8 @@ fail_create_channel_invite(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_channel_create_invite(struct discord *client, struct discord_message *event)
+on_channel_create_invite(struct discord *client,
+                         const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -198,7 +208,8 @@ fail_start_thread(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_channel_start_thread(struct discord *client, struct discord_message *event)
+on_channel_start_thread(struct discord *client,
+                        const struct discord_message *event)
 {
     if (event->author->bot) return;
 

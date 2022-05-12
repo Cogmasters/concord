@@ -13,14 +13,14 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-on_ping(struct discord *client, struct discord_message *event)
+on_ping(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -29,7 +29,7 @@ on_ping(struct discord *client, struct discord_message *event)
 }
 
 void
-on_pong(struct discord *client, struct discord_message *event)
+on_pong(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

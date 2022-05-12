@@ -15,14 +15,14 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("8ball-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-eight_ball(struct discord *client, struct discord_message *event)
+eight_ball(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

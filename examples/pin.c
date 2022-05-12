@@ -20,14 +20,14 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Pin-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-on_pin(struct discord *client, struct discord_message *event)
+on_pin(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -45,7 +45,7 @@ on_pin(struct discord *client, struct discord_message *event)
 }
 
 void
-on_unpin(struct discord *client, struct discord_message *event)
+on_unpin(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -101,7 +101,7 @@ fail_get_pins(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_get_pins(struct discord *client, struct discord_message *event)
+on_get_pins(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

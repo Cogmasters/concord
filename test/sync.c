@@ -18,14 +18,14 @@ bool g_keep_spamming = true;
 unsigned g_thread_count;
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-on_disconnect(struct discord *client, struct discord_message *event)
+on_disconnect(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -41,7 +41,7 @@ on_disconnect(struct discord *client, struct discord_message *event)
 }
 
 void
-on_reconnect(struct discord *client, struct discord_message *event)
+on_reconnect(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -57,7 +57,7 @@ on_reconnect(struct discord *client, struct discord_message *event)
 }
 
 void
-on_spam(struct discord *client, struct discord_message *event)
+on_spam(struct discord *client, const struct discord_message *event)
 {
     const unsigned threadpool_size = strtol(THREADPOOL_SIZE, NULL, 10);
 
@@ -105,7 +105,7 @@ on_spam(struct discord *client, struct discord_message *event)
 }
 
 void
-on_spam_block(struct discord *client, struct discord_message *event)
+on_spam_block(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -119,7 +119,8 @@ on_spam_block(struct discord *client, struct discord_message *event)
 }
 
 void
-on_spam_block_continue(struct discord *client, struct discord_message *event)
+on_spam_block_continue(struct discord *client,
+                       const struct discord_message *event)
 {
     const struct discord_user *bot = discord_get_self(client);
     char text[32];
@@ -140,7 +141,7 @@ on_spam_block_continue(struct discord *client, struct discord_message *event)
 }
 
 void
-on_stop(struct discord *client, struct discord_message *event)
+on_stop(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -151,7 +152,7 @@ on_stop(struct discord *client, struct discord_message *event)
 }
 
 void
-on_force_error(struct discord *client, struct discord_message *event)
+on_force_error(struct discord *client, const struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123ULL;
     CCORDcode code;
@@ -175,7 +176,7 @@ on_force_error(struct discord *client, struct discord_message *event)
 }
 
 void
-on_ping(struct discord *client, struct discord_message *event)
+on_ping(struct discord *client, const struct discord_message *event)
 {
     char text[256];
 

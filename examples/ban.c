@@ -16,7 +16,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Ban-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -24,7 +24,7 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 log_on_guild_ban_add(struct discord *client,
-                     struct discord_guild_ban_add *event)
+                     const struct discord_guild_ban_add *event)
 {
     log_info("User `%s#%s` has been banned.", event->user->username,
              event->user->discriminator);
@@ -32,14 +32,14 @@ log_on_guild_ban_add(struct discord *client,
 
 void
 log_on_guild_ban_remove(struct discord *client,
-                        struct discord_guild_ban_remove *event)
+                        const struct discord_guild_ban_remove *event)
 {
     log_info("User `%s#%s` has been unbanned.", event->user->username,
              event->user->discriminator);
 }
 
 void
-on_ban(struct discord *client, struct discord_message *event)
+on_ban(struct discord *client, const struct discord_message *event)
 {
     u64snowflake target_id = 0ULL;
     sscanf(event->content, "%" SCNu64, &target_id);
@@ -53,7 +53,7 @@ on_ban(struct discord *client, struct discord_message *event)
 }
 
 void
-on_unban(struct discord *client, struct discord_message *event)
+on_unban(struct discord *client, const struct discord_message *event)
 {
     u64snowflake target_id = 0ULL;
     sscanf(event->content, "%" SCNu64, &target_id);

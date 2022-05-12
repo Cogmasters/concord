@@ -25,7 +25,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Guild-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -33,27 +33,27 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 log_on_role_create(struct discord *client,
-                   struct discord_guild_role_create *event)
+                   const struct discord_guild_role_create *event)
 {
     log_warn("Role (%" PRIu64 ") created", event->role->id);
 }
 
 void
 log_on_role_update(struct discord *client,
-                   struct discord_guild_role_update *event)
+                   const struct discord_guild_role_update *event)
 {
     log_warn("Role (%" PRIu64 ") updated", event->role->id);
 }
 
 void
 log_on_role_delete(struct discord *client,
-                   struct discord_guild_role_delete *event)
+                   const struct discord_guild_role_delete *event)
 {
     log_warn("Role (%" PRIu64 ") deleted", event->role_id);
 }
 
 void
-on_role_create(struct discord *client, struct discord_message *event)
+on_role_create(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -70,7 +70,7 @@ on_role_create(struct discord *client, struct discord_message *event)
 }
 
 void
-on_role_delete(struct discord *client, struct discord_message *event)
+on_role_delete(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -86,7 +86,7 @@ on_role_delete(struct discord *client, struct discord_message *event)
 }
 
 void
-on_role_member_add(struct discord *client, struct discord_message *event)
+on_role_member_add(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -104,7 +104,8 @@ on_role_member_add(struct discord *client, struct discord_message *event)
 }
 
 void
-on_role_member_remove(struct discord *client, struct discord_message *event)
+on_role_member_remove(struct discord *client,
+                      const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -158,7 +159,7 @@ fail_get_guild_roles(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_role_list(struct discord *client, struct discord_message *event)
+on_role_list(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -186,7 +187,7 @@ fail_get_guild_member(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_member_get(struct discord *client, struct discord_message *event)
+on_member_get(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -250,7 +251,7 @@ fail_get_guild_channels(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_channels_get(struct discord *client, struct discord_message *event)
+on_channels_get(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

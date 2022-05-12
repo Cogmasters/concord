@@ -22,7 +22,7 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Voice-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
@@ -30,7 +30,7 @@ on_ready(struct discord *client, struct discord_ready *event)
 
 void
 log_on_voice_state_update(struct discord *client,
-                          struct discord_voice_state *event)
+                          const struct discord_voice_state *event)
 {
     log_info("User <@!%" PRIu64 "> has joined <#%" PRIu64 ">!", event->user_id,
              event->channel_id);
@@ -62,7 +62,8 @@ fail_list_voice_regions(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_list_voice_regions(struct discord *client, struct discord_message *event)
+on_list_voice_regions(struct discord *client,
+                      const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -103,7 +104,7 @@ fail_get_vchannel_position(struct discord *client, CCORDcode code, void *data)
 }
 
 void
-on_voice_join(struct discord *client, struct discord_message *event)
+on_voice_join(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
@@ -151,7 +152,7 @@ fail_disconnect_guild_member(struct discord *client,
 }
 
 void
-on_voice_kick(struct discord *client, struct discord_message *event)
+on_voice_kick(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 

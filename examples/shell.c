@@ -22,14 +22,14 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client, struct discord_ready *event)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Shell-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
 }
 
 void
-on_cd(struct discord *client, struct discord_message *event)
+on_cd(struct discord *client, const struct discord_message *event)
 {
     if (event->author->id != g_sudo_id) return;
 
@@ -44,7 +44,7 @@ on_cd(struct discord *client, struct discord_message *event)
 }
 
 void
-on_less_like(struct discord *client, struct discord_message *event)
+on_less_like(struct discord *client, const struct discord_message *event)
 {
     if (event->author->id != g_sudo_id) return;
 
@@ -79,7 +79,7 @@ on_less_like(struct discord *client, struct discord_message *event)
 }
 
 void
-on_fallback(struct discord *client, struct discord_message *event)
+on_fallback(struct discord *client, const struct discord_message *event)
 {
     const size_t MAX_FSIZE = 5e6; // 5 mb
     const size_t MAX_CHARS = 2000;
