@@ -37,16 +37,13 @@ VOICE_BOT = voice-join
 CFLAGS  = -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
           -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
           -O0 -g -pthread -Wall $(XFLAGS)
-LDFLAGS = -ldiscord -L$(TOP)/lib -lcurl
+LDFLAGS = -L$(TOP)/lib
+LDLIBS  = -ldiscord -lcurl
 
 all: $(BOTS)
 
 voice:
 	$(MAKE) XFLAGS=-DCCORD_VOICE XSRC=$(VOICE_BOT) all
-
-.SUFFIXES:
-.DEFAULT:
-	$(CC) $(CFLAGS) -o $@ $@.c $(LDFLAGS)
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
