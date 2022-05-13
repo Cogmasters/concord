@@ -72,6 +72,11 @@
 #define ASSERT_NOT_OOB(nbytes, destsz)                                        \
     ASSERT_S((size_t)nbytes < (size_t)destsz, "Out of bounds write attempt");
 
+/** URL endpoint threshold length */
+#define DISCORD_ENDPT_LEN 512
+/** Route's unique key threshold length */
+#define DISCORD_ROUTE_LEN 256
+
 /** @defgroup DiscordInternalAdapter REST API
  * @brief Wrapper to the Discord REST API
  *  @{ */
@@ -113,53 +118,21 @@ struct discord_ret_response {
     void (*cleanup)(void *data);
 };
 
+/**
+ * @brief Macro containing @ref discord_request fields
+ * @note for @ref discord_context alignment purposes
+ */
+#define DISCORD_REQUEST_FIELDS                                                \
+    /** attributes set by client for request dispatch behavior */             \
+    struct discord_ret_dispatch dispatch;                                     \
+    /** information for parsing response into a datatype (if possible) */     \
+    struct discord_ret_response response;                                     \
+    /** in case of `HTTP_MIMEPOST` provide attachments for file transfer */   \
+    struct discord_attachments attachments
+
 /** @brief Request to be performed */
 struct discord_request {
-    /** attributes set by client for request dispatch behavior */
-    struct discord_ret_dispatch dispatch;
-    /** information for parsing response into a datatype (if possible) */
-    struct discord_ret_response response;
-    /** in case of `HTTP_MIMEPOST` provide attachments for file transfer */
-    struct discord_attachments attachments;
-};
-
-/** URL endpoint threshold length */
-#define DISCORD_ENDPT_LEN 512
-/** Route's unique key threshold length */
-#define DISCORD_ROUTE_LEN 256
-
-/**
- * @brief Context of individual requests that are scheduled to run
- *        asynchronously
- */
-struct discord_adapter_context {
-    /** request return struct attributes */
-    struct discord_request req;
-
-    /** the request's bucket */
-    struct discord_bucket *b;
-
-    /** request body handle @note buffer is kept and recycled */
-    struct {
-        /** the request body contents */
-        struct ccord_szbuf buf;
-        /** the real size occupied in memory by `buf.start` */
-        size_t memsize;
-    } body;
-
-    /** the request's http method */
-    enum http_method method;
-    /** the request's endpoint */
-    char endpoint[DISCORD_ENDPT_LEN];
-    /** the request bucket's key */
-    char key[DISCORD_ROUTE_LEN];
-    /** the connection handler assigned */
-    struct ua_conn *conn;
-    /** the request bucket's queue entry */
-    QUEUE entry;
-
-    /** current retry attempt (stop at adapter->retry_limit) */
-    int retry_attempt;
+    DISCORD_REQUEST_FIELDS;
 };
 
 /** @brief The handle used for performing HTTP Requests */
@@ -175,7 +148,7 @@ struct discord_adapter {
     struct discord_ratelimiter *ratelimiter;
 
     /** idle request handles */
-    QUEUE(struct discord_adapter_context) * idleq;
+    QUEUE(struct discord_context) * idleq;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -237,6 +210,79 @@ CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
  */
 void discord_adapter_stop_buckets(struct discord_adapter *adapter);
 
+/** @defgroup DiscordInternalAdapterContext Request's context handling (for async)
+ * @brief Enqueue request contexts for asynchronous purposes
+ *  @{ */
+
+/**
+ * @brief Context of individual requests that are scheduled to run
+ *      asynchronously
+ * @note its fields are aligned with @ref discord_request, meaning those can be
+ *      cast back and forth
+ */
+struct discord_context {
+    DISCORD_REQUEST_FIELDS;
+
+    /** the request's bucket */
+    struct discord_bucket *b;
+
+    /** request body handle @note buffer is kept and recycled */
+    struct {
+        /** the request body contents */
+        struct ccord_szbuf buf;
+        /** the real size occupied in memory by `buf.start` */
+        size_t memsize;
+    } body;
+
+    /** the request's http method */
+    enum http_method method;
+    /** the request's endpoint */
+    char endpoint[DISCORD_ENDPT_LEN];
+    /** the request bucket's key */
+    char key[DISCORD_ROUTE_LEN];
+    /** the connection handler assigned */
+    struct ua_conn *conn;
+    /** the request bucket's queue entry */
+    QUEUE entry;
+
+    /** current retry attempt (stop at adapter->retry_limit) */
+    int retry_attempt;
+};
+
+QUEUE *discord_context_queue_init(void);
+
+void discord_context_queue_cleanup(QUEUE *cxt_queue);
+
+void discord_context_bucket_enqueue(struct discord_bucket *b,
+                                    struct discord_context *cxt,
+                                    bool high_priority);
+
+struct discord_context *discord_context_bucket_dequeue(
+    struct discord_bucket *b);
+
+CURLMcode discord_context_send(struct discord_adapter *adapter,
+                               struct discord_context *cxt,
+                               struct ua_conn *conn);
+
+void discord_context_to_curlmime(curl_mime *mime, void *p_cxt);
+
+bool discord_context_retry_enqueue(struct discord_adapter *adapter,
+                                   struct discord_context *cxt,
+                                   int64_t wait_ms);
+
+void discord_context_recycle_enqueue(struct discord_adapter *adapter,
+                                     struct discord_context *cxt);
+
+struct discord_context *discord_context_populate(
+    struct discord_adapter *adapter,
+    struct discord_request *req,
+    struct ccord_szbuf *body,
+    enum http_method method,
+    char endpoint[DISCORD_ENDPT_LEN],
+    char key[DISCORD_ROUTE_LEN]);
+
+/** @} DiscordInternalAdapterContext */
+
 /** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
@@ -260,12 +306,12 @@ struct discord_bucket {
     /** synchronize ratelimiting between threads */
     pthread_mutex_t lock;
     /** pending requests */
-    QUEUE(struct discord_adapter_context) waitq;
+    QUEUE(struct discord_context) waitq;
     /**
      * pointer to currently performing busy request (if any)
      * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
      */
-    struct discord_adapter_context *busy;
+    struct discord_context *busy;
 };
 
 /**
