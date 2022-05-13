@@ -11,9 +11,8 @@
 #define _RET_SAFECOPY_TYPED(dest, src)                                        \
     do {                                                                      \
         (dest).has_type = true;                                               \
-        (dest).done.typed = (void (*)(struct discord * client, void *data,    \
-                                      const void *ret))(src)                  \
-                                .done;                                        \
+        (dest).done.typed =                                                   \
+            (void (*)(struct discord *, void *, const void *))(src).done;     \
         (dest).fail = (src).fail;                                             \
         (dest).data = (src).data;                                             \
         (dest).cleanup = (src).cleanup;                                       \
@@ -41,12 +40,12 @@
  */
 #define DISCORD_REQ_INIT(req, type, ret)                                      \
     do {                                                                      \
-        (req).gnrc.size = sizeof(struct type);                                \
-        (req).gnrc.init = (void (*)(void *))type##_init;                      \
-        (req).gnrc.from_json =                                                \
+        (req).response.size = sizeof(struct type);                            \
+        (req).response.init = (void (*)(void *))type##_init;                  \
+        (req).response.from_json =                                            \
             (size_t(*)(const char *, size_t, void *))type##_from_json;        \
-        (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
-        if (ret) _RET_SAFECOPY_TYPED(req.ret, *ret);                          \
+        (req).response.cleanup = (void (*)(void *))type##_cleanup;            \
+        if (ret) _RET_SAFECOPY_TYPED(req.dispatch, *ret);                     \
     } while (0)
 
 /**
@@ -58,11 +57,11 @@
  */
 #define DISCORD_REQ_LIST_INIT(req, type, ret)                                 \
     do {                                                                      \
-        (req).gnrc.size = sizeof(struct type);                                \
-        (req).gnrc.from_json =                                                \
+        (req).response.size = sizeof(struct type);                            \
+        (req).response.from_json =                                            \
             (size_t(*)(const char *, size_t, void *))type##_from_json;        \
-        (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
-        if (ret) _RET_SAFECOPY_TYPED(req.ret, *ret);                          \
+        (req).response.cleanup = (void (*)(void *))type##_cleanup;            \
+        if (ret) _RET_SAFECOPY_TYPED(req.dispatch, *ret);                     \
     } while (0)
 
 /**
@@ -72,6 +71,6 @@
  * @param ret request attributes
  */
 #define DISCORD_REQ_BLANK_INIT(req, ret)                                      \
-    if (ret) _RET_SAFECOPY_TYPELESS(req.ret, *ret)
+    if (ret) _RET_SAFECOPY_TYPELESS(req.dispatch, *ret)
 
 #endif /* DISCORD_REQUEST_H */

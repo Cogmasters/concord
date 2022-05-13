@@ -61,9 +61,9 @@ discord_get_gateway(struct discord *client, struct ccord_szbuf *ret)
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.gnrc.from_json = &_ccord_szbuf_from_json;
-    req.ret.has_type = true;
-    req.ret.sync = ret;
+    req.response.from_json = &_ccord_szbuf_from_json;
+    req.dispatch.has_type = true;
+    req.dispatch.sync = ret;
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/gateway");
@@ -76,9 +76,9 @@ discord_get_gateway_bot(struct discord *client, struct ccord_szbuf *ret)
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.gnrc.from_json = &_ccord_szbuf_from_json;
-    req.ret.has_type = true;
-    req.ret.sync = ret;
+    req.response.from_json = &_ccord_szbuf_from_json;
+    req.dispatch.has_type = true;
+    req.dispatch.sync = ret;
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/gateway/bot");

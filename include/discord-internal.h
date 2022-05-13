@@ -76,12 +76,16 @@
  * @brief Wrapper to the Discord REST API
  *  @{ */
 
-/** @brief Request's return context */
-struct discord_ret_generic {
-    /** `true` if may receive a datatype from response*/
+/** @brief Generic request dispatcher */
+struct discord_ret_dispatch {
+    /** `true` if may receive a datatype from response */
     bool has_type;
 
-    /** optional callback to be executed on a successful request */
+    /**
+     * optional callback to be executed on a successful request
+     * @todo should be cast to the original callback signature before calling,
+     *      otherwise its UB
+     */
     union {
         void (*typed)(struct discord *client, void *data, const void *ret);
         void (*typeless)(struct discord *client, void *data);
@@ -96,7 +100,7 @@ struct discord_ret_generic {
 };
 
 /** @brief Attributes of response datatype */
-struct discord_generic {
+struct discord_ret_response {
     /** pointer to the datatype in memory */
     void *data;
     /** size of datatype in bytes */
@@ -109,13 +113,13 @@ struct discord_generic {
     void (*cleanup)(void *data);
 };
 
-/** @brief Behavior of request return struct */
+/** @brief Request to be performed */
 struct discord_request {
-    /** request response's return datatype attributes */
-    struct discord_generic gnrc;
-    /** request attributes set by client */
-    struct discord_ret_generic ret;
-    /** in case of HTTP_MIMEPOST, provide attachments */
+    /** attributes set by client for request dispatch behavior */
+    struct discord_ret_dispatch dispatch;
+    /** information for parsing response into a datatype (if possible) */
+    struct discord_ret_response response;
+    /** in case of `HTTP_MIMEPOST` provide attachments for file transfer */
     struct discord_attachments attachments;
 };
 
@@ -128,7 +132,7 @@ struct discord_request {
  * @brief Context of individual requests that are scheduled to run
  *        asynchronously
  */
-struct discord_context {
+struct discord_adapter_context {
     /** request return struct attributes */
     struct discord_request req;
 
@@ -171,7 +175,7 @@ struct discord_adapter {
     struct discord_ratelimiter *ratelimiter;
 
     /** idle request handles */
-    QUEUE(struct discord_context) * idleq;
+    QUEUE(struct discord_adapter_context) * idleq;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -237,6 +241,10 @@ void discord_adapter_stop_buckets(struct discord_adapter *adapter);
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
+/**
+ * @brief Value assigned to @ref discord_bucket `busy` field in case it's
+ *      being timed-out
+ */
 #define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
 
 /** @brief The Discord bucket for handling per-group ratelimits */
@@ -252,12 +260,12 @@ struct discord_bucket {
     /** synchronize ratelimiting between threads */
     pthread_mutex_t lock;
     /** pending requests */
-    QUEUE(struct discord_context) waitq;
+    QUEUE(struct discord_adapter_context) waitq;
     /**
      * pointer to currently performing busy request (if any)
      * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
      */
-    struct discord_context *busy;
+    struct discord_adapter_context *busy;
 };
 
 /**
@@ -507,7 +515,11 @@ struct discord_gateway {
 
     /** response-payload structure */
     struct discord_gateway_payload payload;
-    /** the user's callbacks for Discord events */
+    /**
+     * the user's callbacks for Discord events
+     * @todo should be cast to the original callback signature before calling,
+     *      otherwise its UB
+     */
     discord_ev cbs[DISCORD_EV_MAX];
     /** the event scheduler callback */
     discord_ev_scheduler scheduler;

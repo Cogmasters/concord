@@ -383,8 +383,8 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
                                  struct discord_bucket *b,
                                  const char key[])
 {
-    QUEUE(struct discord_context) queue, *qelem;
-    struct discord_context *cxt;
+    QUEUE(struct discord_adapter_context) queue, *qelem;
+    struct discord_adapter_context *cxt;
 
     QUEUE_MOVE(&rl->null->waitq, &queue);
     QUEUE_INIT(&rl->null->waitq);
@@ -393,7 +393,7 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
         qelem = QUEUE_HEAD(&queue);
         QUEUE_REMOVE(qelem);
 
-        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
+        cxt = QUEUE_DATA(qelem, struct discord_adapter_context, entry);
         if (0 == strcmp(cxt->key, key)) {
             QUEUE_INSERT_TAIL(&b->waitq, qelem);
             cxt->b = b;
