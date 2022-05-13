@@ -115,11 +115,11 @@ discord_run(struct discord *client)
                     client->on_idle(client);
                 }
                 else {
-                    poll_time = discord_timer_get_next_trigger(
+                    int64_t sleep_time = discord_timer_get_next_trigger(
                         timers, sizeof timers / sizeof *timers, now,
                         now < next_run ? ((next_run - now)) : 0);
-                    if (poll_time > 0 && poll_time < 1000)
-                        cog_sleep_us(poll_time);
+                    if (sleep_time > 0 && sleep_time < 1000)
+                        cog_sleep_us(sleep_time);
                 }
             }
 
