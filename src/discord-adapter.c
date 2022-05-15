@@ -26,14 +26,6 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 #endif
 }
 
-static int
-on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
-{
-    (void)io;
-    (void)mhandle;
-    return discord_adapter_perform(user_data);
-}
-
 void
 discord_adapter_init(struct discord_adapter *adapter,
                      struct logconf *conf,
@@ -55,15 +47,8 @@ discord_adapter_init(struct discord_adapter *adapter,
         ua_set_opt(adapter->ua, token, &setopt_cb);
     }
 
-    adapter->mhandle = curl_multi_init();
-    io_poller_curlm_add(CLIENT(adapter, adapter)->io_poller, adapter->mhandle,
-                        on_io_poller_curl, adapter);
-
+    discord_async_init(&adapter->async, &adapter->conf);
     adapter->ratelimiter = discord_ratelimiter_init(&adapter->conf);
-
-    /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
-     *      share the same queue with the original */
-    adapter->idleq = discord_context_queue_init();
 
     adapter->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 }
@@ -73,15 +58,12 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
 {
     /* cleanup User-Agent handle */
     ua_cleanup(adapter->ua);
-    /* cleanup curl's multi handle */
-    io_poller_curlm_del(CLIENT(adapter, adapter)->io_poller, adapter->mhandle);
-    curl_multi_cleanup(adapter->mhandle);
-    /* move pending requests to idleq */
+    /* move pending requests to idle_contexts */
     discord_adapter_stop_buckets(adapter);
+    /* cleanup idle requests queue */
+    discord_async_cleanup(&adapter->async);
     /* cleanup discovered buckets */
     discord_ratelimiter_cleanup(adapter->ratelimiter);
-    /* cleanup idle requests queue */
-    discord_context_queue_cleanup(adapter->idleq);
 }
 
 static CCORDcode _discord_adapter_run_sync(struct discord_adapter *adapter,
@@ -222,6 +204,64 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
     }
 }
 
+/*
+ * data is a `void *[2]`, where the first element is a
+ * `struct discord_attachment` and the second element is a
+ * `struct ccord_szbuf` containing the request body */
+static void
+_discord_adapter_request_to_multipart(curl_mime *mime, void *data)
+{
+    struct discord_attachments *atchs = ((void **)data)[0];
+    struct ccord_szbuf *body = ((void **)data)[1];
+    curl_mimepart *part;
+    char name[64];
+
+    /* json part */
+    if (body->start && body->size) {
+        part = curl_mime_addpart(mime);
+        curl_mime_data(part, body->start, body->size);
+        curl_mime_type(part, "application/json");
+        curl_mime_name(part, "payload_json");
+    }
+
+    /* attachment part */
+    for (int i = 0; i < atchs->size; ++i) {
+        int len = snprintf(name, sizeof(name), "files[%d]", i);
+        ASSERT_NOT_OOB(len, sizeof(name));
+
+        if (atchs->array[i].content) {
+            part = curl_mime_addpart(mime);
+            curl_mime_data(part, atchs->array[i].content,
+                           atchs->array[i].size ? atchs->array[i].size
+                                                : CURL_ZERO_TERMINATED);
+            curl_mime_filename(part, !atchs->array[i].filename
+                                         ? "a.out"
+                                         : atchs->array[i].filename);
+            curl_mime_type(part, !atchs->array[i].content_type
+                                     ? "application/octet-stream"
+                                     : atchs->array[i].content_type);
+            curl_mime_name(part, name);
+        }
+        else if (atchs->array[i].filename) {
+            CURLcode code;
+
+            /* fetch local file by the filename */
+            part = curl_mime_addpart(mime);
+            code = curl_mime_filedata(part, atchs->array[i].filename);
+            if (code != CURLE_OK) {
+                char errbuf[256];
+                snprintf(errbuf, sizeof(errbuf), "%s (file: %s)",
+                         curl_easy_strerror(code), atchs->array[i].filename);
+                perror(errbuf);
+            }
+            curl_mime_type(part, !atchs->array[i].content_type
+                                     ? "application/octet-stream"
+                                     : atchs->array[i].content_type);
+            curl_mime_name(part, name);
+        }
+    }
+}
+
 /* SYNCHRONOUS REQUEST LOGIC */
 
 /* perform a blocking request */
@@ -233,8 +273,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
                           char endpoint[DISCORD_ENDPT_LEN],
                           char key[DISCORD_ROUTE_LEN])
 {
-    /* throw-away for ua_conn_set_mime() */
-    struct discord_context cxt = { 0 };
+    void *data[2] = { &req->attachments, body };
     struct discord_bucket *b;
     struct ua_conn *conn;
     int retry_attempt = 0;
@@ -245,11 +284,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     conn = ua_conn_start(adapter->ua);
 
     if (HTTP_MIMEPOST == method) {
-        cxt.attachments = req->attachments;
-        cxt.body.buf = *body;
-
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
-        ua_conn_set_mime(conn, &cxt, &discord_context_to_curlmime);
+        ua_conn_set_mime(conn, data, &_discord_adapter_request_to_multipart);
     }
     else {
         ua_conn_add_header(conn, "Content-Type", "application/json");
@@ -339,26 +375,38 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
                            char endpoint[DISCORD_ENDPT_LEN],
                            char key[DISCORD_ROUTE_LEN])
 {
-    struct discord_context *cxt =
-        discord_context_populate(adapter, req, body, method, endpoint, key);
+    struct discord_context *cxt = discord_async_start_context(
+        &adapter->async, req, body, method, endpoint, key);
 
-    discord_context_bucket_enqueue(cxt->b, cxt, cxt->dispatch.high_p);
+    discord_context_bucket_insert(cxt, cxt->b, req->dispatch.high_p);
 
     /* FIXME: redundant return value (constant) */
     return CCORD_OK;
 }
 
+static void
+_discord_context_to_multipart(curl_mime *mime, void *p_cxt)
+{
+    struct discord_context *cxt = p_cxt;
+    void *data[2] = { &cxt->attachments, &(struct ccord_szbuf){
+                                             cxt->body.start,
+                                             cxt->body.size,
+                                         } };
+
+    _discord_adapter_request_to_multipart(mime, data);
+}
+
 /* add a request to libcurl's multi handle */
 static CCORDcode
-_discord_adapter_send(struct discord_adapter *adapter,
-                      struct discord_bucket *b)
+_discord_adapter_add_request(struct discord_adapter *adapter,
+                             struct discord_bucket *b)
 {
-    struct discord_context *cxt = discord_context_bucket_dequeue(b);
+    struct discord_context *cxt = discord_context_bucket_remove(b);
     struct ua_conn *conn = ua_conn_start(adapter->ua);
 
     if (HTTP_MIMEPOST == cxt->method) {
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
-        ua_conn_set_mime(conn, cxt, &discord_context_to_curlmime);
+        ua_conn_set_mime(conn, cxt, &_discord_context_to_multipart);
     }
     else {
         ua_conn_add_header(conn, "Content-Type", "application/json");
@@ -366,33 +414,33 @@ _discord_adapter_send(struct discord_adapter *adapter,
 
     ua_conn_setup(conn, &(struct ua_conn_attr){
                             .method = cxt->method,
-                            .body = cxt->body.buf.start,
-                            .body_size = cxt->body.buf.size,
+                            .body = cxt->body.start,
+                            .body_size = cxt->body.size,
                             .endpoint = cxt->endpoint,
+                            .base_url = NULL,
                         });
 
-    return discord_context_send(adapter, cxt, conn) ? CCORD_CURLM_INTERNAL
-                                                    : CCORD_OK;
+    return discord_async_add_request(&adapter->async, cxt, conn);
 }
 
 static void
-_discord_adapter_try_send(struct discord_adapter *adapter,
-                          struct discord_bucket *b)
+_discord_adapter_try_add_request(struct discord_adapter *adapter,
+                                 struct discord_bucket *b)
 {
     /* skip if bucket is busy performing */
     if (b->busy) return;
 
     if (!b->remaining)
-        discord_bucket_try_timeout(CLIENT(adapter, adapter), b);
-    else if (!QUEUE_EMPTY(&b->waitq))
-        _discord_adapter_send(adapter, b);
+        discord_bucket_try_timeout(adapter, b);
+    else if (!QUEUE_EMPTY(&b->pending_queue))
+        _discord_adapter_add_request(adapter, b);
 }
 
 static CCORDcode
 _discord_adapter_check_pending(struct discord_adapter *adapter)
 {
-    discord_ratelimiter_foreach(adapter->ratelimiter, adapter,
-                                &_discord_adapter_try_send);
+    discord_ratelimiter_foreach_bucket(adapter->ratelimiter, adapter,
+                                       &_discord_adapter_try_add_request);
     /* FIXME: redundant return value (constant) */
     return CCORD_OK;
 }
@@ -471,14 +519,14 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
     /* enqueue request for retry or recycle */
     cxt->b->busy = NULL;
-    if (!retry || !discord_context_retry_enqueue(adapter, cxt, wait_ms))
-        discord_context_recycle_enqueue(adapter, cxt);
+    if (!retry || !discord_async_retry_context(&adapter->async, cxt, wait_ms))
+        discord_async_recycle_context(&adapter->async, cxt);
 
     return code;
 }
 
 CCORDcode
-discord_adapter_perform(struct discord_adapter *adapter)
+discord_adapter_async_perform(struct discord_adapter *adapter)
 {
     CURLMcode mcode;
     CCORDcode code;
@@ -487,13 +535,15 @@ discord_adapter_perform(struct discord_adapter *adapter)
     if (CCORD_OK != (code = _discord_adapter_check_pending(adapter)))
         return code;
 
-    if (CURLM_OK != (mcode = curl_multi_socket_all(adapter->mhandle, &alive)))
+    if (CURLM_OK
+        != (mcode = curl_multi_socket_all(adapter->async.mhandle, &alive)))
         return CCORD_CURLM_INTERNAL;
 
     /* ask for any messages/informationals from the individual transfers */
     while (1) {
         int msgq = 0;
-        struct CURLMsg *msg = curl_multi_info_read(adapter->mhandle, &msgq);
+        struct CURLMsg *msg =
+            curl_multi_info_read(adapter->async.mhandle, &msgq);
 
         if (!msg) break;
         if (CURLMSG_DONE != msg->msg) continue;
@@ -514,17 +564,17 @@ _discord_adapter_stop_bucket(struct discord_adapter *adapter,
         struct discord_context *cxt = b->busy;
 
         b->busy = NULL;
-        discord_context_recycle_enqueue(adapter, cxt);
+        discord_async_recycle_context(&adapter->async, cxt);
     }
 
     /* cancel pending tranfers */
-    QUEUE_ADD(adapter->idleq, &b->waitq);
-    QUEUE_INIT(&b->waitq);
+    QUEUE_ADD(adapter->async.idle_contexts, &b->pending_queue);
+    QUEUE_INIT(&b->pending_queue);
 }
 
 void
 discord_adapter_stop_buckets(struct discord_adapter *adapter)
 {
-    discord_ratelimiter_foreach(adapter->ratelimiter, adapter,
-                                &_discord_adapter_stop_bucket);
+    discord_ratelimiter_foreach_bucket(adapter->ratelimiter, adapter,
+                                       &_discord_adapter_stop_bucket);
 }

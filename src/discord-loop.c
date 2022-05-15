@@ -83,10 +83,10 @@ discord_timer_get_next_trigger(struct discord_timers *const timers[],
 CCORDcode
 discord_run(struct discord *client)
 {
-    int64_t next_run, now;
-    CCORDcode code;
     struct discord_timers *const timers[] = { &client->timers.internal,
                                               &client->timers.user };
+    int64_t next_run, now;
+    CCORDcode code;
 
     while (1) {
         BREAK_ON_FAIL(code, discord_gateway_start(&client->gw));
@@ -134,7 +134,7 @@ discord_run(struct discord *client)
 
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
-                // use poll_errno instead of errno
+                /* use poll_errno instead of errno */
                 (void)poll_errno;
             }
 
@@ -142,7 +142,8 @@ discord_run(struct discord *client)
 
             if (next_run <= now) {
                 BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
-                BREAK_ON_FAIL(code, discord_adapter_perform(&client->adapter));
+                BREAK_ON_FAIL(code,
+                              discord_adapter_async_perform(&client->adapter));
 
                 /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000000;

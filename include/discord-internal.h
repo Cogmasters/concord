@@ -135,30 +135,171 @@ struct discord_request {
     DISCORD_REQUEST_FIELDS;
 };
 
-/** @brief The handle used for performing HTTP Requests */
+/** @defgroup DiscordInternalAdapterAsync Async
+ * async)
+ * @brief Store contexts of individual asynchronous requests
+ *  @{ */
+
+/**
+ * @brief Context of individual requests that are scheduled to run
+ *      asynchronously
+ * @note its fields are aligned with @ref discord_request
+ */
+struct discord_context {
+    DISCORD_REQUEST_FIELDS;
+
+    /** the request's bucket */
+    struct discord_bucket *b;
+    /** request body handle @note buffer is kept and reused */
+
+    struct ccord_szbuf_reusable body;
+    /** the request's http method */
+    enum http_method method;
+    /** the request's endpoint */
+    char endpoint[DISCORD_ENDPT_LEN];
+    /** the request bucket's key */
+    char key[DISCORD_ROUTE_LEN];
+    /** the connection handler assigned */
+    struct ua_conn *conn;
+    /** the request bucket's queue entry */
+    QUEUE entry;
+
+    /** current retry attempt (stop at adapter->retry_limit) */
+    int retry_attempt;
+};
+
+/** @brief The handle used for handling asynchronous requests */
+struct discord_async {
+    /** DISCORD_ASYNC logging module */
+    struct logconf conf;
+    /** curl_multi handle for performing asynchronous requests */
+    CURLM *mhandle;
+    /** idle request contexts */
+    QUEUE(struct discord_context) * idle_contexts;
+};
+
+/**
+ * @brief Initialize an Async handle
+ *
+ * This shall initialize a `CURLM` multi handle for performing requests
+ *      asynchronously, and a queue for storing individual requests contexts
+ * @param async the async handle to be initialized
+ * @param conf pointer to @ref discord_adapter logging module
+ */
+void discord_async_init(struct discord_async *async, struct logconf *conf);
+
+/**
+ * @brief Free an Async handle
+ *
+ * @param async the handle initialized with discord_async_init()
+ */
+void discord_async_cleanup(struct discord_async *async);
+
+/**
+ * @brief Insert request's context into bucket's pending queue
+ * @todo this doesn't have to be done manually,
+ * discord_async_start_context() should take care of it
+ *
+ * @param cxt the request context obtained via discord_async_start_context()
+ * @param b the bucket to insert the request to
+ * @param high_priority if high priority then request shall be prioritized over
+ *      already enqueued requests
+ */
+void discord_context_bucket_insert(struct discord_context *cxt,
+                                   struct discord_bucket *b,
+                                   bool high_priority);
+
+/**
+ * @brief Remove head request's context from bucket's pending queue
+ *
+ * @param b the bucket to fetch the request from
+ * @return the request's context
+ */
+struct discord_context *discord_context_bucket_remove(
+    struct discord_bucket *b);
+
+/**
+ * @brief Kickstart the request by adding it to libcurl's request multiplexer
+ *      (`CURLM` multi handle)
+ *
+ * @param async the async handle initialized with discord_async_init()
+ * @param cxt the context of the request to be sent over
+ * @param conn the @ref ua_conn connection handle
+ * @return CCORDcode for how the request went, @ref CCORD_CURLM_INTERNAL means
+ *      something wrong happened
+ */
+CCORDcode discord_async_add_request(struct discord_async *async,
+                                    struct discord_context *cxt,
+                                    struct ua_conn *conn);
+
+/**
+ * @brief Request failed, enqueue it back to bucket's first position
+ *      for next attempt
+ *
+ * @param async the async handle initialized with discord_async_init()
+ * @param cxt the failed request's context to be set for retry
+ * @param wait_ms in case of a @ref HTTP_TOO_MANY_REQUESTS, this is the
+ *      ratelimiting time to wait for
+ * @return `true` if request can be retried
+ */
+bool discord_async_retry_context(struct discord_async *async,
+                                 struct discord_context *cxt,
+                                 int64_t wait_ms);
+
+/**
+ * @brief Insert a @ref discord_context structure into `async.idle_contexts`
+ *      queue for recycling
+ *
+ * @param async the async handle initialized with discord_async_init()
+ * @param cxt the request context to be recycled
+ */
+void discord_async_recycle_context(struct discord_async *async,
+                                   struct discord_context *cxt);
+
+/**
+ * @brief Start request's context
+ *
+ * @param async the async handle initialized with discord_async_init()
+ * @param req the request containing preliminary information for its dispatch
+ * and response's parsing
+ * @param body the request's body
+ * @param method the request's HTTP method
+ * @param endpoint the request's endpoint
+ * @param key the request bucket's group for ratelimiting
+ * @return the initialized request context
+ */
+struct discord_context *discord_async_start_context(
+    struct discord_async *async,
+    struct discord_request *req,
+    struct ccord_szbuf *body,
+    enum http_method method,
+    char endpoint[DISCORD_ENDPT_LEN],
+    char key[DISCORD_ROUTE_LEN]);
+
+/** @} DiscordInternalAdapterAsync */
+
+/** @brief The handle used for interfacing with Discord's REST API */
 struct discord_adapter {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
     struct logconf conf;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
-    /** curl_multi handle for performing non-blocking requests */
-    CURLM *mhandle;
+    /** store individual contexts from asynchronous requests */
+    struct discord_async async;
 
-    /** buckets discovered (declared at discord-adapter_ratelimit.c) */
+    /** enforce ratelimiting on discovered buckets */
     struct discord_ratelimiter *ratelimiter;
-
-    /** idle request handles */
-    QUEUE(struct discord_context) * idleq;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
 };
 
 /**
- * @brief Initialize the fields of a Discord Adapter handle
+ * @brief Initialize an Adapter handle
  *
+ * Structure used for interfacing with the Discord's REST API
  * @param adapter the adapter handle to be initialized
- * @param conf optional pointer to a parent logconf
+ * @param conf pointer to @ref discord logging module
  * @param token the bot token
  */
 void discord_adapter_init(struct discord_adapter *adapter,
@@ -166,7 +307,7 @@ void discord_adapter_init(struct discord_adapter *adapter,
                           struct ccord_szbuf_readonly *token);
 
 /**
- * @brief Free a Discord Adapter handle
+ * @brief Free an Adapter handle
  *
  * @param adapter the handle initialized with discord_adapter_init()
  */
@@ -200,88 +341,15 @@ CCORDcode discord_adapter_run(struct discord_adapter *adapter,
  * @param adapter the handle initialized with discord_adapter_init()
  * @CCORD_return
  */
-CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
+CCORDcode discord_adapter_async_perform(struct discord_adapter *adapter);
 
 /**
  * @brief Stop all bucket's on-going, pending and timed-out requests
  *
- * The requests will be moved over to client's 'idleq' queue
+ * The requests will be moved over to client's 'idle_contexts' queue
  * @param adapter the handle initialized with discord_adapter_init()
  */
 void discord_adapter_stop_buckets(struct discord_adapter *adapter);
-
-/** @defgroup DiscordInternalAdapterContext Request's context handling (for async)
- * @brief Enqueue request contexts for asynchronous purposes
- *  @{ */
-
-/**
- * @brief Context of individual requests that are scheduled to run
- *      asynchronously
- * @note its fields are aligned with @ref discord_request, meaning those can be
- *      cast back and forth
- */
-struct discord_context {
-    DISCORD_REQUEST_FIELDS;
-
-    /** the request's bucket */
-    struct discord_bucket *b;
-
-    /** request body handle @note buffer is kept and recycled */
-    struct {
-        /** the request body contents */
-        struct ccord_szbuf buf;
-        /** the real size occupied in memory by `buf.start` */
-        size_t memsize;
-    } body;
-
-    /** the request's http method */
-    enum http_method method;
-    /** the request's endpoint */
-    char endpoint[DISCORD_ENDPT_LEN];
-    /** the request bucket's key */
-    char key[DISCORD_ROUTE_LEN];
-    /** the connection handler assigned */
-    struct ua_conn *conn;
-    /** the request bucket's queue entry */
-    QUEUE entry;
-
-    /** current retry attempt (stop at adapter->retry_limit) */
-    int retry_attempt;
-};
-
-QUEUE *discord_context_queue_init(void);
-
-void discord_context_queue_cleanup(QUEUE *cxt_queue);
-
-void discord_context_bucket_enqueue(struct discord_bucket *b,
-                                    struct discord_context *cxt,
-                                    bool high_priority);
-
-struct discord_context *discord_context_bucket_dequeue(
-    struct discord_bucket *b);
-
-CURLMcode discord_context_send(struct discord_adapter *adapter,
-                               struct discord_context *cxt,
-                               struct ua_conn *conn);
-
-void discord_context_to_curlmime(curl_mime *mime, void *p_cxt);
-
-bool discord_context_retry_enqueue(struct discord_adapter *adapter,
-                                   struct discord_context *cxt,
-                                   int64_t wait_ms);
-
-void discord_context_recycle_enqueue(struct discord_adapter *adapter,
-                                     struct discord_context *cxt);
-
-struct discord_context *discord_context_populate(
-    struct discord_adapter *adapter,
-    struct discord_request *req,
-    struct ccord_szbuf *body,
-    enum http_method method,
-    char endpoint[DISCORD_ENDPT_LEN],
-    char key[DISCORD_ROUTE_LEN]);
-
-/** @} DiscordInternalAdapterContext */
 
 /** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
  * @brief Enforce ratelimiting per the official Discord Documentation
@@ -306,7 +374,7 @@ struct discord_bucket {
     /** synchronize ratelimiting between threads */
     pthread_mutex_t lock;
     /** pending requests */
-    QUEUE(struct discord_context) waitq;
+    QUEUE(struct discord_context) pending_queue;
     /**
      * pointer to currently performing busy request (if any)
      * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
@@ -338,10 +406,10 @@ void discord_bucket_try_sleep(struct discord_ratelimiter *rl,
 /**
  * @brief Try to timeout bucket for pending cooldown time
  *
- * @param client the client initialized with discord_init()
+ * @param adapter the handle initialized with discord_adapter_init()
  * @param bucket the bucket to wait on cooldown
  */
-void discord_bucket_try_timeout(struct discord *client,
+void discord_bucket_try_timeout(struct discord_adapter *adapter,
                                 struct discord_bucket *b);
 
 /**
@@ -389,7 +457,7 @@ struct discord_ratelimiter {
  * @brief Initialize ratelimiter handle
  *
  * A hashtable shall be used for storage and retrieval of discovered buckets
- * @param conf optional pointer to a parent logconf
+ * @param conf pointer to @ref discord_adapter logging module
  * @return the ratelimiter handle
  */
 struct discord_ratelimiter *discord_ratelimiter_init(struct logconf *conf);
@@ -397,7 +465,7 @@ struct discord_ratelimiter *discord_ratelimiter_init(struct logconf *conf);
 /**
  * @brief Cleanup all buckets that have been discovered
  *
- * @note pending requests will be moved to `adapter.idleq`
+ * @note pending requests will be moved to `adapter.idle_contexts`
  * @param rl the handle initialized with discord_ratelimiter_init()
  */
 void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
@@ -409,10 +477,10 @@ void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
  * @param adapter the handle initialized with discord_adapter_init()
  * @param iter the user callback to be called per bucket
  */
-void discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
-                                 struct discord_adapter *adapter,
-                                 void (*iter)(struct discord_adapter *adapter,
-                                              struct discord_bucket *b));
+void discord_ratelimiter_foreach_bucket(
+    struct discord_ratelimiter *rl,
+    struct discord_adapter *adapter,
+    void (*iter)(struct discord_adapter *adapter, struct discord_bucket *b));
 
 /**
  * @brief Build unique key formed from the HTTP method and endpoint
@@ -488,7 +556,7 @@ struct discord_gateway_payload {
     jsmnf_pair *data;
 };
 
-/** @brief The handle used for establishing a WebSockets connection */
+/** @brief The handle used for interfacing with Discord's Gateway API */
 struct discord_gateway {
     /** DISCORD_GATEWAY logging module */
     struct logconf conf;
@@ -572,10 +640,11 @@ struct discord_gateway {
 };
 
 /**
- * @brief Initialize the fields of Discord Gateway handle
+ * @brief Initialize a Gateway handle
  *
+ * Structure used for interfacing with the Discord's Gateway API
  * @param gw the gateway handle to be initialized
- * @param conf optional pointer to a parent logconf
+ * @param conf pointer to @ref discord logging module
  * @param token the bot token
  */
 void discord_gateway_init(struct discord_gateway *gw,
@@ -583,7 +652,7 @@ void discord_gateway_init(struct discord_gateway *gw,
                           struct ccord_szbuf_readonly *token);
 
 /**
- * @brief Free a Discord Gateway handle
+ * @brief Free a Gateway handle
  *
  * @param gw the handle initialized with discord_gateway_init()
  */
@@ -797,7 +866,7 @@ struct discord_refcounter {
  * @brief Initialize reference counter handle
  *
  * A hashtable shall be used for storage and retrieval of user data
- * @param conf optional pointer to a parent logconf
+ * @param conf pointer to @ref discord logging module
  * @return the reference counter handle
  */
 struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
@@ -863,16 +932,16 @@ struct discord_message_commands {
 };
 
 /**
- * @brief Initialize the fields of the Message Commands handle
+ * @brief Initialize a Message Commands handle
  *
- * @param conf optional pointer to a parent logconf
+ * @param conf pointer to @ref discord logging module
  * @return the message commands handle
  */
 struct discord_message_commands *discord_message_commands_init(
     struct logconf *conf);
 
 /**
- * @brief Free Message Commands handle
+ * @brief Free a Message Commands handle
  *
  * @param cmds the handle initialized with discord_message_commands_init()
  */

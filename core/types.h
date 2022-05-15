@@ -56,6 +56,16 @@ struct ccord_szbuf_readonly {
     size_t size;
 };
 
+/** @brief Reusable generic sized buffer */
+struct ccord_szbuf_reusable {
+    /** the buffer's start */
+    char *start;
+    /** the buffer's relative size in bytes */
+    size_t size;
+    /** the buffer's real size in bytes */
+    size_t realsize;
+};
+
 /** @} ConcordTypes */
 
 #endif /* CONCORD_TYPES_H */

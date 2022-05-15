@@ -133,7 +133,7 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     if (pthread_mutex_init(&b->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
 
-    QUEUE_INIT(&b->waitq);
+    QUEUE_INIT(&b->pending_queue);
 
     pthread_mutex_lock(&rl->global.lock);
     chash_assign(rl, key, b, RATELIMITER_TABLE);
@@ -173,10 +173,10 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 }
 
 void
-discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
-                            struct discord_adapter *adapter,
-                            void (*iter)(struct discord_adapter *adapter,
-                                         struct discord_bucket *b))
+discord_ratelimiter_foreach_bucket(
+    struct discord_ratelimiter *rl,
+    struct discord_adapter *adapter,
+    void (*iter)(struct discord_adapter *adapter, struct discord_bucket *b))
 {
     struct _discord_route *r;
     int i;
@@ -255,8 +255,10 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
 }
 
 void
-discord_bucket_try_timeout(struct discord *client, struct discord_bucket *b)
+discord_bucket_try_timeout(struct discord_adapter *adapter,
+                           struct discord_bucket *b)
 {
+    struct discord *client = CLIENT(adapter, adapter);
     const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
     b->busy = DISCORD_BUCKET_TIMEOUT;
@@ -386,8 +388,8 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
     QUEUE(struct discord_context) queue, *qelem;
     struct discord_context *cxt;
 
-    QUEUE_MOVE(&rl->null->waitq, &queue);
-    QUEUE_INIT(&rl->null->waitq);
+    QUEUE_MOVE(&rl->null->pending_queue, &queue);
+    QUEUE_INIT(&rl->null->pending_queue);
 
     while (!QUEUE_EMPTY(&queue)) {
         qelem = QUEUE_HEAD(&queue);
@@ -395,11 +397,11 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
 
         cxt = QUEUE_DATA(qelem, struct discord_context, entry);
         if (0 == strcmp(cxt->key, key)) {
-            QUEUE_INSERT_TAIL(&b->waitq, qelem);
+            QUEUE_INSERT_TAIL(&b->pending_queue, qelem);
             cxt->b = b;
         }
         else {
-            QUEUE_INSERT_TAIL(&rl->null->waitq, qelem);
+            QUEUE_INSERT_TAIL(&rl->null->pending_queue, qelem);
         }
     }
 }
