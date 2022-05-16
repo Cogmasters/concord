@@ -142,8 +142,7 @@ discord_run(struct discord *client)
 
             if (next_run <= now) {
                 BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
-                BREAK_ON_FAIL(code,
-                              discord_adapter_async_perform(&client->adapter));
+                BREAK_ON_FAIL(code, discord_rest_async_perform(&client->rest));
 
                 /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000000;
@@ -152,7 +151,7 @@ discord_run(struct discord *client)
 
         /* stop all pending requests in case of connection shutdown */
         if (true == discord_gateway_end(&client->gw)) {
-            discord_adapter_stop_buckets(&client->adapter);
+            discord_rest_stop_buckets(&client->rest);
             break;
         }
     }

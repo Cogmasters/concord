@@ -18,9 +18,9 @@ discord_get_global_application_commands(
 
     DISCORD_REQ_LIST_INIT(req, discord_application_commands, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/applications/%" PRIu64 "/commands",
-                               application_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/applications/%" PRIu64 "/commands",
+                            application_id);
 }
 
 CCORDcode
@@ -46,9 +46,9 @@ discord_create_global_application_command(
         buf, sizeof(buf), params);
     body.start = buf;
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/applications/%" PRIu64 "/commands",
-                               application_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/applications/%" PRIu64 "/commands",
+                            application_id);
 }
 
 CCORDcode
@@ -65,9 +65,9 @@ discord_get_global_application_command(
 
     DISCORD_REQ_INIT(req, discord_application_command, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/applications/%" PRIu64 "/commands/%" PRIu64,
-                               application_id, command_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/applications/%" PRIu64 "/commands/%" PRIu64,
+                            application_id, command_id);
 }
 
 CCORDcode
@@ -91,9 +91,9 @@ discord_edit_global_application_command(
 
     DISCORD_REQ_INIT(req, discord_application_command, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/applications/%" PRIu64 "/commands/%" PRIu64,
-                               application_id, command_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/applications/%" PRIu64 "/commands/%" PRIu64,
+                            application_id, command_id);
 }
 
 CCORDcode
@@ -109,9 +109,9 @@ discord_delete_global_application_command(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/applications/%" PRIu64 "/commands/%" PRIu64,
-                               application_id, command_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/applications/%" PRIu64 "/commands/%" PRIu64,
+                            application_id, command_id);
 }
 
 CCORDcode
@@ -133,9 +133,9 @@ discord_bulk_overwrite_global_application_command(
 
     DISCORD_REQ_LIST_INIT(req, discord_application_commands, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/applications/%" PRIu64 "/commands",
-                               application_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/applications/%" PRIu64 "/commands",
+                            application_id);
 }
 
 CCORDcode
@@ -152,10 +152,10 @@ discord_get_guild_application_commands(
 
     DISCORD_REQ_LIST_INIT(req, discord_application_commands, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands",
-                               application_id, guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands",
+                            application_id, guild_id);
 }
 
 CCORDcode
@@ -183,10 +183,10 @@ discord_create_guild_application_command(
 
     DISCORD_REQ_INIT(req, discord_application_command, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands",
-                               application_id, guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands",
+                            application_id, guild_id);
 }
 
 CCORDcode
@@ -205,10 +205,10 @@ discord_get_guild_application_command(
 
     DISCORD_REQ_INIT(req, discord_application_command, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/%" PRIu64,
-                               application_id, guild_id, command_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/%" PRIu64,
+                            application_id, guild_id, command_id);
 }
 
 CCORDcode
@@ -234,10 +234,10 @@ discord_edit_guild_application_command(
 
     DISCORD_REQ_INIT(req, discord_application_command, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/%" PRIu64,
-                               application_id, guild_id, command_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/%" PRIu64,
+                            application_id, guild_id, command_id);
 }
 
 CCORDcode
@@ -255,10 +255,10 @@ discord_delete_guild_application_command(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/%" PRIu64,
-                               application_id, guild_id, command_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/%" PRIu64,
+                            application_id, guild_id, command_id);
 }
 
 CCORDcode
@@ -282,10 +282,10 @@ discord_bulk_overwrite_guild_application_command(
 
     DISCORD_REQ_LIST_INIT(req, discord_application_commands, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands",
-                               application_id, guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands",
+                            application_id, guild_id);
 }
 
 CCORDcode
@@ -302,10 +302,10 @@ discord_get_guild_application_command_permissions(
 
     DISCORD_REQ_LIST_INIT(req, discord_application_command_permissions, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/permissions",
-                               application_id, guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/permissions",
+                            application_id, guild_id);
 }
 
 CCORDcode
@@ -324,10 +324,10 @@ discord_get_application_command_permissions(
 
     DISCORD_REQ_INIT(req, discord_application_command_permission, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/%" PRIu64 "/permissions",
-                               application_id, guild_id, command_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/%" PRIu64 "/permissions",
+                            application_id, guild_id, command_id);
 }
 
 CCORDcode
@@ -353,10 +353,10 @@ discord_edit_application_command_permissions(
 
     DISCORD_REQ_INIT(req, discord_application_command_permission, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/%" PRIu64 "/permissions",
-                               application_id, guild_id, command_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/%" PRIu64 "/permissions",
+                            application_id, guild_id, command_id);
 }
 
 CCORDcode
@@ -381,8 +381,8 @@ discord_batch_edit_application_command_permissions(
 
     DISCORD_REQ_LIST_INIT(req, discord_application_command_permissions, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/applications/%" PRIu64 "/guilds/%" PRIu64
-                               "/commands/permissions",
-                               application_id, guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/applications/%" PRIu64 "/guilds/%" PRIu64
+                            "/commands/permissions",
+                            application_id, guild_id);
 }

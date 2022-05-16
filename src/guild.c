@@ -22,8 +22,7 @@ discord_create_guild(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/guilds");
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST, "/guilds");
 }
 
 CCORDcode
@@ -37,8 +36,8 @@ discord_get_guild(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64, guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64, guild_id);
 }
 
 CCORDcode
@@ -52,8 +51,8 @@ discord_get_guild_preview(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_preview, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/preview", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/preview", guild_id);
 }
 
 CCORDcode
@@ -74,8 +73,8 @@ discord_modify_guild(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64, guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64, guild_id);
 }
 
 CCORDcode
@@ -89,8 +88,8 @@ discord_delete_guild(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64, guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64, guild_id);
 }
 
 CCORDcode
@@ -104,8 +103,8 @@ discord_get_guild_channels(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_channels, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/channels", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/channels", guild_id);
 }
 
 CCORDcode
@@ -126,8 +125,8 @@ discord_create_guild_channel(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/guilds/%" PRIu64 "/channels", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/guilds/%" PRIu64 "/channels", guild_id);
 }
 
 CCORDcode
@@ -150,8 +149,8 @@ discord_modify_guild_channel_positions(
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/channels", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/channels", guild_id);
 }
 
 CCORDcode
@@ -167,9 +166,9 @@ discord_get_guild_member(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64,
-                               guild_id, user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
+                            user_id);
 }
 
 CCORDcode
@@ -201,9 +200,9 @@ discord_list_guild_members(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_guild_members, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/members%s%s", guild_id,
-                               *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/members%s%s", guild_id,
+                            *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -221,7 +220,8 @@ discord_search_guild_members(struct discord *client,
         int offset = 0;
 
         if (params->query) {
-            char *pe_query = curl_escape(params->query, (int)strlen(params->query));
+            char *pe_query =
+                curl_escape(params->query, (int)strlen(params->query));
 
             offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "query=%s", pe_query);
@@ -238,9 +238,9 @@ discord_search_guild_members(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_guild_members, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/members/search%s%s",
-                               guild_id, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/members/search%s%s", guild_id,
+                            *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -265,9 +265,9 @@ discord_add_guild_member(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64,
-                               guild_id, user_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
+                            user_id);
 }
 
 CCORDcode
@@ -290,9 +290,9 @@ discord_modify_guild_member(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64,
-                               guild_id, user_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
+                            user_id);
 }
 CCORDcode
 discord_modify_current_member(struct discord *client,
@@ -314,8 +314,8 @@ discord_modify_current_member(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/members/@me", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/members/@me", guild_id);
 }
 CCORDcode
 discord_modify_current_user_nick(
@@ -342,9 +342,8 @@ discord_modify_current_user_nick(
 
     DISCORD_REQ_INIT(req, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/members/@me/nick",
-                               guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/members/@me/nick", guild_id);
 }
 
 CCORDcode
@@ -362,10 +361,10 @@ discord_add_guild_member_role(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64
-                               "/roles/%" PRIu64,
-                               guild_id, user_id, role_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_PUT,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64
+                            "/roles/%" PRIu64,
+                            guild_id, user_id, role_id);
 }
 
 CCORDcode
@@ -383,10 +382,10 @@ discord_remove_guild_member_role(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64
-                               "/roles/%" PRIu64,
-                               guild_id, user_id, role_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64
+                            "/roles/%" PRIu64,
+                            guild_id, user_id, role_id);
 }
 
 CCORDcode
@@ -402,9 +401,9 @@ discord_remove_guild_member(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64,
-                               guild_id, user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
+                            user_id);
 }
 
 CCORDcode
@@ -418,8 +417,8 @@ discord_get_guild_bans(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_bans, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/bans", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/bans", guild_id);
 }
 
 CCORDcode
@@ -435,9 +434,9 @@ discord_get_guild_ban(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_ban, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
-                               user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
+                            user_id);
 }
 
 CCORDcode
@@ -464,9 +463,9 @@ discord_create_guild_ban(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
-                               user_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
+                            user_id);
 }
 CCORDcode
 discord_remove_guild_ban(struct discord *client,
@@ -481,9 +480,9 @@ discord_remove_guild_ban(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
-                               user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
+                            user_id);
 }
 
 CCORDcode
@@ -497,8 +496,8 @@ discord_get_guild_roles(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_roles, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/roles", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/roles", guild_id);
 }
 
 CCORDcode
@@ -518,8 +517,8 @@ discord_create_guild_role(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_role, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/guilds/%" PRIu64 "/roles", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/guilds/%" PRIu64 "/roles", guild_id);
 }
 
 CCORDcode
@@ -542,8 +541,8 @@ discord_modify_guild_role_positions(
 
     DISCORD_REQ_LIST_INIT(req, discord_roles, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/roles", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/roles", guild_id);
 }
 
 CCORDcode
@@ -569,9 +568,9 @@ discord_modify_guild_role(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_role, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
-                               role_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
+                            role_id);
 }
 
 CCORDcode
@@ -587,9 +586,9 @@ discord_delete_guild_role(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
-                               role_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
+                            role_id);
 }
 
 CCORDcode
@@ -613,8 +612,8 @@ discord_begin_guild_prune(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/guilds/%" PRIu64 "/prune", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/guilds/%" PRIu64 "/prune", guild_id);
 }
 
 CCORDcode
@@ -628,8 +627,8 @@ discord_get_guild_invites(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_invites, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/invites", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/invites", guild_id);
 }
 
 CCORDcode
@@ -645,9 +644,9 @@ discord_delete_guild_integrations(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64 "/integrations/%" PRIu64,
-                               guild_id, integration_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64 "/integrations/%" PRIu64,
+                            guild_id, integration_id);
 }
 
 CCORDcode
@@ -661,8 +660,8 @@ discord_get_guild_vanity_url(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_invite, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/vanity-url", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/vanity-url", guild_id);
 }
 
 CCORDcode
@@ -676,6 +675,6 @@ discord_get_guild_welcome_screen(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_welcome_screen, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/welcome-screen", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/welcome-screen", guild_id);
 }

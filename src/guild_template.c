@@ -17,8 +17,8 @@ discord_get_guild_template(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_template, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/templates/%s", code);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/templates/%s", code);
 }
 
 CCORDcode
@@ -39,8 +39,8 @@ discord_create_guild_template(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_template, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/guilds/%" PRIu64 "/templates", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/guilds/%" PRIu64 "/templates", guild_id);
 }
 
 CCORDcode
@@ -55,7 +55,7 @@ discord_sync_guild_template(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_template, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
-                               "/guilds/%" PRIu64 "/templates/%s", guild_id,
-                               code);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_PUT,
+                            "/guilds/%" PRIu64 "/templates/%s", guild_id,
+                            code);
 }

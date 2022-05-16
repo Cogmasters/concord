@@ -173,10 +173,10 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 }
 
 void
-discord_ratelimiter_foreach_bucket(
-    struct discord_ratelimiter *rl,
-    struct discord_adapter *adapter,
-    void (*iter)(struct discord_adapter *adapter, struct discord_bucket *b))
+discord_ratelimiter_foreach_bucket(struct discord_ratelimiter *rl,
+                                   struct discord_rest *rest,
+                                   void (*iter)(struct discord_rest *rest,
+                                                struct discord_bucket *b))
 {
     struct _discord_route *r;
     int i;
@@ -184,7 +184,7 @@ discord_ratelimiter_foreach_bucket(
     pthread_mutex_lock(&rl->global.lock);
     for (i = 0; i < rl->capacity; ++i) {
         r = rl->routes + i;
-        if (CHASH_FILLED == r->state) (*iter)(adapter, r->bucket);
+        if (CHASH_FILLED == r->state) (*iter)(rest, r->bucket);
     }
     pthread_mutex_unlock(&rl->global.lock);
 }
@@ -255,17 +255,16 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
 }
 
 void
-discord_bucket_try_timeout(struct discord_adapter *adapter,
-                           struct discord_bucket *b)
+discord_bucket_try_timeout(struct discord_rest *rest, struct discord_bucket *b)
 {
-    struct discord *client = CLIENT(adapter, adapter);
+    struct discord *client = CLIENT(rest, rest);
     const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
     b->busy = DISCORD_BUCKET_TIMEOUT;
 
     discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
 
-    logconf_info(&client->adapter.ratelimiter->conf,
+    logconf_info(&client->rest.ratelimiter->conf,
                  "[%.4s] RATELIMITING (wait %" PRId64 " ms)", b->hash,
                  delay_ms);
 }
@@ -349,7 +348,7 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
             pthread_rwlock_unlock(&rl->global.rwlock);
         }
         else {
-            /* lock single bucket, timeout at discord_adapter_run() */
+            /* lock single bucket, timeout at discord_rest_run() */
             b->reset_tstamp = reset_tstamp;
         }
     }

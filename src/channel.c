@@ -94,8 +94,8 @@ discord_get_channel(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64, channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64, channel_id);
 }
 
 CCORDcode
@@ -116,8 +116,8 @@ discord_modify_channel(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/channels/%" PRIu64, channel_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/channels/%" PRIu64, channel_id);
 }
 
 CCORDcode
@@ -131,8 +131,8 @@ discord_delete_channel(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64, channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64, channel_id);
 }
 
 CCORDcode
@@ -176,9 +176,9 @@ discord_get_channel_messages(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_messages, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/messages%s%s",
-                               channel_id, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/messages%s%s", channel_id,
+                            *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -194,9 +194,9 @@ discord_get_channel_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64,
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64,
+                            channel_id, message_id);
 }
 
 CCORDcode
@@ -226,8 +226,8 @@ discord_create_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/channels/%" PRIu64 "/messages", channel_id);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/channels/%" PRIu64 "/messages", channel_id);
 }
 
 CCORDcode
@@ -243,10 +243,10 @@ discord_crosspost_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_POST,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/crosspost",
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_POST,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/crosspost",
+                            channel_id, message_id);
 }
 
 CCORDcode
@@ -276,10 +276,10 @@ discord_create_reaction(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/reactions/%s/@me",
-                               channel_id, message_id, emoji_endpoint);
+    code = discord_rest_run(&client->rest, &req, NULL, HTTP_PUT,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/reactions/%s/@me",
+                            channel_id, message_id, emoji_endpoint);
 
     curl_free(pct_emoji_name);
 
@@ -313,10 +313,10 @@ discord_delete_own_reaction(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/reactions/%s/@me",
-                               channel_id, message_id, emoji_endpoint);
+    code = discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/reactions/%s/@me",
+                            channel_id, message_id, emoji_endpoint);
 
     curl_free(pct_emoji_name);
 
@@ -352,10 +352,10 @@ discord_delete_user_reaction(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    code = discord_adapter_run(
-        &client->adapter, &req, NULL, HTTP_DELETE,
-        "/channels/%" PRIu64 "/messages/%" PRIu64 "/reactions/%s/%" PRIu64,
-        channel_id, message_id, emoji_endpoint, user_id);
+    code = discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/reactions/%s/%" PRIu64,
+                            channel_id, message_id, emoji_endpoint, user_id);
 
     curl_free(pct_emoji_name);
 
@@ -412,10 +412,10 @@ discord_get_reactions(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_users, ret);
 
-    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/reactions/%s%s",
-                               channel_id, message_id, emoji_endpoint, query);
+    code = discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/reactions/%s%s",
+                            channel_id, message_id, emoji_endpoint, query);
 
     curl_free(pct_emoji_name);
 
@@ -435,10 +435,10 @@ discord_delete_all_reactions(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/reactions",
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/reactions",
+                            channel_id, message_id);
 }
 
 CCORDcode
@@ -468,10 +468,10 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/reactions/%s",
-                               channel_id, message_id, emoji_endpoint);
+    code = discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/reactions/%s",
+                            channel_id, message_id, emoji_endpoint);
 
     curl_free(pct_emoji_name);
 
@@ -498,9 +498,9 @@ discord_edit_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64,
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64,
+                            channel_id, message_id);
 }
 
 CCORDcode
@@ -516,9 +516,9 @@ discord_delete_message(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64,
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64,
+                            channel_id, message_id);
 }
 
 /** @todo add duplicated ID verification */
@@ -553,9 +553,9 @@ discord_bulk_delete_messages(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/channels/%" PRIu64 "/messages/bulk-delete",
-                               channel_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/channels/%" PRIu64 "/messages/bulk-delete",
+                            channel_id);
 }
 
 CCORDcode
@@ -580,9 +580,9 @@ discord_edit_channel_permissions(
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/channels/%" PRIu64 "/permissions/%" PRIu64,
-                               channel_id, overwrite_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/channels/%" PRIu64 "/permissions/%" PRIu64,
+                            channel_id, overwrite_id);
 }
 
 CCORDcode
@@ -596,8 +596,8 @@ discord_get_channel_invites(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_invites, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/invites", channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/invites", channel_id);
 }
 
 CCORDcode
@@ -621,8 +621,8 @@ discord_create_channel_invite(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_invite, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/channels/%" PRIu64 "/invites", channel_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/channels/%" PRIu64 "/invites", channel_id);
 }
 
 CCORDcode
@@ -638,9 +638,9 @@ discord_delete_channel_permission(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/permissions/%" PRIu64,
-                               channel_id, overwrite_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/permissions/%" PRIu64,
+                            channel_id, overwrite_id);
 }
 
 CCORDcode
@@ -663,8 +663,8 @@ discord_follow_news_channel(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/channels/%" PRIu64 "/followers", channel_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/channels/%" PRIu64 "/followers", channel_id);
 }
 
 CCORDcode
@@ -678,8 +678,8 @@ discord_trigger_typing_indicator(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_POST,
-                               "/channels/%" PRIu64 "/typing", channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_POST,
+                            "/channels/%" PRIu64 "/typing", channel_id);
 }
 
 CCORDcode
@@ -693,8 +693,8 @@ discord_get_pinned_messages(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_messages, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/pins", channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/pins", channel_id);
 }
 
 CCORDcode
@@ -710,9 +710,9 @@ discord_pin_message(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
-                               "/channels/%" PRIu64 "/pins/%" PRIu64,
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_PUT,
+                            "/channels/%" PRIu64 "/pins/%" PRIu64, channel_id,
+                            message_id);
 }
 
 CCORDcode
@@ -728,9 +728,9 @@ discord_unpin_message(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/pins/%" PRIu64,
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/pins/%" PRIu64, channel_id,
+                            message_id);
 }
 
 CCORDcode
@@ -754,9 +754,9 @@ discord_group_dm_add_recipient(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
-                               "/channels/%" PRIu64 "/recipients/%" PRIu64,
-                               channel_id, user_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PUT,
+                            "/channels/%" PRIu64 "/recipients/%" PRIu64,
+                            channel_id, user_id);
 }
 
 CCORDcode
@@ -772,9 +772,9 @@ discord_group_dm_remove_recipient(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/recipients/%" PRIu64,
-                               channel_id, user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/recipients/%" PRIu64,
+                            channel_id, user_id);
 }
 
 CCORDcode
@@ -799,10 +799,10 @@ discord_start_thread_with_message(
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/channels/%" PRIu64 "/messages/%" PRIu64
-                               "/threads",
-                               channel_id, message_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/channels/%" PRIu64 "/messages/%" PRIu64
+                            "/threads",
+                            channel_id, message_id);
 }
 
 CCORDcode
@@ -825,8 +825,8 @@ discord_start_thread_without_message(
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/channels/%" PRIu64 "/threads", channel_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/channels/%" PRIu64 "/threads", channel_id);
 }
 
 CCORDcode
@@ -840,9 +840,9 @@ discord_join_thread(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
-                               "/channels/%" PRIu64 "/thread-members/@me",
-                               channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_PUT,
+                            "/channels/%" PRIu64 "/thread-members/@me",
+                            channel_id);
 }
 
 CCORDcode
@@ -858,9 +858,9 @@ discord_add_thread_member(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
-                               "/channels/%" PRIu64 "/thread-members/" PRIu64,
-                               channel_id, user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_PUT,
+                            "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                            channel_id, user_id);
 }
 
 CCORDcode
@@ -874,9 +874,9 @@ discord_leave_thread(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/thread-members/@me",
-                               channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/thread-members/@me",
+                            channel_id);
 }
 
 CCORDcode
@@ -892,9 +892,9 @@ discord_remove_thread_member(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/channels/%" PRIu64 "/thread-members/" PRIu64,
-                               channel_id, user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                            channel_id, user_id);
 }
 
 CCORDcode
@@ -908,9 +908,9 @@ discord_list_thread_members(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_thread_members, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/thread-members",
-                               channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/thread-members",
+                            channel_id);
 }
 
 CCORDcode
@@ -924,9 +924,9 @@ discord_list_active_threads(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/threads/active",
-                               channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/threads/active",
+                            channel_id);
 }
 
 CCORDcode
@@ -956,10 +956,10 @@ discord_list_public_archived_threads(
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64
-                               "/threads/archived/public%s%s",
-                               channel_id, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64
+                            "/threads/archived/public%s%s",
+                            channel_id, *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -989,10 +989,10 @@ discord_list_private_archived_threads(
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64
-                               "/threads/archived/private%s%s",
-                               channel_id, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64
+                            "/threads/archived/private%s%s",
+                            channel_id, *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -1022,8 +1022,8 @@ discord_list_joined_private_archived_threads(
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64
-                               "/users/@me/threads/archived/private%s%s",
-                               channel_id, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64
+                            "/users/@me/threads/archived/private%s%s",
+                            channel_id, *query ? "?" : "", query);
 }

@@ -17,8 +17,8 @@ discord_list_guild_emojis(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_emojis, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/emojis", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/emojis", guild_id);
 }
 
 CCORDcode
@@ -34,9 +34,9 @@ discord_get_guild_emoji(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_emoji, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
-                               emoji_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
+                            emoji_id);
 }
 
 CCORDcode
@@ -57,8 +57,8 @@ discord_create_guild_emoji(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_emoji, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/guilds/%" PRIu64 "/emojis", guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/guilds/%" PRIu64 "/emojis", guild_id);
 }
 
 CCORDcode
@@ -81,9 +81,9 @@ discord_modify_guild_emoji(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_emoji, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
-                               emoji_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
+                            emoji_id);
 }
 
 CCORDcode
@@ -99,7 +99,7 @@ discord_delete_guild_emoji(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
-                               emoji_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
+                            emoji_id);
 }

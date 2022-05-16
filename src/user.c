@@ -13,8 +13,7 @@ discord_get_current_user(struct discord *client, struct discord_ret_user *ret)
 
     DISCORD_REQ_INIT(req, discord_user, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/users/@me");
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET, "/users/@me");
 }
 
 CCORDcode
@@ -28,8 +27,8 @@ discord_get_user(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_user, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/users/%" PRIu64, user_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/users/%" PRIu64, user_id);
 }
 
 CCORDcode
@@ -48,8 +47,8 @@ discord_modify_current_user(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_user, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/users/@me");
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/users/@me");
 }
 
 CCORDcode
@@ -60,8 +59,8 @@ discord_get_current_user_guilds(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_guilds, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/users/@me/guilds");
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/users/@me/guilds");
 }
 
 CCORDcode
@@ -76,8 +75,8 @@ discord_leave_guild(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_DELETE,
-                               "/users/@me/guilds/%" PRIu64, guild_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_DELETE,
+                            "/users/@me/guilds/%" PRIu64, guild_id);
 }
 
 CCORDcode
@@ -96,8 +95,8 @@ discord_create_dm(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/users/@me/channels");
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/users/@me/channels");
 }
 
 CCORDcode
@@ -119,8 +118,8 @@ discord_create_group_dm(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_channel, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/users/@me/channels");
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/users/@me/channels");
 }
 
 CCORDcode
@@ -131,6 +130,6 @@ discord_get_user_connections(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_connections, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/users/@me/connections");
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/users/@me/connections");
 }

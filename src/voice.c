@@ -14,6 +14,6 @@ discord_list_voice_regions(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_voice_regions, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/voice/regions");
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/voice/regions");
 }

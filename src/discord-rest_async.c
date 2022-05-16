@@ -44,14 +44,13 @@ _on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 {
     (void)io;
     (void)mhandle;
-    return discord_adapter_async_perform(user_data);
+    return discord_rest_async_perform(user_data);
 }
 
 void
 discord_async_init(struct discord_async *async, struct logconf *conf)
 {
-    struct discord_adapter *adapter =
-        CONTAINEROF(async, struct discord_adapter, async);
+    struct discord_rest *rest = CONTAINEROF(async, struct discord_rest, async);
 
     logconf_branch(&async->conf, conf, "DISCORD_ASYNC");
 
@@ -61,8 +60,8 @@ discord_async_init(struct discord_async *async, struct logconf *conf)
     QUEUE_INIT(async->idle_contexts);
 
     async->mhandle = curl_multi_init();
-    io_poller_curlm_add(CLIENT(adapter, adapter)->io_poller, async->mhandle,
-                        &_on_io_poller_curl, adapter);
+    io_poller_curlm_add(CLIENT(rest, rest)->io_poller, async->mhandle,
+                        &_on_io_poller_curl, rest);
 }
 
 void
@@ -81,8 +80,7 @@ discord_async_cleanup(struct discord_async *async)
     free(async->idle_contexts);
 
     /* cleanup curl's multi handle */
-    io_poller_curlm_del(CLIENT(async, adapter.async)->io_poller,
-                        async->mhandle);
+    io_poller_curlm_del(CLIENT(async, rest.async)->io_poller, async->mhandle);
     curl_multi_cleanup(async->mhandle);
 }
 
@@ -124,7 +122,7 @@ discord_async_add_request(struct discord_async *async,
     /* initiate libcurl transfer */
     mcode = curl_multi_add_handle(async->mhandle, ehandle);
 
-    io_poller_curlm_enable_perform(CLIENT(async, adapter.async)->io_poller,
+    io_poller_curlm_enable_perform(CLIENT(async, rest.async)->io_poller,
                                    async->mhandle);
 
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
@@ -135,10 +133,9 @@ discord_async_retry_context(struct discord_async *async,
                             struct discord_context *cxt,
                             int64_t wait_ms)
 {
-    struct discord_adapter *adapter =
-        CONTAINEROF(async, struct discord_adapter, async);
+    struct discord_rest *rest = CONTAINEROF(async, struct discord_rest, async);
 
-    if (adapter->retry_limit < cxt->retry_attempt++) return false;
+    if (rest->retry_limit < cxt->retry_attempt++) return false;
 
     CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
 
@@ -160,7 +157,7 @@ discord_async_recycle_context(struct discord_async *async,
     curl_multi_remove_handle(async->mhandle, ehandle);
     if (cxt->conn) ua_conn_stop(cxt->conn);
 
-    discord_refcounter_decr(CLIENT(async, adapter.async)->refcounter,
+    discord_refcounter_decr(CLIENT(async, rest.async)->refcounter,
                             cxt->dispatch.data);
 
     cxt->b = NULL;
@@ -176,7 +173,7 @@ discord_async_recycle_context(struct discord_async *async,
     QUEUE_INSERT_TAIL(async->idle_contexts, &cxt->entry);
 }
 
-/* Only the fields that are required at _discord_adapter_request_to_multipart()
+/* Only the fields that are required at _discord_rest_request_to_multipart()
  *        are duplicated */
 static void
 _discord_attachments_dup(struct discord_attachments *dest,
@@ -213,9 +210,8 @@ discord_async_start_context(struct discord_async *async,
                             char endpoint[DISCORD_ENDPT_LEN],
                             char key[DISCORD_ROUTE_LEN])
 {
-    struct discord_adapter *adapter =
-        CONTAINEROF(async, struct discord_adapter, async);
-    struct discord *client = CLIENT(adapter, adapter);
+    struct discord_rest *rest = CONTAINEROF(async, struct discord_rest, async);
+    struct discord *client = CLIENT(rest, rest);
     struct discord_context *cxt = _discord_context_get(async);
 
     cxt->method = method;
@@ -242,7 +238,7 @@ discord_async_start_context(struct discord_async *async,
     /* copy bucket's key */
     memcpy(cxt->key, key, sizeof(cxt->key));
     /* bucket pertaining to the request */
-    cxt->b = discord_bucket_get(adapter->ratelimiter, key);
+    cxt->b = discord_bucket_get(rest->ratelimiter, key);
 
     if (req->dispatch.data)
         discord_refcounter_incr(client->refcounter, req->dispatch.data,

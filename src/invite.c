@@ -24,8 +24,8 @@ discord_get_invite(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_invite, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_GET,
-                               "/invites/%s", invite_code);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_GET,
+                            "/invites/%s", invite_code);
 }
 
 CCORDcode
@@ -39,6 +39,6 @@ discord_delete_invite(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_invite, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/invites/%s", invite_code);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/invites/%s", invite_code);
 }

@@ -17,8 +17,8 @@ _discord_init(struct discord *new_client)
     new_client->refcounter = discord_refcounter_init(&new_client->conf);
     new_client->commands = discord_message_commands_init(&new_client->conf);
 
-    discord_adapter_init(&new_client->adapter, &new_client->conf,
-                         &new_client->token);
+    discord_rest_init(&new_client->rest, &new_client->conf,
+                      &new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
                          &new_client->token);
 #ifdef CCORD_VOICE
@@ -169,7 +169,7 @@ discord_cleanup(struct discord *client)
     if (client->is_original) {
         discord_timers_cleanup(client);
         logconf_cleanup(&client->conf);
-        discord_adapter_cleanup(&client->adapter);
+        discord_rest_cleanup(&client->rest);
         discord_gateway_cleanup(&client->gw);
         discord_user_cleanup(&client->self);
         io_poller_destroy(client->io_poller);

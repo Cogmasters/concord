@@ -25,8 +25,8 @@ discord_create_webhook(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
-                               "/channels/%" PRIu64 "/webhooks", channel_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_POST,
+                            "/channels/%" PRIu64 "/webhooks", channel_id);
 }
 
 CCORDcode
@@ -40,8 +40,8 @@ discord_get_channel_webhooks(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_webhooks, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/channels/%" PRIu64 "/webhooks", channel_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/channels/%" PRIu64 "/webhooks", channel_id);
 }
 
 CCORDcode
@@ -55,8 +55,8 @@ discord_get_guild_webhooks(struct discord *client,
 
     DISCORD_REQ_LIST_INIT(req, discord_webhooks, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/guilds/%" PRIu64 "/webhooks", guild_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/webhooks", guild_id);
 }
 
 CCORDcode
@@ -70,8 +70,8 @@ discord_get_webhook(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64, webhook_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64, webhook_id);
 }
 
 CCORDcode
@@ -88,9 +88,9 @@ discord_get_webhook_with_token(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64 "/%s", webhook_id,
-                               webhook_token);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64 "/%s", webhook_id,
+                            webhook_token);
 }
 
 CCORDcode
@@ -110,8 +110,8 @@ discord_modify_webhook(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/webhooks/%" PRIu64, webhook_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/webhooks/%" PRIu64, webhook_id);
 }
 
 CCORDcode
@@ -136,9 +136,9 @@ discord_modify_webhook_with_token(
 
     DISCORD_REQ_INIT(req, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/webhooks/%" PRIu64 "/%s", webhook_id,
-                               webhook_token);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/webhooks/%" PRIu64 "/%s", webhook_id,
+                            webhook_token);
 }
 
 CCORDcode
@@ -152,8 +152,8 @@ discord_delete_webhook(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64, webhook_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64, webhook_id);
 }
 
 CCORDcode
@@ -170,9 +170,9 @@ discord_delete_webhook_with_token(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64 "/%s", webhook_id,
-                               webhook_token);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64 "/%s", webhook_id,
+                            webhook_token);
 }
 
 CCORDcode
@@ -218,9 +218,9 @@ discord_execute_webhook(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s%s%s", webhook_id,
-                               webhook_token, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/webhooks/%" PRIu64 "/%s%s%s", webhook_id,
+                            webhook_token, *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -239,9 +239,9 @@ discord_get_webhook_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64 "/%s/%" PRIu64, webhook_id,
-                               webhook_token, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64 "/%s/%" PRIu64, webhook_id,
+                            webhook_token, message_id);
 }
 
 CCORDcode
@@ -276,9 +276,9 @@ discord_edit_webhook_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
-                               webhook_id, webhook_token, message_id);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
+                            webhook_id, webhook_token, message_id);
 }
 
 CCORDcode
@@ -297,7 +297,7 @@ discord_delete_webhook_message(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
-                               webhook_id, webhook_token, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
+                            webhook_id, webhook_token, message_id);
 }

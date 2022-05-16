@@ -21,73 +21,73 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 
     ua_conn_add_header(conn, "Authorization", auth);
 
-#ifdef CCORD_DEBUG_ADAPTER
+#ifdef CCORD_DEBUG_HTTP
     curl_easy_setopt(ua_conn_get_easy_handle(conn), CURLOPT_VERBOSE, 1L);
 #endif
 }
 
 void
-discord_adapter_init(struct discord_adapter *adapter,
-                     struct logconf *conf,
-                     struct ccord_szbuf_readonly *token)
+discord_rest_init(struct discord_rest *rest,
+                  struct logconf *conf,
+                  struct ccord_szbuf_readonly *token)
 {
     struct ua_attr attr = { 0 };
 
     attr.conf = conf;
-    adapter->ua = ua_init(&attr);
-    ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
+    rest->ua = ua_init(&attr);
+    ua_set_url(rest->ua, DISCORD_API_BASE_URL);
 
     if (!token->size) {
         /* no token means a webhook-only client */
-        logconf_branch(&adapter->conf, conf, "DISCORD_WEBHOOK");
+        logconf_branch(&rest->conf, conf, "DISCORD_WEBHOOK");
     }
     else {
         /* bot client */
-        logconf_branch(&adapter->conf, conf, "DISCORD_HTTP");
-        ua_set_opt(adapter->ua, token, &setopt_cb);
+        logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
+        ua_set_opt(rest->ua, token, &setopt_cb);
     }
 
-    discord_async_init(&adapter->async, &adapter->conf);
-    adapter->ratelimiter = discord_ratelimiter_init(&adapter->conf);
+    discord_async_init(&rest->async, &rest->conf);
+    rest->ratelimiter = discord_ratelimiter_init(&rest->conf);
 
-    adapter->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
+    rest->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 }
 
 void
-discord_adapter_cleanup(struct discord_adapter *adapter)
+discord_rest_cleanup(struct discord_rest *rest)
 {
     /* cleanup User-Agent handle */
-    ua_cleanup(adapter->ua);
+    ua_cleanup(rest->ua);
     /* move pending requests to idle_contexts */
-    discord_adapter_stop_buckets(adapter);
+    discord_rest_stop_buckets(rest);
     /* cleanup idle requests queue */
-    discord_async_cleanup(&adapter->async);
+    discord_async_cleanup(&rest->async);
     /* cleanup discovered buckets */
-    discord_ratelimiter_cleanup(adapter->ratelimiter);
+    discord_ratelimiter_cleanup(rest->ratelimiter);
 }
 
-static CCORDcode _discord_adapter_run_sync(struct discord_adapter *adapter,
-                                           struct discord_request *req,
-                                           struct ccord_szbuf *body,
-                                           enum http_method method,
-                                           char endpoint[DISCORD_ENDPT_LEN],
-                                           char key[DISCORD_ROUTE_LEN]);
+static CCORDcode _discord_rest_run_sync(struct discord_rest *rest,
+                                        struct discord_request *req,
+                                        struct ccord_szbuf *body,
+                                        enum http_method method,
+                                        char endpoint[DISCORD_ENDPT_LEN],
+                                        char key[DISCORD_ROUTE_LEN]);
 
-static CCORDcode _discord_adapter_run_async(struct discord_adapter *adapter,
-                                            struct discord_request *req,
-                                            struct ccord_szbuf *body,
-                                            enum http_method method,
-                                            char endpoint[DISCORD_ENDPT_LEN],
-                                            char key[DISCORD_ROUTE_LEN]);
+static CCORDcode _discord_rest_run_async(struct discord_rest *rest,
+                                         struct discord_request *req,
+                                         struct ccord_szbuf *body,
+                                         enum http_method method,
+                                         char endpoint[DISCORD_ENDPT_LEN],
+                                         char key[DISCORD_ROUTE_LEN]);
 
 /* template function for performing requests */
 CCORDcode
-discord_adapter_run(struct discord_adapter *adapter,
-                    struct discord_request *req,
-                    struct ccord_szbuf *body,
-                    enum http_method method,
-                    char endpoint_fmt[],
-                    ...)
+discord_rest_run(struct discord_rest *rest,
+                 struct discord_request *req,
+                 struct ccord_szbuf *body,
+                 enum http_method method,
+                 char endpoint_fmt[],
+                 ...)
 {
     char endpoint[DISCORD_ENDPT_LEN];
     char key[DISCORD_ROUTE_LEN];
@@ -119,20 +119,18 @@ discord_adapter_run(struct discord_adapter *adapter,
         if (req->dispatch.has_type && req->dispatch.sync != DISCORD_SYNC_FLAG)
             req->response.data = req->dispatch.sync;
 
-        return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
-                                         key);
+        return _discord_rest_run_sync(rest, req, body, method, endpoint, key);
     }
 
     /* enqueue asynchronous request */
-    return _discord_adapter_run_async(adapter, req, body, method, endpoint,
-                                      key);
+    return _discord_rest_run_async(rest, req, body, method, endpoint, key);
 }
 
 /* return true if there should be a retry attempt */
 static bool
-_discord_adapter_get_info(struct discord_adapter *adapter,
-                          struct ua_info *info,
-                          int64_t *wait_ms)
+_discord_rest_get_info(struct discord_rest *rest,
+                       struct ua_info *info,
+                       int64_t *wait_ms)
 {
     if (info->code != CCORD_HTTP_CODE) {
         /* CCORD_OK or internal error */
@@ -147,12 +145,12 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
         return false;
     case HTTP_UNAUTHORIZED:
         logconf_fatal(
-            &adapter->conf,
+            &rest->conf,
             "UNAUTHORIZED: Please provide a valid authentication token");
         info->code = CCORD_DISCORD_BAD_AUTH;
         return false;
     case HTTP_METHOD_NOT_ALLOWED:
-        logconf_fatal(&adapter->conf,
+        logconf_fatal(&rest->conf,
                       "METHOD_NOT_ALLOWED: The server couldn't recognize the "
                       "received HTTP method");
         return false;
@@ -189,7 +187,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
         *wait_ms = (int64_t)(1000 * retry_after);
         if (*wait_ms < 0) *wait_ms = 0;
 
-        logconf_warn(&adapter->conf,
+        logconf_warn(&rest->conf,
                      "429 %s RATELIMITING (wait: %" PRId64 " ms) : %.*s",
                      is_global ? "GLOBAL" : "", *wait_ms, message.len,
                      body.start + message.pos);
@@ -209,7 +207,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
  * `struct discord_attachment` and the second element is a
  * `struct ccord_szbuf` containing the request body */
 static void
-_discord_adapter_request_to_multipart(curl_mime *mime, void *data)
+_discord_rest_request_to_multipart(curl_mime *mime, void *data)
 {
     struct discord_attachments *atchs = ((void **)data)[0];
     struct ccord_szbuf *body = ((void **)data)[1];
@@ -266,12 +264,12 @@ _discord_adapter_request_to_multipart(curl_mime *mime, void *data)
 
 /* perform a blocking request */
 static CCORDcode
-_discord_adapter_run_sync(struct discord_adapter *adapter,
-                          struct discord_request *req,
-                          struct ccord_szbuf *body,
-                          enum http_method method,
-                          char endpoint[DISCORD_ENDPT_LEN],
-                          char key[DISCORD_ROUTE_LEN])
+_discord_rest_run_sync(struct discord_rest *rest,
+                       struct discord_request *req,
+                       struct ccord_szbuf *body,
+                       enum http_method method,
+                       char endpoint[DISCORD_ENDPT_LEN],
+                       char key[DISCORD_ROUTE_LEN])
 {
     void *data[2] = { &req->attachments, body };
     struct discord_bucket *b;
@@ -280,12 +278,12 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     bool retry;
     CCORDcode code;
 
-    b = discord_bucket_get(adapter->ratelimiter, key);
-    conn = ua_conn_start(adapter->ua);
+    b = discord_bucket_get(rest->ratelimiter, key);
+    conn = ua_conn_start(rest->ua);
 
     if (HTTP_MIMEPOST == method) {
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
-        ua_conn_set_mime(conn, data, &_discord_adapter_request_to_multipart);
+        ua_conn_set_mime(conn, data, &_discord_rest_request_to_multipart);
     }
     else {
         ua_conn_add_header(conn, "Content-Type", "application/json");
@@ -301,18 +299,18 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
     pthread_mutex_lock(&b->lock);
     do {
-        discord_bucket_try_sleep(adapter->ratelimiter, b);
+        discord_bucket_try_sleep(rest->ratelimiter, b);
 
         /* perform blocking request, and check results */
         switch (code = ua_conn_easy_perform(conn)) {
         case CCORD_OK: {
-            struct discord *client = CLIENT(adapter, adapter);
+            struct discord *client = CLIENT(rest, rest);
             struct ua_szbuf_readonly resp;
             struct ua_info info = { 0 };
             int64_t wait_ms = 0;
 
             ua_info_extract(conn, &info);
-            retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
+            retry = _discord_rest_get_info(rest, &info, &wait_ms);
 
             resp = ua_info_get_body(&info);
             if (info.code != CCORD_OK) {
@@ -337,25 +335,25 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
              * TODO: create discord_timestamp_update() */
             ws_timestamp_update(client->gw.ws);
 
-            discord_ratelimiter_build(adapter->ratelimiter, b, key, &info);
+            discord_ratelimiter_build(rest->ratelimiter, b, key, &info);
             cog_sleep_ms(wait_ms);
 
             ua_info_cleanup(&info);
         } break;
         case CCORD_CURLE_INTERNAL:
-            logconf_error(&adapter->conf,
+            logconf_error(&rest->conf,
                           "Curl internal error, will retry again");
             retry = true;
             break;
         default:
-            logconf_error(&adapter->conf, "CCORD code: %d", code);
+            logconf_error(&rest->conf, "CCORD code: %d", code);
             retry = false;
             break;
         }
 
         ua_conn_reset(conn);
 
-    } while (retry && retry_attempt++ < adapter->retry_limit);
+    } while (retry && retry_attempt++ < rest->retry_limit);
     pthread_mutex_unlock(&b->lock);
 
     /* reset conn and mark it as free to use */
@@ -368,15 +366,15 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
 /* enqueue a request to be executed asynchronously */
 static CCORDcode
-_discord_adapter_run_async(struct discord_adapter *adapter,
-                           struct discord_request *req,
-                           struct ccord_szbuf *body,
-                           enum http_method method,
-                           char endpoint[DISCORD_ENDPT_LEN],
-                           char key[DISCORD_ROUTE_LEN])
+_discord_rest_run_async(struct discord_rest *rest,
+                        struct discord_request *req,
+                        struct ccord_szbuf *body,
+                        enum http_method method,
+                        char endpoint[DISCORD_ENDPT_LEN],
+                        char key[DISCORD_ROUTE_LEN])
 {
     struct discord_context *cxt = discord_async_start_context(
-        &adapter->async, req, body, method, endpoint, key);
+        &rest->async, req, body, method, endpoint, key);
 
     discord_context_bucket_insert(cxt, cxt->b, req->dispatch.high_p);
 
@@ -393,16 +391,15 @@ _discord_context_to_multipart(curl_mime *mime, void *p_cxt)
                                              cxt->body.size,
                                          } };
 
-    _discord_adapter_request_to_multipart(mime, data);
+    _discord_rest_request_to_multipart(mime, data);
 }
 
 /* add a request to libcurl's multi handle */
 static CCORDcode
-_discord_adapter_add_request(struct discord_adapter *adapter,
-                             struct discord_bucket *b)
+_discord_rest_add_request(struct discord_rest *rest, struct discord_bucket *b)
 {
     struct discord_context *cxt = discord_context_bucket_remove(b);
-    struct ua_conn *conn = ua_conn_start(adapter->ua);
+    struct ua_conn *conn = ua_conn_start(rest->ua);
 
     if (HTTP_MIMEPOST == cxt->method) {
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
@@ -420,36 +417,35 @@ _discord_adapter_add_request(struct discord_adapter *adapter,
                             .base_url = NULL,
                         });
 
-    return discord_async_add_request(&adapter->async, cxt, conn);
+    return discord_async_add_request(&rest->async, cxt, conn);
 }
 
 static void
-_discord_adapter_try_add_request(struct discord_adapter *adapter,
-                                 struct discord_bucket *b)
+_discord_rest_try_add_request(struct discord_rest *rest,
+                              struct discord_bucket *b)
 {
     /* skip if bucket is busy performing */
     if (b->busy) return;
 
     if (!b->remaining)
-        discord_bucket_try_timeout(adapter, b);
+        discord_bucket_try_timeout(rest, b);
     else if (!QUEUE_EMPTY(&b->pending_queue))
-        _discord_adapter_add_request(adapter, b);
+        _discord_rest_add_request(rest, b);
 }
 
 static CCORDcode
-_discord_adapter_check_pending(struct discord_adapter *adapter)
+_discord_rest_check_pending(struct discord_rest *rest)
 {
-    discord_ratelimiter_foreach_bucket(adapter->ratelimiter, adapter,
-                                       &_discord_adapter_try_add_request);
+    discord_ratelimiter_foreach_bucket(rest->ratelimiter, rest,
+                                       &_discord_rest_try_add_request);
     /* FIXME: redundant return value (constant) */
     return CCORD_OK;
 }
 
 static CCORDcode
-_discord_adapter_check_action(struct discord_adapter *adapter,
-                              struct CURLMsg *msg)
+_discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 {
-    struct discord *client = CLIENT(adapter, adapter);
+    struct discord *client = CLIENT(rest, rest);
     struct discord_context *cxt;
     int64_t wait_ms = 0LL;
     CCORDcode code;
@@ -463,7 +459,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         struct ua_szbuf_readonly body;
 
         ua_info_extract(cxt->conn, &info);
-        retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
+        retry = _discord_rest_get_info(rest, &info, &wait_ms);
 
         body = ua_info_get_body(&info);
         if (info.code != CCORD_OK) {
@@ -494,19 +490,18 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
         code = info.code;
 
-        discord_ratelimiter_build(adapter->ratelimiter, cxt->b, cxt->key,
-                                  &info);
+        discord_ratelimiter_build(rest->ratelimiter, cxt->b, cxt->key, &info);
         ua_info_cleanup(&info);
     } break;
     case CURLE_READ_ERROR:
-        logconf_warn(&adapter->conf, "Read error, will retry again");
+        logconf_warn(&rest->conf, "Read error, will retry again");
         retry = true;
 
         code = CCORD_CURLE_INTERNAL;
 
         break;
     default:
-        logconf_error(&adapter->conf, "(CURLE code: %d)", msg->data.result);
+        logconf_error(&rest->conf, "(CURLE code: %d)", msg->data.result);
         retry = false;
 
         code = CCORD_CURLE_INTERNAL;
@@ -519,62 +514,59 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
     /* enqueue request for retry or recycle */
     cxt->b->busy = NULL;
-    if (!retry || !discord_async_retry_context(&adapter->async, cxt, wait_ms))
-        discord_async_recycle_context(&adapter->async, cxt);
+    if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms))
+        discord_async_recycle_context(&rest->async, cxt);
 
     return code;
 }
 
 CCORDcode
-discord_adapter_async_perform(struct discord_adapter *adapter)
+discord_rest_async_perform(struct discord_rest *rest)
 {
     CURLMcode mcode;
     CCORDcode code;
     int alive = 0;
 
-    if (CCORD_OK != (code = _discord_adapter_check_pending(adapter)))
-        return code;
+    if (CCORD_OK != (code = _discord_rest_check_pending(rest))) return code;
 
     if (CURLM_OK
-        != (mcode = curl_multi_socket_all(adapter->async.mhandle, &alive)))
+        != (mcode = curl_multi_socket_all(rest->async.mhandle, &alive)))
         return CCORD_CURLM_INTERNAL;
 
     /* ask for any messages/informationals from the individual transfers */
     while (1) {
         int msgq = 0;
-        struct CURLMsg *msg =
-            curl_multi_info_read(adapter->async.mhandle, &msgq);
+        struct CURLMsg *msg = curl_multi_info_read(rest->async.mhandle, &msgq);
 
         if (!msg) break;
         if (CURLMSG_DONE != msg->msg) continue;
 
         /* check for request action */
-        _discord_adapter_check_action(adapter, msg);
+        _discord_rest_check_action(rest, msg);
     }
 
     return CCORD_OK;
 }
 
 static void
-_discord_adapter_stop_bucket(struct discord_adapter *adapter,
-                             struct discord_bucket *b)
+_discord_rest_stop_bucket(struct discord_rest *rest, struct discord_bucket *b)
 {
     /* cancel busy transfer */
     if (b->busy && b->busy != DISCORD_BUCKET_TIMEOUT) {
         struct discord_context *cxt = b->busy;
 
         b->busy = NULL;
-        discord_async_recycle_context(&adapter->async, cxt);
+        discord_async_recycle_context(&rest->async, cxt);
     }
 
     /* cancel pending tranfers */
-    QUEUE_ADD(adapter->async.idle_contexts, &b->pending_queue);
+    QUEUE_ADD(rest->async.idle_contexts, &b->pending_queue);
     QUEUE_INIT(&b->pending_queue);
 }
 
 void
-discord_adapter_stop_buckets(struct discord_adapter *adapter)
+discord_rest_stop_buckets(struct discord_rest *rest)
 {
-    discord_ratelimiter_foreach_bucket(adapter->ratelimiter, adapter,
-                                       &_discord_adapter_stop_bucket);
+    discord_ratelimiter_foreach_bucket(rest->ratelimiter, rest,
+                                       &_discord_rest_stop_bucket);
 }

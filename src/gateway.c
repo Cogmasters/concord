@@ -38,9 +38,9 @@ discord_disconnect_guild_member(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64,
-                               guild_id, user_id);
+    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
+                            user_id);
 }
 
 /******************************************************************************
@@ -65,8 +65,7 @@ discord_get_gateway(struct discord *client, struct ccord_szbuf *ret)
     req.dispatch.has_type = true;
     req.dispatch.sync = ret;
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/gateway");
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET, "/gateway");
 }
 
 CCORDcode
@@ -80,6 +79,6 @@ discord_get_gateway_bot(struct discord *client, struct ccord_szbuf *ret)
     req.dispatch.has_type = true;
     req.dispatch.sync = ret;
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/gateway/bot");
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/gateway/bot");
 }

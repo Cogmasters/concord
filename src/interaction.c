@@ -37,9 +37,9 @@ discord_create_interaction_response(
 
     DISCORD_REQ_INIT(req, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/interactions/%" PRIu64 "/%s/callback",
-                               interaction_id, interaction_token);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/interactions/%" PRIu64 "/%s/callback",
+                            interaction_id, interaction_token);
 }
 
 CCORDcode
@@ -57,9 +57,9 @@ discord_get_original_interaction_response(
 
     DISCORD_REQ_INIT(req, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64 "/%s/messages/@original",
-                               application_id, interaction_token);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64 "/%s/messages/@original",
+                            application_id, interaction_token);
 }
 
 CCORDcode
@@ -94,9 +94,9 @@ discord_edit_original_interaction_response(
 
     DISCORD_REQ_INIT(req, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s/messages/@original",
-                               application_id, interaction_token);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/webhooks/%" PRIu64 "/%s/messages/@original",
+                            application_id, interaction_token);
 }
 
 CCORDcode
@@ -113,9 +113,9 @@ discord_delete_original_interaction_response(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64 "/%s/messages/@original",
-                               application_id, interaction_token);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64 "/%s/messages/@original",
+                            application_id, interaction_token);
 }
 
 CCORDcode
@@ -156,9 +156,9 @@ discord_create_followup_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s%s%s", application_id,
-                               interaction_token, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/webhooks/%" PRIu64 "/%s%s%s", application_id,
+                            interaction_token, *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -177,9 +177,9 @@ discord_get_followup_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64 "/%s/%" PRIu64,
-                               application_id, interaction_token, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64 "/%s/%" PRIu64,
+                            application_id, interaction_token, message_id);
 }
 
 CCORDcode
@@ -215,9 +215,9 @@ discord_edit_followup_message(struct discord *client,
 
     DISCORD_REQ_INIT(req, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
-                               application_id, interaction_token, message_id);
+    return discord_rest_run(&client->rest, &req, &body, method,
+                            "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
+                            application_id, interaction_token, message_id);
 }
 
 CCORDcode
@@ -236,7 +236,7 @@ discord_delete_followup_message(struct discord *client,
 
     DISCORD_REQ_BLANK_INIT(req, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
-                               application_id, interaction_token, message_id);
+    return discord_rest_run(&client->rest, &req, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
+                            application_id, interaction_token, message_id);
 }

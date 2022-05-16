@@ -239,12 +239,12 @@ The following outlines special flags and targets to override the default Makefil
     * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
 * `-DCCORD_DEBUG_WEBSOCKETS`
     * Enable verbose debugging for WebSockets communication.
-* `-DCCORD_DEBUG_ADAPTER`
-    * Enable verbose debugging for REST communication.
+* `-DCCORD_DEBUG_HTTP`
+    * Enable verbose debugging for HTTP communication.
 
 *Example:*
 ```console
-$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_ADAPTER" make
+$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 ```
 
 #### Special targets
@@ -252,7 +252,7 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_ADAPTER" make
 * `make voice`
     * Enable experimental Voice Connection handling - not production ready.
 * `make debug`
-    * Same as enabling `-DCCORD_DEBUG_WEBSOCKETS` and `-DCCORD_DEBUG_ADAPTER`
+    * Same as enabling `-DCCORD_DEBUG_WEBSOCKETS` and `-DCCORD_DEBUG_HTTP`
 
 ## Installing Concord
 
