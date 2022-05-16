@@ -376,7 +376,7 @@ _discord_rest_run_async(struct discord_rest *rest,
     struct discord_context *cxt = discord_async_start_context(
         &rest->async, req, body, method, endpoint, key);
 
-    discord_context_bucket_insert(cxt, cxt->b, req->dispatch.high_p);
+    discord_bucket_add_context(cxt->b, cxt, req->dispatch.high_p);
 
     /* FIXME: redundant return value (constant) */
     return CCORD_OK;
@@ -398,7 +398,7 @@ _discord_context_to_multipart(curl_mime *mime, void *p_cxt)
 static CCORDcode
 _discord_rest_add_request(struct discord_rest *rest, struct discord_bucket *b)
 {
-    struct discord_context *cxt = discord_context_bucket_remove(b);
+    struct discord_context *cxt = discord_bucket_remove_context(b);
     struct ua_conn *conn = ua_conn_start(rest->ua);
 
     if (HTTP_MIMEPOST == cxt->method) {

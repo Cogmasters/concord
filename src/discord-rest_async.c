@@ -84,27 +84,6 @@ discord_async_cleanup(struct discord_async *async)
     curl_multi_cleanup(async->mhandle);
 }
 
-void
-discord_context_bucket_insert(struct discord_context *cxt,
-                              struct discord_bucket *b,
-                              bool high_priority)
-{
-    if (high_priority)
-        QUEUE_INSERT_HEAD(&b->pending_queue, &cxt->entry);
-    else
-        QUEUE_INSERT_TAIL(&b->pending_queue, &cxt->entry);
-}
-
-struct discord_context *
-discord_context_bucket_remove(struct discord_bucket *b)
-{
-    QUEUE(struct discord_context) *qelem = QUEUE_HEAD(&b->pending_queue);
-    QUEUE_REMOVE(qelem);
-    QUEUE_INIT(qelem);
-
-    return QUEUE_DATA(qelem, struct discord_context, entry);
-}
-
 CCORDcode
 discord_async_add_request(struct discord_async *async,
                           struct discord_context *cxt,
@@ -143,7 +122,7 @@ discord_async_retry_context(struct discord_async *async,
     ua_conn_reset(cxt->conn);
 
     /* FIXME: wait_ms > 0 should be dealt with aswell */
-    if (wait_ms <= 0) discord_context_bucket_insert(cxt, cxt->b, true);
+    if (wait_ms <= 0) discord_bucket_add_context(cxt->b, cxt, true);
 
     return true;
 }

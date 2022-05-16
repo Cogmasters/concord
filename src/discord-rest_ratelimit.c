@@ -420,3 +420,24 @@ discord_ratelimiter_build(struct discord_ratelimiter *rl,
     /* populate bucket with response header values */
     _discord_bucket_populate(rl, b, info);
 }
+
+void
+discord_bucket_add_context(struct discord_bucket *b,
+                           struct discord_context *cxt,
+                           bool high_priority)
+{
+    if (high_priority)
+        QUEUE_INSERT_HEAD(&b->pending_queue, &cxt->entry);
+    else
+        QUEUE_INSERT_TAIL(&b->pending_queue, &cxt->entry);
+}
+
+struct discord_context *
+discord_bucket_remove_context(struct discord_bucket *b)
+{
+    QUEUE(struct discord_context) *qelem = QUEUE_HEAD(&b->pending_queue);
+    QUEUE_REMOVE(qelem);
+    QUEUE_INIT(qelem);
+
+    return QUEUE_DATA(qelem, struct discord_context, entry);
+}

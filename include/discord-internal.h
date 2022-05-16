@@ -32,9 +32,9 @@
 /**
  * @brief Get container `type` from a field `ptr`
  *
- * @param ptr the field contained in `type`
- * @param type the container datatype
- * @param path the path to the field from the container POV
+ * @param[in] ptr the field contained in `type`
+ * @param[in] type the container datatype
+ * @param[in] path the path to the field from the container POV
  */
 #define CONTAINEROF(ptr, type, path)                                          \
     ((type *)((char *)(ptr)-offsetof(type, path)))
@@ -49,10 +49,11 @@
 /**
  * @brief log and return `code` if `expect` condition is false
  *
- * @param expect the expected outcome
- * @param client the discord client
- * @param error return CCORDcode error
- * @param reason for return
+ * @param[in] client the Discord client
+ * @param[in] expect the expected outcome
+ * @param[in] code return CCORDcode error code
+ * @param[in] reason for return
+ * @return the provided @ref CCORDcode `code` parameter
  */
 #define CCORD_EXPECT(client, expect, code, reason)                            \
     do {                                                                      \
@@ -66,8 +67,8 @@
  * @brief Shortcut for checking OOB-write attempts
  * @note unsigned values are expected
  *
- * @param nbytes amount of bytes to be written
- * @param destsz size of dest in bytes
+ * @param[in] nbytes amount of bytes to be written
+ * @param[in] destsz size of dest in bytes
  */
 #define ASSERT_NOT_OOB(nbytes, destsz)                                        \
     ASSERT_S((size_t)nbytes < (size_t)destsz, "Out of bounds write attempt");
@@ -193,29 +194,6 @@ void discord_async_init(struct discord_async *async, struct logconf *conf);
  * @param async the handle initialized with discord_async_init()
  */
 void discord_async_cleanup(struct discord_async *async);
-
-/**
- * @brief Insert request's context into bucket's pending queue
- * @todo this doesn't have to be done manually,
- * discord_async_start_context() should take care of it
- *
- * @param cxt the request context obtained via discord_async_start_context()
- * @param b the bucket to insert the request to
- * @param high_priority if high priority then request shall be prioritized over
- *      already enqueued requests
- */
-void discord_context_bucket_insert(struct discord_context *cxt,
-                                   struct discord_bucket *b,
-                                   bool high_priority);
-
-/**
- * @brief Remove head request's context from bucket's pending queue
- *
- * @param b the bucket to fetch the request from
- * @return the request's context
- */
-struct discord_context *discord_context_bucket_remove(
-    struct discord_bucket *b);
 
 /**
  * @brief Kickstart the request by adding it to libcurl's request multiplexer
@@ -420,6 +398,27 @@ void discord_bucket_try_timeout(struct discord_rest *rest,
  */
 struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
                                           const char key[]);
+
+/**
+ * @brief Insert request's context into bucket's pending queue
+ *
+ * @param b the bucket to insert the request to
+ * @param cxt the request context obtained via discord_async_start_context()
+ * @param high_priority if high priority then request shall be prioritized over
+ *      already enqueued requests
+ */
+void discord_bucket_add_context(struct discord_bucket *b,
+                                struct discord_context *cxt,
+                                bool high_priority);
+
+/**
+ * @brief Remove head request's context from bucket's pending queue
+ *
+ * @param b the bucket to fetch the request from
+ * @return the request's context
+ */
+struct discord_context *discord_bucket_remove_context(
+    struct discord_bucket *b);
 
 /** @brief The ratelimiter struct for handling ratelimiting */
 struct discord_ratelimiter {
@@ -856,7 +855,7 @@ struct discord_refcounter {
     int capacity;
     /**
      * individual user's data held for automatic cleanup
-     * @note datatype declared at discord-rest_refcount.c
+     * @note datatype declared at discord-refcount.c
      */
     struct _discord_ref *refs;
 };
@@ -925,7 +924,7 @@ struct discord_message_commands {
     int capacity;
     /**
      * message command entries
-     * @note datatype declared at discord-gateway_command.c
+     * @note datatype declared at discord-messagecommands.c
      */
     struct _discord_message_commands_entry *entries;
 };
