@@ -675,3 +675,17 @@ discord_config_get_field(struct discord *client,
 
     return (struct ccord_szbuf_readonly){ field.start, field.size };
 }
+
+void
+__discord_claim(struct discord *client, const void *param)
+{
+    ASSERT_S(discord_refcounter_claim(client->refcounter, (void *)param),
+             "Failed attempt to claim non-Concord function parameter");
+}
+
+void
+discord_unclaim(struct discord *client, const void *param)
+{
+    ASSERT_S(discord_refcounter_unclaim(client->refcounter, (void *)param),
+             "Failed attempt to unclaim non-Concord function parameter");
+}

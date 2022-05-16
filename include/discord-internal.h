@@ -877,29 +877,56 @@ struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
 void discord_refcounter_cleanup(struct discord_refcounter *rc);
 
 /**
+ * @brief Claim ownership of `data`
+ * @see discord_refcounter_unclaim()
+ *
+ * After ownership is claimed `data` will no longer be cleaned automatically,
+ *      but shall be immediatelly cleaned once discord_refcounter_unclaim() is
+ *      called
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the data to have its ownership claimed
+ * @return `true` if `data` was found and claimed
+ */
+bool discord_refcounter_claim(struct discord_refcounter *rc, void *data);
+
+/**
+ * @brief Unclaim ownership of `data`
+ * @see discord_refcounter_claim()
+ *
+ * This function will have `data` cleanup method will be immediatelly called
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the data to have its ownership unclaimed
+ * @return `true` if `data` was found, unclaimed, and free'd
+ */
+bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
+
+/**
  * @brief Increment the reference counter for `ret->data`
+ * @see discord_refcounter_decr()
  *
  * @param rc the handle initialized with discord_refcounter_init()
- * @param data the user arbitrary data to have its reference counter
- * @param cleanup user-defined function for cleaning `data` resources once its
+ * @param data the data to have its reference counter incremented
+ * @param cleanup function for cleaning `data` resources once its
  *      no longer referenced
  * @param should_free whether `data` cleanup should be followed by a free()
+ * @return `true` if `data` reference count has been successfully incremented
  */
-void discord_refcounter_incr(struct discord_refcounter *rc,
+bool discord_refcounter_incr(struct discord_refcounter *rc,
                              void *data,
                              void (*cleanup)(void *data),
                              bool should_free);
 
 /**
  * @brief Decrement the reference counter for `data`
+ * @see discord_refcounter_incr()
  *
  * If the count reaches zero then `data` shall be cleanup up with its
  *      user-defined cleanup function
  * @param rc the handle initialized with discord_refcounter_init()
- * @param data the user arbitrary data to have its reference counter
- *      decremented
+ * @param data the data to have its reference counter decremented
+ * @return `true` if `data` reference count has been successfully decremented
  */
-void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
+bool discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 
 /** @} DiscordInternalRefcount */
 

@@ -27,7 +27,12 @@ struct _discord_refvalue {
      * @note this only has to be assigned once, it is automatically called once
      *      `data` is no longer referenced by any callback */
     void (*cleanup)(void *data);
-    /** `data` references count */
+    /**
+     * `data` references count
+     * @note if `-1` then `data` has been claimed with
+     *      discord_refcounter_claim() and will be cleaned up once
+     *      discord_refcount_unclaim() is called
+     */
     int visits;
     /** whether `data` cleanup should also be followed by a free() */
     bool should_free;
@@ -50,29 +55,44 @@ _discord_refvalue_cleanup(struct _discord_refvalue *value)
 }
 
 static struct _discord_refvalue *
-_discord_refvalue_find(struct discord_refcounter *rc, intptr_t key)
+_discord_refvalue_find(struct discord_refcounter *rc, void *data)
 {
     struct _discord_ref *ref = NULL;
 
-    ref = chash_lookup_bucket(rc, key, ref, REFCOUNTER_TABLE);
+    ref = chash_lookup_bucket(rc, (intptr_t)data, ref, REFCOUNTER_TABLE);
 
     return &ref->value;
 }
 
 static struct _discord_refvalue *
 _discord_refvalue_init(struct discord_refcounter *rc,
-                       intptr_t key,
                        void *data,
-                       void (*cleanup)(void *data))
+                       void (*cleanup)(void *data),
+                       bool should_free)
 {
-    struct _discord_refvalue value;
+    struct _discord_refvalue value = {
+        .data = data,
+        .cleanup = cleanup,
+        .visits = 0,
+        .should_free = should_free,
+    };
 
-    value.data = data;
-    value.cleanup = cleanup;
-    value.visits = 0;
-    chash_assign(rc, key, value, REFCOUNTER_TABLE);
+    chash_assign(rc, (intptr_t)data, value, REFCOUNTER_TABLE);
 
-    return _discord_refvalue_find(rc, key);
+    return _discord_refvalue_find(rc, data);
+}
+
+static bool
+_discord_refvalue_contains(struct discord_refcounter *rc, void *data)
+{
+    bool ret = chash_contains(rc, (intptr_t)data, ret, REFCOUNTER_TABLE);
+    return ret;
+}
+
+static void
+_discord_refvalue_delete(struct discord_refcounter *rc, void *data)
+{
+    chash_delete(rc, (intptr_t)data, REFCOUNTER_TABLE);
 }
 
 struct discord_refcounter *
@@ -91,37 +111,65 @@ discord_refcounter_cleanup(struct discord_refcounter *rc)
     chash_free(rc, REFCOUNTER_TABLE);
 }
 
-void
+bool
+discord_refcounter_claim(struct discord_refcounter *rc, void *data)
+{
+    if (_discord_refvalue_contains(rc, data)) {
+        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
+
+        value->visits = -1;
+        return true;
+    }
+    return false;
+}
+
+bool
+discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
+{
+    if (_discord_refvalue_contains(rc, data)) {
+        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
+
+        if (value->visits == -1) {
+            _discord_refvalue_delete(rc, data);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool
 discord_refcounter_incr(struct discord_refcounter *rc,
                         void *data,
                         void (*cleanup)(void *data),
                         bool should_free)
 {
-    struct _discord_refvalue *value = NULL;
-    intptr_t key = (intptr_t)data;
-    int ret;
+    struct _discord_refvalue *value;
 
-    ret = chash_contains(rc, key, ret, REFCOUNTER_TABLE);
-    if (ret)
-        value = _discord_refvalue_find(rc, key);
+    if (_discord_refvalue_contains(rc, data))
+        value = _discord_refvalue_find(rc, data);
     else
-        value = _discord_refvalue_init(rc, key, data, cleanup);
-    value->should_free = should_free;
-    ++value->visits;
+        value = _discord_refvalue_init(rc, data, cleanup, should_free);
+
+    if (value->visits != -1) {
+        ++value->visits;
+        return true;
+    }
+    return false;
 }
 
-void
+bool
 discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
     struct _discord_refvalue *value = NULL;
-    intptr_t key = (intptr_t)data;
-    int ret;
 
-    ret = chash_contains(rc, key, ret, REFCOUNTER_TABLE);
-    if (ret) {
-        value = _discord_refvalue_find(rc, key);
+    if (_discord_refvalue_contains(rc, data))
+        value = _discord_refvalue_find(rc, data);
+
+    if (value && value->visits != -1) {
         if (0 == --value->visits) {
-            chash_delete(rc, key, REFCOUNTER_TABLE);
+            _discord_refvalue_delete(rc, data);
         }
+        return true;
     }
+    return false;
 }
