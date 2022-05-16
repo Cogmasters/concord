@@ -45,24 +45,23 @@ struct _discord_message_commands_entry {
     int state;
 };
 
-struct discord_message_commands *
-discord_message_commands_init(struct logconf *conf)
+void
+discord_message_commands_init(struct discord_message_commands *cmds,
+                              struct logconf *conf)
 {
-    struct discord_message_commands *cmds = chash_init(cmds, COMMANDS_TABLE);
+    __chash_init(cmds, COMMANDS_TABLE);
 
     logconf_branch(&cmds->conf, conf, "DISCORD_MESSAGE_COMMANDS");
 
     cmds->fallback = NULL;
     memset(&cmds->prefix, 0, sizeof(cmds->prefix));
-
-    return cmds;
 }
 
 void
 discord_message_commands_cleanup(struct discord_message_commands *cmds)
 {
     if (cmds->prefix.start) free(cmds->prefix.start);
-    chash_free(cmds, COMMANDS_TABLE);
+    __chash_free(cmds, COMMANDS_TABLE);
 }
 
 discord_ev_message
@@ -101,13 +100,6 @@ discord_message_commands_append(struct discord_message_commands *cmds,
     }
 }
 
-static void
-_discord_message_cleanup_v(void *message)
-{
-    discord_message_cleanup(message);
-    free(message);
-}
-
 void
 discord_message_commands_set_prefix(struct discord_message_commands *cmds,
                                     const char prefix[],
@@ -116,6 +108,15 @@ discord_message_commands_set_prefix(struct discord_message_commands *cmds,
     if (cmds->prefix.start) free(cmds->prefix.start);
 
     cmds->prefix.size = cog_strndup(prefix, length, &cmds->prefix.start);
+}
+
+static void
+_discord_message_cleanup_v(struct discord *client, void *message)
+{
+    (void)client;
+
+    discord_message_cleanup(message);
+    free(message);
 }
 
 /** return true in case user command has been triggered */
@@ -167,11 +168,11 @@ discord_message_commands_try_perform(struct discord_gateway *gw,
                 ++event->content;
         }
 
-        discord_refcounter_incr(client->refcounter, event,
+        discord_refcounter_incr(&client->refcounter, event,
                                 _discord_message_cleanup_v, false);
         callback(client, event);
         event->content = tmp; /* retrieve original ptr */
-        discord_refcounter_decr(client->refcounter, event);
+        discord_refcounter_decr(&client->refcounter, event);
 
         return true;
     }

@@ -147,7 +147,7 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
  * @param param a function parameter provided by Concord
  * @return pointer to `param` (for one-liners)
  */
-#define discord_claim(client, param) __discord_claim(client, param), param
+#define discord_claim(client, param) (__discord_claim(client, param), param)
 void __discord_claim(struct discord *client, const void *data);
 
 /**

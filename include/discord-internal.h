@@ -544,12 +544,15 @@ struct discord_gateway_payload {
     char *json;
     /** current iteration JSON string data length */
     size_t length;
+
     /** field 'op' */
     enum discord_gateway_opcodes opcode;
     /** field 's' */
     int seq;
     /** field 't' */
     char name[32];
+    /** field 't' enumerator value */
+    enum discord_gateway_events event;
     /** field 'd' */
     jsmnf_pair *data;
 };
@@ -755,10 +758,8 @@ void discord_gateway_send_presence_update(
  * @brief Dispatch user callback matched to event
  *
  * @param gw the handle initialized with discord_gateway_init()
- * @param event the Discord event to be executed
  */
-void discord_gateway_dispatch(struct discord_gateway *gw,
-                              enum discord_gateway_events event);
+void discord_gateway_dispatch(struct discord_gateway *gw);
 
 /** @} DiscordInternalGateway */
 
@@ -864,10 +865,11 @@ struct discord_refcounter {
  * @brief Initialize reference counter handle
  *
  * A hashtable shall be used for storage and retrieval of user data
+ * @param rc the reference counter handle to be initialized
  * @param conf pointer to @ref discord logging module
- * @return the reference counter handle
  */
-struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
+void discord_refcounter_init(struct discord_refcounter *rc,
+                             struct logconf *conf);
 
 /**
  * @brief Cleanup refcounter and all user data currently held
@@ -913,7 +915,8 @@ bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
  */
 bool discord_refcounter_incr(struct discord_refcounter *rc,
                              void *data,
-                             void (*cleanup)(void *data),
+                             void (*cleanup)(struct discord *client,
+                                             void *data),
                              bool should_free);
 
 /**
@@ -959,11 +962,12 @@ struct discord_message_commands {
 /**
  * @brief Initialize a Message Commands handle
  *
+ * @param cmds the message commands handle to be initialized
  * @param conf pointer to @ref discord logging module
  * @return the message commands handle
  */
-struct discord_message_commands *discord_message_commands_init(
-    struct logconf *conf);
+void discord_message_commands_init(struct discord_message_commands *cmds,
+                                   struct logconf *conf);
 
 /**
  * @brief Free a Message Commands handle
@@ -1046,12 +1050,16 @@ struct discord {
     struct ccord_szbuf_readonly token;
     /** the io poller for listening to file descriptors */
     struct io_poller *io_poller;
+
+    /** the user's message commands @see discord_set_on_command() */
+    struct discord_message_commands commands;
+    /** user's data reference counter for automatic cleanup */
+    struct discord_refcounter refcounter;
+
     /** the handle for interfacing with Discord's REST API */
     struct discord_rest rest;
     /** the handle for interfacing with Discord's Gateway API */
     struct discord_gateway gw;
-    /** user's data reference counter for automatic cleanup */
-    struct discord_refcounter *refcounter;
     /** the client's user structure */
     struct discord_user self;
 
@@ -1072,8 +1080,6 @@ struct discord {
     discord_ev_idle on_idle;
     /** triggers once per loop cycle */
     discord_ev_idle on_cycle;
-    /** the user's message commands @see discord_set_on_command() */
-    struct discord_message_commands *commands;
 
     /** space for user arbitrary data */
     void *data;

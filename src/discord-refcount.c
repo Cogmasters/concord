@@ -12,8 +12,9 @@
 #define REFCOUNTER_TABLE_HEAP   1
 #define REFCOUNTER_TABLE_BUCKET struct _discord_ref
 #define REFCOUNTER_TABLE_FREE_KEY(_key)
-#define REFCOUNTER_TABLE_HASH(_key, _hash)       ((intptr_t)(_key))
-#define REFCOUNTER_TABLE_FREE_VALUE(_value)      _discord_refvalue_cleanup(&_value)
+#define REFCOUNTER_TABLE_HASH(_key, _hash) ((intptr_t)(_key))
+#define REFCOUNTER_TABLE_FREE_VALUE(_value)                                   \
+    _discord_refvalue_cleanup(&_value, client)
 #define REFCOUNTER_TABLE_COMPARE(_cmp_a, _cmp_b) (_cmp_a == _cmp_b)
 #define REFCOUNTER_TABLE_INIT(ref, _key, _value)                              \
     memset(&ref, 0, sizeof(ref));                                             \
@@ -26,7 +27,7 @@ struct _discord_refvalue {
      * cleanup for when `data` is no longer needed
      * @note this only has to be assigned once, it is automatically called once
      *      `data` is no longer referenced by any callback */
-    void (*cleanup)(void *data);
+    void (*cleanup)(struct discord *client, void *data);
     /**
      * `data` references count
      * @note if `-1` then `data` has been claimed with
@@ -48,9 +49,10 @@ struct _discord_ref {
 };
 
 static void
-_discord_refvalue_cleanup(struct _discord_refvalue *value)
+_discord_refvalue_cleanup(struct _discord_refvalue *value,
+                          struct discord *client)
 {
-    if (value->cleanup) value->cleanup(value->data);
+    if (value->cleanup) value->cleanup(client, value->data);
     if (value->should_free) free(value->data);
 }
 
@@ -67,9 +69,10 @@ _discord_refvalue_find(struct discord_refcounter *rc, void *data)
 static struct _discord_refvalue *
 _discord_refvalue_init(struct discord_refcounter *rc,
                        void *data,
-                       void (*cleanup)(void *data),
+                       void (*cleanup)(struct discord *client, void *data),
                        bool should_free)
 {
+    struct discord *client = CLIENT(rc, refcounter);
     struct _discord_refvalue value = {
         .data = data,
         .cleanup = cleanup,
@@ -92,23 +95,23 @@ _discord_refvalue_contains(struct discord_refcounter *rc, void *data)
 static void
 _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
 {
+    struct discord *client = CLIENT(rc, refcounter);
     chash_delete(rc, (intptr_t)data, REFCOUNTER_TABLE);
 }
 
-struct discord_refcounter *
-discord_refcounter_init(struct logconf *conf)
+void
+discord_refcounter_init(struct discord_refcounter *rc, struct logconf *conf)
 {
-    struct discord_refcounter *rc = chash_init(rc, REFCOUNTER_TABLE);
+    __chash_init(rc, REFCOUNTER_TABLE);
 
     logconf_branch(&rc->conf, conf, "DISCORD_REFCOUNT");
-
-    return rc;
 }
 
 void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
-    chash_free(rc, REFCOUNTER_TABLE);
+    struct discord *client = CLIENT(rc, refcounter);
+    __chash_free(rc, REFCOUNTER_TABLE);
 }
 
 bool
@@ -140,7 +143,7 @@ discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
 bool
 discord_refcounter_incr(struct discord_refcounter *rc,
                         void *data,
-                        void (*cleanup)(void *data),
+                        void (*cleanup)(struct discord *client, void *data),
                         bool should_free)
 {
     struct _discord_refvalue *value;

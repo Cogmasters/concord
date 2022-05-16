@@ -136,7 +136,7 @@ discord_async_recycle_context(struct discord_async *async,
     curl_multi_remove_handle(async->mhandle, ehandle);
     if (cxt->conn) ua_conn_stop(cxt->conn);
 
-    discord_refcounter_decr(CLIENT(async, rest.async)->refcounter,
+    discord_refcounter_decr(&CLIENT(async, rest.async)->refcounter,
                             cxt->dispatch.data);
 
     cxt->b = NULL;
@@ -220,7 +220,7 @@ discord_async_start_context(struct discord_async *async,
     cxt->b = discord_bucket_get(rest->ratelimiter, key);
 
     if (req->dispatch.data)
-        discord_refcounter_incr(client->refcounter, req->dispatch.data,
+        discord_refcounter_incr(&client->refcounter, req->dispatch.data,
                                 req->dispatch.cleanup, false);
 
     io_poller_curlm_enable_perform(client->io_poller, async->mhandle);

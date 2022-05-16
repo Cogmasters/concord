@@ -11,37 +11,6 @@
     case code:                                                                \
         return #code
 
-/**
- * @brief Context in case event is scheduled to be triggered
- *        from Concord's worker threads
- */
-struct _discord_gateway_context {
-    /** the discord gateway client */
-    struct discord_gateway *gw;
-    /** the event unique id value */
-    enum discord_gateway_events event;
-};
-
-static struct _discord_gateway_context *
-_discord_gateway_context_init(const struct discord_gateway *gw,
-                              enum discord_gateway_events event)
-{
-    struct _discord_gateway_context *cxt = malloc(sizeof *cxt);
-    struct discord *clone = discord_clone(CLIENT(gw, gw));
-
-    cxt->gw = &clone->gw;
-    cxt->event = event;
-
-    return cxt;
-}
-
-static void
-_discord_gateway_context_cleanup(struct _discord_gateway_context *cxt)
-{
-    discord_cleanup(CLIENT(cxt->gw, gw));
-    free(cxt);
-}
-
 static const char *
 _discord_gateway_opcode_print(enum discord_gateway_opcodes opcode)
 {
@@ -114,12 +83,12 @@ on_hello(struct discord_gateway *gw)
         discord_gateway_send_identify(gw, &gw->id);
 }
 
-static enum discord_gateway_events
-_discord_gateway_event_eval(char name[])
-{
 #define RETURN_IF_MATCH(event, str)                                           \
     if (!strcmp(#event, str)) return DISCORD_EV_##event
 
+static enum discord_gateway_events
+_discord_gateway_event_eval(char name[])
+{
     RETURN_IF_MATCH(READY, name);
     RETURN_IF_MATCH(RESUMED, name);
     RETURN_IF_MATCH(APPLICATION_COMMAND_CREATE, name);
@@ -174,33 +143,44 @@ _discord_gateway_event_eval(char name[])
     RETURN_IF_MATCH(VOICE_SERVER_UPDATE, name);
     RETURN_IF_MATCH(WEBHOOKS_UPDATE, name);
     return DISCORD_EV_NONE;
+}
 
 #undef RETURN_IF_MATCH
+
+static struct discord_gateway *
+_discord_gateway_clone(const struct discord_gateway *gw)
+{
+    return &discord_clone(CLIENT(gw, gw))->gw;
 }
 
 static void
-_discord_gateway_dispatch_thread(void *p_cxt)
+_discord_gateway_clone_cleanup(struct discord_gateway *clone)
 {
-    struct _discord_gateway_context *cxt = p_cxt;
+    discord_cleanup(CLIENT(clone, gw));
+}
 
-    logconf_info(&cxt->gw->conf,
+static void
+_discord_gateway_dispatch_thread(void *p_gw)
+{
+    struct discord_gateway *gw = p_gw;
+
+    logconf_info(&gw->conf,
                  "Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
-                 cxt->gw->payload.name);
+                 gw->payload.name);
 
-    discord_gateway_dispatch(cxt->gw, cxt->event);
+    discord_gateway_dispatch(gw);
 
-    logconf_info(&cxt->gw->conf,
+    logconf_info(&gw->conf,
                  "Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
-                 cxt->gw->payload.name);
+                 gw->payload.name);
 
-    _discord_gateway_context_cleanup(cxt);
+    _discord_gateway_clone_cleanup(gw);
 }
 
 static void
 on_dispatch(struct discord_gateway *gw)
 {
     /* get dispatch event opcode */
-    enum discord_gateway_events event;
     enum discord_event_scheduler mode;
 
     /* XXX: this should only apply for user dispatched payloads? */
@@ -217,7 +197,7 @@ on_dispatch(struct discord_gateway *gw)
   }
 #endif
 
-    switch (event = _discord_gateway_event_eval(gw->payload.name)) {
+    switch (gw->payload.event) {
     case DISCORD_EV_READY: {
         jsmnf_pair *f;
 
@@ -248,23 +228,22 @@ on_dispatch(struct discord_gateway *gw)
 
     mode = gw->scheduler(CLIENT(gw, gw),
                          gw->payload.json + gw->payload.data->v.pos,
-                         gw->payload.data->v.len, event);
+                         gw->payload.data->v.len, gw->payload.event);
 
     /* user subscribed to event */
     switch (mode) {
     case DISCORD_EVENT_IGNORE:
         break;
     case DISCORD_EVENT_MAIN_THREAD:
-        discord_gateway_dispatch(gw, event);
+        discord_gateway_dispatch(gw);
         break;
     case DISCORD_EVENT_WORKER_THREAD: {
-        struct _discord_gateway_context *cxt =
-            _discord_gateway_context_init(gw, event);
-        int ret = work_run(&_discord_gateway_dispatch_thread, cxt);
+        struct discord_gateway *clone = _discord_gateway_clone(gw);
+        int ret = work_run(&_discord_gateway_dispatch_thread, clone);
 
         if (ret != 0) {
             log_error("Couldn't execute worker-thread (code %d)", ret);
-            _discord_gateway_context_cleanup(cxt);
+            _discord_gateway_clone_cleanup(clone);
         }
     } break;
     default:
@@ -435,6 +414,9 @@ on_text_cb(void *p_gw,
                              gw->payload.json + f->v.pos);
                 else
                     *gw->payload.name = '\0';
+
+                gw->payload.event =
+                    _discord_gateway_event_eval(gw->payload.name);
             }
             if ((f = jsmnf_find(gw->parse.pairs, text, "s", 1))) {
                 int seq = (int)strtol(gw->payload.json + f->v.pos, NULL, 10);

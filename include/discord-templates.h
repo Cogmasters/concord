@@ -17,10 +17,9 @@
     void (*fail)(struct discord * client, CCORDcode code, void *data);        \
     /** user arbitrary data to be passed to `done` or `fail` callbacks */     \
     void *data;                                                               \
-    /** cleanup for when `data` is no longer needed                           \
-        @note this only has to be defined once, it shall be called when       \
-       `data` is no longer referenced by any callback */                      \
-    void (*cleanup)(void *data);                                              \
+    /** cleanup method to be called for `data`, once its no longer            \
+    being referenced */                                                       \
+    void (*cleanup)(struct discord * client, void *data);                     \
     /** if `true` then request will be prioritized over already enqueued      \
         requests */                                                           \
     bool high_p

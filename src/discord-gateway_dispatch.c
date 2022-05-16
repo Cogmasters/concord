@@ -126,15 +126,21 @@ static const struct {
         INIT(discord_webhooks_update, webhooks_update),
 };
 
-void
-discord_gateway_dispatch(struct discord_gateway *gw,
-                         enum discord_gateway_events event)
+static void
+_discord_gateway_dispatch_cleanup(struct discord *client, void *data)
 {
+    dispatch[client->gw.payload.event].cleanup(data);
+}
+
+void
+discord_gateway_dispatch(struct discord_gateway *gw)
+{
+    const enum discord_gateway_events event = gw->payload.event;
     struct discord *client = CLIENT(gw, gw);
 
     switch (event) {
     case DISCORD_EV_MESSAGE_CREATE:
-        if (discord_message_commands_try_perform(gw, client->commands,
+        if (discord_message_commands_try_perform(gw, &client->commands,
                                                  &gw->payload))
         {
             return;
@@ -147,10 +153,10 @@ discord_gateway_dispatch(struct discord_gateway *gw,
             dispatch[event].from_jsmnf(gw->payload.data, gw->payload.json,
                                        data);
 
-            discord_refcounter_incr(client->refcounter, data,
-                                    dispatch[event].cleanup, true);
+            discord_refcounter_incr(&client->refcounter, data,
+                                    _discord_gateway_dispatch_cleanup, true);
             gw->cbs[event](client, data);
-            discord_refcounter_decr(client->refcounter, data);
+            discord_refcounter_decr(&client->refcounter, data);
         }
         break;
     case DISCORD_EV_NONE:

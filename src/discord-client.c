@@ -14,8 +14,9 @@ _discord_init(struct discord *new_client)
     ccord_global_init();
     discord_timers_init(new_client);
     new_client->io_poller = io_poller_create();
-    new_client->refcounter = discord_refcounter_init(&new_client->conf);
-    new_client->commands = discord_message_commands_init(&new_client->conf);
+
+    discord_refcounter_init(&new_client->refcounter, &new_client->conf);
+    discord_message_commands_init(&new_client->commands, &new_client->conf);
 
     discord_rest_init(&new_client->rest, &new_client->conf,
                       &new_client->token);
@@ -111,7 +112,7 @@ discord_config_init(const char config_file[])
 
                 if (enable_prefix
                     && (f = jsmnf_find(pairs, field.start, "prefix", 6))) {
-                    discord_message_commands_set_prefix(new_client->commands,
+                    discord_message_commands_set_prefix(&new_client->commands,
                                                         field.start + f->v.pos,
                                                         f->v.len);
                 }
@@ -173,8 +174,8 @@ discord_cleanup(struct discord *client)
         discord_gateway_cleanup(&client->gw);
         discord_user_cleanup(&client->self);
         io_poller_destroy(client->io_poller);
-        discord_refcounter_cleanup(client->refcounter);
-        discord_message_commands_cleanup(client->commands);
+        discord_refcounter_cleanup(&client->refcounter);
+        discord_message_commands_cleanup(&client->commands);
 #ifdef CCORD_VOICE
         discord_voice_connections_cleanup(client);
 #endif
@@ -276,7 +277,7 @@ discord_set_prefix(struct discord *client, const char prefix[])
 {
     if (!prefix || !*prefix) return;
 
-    discord_message_commands_set_prefix(client->commands, prefix,
+    discord_message_commands_set_prefix(&client->commands, prefix,
                                         strlen(prefix));
 }
 
@@ -292,7 +293,8 @@ discord_set_on_command(struct discord *client,
                        discord_ev_message callback)
 {
     size_t length = (!command || !*command) ? 0 : strlen(command);
-    discord_message_commands_append(client->commands, command, length,
+
+    discord_message_commands_append(&client->commands, command, length,
                                     callback);
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
@@ -679,13 +681,13 @@ discord_config_get_field(struct discord *client,
 void
 __discord_claim(struct discord *client, const void *param)
 {
-    ASSERT_S(discord_refcounter_claim(client->refcounter, (void *)param),
+    ASSERT_S(discord_refcounter_claim(&client->refcounter, (void *)param),
              "Failed attempt to claim non-Concord function parameter");
 }
 
 void
 discord_unclaim(struct discord *client, const void *param)
 {
-    ASSERT_S(discord_refcounter_unclaim(client->refcounter, (void *)param),
+    ASSERT_S(discord_refcounter_unclaim(&client->refcounter, (void *)param),
              "Failed attempt to unclaim non-Concord function parameter");
 }
