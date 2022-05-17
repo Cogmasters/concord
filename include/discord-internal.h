@@ -255,6 +255,196 @@ struct discord_context *discord_async_start_context(
 
 /** @} DiscordInternalRESTAsync */
 
+/** @defgroup DiscordInternalRESTRatelimit Ratelimiting
+ * @brief Enforce ratelimiting per the official Discord Documentation
+ *  @{ */
+
+/**
+ * @brief Value assigned to @ref discord_bucket `busy` field in case it's
+ *      being timed-out
+ */
+#define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
+
+/** @brief The ratelimiter struct for handling ratelimiting */
+struct discord_ratelimiter {
+    /** DISCORD_RATELIMIT logging module */
+    struct logconf conf;
+    /** amount of bucket's routes discovered */
+    int length;
+    /** route's cap before increase */
+    int capacity;
+    /**
+     * routes matched to individual buckets
+     * @note datatype declared at discord-rest_ratelimit.c
+     */
+    struct _discord_route *routes;
+    /** singleton bucket for requests that haven't been matched to a
+     *      known or new bucket (i.e first time running the request) */
+    struct discord_bucket *null;
+    /** singleton bucket for requests that are not part of any known
+     *      ratelimiting group */
+    struct discord_bucket *miss;
+
+    /* client-wide ratelimiting timeout */
+    struct {
+        /** global ratelimit */
+        u64unix_ms wait_ms;
+        /** global rwlock  */
+        pthread_rwlock_t rwlock;
+        /** global lock */
+        pthread_mutex_t lock;
+    } * global;
+};
+
+/**
+ * @brief Initialize ratelimiter handle
+ *
+ * A hashtable shall be used for storage and retrieval of discovered buckets
+ * @param rl the ratelimiter handle to be initialized
+ * @param conf pointer to @ref discord_rest logging module
+ * @return the ratelimiter handle
+ */
+void discord_ratelimiter_init(struct discord_ratelimiter *rl,
+                              struct logconf *conf);
+
+/**
+ * @brief Cleanup all buckets that have been discovered
+ *
+ * @note pending requests will be moved to `rest.idle_contexts`
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ */
+void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
+
+/**
+ * @brief Iterate known buckets
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param iter the user callback to be called per bucket
+ */
+void discord_ratelimiter_foreach_bucket(
+    struct discord_ratelimiter *rl,
+    void (*iter)(struct discord_ratelimiter *rl, struct discord_bucket *b));
+
+/**
+ * @brief Build unique key formed from the HTTP method and endpoint
+ * @see https://discord.com/developers/docs/topics/rate-limits
+ *
+ * @param[in] method the request method
+ * @param[out] key unique key for matching to buckets
+ * @param[in] endpoint_fmt the printf-like endpoint formatting string
+ * @param[in] args variadic arguments matched to `endpoint_fmt`
+ */
+void discord_ratelimiter_build_key(enum http_method method,
+                                   char key[DISCORD_ROUTE_LEN],
+                                   const char endpoint_fmt[],
+                                   va_list args);
+
+/**
+ * @brief Get global timeout timestamp
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @return the most recent global timeout timestamp
+ */
+u64unix_ms discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl);
+
+/**
+ * @brief Update the bucket with response header data
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket NULL when bucket is first discovered
+ * @param key obtained from discord_ratelimiter_build_key()
+ * @param info informational struct containing details on the current transfer
+ * @note If the bucket was just discovered it will be created here.
+ */
+void discord_ratelimiter_build(struct discord_ratelimiter *rl,
+                               struct discord_bucket *bucket,
+                               const char key[],
+                               struct ua_info *info);
+
+/** @brief The Discord bucket for handling per-group ratelimits */
+struct discord_bucket {
+    /** the hash associated with the bucket's ratelimiting group */
+    char hash[64];
+    /** maximum connections this bucket can handle before ratelimit */
+    long limit;
+    /** connections this bucket can do before waiting for cooldown */
+    long remaining;
+    /** timestamp of when cooldown timer resets */
+    u64unix_ms reset_tstamp;
+    /** synchronize ratelimiting between threads */
+    pthread_mutex_t lock;
+    /** pending requests */
+    QUEUE(struct discord_context) pending_queue;
+    /**
+     * pointer to currently performing busy request (if any)
+     * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
+     */
+    struct discord_context *busy;
+};
+
+/**
+ * @brief Return bucket timeout timestamp
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket the bucket to be checked for time out
+ * @return the timeout timestamp
+ */
+u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
+                                      struct discord_bucket *bucket);
+
+/**
+ * @brief Try to sleep bucket for pending cooldown time
+ * @note this is used for `sync` mode and **WILL** block the bucket's
+ *      execution thread
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket the bucket to wait on cooldown
+ */
+void discord_bucket_try_sleep(struct discord_ratelimiter *rl,
+                              struct discord_bucket *bucket);
+
+/**
+ * @brief Try to timeout bucket for pending cooldown time
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket the bucket to wait on cooldown
+ */
+void discord_bucket_try_timeout(struct discord_ratelimiter *rl,
+                                struct discord_bucket *b);
+
+/**
+ * @brief Get a `struct discord_bucket` assigned to `key`
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param key obtained from discord_ratelimiter_build_key()
+ * @return bucket matched to `key`
+ */
+struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
+                                          const char key[]);
+
+/**
+ * @brief Insert request's context into bucket's pending queue
+ *
+ * @param b the bucket to insert the request to
+ * @param cxt the request context obtained via discord_async_start_context()
+ * @param high_priority if high priority then request shall be prioritized over
+ *      already enqueued requests
+ */
+void discord_bucket_add_context(struct discord_bucket *b,
+                                struct discord_context *cxt,
+                                bool high_priority);
+
+/**
+ * @brief Remove head request's context from bucket's pending queue
+ *
+ * @param b the bucket to fetch the request from
+ * @return the request's context
+ */
+struct discord_context *discord_bucket_remove_context(
+    struct discord_bucket *b);
+
+/** @} DiscordInternalRESTRatelimit */
+
 /** @brief The handle used for interfacing with Discord's REST API */
 struct discord_rest {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
@@ -265,7 +455,7 @@ struct discord_rest {
     struct discord_async async;
 
     /** enforce ratelimiting on discovered buckets */
-    struct discord_ratelimiter *ratelimiter;
+    struct discord_ratelimiter ratelimiter;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -327,196 +517,6 @@ CCORDcode discord_rest_async_perform(struct discord_rest *rest);
  * @param rest the handle initialized with discord_rest_init()
  */
 void discord_rest_stop_buckets(struct discord_rest *rest);
-
-/** @defgroup DiscordInternalRESTRatelimit Ratelimiting
- * @brief Enforce ratelimiting per the official Discord Documentation
- *  @{ */
-
-/**
- * @brief Value assigned to @ref discord_bucket `busy` field in case it's
- *      being timed-out
- */
-#define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
-
-/** @brief The Discord bucket for handling per-group ratelimits */
-struct discord_bucket {
-    /** the hash associated with the bucket's ratelimiting group */
-    char hash[64];
-    /** maximum connections this bucket can handle before ratelimit */
-    long limit;
-    /** connections this bucket can do before waiting for cooldown */
-    long remaining;
-    /** timestamp of when cooldown timer resets */
-    u64unix_ms reset_tstamp;
-    /** synchronize ratelimiting between threads */
-    pthread_mutex_t lock;
-    /** pending requests */
-    QUEUE(struct discord_context) pending_queue;
-    /**
-     * pointer to currently performing busy request (if any)
-     * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
-     */
-    struct discord_context *busy;
-};
-
-/**
- * @brief Return bucket timeout timestamp
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param bucket the bucket to be checked for time out
- * @return the timeout timestamp
- */
-u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
-                                      struct discord_bucket *bucket);
-
-/**
- * @brief Try to sleep bucket for pending cooldown time
- * @note this is used for `sync` mode and **WILL** block the bucket's
- *      execution thread
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param bucket the bucket to wait on cooldown
- */
-void discord_bucket_try_sleep(struct discord_ratelimiter *rl,
-                              struct discord_bucket *bucket);
-
-/**
- * @brief Try to timeout bucket for pending cooldown time
- *
- * @param rest the handle initialized with discord_rest_init()
- * @param bucket the bucket to wait on cooldown
- */
-void discord_bucket_try_timeout(struct discord_rest *rest,
-                                struct discord_bucket *b);
-
-/**
- * @brief Get a `struct discord_bucket` assigned to `key`
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param key obtained from discord_ratelimiter_build_key()
- * @return bucket matched to `key`
- */
-struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
-                                          const char key[]);
-
-/**
- * @brief Insert request's context into bucket's pending queue
- *
- * @param b the bucket to insert the request to
- * @param cxt the request context obtained via discord_async_start_context()
- * @param high_priority if high priority then request shall be prioritized over
- *      already enqueued requests
- */
-void discord_bucket_add_context(struct discord_bucket *b,
-                                struct discord_context *cxt,
-                                bool high_priority);
-
-/**
- * @brief Remove head request's context from bucket's pending queue
- *
- * @param b the bucket to fetch the request from
- * @return the request's context
- */
-struct discord_context *discord_bucket_remove_context(
-    struct discord_bucket *b);
-
-/** @brief The ratelimiter struct for handling ratelimiting */
-struct discord_ratelimiter {
-    /** DISCORD_RATELIMIT logging module */
-    struct logconf conf;
-    /** amount of bucket's routes discovered */
-    int length;
-    /** route's cap before increase */
-    int capacity;
-    /**
-     * routes matched to individual buckets
-     * @note datatype declared at discord-rest_ratelimit.c
-     */
-    struct _discord_route *routes;
-    /** singleton bucket for requests that haven't been matched to a
-     *      known or new bucket (i.e first time running the request) */
-    struct discord_bucket *null;
-    /** singleton bucket for requests that are not part of any known
-     *      ratelimiting group */
-    struct discord_bucket *miss;
-
-    /* client-wide ratelimiting timeout */
-    struct {
-        /** global ratelimit */
-        u64unix_ms wait_ms;
-        /** global rwlock  */
-        pthread_rwlock_t rwlock;
-        /** global lock */
-        pthread_mutex_t lock;
-    } global;
-};
-
-/**
- * @brief Initialize ratelimiter handle
- *
- * A hashtable shall be used for storage and retrieval of discovered buckets
- * @param conf pointer to @ref discord_rest logging module
- * @return the ratelimiter handle
- */
-struct discord_ratelimiter *discord_ratelimiter_init(struct logconf *conf);
-
-/**
- * @brief Cleanup all buckets that have been discovered
- *
- * @note pending requests will be moved to `rest.idle_contexts`
- * @param rl the handle initialized with discord_ratelimiter_init()
- */
-void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
-
-/**
- * @brief Iterate known buckets
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param rest the handle initialized with discord_rest_init()
- * @param iter the user callback to be called per bucket
- */
-void discord_ratelimiter_foreach_bucket(
-    struct discord_ratelimiter *rl,
-    struct discord_rest *rest,
-    void (*iter)(struct discord_rest *rest, struct discord_bucket *b));
-
-/**
- * @brief Build unique key formed from the HTTP method and endpoint
- * @see https://discord.com/developers/docs/topics/rate-limits
- *
- * @param[in] method the request method
- * @param[out] key unique key for matching to buckets
- * @param[in] endpoint_fmt the printf-like endpoint formatting string
- * @param[in] args variadic arguments matched to `endpoint_fmt`
- */
-void discord_ratelimiter_build_key(enum http_method method,
-                                   char key[DISCORD_ROUTE_LEN],
-                                   const char endpoint_fmt[],
-                                   va_list args);
-
-/**
- * @brief Get global timeout timestamp
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @return the most recent global timeout timestamp
- */
-u64unix_ms discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl);
-
-/**
- * @brief Update the bucket with response header data
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param bucket NULL when bucket is first discovered
- * @param key obtained from discord_ratelimiter_build_key()
- * @param info informational struct containing details on the current transfer
- * @note If the bucket was just discovered it will be created here.
- */
-void discord_ratelimiter_build(struct discord_ratelimiter *rl,
-                               struct discord_bucket *bucket,
-                               const char key[],
-                               struct ua_info *info);
-
-/** @} DiscordInternalRESTRatelimit */
 
 /** @} DiscordInternalREST */
 
@@ -1020,16 +1020,12 @@ void discord_message_commands_set_prefix(struct discord_message_commands *cmds,
  * @brief Read the current @ref DISCORD_EV_MESSAGE_CREATE payload and attempt
  *      to perform its matching callback
  *
- * @param gw the handle initialized with discord_gateway_init()
- *      @note used for its @ref discord_refcounter and passing as a callback
- *      parameter
  * @param cmds the handle initialized with discord_message_commands_init()
  * @param payload the event payload to read from
  *      (assumes its from `MESSAGE_CREATE`)
  * @return `true` if the callback has been performed
  */
 bool discord_message_commands_try_perform(
-    struct discord_gateway *gw,
     struct discord_message_commands *cmds,
     struct discord_gateway_payload *payload);
 

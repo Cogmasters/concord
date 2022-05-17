@@ -121,8 +121,7 @@ _discord_message_cleanup_v(struct discord *client, void *message)
 
 /** return true in case user command has been triggered */
 bool
-discord_message_commands_try_perform(struct discord_gateway *gw,
-                                     struct discord_message_commands *cmds,
+discord_message_commands_try_perform(struct discord_message_commands *cmds,
                                      struct discord_gateway_payload *payload)
 {
     jsmnf_pair *f;
@@ -134,7 +133,7 @@ discord_message_commands_try_perform(struct discord_gateway *gw,
         && !strncmp(cmds->prefix.start, payload->json + f->v.pos,
                     cmds->prefix.size))
     {
-        struct discord *client = CLIENT(gw, gw);
+        struct discord *client = CLIENT(cmds, commands);
         struct discord_message *event = calloc(1, sizeof *event);
         discord_ev_message callback = NULL;
         struct ccord_szbuf command;

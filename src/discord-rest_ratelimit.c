@@ -135,58 +135,59 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
 
     QUEUE_INIT(&b->pending_queue);
 
-    pthread_mutex_lock(&rl->global.lock);
+    pthread_mutex_lock(&rl->global->lock);
     chash_assign(rl, key, b, RATELIMITER_TABLE);
-    pthread_mutex_unlock(&rl->global.lock);
+    pthread_mutex_unlock(&rl->global->lock);
 
     return b;
 }
 
-struct discord_ratelimiter *
-discord_ratelimiter_init(struct logconf *conf)
+void
+discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
 {
     struct ua_szbuf_readonly keynull = { "null", 4 }, keymiss = { "miss", 4 };
-    struct discord_ratelimiter *rl = chash_init(rl, RATELIMITER_TABLE);
+
+    __chash_init(rl, RATELIMITER_TABLE);
 
     logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
 
     /* global ratelimiting resources */
-    rl->global.wait_ms = 0;
-    if (pthread_rwlock_init(&rl->global.rwlock, NULL))
+    rl->global = malloc(sizeof *rl->global);
+    rl->global->wait_ms = 0;
+    if (pthread_rwlock_init(&rl->global->rwlock, NULL))
         ERR("Couldn't initialize pthread rwlock");
-    if (pthread_mutex_init(&rl->global.lock, NULL))
+    if (pthread_mutex_init(&rl->global->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
 
     /* initialize 'singleton' buckets */
     rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
     rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX);
-
-    return rl;
 }
 
 void
 discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 {
-    pthread_rwlock_destroy(&rl->global.rwlock);
-    pthread_mutex_destroy(&rl->global.lock);
-    chash_free(rl, RATELIMITER_TABLE);
+    pthread_rwlock_destroy(&rl->global->rwlock);
+    pthread_mutex_destroy(&rl->global->lock);
+    free(rl->global);
+
+    __chash_free(rl, RATELIMITER_TABLE);
 }
 
 void
 discord_ratelimiter_foreach_bucket(struct discord_ratelimiter *rl,
-                                   struct discord_rest *rest,
-                                   void (*iter)(struct discord_rest *rest,
+                                   void (*iter)(struct discord_ratelimiter *rl,
                                                 struct discord_bucket *b))
 {
     struct _discord_route *r;
     int i;
 
-    pthread_mutex_lock(&rl->global.lock);
+    pthread_mutex_lock(&rl->global->lock);
     for (i = 0; i < rl->capacity; ++i) {
         r = rl->routes + i;
-        if (CHASH_FILLED == r->state) (*iter)(rest, r->bucket);
+        if (CHASH_FILLED == r->state) (*iter)(rl, r->bucket);
     }
-    pthread_mutex_unlock(&rl->global.lock);
+    pthread_mutex_unlock(&rl->global->lock);
 }
 
 static struct discord_bucket *
@@ -195,12 +196,12 @@ _discord_bucket_find(struct discord_ratelimiter *rl, const char key[])
     struct discord_bucket *b = NULL;
     int ret;
 
-    pthread_mutex_lock(&rl->global.lock);
+    pthread_mutex_lock(&rl->global->lock);
     ret = chash_contains(rl, key, ret, RATELIMITER_TABLE);
     if (ret) {
         b = chash_lookup(rl, key, b, RATELIMITER_TABLE);
     }
-    pthread_mutex_unlock(&rl->global.lock);
+    pthread_mutex_unlock(&rl->global->lock);
 
     return b;
 }
@@ -210,9 +211,9 @@ discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl)
 {
     u64unix_ms global;
 
-    pthread_rwlock_rdlock(&rl->global.rwlock);
-    global = rl->global.wait_ms;
-    pthread_rwlock_unlock(&rl->global.rwlock);
+    pthread_rwlock_rdlock(&rl->global->rwlock);
+    global = rl->global->wait_ms;
+    pthread_rwlock_unlock(&rl->global->rwlock);
 
     return global;
 }
@@ -255,18 +256,18 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
 }
 
 void
-discord_bucket_try_timeout(struct discord_rest *rest, struct discord_bucket *b)
+discord_bucket_try_timeout(struct discord_ratelimiter *rl,
+                           struct discord_bucket *b)
 {
-    struct discord *client = CLIENT(rest, rest);
+    struct discord *client = CLIENT(rl, rest.ratelimiter);
     const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
     b->busy = DISCORD_BUCKET_TIMEOUT;
 
     discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
 
-    logconf_info(&client->rest.ratelimiter->conf,
-                 "[%.4s] RATELIMITING (wait %" PRId64 " ms)", b->hash,
-                 delay_ms);
+    logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
+                 b->hash, delay_ms);
 }
 
 /* attempt to find a bucket associated key */
@@ -343,9 +344,9 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
 
         if (global.size) {
             /* lock all buckets */
-            pthread_rwlock_wrlock(&rl->global.rwlock);
-            rl->global.wait_ms = reset_tstamp;
-            pthread_rwlock_unlock(&rl->global.rwlock);
+            pthread_rwlock_wrlock(&rl->global->rwlock);
+            rl->global->wait_ms = reset_tstamp;
+            pthread_rwlock_unlock(&rl->global->rwlock);
         }
         else {
             /* lock single bucket, timeout at discord_rest_run() */

@@ -217,7 +217,7 @@ discord_async_start_context(struct discord_async *async,
     /* copy bucket's key */
     memcpy(cxt->key, key, sizeof(cxt->key));
     /* bucket pertaining to the request */
-    cxt->b = discord_bucket_get(rest->ratelimiter, key);
+    cxt->b = discord_bucket_get(&rest->ratelimiter, key);
 
     if (req->dispatch.data)
         discord_refcounter_incr(&client->refcounter, req->dispatch.data,

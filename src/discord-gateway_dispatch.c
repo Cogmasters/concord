@@ -140,7 +140,7 @@ discord_gateway_dispatch(struct discord_gateway *gw)
 
     switch (event) {
     case DISCORD_EV_MESSAGE_CREATE:
-        if (discord_message_commands_try_perform(gw, &client->commands,
+        if (discord_message_commands_try_perform(&client->commands,
                                                  &gw->payload))
         {
             return;
