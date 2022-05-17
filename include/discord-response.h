@@ -18,9 +18,11 @@ struct discord_response {
  * Templates for generating type-safe return handles for async requests
  ******************************************************************************/
 
-#define DISCORDT_RET_DEFAULT_FIELDS                                           \
-    /** optional callback to be executed on a failed request */               \
-    void (*fail)(struct discord * client, struct discord_response * resp);    \
+/**
+ * @brief Macro containing common fields for `struct discord_ret*` datatypes
+ * @note this exists for alignment purposes
+ */
+#define DISCORD_RET_DEFAULT_FIELDS                                           \
     /** user arbitrary data to be passed to `done` or `fail` callbacks */     \
     void *data;                                                               \
     /** cleanup method to be called for `data`, once its no longer            \
@@ -30,16 +32,18 @@ struct discord_response {
     const void *keep;                                                         \
     /** if `true` then request will be prioritized over already enqueued      \
         requests */                                                           \
-    bool high_p
+    bool high_p;                                                              \
+    /** optional callback to be executed on a failed request */               \
+    void (*fail)(struct discord * client, struct discord_response * resp)
 
-#define DISCORDT_RETURN(_type)                                                \
+#define DISCORD_RETURN(_type)                                                \
     /** @brief Request's return context */                                    \
     struct discord_ret_##_type {                                              \
+        DISCORD_RET_DEFAULT_FIELDS;                                          \
         /** optional callback to be executed on a successful request */       \
         void (*done)(struct discord * client,                                 \
                      struct discord_response *resp,                           \
                      const struct discord_##_type *ret);                      \
-        DISCORDT_RET_DEFAULT_FIELDS;                                          \
         /** if an address is provided, then request will block the thread and \
            perform on-spot.                                                   \
            On success the response object will be written to the address,     \
@@ -49,9 +53,9 @@ struct discord_response {
 
 /** @brief Request's return context */
 struct discord_ret {
+    DISCORD_RET_DEFAULT_FIELDS;
     /** optional callback to be executed on a successful request */
     void (*done)(struct discord *client, struct discord_response *resp);
-    DISCORDT_RET_DEFAULT_FIELDS;
     /** if `true`, request will block the thread and perform on-spot */
     bool sync;
 };
@@ -61,83 +65,83 @@ struct discord_ret {
 
 /** @addtogroup DiscordAPIAuditLog
  *  @{ */
-DISCORDT_RETURN(audit_log);
+DISCORD_RETURN(audit_log);
 /** @} DiscordAPIAuditLog */
 
 /** @addtogroup DiscordAPIChannel
  *  @{ */
-DISCORDT_RETURN(channel);
-DISCORDT_RETURN(channels);
-DISCORDT_RETURN(message);
-DISCORDT_RETURN(messages);
-DISCORDT_RETURN(followed_channel);
-DISCORDT_RETURN(thread_members);
-DISCORDT_RETURN(thread_response_body);
+DISCORD_RETURN(channel);
+DISCORD_RETURN(channels);
+DISCORD_RETURN(message);
+DISCORD_RETURN(messages);
+DISCORD_RETURN(followed_channel);
+DISCORD_RETURN(thread_members);
+DISCORD_RETURN(thread_response_body);
 /** @} DiscordAPIChannel */
 
 /** @addtogroup DiscordAPIEmoji
  *  @{ */
-DISCORDT_RETURN(emoji);
-DISCORDT_RETURN(emojis);
+DISCORD_RETURN(emoji);
+DISCORD_RETURN(emojis);
 /** @} DiscordAPIEmoji */
 
 /** @addtogroup DiscordAPIGuild
  *  @{ */
-DISCORDT_RETURN(guild);
-DISCORDT_RETURN(guilds);
-DISCORDT_RETURN(guild_preview);
-DISCORDT_RETURN(guild_member);
-DISCORDT_RETURN(guild_members);
-DISCORDT_RETURN(ban);
-DISCORDT_RETURN(bans);
-DISCORDT_RETURN(role);
-DISCORDT_RETURN(roles);
-DISCORDT_RETURN(welcome_screen);
+DISCORD_RETURN(guild);
+DISCORD_RETURN(guilds);
+DISCORD_RETURN(guild_preview);
+DISCORD_RETURN(guild_member);
+DISCORD_RETURN(guild_members);
+DISCORD_RETURN(ban);
+DISCORD_RETURN(bans);
+DISCORD_RETURN(role);
+DISCORD_RETURN(roles);
+DISCORD_RETURN(welcome_screen);
 /** @} DiscordAPIGuild */
 
 /** @addtogroup DiscordAPIGuildTemplate
  *  @{ */
-DISCORDT_RETURN(guild_template);
+DISCORD_RETURN(guild_template);
 /** @} DiscordAPIGuildTemplate */
 
 /** @addtogroup DiscordAPIInvite
  *  @{ */
-DISCORDT_RETURN(invite);
-DISCORDT_RETURN(invites);
+DISCORD_RETURN(invite);
+DISCORD_RETURN(invites);
 /** @} DiscordAPIInvite */
 
 /** @addtogroup DiscordAPIUser
  *  @{ */
-DISCORDT_RETURN(user);
-DISCORDT_RETURN(users);
-DISCORDT_RETURN(connections);
+DISCORD_RETURN(user);
+DISCORD_RETURN(users);
+DISCORD_RETURN(connections);
 /** @} DiscordAPIUser */
 
 /** @addtogroup DiscordAPIVoice
  *  @{ */
-DISCORDT_RETURN(voice_regions);
+DISCORD_RETURN(voice_regions);
 /** @} DiscordAPIVoice */
 
 /** @addtogroup DiscordAPIWebhook
  *  @{ */
-DISCORDT_RETURN(webhook);
-DISCORDT_RETURN(webhooks);
+DISCORD_RETURN(webhook);
+DISCORD_RETURN(webhooks);
 /** @} DiscordAPIWebhook */
 
 /** @addtogroup DiscordAPIInteractionsApplicationCommand
  * @ingroup DiscordAPIInteractions
  *  @{ */
-DISCORDT_RETURN(application_command);
-DISCORDT_RETURN(application_commands);
-DISCORDT_RETURN(application_command_permission);
-DISCORDT_RETURN(application_command_permissions);
-DISCORDT_RETURN(guild_application_command_permissions);
+DISCORD_RETURN(application_command);
+DISCORD_RETURN(application_commands);
+DISCORD_RETURN(application_command_permission);
+DISCORD_RETURN(application_command_permissions);
+DISCORD_RETURN(guild_application_command_permissions);
 /** @} DiscordAPIInteractionsApplicationCommand */
 
 /** @addtogroup DiscordAPIInteractionsReact
  * @ingroup DiscordAPIInteractions
  *  @{ */
-DISCORDT_RETURN(interaction_response);
+DISCORD_RETURN(interaction_response);
 /** @} DiscordAPIInteractionsReact */
 
 #endif /* DISCORD_RESPONSE_H */

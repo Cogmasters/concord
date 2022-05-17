@@ -84,7 +84,7 @@
 
 /** @brief Generic request dispatcher */
 struct discord_ret_dispatch {
-    DISCORDT_RET_DEFAULT_FIELDS;
+    DISCORD_RET_DEFAULT_FIELDS;
     /** `true` if may receive a datatype from response */
     bool has_type;
 

@@ -34,20 +34,20 @@ on_ready(struct discord *client, const struct discord_ready *event)
 
 void
 disconnect(struct discord *client,
-           void *data,
+           struct discord_response *resp,
            const struct discord_message *msg)
 {
-    (void)data;
+    (void)resp;
     (void)msg;
     discord_shutdown(client);
 }
 
 void
 reconnect(struct discord *client,
-          void *data,
+          struct discord_response *resp,
           const struct discord_message *msg)
 {
-    (void)data;
+    (void)resp;
     (void)msg;
     discord_reconnect(client, true);
 }
@@ -96,9 +96,10 @@ on_single(struct discord *client, const struct discord_message *event)
 
 void
 send_batch(struct discord *client,
-           void *data,
+           struct discord_response *resp,
            const struct discord_message *msg)
 {
+    (void)resp;
     char text[32];
 
     for (int i = 0; i < 128; ++i) {
@@ -126,8 +127,11 @@ on_spam(struct discord *client, const struct discord_message *event)
 }
 
 void
-send_msg(struct discord *client, void *data, const struct discord_message *msg)
+send_msg(struct discord *client,
+         struct discord_response *resp,
+         const struct discord_message *msg)
 {
+    (void)resp;
     struct global_context *g_cxt = discord_get_data(client);
     char text[32];
 
@@ -151,14 +155,14 @@ on_spam_ordered(struct discord *client, const struct discord_message *event)
 }
 
 void
-fail_delete_channel(struct discord *client, CCORDcode code, void *data)
+fail_delete_channel(struct discord *client, struct discord_response *resp)
 {
-    struct local_context *cxt = data;
+    const struct discord_message *event = resp->keep;
 
     discord_create_message(
-        client, cxt->event->channel_id,
+        client, event->channel_id,
         &(struct discord_create_message){
-            .content = (char *)discord_strerror(code, client),
+            .content = (char *)discord_strerror(resp->code, client),
         },
         NULL);
 }
@@ -167,15 +171,11 @@ void
 on_force_error(struct discord *client, const struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123;
-    struct local_context *cxt = malloc(sizeof *cxt);
-
-    cxt->event = discord_claim(client, event);
 
     discord_delete_channel(client, FAUX_CHANNEL_ID,
                            &(struct discord_ret_channel){
                                .fail = &fail_delete_channel,
-                               .data = cxt,
-                               .cleanup = &local_context_cleanup,
+                               .keep = event,
                            });
 }
 
