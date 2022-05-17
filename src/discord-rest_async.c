@@ -131,13 +131,14 @@ void
 discord_async_recycle_context(struct discord_async *async,
                               struct discord_context *cxt)
 {
+    struct discord_refcounter *rc = &CLIENT(async, rest.async)->refcounter;
     CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
 
     curl_multi_remove_handle(async->mhandle, ehandle);
     if (cxt->conn) ua_conn_stop(cxt->conn);
 
-    discord_refcounter_decr(&CLIENT(async, rest.async)->refcounter,
-                            cxt->dispatch.data);
+    discord_refcounter_decr(rc, (void *)cxt->dispatch.keep);
+    discord_refcounter_decr(rc, cxt->dispatch.data);
 
     cxt->b = NULL;
     cxt->body.size = 0;
@@ -219,6 +220,14 @@ discord_async_start_context(struct discord_async *async,
     /* bucket pertaining to the request */
     cxt->b = discord_bucket_get(&rest->ratelimiter, key);
 
+    if (req->dispatch.keep) {
+        ASSERT_S(discord_refcounter_contains(&client->refcounter,
+                                             req->dispatch.keep),
+                 "'.keep' data must be a Concord callback parameter");
+
+        discord_refcounter_incr(&client->refcounter,
+                                (void *)req->dispatch.keep, NULL, false);
+    }
     if (req->dispatch.data)
         discord_refcounter_incr(&client->refcounter, req->dispatch.data,
                                 req->dispatch.cleanup, false);

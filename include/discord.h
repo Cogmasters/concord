@@ -31,7 +31,7 @@ struct discord;
 #ifdef CCORD_VOICE
 #include "discord-voice.h"
 #endif /* CCORD_VOICE */
-#include "discord-templates.h"
+#include "discord-response.h"
 
 /** @defgroup DiscordConstants Constants
  * @brief Macros for constants defined by Discord

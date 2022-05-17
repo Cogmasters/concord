@@ -84,6 +84,7 @@
 
 /** @brief Generic request dispatcher */
 struct discord_ret_dispatch {
+    DISCORDT_RET_DEFAULT_FIELDS;
     /** `true` if may receive a datatype from response */
     bool has_type;
 
@@ -93,11 +94,12 @@ struct discord_ret_dispatch {
      *      otherwise its UB
      */
     union {
-        void (*typed)(struct discord *client, void *data, const void *ret);
-        void (*typeless)(struct discord *client, void *data);
+        void (*typed)(struct discord *client,
+                      struct discord_response *resp,
+                      const void *ret);
+        void (*typeless)(struct discord *client,
+                         struct discord_response *resp);
     } done;
-
-    DISCORDT_RET_DEFAULT_FIELDS;
 
     /** if an address is provided, then request will block the thread and
      * perform on-spot. On success the response object will be written to
@@ -121,7 +123,7 @@ struct discord_ret_response {
 
 /**
  * @brief Macro containing @ref discord_request fields
- * @note for @ref discord_context alignment purposes
+ * @note this exists for @ref discord_context alignment purposes
  */
 #define DISCORD_REQUEST_FIELDS                                                \
     /** attributes set by client for request dispatch behavior */             \
@@ -151,7 +153,6 @@ struct discord_context {
     /** the request's bucket */
     struct discord_bucket *b;
     /** request body handle @note buffer is kept and reused */
-
     struct ccord_szbuf_reusable body;
     /** the request's http method */
     enum http_method method;
@@ -302,7 +303,6 @@ struct discord_ratelimiter {
  * A hashtable shall be used for storage and retrieval of discovered buckets
  * @param rl the ratelimiter handle to be initialized
  * @param conf pointer to @ref discord_rest logging module
- * @return the ratelimiter handle
  */
 void discord_ratelimiter_init(struct discord_ratelimiter *rl,
                               struct logconf *conf);
@@ -879,23 +879,33 @@ void discord_refcounter_init(struct discord_refcounter *rc,
 void discord_refcounter_cleanup(struct discord_refcounter *rc);
 
 /**
+ * @brief Check if `data` is stored at the reference counter
+ *
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the data address to be checked
+ * @return `true` if data is stored
+ */
+bool discord_refcounter_contains(struct discord_refcounter *rc,
+                                 const void *data);
+
+/**
  * @brief Claim ownership of `data`
  * @see discord_refcounter_unclaim()
  *
  * After ownership is claimed `data` will no longer be cleaned automatically,
- *      but shall be immediatelly cleaned once discord_refcounter_unclaim() is
+ *      instead shall be cleaned only when discord_refcounter_unclaim() is
  *      called
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership claimed
  * @return `true` if `data` was found and claimed
  */
-bool discord_refcounter_claim(struct discord_refcounter *rc, void *data);
+bool discord_refcounter_claim(struct discord_refcounter *rc, const void *data);
 
 /**
  * @brief Unclaim ownership of `data`
  * @see discord_refcounter_claim()
  *
- * This function will have `data` cleanup method will be immediatelly called
+ * This function will have `data` cleanup method called immediately
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership unclaimed
  * @return `true` if `data` was found, unclaimed, and free'd
@@ -964,7 +974,6 @@ struct discord_message_commands {
  *
  * @param cmds the message commands handle to be initialized
  * @param conf pointer to @ref discord logging module
- * @return the message commands handle
  */
 void discord_message_commands_init(struct discord_message_commands *cmds,
                                    struct logconf *conf);

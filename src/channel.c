@@ -20,10 +20,10 @@ struct _discord_get_channel_at_pos_cxt {
  *      discord_get_channel_at_pos() */
 static void
 _done_get_channels(struct discord *client,
-                   void *data,
+                   struct discord_response *resp,
                    const struct discord_channels *chs)
 {
-    struct _discord_get_channel_at_pos_cxt *cxt = data;
+    struct _discord_get_channel_at_pos_cxt *cxt = resp->data;
 
     const struct discord_channel *found_ch = NULL;
     int pos;
@@ -36,11 +36,15 @@ _done_get_channels(struct discord *client,
         }
     }
 
+    resp->data = cxt->ret.data;
+    resp->keep = cxt->ret.keep;
+
     if (found_ch) {
-        if (cxt->ret.done) cxt->ret.done(client, cxt->ret.data, found_ch);
+        if (cxt->ret.done) cxt->ret.done(client, resp, found_ch);
     }
     else if (cxt->ret.fail) {
-        cxt->ret.fail(client, CCORD_BAD_PARAMETER, cxt->ret.data);
+        resp->code = CCORD_BAD_PARAMETER;
+        cxt->ret.fail(client, resp);
     }
 
     discord_refcounter_decr(&client->refcounter, cxt->ret.data);

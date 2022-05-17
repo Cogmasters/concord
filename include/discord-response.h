@@ -1,12 +1,18 @@
 /**
- * @file discord-templates.h
+ * @file discord-response.h
  * @author Cogmasters
- * @brief Macro template for generating type-safe return handles for async
- *      requests
+ * @brief Generic macros for initializing a @ref discord_response and return
+ *      handles
  */
 
-#ifndef DISCORD_TEMPLATES_H
-#define DISCORD_TEMPLATES_H
+#ifndef DISCORD_RESPONSE_H
+#define DISCORD_RESPONSE_H
+
+struct discord_response {
+    void *data;
+    const void *keep;
+    CCORDcode code;
+};
 
 /******************************************************************************
  * Templates for generating type-safe return handles for async requests
@@ -14,12 +20,14 @@
 
 #define DISCORDT_RET_DEFAULT_FIELDS                                           \
     /** optional callback to be executed on a failed request */               \
-    void (*fail)(struct discord * client, CCORDcode code, void *data);        \
+    void (*fail)(struct discord * client, struct discord_response * resp);    \
     /** user arbitrary data to be passed to `done` or `fail` callbacks */     \
     void *data;                                                               \
     /** cleanup method to be called for `data`, once its no longer            \
     being referenced */                                                       \
     void (*cleanup)(struct discord * client, void *data);                     \
+    /** Concord callback parameter the client wish to keep reference */       \
+    const void *keep;                                                         \
     /** if `true` then request will be prioritized over already enqueued      \
         requests */                                                           \
     bool high_p
@@ -29,7 +37,7 @@
     struct discord_ret_##_type {                                              \
         /** optional callback to be executed on a successful request */       \
         void (*done)(struct discord * client,                                 \
-                     void *data,                                              \
+                     struct discord_response *resp,                           \
                      const struct discord_##_type *ret);                      \
         DISCORDT_RET_DEFAULT_FIELDS;                                          \
         /** if an address is provided, then request will block the thread and \
@@ -42,7 +50,7 @@
 /** @brief Request's return context */
 struct discord_ret {
     /** optional callback to be executed on a successful request */
-    void (*done)(struct discord *client, void *data);
+    void (*done)(struct discord *client, struct discord_response *resp);
     DISCORDT_RET_DEFAULT_FIELDS;
     /** if `true`, request will block the thread and perform on-spot */
     bool sync;
@@ -132,4 +140,4 @@ DISCORDT_RETURN(guild_application_command_permissions);
 DISCORDT_RETURN(interaction_response);
 /** @} DiscordAPIInteractionsReact */
 
-#endif /* DISCORD_TEMPLATES_H */
+#endif /* DISCORD_RESPONSE_H */

@@ -451,27 +451,31 @@ static CCORDcode
 _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 {
     struct discord *client = CLIENT(rest, rest);
+    struct discord_response resp;
     struct discord_context *cxt;
     int64_t wait_ms = 0LL;
-    CCORDcode code;
     bool retry;
 
     curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
 
+    resp = (struct discord_response){ .data = cxt->dispatch.data,
+                                      .keep = cxt->dispatch.keep,
+                                      .code = CCORD_OK };
+
     switch (msg->data.result) {
     case CURLE_OK: {
-        struct ua_info info = { 0 };
         struct ua_szbuf_readonly body;
+        struct ua_info info = { 0 };
 
         ua_info_extract(cxt->conn, &info);
         retry = _discord_rest_get_info(rest, &info, &wait_ms);
-
         body = ua_info_get_body(&info);
-        if (info.code != CCORD_OK) {
-            logconf_error(&client->conf, "%.*s", (int)body.size, body.start);
 
-            if (cxt->dispatch.fail)
-                cxt->dispatch.fail(client, info.code, cxt->dispatch.data);
+        resp.code = info.code;
+
+        if (resp.code != CCORD_OK) {
+            logconf_error(&rest->conf, "%.*s", (int)body.size, body.start);
+            if (cxt->dispatch.fail) cxt->dispatch.fail(client, &resp);
         }
         else if (cxt->dispatch.done.typed) {
             void *ret = calloc(1, cxt->response.size);
@@ -484,16 +488,14 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
                 cxt->response.from_json(body.start, body.size, ret);
 
             if (cxt->dispatch.has_type)
-                cxt->dispatch.done.typed(client, cxt->dispatch.data, ret);
+                cxt->dispatch.done.typed(client, &resp, ret);
             else
-                cxt->dispatch.done.typeless(client, cxt->dispatch.data);
+                cxt->dispatch.done.typeless(client, &resp);
 
-            /* cleanup ret */
+            /* cleanup ret TODO: add refcounter so that users may keep */
             if (cxt->response.cleanup) cxt->response.cleanup(ret);
             free(ret);
         }
-
-        code = info.code;
 
         discord_ratelimiter_build(&rest->ratelimiter, cxt->b, cxt->key, &info);
         ua_info_cleanup(&info);
@@ -502,17 +504,16 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
         logconf_warn(&rest->conf, "Read error, will retry again");
         retry = true;
 
-        code = CCORD_CURLE_INTERNAL;
+        resp.code = CCORD_CURLE_INTERNAL;
 
         break;
     default:
         logconf_error(&rest->conf, "(CURLE code: %d)", msg->data.result);
         retry = false;
 
-        code = CCORD_CURLE_INTERNAL;
+        resp.code = CCORD_CURLE_INTERNAL;
 
-        if (cxt->dispatch.fail)
-            cxt->dispatch.fail(client, code, cxt->dispatch.data);
+        if (cxt->dispatch.fail) cxt->dispatch.fail(client, &resp);
 
         break;
     }
@@ -522,7 +523,7 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
     if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms))
         discord_async_recycle_context(&rest->async, cxt);
 
-    return code;
+    return resp.code;
 }
 
 CCORDcode

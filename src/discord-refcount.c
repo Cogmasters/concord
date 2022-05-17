@@ -57,7 +57,7 @@ _discord_refvalue_cleanup(struct _discord_refvalue *value,
 }
 
 static struct _discord_refvalue *
-_discord_refvalue_find(struct discord_refcounter *rc, void *data)
+_discord_refvalue_find(struct discord_refcounter *rc, const void *data)
 {
     struct _discord_ref *ref = NULL;
 
@@ -85,13 +85,6 @@ _discord_refvalue_init(struct discord_refcounter *rc,
     return _discord_refvalue_find(rc, data);
 }
 
-static bool
-_discord_refvalue_contains(struct discord_refcounter *rc, void *data)
-{
-    bool ret = chash_contains(rc, (intptr_t)data, ret, REFCOUNTER_TABLE);
-    return ret;
-}
-
 static void
 _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
 {
@@ -115,9 +108,16 @@ discord_refcounter_cleanup(struct discord_refcounter *rc)
 }
 
 bool
-discord_refcounter_claim(struct discord_refcounter *rc, void *data)
+discord_refcounter_contains(struct discord_refcounter *rc, const void *data)
 {
-    if (_discord_refvalue_contains(rc, data)) {
+    bool ret = chash_contains(rc, (intptr_t)data, ret, REFCOUNTER_TABLE);
+    return ret;
+}
+
+bool
+discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
+{
+    if (discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         value->visits = -1;
@@ -129,7 +129,7 @@ discord_refcounter_claim(struct discord_refcounter *rc, void *data)
 bool
 discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
 {
-    if (_discord_refvalue_contains(rc, data)) {
+    if (discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (value->visits == -1) {
@@ -148,7 +148,7 @@ discord_refcounter_incr(struct discord_refcounter *rc,
 {
     struct _discord_refvalue *value;
 
-    if (_discord_refvalue_contains(rc, data))
+    if (discord_refcounter_contains(rc, data))
         value = _discord_refvalue_find(rc, data);
     else
         value = _discord_refvalue_init(rc, data, cleanup, should_free);
@@ -165,7 +165,7 @@ discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
     struct _discord_refvalue *value = NULL;
 
-    if (_discord_refvalue_contains(rc, data))
+    if (discord_refcounter_contains(rc, data))
         value = _discord_refvalue_find(rc, data);
 
     if (value && value->visits != -1) {
