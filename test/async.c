@@ -6,10 +6,24 @@
 
 #include "discord.h"
 
-struct user_cxt {
+struct global_context {
     u64snowflake channel_id;
     unsigned long long counter;
 };
+
+struct local_context {
+    struct discord *client;
+    const struct discord_message *event;
+};
+
+void
+local_context_cleanup(struct discord *client, void *data)
+{
+    struct local_context *cxt = data;
+
+    discord_unclaim(client, cxt->event);
+    free(data);
+}
 
 void
 on_ready(struct discord *client, const struct discord_ready *event)
@@ -114,10 +128,10 @@ on_spam(struct discord *client, const struct discord_message *event)
 void
 send_msg(struct discord *client, void *data, const struct discord_message *msg)
 {
-    struct user_cxt *cxt = discord_get_data(client);
+    struct global_context *g_cxt = discord_get_data(client);
     char text[32];
 
-    snprintf(text, sizeof(text), "%llu", cxt->counter);
+    snprintf(text, sizeof(text), "%llu", g_cxt->counter);
 
     discord_create_message(client, msg->channel_id,
                            &(struct discord_create_message){
@@ -127,7 +141,7 @@ send_msg(struct discord *client, void *data, const struct discord_message *msg)
                                .done = &send_msg,
                            });
 
-    ++cxt->counter;
+    ++g_cxt->counter;
 }
 
 void
@@ -137,12 +151,12 @@ on_spam_ordered(struct discord *client, const struct discord_message *event)
 }
 
 void
-send_err(struct discord *client, CCORDcode code, void *data)
+fail_delete_channel(struct discord *client, CCORDcode code, void *data)
 {
-    struct discord_message *event = data;
+    struct local_context *cxt = data;
 
     discord_create_message(
-        client, event->channel_id,
+        client, cxt->event->channel_id,
         &(struct discord_create_message){
             .content = (char *)discord_strerror(code, client),
         },
@@ -153,11 +167,15 @@ void
 on_force_error(struct discord *client, const struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123;
+    struct local_context *cxt = malloc(sizeof *cxt);
+
+    cxt->event = discord_claim(client, event);
 
     discord_delete_channel(client, FAUX_CHANNEL_ID,
                            &(struct discord_ret_channel){
-                               .fail = &send_err,
-                               .data = event,
+                               .fail = &fail_delete_channel,
+                               .data = cxt,
+                               .cleanup = &local_context_cleanup,
                            });
 }
 
@@ -175,8 +193,8 @@ main(int argc, char *argv[])
     struct discord *client = discord_config_init(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
-    struct user_cxt cxt = { 0 };
-    discord_set_data(client, &cxt);
+    struct global_context g_cxt = { 0 };
+    discord_set_data(client, &g_cxt);
 
     discord_set_on_ready(client, &on_ready);
 
