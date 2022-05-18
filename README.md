@@ -151,6 +151,11 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
 * `-DCCORD_DEBUG_ADAPTER`
     * Enable verbose debugging for REST communication.
 
+#### Dynamic Linking Support
+If you wish to produce a dynamically-linked version of Concord, use
+`make -f Makefile.dynamic`. Note that this Makefile is intended only for
+GNU-style compilers, like `gcc` or `clang`. 
+
 ### Configuring Concord
 
 The following outlines the default fields of `config.json`
