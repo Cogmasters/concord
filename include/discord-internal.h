@@ -872,6 +872,35 @@ void discord_refcounter_init(struct discord_refcounter *rc,
                              struct logconf *conf);
 
 /**
+ * @brief Add a new internal reference to the reference counter
+ *
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the data address to be referenced
+ * @param cleanup function for cleaning `data` resources once its
+ *      no longer referenced
+ * @param should_free whether `data` cleanup should be followed by a free()
+ */
+void discord_refcounter_add_internal(struct discord_refcounter *rc,
+                                     void *data,
+                                     void (*cleanup)(void *data),
+                                     bool should_free);
+
+/**
+ * @brief Add a new client reference to the reference counter
+ *
+ * @param rc the handle initialized with discord_refcounter_init()
+ * @param data the data address to be referenced
+ * @param cleanup function for cleaning `data` resources once its
+ *      no longer referenced
+ * @param should_free whether `data` cleanup should be followed by a free()
+ */
+void discord_refcounter_add_client(struct discord_refcounter *rc,
+                                   void *data,
+                                   void (*cleanup)(struct discord *client,
+                                                   void *data),
+                                   bool should_free);
+
+/**
  * @brief Cleanup refcounter and all user data currently held
  *
  * @param rc the handle initialized with discord_refcounter_init()
@@ -905,7 +934,7 @@ bool discord_refcounter_claim(struct discord_refcounter *rc, const void *data);
  * @brief Unclaim ownership of `data`
  * @see discord_refcounter_claim()
  *
- * This function will have `data` cleanup method called immediately
+ * This function will have `data` cleanup method be called immediately
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership unclaimed
  * @return `true` if `data` was found, unclaimed, and free'd
@@ -918,16 +947,11 @@ bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
  *
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its reference counter incremented
- * @param cleanup function for cleaning `data` resources once its
- *      no longer referenced
- * @param should_free whether `data` cleanup should be followed by a free()
- * @return `true` if `data` reference count has been successfully incremented
+ * @retval CCORD_OK counter for `data` has been incremented
+ * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_OWNERSHIP `data` has been claimed by client with discord_claim()
  */
-bool discord_refcounter_incr(struct discord_refcounter *rc,
-                             void *data,
-                             void (*cleanup)(struct discord *client,
-                                             void *data),
-                             bool should_free);
+CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
 
 /**
  * @brief Decrement the reference counter for `data`
@@ -937,9 +961,11 @@ bool discord_refcounter_incr(struct discord_refcounter *rc,
  *      user-defined cleanup function
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its reference counter decremented
- * @return `true` if `data` reference count has been successfully decremented
+ * @retval CCORD_OK counter for `data` has been decremented
+ * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_OWNERSHIP `data` has been claimed by client with discord_claim()
  */
-bool discord_refcounter_decr(struct discord_refcounter *rc, void *data);
+CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 
 /** @} DiscordInternalRefcount */
 

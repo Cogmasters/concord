@@ -9,7 +9,8 @@
 
 /** the error code datatype */
 typedef int CCORDcode;
-/** request was a success */
+
+/** action was a success */
 #define CCORD_OK 0
 /** request wasn't succesful */
 #define CCORD_HTTP_CODE -1
@@ -27,6 +28,10 @@ typedef int CCORDcode;
 #define CCORD_CURLM_INTERNAL -7
 /** attempt to initialize globals more than once */
 #define CCORD_GLOBAL_INIT -8
+/** couldn't perform action because of resource's ownership issues */
+#define CCORD_OWNERSHIP -9
+/** couldn't perform action because resource is unavailable */
+#define CCORD_UNAVAILABLE -10
 
 /** @} ConcordError */
 

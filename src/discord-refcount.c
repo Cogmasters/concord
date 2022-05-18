@@ -14,7 +14,7 @@
 #define REFCOUNTER_TABLE_FREE_KEY(_key)
 #define REFCOUNTER_TABLE_HASH(_key, _hash) ((intptr_t)(_key))
 #define REFCOUNTER_TABLE_FREE_VALUE(_value)                                   \
-    _discord_refvalue_cleanup(&_value, client)
+    _discord_refvalue_cleanup(rc, &_value)
 #define REFCOUNTER_TABLE_COMPARE(_cmp_a, _cmp_b) (_cmp_a == _cmp_b)
 #define REFCOUNTER_TABLE_INIT(ref, _key, _value)                              \
     memset(&ref, 0, sizeof(ref));                                             \
@@ -23,11 +23,16 @@
 struct _discord_refvalue {
     /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
     void *data;
+    /** whether cleanup expects a client parameter */
+    bool expects_client;
     /**
      * cleanup for when `data` is no longer needed
      * @note this only has to be assigned once, it is automatically called once
      *      `data` is no longer referenced by any callback */
-    void (*cleanup)(struct discord *client, void *data);
+    union {
+        void (*client)(struct discord *client, void *data);
+        void (*internal)(void *data);
+    } cleanup;
     /**
      * `data` references count
      * @note if `-1` then `data` has been claimed with
@@ -49,10 +54,15 @@ struct _discord_ref {
 };
 
 static void
-_discord_refvalue_cleanup(struct _discord_refvalue *value,
-                          struct discord *client)
+_discord_refvalue_cleanup(struct discord_refcounter *rc,
+                          struct _discord_refvalue *value)
 {
-    if (value->cleanup) value->cleanup(client, value->data);
+    if (value->cleanup.client) {
+        if (value->expects_client)
+            value->cleanup.client(CLIENT(rc, refcounter), value->data);
+        else
+            value->cleanup.internal(value->data);
+    }
     if (value->should_free) free(value->data);
 }
 
@@ -66,29 +76,19 @@ _discord_refvalue_find(struct discord_refcounter *rc, const void *data)
     return &ref->value;
 }
 
-static struct _discord_refvalue *
+static void
 _discord_refvalue_init(struct discord_refcounter *rc,
                        void *data,
-                       void (*cleanup)(struct discord *client, void *data),
-                       bool should_free)
+                       struct _discord_refvalue *init_fields)
 {
-    struct discord *client = CLIENT(rc, refcounter);
-    struct _discord_refvalue value = {
-        .data = data,
-        .cleanup = cleanup,
-        .visits = 0,
-        .should_free = should_free,
-    };
-
-    chash_assign(rc, (intptr_t)data, value, REFCOUNTER_TABLE);
-
-    return _discord_refvalue_find(rc, data);
+    init_fields->data = data;
+    init_fields->visits = 1;
+    chash_assign(rc, (intptr_t)data, *init_fields, REFCOUNTER_TABLE);
 }
 
 static void
 _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
 {
-    struct discord *client = CLIENT(rc, refcounter);
     chash_delete(rc, (intptr_t)data, REFCOUNTER_TABLE);
 }
 
@@ -103,7 +103,6 @@ discord_refcounter_init(struct discord_refcounter *rc, struct logconf *conf)
 void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
-    struct discord *client = CLIENT(rc, refcounter);
     __chash_free(rc, REFCOUNTER_TABLE);
 }
 
@@ -140,39 +139,65 @@ discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
     return false;
 }
 
-bool
-discord_refcounter_incr(struct discord_refcounter *rc,
-                        void *data,
-                        void (*cleanup)(struct discord *client, void *data),
-                        bool should_free)
+void
+discord_refcounter_add_internal(struct discord_refcounter *rc,
+                                void *data,
+                                void (*cleanup)(void *data),
+                                bool should_free)
+{
+    struct _discord_refvalue init = {
+        .expects_client = false,
+        .cleanup.internal = cleanup,
+        .should_free = should_free,
+    };
+    _discord_refvalue_init(rc, data, &init);
+}
+
+void
+discord_refcounter_add_client(struct discord_refcounter *rc,
+                              void *data,
+                              void (*cleanup)(struct discord *client,
+                                              void *data),
+                              bool should_free)
+{
+    struct _discord_refvalue init = {
+        .expects_client = true,
+        .cleanup.client = cleanup,
+        .should_free = should_free,
+    };
+    _discord_refvalue_init(rc, data, &init);
+}
+
+CCORDcode
+discord_refcounter_incr(struct discord_refcounter *rc, void *data)
 {
     struct _discord_refvalue *value;
 
-    if (discord_refcounter_contains(rc, data))
-        value = _discord_refvalue_find(rc, data);
-    else
-        value = _discord_refvalue_init(rc, data, cleanup, should_free);
+    if (!discord_refcounter_contains(rc, data)) return CCORD_UNAVAILABLE;
+
+    value = _discord_refvalue_find(rc, data);
 
     if (value->visits != -1) {
         ++value->visits;
-        return true;
+        return CCORD_OK;
     }
-    return false;
+    return CCORD_OWNERSHIP;
 }
 
-bool
+CCORDcode
 discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
     struct _discord_refvalue *value = NULL;
 
-    if (discord_refcounter_contains(rc, data))
-        value = _discord_refvalue_find(rc, data);
+    if (!discord_refcounter_contains(rc, data)) return CCORD_UNAVAILABLE;
 
-    if (value && value->visits != -1) {
+    value = _discord_refvalue_find(rc, data);
+
+    if (value->visits != -1) {
         if (0 == --value->visits) {
             _discord_refvalue_delete(rc, data);
         }
-        return true;
+        return CCORD_OK;
     }
-    return false;
+    return CCORD_OWNERSHIP;
 }
