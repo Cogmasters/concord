@@ -63,9 +63,9 @@ log_on_app_delete(struct discord *client,
 }
 
 void
-fail_interaction_create(struct discord *client, CCORDcode code, void *data)
+fail_interaction_create(struct discord *client, struct discord_response *resp)
 {
-    log_error("%s", discord_strerror(code, client));
+    log_error("%s", discord_strerror(resp->code, client));
 }
 
 void

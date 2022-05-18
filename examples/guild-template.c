@@ -27,10 +27,10 @@ on_ready(struct discord *client, const struct discord_ready *event)
 
 void
 done(struct discord *client,
-     void *data,
+     struct discord_response *resp,
      const struct discord_guild_template *template)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text),
@@ -43,13 +43,13 @@ done(struct discord *client,
 }
 
 void
-fail(struct discord *client, CCORDcode code, void *data)
+fail(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text), "Couldn't perform operation: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -62,7 +62,7 @@ on_get_guild_template(struct discord *client,
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = event,
+        .keep = event,
     };
     discord_get_guild_template(client, event->content, &ret);
 }
@@ -74,7 +74,7 @@ on_create_guild_template(struct discord *client,
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = event,
+        .keep = event,
     };
 
     struct discord_create_guild_template params = {
@@ -92,7 +92,7 @@ on_sync_guild_template(struct discord *client,
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = event,
+        .keep = event,
     };
 
     discord_sync_guild_template(client, event->guild_id, event->content, &ret);

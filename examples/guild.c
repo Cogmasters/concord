@@ -124,7 +124,7 @@ on_role_member_remove(struct discord *client,
 
 void
 done_get_guild_roles(struct discord *client,
-                     void *data,
+                     struct discord_response *resp,
                      const struct discord_roles *roles)
 {
     char text[DISCORD_MAX_MESSAGE_LEN];
@@ -152,10 +152,10 @@ done_get_guild_roles(struct discord *client,
 }
 
 void
-fail_get_guild_roles(struct discord *client, CCORDcode code, void *data)
+fail_get_guild_roles(struct discord *client, struct discord_response *resp)
 {
     log_error("Couldn't fetch guild roles: %s",
-              discord_strerror(code, client));
+              discord_strerror(resp->code, client));
 }
 
 void
@@ -172,18 +172,19 @@ on_role_list(struct discord *client, const struct discord_message *event)
 
 void
 done_get_guild_member(struct discord *client,
-                      void *data,
+                      struct discord_response *resp,
                       const struct discord_guild_member *member)
 {
+    (void)resp;
     log_info("Member %s (%" PRIu64 ") found!", member->user->username,
              member->user->id);
 }
 
 void
-fail_get_guild_member(struct discord *client, CCORDcode code, void *data)
+fail_get_guild_member(struct discord *client, struct discord_response *resp)
 {
     log_error("Couldn't fetch guild member: %s",
-              discord_strerror(code, client));
+              discord_strerror(resp->code, client));
 }
 
 void
@@ -208,10 +209,10 @@ on_member_get(struct discord *client, const struct discord_message *event)
 
 void
 done_get_guild_channels(struct discord *client,
-                        void *data,
+                        struct discord_response *resp,
                         const struct discord_channels *channels)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     char *cur = text;
@@ -238,13 +239,13 @@ done_get_guild_channels(struct discord *client,
 }
 
 void
-fail_get_guild_channels(struct discord *client, CCORDcode code, void *data)
+fail_get_guild_channels(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch guild channels: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -258,7 +259,7 @@ on_channels_get(struct discord *client, const struct discord_message *event)
     struct discord_ret_channels ret = {
         .done = &done_get_guild_channels,
         .fail = &fail_get_guild_channels,
-        .data = event,
+        .keep = event,
     };
     discord_get_guild_channels(client, event->guild_id, &ret);
 }

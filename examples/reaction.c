@@ -36,10 +36,10 @@ on_ready(struct discord *client, const struct discord_ready *event)
 
 void
 done_get_users(struct discord *client,
-               void *data,
+               struct discord_response *resp,
                const struct discord_users *users)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[2000];
 
     if (!users->size) {
@@ -62,13 +62,13 @@ done_get_users(struct discord *client,
 }
 
 void
-fail_get_users(struct discord *client, CCORDcode code, void *data)
+fail_get_users(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch reactions: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -82,7 +82,7 @@ on_get_users(struct discord *client, const struct discord_message *event)
     struct discord_ret_users ret = {
         .done = &done_get_users,
         .fail = &fail_get_users,
-        .data = event,
+        .keep = event,
     };
     struct discord_get_reactions params = { .limit = 25 };
 

@@ -58,10 +58,10 @@ log_on_guild_member_remove(struct discord *client,
 
 void
 done(struct discord *client,
-     void *data,
+     struct discord_response *resp,
      const struct discord_audit_log *audit_log)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
 
     if (!audit_log->audit_log_entries || !audit_log->audit_log_entries->size) {
         log_warn("No audit log entries found!");
@@ -80,12 +80,12 @@ done(struct discord *client,
 }
 
 void
-fail(struct discord *client, CCORDcode code, void *data)
+fail(struct discord *client, struct discord_response *resp)
 {
-    (void)data;
+    (void)resp;
 
     log_error("Couldn't retrieve audit log: %s",
-              discord_strerror(code, client));
+              discord_strerror(resp->code, client));
 }
 
 void
@@ -97,7 +97,7 @@ on_audit_channel_create(struct discord *client,
     struct discord_ret_audit_log ret = {
         .done = &done,
         .fail = &fail,
-        .data = event,
+        .keep = event,
     };
     struct discord_get_guild_audit_log params = {
         .user_id = event->author->id,

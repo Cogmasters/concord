@@ -64,10 +64,10 @@ on_unpin(struct discord *client, const struct discord_message *event)
 
 void
 done_get_pins(struct discord *client,
-              void *data,
+              struct discord_response *resp,
               const struct discord_messages *msgs)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[2000] = "No pins on channel";
 
     char *cur = text;
@@ -87,9 +87,9 @@ done_get_pins(struct discord *client,
 }
 
 void
-fail_get_pins(struct discord *client, CCORDcode code, void *data)
+fail_get_pins(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[2000] = "";
 
     snprintf(text, sizeof(text),
@@ -108,7 +108,7 @@ on_get_pins(struct discord *client, const struct discord_message *event)
     struct discord_ret_messages ret = {
         .done = &done_get_pins,
         .fail = &fail_get_pins,
-        .data = event,
+        .keep = event,
     };
     discord_get_pinned_messages(client, event->channel_id, &ret);
 }

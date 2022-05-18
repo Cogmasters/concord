@@ -25,10 +25,10 @@ on_ready(struct discord *client, const struct discord_ready *event)
 
 void
 done_list_guild_emojis(struct discord *client,
-                       void *data,
+                       struct discord_response *resp,
                        const struct discord_emojis *emojis)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[2000] = "";
 
     if (!emojis->size) {
@@ -67,13 +67,13 @@ done_list_guild_emojis(struct discord *client,
 }
 
 void
-fail_list_guild_emojis(struct discord *client, CCORDcode code, void *data)
+fail_list_guild_emojis(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch guild emojis: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -88,17 +88,17 @@ on_list_guild_emojis(struct discord *client,
     struct discord_ret_emojis ret = {
         .done = &done_list_guild_emojis,
         .fail = &fail_list_guild_emojis,
-        .data = event,
+        .keep = event,
     };
     discord_list_guild_emojis(client, event->guild_id, &ret);
 }
 
 void
 done_get_guild_emoji(struct discord *client,
-                     void *data,
+                     struct discord_response *resp,
                      const struct discord_emoji *emoji)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text), "Here you go: <%s:%s:%" PRIu64 ">",
@@ -109,13 +109,13 @@ done_get_guild_emoji(struct discord *client,
 }
 
 void
-fail_get_guild_emoji(struct discord *client, CCORDcode code, void *data)
+fail_get_guild_emoji(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "Unknown emoji: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -134,7 +134,7 @@ on_get_guild_emoji(struct discord *client, const struct discord_message *event)
     struct discord_ret_emoji ret = {
         .done = &done_get_guild_emoji,
         .fail = &fail_get_guild_emoji,
-        .data = event,
+        .keep = event,
     };
     discord_get_guild_emoji(client, event->guild_id, emoji_id, &ret);
 }

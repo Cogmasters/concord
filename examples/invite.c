@@ -25,9 +25,11 @@ on_ready(struct discord *client, const struct discord_ready *event)
 }
 
 void
-done(struct discord *client, void *data, const struct discord_invite *invite)
+done(struct discord *client,
+     struct discord_response *resp,
+     const struct discord_invite *invite)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "Success: https://discord.gg/%s",
@@ -38,9 +40,9 @@ done(struct discord *client, void *data, const struct discord_invite *invite)
 }
 
 void
-fail(struct discord *client, CCORDcode code, void *data)
+fail(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = data;
+    const struct discord_message *event = resp->keep;
 
     struct discord_create_message params = {
         .content = "Couldn't perform operation."
@@ -56,7 +58,7 @@ on_invite_get(struct discord *client, const struct discord_message *event)
     struct discord_ret_invite ret = {
         .done = &done,
         .fail = &fail,
-        .data = event,
+        .keep = event,
     };
 
     struct discord_get_invite params = {
@@ -74,7 +76,7 @@ on_invite_delete(struct discord *client, const struct discord_message *event)
     struct discord_ret_invite ret = {
         .done = &done,
         .fail = &fail,
-        .data = event,
+        .keep = event,
     };
     discord_delete_invite(client, event->content, &ret);
 }
