@@ -111,12 +111,10 @@ discord_message_commands_set_prefix(struct discord_message_commands *cmds,
 }
 
 static void
-_discord_message_cleanup_v(struct discord *client, void *message)
+_discord_message_cleanup_v(void *p_message)
 {
-    (void)client;
-
-    discord_message_cleanup(message);
-    free(message);
+    discord_message_cleanup(p_message);
+    free(p_message);
 }
 
 /** return true in case user command has been triggered */
@@ -134,17 +132,17 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
                     cmds->prefix.size))
     {
         struct discord *client = CLIENT(cmds, commands);
-        struct discord_message *event = calloc(1, sizeof *event);
+        struct discord_message *event_data = calloc(1, sizeof *event_data);
         discord_ev_message callback = NULL;
         struct ccord_szbuf command;
         char *tmp;
 
-        discord_message_from_jsmnf(payload->data, payload->json, event);
+        discord_message_from_jsmnf(payload->data, payload->json, event_data);
 
-        command.start = event->content + cmds->prefix.size;
+        command.start = event_data->content + cmds->prefix.size;
         command.size = strcspn(command.start, " \n\t\r");
 
-        tmp = event->content;
+        tmp = event_data->content;
 
         /* match command to its callback */
         if (!(callback = discord_message_commands_find(cmds, command.start,
@@ -152,8 +150,7 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
         {
             /* couldn't match command to callback, get fallback if available */
             if (!cmds->prefix.size || !cmds->fallback) {
-                discord_message_cleanup(event);
-                free(event);
+                _discord_message_cleanup_v(event_data);
                 return false;
             }
             command.size = 0;
@@ -161,17 +158,22 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
         }
 
         /* skip blank characters after command */
-        if (event->content) {
-            event->content = command.start + command.size;
-            while (*event->content && isspace((int)event->content[0]))
-                ++event->content;
+        if (event_data->content) {
+            event_data->content = command.start + command.size;
+            while (*event_data->content
+                   && isspace((int)event_data->content[0]))
+                ++event_data->content;
         }
 
-        discord_refcounter_incr(&client->refcounter, event,
-                                _discord_message_cleanup_v, false);
-        callback(client, event);
-        event->content = tmp; /* retrieve original ptr */
-        discord_refcounter_decr(&client->refcounter, event);
+        if (CCORD_UNAVAILABLE
+            == discord_refcounter_incr(&client->refcounter, event_data))
+        {
+            discord_refcounter_add_internal(&client->refcounter, event_data,
+                                            _discord_message_cleanup_v, false);
+        }
+        callback(client, event_data);
+        event_data->content = tmp; /* retrieve original ptr */
+        discord_refcounter_decr(&client->refcounter, event_data);
 
         return true;
     }

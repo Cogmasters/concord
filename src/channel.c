@@ -73,9 +73,13 @@ discord_get_channel_at_pos(struct discord *client,
     current_ret.fail = ret->fail;
     current_ret.data = cxt;
 
-    if (ret->data)
-        discord_refcounter_incr(&client->refcounter, ret->data, ret->cleanup,
-                                true);
+    if (ret->data
+        && CCORD_UNAVAILABLE
+               == discord_refcounter_incr(&client->refcounter, ret->data))
+    {
+        discord_refcounter_add_client(&client->refcounter, ret->data,
+                                      ret->cleanup, false);
+    }
 
     /* TODO: fetch channel via caching, and return if results are non-existent
      */

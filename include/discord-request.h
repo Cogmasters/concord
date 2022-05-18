@@ -21,7 +21,7 @@ typedef struct {
     DISCORD_RET_DEFAULT_FIELDS;
 } discord_ret_default_fields;
 
-#define _RET_SAFECOPY_TYPED(dest, src)                                        \
+#define _RET_COPY_TYPED(dest, src)                                            \
     do {                                                                      \
         memcpy(&(dest), &(src), sizeof(discord_ret_default_fields));          \
         (dest).has_type = true;                                               \
@@ -29,7 +29,7 @@ typedef struct {
         (dest).sync = (src).sync;                                             \
     } while (0)
 
-#define _RET_SAFECOPY_TYPELESS(dest, src)                                     \
+#define _RET_COPY_TYPELESS(dest, src)                                         \
     do {                                                                      \
         memcpy(&(dest), &(src), sizeof(discord_ret_default_fields));          \
         (dest).has_type = false;                                              \
@@ -50,7 +50,7 @@ typedef struct {
         (req).response.init = (cast_init)type##_init;                         \
         (req).response.from_json = (cast_from_json)type##_from_json;          \
         (req).response.cleanup = (cast_cleanup)type##_cleanup;                \
-        if (ret) _RET_SAFECOPY_TYPED(req.dispatch, *ret);                     \
+        if (ret) _RET_COPY_TYPED(req.dispatch, *ret);                         \
     } while (0)
 
 /**
@@ -65,7 +65,7 @@ typedef struct {
         (req).response.size = sizeof(struct type);                            \
         (req).response.from_json = (cast_from_json)type##_from_json;          \
         (req).response.cleanup = (cast_cleanup)type##_cleanup;                \
-        if (ret) _RET_SAFECOPY_TYPED(req.dispatch, *ret);                     \
+        if (ret) _RET_COPY_TYPED(req.dispatch, *ret);                         \
     } while (0)
 
 /**
@@ -75,6 +75,6 @@ typedef struct {
  * @param ret request attributes
  */
 #define DISCORD_REQ_BLANK_INIT(req, ret)                                      \
-    if (ret) _RET_SAFECOPY_TYPELESS(req.dispatch, *ret)
+    if (ret) _RET_COPY_TYPELESS(req.dispatch, *ret)
 
 #endif /* DISCORD_REQUEST_H */

@@ -126,12 +126,6 @@ static const struct {
         INIT(discord_webhooks_update, webhooks_update),
 };
 
-static void
-_discord_gateway_dispatch_cleanup(struct discord *client, void *data)
-{
-    dispatch[client->gw.payload.event].cleanup(data);
-}
-
 void
 discord_gateway_dispatch(struct discord_gateway *gw)
 {
@@ -141,22 +135,26 @@ discord_gateway_dispatch(struct discord_gateway *gw)
     switch (event) {
     case DISCORD_EV_MESSAGE_CREATE:
         if (discord_message_commands_try_perform(&client->commands,
-                                                 &gw->payload))
-        {
+                                                 &gw->payload)) {
             return;
         }
     /* fall-through */
     default:
         if (gw->cbs[event]) {
-            void *data = calloc(1, dispatch[event].size);
+            void *event_data = calloc(1, dispatch[event].size);
 
             dispatch[event].from_jsmnf(gw->payload.data, gw->payload.json,
-                                       data);
+                                       event_data);
 
-            discord_refcounter_incr(&client->refcounter, data,
-                                    _discord_gateway_dispatch_cleanup, true);
-            gw->cbs[event](client, data);
-            discord_refcounter_decr(&client->refcounter, data);
+            if (CCORD_UNAVAILABLE
+                == discord_refcounter_incr(&client->refcounter, event_data))
+            {
+                discord_refcounter_add_internal(&client->refcounter,
+                                                event_data,
+                                                dispatch[event].cleanup, true);
+            }
+            gw->cbs[event](client, event_data);
+            discord_refcounter_decr(&client->refcounter, event_data);
         }
         break;
     case DISCORD_EV_NONE:

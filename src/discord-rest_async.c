@@ -137,8 +137,12 @@ discord_async_recycle_context(struct discord_async *async,
     curl_multi_remove_handle(async->mhandle, ehandle);
     if (cxt->conn) ua_conn_stop(cxt->conn);
 
-    discord_refcounter_decr(rc, (void *)cxt->dispatch.keep);
-    discord_refcounter_decr(rc, cxt->dispatch.data);
+    if (cxt->dispatch.keep) {
+        discord_refcounter_decr(rc, (void *)cxt->dispatch.keep);
+    }
+    if (cxt->dispatch.data) {
+        discord_refcounter_decr(rc, cxt->dispatch.data);
+    }
 
     cxt->b = NULL;
     cxt->body.size = 0;
@@ -221,16 +225,20 @@ discord_async_start_context(struct discord_async *async,
     cxt->b = discord_bucket_get(&rest->ratelimiter, key);
 
     if (req->dispatch.keep) {
-        ASSERT_S(discord_refcounter_contains(&client->refcounter,
-                                             req->dispatch.keep),
-                 "'.keep' data must be a Concord callback parameter");
+        CCORDcode code = discord_refcounter_incr(&client->refcounter,
+                                                 (void *)req->dispatch.keep);
 
-        discord_refcounter_incr(&client->refcounter,
-                                (void *)req->dispatch.keep, NULL, false);
+        ASSERT_S(code == CCORD_OK,
+                 "'.keep' data must be a Concord callback parameter");
     }
-    if (req->dispatch.data)
-        discord_refcounter_incr(&client->refcounter, req->dispatch.data,
-                                req->dispatch.cleanup, false);
+    if (req->dispatch.data
+        && CCORD_UNAVAILABLE
+               == discord_refcounter_incr(&client->refcounter,
+                                          req->dispatch.data))
+    {
+        discord_refcounter_add_client(&client->refcounter, req->dispatch.data,
+                                      req->dispatch.cleanup, false);
+    }
 
     io_poller_curlm_enable_perform(client->io_poller, async->mhandle);
 

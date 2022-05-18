@@ -478,23 +478,29 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
             if (cxt->dispatch.fail) cxt->dispatch.fail(client, &resp);
         }
         else if (cxt->dispatch.done.typed) {
-            void *ret = calloc(1, cxt->response.size);
-
-            /* initialize ret */
-            if (cxt->response.init) cxt->response.init(ret);
-
-            /* populate ret */
-            if (cxt->response.from_json)
-                cxt->response.from_json(body.start, body.size, ret);
-
-            if (cxt->dispatch.has_type)
-                cxt->dispatch.done.typed(client, &resp, ret);
-            else
+            if (!cxt->dispatch.has_type) {
                 cxt->dispatch.done.typeless(client, &resp);
+            }
+            else {
+                void *ret_data = calloc(1, cxt->response.size);
 
-            /* cleanup ret TODO: add refcounter so that users may keep */
-            if (cxt->response.cleanup) cxt->response.cleanup(ret);
-            free(ret);
+                /* initialize ret_data */
+                if (cxt->response.init) cxt->response.init(ret_data);
+
+                /* populate ret_data */
+                if (cxt->response.from_json)
+                    cxt->response.from_json(body.start, body.size, ret_data);
+
+                if (CCORD_UNAVAILABLE
+                    == discord_refcounter_incr(&client->refcounter, ret_data))
+                {
+                    discord_refcounter_add_internal(
+                        &client->refcounter, ret_data, cxt->response.cleanup,
+                        true);
+                }
+                cxt->dispatch.done.typed(client, &resp, ret_data);
+                discord_refcounter_decr(&client->refcounter, ret_data);
+            }
         }
 
         discord_ratelimiter_build(&rest->ratelimiter, cxt->b, cxt->key, &info);
