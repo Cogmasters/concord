@@ -547,8 +547,6 @@ discord_rest_async_perform(struct discord_rest *rest)
     CCORDcode code;
     int alive = 0;
 
-    if (CCORD_OK != (code = _discord_rest_check_pending(rest))) return code;
-
     if (CURLM_OK
         != (mcode = curl_multi_socket_all(rest->async.mhandle, &alive)))
         return CCORD_CURLM_INTERNAL;
@@ -564,6 +562,8 @@ discord_rest_async_perform(struct discord_rest *rest)
         /* check for request action */
         _discord_rest_check_action(rest, msg);
     }
+
+    if (CCORD_OK != (code = _discord_rest_check_pending(rest))) return code;
 
     return CCORD_OK;
 }
