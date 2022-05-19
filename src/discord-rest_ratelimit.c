@@ -251,8 +251,9 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
     (void)client;
     struct discord_bucket *b = timer->data;
 
-    b->busy = NULL; /* bucket is no longer busy */
     b->remaining = 1;
+
+    pthread_mutex_unlock(&b->lock);
 }
 
 void
@@ -261,8 +262,6 @@ discord_bucket_try_timeout(struct discord_ratelimiter *rl,
 {
     struct discord *client = CLIENT(rl, rest.ratelimiter);
     const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
-
-    b->busy = DISCORD_BUCKET_TIMEOUT;
 
     discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
 

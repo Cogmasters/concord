@@ -7,7 +7,7 @@ CORE_DIR      = $(TOP)/core
 INCLUDE_DIR   = $(TOP)/include
 GENCODECS_DIR = $(TOP)/gencodecs
 
-TEST_DISCORD = rest sync async timeout
+TEST_DISCORD = racecond rest timeout
 TEST_CORE    = user-agent websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_CORE)

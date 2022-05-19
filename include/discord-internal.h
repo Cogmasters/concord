@@ -260,12 +260,6 @@ struct discord_context *discord_async_start_context(
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
-/**
- * @brief Value assigned to @ref discord_bucket `busy` field in case it's
- *      being timed-out
- */
-#define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
-
 /** @brief The ratelimiter struct for handling ratelimiting */
 struct discord_ratelimiter {
     /** DISCORD_RATELIMIT logging module */
@@ -375,11 +369,8 @@ struct discord_bucket {
     pthread_mutex_t lock;
     /** pending requests */
     QUEUE(struct discord_context) pending_queue;
-    /**
-     * pointer to currently performing busy request (if any)
-     * @note `NULL` if free or @ref DISCORD_BUCKET_TIMEOUT if being ratelimited
-     */
-    struct discord_context *busy;
+    /** pointer to currently performing busy context (if asynchronous) */
+    struct discord_context *performing_cxt;
 };
 
 /**
@@ -949,7 +940,8 @@ bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
  * @param data the data to have its reference counter incremented
  * @retval CCORD_OK counter for `data` has been incremented
  * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has been claimed by client with discord_claim()
+ * @retval CCORD_OWNERSHIP `data` has been claimed by client with
+ * discord_claim()
  */
 CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
 
@@ -963,7 +955,8 @@ CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
  * @param data the data to have its reference counter decremented
  * @retval CCORD_OK counter for `data` has been decremented
  * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has been claimed by client with discord_claim()
+ * @retval CCORD_OWNERSHIP `data` has been claimed by client with
+ * discord_claim()
  */
 CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 

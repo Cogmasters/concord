@@ -25,6 +25,26 @@ on_ready(struct discord *client, const struct discord_ready *event)
 }
 
 void
+disconnect(struct discord *client,
+           struct discord_response *resp,
+           const struct discord_message *msg)
+{
+    (void)resp;
+    (void)msg;
+    discord_shutdown(client);
+}
+
+void
+reconnect(struct discord *client,
+          struct discord_response *resp,
+          const struct discord_message *msg)
+{
+    (void)resp;
+    (void)msg;
+    discord_reconnect(client, true);
+}
+
+void
 on_disconnect(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
@@ -34,10 +54,9 @@ on_disconnect(struct discord *client, const struct discord_message *event)
                                .content = "Disconnecting ...",
                            },
                            &(struct discord_ret_message){
-                               .sync = DISCORD_SYNC_FLAG,
+                               .done = &disconnect,
+                               .high_p = true,
                            });
-
-    discord_shutdown(client);
 }
 
 void
@@ -50,14 +69,34 @@ on_reconnect(struct discord *client, const struct discord_message *event)
                                .content = "Reconnecting ...",
                            },
                            &(struct discord_ret_message){
-                               .sync = DISCORD_SYNC_FLAG,
+                               .done = &reconnect,
+                               .high_p = true,
                            });
-
-    discord_reconnect(client, true);
 }
 
 void
-on_spam(struct discord *client, const struct discord_message *event)
+on_single(struct discord *client, const struct discord_message *event)
+{
+    if (event->author->bot) return;
+
+    discord_create_message(client, event->channel_id,
+                           &(struct discord_create_message){
+                               .content = "Hello",
+                           },
+                           NULL);
+}
+
+void
+on_stop_spam_sync(struct discord *client, const struct discord_message *event)
+{
+    pthread_mutex_lock(&g_lock);
+    g_keep_spamming = false;
+    g_thread_count = 0;
+    pthread_mutex_unlock(&g_lock);
+}
+
+void
+on_spam_sync(struct discord *client, const struct discord_message *event)
 {
     const unsigned threadpool_size = strtol(THREADPOOL_SIZE, NULL, 10);
 
@@ -105,91 +144,59 @@ on_spam(struct discord *client, const struct discord_message *event)
 }
 
 void
-on_spam_block(struct discord *client, const struct discord_message *event)
+send_batch(struct discord *client,
+           struct discord_response *resp,
+           const struct discord_message *msg)
 {
-    if (event->author->bot) return;
-
-    discord_create_message(client, event->channel_id,
-                           &(struct discord_create_message){
-                               .content = "No 1",
-                           },
-                           &(struct discord_ret_message){
-                               .sync = DISCORD_SYNC_FLAG,
-                           });
-}
-
-void
-on_spam_block_continue(struct discord *client,
-                       const struct discord_message *event)
-{
-    const struct discord_user *bot = discord_get_self(client);
+    (void)resp;
     char text[32];
-    int number;
 
-    if (event->author->id != bot->id) return;
+    for (int i = 0; i < 128; ++i) {
+        snprintf(text, sizeof(text), "%d", i);
+        discord_create_message(client, msg->channel_id,
+                               &(struct discord_create_message){
+                                   .content = text,
+                               },
+                               NULL);
+    }
 
-    sscanf(event->content, "No %d", &number);
-    snprintf(text, sizeof(text), "No %d", 1 + number);
-
-    discord_create_message(client, event->channel_id,
+    discord_create_message(client, msg->channel_id,
                            &(struct discord_create_message){
-                               .content = text,
+                               .content = "CHECKPOINT",
                            },
                            &(struct discord_ret_message){
-                               .sync = DISCORD_SYNC_FLAG,
+                               .done = &send_batch,
                            });
 }
 
 void
-on_stop(struct discord *client, const struct discord_message *event)
+on_spam_async(struct discord *client, const struct discord_message *event)
 {
-    if (event->author->bot) return;
+    send_batch(client, NULL, event);
+}
 
-    pthread_mutex_lock(&g_lock);
-    g_keep_spamming = false;
-    g_thread_count = 0;
-    pthread_mutex_unlock(&g_lock);
+void
+fail_delete_channel(struct discord *client, struct discord_response *resp)
+{
+    const struct discord_message *event = resp->keep;
+
+    discord_create_message(
+        client, event->channel_id,
+        &(struct discord_create_message){
+            .content = (char *)discord_strerror(resp->code, client),
+        },
+        NULL);
 }
 
 void
 on_force_error(struct discord *client, const struct discord_message *event)
 {
-    const u64snowflake FAUX_CHANNEL_ID = 123ULL;
-    CCORDcode code;
+    const u64snowflake FAUX_CHANNEL_ID = 123;
 
-    if (event->author->bot) return;
-
-    code = discord_delete_channel(client, FAUX_CHANNEL_ID,
-                                  &(struct discord_ret_channel){
-                                      .sync = DISCORD_SYNC_FLAG,
-                                  });
-    assert(code != CCORD_OK);
-
-    discord_create_message(
-        client, event->channel_id,
-        &(struct discord_create_message){
-            .content = (char *)discord_strerror(code, client),
-        },
-        &(struct discord_ret_message){
-            .sync = DISCORD_SYNC_FLAG,
-        });
-}
-
-void
-on_ping(struct discord *client, const struct discord_message *event)
-{
-    char text[256];
-
-    if (event->author->bot) return;
-
-    sprintf(text, "Ping: %d", discord_get_ping(client));
-
-    discord_create_message(client, event->channel_id,
-                           &(struct discord_create_message){
-                               .content = text,
-                           },
-                           &(struct discord_ret_message){
-                               .sync = DISCORD_SYNC_FLAG,
+    discord_delete_channel(client, FAUX_CHANNEL_ID,
+                           &(struct discord_ret_channel){
+                               .fail = &fail_delete_channel,
+                               .keep = event,
                            });
 }
 
@@ -200,7 +207,7 @@ scheduler(struct discord *client,
           enum discord_gateway_events event)
 {
     if (event == DISCORD_EV_MESSAGE_CREATE) {
-        char cmd[1024] = "";
+        char cmd[DISCORD_MAX_MESSAGE_LEN] = "";
 
         jsmntok_t *tokens = NULL;
         unsigned ntokens = 0;
@@ -226,22 +233,10 @@ scheduler(struct discord *client,
             free(tokens);
         }
 
-        if (0 == strcmp(PREFIX "ping", cmd)
-            || 0 == strcmp(PREFIX "spam-block", cmd)) {
-            return DISCORD_EVENT_MAIN_THREAD;
-        }
-        else if (0 == strncmp("No", cmd, 2)) {
-            struct discord_message msg = { 0 };
-
-            discord_message_from_json(data, size, &msg);
-            on_spam_block_continue(client, &msg);
-            discord_message_cleanup(&msg);
-
-            return DISCORD_EVENT_IGNORE;
-        }
+        if (0 == strcmp(PREFIX "spam_sync", cmd))
+            return DISCORD_EVENT_WORKER_THREAD;
     }
-
-    return DISCORD_EVENT_WORKER_THREAD;
+    return DISCORD_EVENT_MAIN_THREAD;
 }
 
 int
@@ -257,10 +252,10 @@ main(int argc, char *argv[])
     setenv("CCORD_THREADPOOL_QUEUE_SIZE", "128", 1);
 
     ccord_global_init();
+
     struct discord *client = discord_config_init(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
-    /* trigger event callbacks in a multi-threaded fashion */
     discord_set_event_scheduler(client, &scheduler);
 
     discord_set_on_ready(client, &on_ready);
@@ -268,11 +263,11 @@ main(int argc, char *argv[])
     discord_set_prefix(client, PREFIX);
     discord_set_on_command(client, "disconnect", &on_disconnect);
     discord_set_on_command(client, "reconnect", &on_reconnect);
-    discord_set_on_command(client, "spam", &on_spam);
-    discord_set_on_command(client, "spam-block", &on_spam_block);
-    discord_set_on_command(client, "stop", &on_stop);
+    discord_set_on_command(client, "single", &on_single);
+    discord_set_on_command(client, "stop_spam_sync", &on_stop_spam_sync);
+    discord_set_on_command(client, "spam_sync", &on_spam_sync);
+    discord_set_on_command(client, "spam_async", &on_spam_async);
     discord_set_on_command(client, "force_error", &on_force_error);
-    discord_set_on_command(client, "ping", &on_ping);
 
     discord_run(client);
 

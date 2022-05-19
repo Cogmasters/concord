@@ -188,8 +188,8 @@ _discord_rest_get_info(struct discord_rest *rest,
         if (*wait_ms < 0) *wait_ms = 0;
 
         logconf_warn(&rest->conf,
-                     "429 %s RATELIMITING (wait: %" PRId64 " ms) : %.*s",
-                     is_global ? "GLOBAL" : "", *wait_ms, message.len,
+                     "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
+                     is_global ? "GLOBAL " : "", *wait_ms, message.len,
                      body.start + message.pos);
 
         return true;
@@ -425,7 +425,9 @@ _discord_rest_try_add_request(struct discord_ratelimiter *rl,
                               struct discord_bucket *b)
 {
     /* skip if bucket is busy performing */
-    if (b->busy) return;
+    if (pthread_mutex_trylock(&b->lock) != 0) {
+        return;
+    }
 
     if (!b->remaining) {
         discord_bucket_try_timeout(rl, b);
@@ -436,11 +438,15 @@ _discord_rest_try_add_request(struct discord_ratelimiter *rl,
 
         _discord_rest_add_request(rest, b);
     }
+    else {
+        pthread_mutex_unlock(&b->lock);
+    }
 }
 
 static CCORDcode
 _discord_rest_check_pending(struct discord_rest *rest)
 {
+    /* TODO: replace foreach with a mechanism that loops only busy buckets */
     discord_ratelimiter_foreach_bucket(&rest->ratelimiter,
                                        &_discord_rest_try_add_request);
     /* FIXME: redundant return value (constant) */
@@ -525,9 +531,11 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
     }
 
     /* enqueue request for retry or recycle */
-    cxt->b->busy = NULL;
     if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms))
         discord_async_recycle_context(&rest->async, cxt);
+
+    cxt->b->performing_cxt = NULL;
+    pthread_mutex_unlock(&cxt->b->lock);
 
     return resp.code;
 }
@@ -568,12 +576,7 @@ _discord_rest_stop_bucket(struct discord_ratelimiter *rl,
         &CONTAINEROF(rl, struct discord_rest, ratelimiter)->async;
 
     /* cancel busy transfer */
-    if (b->busy && b->busy != DISCORD_BUCKET_TIMEOUT) {
-        struct discord_context *cxt = b->busy;
-
-        b->busy = NULL;
-        discord_async_recycle_context(async, cxt);
-    }
+    discord_async_recycle_context(async, b->performing_cxt);
 
     /* cancel pending tranfers */
     QUEUE_ADD(async->idle_contexts, &b->pending_queue);

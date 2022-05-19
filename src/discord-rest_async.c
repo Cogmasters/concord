@@ -93,7 +93,7 @@ discord_async_add_request(struct discord_async *async,
     CURLMcode mcode;
 
     cxt->conn = conn;
-    cxt->b->busy = cxt;
+    cxt->b->performing_cxt = cxt;
 
     /* link 'cxt' to 'ehandle' for easy retrieval */
     curl_easy_setopt(ehandle, CURLOPT_PRIVATE, cxt);
@@ -131,6 +131,8 @@ void
 discord_async_recycle_context(struct discord_async *async,
                               struct discord_context *cxt)
 {
+    if (!cxt) return;
+
     struct discord_refcounter *rc = &CLIENT(async, rest.async)->refcounter;
     CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
 
@@ -144,7 +146,6 @@ discord_async_recycle_context(struct discord_async *async,
         discord_refcounter_decr(rc, cxt->dispatch.data);
     }
 
-    cxt->b = NULL;
     cxt->body.size = 0;
     cxt->method = 0;
     *cxt->endpoint = '\0';
