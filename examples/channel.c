@@ -187,8 +187,7 @@ done_start_thread(struct discord *client,
     const struct discord_message *event = resp->keep;
     char text[1024];
 
-    snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">",
-             event->channel_id);
+    snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">", thread->id);
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
