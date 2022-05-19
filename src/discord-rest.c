@@ -543,12 +543,9 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 CCORDcode
 discord_rest_async_perform(struct discord_rest *rest)
 {
-    CURLMcode mcode;
-    CCORDcode code;
     int alive = 0;
 
-    if (CURLM_OK
-        != (mcode = curl_multi_socket_all(rest->async.mhandle, &alive)))
+    if (CURLM_OK != curl_multi_socket_all(rest->async.mhandle, &alive))
         return CCORD_CURLM_INTERNAL;
 
     /* ask for any messages/informationals from the individual transfers */
@@ -563,9 +560,7 @@ discord_rest_async_perform(struct discord_rest *rest)
         _discord_rest_check_action(rest, msg);
     }
 
-    if (CCORD_OK != (code = _discord_rest_check_pending(rest))) return code;
-
-    return CCORD_OK;
+    return _discord_rest_check_pending(rest);
 }
 
 static void
