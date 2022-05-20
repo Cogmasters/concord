@@ -450,10 +450,8 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 
     /* enqueue request for retry or recycle */
     cxt->b->performing_cxt = NULL;
-    if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms))
+    if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms)) {
         discord_async_recycle_context(&rest->async, cxt);
-
-    if (cxt->dispatch.sync) {
         pthread_mutex_lock(&cxt->b->sync.lock);
         pthread_cond_signal(&cxt->b->sync.cond);
         pthread_mutex_unlock(&cxt->b->sync.lock);
