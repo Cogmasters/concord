@@ -105,6 +105,21 @@ void discord_timers_init(struct discord *client);
 void discord_timers_cleanup(struct discord *client);
 
 /**
+ * @brief Get earliest trigger time from a group of timers
+ * 
+ * @param timers array of timers
+ * @param n number of timers in array
+ * @param now current time
+ * @param max_time max time to allowed
+ * @return time in microseconds until next timer, or max
+ */
+int64_t
+discord_timers_get_next_trigger(struct discord_timers *const timers[],
+                                size_t n,
+                                int64_t now,
+                                int64_t max_time);
+
+/**
  * @brief Run all timers that are due
  *
  * @param client the client created with discord_init()

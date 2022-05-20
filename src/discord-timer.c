@@ -50,6 +50,28 @@ discord_timers_cleanup(struct discord *client)
     priority_queue_destroy(client->timers.internal.q);
 }
 
+int64_t
+discord_timers_get_next_trigger(struct discord_timers *const timers[],
+                                size_t n,
+                                int64_t now,
+                                int64_t max_time)
+{
+    if (max_time == 0) return 0;
+
+    for (unsigned i = 0; i < n; i++) {
+        int64_t trigger;
+        if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
+            if (trigger < 0) continue;
+
+            if (trigger <= now)
+                max_time = 0;
+            else if (max_time > trigger - now)
+                max_time = trigger - now;
+        }
+    }
+    return max_time;
+}
+
 unsigned
 _discord_timer_ctl(struct discord *client,
                    struct discord_timers *timers,

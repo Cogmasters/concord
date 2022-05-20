@@ -49,28 +49,6 @@ discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
     client->on_cycle = callback;
 }
 
-static inline int64_t
-discord_timer_get_next_trigger(struct discord_timers *const timers[],
-                               size_t n,
-                               int64_t now,
-                               int64_t max_time)
-{
-    if (max_time == 0) return 0;
-
-    for (unsigned i = 0; i < n; i++) {
-        int64_t trigger;
-        if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
-            if (trigger < 0) continue;
-
-            if (trigger <= now)
-                max_time = 0;
-            else if (max_time > trigger - now)
-                max_time = trigger - now;
-        }
-    }
-    return max_time;
-}
-
 #define BREAK_ON_FAIL(code, function)                                         \
     if (CCORD_OK != (code = function)) break
 
@@ -99,7 +77,7 @@ discord_run(struct discord *client)
             now = (int64_t)discord_timestamp_us(client);
 
             if (!client->on_idle) {
-                poll_time = discord_timer_get_next_trigger(
+                poll_time = discord_timers_get_next_trigger(
                     timers, sizeof timers / sizeof *timers, now,
                     now < next_run ? ((next_run - now)) : 0);
             }
@@ -118,7 +96,7 @@ discord_run(struct discord *client)
                     client->on_idle(client);
                 }
                 else {
-                    int64_t sleep_time = discord_timer_get_next_trigger(
+                    int64_t sleep_time = discord_timers_get_next_trigger(
                         timers, sizeof timers / sizeof *timers, now,
                         now < next_run ? ((next_run - now)) : 0);
                     if (sleep_time > 0 && sleep_time < 1000)
