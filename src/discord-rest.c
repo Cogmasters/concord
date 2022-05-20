@@ -28,228 +28,6 @@ _discord_rest_setopt_cb(struct ua_conn *conn, void *p_token)
 }
 
 static void
-_discord_rest_manager(void *p_rest)
-{
-    struct discord_rest *rest = p_rest;
-    struct discord_timers *const timers[] = { &rest->timers };
-    int64_t now, trigger;
-
-    while (1) {
-        discord_rest_async_perform(rest);
-        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
-
-        trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
-        int poll_result =
-            io_poller_poll(rest->io_poller, (int)(trigger / 1000));
-
-        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
-        if (0 == poll_result) {
-            trigger = discord_timers_get_next_trigger(timers, 1, now, 1000);
-            if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
-        }
-        discord_timers_run(CLIENT(rest, rest), &rest->timers);
-        io_poller_perform(rest->io_poller);
-    }
-
-    discord_rest_stop_buckets(rest);
-}
-
-void
-discord_rest_init(struct discord_rest *rest,
-                  struct logconf *conf,
-                  struct ccord_szbuf_readonly *token)
-{
-    struct ua_attr attr = { 0 };
-
-    attr.conf = conf;
-    rest->ua = ua_init(&attr);
-    ua_set_url(rest->ua, DISCORD_API_BASE_URL);
-
-    if (!token->size) {
-        /* no token means a webhook-only client */
-        logconf_branch(&rest->conf, conf, "DISCORD_WEBHOOK");
-    }
-    else {
-        /* bot client */
-        logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
-        ua_set_opt(rest->ua, token, &_discord_rest_setopt_cb);
-    }
-    discord_timers_init(&rest->timers);
-    rest->io_poller = io_poller_create();
-    discord_async_init(&rest->async, &rest->conf);
-    discord_ratelimiter_init(&rest->ratelimiter, &rest->conf);
-
-    rest->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
-
-    rest->tpool = threadpool_create(1, 1024, 0);
-    ASSERT_S(0 == threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
-             "Couldn't initialize REST managagement thread");
-}
-
-void
-discord_rest_cleanup(struct discord_rest *rest)
-{
-    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
-    /* cleanup REST managing thread */
-    threadpool_destroy(rest->tpool, threadpool_graceful);
-    /* cleanup User-Agent handle */
-    ua_cleanup(rest->ua);
-    /* move pending requests to idle_contexts */
-    discord_rest_stop_buckets(rest);
-    /* cleanup idle requests queue */
-    discord_async_cleanup(&rest->async);
-    /* cleanup discovered buckets */
-    discord_ratelimiter_cleanup(&rest->ratelimiter);
-    /* cleanup REST io_poller */
-    io_poller_destroy(rest->io_poller);
-}
-
-static CCORDcode _discord_rest_start_context(struct discord_rest *rest,
-                                             struct discord_request *req,
-                                             struct ccord_szbuf *body,
-                                             enum http_method method,
-                                             char endpoint[DISCORD_ENDPT_LEN],
-                                             char key[DISCORD_ROUTE_LEN]);
-
-/* template function for performing requests */
-CCORDcode
-discord_rest_run(struct discord_rest *rest,
-                 struct discord_request *req,
-                 struct ccord_szbuf *body,
-                 enum http_method method,
-                 char endpoint_fmt[],
-                 ...)
-{
-    char endpoint[DISCORD_ENDPT_LEN];
-    char key[DISCORD_ROUTE_LEN];
-    va_list args;
-    int len;
-
-    /* have it point somewhere */
-    if (!req) {
-        static struct discord_request blank = { 0 };
-        req = &blank;
-    }
-    if (!body) {
-        static struct ccord_szbuf blank = { 0 };
-        body = &blank;
-    }
-
-    /* build the endpoint string */
-    va_start(args, endpoint_fmt);
-    len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-    ASSERT_NOT_OOB(len, sizeof(endpoint));
-    va_end(args);
-
-    /* build the bucket's key */
-    va_start(args, endpoint_fmt);
-    discord_ratelimiter_build_key(method, key, endpoint_fmt, args);
-    va_end(args);
-
-    return _discord_rest_start_context(rest, req, body, method, endpoint, key);
-}
-
-/* return true if there should be a retry attempt */
-static bool
-_discord_rest_get_info(struct discord_rest *rest,
-                       struct ua_info *info,
-                       int64_t *wait_ms)
-{
-    if (info->code != CCORD_HTTP_CODE) {
-        /* CCORD_OK or internal error */
-        return false;
-    }
-
-    switch (info->httpcode) {
-    case HTTP_FORBIDDEN:
-    case HTTP_NOT_FOUND:
-    case HTTP_BAD_REQUEST:
-        info->code = CCORD_DISCORD_JSON_CODE;
-        return false;
-    case HTTP_UNAUTHORIZED:
-        logconf_fatal(
-            &rest->conf,
-            "UNAUTHORIZED: Please provide a valid authentication token");
-        info->code = CCORD_DISCORD_BAD_AUTH;
-        return false;
-    case HTTP_METHOD_NOT_ALLOWED:
-        logconf_fatal(&rest->conf,
-                      "METHOD_NOT_ALLOWED: The server couldn't recognize the "
-                      "received HTTP method");
-        return false;
-    case HTTP_TOO_MANY_REQUESTS: {
-        struct ua_szbuf_readonly body = ua_info_get_body(info);
-        struct jsmnftok message = { 0 };
-        double retry_after = 1.0;
-        bool is_global = false;
-        jsmn_parser parser;
-        jsmntok_t tokens[16];
-
-        jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
-        {
-            jsmnf_loader loader;
-            jsmnf_pair pairs[16];
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
-            {
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, body.start, "global", 6)))
-                    is_global = ('t' == body.start[f->v.pos]);
-                if ((f = jsmnf_find(pairs, body.start, "message", 7)))
-                    message = f->v;
-                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
-                    retry_after = strtod(body.start + f->v.pos, NULL);
-            }
-        }
-
-        *wait_ms = (int64_t)(1000 * retry_after);
-        if (*wait_ms < 0) *wait_ms = 0;
-
-        logconf_warn(&rest->conf,
-                     "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
-                     is_global ? "GLOBAL " : "", *wait_ms, message.len,
-                     body.start + message.pos);
-
-        return true;
-    }
-    default:
-        if (info->httpcode >= 500) { /* Server Error */
-            return true;
-        }
-        return false;
-    }
-}
-
-/* enqueue a request to be executed asynchronously */
-static CCORDcode
-_discord_rest_start_context(struct discord_rest *rest,
-                            struct discord_request *req,
-                            struct ccord_szbuf *body,
-                            enum http_method method,
-                            char endpoint[DISCORD_ENDPT_LEN],
-                            char key[DISCORD_ROUTE_LEN])
-{
-    struct discord_context *cxt = discord_async_start_context(
-        &rest->async, req, body, method, endpoint, key);
-
-    pthread_mutex_lock(&cxt->b->sync.lock);
-
-    discord_bucket_add_context(cxt->b, cxt, cxt->dispatch.high_p);
-
-    if (cxt->dispatch.sync)
-        pthread_cond_wait(&cxt->b->sync.cond, &cxt->b->sync.lock);
-
-    pthread_mutex_unlock(&cxt->b->sync.lock);
-
-    return CCORD_OK;
-}
-
-static void
 _discord_context_to_multipart(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
@@ -359,6 +137,82 @@ _discord_rest_check_pending(struct discord_rest *rest)
     return CCORD_OK;
 }
 
+/* return true if there should be a retry attempt */
+static bool
+_discord_rest_get_info(struct discord_rest *rest,
+                       struct ua_info *info,
+                       int64_t *wait_ms)
+{
+    if (info->code != CCORD_HTTP_CODE) {
+        /* CCORD_OK or internal error */
+        return false;
+    }
+
+    switch (info->httpcode) {
+    case HTTP_FORBIDDEN:
+    case HTTP_NOT_FOUND:
+    case HTTP_BAD_REQUEST:
+        info->code = CCORD_DISCORD_JSON_CODE;
+        return false;
+    case HTTP_UNAUTHORIZED:
+        logconf_fatal(
+            &rest->conf,
+            "UNAUTHORIZED: Please provide a valid authentication token");
+        info->code = CCORD_DISCORD_BAD_AUTH;
+        return false;
+    case HTTP_METHOD_NOT_ALLOWED:
+        logconf_fatal(&rest->conf,
+                      "METHOD_NOT_ALLOWED: The server couldn't recognize the "
+                      "received HTTP method");
+        return false;
+    case HTTP_TOO_MANY_REQUESTS: {
+        struct ua_szbuf_readonly body = ua_info_get_body(info);
+        struct jsmnftok message = { 0 };
+        double retry_after = 1.0;
+        bool is_global = false;
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
+
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, body.start, "global", 6)))
+                    is_global = ('t' == body.start[f->v.pos]);
+                if ((f = jsmnf_find(pairs, body.start, "message", 7)))
+                    message = f->v;
+                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
+                    retry_after = strtod(body.start + f->v.pos, NULL);
+            }
+        }
+
+        *wait_ms = (int64_t)(1000 * retry_after);
+        if (*wait_ms < 0) *wait_ms = 0;
+
+        logconf_warn(&rest->conf,
+                     "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
+                     is_global ? "GLOBAL " : "", *wait_ms, message.len,
+                     body.start + message.pos);
+
+        return true;
+    }
+    default:
+        if (info->httpcode >= 500) { /* Server Error */
+            return true;
+        }
+        return false;
+    }
+}
+
 static CCORDcode
 _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 {
@@ -370,6 +224,8 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 
     curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
 
+    pthread_mutex_lock(&cxt->b->sync.lock);
+
     resp = (struct discord_response){ .data = cxt->dispatch.data,
                                       .keep = cxt->dispatch.keep,
                                       .code = CCORD_OK };
@@ -380,8 +236,9 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
         struct ua_info info = { 0 };
 
         ua_info_extract(cxt->conn, &info);
-        retry = _discord_rest_get_info(rest, &info, &wait_ms);
         body = ua_info_get_body(&info);
+
+        retry = _discord_rest_get_info(rest, &info, &wait_ms);
 
         resp.code = info.code;
 
@@ -406,24 +263,27 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
                 cxt->dispatch.done.typeless(client, &resp);
             }
             else {
-                void *ret_data = calloc(1, cxt->response.size);
+                cxt->response.data = calloc(1, cxt->response.size);
 
                 /* initialize ret_data */
-                if (cxt->response.init) cxt->response.init(ret_data);
+                if (cxt->response.init) cxt->response.init(cxt->response.data);
 
                 /* populate ret_data */
                 if (cxt->response.from_json)
-                    cxt->response.from_json(body.start, body.size, ret_data);
+                    cxt->response.from_json(body.start, body.size,
+                                            cxt->response.data);
 
                 if (CCORD_UNAVAILABLE
-                    == discord_refcounter_incr(&client->refcounter, ret_data))
+                    == discord_refcounter_incr(&client->refcounter,
+                                               cxt->response.data))
                 {
                     discord_refcounter_add_internal(
-                        &client->refcounter, ret_data, cxt->response.cleanup,
+                        &client->refcounter, cxt->response.data, cxt->response.cleanup,
                         true);
                 }
-                cxt->dispatch.done.typed(client, &resp, ret_data);
-                discord_refcounter_decr(&client->refcounter, ret_data);
+                cxt->dispatch.done.typed(client, &resp, cxt->response.data);
+                discord_refcounter_decr(&client->refcounter,
+                                        cxt->response.data);
             }
         }
 
@@ -452,10 +312,9 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
     cxt->b->performing_cxt = NULL;
     if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms)) {
         discord_async_recycle_context(&rest->async, cxt);
-        pthread_mutex_lock(&cxt->b->sync.lock);
         pthread_cond_signal(&cxt->b->sync.cond);
-        pthread_mutex_unlock(&cxt->b->sync.lock);
     }
+    pthread_mutex_unlock(&cxt->b->sync.lock);
 
     return resp.code;
 }
@@ -484,6 +343,141 @@ discord_rest_async_perform(struct discord_rest *rest)
 }
 
 static void
+_discord_rest_manager(void *p_rest)
+{
+    struct discord_rest *rest = p_rest;
+    struct discord_timers *const timers[] = { &rest->timers };
+    int64_t now, trigger;
+
+    while (1) {
+        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+
+        trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
+        int poll_result =
+            io_poller_poll(rest->async.io_poller, (int)(trigger / 1000));
+
+        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+        if (0 == poll_result) {
+            trigger = discord_timers_get_next_trigger(timers, 1, now, 1000);
+            if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
+        }
+        discord_timers_run(CLIENT(rest, rest), &rest->timers);
+        io_poller_perform(rest->async.io_poller);
+    }
+
+    discord_rest_stop_buckets(rest);
+}
+
+void
+discord_rest_init(struct discord_rest *rest,
+                  struct logconf *conf,
+                  struct ccord_szbuf_readonly *token)
+{
+    struct ua_attr attr = { 0 };
+
+    attr.conf = conf;
+    rest->ua = ua_init(&attr);
+    ua_set_url(rest->ua, DISCORD_API_BASE_URL);
+
+    if (!token->size) {
+        /* no token means a webhook-only client */
+        logconf_branch(&rest->conf, conf, "DISCORD_WEBHOOK");
+    }
+    else {
+        /* bot client */
+        logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
+        ua_set_opt(rest->ua, token, &_discord_rest_setopt_cb);
+    }
+    discord_timers_init(&rest->timers);
+    discord_async_init(&rest->async, &rest->conf);
+    discord_ratelimiter_init(&rest->ratelimiter, &rest->conf);
+
+    rest->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
+
+    rest->tpool = threadpool_create(1, 1024, 0);
+    ASSERT_S(0 == threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
+             "Couldn't initialize REST managagement thread");
+}
+
+void
+discord_rest_cleanup(struct discord_rest *rest)
+{
+    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
+    /* cleanup REST managing thread */
+    threadpool_destroy(rest->tpool, threadpool_graceful);
+    /* cleanup User-Agent handle */
+    ua_cleanup(rest->ua);
+    /* move pending requests to queues->recycling */
+    discord_rest_stop_buckets(rest);
+    /* cleanup context queues */
+    discord_async_cleanup(&rest->async);
+    /* cleanup discovered buckets */
+    discord_ratelimiter_cleanup(&rest->ratelimiter);
+}
+
+/* enqueue a request to be executed asynchronously */
+static CCORDcode
+_discord_rest_start_context(struct discord_rest *rest,
+                            struct discord_request *req,
+                            struct ccord_szbuf *body,
+                            enum http_method method,
+                            char endpoint[DISCORD_ENDPT_LEN],
+                            char key[DISCORD_ROUTE_LEN])
+{
+    struct discord_context *cxt = discord_async_start_context(
+        &rest->async, req, body, method, endpoint, key);
+
+    pthread_mutex_lock(&cxt->b->sync.lock);
+
+    discord_bucket_add_context(cxt->b, cxt, cxt->dispatch.high_p);
+
+    if (cxt->dispatch.sync)
+        pthread_cond_wait(&cxt->b->sync.cond, &cxt->b->sync.lock);
+
+    pthread_mutex_unlock(&cxt->b->sync.lock);
+
+    return CCORD_OK;
+}
+
+/* template function for performing requests */
+CCORDcode
+discord_rest_run(struct discord_rest *rest,
+                 struct discord_request *req,
+                 struct ccord_szbuf *body,
+                 enum http_method method,
+                 char endpoint_fmt[],
+                 ...)
+{
+    char endpoint[DISCORD_ENDPT_LEN];
+    char key[DISCORD_ROUTE_LEN];
+    va_list args;
+    int len;
+
+    /* have it point somewhere */
+    if (!req) {
+        static struct discord_request blank = { 0 };
+        req = &blank;
+    }
+    if (!body) {
+        static struct ccord_szbuf blank = { 0 };
+        body = &blank;
+    }
+
+    /* build the endpoint string */
+    va_start(args, endpoint_fmt);
+    len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+    ASSERT_NOT_OOB(len, sizeof(endpoint));
+    va_end(args);
+
+    /* build the bucket's key */
+    va_start(args, endpoint_fmt);
+    discord_ratelimiter_build_key(method, key, endpoint_fmt, args);
+    va_end(args);
+
+    return _discord_rest_start_context(rest, req, body, method, endpoint, key);
+}
+
+static void
 _discord_rest_stop_bucket(struct discord_ratelimiter *rl,
                           struct discord_bucket *b)
 {
@@ -494,7 +488,7 @@ _discord_rest_stop_bucket(struct discord_ratelimiter *rl,
     discord_async_recycle_context(async, b->performing_cxt);
 
     /* cancel pending tranfers */
-    QUEUE_ADD(async->idle_contexts, &b->pending_queue);
+    QUEUE_ADD(&async->queues->recycling, &b->pending_queue);
     QUEUE_INIT(&b->pending_queue);
 }
 

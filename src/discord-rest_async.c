@@ -24,12 +24,13 @@ _discord_context_get(struct discord_async *async)
 {
     struct discord_context *cxt;
 
-    if (QUEUE_EMPTY(async->idle_contexts)) { /* create new context struct */
+    if (QUEUE_EMPTY(&async->queues->recycling))
+    { /* create new context struct */
         cxt = _discord_context_init();
     }
-    else { /* recycle a context struct from idle_contexts */
+    else { /* recycle a context struct from queues->recycling */
         QUEUE(struct discord_context) *qelem =
-            QUEUE_HEAD(async->idle_contexts);
+            QUEUE_HEAD(&async->queues->recycling);
 
         QUEUE_REMOVE(qelem);
         cxt = QUEUE_DATA(qelem, struct discord_context, entry);
@@ -50,39 +51,46 @@ _on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 void
 discord_async_init(struct discord_async *async, struct logconf *conf)
 {
-    struct discord_rest *rest = CONTAINEROF(async, struct discord_rest, async);
-
     logconf_branch(&async->conf, conf, "DISCORD_ASYNC");
 
-    /* idle_contexts is malloc'd to guarantee a client cloned by
+    /* queues are malloc'd to guarantee a client cloned by
      * discord_clone() will share the same queue with the original */
-    async->idle_contexts = malloc(sizeof *async->idle_contexts);
-    QUEUE_INIT(async->idle_contexts);
+    async->queues = malloc(sizeof *async->queues);
+    QUEUE_INIT(&async->queues->recycling);
+    QUEUE_INIT(&async->queues->finished);
 
     async->mhandle = curl_multi_init();
-    io_poller_curlm_add(rest->io_poller, async->mhandle, &_on_io_poller_curl,
-                        rest);
+    async->io_poller = io_poller_create();
+    io_poller_curlm_add(async->io_poller, async->mhandle, &_on_io_poller_curl,
+                        CONTAINEROF(async, struct discord_rest, async));
 }
 
 void
 discord_async_cleanup(struct discord_async *async)
 {
-    QUEUE(struct discord_context) queue, *qelem;
-    struct discord_context *cxt;
+    QUEUE *const cxt_queues[] = { &async->queues->recycling,
+                                  &async->queues->finished };
 
-    QUEUE_MOVE(async->idle_contexts, &queue);
-    while (!QUEUE_EMPTY(&queue)) {
-        qelem = QUEUE_HEAD(&queue);
-        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-        QUEUE_REMOVE(&cxt->entry);
-        _discord_context_cleanup(cxt);
+    for (size_t i = 0; i < sizeof(cxt_queues) / sizeof *cxt_queues; ++i) {
+        QUEUE(struct discord_context) queue, *qelem;
+        struct discord_context *cxt;
+
+        QUEUE_MOVE(cxt_queues[i], &queue);
+        while (!QUEUE_EMPTY(&queue)) {
+            qelem = QUEUE_HEAD(&queue);
+            QUEUE_REMOVE(qelem);
+
+            cxt = QUEUE_DATA(qelem, struct discord_context, entry);
+            _discord_context_cleanup(cxt);
+        }
     }
-    free(async->idle_contexts);
+    free(async->queues);
 
     /* cleanup curl's multi handle */
-    io_poller_curlm_del(CLIENT(async, rest.async)->rest.io_poller,
-                        async->mhandle);
+    io_poller_curlm_del(async->io_poller, async->mhandle);
     curl_multi_cleanup(async->mhandle);
+    /* cleanup REST io_poller */
+    io_poller_destroy(async->io_poller);
 }
 
 CCORDcode
@@ -91,7 +99,6 @@ discord_async_add_request(struct discord_async *async,
                           struct ua_conn *conn)
 {
     CURL *ehandle = ua_conn_get_easy_handle(conn);
-    CURLMcode mcode;
 
     cxt->conn = conn;
     cxt->b->performing_cxt = cxt;
@@ -100,9 +107,9 @@ discord_async_add_request(struct discord_async *async,
     curl_easy_setopt(ehandle, CURLOPT_PRIVATE, cxt);
 
     /* initiate libcurl transfer */
-    mcode = curl_multi_add_handle(async->mhandle, ehandle);
-
-    return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
+    return curl_multi_add_handle(async->mhandle, ehandle)
+               ? CCORD_CURLM_INTERNAL
+               : CCORD_OK;
 }
 
 bool
@@ -153,7 +160,7 @@ discord_async_recycle_context(struct discord_async *async,
     discord_attachments_cleanup(&cxt->attachments);
     memset(cxt, 0, sizeof(struct discord_request));
 
-    QUEUE_INSERT_TAIL(async->idle_contexts, &cxt->entry);
+    QUEUE_INSERT_TAIL(&async->queues->recycling, &cxt->entry);
 }
 
 /* Only the fields that are required at _discord_rest_request_to_multipart()
@@ -239,6 +246,6 @@ discord_async_start_context(struct discord_async *async,
                                       req->dispatch.cleanup, false);
     }
 
-    io_poller_wakeup(rest->io_poller);
+    io_poller_wakeup(async->io_poller);
     return cxt;
 }

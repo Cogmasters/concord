@@ -522,12 +522,10 @@ ua_init(struct ua_attr *attr)
 void
 ua_cleanup(struct user_agent *ua)
 {
-    QUEUE(struct ua_conn)
-    *ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
-    size_t i;
+    QUEUE *const ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
 
     /* cleanup connection queues */
-    for (i = 0; i < sizeof(ua_queues) / sizeof(QUEUE *); ++i) {
+    for (size_t i = 0; i < sizeof(ua_queues) / sizeof *ua_queues; ++i) {
         QUEUE(struct ua_conn) queue, *qelem;
         struct ua_conn *conn;
 

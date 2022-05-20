@@ -198,6 +198,8 @@ struct discord_ret_dispatch {
 
 /** @brief Attributes of response datatype */
 struct discord_ret_response {
+    /** pointer to datatype */
+    void *data;
     /** size of datatype in bytes */
     size_t size;
     /** initializer function for datatype fields */
@@ -262,8 +264,19 @@ struct discord_async {
     struct logconf conf;
     /** curl_multi handle for performing asynchronous requests */
     CURLM *mhandle;
-    /** idle request contexts */
-    QUEUE(struct discord_context) * idle_contexts;
+    /** io_poller for rest only */
+    struct io_poller *io_poller;
+
+    /** context queues */
+    struct {
+        /** requests contexts for recycling */
+        QUEUE(struct discord_context) recycling;
+        /**
+         * finished requests contexts that are done performing and waiting for
+         *      their callbacks to be called from the main thread
+         */
+        QUEUE(struct discord_context) finished;
+    } * queues;
 };
 
 /**
@@ -312,8 +325,8 @@ bool discord_async_retry_context(struct discord_async *async,
                                  int64_t wait_ms);
 
 /**
- * @brief Insert a @ref discord_context structure into `async.idle_contexts`
- *      queue for recycling
+ * @brief Insert a @ref discord_context structure into
+ *      `async.queues->recycling` queue for recycling
  *
  * @param async the async handle initialized with discord_async_init()
  * @param cxt the request context to be recycled
@@ -397,7 +410,7 @@ void discord_ratelimiter_init(struct discord_ratelimiter *rl,
 /**
  * @brief Cleanup all buckets that have been discovered
  *
- * @note pending requests will be moved to `rest.idle_contexts`
+ * @note pending requests will be moved to `rest.queues->recycling`
  * @param rl the handle initialized with discord_ratelimiter_init()
  */
 void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
@@ -526,8 +539,6 @@ struct discord_rest {
     struct user_agent *ua;
     /** store individual contexts from asynchronous requests */
     struct discord_async async;
-    /** io_poller for rest only */
-    struct io_poller *io_poller;
     /** the timer queue for the rest thread */
     struct discord_timers timers;
 
@@ -590,7 +601,7 @@ CCORDcode discord_rest_async_perform(struct discord_rest *rest);
 /**
  * @brief Stop all bucket's on-going, pending and timed-out requests
  *
- * The requests will be moved over to client's 'idle_contexts' queue
+ * The requests will be moved over to client's 'queues->recycling' queue
  * @param rest the handle initialized with discord_rest_init()
  */
 void discord_rest_stop_buckets(struct discord_rest *rest);
