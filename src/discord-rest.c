@@ -31,9 +31,22 @@ static void
 _discord_rest_manager(void *p_rest)
 {
     struct discord_rest *rest = p_rest;
+    struct discord_timers *const timers[] = { &rest->timers };
+    int64_t now, trigger;
 
     while (1) {
-        io_poller_poll(rest->io_poller, 1000);
+        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+
+        trigger = discord_timers_get_next_trigger(timers, 1, now, 1000000);
+        int poll_result =
+            io_poller_poll(rest->io_poller, (int)(trigger / 1000));
+
+        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+        if (0 == poll_result) {
+            trigger = discord_timers_get_next_trigger(timers, 1, now, 1000000);
+            if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
+        }
+        discord_timers_run(CLIENT(rest, rest), &rest->timers);
         io_poller_perform(rest->io_poller);
         discord_rest_async_perform(rest);
     }

@@ -106,18 +106,17 @@ void discord_timers_cleanup(struct discord *client);
 
 /**
  * @brief Get earliest trigger time from a group of timers
- * 
+ *
  * @param timers array of timers
  * @param n number of timers in array
  * @param now current time
  * @param max_time max time to allowed
  * @return time in microseconds until next timer, or max
  */
-int64_t
-discord_timers_get_next_trigger(struct discord_timers *const timers[],
-                                size_t n,
-                                int64_t now,
-                                int64_t max_time);
+int64_t discord_timers_get_next_trigger(struct discord_timers *const timers[],
+                                        size_t n,
+                                        int64_t now,
+                                        int64_t max_time);
 
 /**
  * @brief Run all timers that are due
@@ -527,6 +526,8 @@ struct discord_rest {
     struct discord_async async;
     /** io_poller for rest only */
     struct io_poller *io_poller;
+    /** the timer queue for the rest thread */
+    struct discord_timers timers;
 
     /** enforce ratelimiting on discovered buckets */
     struct discord_ratelimiter ratelimiter;

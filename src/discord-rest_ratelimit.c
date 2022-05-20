@@ -251,7 +251,12 @@ discord_bucket_try_timeout(struct discord_ratelimiter *rl,
 
     b->performing_cxt = DISCORD_BUCKET_TIMEOUT;
 
-    discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
+    _discord_timer_ctl(
+        client, &client->rest.timers,
+        &(struct discord_timer){ .cb = &_discord_bucket_wake_cb,
+                                 .data = b,
+                                 .delay = delay_ms,
+                                 .flags = DISCORD_TIMER_DELETE_AUTO });
 
     logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
                  b->hash, delay_ms);
