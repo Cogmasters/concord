@@ -60,8 +60,8 @@ discord_async_init(struct discord_async *async, struct logconf *conf)
     QUEUE_INIT(async->idle_contexts);
 
     async->mhandle = curl_multi_init();
-    io_poller_curlm_add(CLIENT(rest, rest)->io_poller, async->mhandle,
-                        &_on_io_poller_curl, rest);
+    io_poller_curlm_add(rest->io_poller, async->mhandle, &_on_io_poller_curl,
+                        rest);
 }
 
 void
@@ -80,7 +80,8 @@ discord_async_cleanup(struct discord_async *async)
     free(async->idle_contexts);
 
     /* cleanup curl's multi handle */
-    io_poller_curlm_del(CLIENT(async, rest.async)->io_poller, async->mhandle);
+    io_poller_curlm_del(CLIENT(async, rest.async)->rest.io_poller,
+                        async->mhandle);
     curl_multi_cleanup(async->mhandle);
 }
 
@@ -101,7 +102,7 @@ discord_async_add_request(struct discord_async *async,
     /* initiate libcurl transfer */
     mcode = curl_multi_add_handle(async->mhandle, ehandle);
 
-    io_poller_curlm_enable_perform(CLIENT(async, rest.async)->io_poller,
+    io_poller_curlm_enable_perform(CLIENT(async, rest.async)->rest.io_poller,
                                    async->mhandle);
 
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
@@ -241,7 +242,7 @@ discord_async_start_context(struct discord_async *async,
                                       req->dispatch.cleanup, false);
     }
 
-    io_poller_curlm_enable_perform(client->io_poller, async->mhandle);
+    io_poller_curlm_enable_perform(rest->io_poller, async->mhandle);
 
     return cxt;
 }

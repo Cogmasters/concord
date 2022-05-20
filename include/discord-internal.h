@@ -437,6 +437,8 @@ struct discord_rest {
     struct user_agent *ua;
     /** store individual contexts from asynchronous requests */
     struct discord_async async;
+    /** io_poller for rest only */
+    struct io_poller *io_poller;
 
     /** enforce ratelimiting on discovered buckets */
     struct discord_ratelimiter ratelimiter;

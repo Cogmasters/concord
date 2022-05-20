@@ -33,6 +33,8 @@ _discord_rest_manager(void *p_rest)
     struct discord_rest *rest = p_rest;
 
     while (1) {
+        io_poller_poll(rest->io_poller, 1000);
+        io_poller_perform(rest->io_poller);
         discord_rest_async_perform(rest);
     }
 
@@ -59,7 +61,7 @@ discord_rest_init(struct discord_rest *rest,
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
         ua_set_opt(rest->ua, token, &_discord_rest_setopt_cb);
     }
-
+    rest->io_poller = io_poller_create();
     discord_async_init(&rest->async, &rest->conf);
     discord_ratelimiter_init(&rest->ratelimiter, &rest->conf);
 
@@ -83,6 +85,8 @@ discord_rest_cleanup(struct discord_rest *rest)
     discord_async_cleanup(&rest->async);
     /* cleanup discovered buckets */
     discord_ratelimiter_cleanup(&rest->ratelimiter);
+    /* cleanup REST io_poller */
+    io_poller_destroy(rest->io_poller);
 }
 
 static CCORDcode _discord_rest_start_context(struct discord_rest *rest,
