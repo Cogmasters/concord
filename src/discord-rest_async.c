@@ -102,9 +102,6 @@ discord_async_add_request(struct discord_async *async,
     /* initiate libcurl transfer */
     mcode = curl_multi_add_handle(async->mhandle, ehandle);
 
-    io_poller_curlm_enable_perform(CLIENT(async, rest.async)->rest.io_poller,
-                                   async->mhandle);
-
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
 }
 
@@ -242,7 +239,6 @@ discord_async_start_context(struct discord_async *async,
                                       req->dispatch.cleanup, false);
     }
 
-    io_poller_curlm_enable_perform(rest->io_poller, async->mhandle);
-
+    io_poller_wakeup(rest->io_poller);
     return cxt;
 }
