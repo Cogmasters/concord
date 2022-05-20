@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <string.h>
 #include <inttypes.h>
 #include <time.h>
@@ -38,7 +40,18 @@ struct io_poller {
     struct io_curlm **curlm;
     int curlm_cap;
     int curlm_cnt;
+
+    int wakeup_fds[2];
 };
+
+static void
+on_io_poller_wakeup(struct io_poller *io,
+                    enum io_poller_events events,
+                    void *user_data)
+{
+    char buf[0x1000];
+    read(io->wakeup_fds[0], buf, sizeof buf);
+}
 
 struct io_poller *
 io_poller_create(void)
@@ -48,8 +61,18 @@ io_poller_create(void)
         io->cap = 0x10;
         io->elements = calloc(io->cap, sizeof *io->elements);
         io->pollfds = calloc(io->cap, sizeof *io->pollfds);
-        if (io->elements && io->pollfds)
-            return io;
+        if (io->elements && io->pollfds) {
+            if (0 == pipe(io->wakeup_fds)) {
+                int flags = fcntl(io->wakeup_fds[0], F_GETFL);
+                fcntl(io->wakeup_fds[0], F_SETFL, flags | O_NONBLOCK);
+
+                io_poller_socket_add(io, io->wakeup_fds[0], IO_POLLER_IN,
+                                     on_io_poller_wakeup, NULL);
+                return io;
+            }
+            free(io->elements);
+            free(io->pollfds);
+        }
         free(io->elements);
         free(io->pollfds);
         free(io);
@@ -60,6 +83,8 @@ io_poller_create(void)
 void
 io_poller_destroy(struct io_poller *io)
 {
+    close(io->wakeup_fds[0]);
+    close(io->wakeup_fds[1]);
     for (int i = 0; i < io->curlm_cnt; i++) {
         free(io->curlm[i]->fds);
         free(io->curlm[i]);
@@ -68,6 +93,13 @@ io_poller_destroy(struct io_poller *io)
     free(io->elements);
     free(io->pollfds);
     free(io);
+}
+
+void
+io_poller_wakeup(struct io_poller *io)
+{
+    char buf = 0;
+    write(io->wakeup_fds[1], &buf, sizeof buf);
 }
 
 int
@@ -96,10 +128,8 @@ io_poller_perform(struct io_poller *io)
     for (int i = 0; i < io->cnt; i++) {
         if (io->pollfds[i].revents) {
             int events = 0;
-            if (io->pollfds[i].revents & POLLIN)
-                events |= IO_POLLER_IN;
-            if (io->pollfds[i].revents & POLLOUT)
-                events |= IO_POLLER_OUT;
+            if (io->pollfds[i].revents & POLLIN) events |= IO_POLLER_IN;
+            if (io->pollfds[i].revents & POLLOUT) events |= IO_POLLER_OUT;
             io->pollfds[i].revents = 0;
             struct io_poller_element *element = &io->elements[i];
             element->cb(io, events, element->user_data);
@@ -107,15 +137,15 @@ io_poller_perform(struct io_poller *io)
     }
     for (int i = 0; i < io->curlm_cnt; i++) {
         struct io_curlm *curlm = io->curlm[i];
-        if (curlm->should_perform || 
-            (-1 != curlm->timeout && now >= curlm->timeout)) {
+        if (curlm->should_perform
+            || (-1 != curlm->timeout && now >= curlm->timeout)) {
             curlm->should_perform = false;
-            int result = curlm->cb ?
-                curlm->cb(io, curlm->multi, curlm->user_data) :
-                curl_multi_socket_all(curlm->multi, &curlm->running);
-            
-            if (result != 0)
-                return result;
+            int result =
+                curlm->cb
+                    ? curlm->cb(io, curlm->multi, curlm->user_data)
+                    : curl_multi_socket_all(curlm->multi, &curlm->running);
+
+            if (result != 0) return result;
         }
     }
     return 0;
@@ -156,10 +186,8 @@ io_poller_socket_add(struct io_poller *io,
 
 modify:
     io->pollfds[index].events = 0;
-    if (events & IO_POLLER_IN)
-        io->pollfds[index].events |= POLLIN;
-    if (events & IO_POLLER_OUT)
-        io->pollfds[index].events |= POLLOUT;
+    if (events & IO_POLLER_IN) io->pollfds[index].events |= POLLIN;
+    if (events & IO_POLLER_OUT) io->pollfds[index].events |= POLLOUT;
     io->elements[index].cb = cb;
     io->elements[index].user_data = user_data;
     return true;
@@ -241,7 +269,8 @@ curl_socket_cb(
         }
         io_curlm->fds[io_curlm->fds_cnt++] = fd;
     }
-    io_poller_socket_add(io_curlm->io_poller, fd, events, io_curl_cb, io_curlm);
+    io_poller_socket_add(io_curlm->io_poller, fd, events, io_curl_cb,
+                         io_curlm);
     return CURLM_OK;
 }
 
@@ -264,7 +293,7 @@ io_poller_curlm_add(struct io_poller *io,
                     CURLM *multi,
                     io_poller_curl_cb cb,
                     void *user_data)
-{   
+{
     struct io_curlm *io_curlm = NULL;
     size_t index = 0;
     for (; index < io->curlm_cnt; index++) {
@@ -282,13 +311,12 @@ io_poller_curlm_add(struct io_poller *io,
         io->curlm_cap = cap;
     }
 
-    if (!(io_curlm = calloc(1, sizeof *io_curlm)))
-        return false;
+    if (!(io_curlm = calloc(1, sizeof *io_curlm))) return false;
     io->curlm[io->curlm_cnt++] = io_curlm;
     io_curlm->io_poller = io;
     io_curlm->multi = multi;
     io_curlm->timeout = -1;
-    io_curlm->should_perform = true;    
+    io_curlm->should_perform = true;
     curl_multi_setopt(multi, CURLMOPT_TIMERFUNCTION, curl_timer_cb);
     curl_multi_setopt(multi, CURLMOPT_TIMERDATA, io_curlm);
     curl_multi_setopt(multi, CURLMOPT_SOCKETFUNCTION, curl_socket_cb);
@@ -322,7 +350,6 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
     }
     return false;
 }
-
 
 bool
 io_poller_curlm_enable_perform(struct io_poller *io, CURLM *multi)
