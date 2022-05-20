@@ -74,6 +74,7 @@ discord_rest_init(struct discord_rest *rest,
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
         ua_set_opt(rest->ua, token, &_discord_rest_setopt_cb);
     }
+    discord_timers_init(&rest->timers);
     rest->io_poller = io_poller_create();
     discord_async_init(&rest->async, &rest->conf);
     discord_ratelimiter_init(&rest->ratelimiter, &rest->conf);
@@ -88,6 +89,7 @@ discord_rest_init(struct discord_rest *rest,
 void
 discord_rest_cleanup(struct discord_rest *rest)
 {
+    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
     /* cleanup REST managing thread */
     threadpool_destroy(rest->tpool, threadpool_graceful);
     /* cleanup User-Agent handle */

@@ -93,16 +93,18 @@ struct discord_timers {
 /**
  * @brief Prepare timers for usage
  *
- * @param client the client created with discord_init()
+ * @param timers the 'struct discord_timers' to init
  */
-void discord_timers_init(struct discord *client);
+void discord_timers_init(struct discord_timers *timers);
 
 /**
  * @brief Cleanup timers and call cancel any running ones
  *
  * @param client the client created with discord_init()
+ * @param timers the 'struct discord_timers' to cleanup
  */
-void discord_timers_cleanup(struct discord *client);
+void discord_timers_cleanup(struct discord *client,
+                            struct discord_timers *timers);
 
 /**
  * @brief Get earliest trigger time from a group of timers

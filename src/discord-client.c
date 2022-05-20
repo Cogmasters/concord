@@ -12,7 +12,8 @@ static void
 _discord_init(struct discord *new_client)
 {
     ccord_global_init();
-    discord_timers_init(new_client);
+    discord_timers_init(&new_client->timers.internal);
+    discord_timers_init(&new_client->timers.user);
     new_client->io_poller = io_poller_create();
 
     discord_refcounter_init(&new_client->refcounter, &new_client->conf);
@@ -168,7 +169,8 @@ void
 discord_cleanup(struct discord *client)
 {
     if (client->is_original) {
-        discord_timers_cleanup(client);
+        discord_timers_cleanup(client, &client->timers.user);
+        discord_timers_cleanup(client, &client->timers.internal);
         logconf_cleanup(&client->conf);
         discord_rest_cleanup(&client->rest);
         discord_gateway_cleanup(&client->gw);
