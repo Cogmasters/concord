@@ -93,8 +93,8 @@ discord_run(struct discord *client)
 
         next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
-            int64_t poll_time = 0;
             int poll_result, poll_errno = 0;
+            int64_t poll_time = 0;
 
             now = (int64_t)discord_timestamp_us(client);
 
@@ -110,7 +110,10 @@ discord_run(struct discord *client)
             now = (int64_t)discord_timestamp_us(client);
 
             if (0 == poll_result) {
-                if (ccord_has_sigint != 0) discord_shutdown(client);
+                if (ccord_has_sigint != 0) {
+                    discord_shutdown(client);
+                }
+
                 if (client->on_idle) {
                     client->on_idle(client);
                 }
@@ -142,7 +145,9 @@ discord_run(struct discord *client)
 
             if (next_run <= now) {
                 BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
+#if 0
                 BREAK_ON_FAIL(code, discord_rest_async_perform(&client->rest));
+#endif
 
                 /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000000;
@@ -150,10 +155,7 @@ discord_run(struct discord *client)
         }
 
         /* stop all pending requests in case of connection shutdown */
-        if (true == discord_gateway_end(&client->gw)) {
-            discord_rest_stop_buckets(&client->rest);
-            break;
-        }
+        if (true == discord_gateway_end(&client->gw)) break;
     }
 
     return code;

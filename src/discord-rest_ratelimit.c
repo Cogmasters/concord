@@ -36,7 +36,8 @@ struct _discord_route {
 static void
 _discord_bucket_cleanup(struct discord_bucket *b)
 {
-    pthread_mutex_destroy(&b->lock);
+    pthread_cond_destroy(&b->sync.cond);
+    pthread_mutex_destroy(&b->sync.lock);
     free(b);
 }
 
@@ -130,8 +131,10 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     b->remaining = 1;
     b->limit = limit;
 
-    if (pthread_mutex_init(&b->lock, NULL))
-        ERR("Couldn't initialize pthread mutex");
+    ASSERT_S(!pthread_cond_init(&b->sync.cond, NULL),
+             "Couldn't initialize bucket's cond");
+    ASSERT_S(!pthread_mutex_init(&b->sync.lock, NULL),
+             "Couldn't initialize bucket's mutex");
 
     QUEUE_INIT(&b->pending_queue);
 
@@ -206,8 +209,8 @@ _discord_bucket_find(struct discord_ratelimiter *rl, const char key[])
     return b;
 }
 
-u64unix_ms
-discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl)
+static u64unix_ms
+_discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl)
 {
     u64unix_ms global;
 
@@ -223,26 +226,10 @@ u64unix_ms
 discord_bucket_get_timeout(struct discord_ratelimiter *rl,
                            struct discord_bucket *b)
 {
-    u64unix_ms global = discord_ratelimiter_get_global_wait(rl),
+    u64unix_ms global = _discord_ratelimiter_get_global_wait(rl),
                reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
 
     return (global > reset) ? global : reset;
-}
-
-void
-discord_bucket_try_sleep(struct discord_ratelimiter *rl,
-                         struct discord_bucket *b)
-{
-    /* sleep_ms := reset timestamp - current timestamp */
-    const int64_t sleep_ms =
-        (int64_t)(discord_bucket_get_timeout(rl, b) - cog_timestamp_ms());
-
-    if (sleep_ms > 0) {
-        /* block thread's runtime for delay amount */
-        logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
-                     b->hash, sleep_ms);
-        cog_sleep_ms(sleep_ms);
-    }
 }
 
 static void
@@ -251,9 +238,8 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
     (void)client;
     struct discord_bucket *b = timer->data;
 
+    b->performing_cxt = NULL;
     b->remaining = 1;
-
-    pthread_mutex_unlock(&b->lock);
 }
 
 void
@@ -262,6 +248,8 @@ discord_bucket_try_timeout(struct discord_ratelimiter *rl,
 {
     struct discord *client = CLIENT(rl, rest.ratelimiter);
     const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
+
+    b->performing_cxt = DISCORD_BUCKET_TIMEOUT;
 
     discord_internal_timer(client, &_discord_bucket_wake_cb, b, delay_ms);
 

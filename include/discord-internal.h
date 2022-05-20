@@ -109,8 +109,6 @@ struct discord_ret_dispatch {
 
 /** @brief Attributes of response datatype */
 struct discord_ret_response {
-    /** pointer to the datatype in memory */
-    void *data;
     /** size of datatype in bytes */
     size_t size;
     /** initializer function for datatype fields */
@@ -260,6 +258,12 @@ struct discord_context *discord_async_start_context(
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
+/**
+ * @brief Value assigned to @ref discord_bucket `pending_cxt` field in case
+ *      it's being timed-out
+ */
+#define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
+
 /** @brief The ratelimiter struct for handling ratelimiting */
 struct discord_ratelimiter {
     /** DISCORD_RATELIMIT logging module */
@@ -334,14 +338,6 @@ void discord_ratelimiter_build_key(enum http_method method,
                                    va_list args);
 
 /**
- * @brief Get global timeout timestamp
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @return the most recent global timeout timestamp
- */
-u64unix_ms discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl);
-
-/**
  * @brief Update the bucket with response header data
  *
  * @param rl the handle initialized with discord_ratelimiter_init()
@@ -365,12 +361,18 @@ struct discord_bucket {
     long remaining;
     /** timestamp of when cooldown timer resets */
     u64unix_ms reset_tstamp;
-    /** synchronize ratelimiting between threads */
-    pthread_mutex_t lock;
     /** pending requests */
     QUEUE(struct discord_context) pending_queue;
-    /** pointer to currently performing busy context (if asynchronous) */
+    /**
+     * pointer to context of this bucket's currently performing request
+     * @note @ref DISCORD_BUCKET_TIMEOUT if bucket is being ratelimited
+     */
     struct discord_context *performing_cxt;
+    /** wait and notify synchronous requests */
+    struct {
+        pthread_cond_t cond;
+        pthread_mutex_t lock;
+    } sync;
 };
 
 /**
@@ -382,17 +384,6 @@ struct discord_bucket {
  */
 u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
                                       struct discord_bucket *bucket);
-
-/**
- * @brief Try to sleep bucket for pending cooldown time
- * @note this is used for `sync` mode and **WILL** block the bucket's
- *      execution thread
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param bucket the bucket to wait on cooldown
- */
-void discord_bucket_try_sleep(struct discord_ratelimiter *rl,
-                              struct discord_bucket *bucket);
 
 /**
  * @brief Try to timeout bucket for pending cooldown time
@@ -440,6 +431,8 @@ struct discord_context *discord_bucket_remove_context(
 struct discord_rest {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
     struct logconf conf;
+    /** threadpool that manages a single REST thread */
+    struct threadpool_t *tpool;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
     /** store individual contexts from asynchronous requests */
