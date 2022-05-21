@@ -107,9 +107,12 @@ discord_async_add_request(struct discord_async *async,
     curl_easy_setopt(ehandle, CURLOPT_PRIVATE, cxt);
 
     /* initiate libcurl transfer */
-    return curl_multi_add_handle(async->mhandle, ehandle)
-               ? CCORD_CURLM_INTERNAL
-               : CCORD_OK;
+    if (curl_multi_add_handle(async->mhandle, ehandle) != CURLM_OK)
+        return CCORD_CURLM_INTERNAL;
+
+    io_poller_wakeup(async->io_poller);
+
+    return CCORD_OK;
 }
 
 bool
@@ -198,7 +201,8 @@ discord_async_start_context(struct discord_async *async,
                             struct ccord_szbuf *body,
                             enum http_method method,
                             char endpoint[DISCORD_ENDPT_LEN],
-                            char key[DISCORD_ROUTE_LEN])
+                            char key[DISCORD_ROUTE_LEN],
+                            struct discord_bucket *b)
 {
     struct discord_rest *rest = CONTAINEROF(async, struct discord_rest, async);
     struct discord *client = CLIENT(rest, rest);
@@ -227,8 +231,8 @@ discord_async_start_context(struct discord_async *async,
     memcpy(cxt->endpoint, endpoint, sizeof(cxt->endpoint));
     /* copy bucket's key */
     memcpy(cxt->key, key, sizeof(cxt->key));
-    /* bucket pertaining to the request */
-    cxt->b = discord_bucket_get(&rest->ratelimiter, key);
+
+    cxt->cond = NULL;
 
     if (req->dispatch.keep) {
         CCORDcode code = discord_refcounter_incr(&client->refcounter,
@@ -246,6 +250,8 @@ discord_async_start_context(struct discord_async *async,
                                       req->dispatch.cleanup, false);
     }
 
-    io_poller_wakeup(async->io_poller);
+    /* bucket pertaining to the request */
+    discord_bucket_add_context(b, cxt, cxt->dispatch.high_p);
+
     return cxt;
 }

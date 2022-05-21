@@ -224,8 +224,7 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 
     curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
 
-    pthread_mutex_lock(&cxt->b->sync.lock);
-
+    pthread_mutex_lock(&cxt->b->lock);
     resp = (struct discord_response){ .data = cxt->dispatch.data,
                                       .keep = cxt->dispatch.keep,
                                       .code = CCORD_OK };
@@ -312,9 +311,9 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
     cxt->b->performing_cxt = NULL;
     if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms)) {
         discord_async_recycle_context(&rest->async, cxt);
-        pthread_cond_signal(&cxt->b->sync.cond);
+        if (cxt->cond) pthread_cond_signal(cxt->cond);
     }
-    pthread_mutex_unlock(&cxt->b->sync.lock);
+    pthread_mutex_unlock(&cxt->b->lock);
 
     return resp.code;
 }
@@ -426,17 +425,27 @@ _discord_rest_start_context(struct discord_rest *rest,
                             char endpoint[DISCORD_ENDPT_LEN],
                             char key[DISCORD_ROUTE_LEN])
 {
-    struct discord_context *cxt = discord_async_start_context(
-        &rest->async, req, body, method, endpoint, key);
+    struct discord_bucket *b = discord_bucket_get(&rest->ratelimiter, key);
+    struct discord_context *cxt;
 
-    pthread_mutex_lock(&cxt->b->sync.lock);
+    pthread_mutex_lock(&b->lock);
 
-    discord_bucket_add_context(cxt->b, cxt, cxt->dispatch.high_p);
+    cxt = discord_async_start_context(
+        &rest->async, req, body, method, endpoint, key, b);
 
-    if (cxt->dispatch.sync)
-        pthread_cond_wait(&cxt->b->sync.cond, &cxt->b->sync.lock);
+    if (cxt->dispatch.sync) {
+#if 0
+        cxt->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
+#else
+        pthread_cond_t cond;
+        pthread_cond_init(&cond, NULL);
+        cxt->cond = &cond;
+#endif
+        pthread_cond_wait(cxt->cond, &b->lock);
 
-    pthread_mutex_unlock(&cxt->b->sync.lock);
+    }
+
+    pthread_mutex_unlock(&b->lock);
 
     return CCORD_OK;
 }
