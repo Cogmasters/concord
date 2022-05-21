@@ -70,8 +70,6 @@ io_poller_create(void)
                                      on_io_poller_wakeup, NULL);
                 return io;
             }
-            free(io->elements);
-            free(io->pollfds);
         }
         free(io->elements);
         free(io->pollfds);
