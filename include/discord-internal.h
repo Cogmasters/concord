@@ -17,7 +17,7 @@
 #include "jsmn.h"
 #include "jsmn-find.h"
 
-#include "logconf.h" /* struct logconf */
+#include "logconf.h"
 #include "user-agent.h"
 #include "websockets.h"
 #include "work.h"
@@ -251,11 +251,13 @@ struct discord_context {
     char key[DISCORD_ROUTE_LEN];
     /** the connection handler assigned */
     struct ua_conn *conn;
-    /** the request bucket's queue entry */
-    QUEUE entry;
 
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
+    /** the request bucket's queue entry */
+    QUEUE entry;
+    /** synchronize synchronous requests */
+    pthread_cond_t *cond;
 };
 
 /** @brief The handle used for handling asynchronous requests */
@@ -352,7 +354,8 @@ struct discord_context *discord_async_start_context(
     struct ccord_szbuf *body,
     enum http_method method,
     char endpoint[DISCORD_ENDPT_LEN],
-    char key[DISCORD_ROUTE_LEN]);
+    char key[DISCORD_ROUTE_LEN],
+    struct discord_bucket *b);
 
 /** @} DiscordInternalRESTAsync */
 
@@ -470,11 +473,8 @@ struct discord_bucket {
      * @note @ref DISCORD_BUCKET_TIMEOUT if bucket is being ratelimited
      */
     struct discord_context *performing_cxt;
-    /** wait and notify synchronous requests */
-    struct {
-        pthread_cond_t cond;
-        pthread_mutex_t lock;
-    } sync;
+    /** synchronize bucket */
+    pthread_mutex_t lock;
 };
 
 /**

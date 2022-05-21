@@ -36,8 +36,7 @@ struct _discord_route {
 static void
 _discord_bucket_cleanup(struct discord_bucket *b)
 {
-    pthread_cond_destroy(&b->sync.cond);
-    pthread_mutex_destroy(&b->sync.lock);
+    pthread_mutex_destroy(&b->lock);
     free(b);
 }
 
@@ -131,9 +130,7 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     b->remaining = 1;
     b->limit = limit;
 
-    ASSERT_S(!pthread_cond_init(&b->sync.cond, NULL),
-             "Couldn't initialize bucket's cond");
-    ASSERT_S(!pthread_mutex_init(&b->sync.lock, NULL),
+    ASSERT_S(!pthread_mutex_init(&b->lock, NULL),
              "Couldn't initialize bucket's mutex");
 
     QUEUE_INIT(&b->pending_queue);
@@ -423,6 +420,8 @@ discord_bucket_add_context(struct discord_bucket *b,
         QUEUE_INSERT_HEAD(&b->pending_queue, &cxt->entry);
     else
         QUEUE_INSERT_TAIL(&b->pending_queue, &cxt->entry);
+
+    cxt->b = b;
 }
 
 struct discord_context *
