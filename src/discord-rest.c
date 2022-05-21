@@ -206,30 +206,23 @@ _discord_rest_get_info(struct discord_rest *rest,
         return true;
     }
     default:
-        if (info->httpcode >= 500) { /* Server Error */
-            return true;
-        }
-        return false;
+        return info->httpcode >= 500; /* retry if Server Error */
     }
 }
 
-static CCORDcode
-_discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
+static void
+_discord_rest_run_finished(struct discord_rest *rest,
+                           struct discord_context *cxt)
 {
     struct discord *client = CLIENT(rest, rest);
-    struct discord_response resp;
-    struct discord_context *cxt;
     int64_t wait_ms = 0LL;
     bool retry;
 
-    curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
+    struct discord_response resp = { .data = cxt->dispatch.data,
+                                     .keep = cxt->dispatch.keep,
+                                     .code = CCORD_OK };
 
-    pthread_mutex_lock(&cxt->b->lock);
-    resp = (struct discord_response){ .data = cxt->dispatch.data,
-                                      .keep = cxt->dispatch.keep,
-                                      .code = CCORD_OK };
-
-    switch (msg->data.result) {
+    switch (cxt->ecode) {
     case CURLE_OK: {
         struct ua_szbuf_readonly body;
         struct ua_info info = { 0 };
@@ -277,8 +270,8 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
                                                cxt->response.data))
                 {
                     discord_refcounter_add_internal(
-                        &client->refcounter, cxt->response.data, cxt->response.cleanup,
-                        true);
+                        &client->refcounter, cxt->response.data,
+                        cxt->response.cleanup, true);
                 }
                 cxt->dispatch.done.typed(client, &resp, cxt->response.data);
                 discord_refcounter_decr(&client->refcounter,
@@ -291,15 +284,17 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
     } break;
     case CURLE_READ_ERROR:
         logconf_warn(&rest->conf, "Read error, will retry again");
-        retry = true;
 
+        retry = true;
         resp.code = CCORD_CURLE_INTERNAL;
+
+        if (cxt->dispatch.fail) cxt->dispatch.fail(client, &resp);
 
         break;
     default:
-        logconf_error(&rest->conf, "(CURLE code: %d)", msg->data.result);
-        retry = false;
+        logconf_error(&rest->conf, "(CURLE code: %d)", cxt->ecode);
 
+        retry = false;
         resp.code = CCORD_CURLE_INTERNAL;
 
         if (cxt->dispatch.fail) cxt->dispatch.fail(client, &resp);
@@ -309,17 +304,33 @@ _discord_rest_check_action(struct discord_rest *rest, struct CURLMsg *msg)
 
     /* enqueue request for retry or recycle */
     cxt->b->performing_cxt = NULL;
-    if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms)) {
+    if (!retry || !discord_async_retry_context(&rest->async, cxt, wait_ms))
         discord_async_recycle_context(&rest->async, cxt);
-        if (cxt->cond) pthread_cond_signal(cxt->cond);
-    }
-    pthread_mutex_unlock(&cxt->b->lock);
+}
 
-    return resp.code;
+void
+discord_rest_perform_callbacks(struct discord_rest *rest)
+{
+    if (!QUEUE_EMPTY(&rest->async.queues->finished)) {
+        QUEUE(struct discord_context) queue, *qelem;
+        struct discord_context *cxt;
+
+        QUEUE_MOVE(&rest->async.queues->finished, &queue);
+        do {
+            qelem = QUEUE_HEAD(&queue);
+            QUEUE_REMOVE(qelem);
+
+            cxt = QUEUE_DATA(qelem, struct discord_context, entry);
+
+            _discord_rest_run_finished(rest, cxt);
+        } while (!QUEUE_EMPTY(&queue));
+
+        io_poller_wakeup(rest->async.io_poller);
+    }
 }
 
 CCORDcode
-discord_rest_async_perform(struct discord_rest *rest)
+discord_rest_perform(struct discord_rest *rest)
 {
     int alive = 0;
 
@@ -332,10 +343,24 @@ discord_rest_async_perform(struct discord_rest *rest)
         struct CURLMsg *msg = curl_multi_info_read(rest->async.mhandle, &msgq);
 
         if (!msg) break;
-        if (CURLMSG_DONE != msg->msg) continue;
 
-        /* check for request action */
-        _discord_rest_check_action(rest, msg);
+        if (CURLMSG_DONE == msg->msg) {
+            struct discord_context *cxt;
+
+            curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
+            curl_multi_remove_handle(rest->async.mhandle, msg->easy_handle);
+
+            cxt->ecode = msg->data.result;
+
+            if (cxt->dispatch.sync) {
+                pthread_mutex_lock(&cxt->b->lock);
+                pthread_cond_signal(cxt->cond);
+                pthread_mutex_unlock(&cxt->b->lock);
+            }
+            else {
+                QUEUE_INSERT_TAIL(&rest->async.queues->finished, &cxt->entry);
+            }
+        }
     }
 
     return _discord_rest_check_pending(rest);
@@ -348,7 +373,7 @@ _discord_rest_manager(void *p_rest)
     struct discord_timers *const timers[] = { &rest->timers };
     int64_t now, trigger;
 
-    discord_rest_async_perform(rest);
+    discord_rest_perform(rest);
 
     now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
 
@@ -363,8 +388,8 @@ _discord_rest_manager(void *p_rest)
     }
     discord_timers_run(CLIENT(rest, rest), &rest->timers);
     io_poller_perform(rest->async.io_poller);
-    
-    threadpool_add(rest->tpool, _discord_rest_manager, rest, 0);
+
+    threadpool_add(rest->manager->tpool, _discord_rest_manager, rest, 0);
 }
 
 void
@@ -378,12 +403,10 @@ discord_rest_init(struct discord_rest *rest,
     rest->ua = ua_init(&attr);
     ua_set_url(rest->ua, DISCORD_API_BASE_URL);
 
-    if (!token->size) {
-        /* no token means a webhook-only client */
+    if (!token->size) { /* no token means a webhook-only client */
         logconf_branch(&rest->conf, conf, "DISCORD_WEBHOOK");
     }
-    else {
-        /* bot client */
+    else { /* bot client */
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
         ua_set_opt(rest->ua, token, &_discord_rest_setopt_cb);
     }
@@ -393,16 +416,18 @@ discord_rest_init(struct discord_rest *rest,
 
     rest->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 
-    rest->tpool = threadpool_create(1, 1024, 0);
-    ASSERT_S(0 == threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
-             "Couldn't initialize REST managagement thread");
+    rest->manager = malloc(sizeof *rest->manager);
+    ASSERT_S(!pthread_mutex_init(&rest->manager->lock, NULL),
+             "Couldn't initialize REST manager mutex");
+    rest->manager->tpool = threadpool_create(1, 1024, 0);
+    ASSERT_S(
+        !threadpool_add(rest->manager->tpool, &_discord_rest_manager, rest, 0),
+        "Couldn't initialize REST managagement thread");
 }
 
 void
 discord_rest_cleanup(struct discord_rest *rest)
 {
-    /* cleanup REST managing thread */
-    threadpool_destroy(rest->tpool, threadpool_graceful);
     /* cleanup timers */
     discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
     /* cleanup User-Agent handle */
@@ -413,6 +438,10 @@ discord_rest_cleanup(struct discord_rest *rest)
     discord_async_cleanup(&rest->async);
     /* cleanup discovered buckets */
     discord_ratelimiter_cleanup(&rest->ratelimiter);
+    /* cleanup REST managing thread */
+    threadpool_destroy(rest->manager->tpool, threadpool_graceful);
+    pthread_mutex_destroy(&rest->manager->lock);
+    free(rest->manager);
 }
 
 /* enqueue a request to be executed asynchronously */
@@ -429,12 +458,13 @@ _discord_rest_start_context(struct discord_rest *rest,
 
     pthread_mutex_lock(&b->lock);
 
-    cxt = discord_async_start_context(
-        &rest->async, req, body, method, endpoint, key, b);
+    cxt = discord_async_start_context(&rest->async, req, body, method,
+                                      endpoint, key, b);
 
     if (cxt->dispatch.sync) {
         cxt->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
         pthread_cond_wait(cxt->cond, &b->lock);
+        _discord_rest_run_finished(rest, cxt);
     }
 
     pthread_mutex_unlock(&b->lock);

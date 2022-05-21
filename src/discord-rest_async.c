@@ -24,8 +24,7 @@ _discord_context_get(struct discord_async *async)
 {
     struct discord_context *cxt;
 
-    if (QUEUE_EMPTY(&async->queues->recycling))
-    { /* create new context struct */
+    if (QUEUE_EMPTY(&async->queues->recycling)) { /* new context struct */
         cxt = _discord_context_init();
     }
     else { /* recycle a context struct from queues->recycling */
@@ -45,7 +44,7 @@ _on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 {
     (void)io;
     (void)mhandle;
-    return discord_rest_async_perform(user_data);
+    return discord_rest_perform(user_data);
 }
 
 void
@@ -121,9 +120,6 @@ discord_async_retry_context(struct discord_async *async,
 
     if (rest->retry_limit < cxt->retry_attempt++) return false;
 
-    CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
-
-    curl_multi_remove_handle(async->mhandle, ehandle);
     ua_conn_reset(cxt->conn);
 
     /* FIXME: wait_ms > 0 should be dealt with aswell */
@@ -136,12 +132,10 @@ void
 discord_async_recycle_context(struct discord_async *async,
                               struct discord_context *cxt)
 {
+    struct discord_refcounter *rc = &CLIENT(async, rest.async)->refcounter;
+
     if (!cxt) return;
 
-    struct discord_refcounter *rc = &CLIENT(async, rest.async)->refcounter;
-    CURL *ehandle = ua_conn_get_easy_handle(cxt->conn);
-
-    curl_multi_remove_handle(async->mhandle, ehandle);
     if (cxt->conn) ua_conn_stop(cxt->conn);
 
     if (cxt->dispatch.keep) {
@@ -169,12 +163,10 @@ static void
 _discord_attachments_dup(struct discord_attachments *dest,
                          struct discord_attachments *src)
 {
-    int i;
-
     if (!src->size) return;
 
     __carray_init(dest, (size_t)src->size, struct discord_attachment, , );
-    for (i = 0; i < src->size; ++i) {
+    for (int i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
         if (src->array[i].content) {
             dest->array[i].size = src->array[i].size

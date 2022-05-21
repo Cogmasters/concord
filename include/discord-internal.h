@@ -251,6 +251,8 @@ struct discord_context {
     char key[DISCORD_ROUTE_LEN];
     /** the connection handler assigned */
     struct ua_conn *conn;
+    /** request's status code */
+    CURLcode ecode;
 
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
@@ -533,20 +535,25 @@ struct discord_context *discord_bucket_remove_context(
 struct discord_rest {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
     struct logconf conf;
-    /** threadpool that manages a single REST thread */
-    struct threadpool_t *tpool;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
     /** store individual contexts from asynchronous requests */
     struct discord_async async;
     /** the timer queue for the rest thread */
     struct discord_timers timers;
-
     /** enforce ratelimiting on discovered buckets */
     struct discord_ratelimiter ratelimiter;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
+
+    /** REST thread manager */
+    struct {
+        /** threadpool for managing a single REST thread */
+        struct threadpool_t *tpool;
+        /** global lock */
+        pthread_mutex_t lock;
+    } * manager;
 };
 
 /**
@@ -596,7 +603,7 @@ CCORDcode discord_rest_run(struct discord_rest *rest,
  * @param rest the handle initialized with discord_rest_init()
  * @CCORD_return
  */
-CCORDcode discord_rest_async_perform(struct discord_rest *rest);
+CCORDcode discord_rest_perform(struct discord_rest *rest);
 
 /**
  * @brief Stop all bucket's on-going, pending and timed-out requests
@@ -605,6 +612,13 @@ CCORDcode discord_rest_async_perform(struct discord_rest *rest);
  * @param rest the handle initialized with discord_rest_init()
  */
 void discord_rest_stop_buckets(struct discord_rest *rest);
+
+/**
+ * @brief Run pending callbacks from completed requests
+ *
+ * @param rest the handle initialized with discord_rest_init()
+ */
+void discord_rest_perform_callbacks(struct discord_rest *rest);
 
 /** @} DiscordInternalREST */
 
