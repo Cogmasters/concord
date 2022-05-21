@@ -349,25 +349,23 @@ _discord_rest_manager(void *p_rest)
     struct discord_timers *const timers[] = { &rest->timers };
     int64_t now, trigger;
 
-    while (1) {
-        discord_rest_async_perform(rest);
+    discord_rest_async_perform(rest);
 
-        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+    now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
 
-        trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
-        int poll_result =
-            io_poller_poll(rest->async.io_poller, (int)(trigger / 1000));
+    trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
+    int poll_result =
+        io_poller_poll(rest->async.io_poller, (int)(trigger / 1000));
 
-        now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
-        if (0 == poll_result) {
-            trigger = discord_timers_get_next_trigger(timers, 1, now, 1000);
-            if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
-        }
-        discord_timers_run(CLIENT(rest, rest), &rest->timers);
-        io_poller_perform(rest->async.io_poller);
+    now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+    if (0 == poll_result) {
+        trigger = discord_timers_get_next_trigger(timers, 1, now, 1000);
+        if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
     }
-
-    discord_rest_stop_buckets(rest);
+    discord_timers_run(CLIENT(rest, rest), &rest->timers);
+    io_poller_perform(rest->async.io_poller);
+    
+    threadpool_add(rest->tpool, _discord_rest_manager, rest, 0);
 }
 
 void
@@ -404,9 +402,10 @@ discord_rest_init(struct discord_rest *rest,
 void
 discord_rest_cleanup(struct discord_rest *rest)
 {
-    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
     /* cleanup REST managing thread */
     threadpool_destroy(rest->tpool, threadpool_graceful);
+    /* cleanup timers */
+    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
     /* cleanup User-Agent handle */
     ua_cleanup(rest->ua);
     /* move pending requests to queues->recycling */
