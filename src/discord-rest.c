@@ -350,6 +350,8 @@ _discord_rest_manager(void *p_rest)
     int64_t now, trigger;
 
     while (1) {
+        discord_rest_async_perform(rest);
+
         now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
 
         trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
