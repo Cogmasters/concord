@@ -107,12 +107,9 @@ discord_async_add_request(struct discord_async *async,
     curl_easy_setopt(ehandle, CURLOPT_PRIVATE, cxt);
 
     /* initiate libcurl transfer */
-    if (curl_multi_add_handle(async->mhandle, ehandle) != CURLM_OK)
-        return CCORD_CURLM_INTERNAL;
-
-    io_poller_wakeup(async->io_poller);
-
-    return CCORD_OK;
+    return (curl_multi_add_handle(async->mhandle, ehandle) != CURLM_OK)
+               ? CCORD_CURLM_INTERNAL
+               : CCORD_OK;
 }
 
 bool
@@ -252,6 +249,8 @@ discord_async_start_context(struct discord_async *async,
 
     /* bucket pertaining to the request */
     discord_bucket_add_context(b, cxt, cxt->dispatch.high_p);
+
+    io_poller_wakeup(async->io_poller);
 
     return cxt;
 }

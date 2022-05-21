@@ -434,15 +434,8 @@ _discord_rest_start_context(struct discord_rest *rest,
         &rest->async, req, body, method, endpoint, key, b);
 
     if (cxt->dispatch.sync) {
-#if 0
         cxt->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
-#else
-        pthread_cond_t cond;
-        pthread_cond_init(&cond, NULL);
-        cxt->cond = &cond;
-#endif
         pthread_cond_wait(cxt->cond, &b->lock);
-
     }
 
     pthread_mutex_unlock(&b->lock);
