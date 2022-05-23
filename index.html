@@ -218,7 +218,10 @@ Special compilation flags</h4>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md17"></a>
+<h4><a class="anchor" id="autotoc_md17"></a>
+Dynamic Linking Support</h4>
+<p >If you wish to produce a dynamically-linked version of Concord, use <code>make -f Makefile.dynamic</code>. Note that this Makefile is intended only for GNU-style compilers, like <code>gcc</code> or <code>clang</code>.</p>
+<h3><a class="anchor" id="autotoc_md18"></a>
 Configuring Concord</h3>
 <p >The following outlines the default fields of <code>config.json</code> </p><div class="fragment"><div class="line">{</div>
 <div class="line">  &quot;logging&quot;: { // logging directives</div>
@@ -241,7 +244,7 @@ Configuring Concord</h3>
 <div class="line">    }</div>
 <div class="line">  }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md18"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md19"></a>
 Test Copycat-Bot</h3>
 <ol type="1">
 <li>Get your bot token and add it to <code>config.json</code>, by assigning it to discord's "token" field. There are well written instructions from <a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">discord-irc</a> explaining how to get your bot token and adding it to a server.</li>
@@ -250,29 +253,29 @@ Test Copycat-Bot</h3>
 <li>Run Copycat-Bot: <div class="fragment"><div class="line">$ cd examples &amp;&amp; ./copycat</div>
 </div><!-- fragment --></li>
 </ol>
-<h4><a class="anchor" id="autotoc_md19"></a>
+<h4><a class="anchor" id="autotoc_md20"></a>
 Get Copycat-Bot Response</h4>
 <p >Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.</p>
-<h4><a class="anchor" id="autotoc_md20"></a>
+<h4><a class="anchor" id="autotoc_md21"></a>
 Terminate Copycat-Bot</h4>
 <p >With <code>Ctrl</code>+<code>c</code> or with <code>Ctrl</code>+<code>|</code></p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Installing Concord</h2>
 <p >*(note &ndash; <code>#</code> means that you should be running as root)*</p>
 <div class="fragment"><div class="line"># make install</div>
 </div><!-- fragment --><p >This will install the headers and libary files into $PREFIX. You can override this as such: </p><div class="fragment"><div class="line"># PREFIX=/opt/concord make install</div>
 </div><!-- fragment --><p >Note that included headers must be <code>concord/</code> prefixed: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md22"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md23"></a>
 Standalone executable</h3>
-<h4><a class="anchor" id="autotoc_md23"></a>
+<h4><a class="anchor" id="autotoc_md24"></a>
 GCC</h4>
 <div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md24"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md25"></a>
 Clang</h4>
 <div class="fragment"><div class="line">$ clang myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md26"></a>
 UNIX C compilers</h4>
-<p ><a class="anchor" id="autotoc_md26"></a> </p><h5>This includes the following compilers:</h5>
+<p ><a class="anchor" id="autotoc_md27"></a> </p><h5>This includes the following compilers:</h5>
 <ul>
 <li>IBM XL C/C++ (AIX, z/OS, possibly IBM i)</li>
 <li>Sun/Oracle Studio (Solaris)</li>
@@ -282,34 +285,34 @@ UNIX C compilers</h4>
 </ul>
 <p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
 </div><!-- fragment --><p> (this links against libpthread.a in <code>/usr/lib</code>)</p>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Recommended debuggers</h2>
 <p >First, make sure your executable is compiled with the <code>-g</code> flag to ensure human-readable debugger messages.</p>
-<h3><a class="anchor" id="autotoc_md28"></a>
+<h3><a class="anchor" id="autotoc_md29"></a>
 Valgrind</h3>
 <p >Using valgrind to check for memory leaks:</p>
 <div class="fragment"><div class="line">valgrind --leak-check=full ./myBot</div>
 </div><!-- fragment --><p> For a more comprehensive guide check <a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind's Quick Start</a>.</p>
-<h3><a class="anchor" id="autotoc_md29"></a>
+<h3><a class="anchor" id="autotoc_md30"></a>
 GDB</h3>
 <p >Using GDB to check for runtime errors, such as segmentation faults:</p>
 <div class="fragment"><div class="line">$ gdb ./myBot</div>
 </div><!-- fragment --><p> And then execute your bot from the gdb environment: </p><div class="fragment"><div class="line">(gdb) run</div>
 </div><!-- fragment --><p> If the program has crashed, get a backtrace of the function calls leading to it: </p><div class="fragment"><div class="line">(gdb) bt</div>
 </div><!-- fragment --><p >For a more comprehensive guide check <a href="https://beej.us/guide/bggdb/">Beej's Quick Guide to GDB</a></p>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Support</h2>
 <p >Problems? Check out our <a href="https://discord.gg/Y7Xa6MA82v">Discord Server</a>.</p>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md32"></a>
 Contributing</h2>
 <p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
-<h2><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md33"></a>
 Getting Started</h2>
 <ul>
 <li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
 <li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md33"></a>
+<h2><a class="anchor" id="autotoc_md34"></a>
 Useful links</h2>
 <ul>
 <li><a href="https://gist.github.com/lcsmuller/a5f2b205c3871888656b86825db90187">Migrating from Orca</a> </li>

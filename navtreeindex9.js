@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"structdiscord__voice__state.html#ae2957dbad86a3db12db2600050d6b9c9":[6,0,236,0],
 "structdiscord__voice__state__status.html":[6,0,237],
 "structdiscord__voice__state__status.html#a38c185dc83f407b3f45c0ff7f96261f3":[6,0,237,1],
 "structdiscord__voice__state__status.html#abae385a955254c1194138bc1e3e03bb0":[6,0,237,3],
