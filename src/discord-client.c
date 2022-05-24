@@ -169,9 +169,6 @@ void
 discord_cleanup(struct discord *client)
 {
     if (client->is_original) {
-        discord_timers_cleanup(client, &client->timers.user);
-        discord_timers_cleanup(client, &client->timers.internal);
-        logconf_cleanup(&client->conf);
         discord_rest_cleanup(&client->rest);
         discord_gateway_cleanup(&client->gw);
         discord_user_cleanup(&client->self);
@@ -181,6 +178,9 @@ discord_cleanup(struct discord *client)
 #ifdef CCORD_VOICE
         discord_voice_connections_cleanup(client);
 #endif
+        discord_timers_cleanup(client, &client->timers.user);
+        discord_timers_cleanup(client, &client->timers.internal);
+        logconf_cleanup(&client->conf);
     }
     else {
         _discord_clone_cleanup(client);

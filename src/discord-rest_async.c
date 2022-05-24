@@ -27,7 +27,7 @@ _discord_context_get(struct discord_async *async)
     if (QUEUE_EMPTY(&async->queues->recycling)) { /* new context struct */
         cxt = _discord_context_init();
     }
-    else { /* recycle a context struct from queues->recycling */
+    else { /* fetch a context struct from queues->recycling */
         QUEUE(struct discord_context) *qelem =
             QUEUE_HEAD(&async->queues->recycling);
 
@@ -88,6 +88,8 @@ discord_async_init(struct discord_async *async,
     io_poller_curlm_add(async->io_poller, async->mhandle,
                         &_discord_on_rest_perform,
                         CONTAINEROF(async, struct discord_rest, async));
+
+    async->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 }
 
 void
@@ -213,15 +215,14 @@ discord_async_start_bucket_request(struct discord_async *async,
                : CCORD_OK;
 }
 
-bool
-discord_async_retry_context(struct discord_async *async,
-                            struct discord_context *cxt)
+static bool
+_discord_async_retry_context(struct discord_async *async,
+                             struct discord_context *cxt)
 {
-    struct discord_rest *rest = CONTAINEROF(async, struct discord_rest, async);
-
     if (!cxt->retry) return false;
-    if (rest->retry_limit < cxt->retry_attempt++) return false;
+    if (async->retry_limit < cxt->retry_attempt++) return false;
 
+    cxt->b->performing_cxt = NULL;
     ua_conn_reset(cxt->conn);
 
     /* FIXME: wait_ms > 0 should be dealt with aswell */
@@ -231,22 +232,19 @@ discord_async_retry_context(struct discord_async *async,
 }
 
 void
-discord_async_recycle_context(struct discord_async *async,
-                              struct discord_context *cxt)
+discord_async_cancel_context(struct discord_async *async,
+                             struct discord_context *cxt)
 {
     struct discord_refcounter *rc = &CLIENT(async, rest.async)->refcounter;
 
-    if (!cxt) return;
-
     if (cxt->conn) ua_conn_stop(cxt->conn);
 
-    if (cxt->dispatch.keep) {
+    if (cxt->dispatch.keep)
         discord_refcounter_decr(rc, (void *)cxt->dispatch.keep);
-    }
-    if (cxt->dispatch.data) {
+    if (cxt->dispatch.data)
         discord_refcounter_decr(rc, cxt->dispatch.data);
-    }
 
+    cxt->b->performing_cxt = NULL;
     cxt->body.size = 0;
     cxt->method = 0;
     *cxt->endpoint = '\0';
@@ -256,7 +254,38 @@ discord_async_recycle_context(struct discord_async *async,
     discord_attachments_cleanup(&cxt->attachments);
     memset(cxt, 0, sizeof(struct discord_request));
 
+    QUEUE_REMOVE(&cxt->entry);
+    QUEUE_INIT(&cxt->entry);
     QUEUE_INSERT_TAIL(&async->queues->recycling, &cxt->entry);
+}
+
+CCORDcode
+discord_async_run_context_callback(struct discord_async *async,
+                                   struct discord_context *cxt)
+{
+    struct discord *client = CLIENT(async, rest.async);
+    struct discord_response resp = { .data = cxt->dispatch.data,
+                                     .keep = cxt->dispatch.keep,
+                                     .code = cxt->code };
+
+    if (cxt->code != CCORD_OK) {
+        cxt->dispatch.fail(client, &resp);
+    }
+    else if (cxt->dispatch.done.typed) {
+        if (!cxt->dispatch.has_type) {
+            cxt->dispatch.done.typeless(client, &resp);
+        }
+        else {
+            cxt->dispatch.done.typed(client, &resp, cxt->response.data);
+            discord_refcounter_decr(&client->refcounter, cxt->response.data);
+        }
+    }
+
+    /* enqueue request for retry or recycle */
+    if (!_discord_async_retry_context(async, cxt))
+        discord_async_cancel_context(async, cxt);
+
+    return resp.code;
 }
 
 /* Only the fields that are required at _discord_rest_request_to_multipart()

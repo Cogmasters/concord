@@ -10,24 +10,6 @@
 #include "discord-internal.h"
 
 static void
-_discord_rest_try_add_request(struct discord_ratelimiter *rl,
-                              struct discord_bucket *b)
-{
-    /* skip if bucket is busy performing */
-    if (b->performing_cxt) return;
-
-    if (!b->remaining) {
-        discord_bucket_try_timeout(rl, b);
-    }
-    else if (!QUEUE_EMPTY(&b->pending_queue)) {
-        struct discord_async *async =
-            &CONTAINEROF(rl, struct discord_rest, ratelimiter)->async;
-
-        discord_async_start_bucket_request(async, b);
-    }
-}
-
-static void
 _discord_rest_start_buckets(struct discord_rest *rest)
 {
     QUEUE(struct discord_context) queue, *qelem;
@@ -45,8 +27,26 @@ _discord_rest_start_buckets(struct discord_rest *rest)
     }
 }
 
+static void
+_discord_rest_try_add_request(struct discord_ratelimiter *rl,
+                              struct discord_bucket *b)
+{
+    /* skip if bucket is already busy performing */
+    if (b->performing_cxt) return;
+
+    if (!b->remaining) {
+        discord_bucket_try_timeout(rl, b);
+    }
+    else if (!QUEUE_EMPTY(&b->pending_queue)) {
+        struct discord_async *async =
+            &CONTAINEROF(rl, struct discord_rest, ratelimiter)->async;
+
+        discord_async_start_bucket_request(async, b);
+    }
+}
+
 static CCORDcode
-_discord_rest_check_pending(struct discord_rest *rest)
+_discord_rest_start_pending(struct discord_rest *rest)
 {
     _discord_rest_start_buckets(rest);
 
@@ -66,8 +66,7 @@ _discord_rest_info_extract(struct discord_rest *rest,
 {
     ua_info_extract(cxt->conn, info);
 
-    if (info->code != CCORD_HTTP_CODE) {
-        /* CCORD_OK or internal error */
+    if (info->code != CCORD_HTTP_CODE) { /* CCORD_OK or internal error */
         cxt->retry = false;
     }
     else {
@@ -200,36 +199,6 @@ _discord_rest_fetch_callback(struct discord_rest *rest,
     return cxt->code;
 }
 
-static CCORDcode
-_discord_rest_run_callback(struct discord_rest *rest,
-                           struct discord_context *cxt)
-{
-    struct discord *client = CLIENT(rest, rest);
-    struct discord_response resp = { .data = cxt->dispatch.data,
-                                     .keep = cxt->dispatch.keep,
-                                     .code = cxt->code };
-
-    if (cxt->code != CCORD_OK) {
-        cxt->dispatch.fail(client, &resp);
-    }
-    else if (cxt->dispatch.done.typed) {
-        if (!cxt->dispatch.has_type) {
-            cxt->dispatch.done.typeless(client, &resp);
-        }
-        else {
-            cxt->dispatch.done.typed(client, &resp, cxt->response.data);
-            discord_refcounter_decr(&client->refcounter, cxt->response.data);
-        }
-    }
-
-    /* enqueue request for retry or recycle */
-    cxt->b->performing_cxt = NULL;
-    if (!discord_async_retry_context(&rest->async, cxt))
-        discord_async_recycle_context(&rest->async, cxt);
-
-    return resp.code;
-}
-
 void
 discord_rest_perform_callbacks(struct discord_rest *rest)
 {
@@ -241,11 +210,8 @@ discord_rest_perform_callbacks(struct discord_rest *rest)
             QUEUE_MOVE(&rest->async.queues->finished, &queue);
             do {
                 qelem = QUEUE_HEAD(&queue);
-                QUEUE_REMOVE(qelem);
-
                 cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-
-                _discord_rest_run_callback(rest, cxt);
+                discord_async_run_context_callback(&rest->async, cxt);
             } while (!QUEUE_EMPTY(&queue));
 
             io_poller_wakeup(rest->async.io_poller);
@@ -285,7 +251,7 @@ discord_rest_perform(struct discord_rest *rest)
         }
     }
 
-    code = _discord_rest_check_pending(rest);
+    code = _discord_rest_start_pending(rest);
 
     pthread_mutex_unlock(&rest->manager->lock);
 
@@ -332,8 +298,6 @@ discord_rest_init(struct discord_rest *rest,
     discord_async_init(&rest->async, &rest->conf, token);
     discord_ratelimiter_init(&rest->ratelimiter, &rest->conf);
 
-    rest->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
-
     rest->manager = malloc(sizeof *rest->manager);
     ASSERT_S(!pthread_mutex_init(&rest->manager->lock, NULL),
              "Couldn't initialize REST manager mutex");
@@ -349,15 +313,14 @@ discord_rest_cleanup(struct discord_rest *rest)
     /* cleanup REST managing thread */
     threadpool_destroy(rest->manager->tpool, threadpool_graceful);
     pthread_mutex_destroy(&rest->manager->lock);
-    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
     free(rest->manager);
 
-    /* move pending requests to queues->recycling */
-    discord_rest_stop_buckets(rest);
+    /* cleanup discovered buckets */
+    discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
+    discord_ratelimiter_cleanup(&rest->ratelimiter);
+
     /* cleanup context queues */
     discord_async_cleanup(&rest->async);
-    /* cleanup discovered buckets */
-    discord_ratelimiter_cleanup(&rest->ratelimiter);
 }
 
 /* enqueue a request to be executed asynchronously */
@@ -380,7 +343,7 @@ _discord_rest_start_context(struct discord_rest *rest,
     if (cxt->dispatch.sync) {
         cxt->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
         pthread_cond_wait(cxt->cond, &rest->manager->lock);
-        code = _discord_rest_run_callback(rest, cxt);
+        code = discord_async_run_context_callback(&rest->async, cxt);
     }
 
     pthread_mutex_unlock(&rest->manager->lock);
@@ -424,26 +387,4 @@ discord_rest_run(struct discord_rest *rest,
     va_end(args);
 
     return _discord_rest_start_context(rest, req, body, method, endpoint, key);
-}
-
-static void
-_discord_rest_stop_bucket(struct discord_ratelimiter *rl,
-                          struct discord_bucket *b)
-{
-    struct discord_async *async =
-        &CONTAINEROF(rl, struct discord_rest, ratelimiter)->async;
-
-    /* cancel busy transfer */
-    discord_async_recycle_context(async, b->performing_cxt);
-
-    /* cancel pending tranfers */
-    QUEUE_ADD(&async->queues->recycling, &b->pending_queue);
-    QUEUE_INIT(&b->pending_queue);
-}
-
-void
-discord_rest_stop_buckets(struct discord_rest *rest)
-{
-    discord_ratelimiter_foreach_bucket(&rest->ratelimiter,
-                                       &_discord_rest_stop_bucket);
 }

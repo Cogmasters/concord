@@ -278,6 +278,9 @@ struct discord_async {
     /** io_poller for rest only */
     struct io_poller *io_poller;
 
+    /** max amount of retries before a failed request gives up */
+    int retry_limit;
+
     /** context queues */
     struct {
         /** requests contexts for recycling */
@@ -325,25 +328,13 @@ CCORDcode discord_async_start_bucket_request(struct discord_async *async,
                                              struct discord_bucket *b);
 
 /**
- * @brief Request failed, enqueue it back to bucket's first position
- *      for next attempt
+ * @brief Cancel an on-going request and move it to the recycle queue
  *
  * @param async the async handle initialized with discord_async_init()
- * @param cxt the failed request's context to be set for retry
- * @return `true` if request can be retried
+ * @param cxt the on-going request to be canceled
  */
-bool discord_async_retry_context(struct discord_async *async,
-                                 struct discord_context *cxt);
-
-/**
- * @brief Insert a @ref discord_context structure into
- *      `async.queues->recycling` queue for recycling
- *
- * @param async the async handle initialized with discord_async_init()
- * @param cxt the request context to be recycled
- */
-void discord_async_recycle_context(struct discord_async *async,
-                                   struct discord_context *cxt);
+void discord_async_cancel_context(struct discord_async *async,
+                                  struct discord_context *cxt);
 
 /**
  * @brief Start request's context
@@ -364,6 +355,16 @@ struct discord_context *discord_async_start_context(
     enum http_method method,
     char endpoint[DISCORD_ENDPT_LEN],
     char key[DISCORD_ROUTE_LEN]);
+
+/**
+ * @brief Run callback from a finished request
+ *
+ * @param async the async handle initialized with discord_async_init()
+ * @param cxt the finished request
+ * @CCORD_return
+ */
+CCORDcode discord_async_run_context_callback(struct discord_async *async,
+                                             struct discord_context *cxt);
 
 /** @} DiscordInternalRESTAsync */
 
@@ -547,9 +548,6 @@ struct discord_rest {
     struct discord_timers timers;
     /** enforce ratelimiting on discovered buckets */
     struct discord_ratelimiter ratelimiter;
-
-    /** max amount of retries before a failed request gives up */
-    int retry_limit;
 
     /** REST thread manager */
     struct {

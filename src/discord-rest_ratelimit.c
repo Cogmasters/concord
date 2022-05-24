@@ -164,9 +164,27 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
     rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX);
 }
 
+static void
+_discord_bucket_cancel(struct discord_ratelimiter *rl,
+                       struct discord_bucket *b)
+{
+    struct discord_async *async =
+        &CONTAINEROF(rl, struct discord_rest, ratelimiter)->async;
+
+    /* cancel busy transfer */
+    if (b->performing_cxt)
+        discord_async_cancel_context(async, b->performing_cxt);
+
+    /* move pending tranfers to recycling */
+    QUEUE_ADD(&async->queues->recycling, &b->pending_queue);
+    QUEUE_INIT(&b->pending_queue);
+}
+
 void
 discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 {
+    discord_ratelimiter_foreach_bucket(rl, &_discord_bucket_cancel);
+
     pthread_rwlock_destroy(&rl->global->rwlock);
     pthread_mutex_destroy(&rl->global->lock);
     free(rl->global);
@@ -417,11 +435,12 @@ discord_bucket_add_context(struct discord_bucket *b,
                            struct discord_context *cxt,
                            bool high_priority)
 {
+    QUEUE_REMOVE(&cxt->entry);
+    QUEUE_INIT(&cxt->entry);
     if (high_priority)
         QUEUE_INSERT_HEAD(&b->pending_queue, &cxt->entry);
     else
         QUEUE_INSERT_TAIL(&b->pending_queue, &cxt->entry);
-
     cxt->b = b;
 }
 
