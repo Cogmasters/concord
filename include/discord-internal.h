@@ -251,8 +251,13 @@ struct discord_context {
     char key[DISCORD_ROUTE_LEN];
     /** the connection handler assigned */
     struct ua_conn *conn;
+
     /** request's status code */
-    CURLcode ecode;
+    CCORDcode code;
+    /** how long to wait for in case of request being ratelimited */
+    int64_t wait_ms;
+    /** whether this request should be retried */
+    bool retry;
 
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
@@ -266,6 +271,8 @@ struct discord_context {
 struct discord_async {
     /** DISCORD_ASYNC logging module */
     struct logconf conf;
+    /** the user agent handle for performing requests */
+    struct user_agent *ua;
     /** curl_multi handle for performing asynchronous requests */
     CURLM *mhandle;
     /** io_poller for rest only */
@@ -275,6 +282,8 @@ struct discord_async {
     struct {
         /** requests contexts for recycling */
         QUEUE(struct discord_context) recycling;
+        /** pending requests waiting to be assigned to a bucket */
+        QUEUE(struct discord_context) pending;
         /**
          * finished requests contexts that are done performing and waiting for
          *      their callbacks to be called from the main thread
@@ -290,8 +299,11 @@ struct discord_async {
  *      asynchronously, and a queue for storing individual requests contexts
  * @param async the async handle to be initialized
  * @param conf pointer to @ref discord_rest logging module
+ * @param token the bot token
  */
-void discord_async_init(struct discord_async *async, struct logconf *conf);
+void discord_async_init(struct discord_async *async,
+                        struct logconf *conf,
+                        struct ccord_szbuf_readonly *token);
 
 /**
  * @brief Free an Async handle
@@ -301,18 +313,16 @@ void discord_async_init(struct discord_async *async, struct logconf *conf);
 void discord_async_cleanup(struct discord_async *async);
 
 /**
- * @brief Kickstart the request by adding it to libcurl's request multiplexer
- *      (`CURLM` multi handle)
+ * @brief Kickstart a bucket request by adding it to libcurl's request
+ *      multiplexer (`CURLM` multi handle)
  *
  * @param async the async handle initialized with discord_async_init()
- * @param cxt the context of the request to be sent over
- * @param conn the @ref ua_conn connection handle
+ * @param b the bucket to have a request sent over
  * @return CCORDcode for how the request went, @ref CCORD_CURLM_INTERNAL means
  *      something wrong happened
  */
-CCORDcode discord_async_add_request(struct discord_async *async,
-                                    struct discord_context *cxt,
-                                    struct ua_conn *conn);
+CCORDcode discord_async_start_bucket_request(struct discord_async *async,
+                                             struct discord_bucket *b);
 
 /**
  * @brief Request failed, enqueue it back to bucket's first position
@@ -320,13 +330,10 @@ CCORDcode discord_async_add_request(struct discord_async *async,
  *
  * @param async the async handle initialized with discord_async_init()
  * @param cxt the failed request's context to be set for retry
- * @param wait_ms in case of a @ref HTTP_TOO_MANY_REQUESTS, this is the
- *      ratelimiting time to wait for
  * @return `true` if request can be retried
  */
 bool discord_async_retry_context(struct discord_async *async,
-                                 struct discord_context *cxt,
-                                 int64_t wait_ms);
+                                 struct discord_context *cxt);
 
 /**
  * @brief Insert a @ref discord_context structure into
@@ -356,8 +363,7 @@ struct discord_context *discord_async_start_context(
     struct ccord_szbuf *body,
     enum http_method method,
     char endpoint[DISCORD_ENDPT_LEN],
-    char key[DISCORD_ROUTE_LEN],
-    struct discord_bucket *b);
+    char key[DISCORD_ROUTE_LEN]);
 
 /** @} DiscordInternalRESTAsync */
 
@@ -535,8 +541,6 @@ struct discord_context *discord_bucket_remove_context(
 struct discord_rest {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
     struct logconf conf;
-    /** the user agent handle for performing requests */
-    struct user_agent *ua;
     /** store individual contexts from asynchronous requests */
     struct discord_async async;
     /** the timer queue for the rest thread */

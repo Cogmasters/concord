@@ -244,8 +244,9 @@ discord_bucket_try_timeout(struct discord_ratelimiter *rl,
                            struct discord_bucket *b)
 {
     struct discord *client = CLIENT(rl, rest.ratelimiter);
-    const int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
+    int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
+    if (delay_ms < 0) delay_ms = 0;
     b->performing_cxt = DISCORD_BUCKET_TIMEOUT;
 
     _discord_timer_ctl(
