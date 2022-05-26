@@ -211,10 +211,10 @@ struct discord_ret_response {
 };
 
 /**
- * @brief Macro containing @ref discord_request fields
+ * @brief Macro containing @ref discord_attributes fields
  * @note this exists for @ref discord_context alignment purposes
  */
-#define DISCORD_REQUEST_FIELDS                                                \
+#define DISCORD_ATTRIBUTES_FIELDS                                             \
     /** attributes set by client for request dispatch behavior */             \
     struct discord_ret_dispatch dispatch;                                     \
     /** information for parsing response into a datatype (if possible) */     \
@@ -223,8 +223,8 @@ struct discord_ret_response {
     struct discord_attachments attachments
 
 /** @brief Request to be performed */
-struct discord_request {
-    DISCORD_REQUEST_FIELDS;
+struct discord_attributes {
+    DISCORD_ATTRIBUTES_FIELDS;
 };
 
 /** @defgroup DiscordInternalRESTAsync Async request's handling
@@ -234,10 +234,11 @@ struct discord_request {
 /**
  * @brief Context of individual requests that are scheduled to run
  *      asynchronously
- * @note its fields are aligned with @ref discord_request
+ * @note this struct **SHOULD NOT** be handled from the `REST` manager thread
+ * @note its fields are aligned with @ref discord_attributes
  */
 struct discord_context {
-    DISCORD_REQUEST_FIELDS;
+    DISCORD_ATTRIBUTES_FIELDS;
 
     /** the request's bucket */
     struct discord_bucket *b;
@@ -269,7 +270,7 @@ struct discord_context {
 
 /** @brief The handle used for handling asynchronous requests */
 struct discord_async {
-    /** DISCORD_ASYNC logging module */
+    /** `DISCORD_ASYNC` logging module */
     struct logconf conf;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
@@ -328,7 +329,18 @@ CCORDcode discord_async_start_bucket_request(struct discord_async *async,
                                              struct discord_bucket *b);
 
 /**
- * @brief Cancel an on-going request and move it to the recycle queue
+ * @brief Check if request is expected to be retried and move it to its
+ * bucket's queue
+ *
+ * @param async the async handle initialized with discord_async_init()
+ * @param cxt the on-going request to be canceled
+ * @return `true` if request has been enqueued for retry
+ */
+bool discord_async_retry_context(struct discord_async *async,
+                                 struct discord_context *cxt);
+
+/**
+ * @brief Mark request as canceled and move it to the recycle queue
  *
  * @param async the async handle initialized with discord_async_init()
  * @param cxt the on-going request to be canceled
@@ -350,21 +362,11 @@ void discord_async_cancel_context(struct discord_async *async,
  */
 struct discord_context *discord_async_start_context(
     struct discord_async *async,
-    struct discord_request *req,
+    struct discord_attributes *req,
     struct ccord_szbuf *body,
     enum http_method method,
     char endpoint[DISCORD_ENDPT_LEN],
     char key[DISCORD_ROUTE_LEN]);
-
-/**
- * @brief Run callback from a finished request
- *
- * @param async the async handle initialized with discord_async_init()
- * @param cxt the finished request
- * @CCORD_return
- */
-CCORDcode discord_async_run_context_callback(struct discord_async *async,
-                                             struct discord_context *cxt);
 
 /** @} DiscordInternalRESTAsync */
 
@@ -378,9 +380,12 @@ CCORDcode discord_async_run_context_callback(struct discord_async *async,
  */
 #define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
 
-/** @brief The ratelimiter struct for handling ratelimiting */
+/**
+ * @brief The ratelimiter struct for handling ratelimiting
+ * @note this struct **SHOULD** only be handled from the `REST` manager thread
+ */
 struct discord_ratelimiter {
-    /** DISCORD_RATELIMIT logging module */
+    /** `DISCORD_RATELIMIT` logging module */
     struct logconf conf;
     /** amount of bucket's routes discovered */
     int length;
@@ -540,7 +545,7 @@ struct discord_context *discord_bucket_remove_context(
 
 /** @brief The handle used for interfacing with Discord's REST API */
 struct discord_rest {
-    /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
+    /** `DISCORD_HTTP` or `DISCORD_WEBHOOK` logging module */
     struct logconf conf;
     /** store individual contexts from asynchronous requests */
     struct discord_async async;
@@ -593,7 +598,7 @@ void discord_rest_cleanup(struct discord_rest *rest);
  *              immediately
  */
 CCORDcode discord_rest_run(struct discord_rest *rest,
-                           struct discord_request *req,
+                           struct discord_attributes *req,
                            struct ccord_szbuf *body,
                            enum http_method method,
                            char endpoint_fmt[],
@@ -663,7 +668,7 @@ struct discord_gateway_payload {
 
 /** @brief The handle used for interfacing with Discord's Gateway API */
 struct discord_gateway {
-    /** DISCORD_GATEWAY logging module */
+    /** `DISCORD_GATEWAY` logging module */
     struct logconf conf;
     /** the websockets handle that connects to Discord */
     struct websockets *ws;
@@ -879,7 +884,7 @@ void discord_gateway_dispatch(struct discord_gateway *gw);
  *      more callbacks expecting the data
  */
 struct discord_refcounter {
-    /** DISCORD_REFCOUNT logging module */
+    /** `DISCORD_REFCOUNT` logging module */
     struct logconf conf;
     /** amount of individual user's data held for automatic cleanup */
     int length;
@@ -1011,7 +1016,7 @@ CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
  * @see discord_set_on_command()
  */
 struct discord_message_commands {
-    /** DISCORD_MESSAGE_COMMANDS logging module */
+    /** `DISCORD_MESSAGE_COMMANDS` logging module */
     struct logconf conf;
     /** the prefix expected for every command */
     struct ccord_szbuf prefix;

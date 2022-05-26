@@ -10,24 +10,6 @@
 #include "discord-internal.h"
 
 static void
-_discord_rest_start_buckets(struct discord_rest *rest)
-{
-    QUEUE(struct discord_context) queue, *qelem;
-    struct discord_context *cxt;
-    struct discord_bucket *b;
-
-    QUEUE_MOVE(&rest->async.queues->pending, &queue);
-    while (!QUEUE_EMPTY(&queue)) {
-        qelem = QUEUE_HEAD(&queue);
-        QUEUE_REMOVE(qelem);
-
-        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-        b = discord_bucket_get(&rest->ratelimiter, cxt->key);
-        discord_bucket_add_context(b, cxt, cxt->dispatch.high_p);
-    }
-}
-
-static void
 _discord_rest_try_add_request(struct discord_ratelimiter *rl,
                               struct discord_bucket *b)
 {
@@ -48,7 +30,20 @@ _discord_rest_try_add_request(struct discord_ratelimiter *rl,
 static CCORDcode
 _discord_rest_start_pending(struct discord_rest *rest)
 {
-    _discord_rest_start_buckets(rest);
+    QUEUE(struct discord_context) queue, *qelem;
+    struct discord_context *cxt;
+    struct discord_bucket *b;
+
+    /* match pending contexts to their buckets */
+    QUEUE_MOVE(&rest->async.queues->pending, &queue);
+    while (!QUEUE_EMPTY(&queue)) {
+        qelem = QUEUE_HEAD(&queue);
+        QUEUE_REMOVE(qelem);
+
+        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
+        b = discord_bucket_get(&rest->ratelimiter, cxt->key);
+        discord_bucket_add_context(b, cxt, cxt->dispatch.high_p);
+    }
 
     /* TODO: replace foreach with a mechanism that loops only busy buckets */
     discord_ratelimiter_foreach_bucket(&rest->ratelimiter,
@@ -139,10 +134,12 @@ _discord_rest_info_extract(struct discord_rest *rest,
     }
 }
 
+/* parse request response and prepare callback that should be triggered
+ * at _discord_rest_trigger_response() */
 static CCORDcode
-_discord_rest_fetch_callback(struct discord_rest *rest,
-                             struct discord_context *cxt,
-                             CURLcode ecode)
+_discord_rest_select_response(struct discord_rest *rest,
+                              struct discord_context *cxt,
+                              CURLcode ecode)
 {
     switch (ecode) {
     case CURLE_OK: {
@@ -199,6 +196,35 @@ _discord_rest_fetch_callback(struct discord_rest *rest,
     return cxt->code;
 }
 
+static CCORDcode
+_discord_rest_trigger_response(struct discord_rest *rest,
+                               struct discord_context *cxt)
+{
+    struct discord *client = CLIENT(rest, rest);
+    struct discord_response resp = { .data = cxt->dispatch.data,
+                                     .keep = cxt->dispatch.keep,
+                                     .code = cxt->code };
+
+    if (cxt->code != CCORD_OK) {
+        cxt->dispatch.fail(client, &resp);
+    }
+    else if (cxt->dispatch.done.typed) {
+        if (!cxt->dispatch.has_type) {
+            cxt->dispatch.done.typeless(client, &resp);
+        }
+        else {
+            cxt->dispatch.done.typed(client, &resp, cxt->response.data);
+            discord_refcounter_decr(&client->refcounter, cxt->response.data);
+        }
+    }
+
+    /* enqueue request for retry or recycle */
+    if (!discord_async_retry_context(&rest->async, cxt))
+        discord_async_cancel_context(&rest->async, cxt);
+
+    return resp.code;
+}
+
 void
 discord_rest_perform_callbacks(struct discord_rest *rest)
 {
@@ -211,7 +237,7 @@ discord_rest_perform_callbacks(struct discord_rest *rest)
             do {
                 qelem = QUEUE_HEAD(&queue);
                 cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-                discord_async_run_context_callback(&rest->async, cxt);
+                _discord_rest_trigger_response(rest, cxt);
             } while (!QUEUE_EMPTY(&queue));
 
             io_poller_wakeup(rest->async.io_poller);
@@ -243,7 +269,7 @@ discord_rest_perform(struct discord_rest *rest)
             curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
             curl_multi_remove_handle(rest->async.mhandle, msg->easy_handle);
 
-            _discord_rest_fetch_callback(rest, cxt, msg->data.result);
+            _discord_rest_select_response(rest, cxt, msg->data.result);
             if (cxt->dispatch.sync)
                 pthread_cond_signal(cxt->cond);
             else
@@ -252,7 +278,6 @@ discord_rest_perform(struct discord_rest *rest)
     }
 
     code = _discord_rest_start_pending(rest);
-
     pthread_mutex_unlock(&rest->manager->lock);
 
     return code;
@@ -261,24 +286,26 @@ discord_rest_perform(struct discord_rest *rest)
 static void
 _discord_rest_manager(void *p_rest)
 {
+    struct discord *client = CLIENT(p_rest, rest);
     struct discord_rest *rest = p_rest;
+
     struct discord_timers *const timers[] = { &rest->timers };
     int64_t now, trigger;
+    int poll_result;
 
     discord_rest_perform(rest);
 
-    now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+    now = (int64_t)discord_timestamp_us(client);
 
     trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
-    int poll_result =
-        io_poller_poll(rest->async.io_poller, (int)(trigger / 1000));
+    poll_result = io_poller_poll(rest->async.io_poller, (int)(trigger / 1000));
 
-    now = (int64_t)discord_timestamp_us(CLIENT(rest, rest));
+    now = (int64_t)discord_timestamp_us(client);
     if (0 == poll_result) {
         trigger = discord_timers_get_next_trigger(timers, 1, now, 1000);
         if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
     }
-    discord_timers_run(CLIENT(rest, rest), &rest->timers);
+    discord_timers_run(client, &rest->timers);
     io_poller_perform(rest->async.io_poller);
 
     threadpool_add(rest->manager->tpool, _discord_rest_manager, rest, 0);
@@ -326,24 +353,27 @@ discord_rest_cleanup(struct discord_rest *rest)
 /* enqueue a request to be executed asynchronously */
 static CCORDcode
 _discord_rest_start_context(struct discord_rest *rest,
-                            struct discord_request *req,
+                            struct discord_attributes *attr,
                             struct ccord_szbuf *body,
                             enum http_method method,
                             char endpoint[DISCORD_ENDPT_LEN],
                             char key[DISCORD_ROUTE_LEN])
 {
     struct discord_context *cxt;
-    CCORDcode code = CCORD_OK;
+    CCORDcode code;
 
     pthread_mutex_lock(&rest->manager->lock);
 
-    cxt = discord_async_start_context(&rest->async, req, body, method,
+    cxt = discord_async_start_context(&rest->async, attr, body, method,
                                       endpoint, key);
 
-    if (cxt->dispatch.sync) {
+    if (!cxt->dispatch.sync) {
+        code = CCORD_OK;
+    }
+    else {
         cxt->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
         pthread_cond_wait(cxt->cond, &rest->manager->lock);
-        code = discord_async_run_context_callback(&rest->async, cxt);
+        code = _discord_rest_trigger_response(rest, cxt);
     }
 
     pthread_mutex_unlock(&rest->manager->lock);
@@ -354,21 +384,20 @@ _discord_rest_start_context(struct discord_rest *rest,
 /* template function for performing requests */
 CCORDcode
 discord_rest_run(struct discord_rest *rest,
-                 struct discord_request *req,
+                 struct discord_attributes *attr,
                  struct ccord_szbuf *body,
                  enum http_method method,
                  char endpoint_fmt[],
                  ...)
 {
-    char endpoint[DISCORD_ENDPT_LEN];
-    char key[DISCORD_ROUTE_LEN];
+    char endpoint[DISCORD_ENDPT_LEN], key[DISCORD_ROUTE_LEN];
     va_list args;
     int len;
 
     /* have it point somewhere */
-    if (!req) {
-        static struct discord_request blank = { 0 };
-        req = &blank;
+    if (!attr) {
+        static struct discord_attributes blank = { 0 };
+        attr = &blank;
     }
     if (!body) {
         static struct ccord_szbuf blank = { 0 };
@@ -386,5 +415,6 @@ discord_rest_run(struct discord_rest *rest,
     discord_ratelimiter_build_key(method, key, endpoint_fmt, args);
     va_end(args);
 
-    return _discord_rest_start_context(rest, req, body, method, endpoint, key);
+    return _discord_rest_start_context(rest, attr, body, method, endpoint,
+                                       key);
 }

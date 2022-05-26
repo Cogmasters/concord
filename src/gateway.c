@@ -16,7 +16,7 @@ discord_disconnect_guild_member(struct discord *client,
                                 u64snowflake user_id,
                                 struct discord_ret_guild_member *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
     struct ccord_szbuf body;
     char buf[128];
     jsonb b;
@@ -36,9 +36,9 @@ discord_disconnect_guild_member(struct discord *client,
     body.start = buf;
     body.size = b.pos;
 
-    DISCORD_REQ_INIT(req, discord_guild_member, ret);
+    DISCORD_ATTR_INIT(attr, discord_guild_member, ret);
 
-    return discord_rest_run(&client->rest, &req, &body, HTTP_PATCH,
+    return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
                             user_id);
 }
@@ -57,28 +57,28 @@ _ccord_szbuf_from_json(const char str[], size_t len, void *p_buf)
 CCORDcode
 discord_get_gateway(struct discord *client, struct ccord_szbuf *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.response.from_json = &_ccord_szbuf_from_json;
-    req.dispatch.has_type = true;
-    req.dispatch.sync = ret;
+    attr.response.from_json = &_ccord_szbuf_from_json;
+    attr.dispatch.has_type = true;
+    attr.dispatch.sync = ret;
 
-    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET, "/gateway");
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET, "/gateway");
 }
 
 CCORDcode
 discord_get_gateway_bot(struct discord *client, struct ccord_szbuf *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.response.from_json = &_ccord_szbuf_from_json;
-    req.dispatch.has_type = true;
-    req.dispatch.sync = ret;
+    attr.response.from_json = &_ccord_szbuf_from_json;
+    attr.dispatch.has_type = true;
+    attr.dispatch.sync = ret;
 
-    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/gateway/bot");
 }

@@ -168,22 +168,22 @@ _discord_clone_cleanup(struct discord *client)
 void
 discord_cleanup(struct discord *client)
 {
-    if (client->is_original) {
+    if (!client->is_original) {
+        _discord_clone_cleanup(client);
+    }
+    else {
         discord_rest_cleanup(&client->rest);
         discord_gateway_cleanup(&client->gw);
-        discord_user_cleanup(&client->self);
-        io_poller_destroy(client->io_poller);
-        discord_refcounter_cleanup(&client->refcounter);
         discord_message_commands_cleanup(&client->commands);
 #ifdef CCORD_VOICE
         discord_voice_connections_cleanup(client);
 #endif
+        discord_user_cleanup(&client->self);
+        io_poller_destroy(client->io_poller);
+        discord_refcounter_cleanup(&client->refcounter);
         discord_timers_cleanup(client, &client->timers.user);
         discord_timers_cleanup(client, &client->timers.internal);
         logconf_cleanup(&client->conf);
-    }
-    else {
-        _discord_clone_cleanup(client);
     }
     free(client);
 }

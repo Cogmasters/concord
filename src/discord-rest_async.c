@@ -215,12 +215,12 @@ discord_async_start_bucket_request(struct discord_async *async,
                : CCORD_OK;
 }
 
-static bool
-_discord_async_retry_context(struct discord_async *async,
-                             struct discord_context *cxt)
+bool
+discord_async_retry_context(struct discord_async *async,
+                            struct discord_context *cxt)
 {
-    if (!cxt->retry) return false;
-    if (async->retry_limit < cxt->retry_attempt++) return false;
+    if (!cxt->retry || cxt->retry_attempt++ >= async->retry_limit)
+        return false;
 
     cxt->b->performing_cxt = NULL;
     ua_conn_reset(cxt->conn);
@@ -241,8 +241,7 @@ discord_async_cancel_context(struct discord_async *async,
 
     if (cxt->dispatch.keep)
         discord_refcounter_decr(rc, (void *)cxt->dispatch.keep);
-    if (cxt->dispatch.data)
-        discord_refcounter_decr(rc, cxt->dispatch.data);
+    if (cxt->dispatch.data) discord_refcounter_decr(rc, cxt->dispatch.data);
 
     cxt->b->performing_cxt = NULL;
     cxt->body.size = 0;
@@ -252,50 +251,18 @@ discord_async_cancel_context(struct discord_async *async,
     cxt->conn = NULL;
     cxt->retry_attempt = 0;
     discord_attachments_cleanup(&cxt->attachments);
-    memset(cxt, 0, sizeof(struct discord_request));
+    memset(cxt, 0, sizeof(struct discord_attributes));
 
     QUEUE_REMOVE(&cxt->entry);
     QUEUE_INIT(&cxt->entry);
     QUEUE_INSERT_TAIL(&async->queues->recycling, &cxt->entry);
 }
 
-CCORDcode
-discord_async_run_context_callback(struct discord_async *async,
-                                   struct discord_context *cxt)
-{
-    struct discord *client = CLIENT(async, rest.async);
-    struct discord_response resp = { .data = cxt->dispatch.data,
-                                     .keep = cxt->dispatch.keep,
-                                     .code = cxt->code };
-
-    if (cxt->code != CCORD_OK) {
-        cxt->dispatch.fail(client, &resp);
-    }
-    else if (cxt->dispatch.done.typed) {
-        if (!cxt->dispatch.has_type) {
-            cxt->dispatch.done.typeless(client, &resp);
-        }
-        else {
-            cxt->dispatch.done.typed(client, &resp, cxt->response.data);
-            discord_refcounter_decr(&client->refcounter, cxt->response.data);
-        }
-    }
-
-    /* enqueue request for retry or recycle */
-    if (!_discord_async_retry_context(async, cxt))
-        discord_async_cancel_context(async, cxt);
-
-    return resp.code;
-}
-
-/* Only the fields that are required at _discord_rest_request_to_multipart()
- *        are duplicated */
+/* Only fields required at _discord_context_to_multipart() are duplicated */
 static void
 _discord_attachments_dup(struct discord_attachments *dest,
                          struct discord_attachments *src)
 {
-    if (!src->size) return;
-
     __carray_init(dest, (size_t)src->size, struct discord_attachment, , );
     for (int i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
@@ -317,7 +284,7 @@ _discord_attachments_dup(struct discord_attachments *dest,
 
 struct discord_context *
 discord_async_start_context(struct discord_async *async,
-                            struct discord_request *req,
+                            struct discord_attributes *attr,
                             struct ccord_szbuf *body,
                             enum http_method method,
                             char endpoint[DISCORD_ENDPT_LEN],
@@ -329,8 +296,10 @@ discord_async_start_context(struct discord_async *async,
 
     cxt->method = method;
 
-    memcpy(cxt, req, sizeof *req);
-    _discord_attachments_dup(&cxt->attachments, &req->attachments);
+    memcpy(cxt, attr, sizeof *attr);
+
+    if (attr->attachments.size)
+        _discord_attachments_dup(&cxt->attachments, &attr->attachments);
 
     if (body) {
         /* copy request body */
@@ -353,23 +322,23 @@ discord_async_start_context(struct discord_async *async,
 
     cxt->cond = NULL;
 
-    if (req->dispatch.keep) {
+    if (attr->dispatch.keep) {
         CCORDcode code = discord_refcounter_incr(&client->refcounter,
-                                                 (void *)req->dispatch.keep);
+                                                 (void *)attr->dispatch.keep);
 
         ASSERT_S(code == CCORD_OK,
                  "'.keep' data must be a Concord callback parameter");
     }
-    if (req->dispatch.data
+    if (attr->dispatch.data
         && CCORD_UNAVAILABLE
                == discord_refcounter_incr(&client->refcounter,
-                                          req->dispatch.data))
+                                          attr->dispatch.data))
     {
-        discord_refcounter_add_client(&client->refcounter, req->dispatch.data,
-                                      req->dispatch.cleanup, false);
+        discord_refcounter_add_client(&client->refcounter, attr->dispatch.data,
+                                      attr->dispatch.cleanup, false);
     }
 
-    /* bucket pertaining to the request */
+    /* context will be assigned to its bucket at the REST thread  */
     QUEUE_INSERT_TAIL(&rest->async.queues->pending, &cxt->entry);
 
     io_poller_wakeup(async->io_poller);

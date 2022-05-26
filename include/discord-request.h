@@ -1,8 +1,8 @@
 /**
  * @file discord-request.h
- * @ingroup DiscordInternal
+ * @ingroup DiscordInternalREST
  * @author Cogmasters
- * @brief Generic macros for initializing a @ref discord_request
+ * @brief Generic macros for initializing a @ref discord_attributes
  */
 
 #ifndef DISCORD_REQUEST_H
@@ -40,41 +40,42 @@ typedef struct {
 /**
  * @brief Helper for setting attributes for a specs-generated return struct
  *
- * @param req request handler to be initialized
+ * @param attr attributes handler to be initialized
  * @param type datatype of the struct
- * @param ret request attributes
+ * @param ret dispatch attributes
  */
-#define DISCORD_REQ_INIT(req, type, ret)                                      \
+#define DISCORD_ATTR_INIT(attr, type, ret)                                    \
     do {                                                                      \
-        (req).response.size = sizeof(struct type);                            \
-        (req).response.init = (cast_init)type##_init;                         \
-        (req).response.from_json = (cast_from_json)type##_from_json;          \
-        (req).response.cleanup = (cast_cleanup)type##_cleanup;                \
-        if (ret) _RET_COPY_TYPED(req.dispatch, *ret);                         \
+        (attr).response.size = sizeof(struct type);                           \
+        (attr).response.init = (cast_init)type##_init;                        \
+        (attr).response.from_json = (cast_from_json)type##_from_json;         \
+        (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \
+        if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \
     } while (0)
 
 /**
  * @brief Helper for setting attributes for a specs-generated list
  *
- * @param req request handler to be initialized
+ * @param attr attributes handler to be initialized
  * @param type datatype of the list
- * @param ret request attributes
+ * @param ret dispatch attributes
  */
-#define DISCORD_REQ_LIST_INIT(req, type, ret)                                 \
+#define DISCORD_ATTR_LIST_INIT(attr, type, ret)                               \
     do {                                                                      \
-        (req).response.size = sizeof(struct type);                            \
-        (req).response.from_json = (cast_from_json)type##_from_json;          \
-        (req).response.cleanup = (cast_cleanup)type##_cleanup;                \
-        if (ret) _RET_COPY_TYPED(req.dispatch, *ret);                         \
+        (attr).response.size = sizeof(struct type);                           \
+        (attr).response.from_json = (cast_from_json)type##_from_json;         \
+        (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \
+        if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \
     } while (0)
 
 /**
- * @brief Helper for setting request attributes expecting no response
+ * @brief Helper for setting attributes for attruests that doensn't expect a
+ *      response object
  *
- * @param req request handler to be initialized
- * @param ret request attributes
+ * @param attr attributes handler to be initialized
+ * @param ret dispatch attributes
  */
-#define DISCORD_REQ_BLANK_INIT(req, ret)                                      \
-    if (ret) _RET_COPY_TYPELESS(req.dispatch, *ret)
+#define DISCORD_ATTR_BLANK_INIT(attr, ret)                                    \
+    if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret)
 
 #endif /* DISCORD_REQUEST_H */
