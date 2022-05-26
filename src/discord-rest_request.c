@@ -70,6 +70,8 @@ discord_requestor_init(struct discord_requestor *rqtor,
                         CONTAINEROF(rqtor, struct discord_rest, requestor));
 
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
+
+    discord_ratelimiter_init(&rqtor->ratelimiter, &rqtor->conf);
 }
 
 void
@@ -79,6 +81,10 @@ discord_requestor_cleanup(struct discord_requestor *rqtor)
                                   &rqtor->queues->pending,
                                   &rqtor->queues->finished };
 
+    /* cleanup ratelimiting handle */
+    discord_ratelimiter_cleanup(&rqtor->ratelimiter);
+
+    /* cleanup request structs */
     for (size_t i = 0; i < sizeof(req_queues) / sizeof *req_queues; ++i) {
         QUEUE(struct discord_request) queue, *qelem;
         struct discord_request *req;
@@ -370,10 +376,6 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 
             switch (ecode) {
             case CURLE_OK: {
-                struct discord_ratelimiter *rl =
-                    &CONTAINEROF(rqtor, struct discord_rest, requestor)
-                         ->ratelimiter;
-
                 struct ua_szbuf_readonly body;
                 struct ua_info info;
 
@@ -405,7 +407,8 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                                                 req->response.data);
                 }
 
-                discord_ratelimiter_build(rl, req->b, req->key, &info);
+                discord_ratelimiter_build(&rqtor->ratelimiter, req->b,
+                                          req->key, &info);
                 ua_info_cleanup(&info);
             } break;
             case CURLE_READ_ERROR:
@@ -450,7 +453,7 @@ _discord_request_try_begin(struct discord_ratelimiter *rl,
     }
     else if (!QUEUE_EMPTY(&b->pending_queue)) {
         struct discord_requestor *rqtor =
-            &CONTAINEROF(rl, struct discord_rest, ratelimiter)->requestor;
+            CONTAINEROF(rl, struct discord_requestor, ratelimiter);
 
         struct discord_request *req = discord_bucket_remove_request(b);
         CURL *ehandle;
@@ -487,9 +490,6 @@ _discord_request_try_begin(struct discord_ratelimiter *rl,
 CCORDcode
 discord_requestor_start_pending(struct discord_requestor *rqtor)
 {
-    struct discord_ratelimiter *rl =
-        &CONTAINEROF(rqtor, struct discord_rest, requestor)->ratelimiter;
-
     QUEUE(struct discord_request) queue, *qelem;
     struct discord_request *req;
     struct discord_bucket *b;
@@ -501,12 +501,13 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
         QUEUE_REMOVE(qelem);
 
         req = QUEUE_DATA(qelem, struct discord_request, entry);
-        b = discord_bucket_get(rl, req->key);
+        b = discord_bucket_get(&rqtor->ratelimiter, req->key);
         discord_bucket_add_request(b, req, req->dispatch.high_p);
     }
 
     /* TODO: replace foreach with a mechanism that loops only busy buckets */
-    discord_ratelimiter_foreach_bucket(rl, &_discord_request_try_begin);
+    discord_ratelimiter_foreach_bucket(&rqtor->ratelimiter,
+                                       &_discord_request_try_begin);
 
     /* FIXME: redundant return value (constant) */
     return CCORD_OK;

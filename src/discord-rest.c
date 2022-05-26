@@ -66,7 +66,6 @@ discord_rest_init(struct discord_rest *rest,
 
     discord_timers_init(&rest->timers);
     discord_requestor_init(&rest->requestor, &rest->conf, token);
-    discord_ratelimiter_init(&rest->ratelimiter, &rest->conf);
 
     rest->manager = malloc(sizeof *rest->manager);
     ASSERT_S(!pthread_mutex_init(&rest->manager->lock, NULL),
@@ -84,11 +83,8 @@ discord_rest_cleanup(struct discord_rest *rest)
     threadpool_destroy(rest->manager->tpool, threadpool_graceful);
     pthread_mutex_destroy(&rest->manager->lock);
     free(rest->manager);
-
     /* cleanup discovered buckets */
     discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
-    discord_ratelimiter_cleanup(&rest->ratelimiter);
-
     /* cleanup request queues */
     discord_requestor_cleanup(&rest->requestor);
 }

@@ -169,7 +169,7 @@ _discord_bucket_cancel(struct discord_ratelimiter *rl,
                        struct discord_bucket *b)
 {
     struct discord_requestor *rqtor =
-        &CONTAINEROF(rl, struct discord_rest, ratelimiter)->requestor;
+        CONTAINEROF(rl, struct discord_requestor, ratelimiter);
 
     /* cancel busy transfer */
     if (b->performing_req) discord_request_cancel(rqtor, b->performing_req);
@@ -260,7 +260,7 @@ void
 discord_bucket_try_timeout(struct discord_ratelimiter *rl,
                            struct discord_bucket *b)
 {
-    struct discord *client = CLIENT(rl, rest.ratelimiter);
+    struct discord *client = CLIENT(rl, rest.requestor.ratelimiter);
     int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
     if (delay_ms < 0) delay_ms = 0;
