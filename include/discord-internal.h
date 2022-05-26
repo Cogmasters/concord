@@ -167,6 +167,10 @@ unsigned discord_internal_timer(struct discord *client,
 
 /** @} DiscordInternalTimer */
 
+/** @defgroup DiscordInternalRESTRequest Request's handling
+ * @brief Store, manage and dispatch individual requests
+ *  @{ */
+
 /** @defgroup DiscordInternalREST REST API
  * @brief Wrapper to the Discord REST API
  *  @{ */
@@ -212,7 +216,7 @@ struct discord_ret_response {
 
 /**
  * @brief Macro containing @ref discord_attributes fields
- * @note this exists for @ref discord_context alignment purposes
+ * @note this exists for @ref discord_request alignment purposes
  */
 #define DISCORD_ATTRIBUTES_FIELDS                                             \
     /** attributes set by client for request dispatch behavior */             \
@@ -227,17 +231,12 @@ struct discord_attributes {
     DISCORD_ATTRIBUTES_FIELDS;
 };
 
-/** @defgroup DiscordInternalRESTAsync Async request's handling
- * @brief Store contexts of individual asynchronous requests
- *  @{ */
-
 /**
- * @brief Context of individual requests that are scheduled to run
- *      asynchronously
+ * @brief Individual requests that are scheduled to run asynchronously
  * @note this struct **SHOULD NOT** be handled from the `REST` manager thread
  * @note its fields are aligned with @ref discord_attributes
  */
-struct discord_context {
+struct discord_request {
     DISCORD_ATTRIBUTES_FIELDS;
 
     /** the request's bucket */
@@ -269,8 +268,8 @@ struct discord_context {
 };
 
 /** @brief The handle used for handling asynchronous requests */
-struct discord_async {
-    /** `DISCORD_ASYNC` logging module */
+struct discord_requestor {
+    /** `DISCORD_REQUEST` logging module */
     struct logconf conf;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
@@ -282,100 +281,100 @@ struct discord_async {
     /** max amount of retries before a failed request gives up */
     int retry_limit;
 
-    /** context queues */
+    /** request queues */
     struct {
-        /** requests contexts for recycling */
-        QUEUE(struct discord_context) recycling;
+        /** requests for recycling */
+        QUEUE(struct discord_request) recycling;
         /** pending requests waiting to be assigned to a bucket */
-        QUEUE(struct discord_context) pending;
+        QUEUE(struct discord_request) pending;
         /**
-         * finished requests contexts that are done performing and waiting for
+         * finished requests that are done performing and waiting for
          *      their callbacks to be called from the main thread
          */
-        QUEUE(struct discord_context) finished;
+        QUEUE(struct discord_request) finished;
     } * queues;
 };
 
 /**
- * @brief Initialize an Async handle
+ * @brief Initialize the request handler
  *
  * This shall initialize a `CURLM` multi handle for performing requests
- *      asynchronously, and a queue for storing individual requests contexts
- * @param async the async handle to be initialized
+ *      asynchronously, and a queue for storing individual requests
+ * @param rqtor the requestor handle to be initialized
  * @param conf pointer to @ref discord_rest logging module
  * @param token the bot token
  */
-void discord_async_init(struct discord_async *async,
-                        struct logconf *conf,
-                        struct ccord_szbuf_readonly *token);
+void discord_requestor_init(struct discord_requestor *rqtor,
+                            struct logconf *conf,
+                            struct ccord_szbuf_readonly *token);
 
 /**
- * @brief Free an Async handle
+ * @brief Free the request handler
  *
- * @param async the handle initialized with discord_async_init()
+ * @param rqtor the handle initialized with discord_requestor_init()
  */
-void discord_async_cleanup(struct discord_async *async);
+void discord_requestor_cleanup(struct discord_requestor *rqtor);
 
 /**
- * @brief Kickstart a bucket request by adding it to libcurl's request
- *      multiplexer (`CURLM` multi handle)
+ * @brief Check for and start pending bucket's requests
  *
- * @param async the async handle initialized with discord_async_init()
- * @param b the bucket to have a request sent over
- * @return CCORDcode for how the request went, @ref CCORD_CURLM_INTERNAL means
- *      something wrong happened
+ * @param rqtor the handle initialized with discord_requestor_init()
+ * @CCORD_return
  */
-CCORDcode discord_async_start_bucket_request(struct discord_async *async,
-                                             struct discord_bucket *b);
+CCORDcode discord_requestor_start_pending(struct discord_requestor *rqtor);
 
 /**
- * @brief Check if request is expected to be retried and move it to its
- * bucket's queue
+ * @brief Poll for request's completion
  *
- * @param async the async handle initialized with discord_async_init()
- * @param cxt the on-going request to be canceled
- * @return `true` if request has been enqueued for retry
+ * @param rqtor the handle initialized with discord_requestor_init()
+ * @CCORD_return
  */
-bool discord_async_retry_context(struct discord_async *async,
-                                 struct discord_context *cxt);
+CCORDcode discord_requestor_info_read(struct discord_requestor *rqtor);
 
 /**
- * @brief Mark request as canceled and move it to the recycle queue
+ * @brief Run pending callbacks from completed requests
  *
- * @param async the async handle initialized with discord_async_init()
- * @param cxt the on-going request to be canceled
+ * @param req the request containing preliminary information for its dispatch
  */
-void discord_async_cancel_context(struct discord_async *async,
-                                  struct discord_context *cxt);
+void discord_requestor_dispatch_responses(struct discord_requestor *rqtor);
 
 /**
- * @brief Start request's context
+ * @brief Mark request as canceled and move it to the recycling queue
  *
- * @param async the async handle initialized with discord_async_init()
+ * @param rqtor the requestor handle initialized with discord_requestor_init()
+ * @param req the on-going request to be canceled
+ */
+void discord_request_cancel(struct discord_requestor *rqtor,
+                            struct discord_request *req);
+
+/**
+ * @brief Begin a new request
+ *
+ * The returned request automatically be performed from the `REST` thread
+ * @param rqtor the requestor handle initialized with discord_requestor_init()
  * @param req the request containing preliminary information for its dispatch
  * and response's parsing
  * @param body the request's body
  * @param method the request's HTTP method
  * @param endpoint the request's endpoint
  * @param key the request bucket's group for ratelimiting
- * @return the initialized request context
+ * @CCORD_return
  */
-struct discord_context *discord_async_start_context(
-    struct discord_async *async,
-    struct discord_attributes *req,
-    struct ccord_szbuf *body,
-    enum http_method method,
-    char endpoint[DISCORD_ENDPT_LEN],
-    char key[DISCORD_ROUTE_LEN]);
+CCORDcode discord_request_begin(struct discord_requestor *rqtor,
+                                struct discord_attributes *req,
+                                struct ccord_szbuf *body,
+                                enum http_method method,
+                                char endpoint[DISCORD_ENDPT_LEN],
+                                char key[DISCORD_ROUTE_LEN]);
 
-/** @} DiscordInternalRESTAsync */
+/** @} DiscordInternalRESTRequest */
 
 /** @defgroup DiscordInternalRESTRatelimit Ratelimiting
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
 /**
- * @brief Value assigned to @ref discord_bucket `pending_cxt` field in case
+ * @brief Value assigned to @ref discord_bucket `performing_req` field in case
  *      it's being timed-out
  */
 #define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
@@ -481,12 +480,12 @@ struct discord_bucket {
     /** timestamp of when cooldown timer resets */
     u64unix_ms reset_tstamp;
     /** pending requests */
-    QUEUE(struct discord_context) pending_queue;
+    QUEUE(struct discord_request) pending_queue;
     /**
-     * pointer to context of this bucket's currently performing request
+     * pointer to this bucket's currently performing request
      * @note @ref DISCORD_BUCKET_TIMEOUT if bucket is being ratelimited
      */
-    struct discord_context *performing_cxt;
+    struct discord_request *performing_req;
     /** synchronize bucket */
     pthread_mutex_t lock;
 };
@@ -521,24 +520,24 @@ struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
                                           const char key[]);
 
 /**
- * @brief Insert request's context into bucket's pending queue
+ * @brief Insert request into bucket's pending queue
  *
  * @param b the bucket to insert the request to
- * @param cxt the request context obtained via discord_async_start_context()
+ * @param req the request obtained via discord_requestor_start_request()
  * @param high_priority if high priority then request shall be prioritized over
  *      already enqueued requests
  */
-void discord_bucket_add_context(struct discord_bucket *b,
-                                struct discord_context *cxt,
+void discord_bucket_add_request(struct discord_bucket *b,
+                                struct discord_request *req,
                                 bool high_priority);
 
 /**
- * @brief Remove head request's context from bucket's pending queue
+ * @brief Remove head request from bucket's pending queue
  *
  * @param b the bucket to fetch the request from
- * @return the request's context
+ * @return the request
  */
-struct discord_context *discord_bucket_remove_context(
+struct discord_request *discord_bucket_remove_request(
     struct discord_bucket *b);
 
 /** @} DiscordInternalRESTRatelimit */
@@ -547,8 +546,8 @@ struct discord_context *discord_bucket_remove_context(
 struct discord_rest {
     /** `DISCORD_HTTP` or `DISCORD_WEBHOOK` logging module */
     struct logconf conf;
-    /** store individual contexts from asynchronous requests */
-    struct discord_async async;
+    /** the requests handler */
+    struct discord_requestor requestor;
     /** the timer queue for the rest thread */
     struct discord_timers timers;
     /** enforce ratelimiting on discovered buckets */
@@ -586,7 +585,7 @@ void discord_rest_cleanup(struct discord_rest *rest);
  * @brief Perform a request to Discord
  *
  * This functions is a selector over discord_rest_run() or
- *        discord_rest_run_async()
+ *        discord_rest_run_requestor()
  * @param rest the handle initialized with discord_rest_init()
  * @param req return object of request
  * @param body the body sent for methods that require (ex: post), leave as
@@ -619,13 +618,6 @@ CCORDcode discord_rest_perform(struct discord_rest *rest);
  * @param rest the handle initialized with discord_rest_init()
  */
 void discord_rest_stop_buckets(struct discord_rest *rest);
-
-/**
- * @brief Run pending callbacks from completed requests
- *
- * @param rest the handle initialized with discord_rest_init()
- */
-void discord_rest_perform_callbacks(struct discord_rest *rest);
 
 /** @} DiscordInternalREST */
 

@@ -33,7 +33,7 @@ THIRDP_OBJS   = $(THIRDP_DIR)/sha1.o           \
 DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/discord-refcount.o          \
                 $(SRC_DIR)/discord-rest.o              \
-                $(SRC_DIR)/discord-rest_async.o        \
+                $(SRC_DIR)/discord-rest_request.o      \
                 $(SRC_DIR)/discord-rest_ratelimit.o    \
                 $(SRC_DIR)/discord-client.o            \
                 $(SRC_DIR)/discord-loop.o              \

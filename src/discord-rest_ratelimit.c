@@ -168,15 +168,14 @@ static void
 _discord_bucket_cancel(struct discord_ratelimiter *rl,
                        struct discord_bucket *b)
 {
-    struct discord_async *async =
-        &CONTAINEROF(rl, struct discord_rest, ratelimiter)->async;
+    struct discord_requestor *rqtor =
+        &CONTAINEROF(rl, struct discord_rest, ratelimiter)->requestor;
 
     /* cancel busy transfer */
-    if (b->performing_cxt)
-        discord_async_cancel_context(async, b->performing_cxt);
+    if (b->performing_req) discord_request_cancel(rqtor, b->performing_req);
 
     /* move pending tranfers to recycling */
-    QUEUE_ADD(&async->queues->recycling, &b->pending_queue);
+    QUEUE_ADD(&rqtor->queues->recycling, &b->pending_queue);
     QUEUE_INIT(&b->pending_queue);
 }
 
@@ -253,7 +252,7 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
     (void)client;
     struct discord_bucket *b = timer->data;
 
-    b->performing_cxt = NULL;
+    b->performing_req = NULL;
     b->remaining = 1;
 }
 
@@ -265,7 +264,7 @@ discord_bucket_try_timeout(struct discord_ratelimiter *rl,
     int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
     if (delay_ms < 0) delay_ms = 0;
-    b->performing_cxt = DISCORD_BUCKET_TIMEOUT;
+    b->performing_req = DISCORD_BUCKET_TIMEOUT;
 
     _discord_timer_ctl(
         client, &client->rest.timers,
@@ -393,8 +392,8 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
                                  struct discord_bucket *b,
                                  const char key[])
 {
-    QUEUE(struct discord_context) queue, *qelem;
-    struct discord_context *cxt;
+    QUEUE(struct discord_request) queue, *qelem;
+    struct discord_request *req;
 
     QUEUE_MOVE(&rl->null->pending_queue, &queue);
     QUEUE_INIT(&rl->null->pending_queue);
@@ -403,10 +402,10 @@ _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
         qelem = QUEUE_HEAD(&queue);
         QUEUE_REMOVE(qelem);
 
-        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-        if (0 == strcmp(cxt->key, key)) {
+        req = QUEUE_DATA(qelem, struct discord_request, entry);
+        if (0 == strcmp(req->key, key)) {
             QUEUE_INSERT_TAIL(&b->pending_queue, qelem);
-            cxt->b = b;
+            req->b = b;
         }
         else {
             QUEUE_INSERT_TAIL(&rl->null->pending_queue, qelem);
@@ -431,25 +430,25 @@ discord_ratelimiter_build(struct discord_ratelimiter *rl,
 }
 
 void
-discord_bucket_add_context(struct discord_bucket *b,
-                           struct discord_context *cxt,
+discord_bucket_add_request(struct discord_bucket *b,
+                           struct discord_request *req,
                            bool high_priority)
 {
-    QUEUE_REMOVE(&cxt->entry);
-    QUEUE_INIT(&cxt->entry);
+    QUEUE_REMOVE(&req->entry);
+    QUEUE_INIT(&req->entry);
     if (high_priority)
-        QUEUE_INSERT_HEAD(&b->pending_queue, &cxt->entry);
+        QUEUE_INSERT_HEAD(&b->pending_queue, &req->entry);
     else
-        QUEUE_INSERT_TAIL(&b->pending_queue, &cxt->entry);
-    cxt->b = b;
+        QUEUE_INSERT_TAIL(&b->pending_queue, &req->entry);
+    req->b = b;
 }
 
-struct discord_context *
-discord_bucket_remove_context(struct discord_bucket *b)
+struct discord_request *
+discord_bucket_remove_request(struct discord_bucket *b)
 {
-    QUEUE(struct discord_context) *qelem = QUEUE_HEAD(&b->pending_queue);
+    QUEUE(struct discord_request) *qelem = QUEUE_HEAD(&b->pending_queue);
     QUEUE_REMOVE(qelem);
     QUEUE_INIT(qelem);
 
-    return QUEUE_DATA(qelem, struct discord_context, entry);
+    return QUEUE_DATA(qelem, struct discord_request, entry);
 }
