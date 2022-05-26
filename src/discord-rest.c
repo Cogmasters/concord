@@ -63,13 +63,13 @@ discord_rest_init(struct discord_rest *rest,
     else
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
 
-    rest->tpool = threadpool_create(1, 1024, 0);
-    ASSERT_S(!threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
-             "Couldn't initialize REST managagement thread");
     rest->io_poller = io_poller_create();
     rest->g_lock = malloc(sizeof *rest->g_lock);
     ASSERT_S(!pthread_mutex_init(rest->g_lock, NULL),
              "Couldn't initialize REST manager mutex");
+    rest->tpool = threadpool_create(1, 1024, 0);
+    ASSERT_S(!threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
+             "Couldn't initialize REST managagement thread");
 
     discord_timers_init(&rest->timers);
     discord_requestor_init(&rest->requestor, &rest->conf, token);
