@@ -348,7 +348,6 @@ struct discord_request *discord_bucket_remove_request(
 
 /** @} DiscordInternalRESTRequestRatelimit */
 
-
 /** @brief Generic request dispatcher */
 struct discord_ret_dispatch {
     DISCORD_RET_DEFAULT_FIELDS;
@@ -449,8 +448,6 @@ struct discord_requestor {
     struct user_agent *ua;
     /** curl_multi handle for performing asynchronous requests */
     CURLM *mhandle;
-    /** io_poller for rest only */
-    struct io_poller *io_poller;
     /** enforce Discord's ratelimiting for requests */
     struct discord_ratelimiter ratelimiter;
 
@@ -545,7 +542,12 @@ CCORDcode discord_request_begin(struct discord_requestor *rqtor,
 
 /** @} DiscordInternalRESTRequest */
 
-/** @brief The handle used for interfacing with Discord's REST API */
+/**
+ * @brief The handle used for interfacing with Discord's REST API
+ *
+ * This handle will manage the special REST thread where requests are performed
+ *      in
+ */
 struct discord_rest {
     /** `DISCORD_HTTP` or `DISCORD_WEBHOOK` logging module */
     struct logconf conf;
@@ -553,14 +555,12 @@ struct discord_rest {
     struct discord_requestor requestor;
     /** the timer queue for the rest thread */
     struct discord_timers timers;
-
-    /** REST thread manager */
-    struct {
-        /** threadpool for managing a single REST thread */
-        struct threadpool_t *tpool;
-        /** global lock */
-        pthread_mutex_t lock;
-    } * manager;
+    /** poller for REST requests */
+    struct io_poller *io_poller;
+    /** threadpool for managing the REST thread */
+    struct threadpool_t *tpool;
+    /** global lock */
+    pthread_mutex_t *g_lock;
 };
 
 /**

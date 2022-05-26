@@ -50,6 +50,9 @@ discord_requestor_init(struct discord_requestor *rqtor,
                        struct logconf *conf,
                        struct ccord_szbuf_readonly *token)
 {
+    struct discord_rest *rest =
+        CONTAINEROF(rqtor, struct discord_rest, requestor);
+
     logconf_branch(&rqtor->conf, conf, "DISCORD_REQUEST");
 
     rqtor->ua = ua_init(&(struct ua_attr){ .conf = conf });
@@ -64,10 +67,8 @@ discord_requestor_init(struct discord_requestor *rqtor,
     QUEUE_INIT(&rqtor->queues->finished);
 
     rqtor->mhandle = curl_multi_init();
-    rqtor->io_poller = io_poller_create();
-    io_poller_curlm_add(rqtor->io_poller, rqtor->mhandle,
-                        &_discord_on_rest_perform,
-                        CONTAINEROF(rqtor, struct discord_rest, requestor));
+    io_poller_curlm_add(rest->io_poller, rqtor->mhandle,
+                        &_discord_on_rest_perform, rest);
 
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 
@@ -77,6 +78,8 @@ discord_requestor_init(struct discord_requestor *rqtor,
 void
 discord_requestor_cleanup(struct discord_requestor *rqtor)
 {
+    struct discord_rest *rest =
+        CONTAINEROF(rqtor, struct discord_rest, requestor);
     QUEUE *const req_queues[] = { &rqtor->queues->recycling,
                                   &rqtor->queues->pending,
                                   &rqtor->queues->finished };
@@ -101,10 +104,8 @@ discord_requestor_cleanup(struct discord_requestor *rqtor)
     free(rqtor->queues);
 
     /* cleanup curl's multi handle */
-    io_poller_curlm_del(rqtor->io_poller, rqtor->mhandle);
+    io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
     curl_multi_cleanup(rqtor->mhandle);
-    /* cleanup REST io_poller */
-    io_poller_destroy(rqtor->io_poller);
     /* cleanup User-Agent handle */
     ua_cleanup(rqtor->ua);
 }
@@ -332,7 +333,7 @@ discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
     struct discord_rest *rest =
         CONTAINEROF(rqtor, struct discord_rest, requestor);
 
-    if (0 == pthread_mutex_trylock(&rest->manager->lock)) {
+    if (0 == pthread_mutex_trylock(rest->g_lock)) {
         if (!QUEUE_EMPTY(&rqtor->queues->finished)) {
             QUEUE(struct discord_request) queue, *qelem;
             struct discord_request *req;
@@ -344,9 +345,9 @@ discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
                 _discord_request_dispatch_response(rqtor, req);
             } while (!QUEUE_EMPTY(&queue));
 
-            io_poller_wakeup(rqtor->io_poller);
+            io_poller_wakeup(rest->io_poller);
         }
-        pthread_mutex_unlock(&rest->manager->lock);
+        pthread_mutex_unlock(rest->g_lock);
     }
 }
 
@@ -571,7 +572,7 @@ discord_request_begin(struct discord_requestor *rqtor,
     struct discord_request *req = _discord_request_get(rqtor);
     CCORDcode code;
 
-    pthread_mutex_lock(&rest->manager->lock);
+    pthread_mutex_lock(rest->g_lock);
 
     req->method = method;
     memcpy(req, attr, sizeof *attr);
@@ -617,20 +618,19 @@ discord_request_begin(struct discord_requestor *rqtor,
     }
 
     /* request will be assigned to its bucket at the REST thread  */
-    QUEUE_INSERT_TAIL(&rest->requestor.queues->pending, &req->entry);
+    QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
 
-    io_poller_wakeup(rqtor->io_poller);
-
+    io_poller_wakeup(rest->io_poller);
     if (!req->dispatch.sync) {
         code = CCORD_OK;
     }
     else {
         req->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
-        pthread_cond_wait(req->cond, &rest->manager->lock);
+        pthread_cond_wait(req->cond, rest->g_lock);
         code = _discord_request_dispatch_response(rqtor, req);
     }
 
-    pthread_mutex_unlock(&rest->manager->lock);
+    pthread_mutex_unlock(rest->g_lock);
 
     return code;
 }

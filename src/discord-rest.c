@@ -14,13 +14,13 @@ discord_rest_perform(struct discord_rest *rest)
 {
     CCORDcode code;
 
-    pthread_mutex_lock(&rest->manager->lock);
+    pthread_mutex_lock(rest->g_lock);
 
     /* ask for any messages/informationals from the individual transfers */
     discord_requestor_info_read(&rest->requestor);
     code = discord_requestor_start_pending(&rest->requestor);
 
-    pthread_mutex_unlock(&rest->manager->lock);
+    pthread_mutex_unlock(rest->g_lock);
 
     return code;
 }
@@ -40,8 +40,7 @@ _discord_rest_manager(void *p_rest)
     now = (int64_t)discord_timestamp_us(client);
 
     trigger = discord_timers_get_next_trigger(timers, 1, now, 60000000);
-    poll_result =
-        io_poller_poll(rest->requestor.io_poller, (int)(trigger / 1000));
+    poll_result = io_poller_poll(rest->io_poller, (int)(trigger / 1000));
 
     now = (int64_t)discord_timestamp_us(client);
     if (0 == poll_result) {
@@ -49,9 +48,9 @@ _discord_rest_manager(void *p_rest)
         if (trigger > 0 && trigger < 1000) cog_sleep_us((long)trigger);
     }
     discord_timers_run(client, &rest->timers);
-    io_poller_perform(rest->requestor.io_poller);
+    io_poller_perform(rest->io_poller);
 
-    threadpool_add(rest->manager->tpool, _discord_rest_manager, rest, 0);
+    threadpool_add(rest->tpool, _discord_rest_manager, rest, 0);
 }
 
 void
@@ -64,29 +63,31 @@ discord_rest_init(struct discord_rest *rest,
     else
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
 
+    rest->tpool = threadpool_create(1, 1024, 0);
+    ASSERT_S(!threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
+             "Couldn't initialize REST managagement thread");
+    rest->io_poller = io_poller_create();
+    rest->g_lock = malloc(sizeof *rest->g_lock);
+    ASSERT_S(!pthread_mutex_init(rest->g_lock, NULL),
+             "Couldn't initialize REST manager mutex");
+
     discord_timers_init(&rest->timers);
     discord_requestor_init(&rest->requestor, &rest->conf, token);
-
-    rest->manager = malloc(sizeof *rest->manager);
-    ASSERT_S(!pthread_mutex_init(&rest->manager->lock, NULL),
-             "Couldn't initialize REST manager mutex");
-    rest->manager->tpool = threadpool_create(1, 1024, 0);
-    ASSERT_S(
-        !threadpool_add(rest->manager->tpool, &_discord_rest_manager, rest, 0),
-        "Couldn't initialize REST managagement thread");
 }
 
 void
 discord_rest_cleanup(struct discord_rest *rest)
 {
-    /* cleanup REST managing thread */
-    threadpool_destroy(rest->manager->tpool, threadpool_graceful);
-    pthread_mutex_destroy(&rest->manager->lock);
-    free(rest->manager);
+    /* cleanup REST managing thread and its global lock */
+    threadpool_destroy(rest->tpool, threadpool_graceful);
+    pthread_mutex_destroy(rest->g_lock);
+    free(rest->g_lock);
     /* cleanup discovered buckets */
     discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
-    /* cleanup request queues */
+    /* cleanup requests */
     discord_requestor_cleanup(&rest->requestor);
+    /* cleanup REST poller */
+    io_poller_destroy(rest->io_poller);
 }
 
 /* template function for performing requests */
