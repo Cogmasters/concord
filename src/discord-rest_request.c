@@ -362,6 +362,7 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
     if (CURLM_OK != curl_multi_socket_all(rqtor->mhandle, &alive))
         return CCORD_CURLM_INTERNAL;
 
+    /* ask for any messages/informationals from the individual transfers */
     while (1) {
         int msgq = 0;
         struct CURLMsg *msg = curl_multi_info_read(rqtor->mhandle, &msgq);

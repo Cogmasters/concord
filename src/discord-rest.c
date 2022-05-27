@@ -15,12 +15,11 @@ discord_rest_perform(struct discord_rest *rest)
     CCORDcode code;
 
     pthread_mutex_lock(rest->g_lock);
-
-    /* ask for any messages/informationals from the individual transfers */
     discord_requestor_info_read(&rest->requestor);
     code = discord_requestor_start_pending(&rest->requestor);
-
     pthread_mutex_unlock(rest->g_lock);
+
+    io_poller_wakeup(CLIENT(rest, rest)->io_poller);
 
     return code;
 }

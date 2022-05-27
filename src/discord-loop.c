@@ -121,10 +121,9 @@ discord_run(struct discord *client)
 
             BREAK_ON_FAIL(code, io_poller_perform(client->io_poller));
 
+            discord_requestor_dispatch_responses(&client->rest.requestor);
             if (next_run <= now) {
                 BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
-                discord_requestor_dispatch_responses(&client->rest.requestor);
-
                 /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000000;
             }
