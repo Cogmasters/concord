@@ -466,6 +466,16 @@ struct discord_requestor {
          */
         QUEUE(struct discord_request) finished;
     } * queues;
+
+    /** queue locks */
+    struct {
+        /** recycling queue lock */
+        pthread_mutex_t recycling;
+        /** pending queue lock */
+        pthread_mutex_t pending;
+        /** finished queue lock */
+        pthread_mutex_t finished;
+    } *qlocks;
 };
 
 /**
@@ -559,8 +569,6 @@ struct discord_rest {
     struct io_poller *io_poller;
     /** threadpool for managing the REST thread */
     struct threadpool_t *tpool;
-    /** global lock */
-    pthread_mutex_t *g_lock;
 };
 
 /**

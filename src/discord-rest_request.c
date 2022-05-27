@@ -66,6 +66,14 @@ discord_requestor_init(struct discord_requestor *rqtor,
     QUEUE_INIT(&rqtor->queues->pending);
     QUEUE_INIT(&rqtor->queues->finished);
 
+    rqtor->qlocks = malloc(sizeof *rqtor->qlocks);
+    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->recycling, NULL),
+             "Couldn't initialize requestor's recycling queue mutex");
+    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->pending, NULL),
+             "Couldn't initialize requestor's pending queue mutex");
+    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->finished, NULL),
+             "Couldn't initialize requestor's finished queue mutex");
+
     rqtor->mhandle = curl_multi_init();
     io_poller_curlm_add(rest->io_poller, rqtor->mhandle,
                         &_discord_on_rest_perform, rest);
@@ -87,7 +95,7 @@ discord_requestor_cleanup(struct discord_requestor *rqtor)
     /* cleanup ratelimiting handle */
     discord_ratelimiter_cleanup(&rqtor->ratelimiter);
 
-    /* cleanup request structs */
+    /* cleanup queues */
     for (size_t i = 0; i < sizeof(req_queues) / sizeof *req_queues; ++i) {
         QUEUE(struct discord_request) queue, *qelem;
         struct discord_request *req;
@@ -102,6 +110,12 @@ discord_requestor_cleanup(struct discord_requestor *rqtor)
         }
     }
     free(rqtor->queues);
+
+    /* cleanup queue locks */
+    pthread_mutex_destroy(&rqtor->qlocks->recycling);
+    pthread_mutex_destroy(&rqtor->qlocks->pending);
+    pthread_mutex_destroy(&rqtor->qlocks->finished);
+    free(rqtor->qlocks);
 
     /* cleanup curl's multi handle */
     io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
@@ -175,21 +189,22 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
 
     if (info->code != CCORD_HTTP_CODE) { /* CCORD_OK or internal error */
         req->retry = false;
+        req->code = info->code;
     }
     else {
         switch (info->httpcode) {
         case HTTP_FORBIDDEN:
         case HTTP_NOT_FOUND:
         case HTTP_BAD_REQUEST:
-            info->code = CCORD_DISCORD_JSON_CODE;
             req->retry = false;
+            req->code = CCORD_DISCORD_JSON_CODE;
             break;
         case HTTP_UNAUTHORIZED:
             logconf_fatal(
                 &rqtor->conf,
                 "UNAUTHORIZED: Please provide a valid authentication token");
-            info->code = CCORD_DISCORD_BAD_AUTH;
             req->retry = false;
+            req->code = CCORD_DISCORD_BAD_AUTH;
             break;
         case HTTP_METHOD_NOT_ALLOWED:
             logconf_fatal(
@@ -197,6 +212,7 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
                 "METHOD_NOT_ALLOWED: The server couldn't recognize the "
                 "received HTTP method");
             req->retry = false;
+            req->code = info->code;
             break;
         case HTTP_TOO_MANY_REQUESTS: {
             struct ua_szbuf_readonly body = ua_info_get_body(info);
@@ -237,10 +253,12 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
                          body.start + message.pos);
 
             req->retry = true;
+            req->code = info->code;
             break;
         }
         default:
             req->retry = (info->httpcode >= 500); /* retry if Server Error */
+            req->code = info->code;
             break;
         }
     }
@@ -330,11 +348,11 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
 void
 discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
 {
-    struct discord_rest *rest =
-        CONTAINEROF(rqtor, struct discord_rest, requestor);
-
-    if (0 == pthread_mutex_trylock(rest->g_lock)) {
+    if (0 == pthread_mutex_trylock(&rqtor->qlocks->finished)) {
         if (!QUEUE_EMPTY(&rqtor->queues->finished)) {
+            struct discord_rest *rest =
+                CONTAINEROF(rqtor, struct discord_rest, requestor);
+
             QUEUE(struct discord_request) queue, *qelem;
             struct discord_request *req;
 
@@ -347,7 +365,7 @@ discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
 
             io_poller_wakeup(rest->io_poller);
         }
-        pthread_mutex_unlock(rest->g_lock);
+        pthread_mutex_unlock(&rqtor->qlocks->finished);
     }
 }
 
@@ -411,6 +429,7 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 
                 discord_ratelimiter_build(&rqtor->ratelimiter, req->b,
                                           req->key, &info);
+
                 ua_info_cleanup(&info);
             } break;
             case CURLE_READ_ERROR:
@@ -433,10 +452,12 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 
             code = req->code;
 
+            pthread_mutex_lock(&rqtor->qlocks->finished);
             if (req->dispatch.sync)
                 pthread_cond_signal(req->cond);
             else
                 QUEUE_INSERT_TAIL(&rqtor->queues->finished, &req->entry);
+            pthread_mutex_unlock(&rqtor->qlocks->finished);
         }
     }
 
@@ -496,6 +517,7 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
     struct discord_request *req;
     struct discord_bucket *b;
 
+    pthread_mutex_lock(&rqtor->qlocks->pending);
     /* match pending requests to their buckets */
     QUEUE_MOVE(&rqtor->queues->pending, &queue);
     while (!QUEUE_EMPTY(&queue)) {
@@ -506,6 +528,7 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
         b = discord_bucket_get(&rqtor->ratelimiter, req->key);
         discord_bucket_add_request(b, req, req->dispatch.high_p);
     }
+    pthread_mutex_unlock(&rqtor->qlocks->pending);
 
     /* TODO: replace foreach with a mechanism that loops only busy buckets */
     discord_ratelimiter_foreach_bucket(&rqtor->ratelimiter,
@@ -544,6 +567,7 @@ _discord_request_get(struct discord_requestor *rqtor)
 {
     struct discord_request *req;
 
+    pthread_mutex_lock(&rqtor->qlocks->recycling);
     if (QUEUE_EMPTY(&rqtor->queues->recycling)) { /* new request struct */
         req = _discord_request_init();
     }
@@ -554,6 +578,8 @@ _discord_request_get(struct discord_requestor *rqtor)
         QUEUE_REMOVE(qelem);
         req = QUEUE_DATA(qelem, struct discord_request, entry);
     }
+    pthread_mutex_unlock(&rqtor->qlocks->recycling);
+
     QUEUE_INIT(&req->entry);
 
     return req;
@@ -570,10 +596,9 @@ discord_request_begin(struct discord_requestor *rqtor,
     struct discord_rest *rest =
         CONTAINEROF(rqtor, struct discord_rest, requestor);
     struct discord *client = CLIENT(rest, rest);
-    struct discord_request *req = _discord_request_get(rqtor);
-    CCORDcode code;
 
-    pthread_mutex_lock(rest->g_lock);
+    struct discord_request *req = _discord_request_get(rqtor);
+    CCORDcode code = CCORD_OK;
 
     req->method = method;
     memcpy(req, attr, sizeof *attr);
@@ -618,20 +643,27 @@ discord_request_begin(struct discord_requestor *rqtor,
                                       attr->dispatch.cleanup, false);
     }
 
-    /* request will be assigned to its bucket at the REST thread  */
-    QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
-
-    io_poller_wakeup(rest->io_poller);
     if (!req->dispatch.sync) {
-        code = CCORD_OK;
+        pthread_mutex_lock(&rqtor->qlocks->pending);
+        QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
+        pthread_mutex_unlock(&rqtor->qlocks->pending);
+        io_poller_wakeup(rest->io_poller);
     }
-    else {
+    else { /* wait for request's completion if sync mode is active */
         req->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
-        pthread_cond_wait(req->cond, rest->g_lock);
-        code = _discord_request_dispatch_response(rqtor, req);
-    }
 
-    pthread_mutex_unlock(rest->g_lock);
+        pthread_mutex_lock(&rqtor->qlocks->finished);
+
+        pthread_mutex_lock(&rqtor->qlocks->pending);
+        QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
+        pthread_mutex_unlock(&rqtor->qlocks->pending);
+        io_poller_wakeup(rest->io_poller);
+
+        pthread_cond_wait(req->cond, &rqtor->qlocks->finished);
+        code = _discord_request_dispatch_response(rqtor, req);
+
+        pthread_mutex_unlock(&rqtor->qlocks->finished);
+    }
 
     return code;
 }

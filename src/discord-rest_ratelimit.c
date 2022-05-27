@@ -154,10 +154,10 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
     /* global ratelimiting resources */
     rl->global = malloc(sizeof *rl->global);
     rl->global->wait_ms = 0;
-    if (pthread_rwlock_init(&rl->global->rwlock, NULL))
-        ERR("Couldn't initialize pthread rwlock");
-    if (pthread_mutex_init(&rl->global->lock, NULL))
-        ERR("Couldn't initialize pthread mutex");
+    ASSERT_S(!pthread_rwlock_init(&rl->global->rwlock, NULL),
+             "Couldn't initialize ratelimiter rwlock");
+    ASSERT_S(!pthread_mutex_init(&rl->global->lock, NULL),
+             "Couldn't initialize ratelimiter mutex");
 
     /* initialize 'singleton' buckets */
     rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
