@@ -69,10 +69,8 @@ _discord_refvalue_cleanup(struct discord_refcounter *rc,
 static struct _discord_refvalue *
 _discord_refvalue_find(struct discord_refcounter *rc, const void *data)
 {
-    struct _discord_ref *ref = NULL;
-
-    ref = chash_lookup_bucket(rc, (intptr_t)data, ref, REFCOUNTER_TABLE);
-
+    struct _discord_ref *ref =
+        chash_lookup_bucket(rc, (intptr_t)data, ref, REFCOUNTER_TABLE);
     return &ref->value;
 }
 
@@ -95,19 +93,25 @@ _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
 void
 discord_refcounter_init(struct discord_refcounter *rc, struct logconf *conf)
 {
+    logconf_branch(&rc->conf, conf, "DISCORD_REFCOUNT");
+
     __chash_init(rc, REFCOUNTER_TABLE);
 
-    logconf_branch(&rc->conf, conf, "DISCORD_REFCOUNT");
+    rc->g_lock = malloc(sizeof *rc->g_lock);
+    ASSERT_S(!pthread_mutex_init(rc->g_lock, NULL),
+             "Couldn't initialize refcounter mutex");
 }
 
 void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
     __chash_free(rc, REFCOUNTER_TABLE);
+    pthread_mutex_destroy(rc->g_lock);
+    free(rc->g_lock);
 }
 
-bool
-discord_refcounter_contains(struct discord_refcounter *rc, const void *data)
+static bool
+_discord_refcounter_contains(struct discord_refcounter *rc, const void *data)
 {
     bool ret = chash_contains(rc, (intptr_t)data, ret, REFCOUNTER_TABLE);
     return ret;
@@ -116,27 +120,37 @@ discord_refcounter_contains(struct discord_refcounter *rc, const void *data)
 bool
 discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
 {
-    if (discord_refcounter_contains(rc, data)) {
+    bool ret = false;
+
+    pthread_mutex_lock(rc->g_lock);
+    if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         value->visits = -1;
-        return true;
+        ret = true;
     }
-    return false;
+    pthread_mutex_unlock(rc->g_lock);
+
+    return ret;
 }
 
 bool
 discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
 {
-    if (discord_refcounter_contains(rc, data)) {
+    bool ret = false;
+
+    pthread_mutex_lock(rc->g_lock);
+    if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (value->visits == -1) {
             _discord_refvalue_delete(rc, data);
-            return true;
+            ret = true;
         }
     }
-    return false;
+    pthread_mutex_unlock(rc->g_lock);
+
+    return ret;
 }
 
 void
@@ -145,12 +159,14 @@ discord_refcounter_add_internal(struct discord_refcounter *rc,
                                 void (*cleanup)(void *data),
                                 bool should_free)
 {
-    struct _discord_refvalue init = {
-        .expects_client = false,
-        .cleanup.internal = cleanup,
-        .should_free = should_free,
-    };
-    _discord_refvalue_init(rc, data, &init);
+    pthread_mutex_lock(rc->g_lock);
+    _discord_refvalue_init(rc, data,
+                           &(struct _discord_refvalue){
+                               .expects_client = false,
+                               .cleanup.internal = cleanup,
+                               .should_free = should_free,
+                           });
+    pthread_mutex_unlock(rc->g_lock);
 }
 
 void
@@ -160,44 +176,55 @@ discord_refcounter_add_client(struct discord_refcounter *rc,
                                               void *data),
                               bool should_free)
 {
-    struct _discord_refvalue init = {
-        .expects_client = true,
-        .cleanup.client = cleanup,
-        .should_free = should_free,
-    };
-    _discord_refvalue_init(rc, data, &init);
+    pthread_mutex_lock(rc->g_lock);
+    _discord_refvalue_init(rc, data,
+                           &(struct _discord_refvalue){
+                               .expects_client = true,
+                               .cleanup.client = cleanup,
+                               .should_free = should_free,
+                           });
+    pthread_mutex_unlock(rc->g_lock);
 }
 
 CCORDcode
 discord_refcounter_incr(struct discord_refcounter *rc, void *data)
 {
-    struct _discord_refvalue *value;
+    CCORDcode code = CCORD_OWNERSHIP;
 
-    if (!discord_refcounter_contains(rc, data)) return CCORD_UNAVAILABLE;
-
-    value = _discord_refvalue_find(rc, data);
-
-    if (value->visits != -1) {
-        ++value->visits;
-        return CCORD_OK;
+    pthread_mutex_lock(rc->g_lock);
+    if (!_discord_refcounter_contains(rc, data)) {
+        code = CCORD_UNAVAILABLE;
     }
-    return CCORD_OWNERSHIP;
+    else {
+        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
+
+        if (value->visits != -1) {
+            ++value->visits;
+            code = CCORD_OK;
+        }
+    }
+    pthread_mutex_unlock(rc->g_lock);
+    return code;
 }
 
 CCORDcode
 discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
-    struct _discord_refvalue *value = NULL;
+    CCORDcode code = CCORD_OWNERSHIP;
 
-    if (!discord_refcounter_contains(rc, data)) return CCORD_UNAVAILABLE;
-
-    value = _discord_refvalue_find(rc, data);
-
-    if (value->visits != -1) {
-        if (0 == --value->visits) {
-            _discord_refvalue_delete(rc, data);
-        }
-        return CCORD_OK;
+    pthread_mutex_lock(rc->g_lock);
+    if (!_discord_refcounter_contains(rc, data)) {
+        code = CCORD_UNAVAILABLE;
     }
-    return CCORD_OWNERSHIP;
+    else {
+        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
+        if (value->visits != -1) {
+            if (0 == --value->visits) {
+                _discord_refvalue_delete(rc, data);
+            }
+            code = CCORD_OK;
+        }
+    }
+    pthread_mutex_unlock(rc->g_lock);
+    return code;
 }

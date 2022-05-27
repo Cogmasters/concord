@@ -888,6 +888,8 @@ struct discord_refcounter {
      * @note datatype declared at discord-refcount.c
      */
     struct _discord_ref *refs;
+    /** global lock */
+    pthread_mutex_t *g_lock;
 };
 
 /**
@@ -935,16 +937,6 @@ void discord_refcounter_add_client(struct discord_refcounter *rc,
  * @param rc the handle initialized with discord_refcounter_init()
  */
 void discord_refcounter_cleanup(struct discord_refcounter *rc);
-
-/**
- * @brief Check if `data` is stored at the reference counter
- *
- * @param rc the handle initialized with discord_refcounter_init()
- * @param data the data address to be checked
- * @return `true` if data is stored
- */
-bool discord_refcounter_contains(struct discord_refcounter *rc,
-                                 const void *data);
 
 /**
  * @brief Claim ownership of `data`
