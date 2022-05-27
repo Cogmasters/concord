@@ -73,6 +73,7 @@ void
 discord_rest_cleanup(struct discord_rest *rest)
 {
     /* cleanup REST managing thread */
+    io_poller_wakeup(rest->io_poller);
     threadpool_destroy(rest->tpool, threadpool_graceful);
     /* cleanup discovered buckets */
     discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);

@@ -208,15 +208,8 @@ struct discord_ratelimiter {
      *      ratelimiting group */
     struct discord_bucket *miss;
 
-    /* client-wide ratelimiting timeout */
-    struct {
-        /** global ratelimit */
-        u64unix_ms wait_ms;
-        /** global rwlock  */
-        pthread_rwlock_t rwlock;
-        /** global lock */
-        pthread_mutex_t lock;
-    } * global;
+    /* client-wide global ratelimiting */
+    u64unix_ms *global_wait_ms;
 };
 
 /**
@@ -292,8 +285,6 @@ struct discord_bucket {
      * @note @ref DISCORD_BUCKET_TIMEOUT if bucket is being ratelimited
      */
     struct discord_request *performing_req;
-    /** synchronize bucket */
-    pthread_mutex_t lock;
 };
 
 /**

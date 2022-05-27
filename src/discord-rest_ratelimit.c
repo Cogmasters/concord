@@ -17,7 +17,7 @@
 #define RATELIMITER_TABLE_BUCKET struct _discord_route
 #define RATELIMITER_TABLE_FREE_KEY(_key)
 #define RATELIMITER_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
-#define RATELIMITER_TABLE_FREE_VALUE(_value) _discord_bucket_cleanup(_value)
+#define RATELIMITER_TABLE_FREE_VALUE(_value) free(_value)
 #define RATELIMITER_TABLE_COMPARE(_cmp_a, _cmp_b)                             \
     chash_string_compare(_cmp_a, _cmp_b)
 #define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
@@ -32,13 +32,6 @@ struct _discord_route {
     /** the route state in the hashtable (see chash.h 'State enums') */
     int state;
 };
-
-static void
-_discord_bucket_cleanup(struct discord_bucket *b)
-{
-    pthread_mutex_destroy(&b->lock);
-    free(b);
-}
 
 #define KEY_PUSH(key, len, ...)                                               \
     do {                                                                      \
@@ -130,14 +123,9 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     b->remaining = 1;
     b->limit = limit;
 
-    ASSERT_S(!pthread_mutex_init(&b->lock, NULL),
-             "Couldn't initialize bucket's mutex");
-
     QUEUE_INIT(&b->pending_queue);
 
-    pthread_mutex_lock(&rl->global->lock);
     chash_assign(rl, key, b, RATELIMITER_TABLE);
-    pthread_mutex_unlock(&rl->global->lock);
 
     return b;
 }
@@ -151,13 +139,8 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
 
     logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
 
-    /* global ratelimiting resources */
-    rl->global = malloc(sizeof *rl->global);
-    rl->global->wait_ms = 0;
-    ASSERT_S(!pthread_rwlock_init(&rl->global->rwlock, NULL),
-             "Couldn't initialize ratelimiter rwlock");
-    ASSERT_S(!pthread_mutex_init(&rl->global->lock, NULL),
-             "Couldn't initialize ratelimiter mutex");
+    /* global ratelimiting */
+    rl->global_wait_ms = calloc(1, sizeof *rl->global_wait_ms);
 
     /* initialize 'singleton' buckets */
     rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
@@ -183,11 +166,7 @@ void
 discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 {
     discord_ratelimiter_foreach_bucket(rl, &_discord_bucket_cancel);
-
-    pthread_rwlock_destroy(&rl->global->rwlock);
-    pthread_mutex_destroy(&rl->global->lock);
-    free(rl->global);
-
+    free(rl->global_wait_ms);
     __chash_free(rl, RATELIMITER_TABLE);
 }
 
@@ -196,43 +175,22 @@ discord_ratelimiter_foreach_bucket(struct discord_ratelimiter *rl,
                                    void (*iter)(struct discord_ratelimiter *rl,
                                                 struct discord_bucket *b))
 {
-    struct _discord_route *r;
-    int i;
-
-    pthread_mutex_lock(&rl->global->lock);
-    for (i = 0; i < rl->capacity; ++i) {
-        r = rl->routes + i;
+    for (int i = 0; i < rl->capacity; ++i) {
+        struct _discord_route *r = rl->routes + i;
         if (CHASH_FILLED == r->state) (*iter)(rl, r->bucket);
     }
-    pthread_mutex_unlock(&rl->global->lock);
 }
 
 static struct discord_bucket *
 _discord_bucket_find(struct discord_ratelimiter *rl, const char key[])
 {
     struct discord_bucket *b = NULL;
-    int ret;
+    int ret = chash_contains(rl, key, ret, RATELIMITER_TABLE);
 
-    pthread_mutex_lock(&rl->global->lock);
-    ret = chash_contains(rl, key, ret, RATELIMITER_TABLE);
     if (ret) {
         b = chash_lookup(rl, key, b, RATELIMITER_TABLE);
     }
-    pthread_mutex_unlock(&rl->global->lock);
-
     return b;
-}
-
-static u64unix_ms
-_discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl)
-{
-    u64unix_ms global;
-
-    pthread_rwlock_rdlock(&rl->global->rwlock);
-    global = rl->global->wait_ms;
-    pthread_rwlock_unlock(&rl->global->rwlock);
-
-    return global;
 }
 
 /* return ratelimit timeout timestamp for this bucket */
@@ -240,10 +198,8 @@ u64unix_ms
 discord_bucket_get_timeout(struct discord_ratelimiter *rl,
                            struct discord_bucket *b)
 {
-    u64unix_ms global = _discord_ratelimiter_get_global_wait(rl),
-               reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
-
-    return (global > reset) ? global : reset;
+    u64unix_ms reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
+    return (*rl->global_wait_ms > reset) ? *rl->global_wait_ms : reset;
 }
 
 static void
@@ -266,12 +222,13 @@ discord_bucket_try_timeout(struct discord_ratelimiter *rl,
     if (delay_ms < 0) delay_ms = 0;
     b->performing_req = DISCORD_BUCKET_TIMEOUT;
 
-    _discord_timer_ctl(
-        client, &client->rest.timers,
-        &(struct discord_timer){ .cb = &_discord_bucket_wake_cb,
-                                 .data = b,
-                                 .delay = delay_ms,
-                                 .flags = DISCORD_TIMER_DELETE_AUTO });
+    _discord_timer_ctl(client, &client->rest.timers,
+                       &(struct discord_timer){
+                           .cb = &_discord_bucket_wake_cb,
+                           .data = b,
+                           .delay = delay_ms,
+                           .flags = DISCORD_TIMER_DELETE_AUTO,
+                       });
 
     logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
                  b->hash, delay_ms);
@@ -349,16 +306,10 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
         u64unix_ms reset_tstamp =
             now + (u64unix_ms)(1000 * strtod(reset_after.start, NULL));
 
-        if (global.size) {
-            /* lock all buckets */
-            pthread_rwlock_wrlock(&rl->global->rwlock);
-            rl->global->wait_ms = reset_tstamp;
-            pthread_rwlock_unlock(&rl->global->rwlock);
-        }
-        else {
-            /* lock single bucket, timeout at discord_rest_run() */
+        if (global.size) /* lock all buckets */
+            *rl->global_wait_ms = reset_tstamp;
+        else /* lock single bucket, timeout at discord_rest_run() */
             b->reset_tstamp = reset_tstamp;
-        }
     }
     else if (reset.size) {
         struct ua_szbuf_readonly date = ua_info_get_header(info, "date");

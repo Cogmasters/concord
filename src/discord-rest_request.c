@@ -452,12 +452,16 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 
             code = req->code;
 
-            pthread_mutex_lock(&rqtor->qlocks->finished);
-            if (req->dispatch.sync)
+            if (req->dispatch.sync) {
+                pthread_mutex_lock(&rqtor->qlocks->pending);
                 pthread_cond_signal(req->cond);
-            else
+                pthread_mutex_unlock(&rqtor->qlocks->pending);
+            }
+            else {
+                pthread_mutex_lock(&rqtor->qlocks->finished);
                 QUEUE_INSERT_TAIL(&rqtor->queues->finished, &req->entry);
-            pthread_mutex_unlock(&rqtor->qlocks->finished);
+                pthread_mutex_unlock(&rqtor->qlocks->finished);
+            }
         }
     }
 
@@ -625,8 +629,6 @@ discord_request_begin(struct discord_requestor *rqtor,
     /* copy bucket's key */
     memcpy(req->key, key, sizeof(req->key));
 
-    req->cond = NULL;
-
     if (attr->dispatch.keep) {
         code = discord_refcounter_incr(&client->refcounter,
                                        (void *)attr->dispatch.keep);
@@ -643,27 +645,19 @@ discord_request_begin(struct discord_requestor *rqtor,
                                       attr->dispatch.cleanup, false);
     }
 
-    if (!req->dispatch.sync) {
-        pthread_mutex_lock(&rqtor->qlocks->pending);
-        QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
-        pthread_mutex_unlock(&rqtor->qlocks->pending);
-        io_poller_wakeup(rest->io_poller);
-    }
-    else { /* wait for request's completion if sync mode is active */
+    pthread_mutex_lock(&rqtor->qlocks->pending);
+    QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
+    io_poller_wakeup(rest->io_poller);
+
+    /* wait for request's completion if sync mode is active */
+    if (req->dispatch.sync) {
         req->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
+        pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
+        req->cond = NULL;
 
-        pthread_mutex_lock(&rqtor->qlocks->finished);
-
-        pthread_mutex_lock(&rqtor->qlocks->pending);
-        QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
-        pthread_mutex_unlock(&rqtor->qlocks->pending);
-        io_poller_wakeup(rest->io_poller);
-
-        pthread_cond_wait(req->cond, &rqtor->qlocks->finished);
         code = _discord_request_dispatch_response(rqtor, req);
-
-        pthread_mutex_unlock(&rqtor->qlocks->finished);
     }
+    pthread_mutex_unlock(&rqtor->qlocks->pending);
 
     return code;
 }
