@@ -313,7 +313,9 @@ discord_request_cancel(struct discord_requestor *rqtor,
 
     QUEUE_REMOVE(&req->entry);
     QUEUE_INIT(&req->entry);
+    pthread_mutex_lock(&rqtor->qlocks->recycling);
     QUEUE_INSERT_TAIL(&rqtor->queues->recycling, &req->entry);
+    pthread_mutex_unlock(&rqtor->qlocks->recycling);
 }
 
 static CCORDcode
