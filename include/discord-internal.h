@@ -604,14 +604,6 @@ CCORDcode discord_rest_run(struct discord_rest *rest,
                            ...);
 
 /**
- * @brief Check and manage on-going, pending and timed-out requests
- *
- * @param rest the handle initialized with discord_rest_init()
- * @CCORD_return
- */
-CCORDcode discord_rest_perform(struct discord_rest *rest);
-
-/**
  * @brief Stop all bucket's on-going, pending and timed-out requests
  *
  * The requests will be moved over to client's 'queues->recycling' queue

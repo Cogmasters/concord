@@ -19,14 +19,6 @@ _discord_request_cleanup(struct discord_request *req)
     free(req);
 }
 
-static int
-_discord_on_rest_perform(struct io_poller *io, CURLM *mhandle, void *p_rest)
-{
-    (void)io;
-    (void)mhandle;
-    return discord_rest_perform(p_rest);
-}
-
 static void
 _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 {
@@ -50,9 +42,6 @@ discord_requestor_init(struct discord_requestor *rqtor,
                        struct logconf *conf,
                        struct ccord_szbuf_readonly *token)
 {
-    struct discord_rest *rest =
-        CONTAINEROF(rqtor, struct discord_rest, requestor);
-
     logconf_branch(&rqtor->conf, conf, "DISCORD_REQUEST");
 
     rqtor->ua = ua_init(&(struct ua_attr){ .conf = conf });
@@ -75,9 +64,6 @@ discord_requestor_init(struct discord_requestor *rqtor,
              "Couldn't initialize requestor's finished queue mutex");
 
     rqtor->mhandle = curl_multi_init();
-    io_poller_curlm_add(rest->io_poller, rqtor->mhandle,
-                        &_discord_on_rest_perform, rest);
-
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 
     discord_ratelimiter_init(&rqtor->ratelimiter, &rqtor->conf);
@@ -351,23 +337,23 @@ void
 discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
 {
     if (0 == pthread_mutex_trylock(&rqtor->qlocks->finished)) {
-        if (!QUEUE_EMPTY(&rqtor->queues->finished)) {
+        QUEUE(struct discord_request) queue;
+        QUEUE_MOVE(&rqtor->queues->finished, &queue);
+        pthread_mutex_unlock(&rqtor->qlocks->finished);
+
+        if (!QUEUE_EMPTY(&queue)) {
             struct discord_rest *rest =
                 CONTAINEROF(rqtor, struct discord_rest, requestor);
-
-            QUEUE(struct discord_request) queue, *qelem;
+            QUEUE(struct discord_request) * qelem;
             struct discord_request *req;
 
-            QUEUE_MOVE(&rqtor->queues->finished, &queue);
             do {
                 qelem = QUEUE_HEAD(&queue);
                 req = QUEUE_DATA(qelem, struct discord_request, entry);
                 _discord_request_dispatch_response(rqtor, req);
             } while (!QUEUE_EMPTY(&queue));
-
             io_poller_wakeup(rest->io_poller);
         }
-        pthread_mutex_unlock(&rqtor->qlocks->finished);
     }
 }
 
@@ -429,6 +415,8 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                                                 req->response.data);
                 }
 
+                /** FIXME: bucket should be recycled if it was matched with an
+                 *      invalid endpoint */
                 discord_ratelimiter_build(&rqtor->ratelimiter, req->b,
                                           req->key, &info);
 
@@ -524,8 +512,10 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
     struct discord_bucket *b;
 
     pthread_mutex_lock(&rqtor->qlocks->pending);
-    /* match pending requests to their buckets */
     QUEUE_MOVE(&rqtor->queues->pending, &queue);
+    pthread_mutex_unlock(&rqtor->qlocks->pending);
+
+    /* match pending requests to their buckets */
     while (!QUEUE_EMPTY(&queue)) {
         qelem = QUEUE_HEAD(&queue);
         QUEUE_REMOVE(qelem);
@@ -534,7 +524,6 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
         b = discord_bucket_get(&rqtor->ratelimiter, req->key);
         discord_bucket_add_request(b, req, req->dispatch.high_p);
     }
-    pthread_mutex_unlock(&rqtor->qlocks->pending);
 
     /* TODO: replace foreach with a mechanism that loops only busy buckets */
     discord_ratelimiter_foreach_bucket(&rqtor->ratelimiter,
@@ -650,16 +639,17 @@ discord_request_begin(struct discord_requestor *rqtor,
     pthread_mutex_lock(&rqtor->qlocks->pending);
     QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
     io_poller_wakeup(rest->io_poller);
-
-    /* wait for request's completion if sync mode is active */
-    if (req->dispatch.sync) {
+    if (!req->dispatch.sync) {
+        pthread_mutex_unlock(&rqtor->qlocks->pending);
+    }
+    else { /* wait for request's completion if sync mode is active */
         req->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
         pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
         req->cond = NULL;
+        pthread_mutex_unlock(&rqtor->qlocks->pending);
 
         code = _discord_request_dispatch_response(rqtor, req);
     }
-    pthread_mutex_unlock(&rqtor->qlocks->pending);
 
     return code;
 }

@@ -9,8 +9,8 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-CCORDcode
-discord_rest_perform(struct discord_rest *rest)
+static CCORDcode
+_discord_rest_perform(struct discord_rest *rest)
 {
     CCORDcode code;
 
@@ -31,7 +31,7 @@ _discord_rest_manager(void *p_rest)
     int64_t now, trigger;
     int poll_result;
 
-    discord_rest_perform(rest);
+    _discord_rest_perform(rest);
 
     now = (int64_t)discord_timestamp_us(client);
 
@@ -49,6 +49,14 @@ _discord_rest_manager(void *p_rest)
     threadpool_add(rest->tpool, _discord_rest_manager, rest, 0);
 }
 
+static int
+_discord_on_rest_perform(struct io_poller *io, CURLM *mhandle, void *p_rest)
+{
+    (void)io;
+    (void)mhandle;
+    return _discord_rest_perform(p_rest);
+}
+
 void
 discord_rest_init(struct discord_rest *rest,
                   struct logconf *conf,
@@ -59,10 +67,12 @@ discord_rest_init(struct discord_rest *rest,
     else
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
 
-    rest->io_poller = io_poller_create();
-
     discord_timers_init(&rest->timers);
+
+    rest->io_poller = io_poller_create();
     discord_requestor_init(&rest->requestor, &rest->conf, token);
+    io_poller_curlm_add(rest->io_poller, rest->requestor.mhandle,
+                        &_discord_on_rest_perform, rest);
 
     rest->tpool = threadpool_create(1, 1024, 0);
     ASSERT_S(!threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
