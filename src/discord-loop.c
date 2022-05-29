@@ -63,13 +63,12 @@ discord_run(struct discord *client)
 {
     struct discord_timers *const timers[] = { &client->timers.internal,
                                               &client->timers.user };
-    int64_t next_run, now;
+    int64_t now;
     CCORDcode code;
 
     while (1) {
         BREAK_ON_FAIL(code, discord_gateway_start(&client->gw));
 
-        next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
             int poll_result, poll_errno = 0;
             int64_t poll_time = 0;
@@ -78,8 +77,7 @@ discord_run(struct discord *client)
 
             if (!client->on_idle) {
                 poll_time = discord_timers_get_next_trigger(
-                    timers, sizeof timers / sizeof *timers, now,
-                    now < next_run ? ((next_run - now)) : 0);
+                    timers, sizeof timers / sizeof *timers, now, 60000000);
             }
 
             CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
@@ -97,8 +95,7 @@ discord_run(struct discord *client)
                 }
                 else {
                     int64_t sleep_time = discord_timers_get_next_trigger(
-                        timers, sizeof timers / sizeof *timers, now,
-                        now < next_run ? ((next_run - now)) : 0);
+                        timers, sizeof timers / sizeof *timers, now, 1000);
                     if (sleep_time > 0 && sleep_time < 1000)
                         cog_sleep_us(sleep_time);
                 }
@@ -122,11 +119,6 @@ discord_run(struct discord *client)
             BREAK_ON_FAIL(code, io_poller_perform(client->io_poller));
 
             discord_requestor_dispatch_responses(&client->rest.requestor);
-            if (next_run <= now) {
-                BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
-                /* enforce a min 1 sec delay between runs */
-                next_run = now + 1000000;
-            }
         }
 
         /* stop all pending requests in case of connection shutdown */
