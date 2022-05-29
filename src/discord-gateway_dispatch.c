@@ -241,8 +241,9 @@ on_ping_timer_cb(struct discord *client, struct discord_timer *timer)
     if (~timer->flags & DISCORD_TIMER_CANCELED) {
         discord_gateway_perform(gw);
         const u64unix_ms next_hb = gw->timer->hbeat + gw->timer->interval;
-        timer->interval = (int64_t)(next_hb - discord_timestamp(client));
-        if (timer->interval < 0) timer->interval = 0;
+        timer->interval =
+            (int64_t)(next_hb) - (int64_t)discord_timestamp(client);
+        if (timer->interval < 1) timer->interval = 1;
         timer->repeat = 1;
     }
 }
