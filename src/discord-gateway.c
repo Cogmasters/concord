@@ -538,6 +538,11 @@ discord_gateway_init(struct discord_gateway *gw,
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
+    if (gw->timer->ping_timer)
+        discord_internal_timer_ctl(
+            CLIENT(gw, gw),
+            &(struct discord_timer){ .id = gw->timer->ping_timer,
+                                     .flags = DISCORD_TIMER_DELETE });
     /* cleanup WebSockets handle */
     io_poller_curlm_del(CLIENT(gw, gw)->io_poller, gw->mhandle);
     curl_multi_cleanup(gw->mhandle);

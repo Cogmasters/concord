@@ -674,6 +674,8 @@ struct discord_gateway {
         u64unix_ms event;
         /** latency obtained from HEARTBEAT and HEARTBEAT_ACK interval */
         int ping_ms;
+        /** timer id for ping timer */
+        unsigned ping_timer;
         /** ping rwlock  */
         pthread_rwlock_t rwlock;
     } * timer;

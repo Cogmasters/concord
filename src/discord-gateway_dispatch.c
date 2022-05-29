@@ -21,42 +21,31 @@ static const struct {
     /** event's cleanup */
     void (*cleanup)(void *);
 } dispatch[] = {
-    [DISCORD_EV_READY] =
-        INIT(discord_ready, ready),
+    [DISCORD_EV_READY] = INIT(discord_ready, ready),
     [DISCORD_EV_APPLICATION_COMMAND_CREATE] =
         INIT(discord_application_command, application_command_create),
     [DISCORD_EV_APPLICATION_COMMAND_UPDATE] =
         INIT(discord_application_command, application_command_update),
     [DISCORD_EV_APPLICATION_COMMAND_DELETE] =
         INIT(discord_application_command, application_command_delete),
-    [DISCORD_EV_CHANNEL_CREATE] =
-        INIT(discord_channel, channel_create),
-    [DISCORD_EV_CHANNEL_UPDATE] =
-        INIT(discord_channel, channel_update),
-    [DISCORD_EV_CHANNEL_DELETE] =
-        INIT(discord_channel, channel_delete),
+    [DISCORD_EV_CHANNEL_CREATE] = INIT(discord_channel, channel_create),
+    [DISCORD_EV_CHANNEL_UPDATE] = INIT(discord_channel, channel_update),
+    [DISCORD_EV_CHANNEL_DELETE] = INIT(discord_channel, channel_delete),
     [DISCORD_EV_CHANNEL_PINS_UPDATE] =
         INIT(discord_channel_pins_update, channel_pins_update),
-    [DISCORD_EV_THREAD_CREATE] =
-        INIT(discord_channel, thread_create),
-    [DISCORD_EV_THREAD_UPDATE] =
-        INIT(discord_channel, thread_update),
-    [DISCORD_EV_THREAD_DELETE] =
-        INIT(discord_channel, thread_delete),
+    [DISCORD_EV_THREAD_CREATE] = INIT(discord_channel, thread_create),
+    [DISCORD_EV_THREAD_UPDATE] = INIT(discord_channel, thread_update),
+    [DISCORD_EV_THREAD_DELETE] = INIT(discord_channel, thread_delete),
     [DISCORD_EV_THREAD_LIST_SYNC] =
         INIT(discord_thread_list_sync, thread_list_sync),
     [DISCORD_EV_THREAD_MEMBER_UPDATE] =
         INIT(discord_thread_member, thread_member_update),
     [DISCORD_EV_THREAD_MEMBERS_UPDATE] =
         INIT(discord_thread_members_update, thread_members_update),
-    [DISCORD_EV_GUILD_CREATE] =
-        INIT(discord_guild, guild_create),
-    [DISCORD_EV_GUILD_UPDATE] =
-        INIT(discord_guild, guild_update),
-    [DISCORD_EV_GUILD_DELETE] =
-        INIT(discord_guild, guild_delete),
-    [DISCORD_EV_GUILD_BAN_ADD] =
-        INIT(discord_guild_ban_add, guild_ban_add),
+    [DISCORD_EV_GUILD_CREATE] = INIT(discord_guild, guild_create),
+    [DISCORD_EV_GUILD_UPDATE] = INIT(discord_guild, guild_update),
+    [DISCORD_EV_GUILD_DELETE] = INIT(discord_guild, guild_delete),
+    [DISCORD_EV_GUILD_BAN_ADD] = INIT(discord_guild_ban_add, guild_ban_add),
     [DISCORD_EV_GUILD_BAN_REMOVE] =
         INIT(discord_guild_ban_remove, guild_ban_remove),
     [DISCORD_EV_GUILD_EMOJIS_UPDATE] =
@@ -85,16 +74,11 @@ static const struct {
         INIT(discord_integration_delete, integration_delete),
     [DISCORD_EV_INTERACTION_CREATE] =
         INIT(discord_interaction, interaction_create),
-    [DISCORD_EV_INVITE_CREATE] =
-        INIT(discord_invite_create, invite_create),
-    [DISCORD_EV_INVITE_DELETE] =
-        INIT(discord_invite_delete, invite_delete),
-    [DISCORD_EV_MESSAGE_CREATE] =
-        INIT(discord_message, message_create),
-    [DISCORD_EV_MESSAGE_UPDATE] =
-        INIT(discord_message, message_update),
-    [DISCORD_EV_MESSAGE_DELETE] =
-        INIT(discord_message_delete, message_delete),
+    [DISCORD_EV_INVITE_CREATE] = INIT(discord_invite_create, invite_create),
+    [DISCORD_EV_INVITE_DELETE] = INIT(discord_invite_delete, invite_delete),
+    [DISCORD_EV_MESSAGE_CREATE] = INIT(discord_message, message_create),
+    [DISCORD_EV_MESSAGE_UPDATE] = INIT(discord_message, message_update),
+    [DISCORD_EV_MESSAGE_DELETE] = INIT(discord_message_delete, message_delete),
     [DISCORD_EV_MESSAGE_DELETE_BULK] =
         INIT(discord_message_delete_bulk, message_delete_bulk),
     [DISCORD_EV_MESSAGE_REACTION_ADD] =
@@ -103,9 +87,8 @@ static const struct {
         INIT(discord_message_reaction_remove, message_reaction_remove),
     [DISCORD_EV_MESSAGE_REACTION_REMOVE_ALL] =
         INIT(discord_message_reaction_remove_all, message_reaction_remove_all),
-    [DISCORD_EV_MESSAGE_REACTION_REMOVE_EMOJI] =
-        INIT(discord_message_reaction_remove_emoji,
-                message_reaction_remove_emoji),
+    [DISCORD_EV_MESSAGE_REACTION_REMOVE_EMOJI] = INIT(
+        discord_message_reaction_remove_emoji, message_reaction_remove_emoji),
     [DISCORD_EV_PRESENCE_UPDATE] =
         INIT(discord_presence_update, presence_update),
     [DISCORD_EV_STAGE_INSTANCE_CREATE] =
@@ -114,10 +97,8 @@ static const struct {
         INIT(discord_stage_instance, stage_instance_update),
     [DISCORD_EV_STAGE_INSTANCE_DELETE] =
         INIT(discord_stage_instance, stage_instance_delete),
-    [DISCORD_EV_TYPING_START] =
-        INIT(discord_typing_start, typing_start),
-    [DISCORD_EV_USER_UPDATE] =
-        INIT(discord_user, user_update),
+    [DISCORD_EV_TYPING_START] = INIT(discord_typing_start, typing_start),
+    [DISCORD_EV_USER_UPDATE] = INIT(discord_user, user_update),
     [DISCORD_EV_VOICE_STATE_UPDATE] =
         INIT(discord_voice_state, voice_state_update),
     [DISCORD_EV_VOICE_SERVER_UPDATE] =
@@ -252,6 +233,18 @@ discord_gateway_send_resume(struct discord_gateway *gw,
     }
 }
 
+static void
+on_ping_timer_cb(struct discord *client, struct discord_timer *timer)
+{
+    (void)client;
+    struct discord_gateway *gw = timer->data;
+    if (~timer->flags & DISCORD_TIMER_CANCELED) {
+        discord_gateway_perform(gw);
+        timer->interval = (int64_t)gw->timer->interval;
+        timer->repeat = 1;
+    }
+}
+
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 void
@@ -281,6 +274,10 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
             b.pos, info.loginfo.counter + 1);
         /* update heartbeat timestamp */
         gw->timer->hbeat = gw->timer->now;
+        if (!gw->timer->ping_timer)
+            gw->timer->ping_timer =
+                discord_internal_timer(CLIENT(gw, gw), on_ping_timer_cb, gw,
+                                       (int64_t)gw->timer->interval);
     }
     else {
         logconf_info(
