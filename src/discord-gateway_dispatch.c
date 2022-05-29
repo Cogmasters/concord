@@ -240,7 +240,9 @@ on_ping_timer_cb(struct discord *client, struct discord_timer *timer)
     struct discord_gateway *gw = timer->data;
     if (~timer->flags & DISCORD_TIMER_CANCELED) {
         discord_gateway_perform(gw);
-        timer->interval = (int64_t)gw->timer->interval;
+        const u64unix_ms next_hb = gw->timer->hbeat + gw->timer->interval;
+        timer->interval = (int64_t)(next_hb - discord_timestamp(client));
+        if (timer->interval < 0) timer->interval = 0;
         timer->repeat = 1;
     }
 }
