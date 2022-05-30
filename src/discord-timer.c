@@ -27,7 +27,8 @@ discord_timers_init(struct discord_timers *timers)
 }
 
 static void
-discord_timers_cancel_all(struct discord *client, struct discord_timers *timers)
+discord_timers_cancel_all(struct discord *client,
+                          struct discord_timers *timers)
 {
     struct discord_timer timer;
     while ((timer.id = priority_queue_pop(timers->q, NULL, &timer))) {
@@ -109,12 +110,10 @@ _discord_timer_ctl(struct discord *client,
 }
 
 #define TIMER_TRY_DELETE                                                      \
-    do {                                                                      \
-        if (timer.flags & DISCORD_TIMER_DELETE) {                             \
-            priority_queue_del(timers->q, timer.id);                          \
-            continue;                                                         \
-        }                                                                     \
-    } while (0)
+    if (timer.flags & DISCORD_TIMER_DELETE) {                                 \
+        priority_queue_del(timers->q, timer.id);                              \
+        continue;                                                             \
+    }
 
 void
 discord_timers_run(struct discord *client, struct discord_timers *timers)
