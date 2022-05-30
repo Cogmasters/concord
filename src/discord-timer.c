@@ -20,34 +20,50 @@ cmp_timers(const void *a, const void *b)
 }
 
 void
-discord_timers_init(struct discord *client)
+discord_timers_init(struct discord_timers *timers)
 {
-    client->timers.internal.q = priority_queue_create(
-        sizeof(int64_t), sizeof(struct discord_timer), cmp_timers, 0);
-    client->timers.user.q = priority_queue_create(
+    timers->q = priority_queue_create(
         sizeof(int64_t), sizeof(struct discord_timer), cmp_timers, 0);
 }
 
 static void
-discord_timers_cancel_all(struct discord *client, priority_queue *q)
+discord_timers_cancel_all(struct discord *client, struct discord_timers *timers)
 {
     struct discord_timer timer;
-    while ((timer.id = priority_queue_pop(q, NULL, &timer))) {
+    while ((timer.id = priority_queue_pop(timers->q, NULL, &timer))) {
         timer.flags |= DISCORD_TIMER_CANCELED;
         if (timer.cb) timer.cb(client, &timer);
     }
 }
 
 void
-discord_timers_cleanup(struct discord *client)
+discord_timers_cleanup(struct discord *client, struct discord_timers *timers)
 {
-    priority_queue_set_max_capacity(client->timers.user.q, 0);
-    discord_timers_cancel_all(client, client->timers.user.q);
-    priority_queue_destroy(client->timers.user.q);
+    priority_queue_set_max_capacity(timers->q, 0);
+    discord_timers_cancel_all(client, timers);
+    priority_queue_destroy(timers->q);
+}
 
-    priority_queue_set_max_capacity(client->timers.internal.q, 0);
-    discord_timers_cancel_all(client, client->timers.internal.q);
-    priority_queue_destroy(client->timers.internal.q);
+int64_t
+discord_timers_get_next_trigger(struct discord_timers *const timers[],
+                                size_t n,
+                                int64_t now,
+                                int64_t max_time)
+{
+    if (max_time == 0) return 0;
+
+    for (unsigned i = 0; i < n; i++) {
+        int64_t trigger;
+        if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
+            if (trigger < 0) continue;
+
+            if (trigger <= now)
+                max_time = 0;
+            else if (max_time > trigger - now)
+                max_time = trigger - now;
+        }
+    }
+    return max_time;
 }
 
 unsigned

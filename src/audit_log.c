@@ -12,7 +12,7 @@ discord_get_guild_audit_log(struct discord *client,
                             struct discord_get_guild_audit_log *params,
                             struct discord_ret_audit_log *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
     char query[1024] = "";
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
@@ -45,9 +45,9 @@ discord_get_guild_audit_log(struct discord *client,
         }
     }
 
-    DISCORD_REQ_INIT(req, discord_audit_log, ret);
+    DISCORD_ATTR_INIT(attr, discord_audit_log, ret);
 
-    return discord_rest_run(&client->rest, &req, NULL, HTTP_GET,
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/audit-logs%s", guild_id,
                             query);
 }

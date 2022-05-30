@@ -49,28 +49,6 @@ discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
     client->on_cycle = callback;
 }
 
-static inline int64_t
-discord_timer_get_next_trigger(struct discord_timers *const timers[],
-                               size_t n,
-                               int64_t now,
-                               int64_t max_time)
-{
-    if (max_time == 0) return 0;
-
-    for (unsigned i = 0; i < n; i++) {
-        int64_t trigger;
-        if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
-            if (trigger < 0) continue;
-
-            if (trigger <= now)
-                max_time = 0;
-            else if (max_time > trigger - now)
-                max_time = trigger - now;
-        }
-    }
-    return max_time;
-}
-
 #define BREAK_ON_FAIL(code, function)                                         \
     if (CCORD_OK != (code = function)) break
 
@@ -85,23 +63,21 @@ discord_run(struct discord *client)
 {
     struct discord_timers *const timers[] = { &client->timers.internal,
                                               &client->timers.user };
-    int64_t next_run, now;
+    int64_t now;
     CCORDcode code;
 
     while (1) {
         BREAK_ON_FAIL(code, discord_gateway_start(&client->gw));
 
-        next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
-            int64_t poll_time = 0;
             int poll_result, poll_errno = 0;
+            int64_t poll_time = 0;
 
             now = (int64_t)discord_timestamp_us(client);
 
             if (!client->on_idle) {
-                poll_time = discord_timer_get_next_trigger(
-                    timers, sizeof timers / sizeof *timers, now,
-                    now < next_run ? ((next_run - now)) : 0);
+                poll_time = discord_timers_get_next_trigger(
+                    timers, sizeof timers / sizeof *timers, now, 60000000);
             }
 
             CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
@@ -110,14 +86,16 @@ discord_run(struct discord *client)
             now = (int64_t)discord_timestamp_us(client);
 
             if (0 == poll_result) {
-                if (ccord_has_sigint != 0) discord_shutdown(client);
+                if (ccord_has_sigint != 0) {
+                    discord_shutdown(client);
+                }
+
                 if (client->on_idle) {
                     client->on_idle(client);
                 }
                 else {
-                    int64_t sleep_time = discord_timer_get_next_trigger(
-                        timers, sizeof timers / sizeof *timers, now,
-                        now < next_run ? ((next_run - now)) : 0);
+                    int64_t sleep_time = discord_timers_get_next_trigger(
+                        timers, sizeof timers / sizeof *timers, now, 1000);
                     if (sleep_time > 0 && sleep_time < 1000)
                         cog_sleep_us(sleep_time);
                 }
@@ -140,20 +118,11 @@ discord_run(struct discord *client)
 
             BREAK_ON_FAIL(code, io_poller_perform(client->io_poller));
 
-            if (next_run <= now) {
-                BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
-                BREAK_ON_FAIL(code, discord_rest_async_perform(&client->rest));
-
-                /* enforce a min 1 sec delay between runs */
-                next_run = now + 1000000;
-            }
+            discord_requestor_dispatch_responses(&client->rest.requestor);
         }
 
         /* stop all pending requests in case of connection shutdown */
-        if (true == discord_gateway_end(&client->gw)) {
-            discord_rest_stop_buckets(&client->rest);
-            break;
-        }
+        if (true == discord_gateway_end(&client->gw)) break;
     }
 
     return code;
