@@ -67,12 +67,10 @@ on_hello(struct discord_gateway *gw)
 {
     jsmnf_pair *f;
 
-    gw->timer->hbeat_interval = 0;
-
     if ((f = jsmnf_find(gw->payload.data, gw->payload.json,
                         "heartbeat_interval", 18)))
         gw->timer->hbeat_interval =
-            strtoull(gw->payload.json + f->v.pos, NULL, 10);
+            strtoll(gw->payload.json + f->v.pos, NULL, 10);
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         discord_gateway_send_resume(gw, &(struct discord_resume){

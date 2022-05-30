@@ -249,7 +249,7 @@ _discord_on_heartbeat_timeout(struct discord *client,
             discord_gateway_send_heartbeat(gw, gw->payload.seq);
         }
         const u64unix_ms next_hb =
-            gw->timer->hbeat_last + gw->timer->hbeat_interval;
+            gw->timer->hbeat_last + (u64unix_ms)gw->timer->hbeat_interval;
 
         timer->interval =
             (int64_t)(next_hb) - (int64_t)discord_timestamp(client);
@@ -291,7 +291,7 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
         if (!gw->timer->hbeat_timer)
             gw->timer->hbeat_timer = discord_internal_timer(
                 CLIENT(gw, gw), _discord_on_heartbeat_timeout, gw,
-                (int64_t)gw->timer->hbeat_interval);
+                gw->timer->hbeat_interval);
     }
     else {
         logconf_info(

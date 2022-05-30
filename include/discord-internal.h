@@ -675,15 +675,15 @@ struct discord_gateway {
     /** timers kept for synchronization */
     struct {
         /**
+         * fixed milliseconds interval between heartbeats
+         * @note obtained at `HELLO`
+         */
+        int64_t hbeat_interval;
+        /**
          * Gateway's concept of "now"
          * @note updated at discord_gateway_perform()
          */
         u64unix_ms now;
-        /**
-         * fixed interval between heartbeats
-         * @note obtained at `HELLO`
-         */
-        u64unix_ms hbeat_interval;
         /**
          * last heartbeat pulse timestamp
          * @note first sent at `READY` and `RESUME`, then updated every
