@@ -155,7 +155,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
     jsonb b;
 
     /* Ratelimit check */
-    if (gw->timer->now - gw->timer->identify < 5) {
+    if (gw->timer->now - gw->timer->identify_last < 5) {
         ++gw->session->concurrent;
         VASSERT_S(gw->session->concurrent
                       < gw->session->start_limit.max_concurrency,
@@ -184,8 +184,9 @@ discord_gateway_send_identify(struct discord_gateway *gw,
                 "SEND",
                 ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
+
         /* get timestamp for this identify */
-        gw->timer->identify = gw->timer->now;
+        gw->timer->identify_last = gw->timer->now;
     }
     else {
         logconf_info(
@@ -234,13 +235,22 @@ discord_gateway_send_resume(struct discord_gateway *gw,
 }
 
 static void
-on_ping_timer_cb(struct discord *client, struct discord_timer *timer)
+_discord_on_heartbeat_timeout(struct discord *client,
+                              struct discord_timer *timer)
 {
     (void)client;
     struct discord_gateway *gw = timer->data;
+
     if (~timer->flags & DISCORD_TIMER_CANCELED) {
-        discord_gateway_perform(gw);
-        const u64unix_ms next_hb = gw->timer->hbeat + gw->timer->interval;
+        if (CCORD_OK == discord_gateway_perform(gw)
+            && ~gw->session->status & DISCORD_SESSION_SHUTDOWN
+            && gw->session->is_ready)
+        {
+            discord_gateway_send_heartbeat(gw, gw->payload.seq);
+        }
+        const u64unix_ms next_hb =
+            gw->timer->hbeat_last + gw->timer->hbeat_interval;
+
         timer->interval =
             (int64_t)(next_hb) - (int64_t)discord_timestamp(client);
         if (timer->interval < 1) timer->interval = 1;
@@ -275,12 +285,13 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
                 "SEND",
                 ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
+
         /* update heartbeat timestamp */
-        gw->timer->hbeat = gw->timer->now;
-        if (!gw->timer->ping_timer)
-            gw->timer->ping_timer =
-                discord_internal_timer(CLIENT(gw, gw), on_ping_timer_cb, gw,
-                                       (int64_t)gw->timer->interval);
+        gw->timer->hbeat_last = gw->timer->now;
+        if (!gw->timer->hbeat_timer)
+            gw->timer->hbeat_timer = discord_internal_timer(
+                CLIENT(gw, gw), _discord_on_heartbeat_timeout, gw,
+                (int64_t)gw->timer->hbeat_interval);
     }
     else {
         logconf_info(
@@ -316,8 +327,6 @@ discord_gateway_send_request_guild_members(
             ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " REQUEST_GUILD_MEMBERS "
                                                     "(%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
-        /* update heartbeat timestamp */
-        gw->timer->hbeat = gw->timer->now;
     }
     else {
         logconf_info(
@@ -357,9 +366,6 @@ discord_gateway_send_update_voice_state(
                                       "(%d bytes): %s channels [@@@_%zu_@@@]",
             b.pos, event->channel_id ? "join" : "leave",
             info.loginfo.counter + 1);
-
-        /* update heartbeat timestamp */
-        gw->timer->hbeat = gw->timer->now;
     }
     else {
         logconf_info(

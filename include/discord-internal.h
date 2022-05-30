@@ -674,21 +674,40 @@ struct discord_gateway {
 
     /** timers kept for synchronization */
     struct {
-        /** fixed interval between heartbeats */
-        u64unix_ms interval;
-        /** last heartbeat pulse timestamp */
-        u64unix_ms hbeat;
-        /** Gateway's concept of "now" */
+        /**
+         * Gateway's concept of "now"
+         * @note updated at discord_gateway_perform()
+         */
         u64unix_ms now;
-        /** timestamp of last succesful identify request */
-        u64unix_ms identify;
-        /** timestamp of last succesful event timestamp in ms
-         *      (resets every 60s) */
+        /**
+         * fixed interval between heartbeats
+         * @note obtained at `HELLO`
+         */
+        u64unix_ms hbeat_interval;
+        /**
+         * last heartbeat pulse timestamp
+         * @note first sent at `READY` and `RESUME`, then updated every
+         *      `hbeat_interval`
+         */
+        u64unix_ms hbeat_last;
+        /** 
+         * timestamp of last succesful identify request
+         * @note updated at discord_gateway_send_identify()
+         */
+        u64unix_ms identify_last;
+        /**
+         * timestamp of last succesful event
+         * @note resets every 60s
+         */
         u64unix_ms event;
-        /** latency obtained from HEARTBEAT and HEARTBEAT_ACK interval */
+        /** timer id for heartbeat timer */
+        unsigned hbeat_timer;
+
+        /**
+         * latency obtained from `HEARTBEAT` and `HEARTBEAT_ACK` response
+         *      interval
+         */
         int ping_ms;
-        /** timer id for ping timer */
-        unsigned ping_timer;
         /** ping rwlock  */
         pthread_rwlock_t rwlock;
     } * timer;

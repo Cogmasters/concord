@@ -385,14 +385,13 @@ discord_bucket_insert(struct discord_ratelimiter *rl,
 }
 
 static void
-_discord_bucket_pop(struct discord_bucket *b)
+_discord_bucket_request_select(struct discord_bucket *b)
 {
     QUEUE(struct discord_request) *qelem = QUEUE_HEAD(&b->queues.next);
     QUEUE_REMOVE(qelem);
     QUEUE_INIT(qelem);
 
     b->busy_req = QUEUE_DATA(qelem, struct discord_request, entry);
-    if (b->busy_req->b == NULL) abort();
 }
 
 void
@@ -421,7 +420,7 @@ discord_bucket_request_selector(struct discord_ratelimiter *rl,
             continue;
         }
 
-        _discord_bucket_pop(b);
+        _discord_bucket_request_select(b);
         (*iter)(data, b->busy_req);
 
         /* if bucket has no pending requests then remove it from

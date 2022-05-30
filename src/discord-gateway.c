@@ -67,12 +67,12 @@ on_hello(struct discord_gateway *gw)
 {
     jsmnf_pair *f;
 
-    gw->timer->interval = 0;
-    gw->timer->hbeat = gw->timer->now;
+    gw->timer->hbeat_interval = 0;
 
     if ((f = jsmnf_find(gw->payload.data, gw->payload.json,
                         "heartbeat_interval", 18)))
-        gw->timer->interval = strtoull(gw->payload.json + f->v.pos, NULL, 10);
+        gw->timer->hbeat_interval =
+            strtoull(gw->payload.json + f->v.pos, NULL, 10);
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         discord_gateway_send_resume(gw, &(struct discord_resume){
@@ -186,13 +186,13 @@ on_dispatch(struct discord_gateway *gw)
     /* XXX: this should only apply for user dispatched payloads? */
 #if 0
   /* Ratelimit check */
-  if (gw->timer->now - gw->timer->event < 60000) {
+  if (gw->timer->now - gw->timer->event_last < 60000) {
     ++gw->session->event_count;
     ASSERT_S(gw->session->event_count < 120,
              "Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
-    gw->timer->event = gw->timer->now;
+    gw->timer->event_last = gw->timer->now;
     gw->session->event_count = 0;
   }
 #endif
@@ -296,7 +296,7 @@ on_heartbeat_ack(struct discord_gateway *gw)
 {
     /* get request / response interval in milliseconds */
     pthread_rwlock_wrlock(&gw->timer->rwlock);
-    gw->timer->ping_ms = (int)(gw->timer->now - gw->timer->hbeat);
+    gw->timer->ping_ms = (int)(gw->timer->now - gw->timer->hbeat_last);
     pthread_rwlock_unlock(&gw->timer->rwlock);
 
     logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
@@ -477,11 +477,11 @@ default_scheduler_cb(struct discord *a,
 }
 
 static int
-on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
+_discord_on_gateway_perform(struct io_poller *io, CURLM *mhandle, void *p_gw)
 {
     (void)io;
     (void)mhandle;
-    return discord_gateway_perform(user_data);
+    return discord_gateway_perform(p_gw);
 }
 
 void
@@ -505,7 +505,8 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* Web-Sockets handler */
     gw->mhandle = curl_multi_init();
-    io_poller_curlm_add(client->io_poller, gw->mhandle, on_io_poller_curl, gw);
+    io_poller_curlm_add(client->io_poller, gw->mhandle,
+                        _discord_on_gateway_perform, gw);
     gw->ws = ws_init(&cbs, gw->mhandle, &attr);
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
@@ -540,11 +541,12 @@ discord_gateway_init(struct discord_gateway *gw,
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-    if (gw->timer->ping_timer)
-        discord_internal_timer_ctl(
-            CLIENT(gw, gw),
-            &(struct discord_timer){ .id = gw->timer->ping_timer,
-                                     .flags = DISCORD_TIMER_DELETE });
+    if (gw->timer->hbeat_timer)
+        discord_internal_timer_ctl(CLIENT(gw, gw),
+                                   &(struct discord_timer){
+                                       .id = gw->timer->hbeat_timer,
+                                       .flags = DISCORD_TIMER_DELETE,
+                                   });
     /* cleanup WebSockets handle */
     io_poller_curlm_del(CLIENT(gw, gw)->io_poller, gw->mhandle);
     curl_multi_cleanup(gw->mhandle);
@@ -613,9 +615,9 @@ static int
 _ws_curl_debug_trace(
     CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
 {
-    const char *text;
     (void)handle;
     (void)userp;
+    const char *text;
 
     switch (type) {
     case CURLINFO_TEXT:
@@ -765,22 +767,9 @@ discord_gateway_end(struct discord_gateway *gw)
 CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
-    /* check for pending transfer, exit on failure */
+    /* check for pending transfer, exit if not running */
     if (!ws_multi_socket_run(gw->ws, &gw->timer->now))
         return CCORD_DISCORD_CONNECTION;
-
-    /* client is in the process of shutting down */
-    if (gw->session->status & DISCORD_SESSION_SHUTDOWN) return CCORD_OK;
-
-    /* client is in the process of connecting */
-    if (!gw->session->is_ready) return CCORD_OK;
-
-    /* check if timespan since first pulse is greater than
-     * minimum heartbeat interval required */
-    if (gw->timer->interval < gw->timer->now - gw->timer->hbeat) {
-        discord_gateway_send_heartbeat(gw, gw->payload.seq);
-    }
-
     return CCORD_OK;
 }
 
