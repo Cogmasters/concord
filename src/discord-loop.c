@@ -84,11 +84,8 @@ discord_run(struct discord *client)
                                 poll_time / 1000);
 
             now = (int64_t)discord_timestamp_us(client);
-
+            
             if (0 == poll_result) {
-                if (ccord_has_sigint != 0) {
-                    discord_shutdown(client);
-                }
 
                 if (client->on_idle) {
                     client->on_idle(client);
@@ -110,6 +107,7 @@ discord_run(struct discord *client)
                 CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
                                     0);
 
+            if (ccord_has_sigint != 0) discord_shutdown(client);
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
                 /* use poll_errno instead of errno */
