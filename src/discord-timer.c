@@ -112,6 +112,7 @@ _discord_timer_ctl(struct discord *client,
 #define TIMER_TRY_DELETE                                                      \
     if (timer.flags & DISCORD_TIMER_DELETE) {                                 \
         priority_queue_del(timers->q, timer.id);                              \
+        timers->active.skip_update_phase = false;                             \
         continue;                                                             \
     }
 
@@ -124,6 +125,7 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
     struct discord_timer timer;
     timers->active.timer = &timer;
 
+    timers->active.skip_update_phase = false;
     for (int64_t trigger, max_iterations = 100000;
          (timer.id = priority_queue_peek(timers->q, &trigger, &timer))
          && max_iterations > 0;
@@ -133,20 +135,23 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         if ((max_iterations & 0x1F) == 0) {
             now = (int64_t)discord_timestamp_us(client);
             // break if we've spent too much time running timers
-            if (now - start_time > 3000) break;
+            if (now - start_time > 10000) break;
         }
 
         // no timers to run
         if (trigger > now || trigger == -1) break;
 
-        if (~timer.flags & DISCORD_TIMER_CANCELED) TIMER_TRY_DELETE;
+        if (~timer.flags & DISCORD_TIMER_CANCELED) {
+            TIMER_TRY_DELETE;
 
-        if (timer.repeat > 0 && ~timer.flags & DISCORD_TIMER_CANCELED)
-            timer.repeat--;
+            if (timer.repeat > 0) timer.repeat--;
+        }
 
-        timers->active.skip_update_phase = false;
         if (timer.cb) timer.cb(client, &timer);
-        if (timers->active.skip_update_phase) continue;
+        if (timers->active.skip_update_phase) {
+            timers->active.skip_update_phase = false;
+            continue;
+        }
 
         if ((timer.repeat == 0 || timer.flags & DISCORD_TIMER_CANCELED)
             && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
@@ -157,16 +162,14 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         TIMER_TRY_DELETE;
 
         int64_t next = -1;
-        if (timer.repeat != 0 && timer.delay != -1
+        if (timer.delay != -1 && timer.interval >= 0 && timer.repeat != 0
             && ~timer.flags & DISCORD_TIMER_CANCELED)
         {
-            if (timer.interval >= 0) {
-                next = ((timer.flags & DISCORD_TIMER_INTERVAL_FIXED) ? trigger
-                                                                     : now)
-                       + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
-                              ? timer.interval
-                              : timer.interval * 1000);
-            }
+            next =
+                ((timer.flags & DISCORD_TIMER_INTERVAL_FIXED) ? trigger : now)
+                + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
+                       ? timer.interval
+                       : timer.interval * 1000);
         }
         timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS;
         priority_queue_update(timers->q, timer.id, &next, &timer);
