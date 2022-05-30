@@ -19,24 +19,20 @@ _discord_init(struct discord *new_client)
     discord_refcounter_init(&new_client->refcounter, &new_client->conf);
     discord_message_commands_init(&new_client->commands, &new_client->conf);
 
-    discord_rest_init(&new_client->rest, &new_client->conf,
-                      &new_client->token);
+    discord_rest_init(&new_client->rest, &new_client->conf, new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
-                         &new_client->token);
+                         new_client->token);
 #ifdef CCORD_VOICE
     discord_voice_connections_init(new_client);
 #endif
 
-    /* fetch the client user structure */
-    if (new_client->token.size) {
-        struct discord_ret_user ret = { 0 };
-        CCORDcode code;
-
-        ret.sync = &new_client->self;
-        code = discord_get_current_user(new_client, &ret);
+    if (new_client->token) { /* fetch client's user structure */
+        CCORDcode code =
+            discord_get_current_user(new_client, &(struct discord_ret_user){
+                                                     .sync = &new_client->self,
+                                                 });
         ASSERT_S(CCORD_OK == code, "Couldn't fetch client's user object");
     }
-
     new_client->is_original = true;
 }
 
@@ -50,8 +46,7 @@ discord_init(const char token[])
     /* silence terminal input by default */
     logconf_set_quiet(&new_client->conf, true);
 
-    new_client->token.start = (char *)token;
-    new_client->token.size = token ? cog_str_bounds_check(token, 128) : 0;
+    if (token && *token) cog_strndup(token, strlen(token), &new_client->token);
 
     _discord_init(new_client);
 
@@ -61,9 +56,8 @@ discord_init(const char token[])
 struct discord *
 discord_config_init(const char config_file[])
 {
-    char *path[2] = { "discord", "" };
+    struct ccord_szbuf_readonly field;
     struct discord *new_client;
-    struct logconf_field field;
     FILE *fp;
 
     fp = fopen(config_file, "rb");
@@ -75,21 +69,16 @@ discord_config_init(const char config_file[])
 
     fclose(fp);
 
-    path[1] = "token";
-    field = logconf_get_field(&new_client->conf, path,
-                              sizeof(path) / sizeof *path);
-    if (!strncmp("YOUR-BOT-TOKEN", field.start, field.size))
-        memset(&new_client->token, 0, sizeof(new_client->token));
-    else {
-        new_client->token.start = field.start;
-        new_client->token.size = field.size;
-    }
+    field = discord_config_get_field(new_client,
+                                     (char *[2]){ "discord", "token" }, 2);
+    if (field.size && 0 != strncmp("YOUR-BOT-TOKEN", field.start, field.size))
+        cog_strndup(field.start, field.size, &new_client->token);
+
     _discord_init(new_client);
 
     /* check for default prefix in config file */
-    path[1] = "default_prefix";
-    field = logconf_get_field(&new_client->conf, path,
-                              sizeof(path) / sizeof *path);
+    field = discord_config_get_field(
+        new_client, (char *[2]){ "discord", "default_prefix" }, 2);
     if (field.size) {
         jsmn_parser parser;
         jsmntok_t tokens[16];
@@ -184,6 +173,7 @@ discord_cleanup(struct discord *client)
         discord_timers_cleanup(client, &client->timers.user);
         discord_timers_cleanup(client, &client->timers.internal);
         logconf_cleanup(&client->conf);
+        if (client->token) free(client->token);
     }
     free(client);
 }

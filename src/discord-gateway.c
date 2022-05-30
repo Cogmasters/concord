@@ -74,6 +74,7 @@ on_hello(struct discord_gateway *gw)
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         discord_gateway_send_resume(gw, &(struct discord_resume){
+                                            .token = gw->id.token,
                                             .session_id = gw->session->id,
                                             .seq = gw->payload.seq,
                                         });
@@ -485,21 +486,16 @@ _discord_on_gateway_perform(struct io_poller *io, CURLM *mhandle, void *p_gw)
 void
 discord_gateway_init(struct discord_gateway *gw,
                      struct logconf *conf,
-                     struct ccord_szbuf_readonly *token)
+                     const char token[])
 {
     struct discord *client = CLIENT(gw, gw);
-
     /* Web-Sockets callbacks */
-    struct ws_callbacks cbs = { 0 };
+    struct ws_callbacks cbs = { .data = gw,
+                                .on_connect = &on_connect_cb,
+                                .on_text = &on_text_cb,
+                                .on_close = &on_close_cb };
     /* Web-Sockets custom attributes */
-    struct ws_attr attr = { 0 };
-
-    cbs.data = gw;
-    cbs.on_connect = &on_connect_cb;
-    cbs.on_text = &on_text_cb;
-    cbs.on_close = &on_close_cb;
-
-    attr.conf = conf;
+    struct ws_attr attr = { .conf = conf };
 
     /* Web-Sockets handler */
     gw->mhandle = curl_multi_init();
@@ -515,17 +511,15 @@ discord_gateway_init(struct discord_gateway *gw,
     /* client connection status */
     gw->session = calloc(1, sizeof *gw->session);
     gw->session->retry.enable = true;
-    gw->session->retry.limit = 5; /* TODO: shouldn't be a hard limit */
+    gw->session->retry.limit = 5; /* FIXME: shouldn't be a hard limit */
 
     /* connection identify token */
-    cog_strndup(token->start, token->size, &gw->id.token);
-
+    gw->id.token = (char *)token;
     /* connection identify properties */
     gw->id.properties = calloc(1, sizeof *gw->id.properties);
     gw->id.properties->os = OSNAME;
     gw->id.properties->browser = "concord";
     gw->id.properties->device = "concord";
-
     /* the bot initial presence */
     gw->id.presence = calloc(1, sizeof *gw->id.presence);
     gw->id.presence->status = "online";
@@ -553,7 +547,6 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     pthread_rwlock_destroy(&gw->timer->rwlock);
     free(gw->timer);
     /* cleanup bot identification */
-    if (gw->id.token) free(gw->id.token);
     free(gw->id.properties);
     free(gw->id.presence);
     /* cleanup client session */

@@ -60,9 +60,9 @@ _discord_on_rest_perform(struct io_poller *io, CURLM *mhandle, void *p_rest)
 void
 discord_rest_init(struct discord_rest *rest,
                   struct logconf *conf,
-                  struct ccord_szbuf_readonly *token)
+                  const char token[])
 {
-    if (!token->size)
+    if (!token || !*token)
         logconf_branch(&rest->conf, conf, "DISCORD_WEBHOOK");
     else
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");

@@ -22,16 +22,11 @@ _discord_request_cleanup(struct discord_request *req)
 static void
 _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 {
-    struct ccord_szbuf *token = p_token;
     char auth[128];
-    int len;
-
-    len = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size,
-                   token->start);
+    int len = snprintf(auth, sizeof(auth), "Bot %s", (char *)p_token);
     ASSERT_NOT_OOB(len, sizeof(auth));
 
     ua_conn_add_header(conn, "Authorization", auth);
-
 #ifdef CCORD_DEBUG_HTTP
     curl_easy_setopt(ua_conn_get_easy_handle(conn), CURLOPT_VERBOSE, 1L);
 #endif
@@ -40,13 +35,13 @@ _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 void
 discord_requestor_init(struct discord_requestor *rqtor,
                        struct logconf *conf,
-                       struct ccord_szbuf_readonly *token)
+                       const char token[])
 {
     logconf_branch(&rqtor->conf, conf, "DISCORD_REQUEST");
 
     rqtor->ua = ua_init(&(struct ua_attr){ .conf = conf });
     ua_set_url(rqtor->ua, DISCORD_API_BASE_URL);
-    ua_set_opt(rqtor->ua, token, &_discord_on_curl_setopt);
+    ua_set_opt(rqtor->ua, (char *)token, &_discord_on_curl_setopt);
 
     /* queues are malloc'd to guarantee a client cloned by
      * discord_clone() will share the same queue with the original */

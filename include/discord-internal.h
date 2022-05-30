@@ -493,7 +493,7 @@ struct discord_requestor {
  */
 void discord_requestor_init(struct discord_requestor *rqtor,
                             struct logconf *conf,
-                            struct ccord_szbuf_readonly *token);
+                            const char token[]);
 
 /**
  * @brief Free the request handler
@@ -585,7 +585,7 @@ struct discord_rest {
  */
 void discord_rest_init(struct discord_rest *rest,
                        struct logconf *conf,
-                       struct ccord_szbuf_readonly *token);
+                       const char token[]);
 
 /**
  * @brief Free an REST handle
@@ -690,7 +690,7 @@ struct discord_gateway {
          *      `hbeat_interval`
          */
         u64unix_ms hbeat_last;
-        /** 
+        /**
          * timestamp of last succesful identify request
          * @note updated at discord_gateway_send_identify()
          */
@@ -777,7 +777,7 @@ struct discord_gateway {
  */
 void discord_gateway_init(struct discord_gateway *gw,
                           struct logconf *conf,
-                          struct ccord_szbuf_readonly *token);
+                          const char token[]);
 
 /**
  * @brief Free a Gateway handle
@@ -1126,7 +1126,7 @@ struct discord {
     /** whether this is the original client or a clone */
     bool is_original;
     /** the bot token */
-    struct ccord_szbuf_readonly token;
+    char *token;
     /** the io poller for listening to file descriptors */
     struct io_poller *io_poller;
 
