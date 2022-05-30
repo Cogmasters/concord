@@ -180,7 +180,7 @@ unsigned discord_internal_timer(struct discord *client,
  *  @{ */
 
 /**
- * @brief Value assigned to @ref discord_bucket `performing_req` field in case
+ * @brief Value assigned to @ref discord_bucket `busy_req` field in case
  *      it's being timed-out
  */
 #define DISCORD_BUCKET_TIMEOUT (void *)(0xf)
@@ -210,6 +210,12 @@ struct discord_ratelimiter {
 
     /* client-wide global ratelimiting */
     u64unix_ms *global_wait_ms;
+
+    /** bucket queues */
+    struct {
+        /** buckets that are currently pending (have pending requests) */
+        QUEUE(struct discord_bucket) pending;
+    } queues;
 };
 
 /**
@@ -229,16 +235,6 @@ void discord_ratelimiter_init(struct discord_ratelimiter *rl,
  * @param rl the handle initialized with discord_ratelimiter_init()
  */
 void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
-
-/**
- * @brief Iterate known buckets
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param iter the user callback to be called per bucket
- */
-void discord_ratelimiter_foreach_bucket(
-    struct discord_ratelimiter *rl,
-    void (*iter)(struct discord_ratelimiter *rl, struct discord_bucket *b));
 
 /**
  * @brief Build unique key formed from the HTTP method and endpoint
@@ -274,17 +270,24 @@ struct discord_bucket {
     char hash[64];
     /** maximum connections this bucket can handle before ratelimit */
     long limit;
-    /** connections this bucket can do before waiting for cooldown */
+    /** connections this bucket can do before pending for cooldown */
     long remaining;
     /** timestamp of when cooldown timer resets */
     u64unix_ms reset_tstamp;
-    /** pending requests */
-    QUEUE(struct discord_request) pending_queue;
+
     /**
-     * pointer to this bucket's currently performing request
+     * pointer to this bucket's currently busy request
      * @note @ref DISCORD_BUCKET_TIMEOUT if bucket is being ratelimited
      */
-    struct discord_request *performing_req;
+    struct discord_request *busy_req;
+
+    /** request queues */
+    struct {
+        /** next requests queue */
+        QUEUE(struct discord_request) next;
+    } queues;
+    /** entry for @ref discord_ratelimiter pending buckets queue */
+    QUEUE entry;
 };
 
 /**
@@ -298,15 +301,6 @@ u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
                                       struct discord_bucket *bucket);
 
 /**
- * @brief Try to timeout bucket for pending cooldown time
- *
- * @param rl the handle initialized with discord_ratelimiter_init()
- * @param bucket the bucket to wait on cooldown
- */
-void discord_bucket_try_timeout(struct discord_ratelimiter *rl,
-                                struct discord_bucket *b);
-
-/**
  * @brief Get a `struct discord_bucket` assigned to `key`
  *
  * @param rl the handle initialized with discord_ratelimiter_init()
@@ -317,25 +311,44 @@ struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
                                           const char key[]);
 
 /**
- * @brief Insert request into bucket's pending queue
+ * @brief Insert into bucket's next requests queue
  *
+ * @param rl the handle initialized with discord_ratelimiter_init()
  * @param b the bucket to insert the request to
- * @param req the request obtained via discord_requestor_start_request()
+ * @param req the request to be inserted to bucket
  * @param high_priority if high priority then request shall be prioritized over
  *      already enqueued requests
  */
-void discord_bucket_add_request(struct discord_bucket *b,
-                                struct discord_request *req,
-                                bool high_priority);
+void discord_bucket_insert(struct discord_ratelimiter *rl,
+                           struct discord_bucket *b,
+                           struct discord_request *req,
+                           bool high_priority);
 
 /**
- * @brief Remove head request from bucket's pending queue
+ * @brief Iterate and select next requests
+ * @note discord_bucket_unselect() must be called once bucket's current request
+ *      is done and its next one should be selected
  *
- * @param b the bucket to fetch the request from
- * @return the request
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param data user arbitrary data
+ * @param iter the user callback to be called per bucket
  */
-struct discord_request *discord_bucket_remove_request(
-    struct discord_bucket *b);
+void discord_bucket_request_selector(
+    struct discord_ratelimiter *rl,
+    void *data,
+    void (*iter)(void *data, struct discord_request *req));
+
+/**
+ * @brief Unselect a request provided at discord_ratelimiter_request_selector()
+ * @note counterpart to discord_ratelimiter_request_selector()
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param b the request's bucket
+ * @param req the request to unslect
+ */
+void discord_bucket_request_unselect(struct discord_ratelimiter *rl,
+                                     struct discord_bucket *b,
+                                     struct discord_request *req);
 
 /** @} DiscordInternalRESTRequestRatelimit */
 
@@ -425,10 +438,10 @@ struct discord_request {
 
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
-    /** the request bucket's queue entry */
-    QUEUE entry;
     /** synchronize synchronous requests */
     pthread_cond_t *cond;
+    /** entry for @ref discord_ratelimitor and @ref discord_bucket queues */
+    QUEUE entry;
 };
 
 /** @brief The handle used for handling asynchronous requests */
@@ -466,7 +479,7 @@ struct discord_requestor {
         pthread_mutex_t pending;
         /** finished queue lock */
         pthread_mutex_t finished;
-    } *qlocks;
+    } * qlocks;
 };
 
 /**

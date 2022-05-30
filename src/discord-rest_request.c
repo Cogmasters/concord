@@ -266,11 +266,11 @@ _discord_request_retry(struct discord_requestor *rqtor,
     if (!req->retry || req->retry_attempt++ >= rqtor->retry_limit)
         return false;
 
-    req->b->performing_req = NULL;
     ua_conn_reset(req->conn);
 
     /* FIXME: wait_ms > 0 should be dealt with aswell */
-    if (req->wait_ms <= 0) discord_bucket_add_request(req->b, req, true);
+    if (req->wait_ms <= 0)
+        discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
 
     return true;
 }
@@ -281,13 +281,16 @@ discord_request_cancel(struct discord_requestor *rqtor,
 {
     struct discord_refcounter *rc = &CLIENT(rqtor, rest.requestor)->refcounter;
 
-    if (req->conn) ua_conn_stop(req->conn);
-
-    if (req->dispatch.keep)
+    if (req->conn) {
+        ua_conn_stop(req->conn);
+    }
+    if (req->dispatch.keep) {
         discord_refcounter_decr(rc, (void *)req->dispatch.keep);
-    if (req->dispatch.data) discord_refcounter_decr(rc, req->dispatch.data);
+    }
+    if (req->dispatch.data) {
+        discord_refcounter_decr(rc, req->dispatch.data);
+    }
 
-    req->b->performing_req = NULL;
     req->body.size = 0;
     req->method = 0;
     *req->endpoint = '\0';
@@ -298,7 +301,6 @@ discord_request_cancel(struct discord_requestor *rqtor,
     memset(req, 0, sizeof(struct discord_attributes));
 
     QUEUE_REMOVE(&req->entry);
-    QUEUE_INIT(&req->entry);
     pthread_mutex_lock(&rqtor->qlocks->recycling);
     QUEUE_INSERT_TAIL(&rqtor->queues->recycling, &req->entry);
     pthread_mutex_unlock(&rqtor->qlocks->recycling);
@@ -314,7 +316,7 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
                                      .code = req->code };
 
     if (req->code != CCORD_OK) {
-        req->dispatch.fail(client, &resp);
+        if (req->dispatch.fail) req->dispatch.fail(client, &resp);
     }
     else if (req->dispatch.done.typed) {
         if (!req->dispatch.has_type) {
@@ -329,6 +331,8 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
     /* enqueue request for retry or recycle */
     if (!_discord_request_retry(rqtor, req))
         discord_request_cancel(rqtor, req);
+
+    discord_bucket_request_unselect(&rqtor->ratelimiter, req->b, req);
 
     return resp.code;
 }
@@ -459,49 +463,35 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 }
 
 static void
-_discord_request_try_begin(struct discord_ratelimiter *rl,
-                           struct discord_bucket *b)
+_discord_request_send(void *p_rqtor, struct discord_request *req)
 {
-    /* skip if bucket is already busy performing */
-    if (b->performing_req) return;
+    struct discord_requestor *rqtor = p_rqtor;
+    CURL *ehandle;
 
-    if (!b->remaining) {
-        discord_bucket_try_timeout(rl, b);
+    req->conn = ua_conn_start(rqtor->ua);
+    ehandle = ua_conn_get_easy_handle(req->conn);
+
+    if (HTTP_MIMEPOST == req->method) {
+        ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
+        ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
     }
-    else if (!QUEUE_EMPTY(&b->pending_queue)) {
-        struct discord_requestor *rqtor =
-            CONTAINEROF(rl, struct discord_requestor, ratelimiter);
-
-        struct discord_request *req = discord_bucket_remove_request(b);
-        CURL *ehandle;
-
-        b->performing_req = req;
-        req->conn = ua_conn_start(rqtor->ua);
-        ehandle = ua_conn_get_easy_handle(req->conn);
-
-        if (HTTP_MIMEPOST == req->method) {
-            ua_conn_add_header(req->conn, "Content-Type",
-                               "multipart/form-data");
-            ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
-        }
-        else {
-            ua_conn_add_header(req->conn, "Content-Type", "application/json");
-        }
-
-        ua_conn_setup(req->conn, &(struct ua_conn_attr){
-                                     .method = req->method,
-                                     .body = req->body.start,
-                                     .body_size = req->body.size,
-                                     .endpoint = req->endpoint,
-                                     .base_url = NULL,
-                                 });
-
-        /* link 'req' to 'ehandle' for easy retrieval */
-        curl_easy_setopt(ehandle, CURLOPT_PRIVATE, req);
-
-        /* initiate libcurl transfer */
-        curl_multi_add_handle(rqtor->mhandle, ehandle);
+    else {
+        ua_conn_add_header(req->conn, "Content-Type", "application/json");
     }
+
+    ua_conn_setup(req->conn, &(struct ua_conn_attr){
+                                 .method = req->method,
+                                 .body = req->body.start,
+                                 .body_size = req->body.size,
+                                 .endpoint = req->endpoint,
+                                 .base_url = NULL,
+                             });
+
+    /* link 'req' to 'ehandle' for easy retrieval */
+    curl_easy_setopt(ehandle, CURLOPT_PRIVATE, req);
+
+    /* initiate libcurl transfer */
+    curl_multi_add_handle(rqtor->mhandle, ehandle);
 }
 
 CCORDcode
@@ -522,12 +512,12 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
 
         req = QUEUE_DATA(qelem, struct discord_request, entry);
         b = discord_bucket_get(&rqtor->ratelimiter, req->key);
-        discord_bucket_add_request(b, req, req->dispatch.high_p);
+        discord_bucket_insert(&rqtor->ratelimiter, b, req,
+                              req->dispatch.high_p);
     }
 
-    /* TODO: replace foreach with a mechanism that loops only busy buckets */
-    discord_ratelimiter_foreach_bucket(&rqtor->ratelimiter,
-                                       &_discord_request_try_begin);
+    discord_bucket_request_selector(&rqtor->ratelimiter, rqtor,
+                                    &_discord_request_send);
 
     /* FIXME: redundant return value (constant) */
     return CCORD_OK;

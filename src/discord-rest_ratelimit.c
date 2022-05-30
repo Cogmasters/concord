@@ -57,7 +57,6 @@ discord_ratelimiter_build_key(enum http_method method,
     KEY_PUSH(key, &keylen, "%d", method);
     do {
         u64snowflake id_arg = 0ULL;
-        size_t i;
 
         curr += 1 + currlen;
         currlen = strcspn(curr, "/");
@@ -66,7 +65,7 @@ discord_ratelimiter_build_key(enum http_method method,
         if (0 == strncmp(prev, "reactions", 9)) break;
 
         /* consume variadic arguments */
-        for (i = 0; i < currlen; ++i) {
+        for (size_t i = 0; i < currlen; ++i) {
             if ('%' == curr[i]) {
                 const char *type = &curr[i + 1];
 
@@ -93,12 +92,9 @@ discord_ratelimiter_build_key(enum http_method method,
         if (0 == strncmp(curr, "%" PRIu64, currlen)
             && (0 == strncmp(prev, "channels", 8)
                 || 0 == strncmp(prev, "guilds", 6)))
-        {
             KEY_PUSH(key, &keylen, "%" PRIu64, id_arg);
-        }
-        else {
+        else
             KEY_PUSH(key, &keylen, "%.*s", (int)currlen, curr);
-        }
 
         prev = curr;
 
@@ -117,13 +113,13 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     struct discord_bucket *b = calloc(1, sizeof *b);
     int len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
                        hash->start);
-
     ASSERT_NOT_OOB(len, sizeof(b->hash));
 
     b->remaining = 1;
     b->limit = limit;
 
-    QUEUE_INIT(&b->pending_queue);
+    QUEUE_INIT(&b->queues.next);
+    QUEUE_INIT(&b->entry);
 
     chash_assign(rl, key, b, RATELIMITER_TABLE);
 
@@ -145,42 +141,41 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
     /* initialize 'singleton' buckets */
     rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
     rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX);
+
+    /* initialize bucket queues */
+    QUEUE_INIT(&rl->queues.pending);
 }
 
+/* cancel all pending and busy requests from a bucket */
 static void
-_discord_bucket_cancel(struct discord_ratelimiter *rl,
-                       struct discord_bucket *b)
+_discord_bucket_cancel_all(struct discord_ratelimiter *rl,
+                           struct discord_bucket *b)
 {
     struct discord_requestor *rqtor =
         CONTAINEROF(rl, struct discord_requestor, ratelimiter);
 
     /* cancel busy transfer */
-    if (b->performing_req) discord_request_cancel(rqtor, b->performing_req);
+    if (b->busy_req) discord_request_cancel(rqtor, b->busy_req);
 
     /* move pending tranfers to recycling */
     pthread_mutex_lock(&rqtor->qlocks->recycling);
-    QUEUE_ADD(&rqtor->queues->recycling, &b->pending_queue);
+    QUEUE_ADD(&rqtor->queues->recycling, &b->queues.next);
     pthread_mutex_unlock(&rqtor->qlocks->recycling);
-    QUEUE_INIT(&b->pending_queue);
+    QUEUE_INIT(&b->queues.next);
 }
 
 void
 discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 {
-    discord_ratelimiter_foreach_bucket(rl, &_discord_bucket_cancel);
-    free(rl->global_wait_ms);
-    __chash_free(rl, RATELIMITER_TABLE);
-}
-
-void
-discord_ratelimiter_foreach_bucket(struct discord_ratelimiter *rl,
-                                   void (*iter)(struct discord_ratelimiter *rl,
-                                                struct discord_bucket *b))
-{
+    /* iterate and cleanup known buckets */
     for (int i = 0; i < rl->capacity; ++i) {
         struct _discord_route *r = rl->routes + i;
-        if (CHASH_FILLED == r->state) (*iter)(rl, r->bucket);
+        if (CHASH_FILLED == r->state) {
+            _discord_bucket_cancel_all(rl, r->bucket);
+        }
     }
+    free(rl->global_wait_ms);
+    __chash_free(rl, RATELIMITER_TABLE);
 }
 
 static struct discord_bucket *
@@ -210,19 +205,19 @@ _discord_bucket_wake_cb(struct discord *client, struct discord_timer *timer)
     (void)client;
     struct discord_bucket *b = timer->data;
 
-    b->performing_req = NULL;
+    b->busy_req = NULL;
     b->remaining = 1;
 }
 
-void
-discord_bucket_try_timeout(struct discord_ratelimiter *rl,
-                           struct discord_bucket *b)
+static void
+_discord_bucket_try_timeout(struct discord_ratelimiter *rl,
+                            struct discord_bucket *b)
 {
     struct discord *client = CLIENT(rl, rest.requestor.ratelimiter);
     int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
 
     if (delay_ms < 0) delay_ms = 0;
-    b->performing_req = DISCORD_BUCKET_TIMEOUT;
+    b->busy_req = DISCORD_BUCKET_TIMEOUT;
 
     _discord_timer_ctl(client, &client->rest.timers,
                        &(struct discord_timer){
@@ -245,14 +240,32 @@ discord_bucket_get(struct discord_ratelimiter *rl, const char key[])
     if (NULL != (b = _discord_bucket_find(rl, key))) {
         logconf_trace(&rl->conf, "[%.4s] Found a bucket match for '%s'!",
                       b->hash, key);
-
-        return b;
     }
+    else {
+        b = rl->null;
+        logconf_trace(&rl->conf, "[null] Couldn't match known buckets to '%s'",
+                      key);
+    }
+    return b;
+}
 
-    logconf_trace(&rl->conf, "[null] Couldn't match known buckets to '%s'",
-                  key);
+/* check if successive requests made from a `null` singleton bucket can be
+ *      matched to another bucket */
+static void
+_discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
+                                 struct discord_bucket *b,
+                                 const char key[])
+{
+    QUEUE(struct discord_request) queue, *qelem;
+    struct discord_request *req;
 
-    return rl->null;
+    QUEUE_MOVE(&rl->null->queues.next, &queue);
+    while (!QUEUE_EMPTY(&queue)) {
+        qelem = QUEUE_HEAD(&queue);
+        req = QUEUE_DATA(qelem, struct discord_request, entry);
+        if (strcmp(req->key, key) != 0) b = rl->null;
+        discord_bucket_insert(rl, b, req, false);
+    }
 }
 
 static struct discord_bucket *
@@ -262,7 +275,6 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
 {
     struct discord_bucket *b;
 
-    /* create bucket if it doesn't exist yet */
     if (NULL == (b = _discord_bucket_find(rl, key))) {
         struct ua_szbuf_readonly hash =
             ua_info_get_header(info, "x-ratelimit-bucket");
@@ -270,7 +282,7 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
         if (!hash.size) { /* bucket is not part of a ratelimiting group */
             b = rl->miss;
         }
-        else {
+        else { /* create bucket if it doesn't exist yet */
             struct ua_szbuf_readonly limit =
                 ua_info_get_header(info, "x-ratelimit-limit");
             long _limit =
@@ -281,6 +293,8 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
     }
 
     logconf_debug(&rl->conf, "[%.4s] Match '%s' to bucket", b->hash, key);
+
+    _discord_ratelimiter_null_filter(rl, b, key);
 
     return b;
 }
@@ -338,34 +352,6 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
                   b->hash, b->remaining, b->reset_tstamp);
 }
 
-/* in case of asynchronous requests, check if successive requests made from a
- * `null` singleton bucket can be matched to another bucket */
-static void
-_discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
-                                 struct discord_bucket *b,
-                                 const char key[])
-{
-    QUEUE(struct discord_request) queue, *qelem;
-    struct discord_request *req;
-
-    QUEUE_MOVE(&rl->null->pending_queue, &queue);
-    QUEUE_INIT(&rl->null->pending_queue);
-
-    while (!QUEUE_EMPTY(&queue)) {
-        qelem = QUEUE_HEAD(&queue);
-        QUEUE_REMOVE(qelem);
-
-        req = QUEUE_DATA(qelem, struct discord_request, entry);
-        if (0 == strcmp(req->key, key)) {
-            QUEUE_INSERT_TAIL(&b->pending_queue, qelem);
-            req->b = b;
-        }
-        else {
-            QUEUE_INSERT_TAIL(&rl->null->pending_queue, qelem);
-        }
-    }
-}
-
 /* attempt to create and/or update bucket's values */
 void
 discord_ratelimiter_build(struct discord_ratelimiter *rl,
@@ -374,34 +360,92 @@ discord_ratelimiter_build(struct discord_ratelimiter *rl,
                           struct ua_info *info)
 {
     /* try to match to existing, or create new bucket */
-    if (b == rl->null) {
-        b = _discord_ratelimiter_get_match(rl, key, info);
-        _discord_ratelimiter_null_filter(rl, b, key);
-    }
+    if (b == rl->null) b = _discord_ratelimiter_get_match(rl, key, info);
     /* populate bucket with response header values */
     _discord_bucket_populate(rl, b, info);
 }
 
 void
-discord_bucket_add_request(struct discord_bucket *b,
-                           struct discord_request *req,
-                           bool high_priority)
+discord_bucket_insert(struct discord_ratelimiter *rl,
+                      struct discord_bucket *b,
+                      struct discord_request *req,
+                      bool high_priority)
 {
     QUEUE_REMOVE(&req->entry);
-    QUEUE_INIT(&req->entry);
     if (high_priority)
-        QUEUE_INSERT_HEAD(&b->pending_queue, &req->entry);
+        QUEUE_INSERT_HEAD(&b->queues.next, &req->entry);
     else
-        QUEUE_INSERT_TAIL(&b->pending_queue, &req->entry);
+        QUEUE_INSERT_TAIL(&b->queues.next, &req->entry);
+
+    /* add bucket to ratelimiter pending buckets queue (if not already in) */
+    if (QUEUE_EMPTY(&b->entry))
+        QUEUE_INSERT_HEAD(&rl->queues.pending, &b->entry);
+
     req->b = b;
 }
 
-struct discord_request *
-discord_bucket_remove_request(struct discord_bucket *b)
+static void
+_discord_bucket_pop(struct discord_bucket *b)
 {
-    QUEUE(struct discord_request) *qelem = QUEUE_HEAD(&b->pending_queue);
+    QUEUE(struct discord_request) *qelem = QUEUE_HEAD(&b->queues.next);
     QUEUE_REMOVE(qelem);
     QUEUE_INIT(qelem);
 
-    return QUEUE_DATA(qelem, struct discord_request, entry);
+    b->busy_req = QUEUE_DATA(qelem, struct discord_request, entry);
+    if (b->busy_req->b == NULL) abort();
+}
+
+void
+discord_bucket_request_selector(struct discord_ratelimiter *rl,
+                                void *data,
+                                void (*iter)(void *data,
+                                             struct discord_request *req))
+{
+    QUEUE(struct discord_bucket) queue, *qelem;
+    struct discord_bucket *b;
+
+    /* loop through each pending buckets and enqueue next requests */
+    QUEUE_MOVE(&rl->queues.pending, &queue);
+    while (!QUEUE_EMPTY(&queue)) {
+        qelem = QUEUE_HEAD(&queue);
+        b = QUEUE_DATA(qelem, struct discord_bucket, entry);
+
+        QUEUE_REMOVE(qelem);
+        if (b->busy_req) {
+            QUEUE_INSERT_TAIL(&rl->queues.pending, qelem);
+            continue;
+        }
+        if (!b->remaining) {
+            _discord_bucket_try_timeout(rl, b);
+            QUEUE_INSERT_TAIL(&rl->queues.pending, qelem);
+            continue;
+        }
+
+        _discord_bucket_pop(b);
+        (*iter)(data, b->busy_req);
+
+        /* if bucket has no pending requests then remove it from
+         * ratelimiter pending buckets queue */
+        if (QUEUE_EMPTY(&b->queues.next))
+            QUEUE_INIT(qelem);
+        else /* otherwise move it back to pending buckets queue */
+            QUEUE_INSERT_TAIL(&rl->queues.pending, qelem);
+    }
+}
+
+void
+discord_bucket_request_unselect(struct discord_ratelimiter *rl,
+                                struct discord_bucket *b,
+                                struct discord_request *req)
+{
+    (void)rl;
+    ASSERT_S(req == b->busy_req,
+             "Attempt to unlock a bucket with a non-busy request");
+
+    if (!req->retry && QUEUE_EMPTY(&b->queues.next)) {
+        QUEUE_REMOVE(&b->entry);
+        QUEUE_INIT(&b->entry);
+    }
+    b->busy_req = NULL;
+    req->b = NULL;
 }
