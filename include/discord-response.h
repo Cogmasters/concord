@@ -8,9 +8,13 @@
 #ifndef DISCORD_RESPONSE_H
 #define DISCORD_RESPONSE_H
 
+/** @brief The response for the completed request */
 struct discord_response {
+    /** user arbitrary data provided at @ref discord_ret */
     void *data;
+    /** kept concord's parameter provided at @ref discord_ret */
     const void *keep;
+    /** request completion status @see @ref ConcordError */
     CCORDcode code;
 };
 
@@ -22,7 +26,7 @@ struct discord_response {
  * @brief Macro containing common fields for `struct discord_ret*` datatypes
  * @note this exists for alignment purposes
  */
-#define DISCORD_RET_DEFAULT_FIELDS                                           \
+#define DISCORD_RET_DEFAULT_FIELDS                                            \
     /** user arbitrary data to be passed to `done` or `fail` callbacks */     \
     void *data;                                                               \
     /** cleanup method to be called for `data`, once its no longer            \
@@ -32,14 +36,14 @@ struct discord_response {
     const void *keep;                                                         \
     /** if `true` then request will be prioritized over already enqueued      \
         requests */                                                           \
-    bool high_p;                                                              \
+    bool high_priority;                                                       \
     /** optional callback to be executed on a failed request */               \
     void (*fail)(struct discord * client, struct discord_response * resp)
 
-#define DISCORD_RETURN(_type)                                                \
+#define DISCORD_RETURN(_type)                                                 \
     /** @brief Request's return context */                                    \
     struct discord_ret_##_type {                                              \
-        DISCORD_RET_DEFAULT_FIELDS;                                          \
+        DISCORD_RET_DEFAULT_FIELDS;                                           \
         /** optional callback to be executed on a successful request */       \
         void (*done)(struct discord * client,                                 \
                      struct discord_response *resp,                           \
