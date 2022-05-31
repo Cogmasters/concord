@@ -39,6 +39,14 @@ CCORDcode discord_worker_add(struct discord *client,
                              void (*callback)(void *data),
                              void *data);
 
+/**
+ * @brief Wait until worker-threads being used by `client` have been joined
+ *
+ * @param client the client currently using a worker thread
+ * @CCORD_return
+ */
+CCORDcode discord_worker_join(struct discord *client);
+
 /** @} DiscordInternalWorker */
 
 #endif /* DISCORD_WORKER_H */

@@ -32,8 +32,8 @@ typedef int CCORDcode;
 #define CCORD_OWNERSHIP -9
 /** couldn't perform action because resource is unavailable */
 #define CCORD_UNAVAILABLE -10
-/** couldn't enqueue request (queue is full) */
-#define CCORD_FULL_QUEUE -11
+/** couldn't enqueue worker thread (queue is full) */
+#define CCORD_FULL_WORKER -11
 
 /** @} ConcordError */
 
