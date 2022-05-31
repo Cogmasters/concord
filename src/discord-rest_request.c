@@ -239,30 +239,6 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
     }
 }
 
-/**
- * @brief If request can be retried then it will be moved back to its
- *      bucket's queue
- * @note this **MUST** be called only after discord_request_info_extract()
- *
- * @param rqtor the requestor handle initialized with discord_requestor_init()
- * @param req the request to be checked for retry
- * @return `true` if request has been enqueued for retry
- */
-static bool
-_discord_request_retry(struct discord_requestor *rqtor,
-                       struct discord_request *req)
-{
-    if (req->retry_attempt++ >= rqtor->retry_limit) return false;
-
-    ua_conn_reset(req->conn);
-
-    /* FIXME: wait_ms > 0 should be dealt with aswell */
-    if (req->wait_ms <= 0)
-        discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
-
-    return true;
-}
-
 void
 discord_request_cancel(struct discord_requestor *rqtor,
                        struct discord_request *req)
@@ -343,6 +319,30 @@ discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
             io_poller_wakeup(rest->io_poller);
         }
     }
+}
+
+/**
+ * @brief If request can be retried then it will be moved back to its
+ *      bucket's queue
+ * @note this **MUST** be called only after discord_request_info_extract()
+ *
+ * @param rqtor the requestor handle initialized with discord_requestor_init()
+ * @param req the request to be checked for retry
+ * @return `true` if request has been enqueued for retry
+ */
+static bool
+_discord_request_retry(struct discord_requestor *rqtor,
+                       struct discord_request *req)
+{
+    if (req->retry_attempt++ >= rqtor->retry_limit) return false;
+
+    ua_conn_reset(req->conn);
+
+    /* FIXME: wait_ms > 0 should be dealt with aswell */
+    if (req->wait_ms <= 0)
+        discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
+
+    return true;
 }
 
 /* parse request response and prepare callback that should be triggered
@@ -611,8 +611,10 @@ discord_request_begin(struct discord_requestor *rqtor,
         pthread_mutex_unlock(&rqtor->qlocks->pending);
     }
     else { /* wait for request's completion if sync mode is active */
-        req->cond = &(pthread_cond_t)PTHREAD_COND_INITIALIZER;
+        req->cond = &(pthread_cond_t){ 0 };
+        pthread_cond_init(req->cond, NULL);
         pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
+        pthread_cond_destroy(req->cond);
         req->cond = NULL;
         pthread_mutex_unlock(&rqtor->qlocks->pending);
 
