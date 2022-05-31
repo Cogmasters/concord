@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <errno.h>
 
-#include "work.h"
+#include "discord-worker.h"
 #include "threadpool.h"
 
 /** true after threadpool initialization */
@@ -13,7 +13,7 @@ static _Bool once;
 static threadpool_t *tpool;
 
 int
-work_global_init(void)
+discord_worker_global_init(void)
 {
     static int nthreads = 0;
     static int queue_size = 0;
@@ -48,13 +48,16 @@ work_global_init(void)
 }
 
 int
-work_run(void (*callback)(void *data), void *data)
+discord_worker_add(struct discord *client,
+                   void (*callback)(void *data),
+                   void *data)
 {
+    (void)client;
     return threadpool_add(tpool, callback, data, 0);
 }
 
 void
-work_global_cleanup(void)
+discord_worker_global_cleanup(void)
 {
     /* cleanup thread-pool manager */
     threadpool_destroy(tpool, threadpool_graceful);

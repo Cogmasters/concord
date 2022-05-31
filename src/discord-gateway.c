@@ -4,6 +4,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
+#include "discord-worker.h"
 #include "osname.h"
 
 /* return enumerator as string in case of a match */
@@ -238,10 +239,11 @@ on_dispatch(struct discord_gateway *gw)
         break;
     case DISCORD_EVENT_WORKER_THREAD: {
         struct discord_gateway *clone = _discord_gateway_clone(gw);
-        int ret = work_run(&_discord_gateway_dispatch_thread, clone);
+        CCORDcode code = discord_worker_add(
+            CLIENT(clone, gw), &_discord_gateway_dispatch_thread, clone);
 
-        if (ret != 0) {
-            log_error("Couldn't execute worker-thread (code %d)", ret);
+        if (code != CCORD_OK) {
+            log_error("Couldn't schedule worker-thread (code %d)", code);
             _discord_gateway_clone_cleanup(clone);
         }
     } break;
@@ -759,9 +761,9 @@ CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
     /* check for pending transfer, exit if not running */
-    if (!ws_multi_socket_run(gw->ws, &gw->timer->now))
-        return CCORD_DISCORD_CONNECTION;
-    return CCORD_OK;
+    return !ws_multi_socket_run(gw->ws, &gw->timer->now)
+               ? CCORD_DISCORD_CONNECTION
+               : CCORD_OK;
 }
 
 void

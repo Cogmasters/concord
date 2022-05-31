@@ -22,8 +22,7 @@ COGUTILS_OBJS = $(COGUTILS_DIR)/cog-utils.o  \
                 $(COGUTILS_DIR)/logconf.o    \
                 $(COGUTILS_DIR)/json-build.o \
                 $(COGUTILS_DIR)/jsmn-find.o
-CORE_OBJS     = $(CORE_DIR)/work.o       \
-                $(CORE_DIR)/user-agent.o \
+CORE_OBJS     = $(CORE_DIR)/user-agent.o \
                 $(CORE_DIR)/websockets.o \
                 $(CORE_DIR)/io_poller.o
 THIRDP_OBJS   = $(THIRDP_DIR)/sha1.o           \
@@ -42,6 +41,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/discord-messagecommands.o   \
                 $(SRC_DIR)/discord-timer.o             \
                 $(SRC_DIR)/discord-misc.o              \
+                $(SRC_DIR)/discord-worker.o            \
                 $(SRC_DIR)/application_command.o       \
                 $(SRC_DIR)/interaction.o               \
                 $(SRC_DIR)/audit_log.o                 \

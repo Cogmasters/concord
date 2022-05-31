@@ -20,10 +20,8 @@
 #include "logconf.h"
 #include "user-agent.h"
 #include "websockets.h"
-#include "work.h"
 #include "cog-utils.h"
 #include "io_poller.h"
-
 #include "queue.h"
 #include "priority_queue.h"
 

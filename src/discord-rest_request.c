@@ -569,10 +569,8 @@ discord_request_begin(struct discord_requestor *rqtor,
     if (attr->attachments.size)
         _discord_attachments_dup(&req->attachments, &attr->attachments);
 
-    if (body) {
-        /* copy request body */
-        if (body->size > req->body.realsize) {
-            /* needs to increase buffer size */
+    if (body) { /* copy request body */
+        if (body->size > req->body.realsize) { /* buffer needs a resize */
             void *tmp = realloc(req->body.start, body->size);
             ASSERT_S(tmp != NULL, "Out of memory");
 
