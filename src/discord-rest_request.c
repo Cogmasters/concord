@@ -611,10 +611,9 @@ discord_request_begin(struct discord_requestor *rqtor,
         pthread_mutex_unlock(&rqtor->qlocks->pending);
     }
     else { /* wait for request's completion if sync mode is active */
-        req->cond = &(pthread_cond_t){ 0 };
-        pthread_cond_init(req->cond, NULL);
+        pthread_cond_t temp_cond = PTHREAD_COND_INITIALIZER;
+        req->cond = &temp_cond;
         pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
-        pthread_cond_destroy(req->cond);
         req->cond = NULL;
         pthread_mutex_unlock(&rqtor->qlocks->pending);
 
