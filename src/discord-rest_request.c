@@ -161,7 +161,7 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
     }
 }
 
-static void
+static bool
 _discord_request_info_extract(struct discord_requestor *rqtor,
                               struct discord_request *req,
                               struct ua_info *info)
@@ -169,79 +169,73 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
     ua_info_extract(req->conn, info);
 
     if (info->code != CCORD_HTTP_CODE) { /* CCORD_OK or internal error */
-        req->retry = false;
         req->code = info->code;
+        return false;
     }
-    else {
-        switch (info->httpcode) {
-        case HTTP_FORBIDDEN:
-        case HTTP_NOT_FOUND:
-        case HTTP_BAD_REQUEST:
-            req->retry = false;
-            req->code = CCORD_DISCORD_JSON_CODE;
-            break;
-        case HTTP_UNAUTHORIZED:
-            logconf_fatal(
-                &rqtor->conf,
-                "UNAUTHORIZED: Please provide a valid authentication token");
-            req->retry = false;
-            req->code = CCORD_DISCORD_BAD_AUTH;
-            break;
-        case HTTP_METHOD_NOT_ALLOWED:
-            logconf_fatal(
-                &rqtor->conf,
-                "METHOD_NOT_ALLOWED: The server couldn't recognize the "
-                "received HTTP method");
-            req->retry = false;
-            req->code = info->code;
-            break;
-        case HTTP_TOO_MANY_REQUESTS: {
-            struct ua_szbuf_readonly body = ua_info_get_body(info);
-            struct jsmnftok message = { 0 };
-            double retry_after = 1.0;
-            bool is_global = false;
-            jsmn_parser parser;
-            jsmntok_t tokens[16];
 
-            jsmn_init(&parser);
-            if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
-                               sizeof(tokens) / sizeof *tokens))
+    switch (info->httpcode) {
+    case HTTP_FORBIDDEN:
+    case HTTP_NOT_FOUND:
+    case HTTP_BAD_REQUEST:
+        req->code = CCORD_DISCORD_JSON_CODE;
+        return false;
+    case HTTP_UNAUTHORIZED:
+        logconf_fatal(
+            &rqtor->conf,
+            "UNAUTHORIZED: Please provide a valid authentication token");
+        req->code = CCORD_DISCORD_BAD_AUTH;
+        return false;
+    case HTTP_METHOD_NOT_ALLOWED:
+        logconf_fatal(&rqtor->conf,
+                      "METHOD_NOT_ALLOWED: The server couldn't recognize the "
+                      "received HTTP method");
+
+        req->code = info->code;
+        return false;
+    case HTTP_TOO_MANY_REQUESTS: {
+        struct ua_szbuf_readonly body = ua_info_get_body(info);
+        struct jsmnftok message = { 0 };
+        double retry_after = 1.0;
+        bool is_global = false;
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
+
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
             {
-                jsmnf_loader loader;
-                jsmnf_pair pairs[16];
+                jsmnf_pair *f;
 
-                jsmnf_init(&loader);
-                if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
-                                   pairs, sizeof(pairs) / sizeof *pairs))
-                {
-                    jsmnf_pair *f;
-
-                    if ((f = jsmnf_find(pairs, body.start, "global", 6)))
-                        is_global = ('t' == body.start[f->v.pos]);
-                    if ((f = jsmnf_find(pairs, body.start, "message", 7)))
-                        message = f->v;
-                    if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
-                        retry_after = strtod(body.start + f->v.pos, NULL);
-                }
+                if ((f = jsmnf_find(pairs, body.start, "global", 6)))
+                    is_global = ('t' == body.start[f->v.pos]);
+                if ((f = jsmnf_find(pairs, body.start, "message", 7)))
+                    message = f->v;
+                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
+                    retry_after = strtod(body.start + f->v.pos, NULL);
             }
-
-            req->wait_ms = (int64_t)(1000 * retry_after);
-            if (req->wait_ms < 0) req->wait_ms = 0;
-
-            logconf_warn(&rqtor->conf,
-                         "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
-                         is_global ? "GLOBAL " : "", req->wait_ms, message.len,
-                         body.start + message.pos);
-
-            req->retry = true;
-            req->code = info->code;
-            break;
         }
-        default:
-            req->retry = (info->httpcode >= 500); /* retry if Server Error */
-            req->code = info->code;
-            break;
-        }
+
+        req->wait_ms = (int64_t)(1000 * retry_after);
+        if (req->wait_ms < 0) req->wait_ms = 0;
+
+        logconf_warn(&rqtor->conf,
+                     "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
+                     is_global ? "GLOBAL " : "", req->wait_ms, message.len,
+                     body.start + message.pos);
+
+        req->code = info->code;
+        return true;
+    }
+    default:
+        req->code = info->code;
+        return (info->httpcode >= 500); /* retry if Server Error */
     }
 }
 
@@ -258,8 +252,7 @@ static bool
 _discord_request_retry(struct discord_requestor *rqtor,
                        struct discord_request *req)
 {
-    if (!req->retry || req->retry_attempt++ >= rqtor->retry_limit)
-        return false;
+    if (req->retry_attempt++ >= rqtor->retry_limit) return false;
 
     ua_conn_reset(req->conn);
 
@@ -322,12 +315,8 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
             discord_refcounter_decr(&client->refcounter, req->response.data);
         }
     }
-
-    /* enqueue request for retry or recycle */
-    if (!_discord_request_retry(rqtor, req))
-        discord_request_cancel(rqtor, req);
-
-    discord_bucket_request_unselect(&rqtor->ratelimiter, req->b, req);
+    /* enqueue request for recycle */
+    discord_request_cancel(rqtor, req);
 
     return resp.code;
 }
@@ -361,7 +350,6 @@ discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
 CCORDcode
 discord_requestor_info_read(struct discord_requestor *rqtor)
 {
-    CCORDcode code;
     int alive = 0;
 
     if (CURLM_OK != curl_multi_socket_all(rqtor->mhandle, &alive))
@@ -377,6 +365,7 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
         if (CURLMSG_DONE == msg->msg) {
             const CURLcode ecode = msg->data.result;
             struct discord_request *req;
+            bool retry = false;
 
             curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &req);
             curl_multi_remove_handle(rqtor->mhandle, msg->easy_handle);
@@ -386,7 +375,7 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                 struct ua_szbuf_readonly body;
                 struct ua_info info;
 
-                _discord_request_info_extract(rqtor, req, &info);
+                retry = _discord_request_info_extract(rqtor, req, &info);
                 body = ua_info_get_body(&info);
 
                 if (info.code != CCORD_OK) {
@@ -421,40 +410,34 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 
                 ua_info_cleanup(&info);
             } break;
-            case CURLE_READ_ERROR:
+            default:
                 logconf_warn(&rqtor->conf, "%s (CURLE code: %d)",
                              curl_easy_strerror(ecode), ecode);
 
-                req->retry = true;
+                retry = (ecode == CURLE_READ_ERROR);
                 req->code = CCORD_CURLE_INTERNAL;
-
-                break;
-            default:
-                logconf_error(&rqtor->conf, "%s (CURLE code: %d)",
-                              curl_easy_strerror(ecode), ecode);
-
-                req->retry = false;
-                req->code = CCORD_CURLE_INTERNAL;
-
                 break;
             }
 
-            code = req->code;
+            if (!retry || !_discord_request_retry(rqtor, req)) {
+                discord_bucket_request_unselect(&rqtor->ratelimiter, req->b,
+                                                req);
 
-            if (req->dispatch.sync) {
-                pthread_mutex_lock(&rqtor->qlocks->pending);
-                pthread_cond_signal(req->cond);
-                pthread_mutex_unlock(&rqtor->qlocks->pending);
-            }
-            else {
-                pthread_mutex_lock(&rqtor->qlocks->finished);
-                QUEUE_INSERT_TAIL(&rqtor->queues->finished, &req->entry);
-                pthread_mutex_unlock(&rqtor->qlocks->finished);
+                if (req->dispatch.sync) {
+                    pthread_mutex_lock(&rqtor->qlocks->pending);
+                    pthread_cond_signal(req->cond);
+                    pthread_mutex_unlock(&rqtor->qlocks->pending);
+                }
+                else {
+                    pthread_mutex_lock(&rqtor->qlocks->finished);
+                    QUEUE_INSERT_TAIL(&rqtor->queues->finished, &req->entry);
+                    pthread_mutex_unlock(&rqtor->qlocks->finished);
+                }
             }
         }
     }
 
-    return code;
+    return CCORD_OK;
 }
 
 static void

@@ -441,7 +441,7 @@ discord_bucket_request_unselect(struct discord_ratelimiter *rl,
     ASSERT_S(req == b->busy_req,
              "Attempt to unlock a bucket with a non-busy request");
 
-    if (!req->retry && QUEUE_EMPTY(&b->queues.next)) {
+    if (QUEUE_EMPTY(&b->queues.next)) {
         QUEUE_REMOVE(&b->entry);
         QUEUE_INIT(&b->entry);
     }

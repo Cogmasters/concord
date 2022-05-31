@@ -433,8 +433,6 @@ struct discord_request {
     CCORDcode code;
     /** how long to wait for in case of request being ratelimited */
     int64_t wait_ms;
-    /** whether this request should be retried */
-    bool retry;
 
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
