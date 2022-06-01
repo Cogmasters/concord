@@ -66,24 +66,22 @@ discord_ratelimiter_build_key(enum http_method method,
 
         /* consume variadic arguments */
         for (size_t i = 0; i < currlen; ++i) {
-            if ('%' == curr[i]) {
-                const char *type = &curr[i + 1];
+            if (curr[i] != '%') continue;
 
-                switch (*type) {
-                default:
-                    VASSERT_S(0 == strncmp(type, PRIu64, sizeof(PRIu64) - 1),
-                              "Internal error: Missing check for '%%%s'",
-                              type);
+            const char *type = &curr[i + 1];
+            switch (*type) {
+            default:
+                VASSERT_S(0 == strncmp(type, PRIu64, sizeof(PRIu64) - 1),
+                          "Internal error: Missing check for '%%%s'", type);
 
-                    id_arg = va_arg(args, u64snowflake);
-                    break;
-                case 's':
-                    (void)va_arg(args, char *);
-                    break;
-                case 'd':
-                    (void)va_arg(args, int);
-                    break;
-                }
+                id_arg = va_arg(args, u64snowflake);
+                break;
+            case 's':
+                (void)va_arg(args, char *);
+                break;
+            case 'd':
+                (void)va_arg(args, int);
+                break;
             }
         }
 
@@ -170,9 +168,8 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
     /* iterate and cleanup known buckets */
     for (int i = 0; i < rl->capacity; ++i) {
         struct _discord_route *r = rl->routes + i;
-        if (CHASH_FILLED == r->state) {
+        if (CHASH_FILLED == r->state)
             _discord_bucket_cancel_all(rl, r->bucket);
-        }
     }
     free(rl->global_wait_ms);
     __chash_free(rl, RATELIMITER_TABLE);

@@ -240,10 +240,10 @@ on_dispatch(struct discord_gateway *gw)
     case DISCORD_EVENT_WORKER_THREAD: {
         struct discord_gateway *clone = _discord_gateway_clone(gw);
         CCORDcode code = discord_worker_add(
-            CLIENT(clone, gw), &_discord_gateway_dispatch_thread, clone);
+            CLIENT(gw, gw), &_discord_gateway_dispatch_thread, clone);
 
         if (code != CCORD_OK) {
-            log_error("Couldn't schedule worker-thread (code %d)", code);
+            log_error("Couldn't start worker-thread (code %d)", code);
             _discord_gateway_clone_cleanup(clone);
         }
     } break;
@@ -507,8 +507,8 @@ discord_gateway_init(struct discord_gateway *gw,
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
     gw->timer = calloc(1, sizeof *gw->timer);
-    if (pthread_rwlock_init(&gw->timer->rwlock, NULL))
-        ERR("Couldn't initialize pthread rwlock");
+    ASSERT_S(!pthread_rwlock_init(&gw->timer->rwlock, NULL),
+             "Couldn't initialize Gateway's rwlock");
 
     /* client connection status */
     gw->session = calloc(1, sizeof *gw->session);

@@ -140,16 +140,16 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
             curl_mime_name(part, name);
         }
         else if (req->attachments.array[i].filename) {
-            CURLcode code;
+            CURLcode ecode;
 
             /* fetch local file by the filename */
             part = curl_mime_addpart(mime);
-            code =
+            ecode =
                 curl_mime_filedata(part, req->attachments.array[i].filename);
-            if (code != CURLE_OK) {
+            if (ecode != CURLE_OK) {
                 char errbuf[256];
                 snprintf(errbuf, sizeof(errbuf), "%s (file: %s)",
-                         curl_easy_strerror(code),
+                         curl_easy_strerror(ecode),
                          req->attachments.array[i].filename);
                 perror(errbuf);
             }
@@ -491,7 +491,7 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
         req = QUEUE_DATA(qelem, struct discord_request, entry);
         b = discord_bucket_get(&rqtor->ratelimiter, req->key);
         discord_bucket_insert(&rqtor->ratelimiter, b, req,
-                              req->dispatch.high_p);
+                              req->dispatch.high_priority);
     }
 
     discord_bucket_request_selector(&rqtor->ratelimiter, rqtor,

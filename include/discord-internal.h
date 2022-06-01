@@ -436,7 +436,7 @@ struct discord_request {
     int retry_attempt;
     /** synchronize synchronous requests */
     pthread_cond_t *cond;
-    /** entry for @ref discord_ratelimitor and @ref discord_bucket queues */
+    /** entry for @ref discord_ratelimiter and @ref discord_bucket queues */
     QUEUE entry;
 };
 
@@ -1117,7 +1117,7 @@ bool discord_message_commands_try_perform(
  * @see discord_init(), discord_config_init(), discord_cleanup()
  */
 struct discord {
-    /** DISCORD logging module */
+    /** `DISCORD` logging module */
     struct logconf conf;
     /** whether this is the original client or a clone */
     bool is_original;
@@ -1156,8 +1156,18 @@ struct discord {
     /** triggers once per loop cycle */
     discord_ev_idle on_cycle;
 
-    /** space for user arbitrary data */
+    /** user arbitrary data @see discord_set_data() */
     void *data;
+
+    /** keep tab of amount of worker threads being used by client */
+    struct {
+        /** amount of worker-threads currently being used by client */
+        int count;
+        /** synchronize `count` between workers */
+        pthread_mutex_t lock;
+        /** notify of `count` decrement */
+        pthread_cond_t cond;
+    } * workers;
 
 #ifdef CCORD_VOICE
     struct discord_voice vcs[DISCORD_MAX_VCS];

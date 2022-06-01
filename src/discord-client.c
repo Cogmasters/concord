@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> /* isgraph() */
 #include <errno.h>
 
 #include "discord.h"
 #include "discord-internal.h"
+#include "discord-worker.h"
 #include "cog-utils.h"
 
 static void
@@ -16,9 +16,14 @@ _discord_init(struct discord *new_client)
     discord_timers_init(&new_client->timers.user);
     new_client->io_poller = io_poller_create();
 
+    new_client->workers = calloc(1, sizeof *new_client->workers);
+    ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),
+             "Couldn't initialize Client's mutex");
+    ASSERT_S(!pthread_cond_init(&new_client->workers->cond, NULL),
+             "Couldn't initialize Client's cond");
+
     discord_refcounter_init(&new_client->refcounter, &new_client->conf);
     discord_message_commands_init(&new_client->commands, &new_client->conf);
-
     discord_rest_init(&new_client->rest, &new_client->conf, new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
                          new_client->token);
@@ -161,6 +166,7 @@ discord_cleanup(struct discord *client)
         _discord_clone_cleanup(client);
     }
     else {
+        discord_worker_join(client);
         discord_rest_cleanup(&client->rest);
         discord_gateway_cleanup(&client->gw);
         discord_message_commands_cleanup(&client->commands);
@@ -174,6 +180,9 @@ discord_cleanup(struct discord *client)
         discord_timers_cleanup(client, &client->timers.internal);
         logconf_cleanup(&client->conf);
         if (client->token) free(client->token);
+        pthread_mutex_destroy(&client->workers->lock);
+        pthread_cond_destroy(&client->workers->cond);
+        free(client->workers);
     }
     free(client);
 }
