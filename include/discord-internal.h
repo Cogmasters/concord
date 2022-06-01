@@ -8,6 +8,10 @@
 #ifndef DISCORD_INTERNAL_H
 #define DISCORD_INTERNAL_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include <pthread.h>
 
 #define JSONB_HEADER
@@ -1176,5 +1180,9 @@ struct discord {
 };
 
 /** @} DiscordInternal */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCORD_INTERNAL_H */

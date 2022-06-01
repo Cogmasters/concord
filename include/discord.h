@@ -11,6 +11,10 @@
 #ifndef DISCORD_H
 #define DISCORD_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include <inttypes.h>
 #include <stdbool.h>
 
@@ -503,5 +507,9 @@ bool discord_timer_cancel_and_delete(struct discord *client, unsigned id);
 
 /** @} DiscordTimer */
 /** @} Discord */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCORD_H */
