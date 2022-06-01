@@ -55,27 +55,27 @@ ENUM_END
 /** @CCORD_pub_struct{discord_audit_log} */
 PUB_STRUCT(discord_audit_log)
   /** list of audit log entries */
-  COND_WRITE(this->audit_log_entries != NULL)
+  COND_WRITE(self->audit_log_entries != NULL)
     FIELD_STRUCT_PTR(audit_log_entries, discord_audit_log_entries, *)
   COND_END
   /** list of guild scheduled events found in the audit log */
-  COND_WRITE(this->guild_scheduled_events != NULL)
+  COND_WRITE(self->guild_scheduled_events != NULL)
     FIELD_STRUCT_PTR(guild_scheduled_events, discord_guild_scheduled_events, *)
   COND_END
   /** list of partial integration objects */
-  COND_WRITE(this->integrations != NULL)
+  COND_WRITE(self->integrations != NULL)
     FIELD_STRUCT_PTR(integrations, discord_integrations, *)
   COND_END
   /** list of threads found in the audit log */
-  COND_WRITE(this->threads != NULL)
+  COND_WRITE(self->threads != NULL)
     FIELD_STRUCT_PTR(threads, discord_channels, *)
   COND_END
   /** list of users found in the audit log */
-  COND_WRITE(this->users != NULL)
+  COND_WRITE(self->users != NULL)
     FIELD_STRUCT_PTR(users, discord_users, *)
   COND_END
   /** list of webhooks found in the audit log */
-  COND_WRITE(this->webhooks != NULL)
+  COND_WRITE(self->webhooks != NULL)
     FIELD_STRUCT_PTR(webhooks, discord_webhooks, *)
   COND_END
 STRUCT_END
@@ -84,7 +84,7 @@ STRUCT(discord_audit_log_entry)
   /** ID of the affected entity (webhook, user, role, etc.) */
     FIELD_SNOWFLAKE(target_id)
   /** changes made to the target_id */
-  COND_WRITE(this->changes != NULL)
+  COND_WRITE(self->changes != NULL)
     FIELD_STRUCT_PTR(changes, discord_audit_log_changes, *)
   COND_END
   /** the user who made the changes */
@@ -92,11 +92,11 @@ STRUCT(discord_audit_log_entry)
   /** id of the entry */
     FIELD_SNOWFLAKE(id)
   /** type of action that occurred */
-  COND_WRITE(this->action_type != 0)
+  COND_WRITE(self->action_type != 0)
     FIELD_ENUM(action_type, discord_audit_log_events)
   COND_END
   /** additional info for certain action types */
-  COND_WRITE(this->options != NULL)
+  COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_optional_audit_entry_infos, *)
   COND_END
   /** the reason for the change (0-512) characters */
@@ -156,7 +156,7 @@ STRUCT(discord_get_guild_audit_log)
   /** filter the log before a certain entry ID */
     FIELD_SNOWFLAKE(before)
   /** how many entries are returned (default 50, minimum 1, maximum 100) */
-  COND_WRITE(this->limit >= 1 && this->limit <= 100)
+  COND_WRITE(self->limit >= 1 && self->limit <= 100)
     FIELD(limit, int, 50)
   COND_END
 STRUCT_END

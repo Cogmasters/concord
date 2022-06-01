@@ -20,7 +20,7 @@ PUB_STRUCT(discord_stage_instance)
   /** the topic of the Stage instance (1-120 characters) */
     FIELD_PTR(topic, char, *)
   /** the privacy level of the stage instance */
-  COND_WRITE(this->privacy_level != 0)
+  COND_WRITE(self->privacy_level != 0)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
   /** whether or not stage discovery is disabled @deprecated deprecated field */
@@ -42,7 +42,7 @@ PUB_STRUCT(discord_create_stage_instance)
   /** the topic of the Stage instance (1-120 characters) */
     FIELD_PTR(topic, char, *)
   /** the privacy level of the stage instance */
-  COND_WRITE(this->privacy_level != 0)
+  COND_WRITE(self->privacy_level != 0)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
 STRUCT_END
@@ -52,7 +52,7 @@ PUB_STRUCT(discord_modify_stage_instance)
   /** the topic of the Stage instance (1-120 characters) */
     FIELD_PTR(topic, char, *)
   /** the privacy level of the stage instance */
-  COND_WRITE(this->privacy_level != 0)
+  COND_WRITE(self->privacy_level != 0)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
 STRUCT_END

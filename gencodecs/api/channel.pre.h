@@ -108,7 +108,7 @@ PUB_STRUCT(discord_channel)
     FIELD_ENUM(type, discord_channel_types)
   /** the ID of the guild (may be missing for some channel objects received
        over gateway guild dispatches) */
-  COND_WRITE(this->guild_id != 0)
+  COND_WRITE(self->guild_id != 0)
     FIELD_SNOWFLAKE(guild_id)
   COND_END
   /** sorting position of the channel */
@@ -192,7 +192,7 @@ PUB_STRUCT(discord_message)
   /** when this message was sent */
     FIELD_TIMESTAMP(timestamp)
   /** when this message was edited (or null if never) */
-  COND_WRITE(this->edited_timestamp != 0)
+  COND_WRITE(self->edited_timestamp != 0)
     FIELD_TIMESTAMP(edited_timestamp)
   COND_END
   /** whether this was a TTS message */
@@ -353,15 +353,15 @@ STRUCT(discord_attachment)
   /** attachment ID */
     FIELD_SNOWFLAKE(id)
   /** name of file attached */
-  COND_WRITE(this->filename != NULL)
+  COND_WRITE(self->filename != NULL)
     FIELD_PTR(filename, char, *)
   COND_END
   /** description for the file */
-  COND_WRITE(this->description != NULL)
+  COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)
   COND_END
   /** the attachment media type */
-  COND_WRITE(this->content_type != NULL)
+  COND_WRITE(self->content_type != NULL)
     FIELD_PTR(content_type, char, *)
   COND_END
   /** size of file in bytes */
@@ -371,11 +371,11 @@ STRUCT(discord_attachment)
   /** proxied url of file */
     FIELD_PTR(proxy_url, char, *)
   /** height of file (if image) */
-  COND_WRITE(this->height != 0)
+  COND_WRITE(self->height != 0)
     FIELD(height, int, 0)
   COND_END
   /** width of file (if image) */
-  COND_WRITE(this->width != 0)
+  COND_WRITE(self->width != 0)
     FIELD(width, int, 0)
   COND_END
   /** whether this attachment is ephemeral */
@@ -398,36 +398,36 @@ PUB_STRUCT(discord_embed)
   /** url of embed */
     FIELD_PTR(url, char, *)
   /** timestamp of embed content */
-  COND_WRITE(this->timestamp != 0)
+  COND_WRITE(self->timestamp != 0)
     FIELD_TIMESTAMP(timestamp)
   COND_END
   /** color code of the embed */
-  COND_WRITE(this->color != 0)
+  COND_WRITE(self->color != 0)
     FIELD(color, int, 0)
   COND_END
   /** footer information */
-  COND_WRITE(this->footer != NULL)
+  COND_WRITE(self->footer != NULL)
     FIELD_STRUCT_PTR(footer, discord_embed_footer, *)
   COND_END
   /** image information */
-  COND_WRITE(this->image != NULL)
+  COND_WRITE(self->image != NULL)
     FIELD_STRUCT_PTR(image, discord_embed_image, *)
   COND_END
   /** thumbnail information */
-  COND_WRITE(this->thumbnail != NULL)
+  COND_WRITE(self->thumbnail != NULL)
     FIELD_STRUCT_PTR(thumbnail, discord_embed_thumbnail, *)
   COND_END
   /** video information */
-  COND_WRITE(this->video != NULL)
+  COND_WRITE(self->video != NULL)
     FIELD_STRUCT_PTR(video, discord_embed_video, *)
   COND_END
-  COND_WRITE(this->provider != NULL)
+  COND_WRITE(self->provider != NULL)
     FIELD_STRUCT_PTR(provider, discord_embed_provider, *)
   COND_END
-  COND_WRITE(this->author != NULL)
+  COND_WRITE(self->author != NULL)
     FIELD_STRUCT_PTR(author, discord_embed_author, *)
   COND_END
-  COND_WRITE(this->fields != NULL)
+  COND_WRITE(self->fields != NULL)
     FIELD_STRUCT_PTR(fields, discord_embed_fields, *)
   COND_END
 STRUCT_END
@@ -442,15 +442,15 @@ PUB_STRUCT(discord_embed_thumbnail)
   /** source url of thumbnail (only supports http(s) and attachments) */
     FIELD_PTR(url, char, *)
   /** a proxied url of the thumbnail */
-  COND_WRITE(this->proxy_url != NULL)
+  COND_WRITE(self->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
   COND_END
   /** height of thumbnail */
-  COND_WRITE(this->height != 0)
+  COND_WRITE(self->height != 0)
     FIELD(height, int, 0)
   COND_END
   /** width of thumbnail */
-  COND_WRITE(this->width != 0)
+  COND_WRITE(self->width != 0)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
@@ -458,19 +458,19 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_embed_video} */
 PUB_STRUCT(discord_embed_video)
   /** source url of video */
-  COND_WRITE(this->url != NULL)
+  COND_WRITE(self->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
   /** a proxied url of the video */
-  COND_WRITE(this->proxy_url != NULL)
+  COND_WRITE(self->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
   COND_END
   /** height of video */
-  COND_WRITE(this->height != 0)
+  COND_WRITE(self->height != 0)
     FIELD(height, int, 0)
   COND_END
   /** width of video */
-  COND_WRITE(this->width != 0)
+  COND_WRITE(self->width != 0)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
@@ -480,15 +480,15 @@ PUB_STRUCT(discord_embed_image)
   /** source url of image (only supports http(s) and attachments) */
     FIELD_PTR(url, char, *)
   /** a proxied url of the image */
-  COND_WRITE(this->proxy_url != NULL)
+  COND_WRITE(self->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
   COND_END
   /** height of image */
-  COND_WRITE(this->height != 0)
+  COND_WRITE(self->height != 0)
     FIELD(height, int, 0)
   COND_END
   /** width of image */
-  COND_WRITE(this->width != 0)
+  COND_WRITE(self->width != 0)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
@@ -496,11 +496,11 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_embed_provider} */
 PUB_STRUCT(discord_embed_provider)
   /** name of provider */
-  COND_WRITE(this->name != NULL)
+  COND_WRITE(self->name != NULL)
     FIELD_PTR(name, char, *)
   COND_END
   /** url of provider */
-  COND_WRITE(this->url != NULL)
+  COND_WRITE(self->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
 STRUCT_END
@@ -510,15 +510,15 @@ PUB_STRUCT(discord_embed_author)
   /** name of author */
     FIELD_PTR(name, char, *)
   /** url of author */
-  COND_WRITE(this->url != NULL)
+  COND_WRITE(self->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
   /** url of author icon (only supports http(s) and attachments) */
-  COND_WRITE(this->icon_url != NULL)
+  COND_WRITE(self->icon_url != NULL)
     FIELD_PTR(icon_url, char, *)
   COND_END
   /** a proxied url of author icon */
-  COND_WRITE(this->proxy_icon_url != NULL)
+  COND_WRITE(self->proxy_icon_url != NULL)
     FIELD_PTR(proxy_icon_url, char, *)
   COND_END
 STRUCT_END
@@ -528,11 +528,11 @@ PUB_STRUCT(discord_embed_footer)
   /** footer text */
     FIELD_PTR(text, char, *)
   /** url of footer icon (only supports http(s) and attachments) */
-  COND_WRITE(this->icon_url != NULL)
+  COND_WRITE(self->icon_url != NULL)
     FIELD_PTR(icon_url, char, *)
   COND_END
   /** a proxied url of footer icon */
-  COND_WRITE(this->proxy_icon_url != NULL)
+  COND_WRITE(self->proxy_icon_url != NULL)
     FIELD_PTR(proxy_icon_url, char, *)
   COND_END
 STRUCT_END
@@ -608,7 +608,7 @@ PUB_STRUCT(discord_modify_channel)
        supported and only in guilds with the `NEWS` feature */
     FIELD_ENUM(type, discord_channel_types)
   /** the position of the channel in the left-hand listing */
-  COND_WRITE(this->position != 0)
+  COND_WRITE(self->position != 0)
     FIELD(position, int, 0)
   COND_END
   /** 0-1024 character channel topic */
@@ -618,32 +618,32 @@ PUB_STRUCT(discord_modify_channel)
   /** amount of seconds a user has to wait before sending another message
        (0-21600); bots, as well as users with the permission
        `MANAGE_MESSAGES` or `MANAGE_CHANNEL`, are unaffected */
-  COND_WRITE(this->rate_limit_per_user != 0)
+  COND_WRITE(self->rate_limit_per_user != 0)
     FIELD(rate_limit_per_user, int, 0)
   COND_END
   /** the user limit of the voice channel; 0 refers to no limit, 1 to 99
        refers to a user limit */
-  COND_WRITE(this->user_limit != 0)
+  COND_WRITE(self->user_limit != 0)
     FIELD(user_limit, int, 0)
   COND_END
   /** channel or category-specific permissions */
-  COND_WRITE(this->permission_overwrites != NULL)
+  COND_WRITE(self->permission_overwrites != NULL)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   COND_END
   /** ID of the new parent category for a channel */
-  COND_WRITE(this->parent_id != 0)
+  COND_WRITE(self->parent_id != 0)
     FIELD_SNOWFLAKE(parent_id)
   COND_END
   /** channel voice region id, automatic when set to NULL */
     FIELD_PTR(rtc_region, char, *)
   /** the camera video quality mode of the voice channel */
-  COND_WRITE(this->video_quality_mode != 0)
+  COND_WRITE(self->video_quality_mode != 0)
     FIELD(video_quality_mode, int, 0)
   COND_END
   /** the default duration that the clients use (not the API) for newly
        created threads in the channel, in minutes, to automatically archive
        the thread after recent activity */
-  COND_WRITE(this->default_auto_archive_duration != 0)
+  COND_WRITE(self->default_auto_archive_duration != 0)
     FIELD(default_auto_archive_duration, int, 0)
   COND_END
   /* THREAD */
@@ -651,7 +651,7 @@ PUB_STRUCT(discord_modify_channel)
     FIELD(archived, bool, false)
   /** duration in minutes to automatically arhived the thread after recent
        activity, can be set to: 60, 1440, 4320, 10080 */
-  COND_WRITE(this->auto_archive_duration != 0)
+  COND_WRITE(self->auto_archive_duration != 0)
     FIELD(auto_archive_duration, int, 0)
   COND_END
   /** whether the thread is locked; when a thread is locked, only users with
@@ -665,19 +665,19 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 PUB_STRUCT(discord_get_channel_messages)
   /** get messages around this message ID */
-  COND_WRITE(this->around != 0)
+  COND_WRITE(self->around != 0)
     FIELD_SNOWFLAKE(around)
   COND_END
   /** get messages before this message ID */
-  COND_WRITE(this->before != 0)
+  COND_WRITE(self->before != 0)
     FIELD_SNOWFLAKE(before)
   COND_END
   /** get messages after this message ID */
-  COND_WRITE(this->after != 0)
+  COND_WRITE(self->after != 0)
     FIELD_SNOWFLAKE(after)
   COND_END
   /** max number of messages to return (1-100) */
-  COND_WRITE(this->limit != 0)
+  COND_WRITE(self->limit != 0)
     FIELD(limit, int, 50)
   COND_END
 STRUCT_END
@@ -692,28 +692,28 @@ PUB_STRUCT(discord_create_message)
   /** embedded `rich` content (up to 6000 characters) */
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** include to make your message a reply */
-  COND_WRITE(this->message_reference != NULL)
+  COND_WRITE(self->message_reference != NULL)
     FIELD_STRUCT_PTR(message_reference, discord_message_reference, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** IDs of up to 3 stickers in the server to send in the message */
-  COND_WRITE(this->sticker_ids != NULL)
+  COND_WRITE(self->sticker_ids != NULL)
     FIELD_STRUCT_PTR(sticker_ids, snowflakes, *)
   COND_END
   /** attachment objects with filename and description */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
        `SUPPRESS_EMBEDS` can be set) */
-  COND_WRITE(this->flags != 0)
+  COND_WRITE(self->flags != 0)
     FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
@@ -721,11 +721,11 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 PUB_STRUCT(discord_get_reactions)
   /** get users after this user ID */
-  COND_WRITE(this->after != 0)
+  COND_WRITE(self->after != 0)
     FIELD_SNOWFLAKE(after)
   COND_END
   /** max number of users to return (1-100) */
-  COND_WRITE(this->limit != 0)
+  COND_WRITE(self->limit != 0)
     FIELD(limit, int, 0)
   COND_END
 STRUCT_END
@@ -739,19 +739,19 @@ PUB_STRUCT(discord_edit_message)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        `SUPPRESS_EMBEDS` can be set) */
-  COND_WRITE(this->flags != 0)
+  COND_WRITE(self->flags != 0)
     FIELD_BITMASK(flags)
   COND_END
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** attachment objects with filename and description */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
@@ -766,12 +766,12 @@ STRUCT_END
 PUB_STRUCT(discord_edit_channel_permissions)
   /** the bitwise value of all allowed permissions (default \"0\")
         @see @ref DiscordPermissions */
-  COND_WRITE(this->allow != 0)
+  COND_WRITE(self->allow != 0)
     FIELD_BITMASK(allow)
   COND_END
   /** the bitwise value of all disallowed permissions (default \"0\") 
         @see @ref DiscordPermissions */
-  COND_WRITE(this->deny != 0)
+  COND_WRITE(self->deny != 0)
     FIELD_BITMASK(deny)
   COND_END
   /** 0 for a role or 1 for a member */
@@ -782,34 +782,34 @@ STRUCT_END
 PUB_STRUCT(discord_create_channel_invite)
   /** duration of invite in seconds before expiry, or 0 for never. between
        0 and 604800 (7 days) */
-  COND_WRITE(this->max_age != 0)
+  COND_WRITE(self->max_age != 0)
     FIELD(max_age, int, 86400)
   COND_END
   /** max number of uses or 0 for unlimited. betwee 0 and 100 */
-  COND_WRITE(this->max_uses != 0)
+  COND_WRITE(self->max_uses != 0)
     FIELD(max_uses, int, 0)
   COND_END
   /** whether this invite only grants temporary membership */
-  COND_WRITE(this->temporary != 0)
+  COND_WRITE(self->temporary != 0)
     FIELD(temporary, bool, false)
   COND_END
   /** if true, don't true to reuse a similar invite (useful for creating
        many unique one time use invites) */
-  COND_WRITE(this->unique != 0)
+  COND_WRITE(self->unique != 0)
     FIELD(unique, bool, false)
   COND_END
   /** the type of target for this voice channel invite */
-  COND_WRITE(this->target_type != 0)
+  COND_WRITE(self->target_type != 0)
     FIELD_ENUM(target_type, discord_invite_target_types)
   COND_END
   /** the id of the user whose stream to display for this invite, required
        if `target_type` is 1, the user must be streaming in the channel */
-  COND_WRITE(this->target_user_id != 0)
+  COND_WRITE(self->target_user_id != 0)
     FIELD_SNOWFLAKE(target_user_id)
   COND_END
   /** the id of the embedded application to open for this invite, required
        if `target_type` is 2, the application must have the `EMBEDDED` flag */
-  COND_WRITE(this->target_application_id != 0)
+  COND_WRITE(self->target_application_id != 0)
     FIELD_SNOWFLAKE(target_application_id)
   COND_END
 STRUCT_END
@@ -817,7 +817,7 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_follow_news_channel} */
 PUB_STRUCT(discord_follow_news_channel)
   /** id of target channel */
-  COND_WRITE(this->webhook_channel_id != 0)
+  COND_WRITE(self->webhook_channel_id != 0)
     FIELD_SNOWFLAKE(webhook_channel_id)
   COND_END
 STRUCT_END
@@ -836,13 +836,13 @@ PUB_STRUCT(discord_start_thread_with_message)
     FIELD_PTR(name, char, *)
   /** duration in minutes to automatically archive the thread after recent
        activity, can be set to: 60, 1440, 4320, 10080 */
-  COND_WRITE(this->auto_archive_duration != 0)
+  COND_WRITE(self->auto_archive_duration != 0)
     FIELD(auto_archive_duration, int, 0)
   COND_END
   /** amount of seconds a user has to wait before sending another message
        (0-21600) */
-  COND_WRITE(this->rate_limit_per_user >= 0
-             && this->rate_limit_per_user <= 21600)
+  COND_WRITE(self->rate_limit_per_user >= 0
+             && self->rate_limit_per_user <= 21600)
     FIELD(rate_limit_per_user, int, 0)
   COND_END
 STRUCT_END
@@ -853,7 +853,7 @@ PUB_STRUCT(discord_start_thread_without_message)
     FIELD_PTR(name, char, *)
   /** duration in minutes to automatically archive the thread after recent
        activity, can be set to: 60, 1440, 4320, 10080 */
-  COND_WRITE(this->auto_archive_duration != 0)
+  COND_WRITE(self->auto_archive_duration != 0)
     FIELD(auto_archive_duration, int, 0)
   COND_END
   /** the type of thread to create */
@@ -863,8 +863,8 @@ PUB_STRUCT(discord_start_thread_without_message)
     FIELD(invitable, bool, false)
   /** amount of seconds a user has to wait before sending another message
        (0-21600) */
-  COND_WRITE(this->rate_limit_per_user >= 0
-             && this->rate_limit_per_user <= 21600)
+  COND_WRITE(self->rate_limit_per_user >= 0
+             && self->rate_limit_per_user <= 21600)
     FIELD(rate_limit_per_user, int, 0)
   COND_END
 STRUCT_END
@@ -872,12 +872,12 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_list_active_threads} */
 PUB_STRUCT(discord_list_active_threads)
   /** the active threads */
-  COND_WRITE(this->threads != NULL)
+  COND_WRITE(self->threads != NULL)
     FIELD_STRUCT_PTR(threads, discord_channels, *)
   COND_END
   /** a thread member object for each returned thread the current user has
        joined */
-  COND_WRITE(this->members != NULL)
+  COND_WRITE(self->members != NULL)
     FIELD_STRUCT_PTR(members, discord_thread_members, *)
   COND_END
   /** whether there are potentially additional threads that could be returned

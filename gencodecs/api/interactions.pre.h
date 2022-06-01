@@ -115,37 +115,37 @@ PUB_STRUCT(discord_interaction_response)
   /** interaction callback type */
     FIELD_ENUM(type, discord_interaction_callback_types)
   /** an optional response message */
-  COND_WRITE(this->data != NULL)
+  COND_WRITE(self->data != NULL)
     FIELD_STRUCT_PTR(data, discord_interaction_callback_data, *)
   COND_END
 STRUCT_END
 
 STRUCT(discord_interaction_callback_data)
   /** message components */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /* MESSAGES */
   /** is the response TTS */
-  COND_WRITE(this->tts != false)
+  COND_WRITE(self->tts != false)
     FIELD(tts, bool, false)
   COND_END
   /** message content */
-  COND_WRITE(this->content != NULL)
+  COND_WRITE(self->content != NULL)
     FIELD_PTR(content, char, *)
   COND_END
   /** supports up to 10 embeds */
-  COND_WRITE(this->embeds != NULL)
+  COND_WRITE(self->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        @ref DISCORD_MESSAGE_SUPRESS_EMBEDS and @ref DISCORD_MESSAGE_EPHEMERAL
        can be set) */
-  COND_WRITE(this->flags != 0)
+  COND_WRITE(self->flags != 0)
     FIELD_BITMASK(flags)
   COND_END
   /** attachment objects with filename and description */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
   /* AUTOCOMPLETE */
@@ -174,19 +174,19 @@ PUB_STRUCT(discord_edit_original_interaction_response)
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
   /** embedded `rich` content */
-  COND_WRITE(this->embeds != NULL)
+  COND_WRITE(self->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** attached files to keep and possible descriptions for new files */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
@@ -210,24 +210,24 @@ PUB_STRUCT(discord_create_followup_message)
   /** true if this is a TTS message */
     FIELD(tts, bool, false)
   /** embedded `rich` content */
-  COND_WRITE(this->embeds != NULL)
+  COND_WRITE(self->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** attachment objects with filename and description */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
        `SUPPRESS_EMBEDS` can be set) */
-  COND_WRITE(this->flags != 0)
+  COND_WRITE(self->flags != 0)
     FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
@@ -244,19 +244,19 @@ PUB_STRUCT(discord_edit_followup_message)
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
   /** embedded `rich` content */
-  COND_WRITE(this->embeds != NULL)
+  COND_WRITE(self->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** attached files to keep and possible descriptions for new files */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END

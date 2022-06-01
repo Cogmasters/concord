@@ -106,7 +106,7 @@ STRUCT(discord_connection)
   /** whether the connection is revoked */
     FIELD(revoked, bool, false)
   /** an array of partial server integrations */
-  COND_WRITE(this->integrations != NULL)
+  COND_WRITE(self->integrations != NULL)
     FIELD_STRUCT_PTR(integrations, discord_integrations, *)
   COND_END
   /** whether the connection is verified */
@@ -133,11 +133,11 @@ LIST_END
 PUB_STRUCT(discord_modify_current_user)
   /** user's username, if changed may cause the user's discriminator to be
        randomized */
-  COND_WRITE(this->username != NULL)
+  COND_WRITE(self->username != NULL)
     FIELD_PTR(username, char, *)
   COND_END
   /** if passed, modified the user's avatar */
-  COND_WRITE(this->avatar != NULL)
+  COND_WRITE(self->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
 STRUCT_END
@@ -145,15 +145,15 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_current_user_guilds)
   /** get guilds before this guild ID */
-  COND_WRITE(this->before != 0)
+  COND_WRITE(self->before != 0)
     FIELD_SNOWFLAKE(before)
   COND_END
   /** get guilds after this guild ID */
-  COND_WRITE(this->after != 0)
+  COND_WRITE(self->after != 0)
     FIELD_SNOWFLAKE(after)
   COND_END
   /** max number of guilds to return (1-200) */
-  COND_WRITE(this->limit >= 1 && this->limit <= 200)
+  COND_WRITE(self->limit >= 1 && self->limit <= 200)
     FIELD(limit, int, 200)
   COND_END
 STRUCT_END
@@ -162,7 +162,7 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_dm} */
 PUB_STRUCT(discord_create_dm)
   /** the recipient to open a DM channel with */
-  COND_WRITE(this->recipient_id != 0)
+  COND_WRITE(self->recipient_id != 0)
     FIELD_SNOWFLAKE(recipient_id)
   COND_END
 STRUCT_END
@@ -170,11 +170,11 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_group_dm} */
 PUB_STRUCT(discord_create_group_dm)
   /** access tokens of users that have grantes your app `gdm.join` scope */
-  COND_WRITE(this->access_tokens != NULL)
+  COND_WRITE(self->access_tokens != NULL)
     FIELD_STRUCT_PTR(access_tokens, snowflakes, *)
   COND_END
   /** a dictionary of user IDs to their respective nicknames */
-  COND_WRITE(this->nicks != NULL)
+  COND_WRITE(self->nicks != NULL)
     FIELD_STRUCT_PTR(nicks, strings, *)
   COND_END
 STRUCT_END

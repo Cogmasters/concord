@@ -35,7 +35,7 @@ ENUM_END
 /** @CCORD_pub_struct{discord_component} */
 PUB_STRUCT(discord_component)
   /** component type */
-  COND_WRITE(this->type != 0)
+  COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_component_types)
   COND_END
   /** a developer-defined identifier for the component, max 100 characters */
@@ -43,34 +43,34 @@ PUB_STRUCT(discord_component)
   /** whether the component is disabled, default `false` */
     FIELD(disabled, bool, false)
   /** one of button or text styles */
-  COND_WRITE(this->style != 0)
+  COND_WRITE(self->style != 0)
     FIELD_ENUM(style, discord_component_styles)
   COND_END
   /** text that appears on the button, max 80 characters */
     FIELD_PTR(label, char, *)
   /** `name`, `id`, and `animated` */
-  COND_WRITE(this->emoji != NULL)
+  COND_WRITE(self->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
   COND_END
   /** a url for link-style buttons */
     FIELD_PTR(url, char, *)
   /** the choices in the select, max 25 */
-  COND_WRITE(this->options != NULL)
+  COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_select_options, *)
   COND_END
   /** custom placeholder text if nothing is selected, max 100 characters */
     FIELD_PTR(placeholder, char, *)
   /** the minimum number of items that must be chosen: default 1, min 0,
        max 25 */
-  COND_WRITE(this->min_values >= 0 && this->max_values <= 25)
+  COND_WRITE(self->min_values >= 0 && self->max_values <= 25)
     FIELD(min_values, int, 1)
   COND_END
   /** the maximum number of items that must be chosen: default 1, max 25 */
-  COND_WRITE(this->max_values <= 25)
+  COND_WRITE(self->max_values <= 25)
     FIELD(max_values, int, 1)
   COND_END
   /** a list of child components */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** the minimum input length for a text input */
@@ -96,7 +96,7 @@ STRUCT(discord_select_option)
   /** an additional description of the option, max 100 characters */
     FIELD_PTR(description, char, *)
   /** `id`, `name`, and `animated` */
-  COND_WRITE(this->emoji != NULL)
+  COND_WRITE(self->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
   COND_END
   /** will render this option as selected by default */

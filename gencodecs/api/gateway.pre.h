@@ -241,28 +241,28 @@ LIST_END
 /** @CCORD_pub_struct{discord_presence_update} */
 PUB_STRUCT(discord_presence_update)
   /** the user presence is being updated for */
-  COND_WRITE(this->user != NULL)
+  COND_WRITE(self->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
   /** id of the guild */
-  COND_WRITE(this->guild_id != 0)
+  COND_WRITE(self->guild_id != 0)
     FIELD_SNOWFLAKE(guild_id)
   COND_END
   /** either "idle", "dnd", "online", or "offline" */
-  COND_WRITE(this->status != NULL)
+  COND_WRITE(self->status != NULL)
     FIELD_PTR(status, char, *)
   COND_END
   /** user's platform-dependent status */
-  COND_WRITE(this->client_status != NULL)
+  COND_WRITE(self->client_status != NULL)
     FIELD_STRUCT_PTR(client_status, discord_client_status, *)
   COND_END
   /** user's current activities */
-  COND_WRITE(this->activities != NULL)
+  COND_WRITE(self->activities != NULL)
     FIELD_STRUCT_PTR(activities, discord_activities, *)
   COND_END
   /** unix time (in milliseconds) of when the client went idle, or null if
        the client is not idle */
-  COND_WRITE(this->since != 0)
+  COND_WRITE(self->since != 0)
     FIELD_TIMESTAMP(since)
   COND_END
   /** whether or not the client is afk */
@@ -300,11 +300,11 @@ PUB_STRUCT(discord_identify)
        will stop sending offline members in the guild member list */
     FIELD(large_threshold, int, 50)
   /** array of two integers (shard_id, num_shards) */
-  COND_WRITE(this->shard != NULL)
+  COND_WRITE(self->shard != NULL)
     FIELD_STRUCT_PTR(shard, integers, *)
   COND_END
   /** presence structure for initial presence information */
-  COND_WRITE(this->presence != NULL)
+  COND_WRITE(self->presence != NULL)
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
   COND_END
   /** the gateway intents you wish to receive
@@ -346,7 +346,7 @@ PUB_STRUCT(discord_request_guild_members)
     FIELD_PTR(query, char, *)
   /** maximum numberof members to send matching the `query`; a limit of `0`
    *    can be used with an empty string `query` to return all members */
-  COND_WRITE(this->query != NULL)
+  COND_WRITE(self->query != NULL)
     FIELD(limit, int, 0)
   COND_END
   /** used to specify if we want the presences of the matched members */
@@ -354,7 +354,7 @@ PUB_STRUCT(discord_request_guild_members)
   /** used to specify which users you wish to fetch */
     FIELD_STRUCT_PTR(user_ids, snowflakes, *)
   /** nonce to identify the `Guild Members Chunk` response */
-  COND_WRITE(this->nonce != NULL)
+  COND_WRITE(self->nonce != NULL)
     FIELD_PTR(nonce, char, *)
   COND_END
 STRUCT_END

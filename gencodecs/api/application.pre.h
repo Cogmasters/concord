@@ -25,7 +25,7 @@ PUB_STRUCT(discord_application)
   /** the description of the app */
     FIELD_PTR(description, char, *)
   /** an array of rpc origin urls, if rpc is enabled */
-  COND_WRITE(this->rpc_origins != NULL)
+  COND_WRITE(self->rpc_origins != NULL)
     FIELD_STRUCT_PTR(rpc_origins, strings, *)
   COND_END
   /** when false only app owner can join the app's bot to guilds */
@@ -38,7 +38,7 @@ PUB_STRUCT(discord_application)
   /** the url of the app's privacy policy */
     FIELD_PTR(privacy_policy_url, char, *)
   /** partial user object containing info on the owner of the application */
-  COND_WRITE(this->owner != NULL)
+  COND_WRITE(self->owner != NULL)
     FIELD_STRUCT_PTR(owner, discord_user, *)
   COND_END
   /** if this application is a game sold on Discord, this field will be the
@@ -49,7 +49,7 @@ PUB_STRUCT(discord_application)
     FIELD_PTR(verify_key, char, *)
   /** if the application belongs to a team, this will be a list of the
        members of that team */
-  COND_WRITE(this->team != NULL)
+  COND_WRITE(self->team != NULL)
     FIELD_STRUCT_PTR(team, discord_team, *)
   COND_END
   /** if this application is a game sold on Discord, this field will be the

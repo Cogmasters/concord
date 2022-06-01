@@ -30,7 +30,7 @@ PUB_STRUCT(discord_voice_state)
     FIELD(suppress, bool, false)
   /* TODO: nullable */
   /** the time at which the user requested to speak */
-  COND_WRITE(this->request_to_speak_timestamp)
+  COND_WRITE(self->request_to_speak_timestamp)
     FIELD_TIMESTAMP(request_to_speak_timestamp)
   COND_END
 STRUCT_END

@@ -14,7 +14,7 @@ PUB_STRUCT(discord_team)
   /** the unique ID of the team */
     FIELD_SNOWFLAKE(id)
   /** the members of the team */
-  COND_WRITE(this->members != NULL)
+  COND_WRITE(self->members != NULL)
     FIELD_STRUCT_PTR(members, discord_team_members, *)
   COND_END
   /** the name of the team */
@@ -27,13 +27,13 @@ STRUCT(discord_team_member)
   /** the user's membership state on the team */
     FIELD_ENUM(membership_state, discord_membership_state)
   /** will always be \"[\"*\"]\" */
-  COND_WRITE(this->permissions != NULL)
+  COND_WRITE(self->permissions != NULL)
     FIELD_STRUCT_PTR(permissions, strings, *)
   COND_END
   /** the ID of the parent team of which they are a member */
     FIELD_SNOWFLAKE(team_id)
   /** the avatar, discriminator, id,and username of the user */
-  COND_WRITE(this->user != NULL)
+  COND_WRITE(self->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
 STRUCT_END
