@@ -123,14 +123,16 @@ _discord_clone_gateway(struct discord_gateway *clone,
                        const struct discord_gateway *orig)
 {
     const size_t n =
-        orig->parse.npairs - (size_t)(orig->payload.data - orig->parse.pairs);
+        orig->payload.parse.npairs
+        - (size_t)(orig->payload.data - orig->payload.parse.pairs);
 
-    clone->payload.data = malloc(n * sizeof *orig->parse.pairs);
+    clone->payload.data = malloc(n * sizeof *orig->payload.parse.pairs);
     memcpy(clone->payload.data, orig->payload.data,
-           n * sizeof *orig->parse.pairs);
+           n * sizeof *orig->payload.parse.pairs);
 
-    clone->payload.length = cog_strndup(
-        orig->payload.json, orig->payload.length, &clone->payload.json);
+    clone->payload.json.size =
+        cog_strndup(orig->payload.json.start, orig->payload.json.size,
+                    &clone->payload.json.start);
 }
 
 struct discord *
@@ -150,7 +152,7 @@ static void
 _discord_clone_gateway_cleanup(struct discord_gateway *clone)
 {
     free(clone->payload.data);
-    free(clone->payload.json);
+    free(clone->payload.json.start);
 }
 
 static void

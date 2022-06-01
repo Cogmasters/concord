@@ -644,12 +644,51 @@ typedef void (*discord_ev)(struct discord *client, void *event);
 #define DISCORD_SESSION_SHUTDOWN 1u << 1
 /** @} DiscordInternalGatewaySessionStatus */
 
+/** @brief The handle for storing the Discord Gateway session */
+struct discord_gateway_session {
+    /** whether client is ready to start sending/receiving events */
+    bool is_ready;
+    /** session id for resuming lost connections */
+    char id[64];
+    /** amount of shards being used by this session */
+    int shards;
+    /** the session base url */
+    char base_url[256];
+    /** session limits */
+    struct discord_session_start_limit start_limit;
+    /** active concurrent sessions */
+    int concurrent;
+    /** event counter to avoid reaching limit of 120 events per 60 sec */
+    int event_count;
+    /** @ref DiscordInternalGatewaySessionStatus */
+    unsigned status;
+
+    /** retry connection structure */
+    struct {
+        /** will attempt reconnecting if true */
+        bool enable;
+        /** current retry attempt (resets to 0 when succesful) */
+        int attempt;
+        /** max amount of retries before giving up */
+        int limit;
+    } retry;
+};
+
 /** @brief The handle for storing the Discord response payload */
 struct discord_gateway_payload {
     /** current iteration JSON string data */
-    char *json;
-    /** current iteration JSON string data length */
-    size_t length;
+    struct ccord_szbuf json;
+    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
+    struct {
+        /** current iteration JSON key/value pairs */
+        jsmnf_pair *pairs;
+        /** current iteration number of JSON key/value pairs */
+        unsigned npairs;
+        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
+        jsmntok_t *tokens;
+        /** current iteration number of JSON tokens */
+        unsigned ntokens;
+    } parse;
 
     /** field 'op' */
     enum discord_gateway_opcodes opcode;
@@ -716,44 +755,7 @@ struct discord_gateway {
     struct discord_identify id;
 
     /** on-going session structure */
-    struct {
-        /** whether client is ready to start sending/receiving events */
-        bool is_ready;
-        /** session id for resuming lost connections */
-        char id[64];
-        /** amount of shards being used by this session */
-        int shards;
-        /** session limits */
-        struct discord_session_start_limit start_limit;
-        /** active concurrent sessions */
-        int concurrent;
-        /** event counter to avoid reaching limit of 120 events per 60 sec */
-        int event_count;
-        /** @ref DiscordInternalGatewaySessionStatus */
-        unsigned status;
-
-        /** retry connection structure */
-        struct {
-            /** will attempt reconnecting if true */
-            bool enable;
-            /** current retry attempt (resets to 0 when succesful) */
-            int attempt;
-            /** max amount of retries before giving up */
-            int limit;
-        } retry;
-    } * session;
-
-    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
-    struct {
-        /** current iteration JSON key/value pairs */
-        jsmnf_pair *pairs;
-        /** current iteration number of JSON key/value pairs */
-        unsigned npairs;
-        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
-        jsmntok_t *tokens;
-        /** current iteration number of JSON tokens */
-        unsigned ntokens;
-    } parse;
+    struct discord_gateway_session *session;
 
     /** response-payload structure */
     struct discord_gateway_payload payload;

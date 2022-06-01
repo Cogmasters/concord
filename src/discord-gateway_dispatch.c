@@ -124,8 +124,8 @@ discord_gateway_dispatch(struct discord_gateway *gw)
         if (gw->cbs[event]) {
             void *event_data = calloc(1, dispatch[event].size);
 
-            dispatch[event].from_jsmnf(gw->payload.data, gw->payload.json,
-                                       event_data);
+            dispatch[event].from_jsmnf(gw->payload.data,
+                                       gw->payload.json.start, event_data);
 
             if (CCORD_UNAVAILABLE
                 == discord_refcounter_incr(&client->refcounter, event_data))

@@ -124,11 +124,11 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
 {
     jsmnf_pair *f;
 
-    if (!(f = jsmnf_find(payload->data, payload->json, "content", 7)))
+    if (!(f = jsmnf_find(payload->data, payload->json.start, "content", 7)))
         return false;
 
     if (cmds->length
-        && !strncmp(cmds->prefix.start, payload->json + f->v.pos,
+        && !strncmp(cmds->prefix.start, payload->json.start + f->v.pos,
                     cmds->prefix.size))
     {
         struct discord *client = CLIENT(cmds, commands);
@@ -137,7 +137,8 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
         struct ccord_szbuf command;
         char *tmp;
 
-        discord_message_from_jsmnf(payload->data, payload->json, event_data);
+        discord_message_from_jsmnf(payload->data, payload->json.start,
+                                   event_data);
 
         command.start = event_data->content + cmds->prefix.size;
         command.size = strcspn(command.start, " \n\t\r");
