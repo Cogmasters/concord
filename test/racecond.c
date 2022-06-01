@@ -13,10 +13,6 @@
 #define THREADPOOL_SIZE "4"
 #define PREFIX          "!"
 
-pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
-bool g_keep_spamming = true;
-unsigned g_thread_count;
-
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
@@ -55,7 +51,7 @@ on_disconnect(struct discord *client, const struct discord_message *event)
                            },
                            &(struct discord_ret_message){
                                .done = &disconnect,
-                               .high_p = true,
+                               .high_priority = true,
                            });
 }
 
@@ -70,7 +66,7 @@ on_reconnect(struct discord *client, const struct discord_message *event)
                            },
                            &(struct discord_ret_message){
                                .done = &reconnect,
-                               .high_p = true,
+                               .high_priority = true,
                            });
 }
 
@@ -87,60 +83,30 @@ on_single(struct discord *client, const struct discord_message *event)
 }
 
 void
-on_stop_spam_sync(struct discord *client, const struct discord_message *event)
-{
-    pthread_mutex_lock(&g_lock);
-    g_keep_spamming = false;
-    g_thread_count = 0;
-    pthread_mutex_unlock(&g_lock);
-}
-
-void
 on_spam_sync(struct discord *client, const struct discord_message *event)
 {
-    const unsigned threadpool_size = strtol(THREADPOOL_SIZE, NULL, 10);
-
     if (event->author->bot) return;
 
-    // prevent blocking all threads
-    pthread_mutex_lock(&g_lock);
-    if (g_thread_count >= threadpool_size - 1) {
+    char text[32];
+
+    for (int i = 0; i < 128; ++i) {
+        snprintf(text, sizeof(text), "%d", i);
         discord_create_message(client, event->channel_id,
                                &(struct discord_create_message){
-                                   .content =
-                                       "Too many threads (" THREADPOOL_SIZE
-                                       ") will block the threadpool!",
-                               },
-                               &(struct discord_ret_message){
-                                   .sync = DISCORD_SYNC_FLAG,
-                               });
-
-        pthread_mutex_unlock(&g_lock);
-        return;
-    }
-
-    ++g_thread_count;
-    g_keep_spamming = true;
-    pthread_mutex_unlock(&g_lock);
-
-    char number[256];
-    bool keep_alive = true;
-    for (int i = 0;; ++i) {
-        pthread_mutex_lock(&g_lock);
-        keep_alive = g_keep_spamming;
-        pthread_mutex_unlock(&g_lock);
-
-        if (!keep_alive) break;
-
-        snprintf(number, sizeof(number), "%d", i);
-        discord_create_message(client, event->channel_id,
-                               &(struct discord_create_message){
-                                   .content = number,
+                                   .content = text,
                                },
                                &(struct discord_ret_message){
                                    .sync = DISCORD_SYNC_FLAG,
                                });
     }
+
+    discord_create_message(client, event->channel_id,
+                           &(struct discord_create_message){
+                               .content = "CHECKPOINT",
+                           },
+                           &(struct discord_ret_message){
+                               .sync = DISCORD_SYNC_FLAG,
+                           });
 }
 
 void
@@ -264,7 +230,6 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "disconnect", &on_disconnect);
     discord_set_on_command(client, "reconnect", &on_reconnect);
     discord_set_on_command(client, "single", &on_single);
-    discord_set_on_command(client, "stop_spam_sync", &on_stop_spam_sync);
     discord_set_on_command(client, "spam_sync", &on_spam_sync);
     discord_set_on_command(client, "spam_async", &on_spam_async);
     discord_set_on_command(client, "force_error", &on_force_error);
