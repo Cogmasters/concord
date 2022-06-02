@@ -385,24 +385,25 @@ _discord_gateway_payload_from_json(struct discord_gateway_payload *payload,
                                    const char text[],
                                    size_t len)
 {
-    payload->json = (struct ccord_szbuf){ (char *)text, len };
+    payload->json.start = (char *)text;
+    payload->json.size = len;
 
     jsmn_parser parser;
     jsmn_init(&parser);
-    if (jsmn_parse_auto(&parser, text, len, &payload->parse.tokens,
-                        &payload->parse.ntokens)
+    if (jsmn_parse_auto(&parser, text, len, &payload->json.tokens,
+                        &payload->json.ntokens)
         <= 0)
         return false;
 
     jsmnf_loader loader;
     jsmnf_init(&loader);
-    if (jsmnf_load_auto(&loader, text, payload->parse.tokens, parser.toknext,
-                        &payload->parse.pairs, &payload->parse.npairs)
+    if (jsmnf_load_auto(&loader, text, payload->json.tokens, parser.toknext,
+                        &payload->json.pairs, &payload->json.npairs)
         <= 0)
         return false;
 
     jsmnf_pair *f;
-    if ((f = jsmnf_find(payload->parse.pairs, text, "t", 1))) {
+    if ((f = jsmnf_find(payload->json.pairs, text, "t", 1))) {
         if (JSMN_STRING == f->type)
             snprintf(payload->name, sizeof(payload->name), "%.*s",
                      (int)f->v.len, text + f->v.pos);
@@ -411,14 +412,14 @@ _discord_gateway_payload_from_json(struct discord_gateway_payload *payload,
 
         payload->event = _discord_gateway_event_eval(payload->name);
     }
-    if ((f = jsmnf_find(payload->parse.pairs, text, "s", 1))) {
+    if ((f = jsmnf_find(payload->json.pairs, text, "s", 1))) {
         int seq = (int)strtol(text + f->v.pos, NULL, 10);
         if (seq) payload->seq = seq;
     }
-    if ((f = jsmnf_find(payload->parse.pairs, text, "op", 2)))
+    if ((f = jsmnf_find(payload->json.pairs, text, "op", 2)))
         payload->opcode =
             (enum discord_gateway_opcodes)strtol(text + f->v.pos, NULL, 10);
-    payload->data = jsmnf_find(payload->parse.pairs, text, "d", 1);
+    payload->data = jsmnf_find(payload->json.pairs, text, "d", 1);
 
     return true;
 }
@@ -560,8 +561,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     free(gw->id.presence);
     /* cleanup client session */
     free(gw->session);
-    if (gw->payload.parse.pairs) free(gw->payload.parse.pairs);
-    if (gw->payload.parse.tokens) free(gw->payload.parse.tokens);
+    if (gw->payload.json.pairs) free(gw->payload.json.pairs);
+    if (gw->payload.json.tokens) free(gw->payload.json.tokens);
 }
 
 #ifdef CCORD_DEBUG_WEBSOCKETS

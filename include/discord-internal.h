@@ -676,19 +676,21 @@ struct discord_gateway_session {
 
 /** @brief The handle for storing the Discord response payload */
 struct discord_gateway_payload {
-    /** current iteration JSON string data */
-    struct ccord_szbuf json;
-    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
+    /** current iteration JSON */
     struct {
-        /** current iteration JSON key/value pairs */
-        jsmnf_pair *pairs;
-        /** current iteration number of JSON key/value pairs */
-        unsigned npairs;
-        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
+        /** the JSON text */
+        char *start;
+        /** the text length */
+        size_t size;
+        /** jsmn tokens */
         jsmntok_t *tokens;
-        /** current iteration number of JSON tokens */
+        /** amount of jsmn tokens */
         unsigned ntokens;
-    } parse;
+        /** jsmn-find key/value pairs */
+        jsmnf_pair *pairs;
+        /** amount of jsmn-find key/value pairs */
+        unsigned npairs;
+    } json;
 
     /** field 'op' */
     enum discord_gateway_opcodes opcode;
