@@ -59,7 +59,12 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
 OBJS := $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
         $(GENCODECS_OBJ)
 
-LIB := $(LIBDIR)/libdiscord.a
+ARLIB   = $(LIBDIR)/libdiscord.a
+ARFLAGS = -cqsv
+
+SOLIB   = $(LIBDIR)/libdiscord.so
+SOFLAGS = -fPIC
+LDFLAGS = -lcurl
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
@@ -71,7 +76,11 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all: $(LIB)
+all: $(ARLIB)
+
+shared: 
+	@ $(MAKE) clean
+	$(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
 
 voice:
 	@ $(MAKE) XFLAGS=-DCCORD_VOICE XOBJ=$(SRC_DIR)/discord-voice.o all
@@ -88,8 +97,10 @@ examples: all
 gencodecs:
 	@ $(MAKE) -C $(GENCODECS_DIR)
 
-$(LIB): $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $?
+$(ARLIB): $(OBJS) | $(LIBDIR)
+	$(AR) $(ARFLAGS) $@ $?
+$(SOLIB): $(OBJS) | $(LIBDIR)
+	$(CC) -shared $(LDFLAGS) -o $@ $<
 
 $(LIBDIR):
 	@ mkdir -p $@
@@ -104,11 +115,13 @@ $(OBJDIR):
 	           $@/$(SRC_DIR)      \
 	           $@/$(GENCODECS_DIR)
 
+.IGNORE:
 install:
 	@ mkdir -p $(PREFIX)/lib/
 	@ mkdir -p $(PREFIX)/include/concord
 	install -d $(PREFIX)/lib/
-	install -m 644 $(LIB) $(PREFIX)/lib/
+	install -m 644 $(ARLIB) $(PREFIX)/lib/
+	install -m 644 $(SOLIB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
 	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(CORE_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(GENCODECS_DIR)/*.h $(PREFIX)/include/concord/

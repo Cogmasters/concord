@@ -178,12 +178,6 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 $ CFLAGS="-pthread -lpthread" make
 ```
 
-#### Dynamic Linking Support
-
-If you wish to produce a dynamically-linked version of Concord, use
-`make -f Makefile.dynamic`. Note that this Makefile is intended only for
-GNU-style compilers, like `gcc` or `clang`. 
-
 ### Configuring Concord
 
 The following outlines the default fields of `config.json`
@@ -254,6 +248,9 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 ```
 
 #### Special targets
+
+* `make shared`
+    * Produce a dynamically-linked version of Concord. This Makefile is intented for GNU-style compilers, such as `gcc` or `clang`.
 
 * `make voice`
     * Enable experimental Voice Connection handling - not production ready.
