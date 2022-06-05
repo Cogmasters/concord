@@ -10,7 +10,7 @@
  * Custom functions
  ******************************************************************************/
 
-struct _discord_get_channel_at_pos_cxt {
+struct _discord_get_channel_at_pos {
     enum discord_channel_types type;
     int position;
     struct discord_ret_channel ret;
@@ -23,13 +23,10 @@ _done_get_channels(struct discord *client,
                    struct discord_response *resp,
                    const struct discord_channels *chs)
 {
-    struct _discord_get_channel_at_pos_cxt *cxt = resp->data;
-
+    struct _discord_get_channel_at_pos *cxt = resp->data;
     const struct discord_channel *found_ch = NULL;
-    int pos;
-    int i;
 
-    for (i = 0, pos = 0; i < chs->size; ++i) {
+    for (int i = 0, pos = 0; i < chs->size; ++i) {
         if (cxt->type == chs->array[i].type && pos++ == cxt->position) {
             found_ch = &chs->array[i];
             break;
@@ -47,7 +44,10 @@ _done_get_channels(struct discord *client,
         cxt->ret.fail(client, resp);
     }
 
-    discord_refcounter_decr(&client->refcounter, cxt->ret.data);
+    if (cxt->ret.keep)
+        discord_refcounter_decr(&client->refcounter, (void *)cxt->ret.keep);
+    if (cxt->ret.data)
+        discord_refcounter_decr(&client->refcounter, cxt->ret.data);
 }
 
 CCORDcode
@@ -57,22 +57,28 @@ discord_get_channel_at_pos(struct discord *client,
                            int position,
                            struct discord_ret_channel *ret)
 {
-    struct _discord_get_channel_at_pos_cxt *cxt;
-    struct discord_ret_channels current_ret = { 0 };
+    struct _discord_get_channel_at_pos *cxt;
+    struct discord_ret_channels channels_ret = { 0 };
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, ret->done != NULL, CCORD_BAD_PARAMETER, "");
 
     cxt = malloc(sizeof *cxt);
-    cxt->type = type;
-    cxt->position = position;
-    cxt->ret = *ret;
+    *cxt = (struct _discord_get_channel_at_pos){ .type = type,
+                                                 .position = position,
+                                                 .ret = *ret };
 
-    current_ret.done = &_done_get_channels;
-    current_ret.fail = ret->fail;
-    current_ret.data = cxt;
+    channels_ret.done = &_done_get_channels;
+    channels_ret.fail = ret->fail;
+    channels_ret.data = cxt;
 
+    if (ret->keep) {
+        CCORDcode code =
+            discord_refcounter_incr(&client->refcounter, (void *)ret->keep);
+        ASSERT_S(code == CCORD_OK,
+                 "'.keep' data must be a Concord callback parameter");
+    }
     if (ret->data
         && CCORD_UNAVAILABLE
                == discord_refcounter_incr(&client->refcounter, ret->data))
@@ -83,7 +89,7 @@ discord_get_channel_at_pos(struct discord *client,
 
     /* TODO: fetch channel via caching, and return if results are non-existent
      */
-    return discord_get_guild_channels(client, guild_id, &current_ret);
+    return discord_get_guild_channels(client, guild_id, &channels_ret);
 }
 
 /******************************************************************************
