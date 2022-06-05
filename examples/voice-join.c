@@ -41,7 +41,7 @@ done_list_voice_regions(struct discord *client,
                         struct discord_response *resp,
                         const struct discord_voice_regions *regions)
 {
-    struct discord_message *event = resp->keep;
+    const struct discord_message *event = resp->keep;
 
     for (int i = 0; i < regions->size; ++i) {
         struct discord_create_message params = { .content =
@@ -53,7 +53,7 @@ done_list_voice_regions(struct discord *client,
 void
 fail_list_voice_regions(struct discord *client, struct discord_response *resp)
 {
-    struct discord_message *event = resp->keep;
+    const struct discord_message *event = resp->keep;
 
     struct discord_create_message params = {
         .content = "Could not fetch voice regions"
@@ -70,7 +70,7 @@ on_list_voice_regions(struct discord *client,
     struct discord_ret_voice_regions ret = {
         .done = &done_list_voice_regions,
         .fail = &fail_list_voice_regions,
-        .data = event,
+        .keep = event,
     };
 
     discord_list_voice_regions(client, &ret);
@@ -143,7 +143,7 @@ void
 fail_disconnect_guild_member(struct discord *client,
                              struct discord_response *resp)
 {
-    struct discord_message *event = resp->keep;
+    const struct discord_message *event = resp->keep;
 
     struct discord_create_message params = {
         .content = "Couldn't disconnect user from voice channel"
