@@ -28,6 +28,8 @@ jobs:
           make examples
           echo "Building tests"
           make test
+          echo "Building voice"
+          make voice
 
       - name: Run Makefile with parallelism
         run: |
@@ -39,3 +41,5 @@ jobs:
           make examples -j$(nproc)
           echo "Building tests with parallelism"
           make test -j$(nproc)
+          echo "Building voice with parallelism"
+          make voice -j$(nproc)

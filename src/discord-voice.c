@@ -529,14 +529,17 @@ discord_voice_join(struct discord *client,
                    bool self_mute,
                    bool self_deaf)
 {
+    struct discord_update_voice_state state = { .guild_id = guild_id,
+                                                .channel_id = vchannel_id,
+                                                .self_mute = self_mute,
+                                                .self_deaf = self_deaf };
     bool found_a_running_vcs = false;
     struct discord_voice *vc = NULL;
-    int i;
 
     if (!ws_is_functional(client->gw.ws)) return DISCORD_VOICE_ERROR;
 
     pthread_mutex_lock(&client_lock);
-    for (i = 0; i < DISCORD_MAX_VCS; ++i) {
+    for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         if (0 == client->vcs[i].guild_id) {
             vc = client->vcs + i;
             _discord_voice_init(vc, client, guild_id, vchannel_id);
@@ -563,8 +566,8 @@ discord_voice_join(struct discord *client,
     }
 
     recycle_active_vc(vc, guild_id, vchannel_id);
-    discord_send_voice_state_update(vc, guild_id, vchannel_id, self_mute,
-                                    self_deaf);
+    discord_gateway_send_update_voice_state(&client->gw, &state);
+
     return DISCORD_VOICE_JOINED;
 }
 
@@ -579,10 +582,9 @@ _discord_on_voice_state_update(struct discord *client,
                                struct discord_voice_state *event)
 {
     struct discord_voice *vc = NULL;
-    int i;
 
     pthread_mutex_lock(&client_lock);
-    for (i = 0; i < DISCORD_MAX_VCS; ++i) {
+    for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         if (event->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
             if (event->channel_id) {
@@ -704,10 +706,9 @@ _discord_on_voice_server_update(struct discord *client,
 {
     struct discord_voice *vc = NULL;
     int len;
-    int i;
 
     pthread_mutex_lock(&client_lock);
-    for (i = 0; i < DISCORD_MAX_VCS; ++i) {
+    for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         if (event->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
             break;
@@ -751,9 +752,7 @@ _discord_on_voice_server_update(struct discord *client,
 void
 discord_voice_connections_init(struct discord *client)
 {
-    int i;
-
-    for (i = 0; i < DISCORD_MAX_VCS; ++i) {
+    for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         client->vcs[i].p_voice_cbs = &client->voice_cbs;
     }
 }
@@ -770,9 +769,7 @@ _discord_voice_cleanup(struct discord_voice *vc)
 void
 discord_voice_connections_cleanup(struct discord *client)
 {
-    int i;
-
-    for (i = 0; i < DISCORD_MAX_VCS; ++i) {
+    for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         _discord_voice_cleanup(&client->vcs[i]);
     }
 }
@@ -780,15 +777,14 @@ discord_voice_connections_cleanup(struct discord *client)
 void
 discord_voice_shutdown(struct discord_voice *vc)
 {
+    struct discord_update_voice_state state = { .guild_id = vc->guild_id };
     const char reason[] = "Client triggered voice shutdown";
 
     vc->reconnect.enable = false;
     vc->shutdown = true;
     vc->is_resumable = false;
 
-    /* TODO: check if discord_send_voice_state_update() is not being ignored
-     *      because of ws_close() */
-    discord_send_voice_state_update(vc, vc->guild_id, 0, false, false);
+    discord_gateway_send_update_voice_state(&vc->p_client->gw, &state);
     ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
@@ -815,7 +811,7 @@ discord_voice_is_alive(struct discord_voice *vc)
 
 void
 discord_set_voice_cbs(struct discord *client,
-                      struct discord_voice_cbs *callbacks)
+                      struct discord_voice_evcallbacks *callbacks)
 {
     if (callbacks->on_speaking)
         client->voice_cbs.on_speaking = callbacks->on_speaking;

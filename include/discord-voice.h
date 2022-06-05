@@ -86,7 +86,7 @@ struct discord_voice_evcallbacks {
  * @see discord_voice_get_vc()
  */
 struct discord_voice {
-    /** DISCORD_VOICE logging module */
+    /** `DISCORD_VOICE` logging module */
     struct logconf conf;
     /** the session guild id @note obtained from discord_voice_join() */
     u64snowflake guild_id;
