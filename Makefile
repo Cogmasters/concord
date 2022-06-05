@@ -53,11 +53,10 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/invite.o                    \
                 $(SRC_DIR)/user.o                      \
                 $(SRC_DIR)/voice.o                     \
-                $(SRC_DIR)/webhook.o                   \
-                $(XOBJ)
+                $(SRC_DIR)/webhook.o
 
-OBJS := $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
-        $(GENCODECS_OBJ)
+OBJS = $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
+       $(GENCODECS_OBJ)
 
 ARLIB   = $(LIBDIR)/libdiscord.a
 ARFLAGS = -cqsv
@@ -66,27 +65,27 @@ SOLIB   = $(LIBDIR)/libdiscord.so
 SOFLAGS = -fPIC
 LDFLAGS = -lcurl
 
-CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
+WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
+CFLAGS  = -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
           -I$(GENCODECS_DIR) -I$(PREFIX)/include -DLOG_USE_COLOR
-WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(WFLAGS) $(XFLAGS) -c -o $@ $<
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
 
 all: $(ARLIB)
 
 shared: 
 	@ $(MAKE) clean
-	$(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
+	@ $(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
 
 voice:
-	@ $(MAKE) XFLAGS=-DCCORD_VOICE XOBJ=$(SRC_DIR)/discord-voice.o all
+	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE" \
+	          OBJS="$(OBJS) $(SRC_DIR)/discord-voice.o" all
 
 debug:
-	@ $(MAKE) XFLAGS="-DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" all
+	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" \
+	          all
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -110,9 +109,7 @@ $(OBJS): $(GENCODECS_HDR) | $(OBJDIR)
 $(GENCODECS_HDR): gencodecs
 
 $(OBJDIR):
-	@ mkdir -p $@/$(THIRDP_DIR)   \
-	           $@/$(COGUTILS_DIR) \
-	           $@/$(SRC_DIR)      \
+	@ mkdir -p $@/$(THIRDP_DIR) $@/$(COGUTILS_DIR) $@/$(SRC_DIR) \
 	           $@/$(GENCODECS_DIR)
 
 .IGNORE:
@@ -140,11 +137,11 @@ echo:
 
 clean: 
 	@ $(RM) $(GENCODECS_OBJS) $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
+	@ $(RM) -r $(LIBDIR)
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean
 
 purge: clean
-	@ $(RM) -r $(LIBDIR)
 	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: test examples install echo clean purge docs gencodecs
