@@ -4,12 +4,14 @@
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
 
-<img align="center" src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
+<div align="center">
+<img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
+</div>
+
+# Concord - C Discord API library
 
 [ ![discord-shield][] ][discord-invite]
 [ ![migrating-shield][] ][migrating-link]
-
-# Concord - C Discord API library
 
 ## About
 
