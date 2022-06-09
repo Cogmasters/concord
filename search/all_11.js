@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['query_0',['query',['../structdiscord__search__guild__members.html#a817842aa1c2d391786ecc24887d1b5ae',1,'discord_search_guild_members']]],
-  ['queue_1',['QUEUE',['../structdiscord__adapter.html#a115bcad0a1ad427ea6dfac7947c53c42',1,'discord_adapter::QUEUE()'],['../structdiscord__bucket.html#a0067cc8cd3d71f6380535cf6d552e388',1,'discord_bucket::QUEUE(struct discord_context) waitq'],['../structdiscord__bucket.html#a53a1f67f697b6e47b39ca35978cb8a8c',1,'discord_bucket::QUEUE(struct discord_context) busyq']]]
+  ['qlocks_0',['qlocks',['../structdiscord__requestor.html#a78d0cc7bbf8ae2441a6305d64ff53bfc',1,'discord_requestor']]],
+  ['query_1',['query',['../structdiscord__request__guild__members.html#a3051ca610824e056011887e159c0fb22',1,'discord_request_guild_members::query()'],['../structdiscord__search__guild__members.html#a817842aa1c2d391786ecc24887d1b5ae',1,'discord_search_guild_members::query()']]],
+  ['queues_2',['queues',['../structdiscord__ratelimiter.html#a621319557605c11bc7c79f99db464497',1,'discord_ratelimiter::queues()'],['../structdiscord__bucket.html#ad9ef4d44da386705f14fe6ce5636ee35',1,'discord_bucket::queues()'],['../structdiscord__requestor.html#aeafdbd969b074a0a2fc7861adc3f6a45',1,'discord_requestor::queues()']]]
 ];

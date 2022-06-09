@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['snowflakes_0',['snowflakes',['../structsnowflakes.html',1,'']]],
-  ['strings_1',['strings',['../structstrings.html',1,'']]]
+  ['json_5fvalues_0',['json_values',['../structjson__values.html',1,'']]]
 ];

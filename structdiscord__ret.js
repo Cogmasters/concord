@@ -1,9 +1,10 @@
 var structdiscord__ret =
 [
-    [ "done", "structdiscord__ret.html#a5062da565b0542f2afe0ca73ca425c6e", null ],
-    [ "fail", "structdiscord__ret.html#a3cceeb41d3e9340351640625f5689dc3", null ],
     [ "data", "structdiscord__ret.html#afec8325b52fd121c7b711551182456c3", null ],
-    [ "cleanup", "structdiscord__ret.html#a8945aaf0e29bbf515fd6ba83a76332ac", null ],
-    [ "high_p", "structdiscord__ret.html#ae20f0e9dc8ec289884664d57596ba108", null ],
+    [ "cleanup", "structdiscord__ret.html#a12f013191f32561ccc1c0027a414bccd", null ],
+    [ "keep", "structdiscord__ret.html#a91a0f5ae39a63e3e4fde9c07d472c408", null ],
+    [ "high_priority", "structdiscord__ret.html#a47ea21a8fb5bf15edca3b64322f001b3", null ],
+    [ "fail", "structdiscord__ret.html#a9e74b641a2f1097fbe7e1ad03f5a87f5", null ],
+    [ "done", "structdiscord__ret.html#a3d056872a740c8aa8bcbf65f04c0b379", null ],
     [ "sync", "structdiscord__ret.html#a20df532b4a94f18a8c983b83b980299e", null ]
 ];

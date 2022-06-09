@@ -92,6 +92,8 @@ $(document).ready(function(){initNavTree('structdiscord__thread__member.html',''
   <div class="headertitle"><div class="title">discord_thread_member Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="docs_2api_2channel_8h_source.html">channel.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -103,8 +105,31 @@ Data Fields</h2></td></tr>
 <tr class="separator:a548ce85474bf51eaadd70ea326b58fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a488f2ec6a99b6dbb07c7dd37cd68e1a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__thread__member.html#a488f2ec6a99b6dbb07c7dd37cd68e1a7">flags</a></td></tr>
 <tr class="separator:a488f2ec6a99b6dbb07c7dd37cd68e1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13615b7fa950c73cd8237de50062fe45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__thread__member.html#a13615b7fa950c73cd8237de50062fe45">guild_id</a></td></tr>
+<tr class="separator:a13615b7fa950c73cd8237de50062fe45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Field Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p ><b>Public methods</b></p><ul>
+<li>Initializer:<ul>
+<li><code>discord_thread_member_init(struct discord_thread_member *this)</code></li>
+</ul>
+</li>
+<li>Cleanup:<ul>
+<li><code>discord_thread_member_cleanup(struct discord_thread_member *this)</code></li>
+</ul>
+</li>
+<li>JSON Decoder:<ul>
+<li><code>discord_thread_member_from_json(const char json[], size_t len, struct discord_thread_member *this)</code></li>
+<li><code>discord_thread_member_from_jsmnf(jsmnf *root, const char json[], struct discord_thread_member *this)</code></li>
+</ul>
+</li>
+<li>JSON Encoder:<ul>
+<li><code>discord_thread_member_to_json(char buf[], size_t size, const struct discord_thread_member *this)</code></li>
+<li><code>discord_thread_member_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_thread_member *this)</code> </li>
+</ul>
+</li>
+</ul>
+</div><h2 class="groupheader">Field Documentation</h2>
 <a id="aa1b2409dd66eda9fbd864ac602b8e570" name="aa1b2409dd66eda9fbd864ac602b8e570"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa1b2409dd66eda9fbd864ac602b8e570">&#9670;&nbsp;</a></span>id</h2>
 
@@ -162,6 +187,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >any user-thread settings, currently only used for notifications </p>
+
+</div>
+</div>
+<a id="a13615b7fa950c73cd8237de50062fe45" name="a13615b7fa950c73cd8237de50062fe45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13615b7fa950c73cd8237de50062fe45">&#9670;&nbsp;</a></span>guild_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> discord_thread_member::guild_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the id of the guild </p><dl class="section note"><dt>Note</dt><dd>used at <code>Thread Member Update</code> </dd></dl>
 
 </div>
 </div>

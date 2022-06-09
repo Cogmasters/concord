@@ -14,5 +14,6 @@ var structdiscord__integration =
     [ "synced_at", "structdiscord__integration.html#afe4f7bff55f5286647ad492358b5032a", null ],
     [ "subscriber_count", "structdiscord__integration.html#a0f7cd6edfd98a0237bfadd13759e9a14", null ],
     [ "revoked", "structdiscord__integration.html#a3d6ea0c0e7e93b2d341b1a4c8a958a00", null ],
-    [ "application", "structdiscord__integration.html#a13756e0b842cb07fca06161c4b554257", null ]
+    [ "application", "structdiscord__integration.html#a13756e0b842cb07fca06161c4b554257", null ],
+    [ "guild_id", "structdiscord__integration.html#a47c49b031f9bfa2bbbd81e2f4bcdefce", null ]
 ];

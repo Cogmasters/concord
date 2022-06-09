@@ -1,6 +1,8 @@
 <map id="discord_request" name="discord_request">
-<area shape="rect" id="node1" title="Behavior of request return struct." alt="" coords="166,95,291,121"/>
-<area shape="rect" id="node2" href="$structdiscord__generic.html" title="Attributes of response datatype." alt="" coords="5,5,129,32"/>
-<area shape="rect" id="node3" href="$structdiscord__ret__generic.html" title="Request&#39;s return context." alt="" coords="154,5,303,32"/>
-<area shape="rect" id="node4" href="$structdiscord__attachments.html" title=" " alt="" coords="328,5,487,32"/>
+<area shape="rect" id="node1" title="Individual requests that are scheduled to run asynchronously." alt="" coords="303,81,428,108"/>
+<area shape="rect" id="node5" href="$structdiscord__bucket.html" title="The Discord bucket for handling per&#45;group ratelimits." alt="" coords="540,81,659,108"/>
+<area shape="rect" id="node2" href="$structdiscord__ret__dispatch.html" title="Generic request dispatcher." alt="" coords="9,5,165,32"/>
+<area shape="rect" id="node3" href="$structdiscord__ret__response.html" title="Attributes of response datatype." alt="" coords="7,56,167,83"/>
+<area shape="rect" id="node4" href="$structdiscord__attachments.html" title=" " alt="" coords="7,107,166,133"/>
+<area shape="rect" id="node6" href="$structccord__szbuf__reusable.html" title="Reusable generic sized buffer." alt="" coords="5,157,168,184"/>
 </map>

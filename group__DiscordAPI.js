@@ -1,8 +1,8 @@
 var group__DiscordAPI =
 [
+    [ "Interactions", "group__DiscordAPIInteractions.html", "group__DiscordAPIInteractions" ],
     [ "Audit Log", "group__DiscordAPIAuditLog.html", "group__DiscordAPIAuditLog" ],
     [ "Channel", "group__DiscordAPIChannel.html", "group__DiscordAPIChannel" ],
-    [ "Interactions API", "group__DiscordAPIInteractions.html", "group__DiscordAPIInteractions" ],
     [ "Emoji", "group__DiscordAPIEmoji.html", "group__DiscordAPIEmoji" ],
     [ "Gateway", "group__DiscordAPIGateway.html", "group__DiscordAPIGateway" ],
     [ "Guild", "group__DiscordAPIGuild.html", "group__DiscordAPIGuild" ],

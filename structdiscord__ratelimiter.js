@@ -6,7 +6,5 @@ var structdiscord__ratelimiter =
     [ "routes", "structdiscord__ratelimiter.html#ada41649708f3b4969e744c576e41a0dd", null ],
     [ "null", "structdiscord__ratelimiter.html#a0f2c5f14dc620e6fe2650f7b7b41ad53", null ],
     [ "miss", "structdiscord__ratelimiter.html#a851e023093acc161d03b26f1c1d56727", null ],
-    [ "wait_ms", "structdiscord__ratelimiter.html#a1e8f418d7424a167b2e739bfee440b6b", null ],
-    [ "rwlock", "structdiscord__ratelimiter.html#a3a6a1c5436cc3fce0705d1049b860aec", null ],
-    [ "lock", "structdiscord__ratelimiter.html#aa0199138a4892d11c6b6e67302f10d1c", null ]
+    [ "queues", "structdiscord__ratelimiter.html#a621319557605c11bc7c79f99db464497", null ]
 ];

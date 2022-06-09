@@ -1,0 +1,5 @@
+<map id="discord_rest" name="discord_rest">
+<area shape="rect" id="node1" title="The handle used for interfacing with Discord&#39;s REST API." alt="" coords="100,95,201,121"/>
+<area shape="rect" id="node2" href="$structdiscord__requestor.html" title="The handle used for handling asynchronous requests." alt="" coords="5,5,144,32"/>
+<area shape="rect" id="node3" href="$structdiscord__timers.html" title=" " alt="" coords="169,5,287,32"/>
+</map>

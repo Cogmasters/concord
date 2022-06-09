@@ -9,5 +9,8 @@ var error_8h =
     [ "CCORD_CURLE_INTERNAL", "group__ConcordError.html#ga593a9fcdc49e58c0dcd1b29bb8458008", null ],
     [ "CCORD_CURLM_INTERNAL", "group__ConcordError.html#ga00c6ee3ff0da117a32837d8e2e5eb90c", null ],
     [ "CCORD_GLOBAL_INIT", "group__ConcordError.html#ga705fdccbf1e575d3311f2d971af77b62", null ],
+    [ "CCORD_OWNERSHIP", "group__ConcordError.html#gadb0f283a9d2715ad5816dff63fceb64b", null ],
+    [ "CCORD_UNAVAILABLE", "group__ConcordError.html#gae3eb4fc7d157920ec30601c078b38755", null ],
+    [ "CCORD_FULL_WORKER", "group__ConcordError.html#ga1035fd7db58d16cf1464ed32d30f141a", null ],
     [ "CCORDcode", "group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587", null ]
 ];

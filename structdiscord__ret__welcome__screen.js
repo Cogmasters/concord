@@ -1,9 +1,10 @@
 var structdiscord__ret__welcome__screen =
 [
-    [ "done", "structdiscord__ret__welcome__screen.html#a2899bf02ea80f021a63e7a9cb754c9f4", null ],
-    [ "fail", "structdiscord__ret__welcome__screen.html#a8e8d7dba2034e9d9e6385f4e7b3fd4bc", null ],
     [ "data", "structdiscord__ret__welcome__screen.html#ae009b04474090c48dd8f72f866eaa695", null ],
-    [ "cleanup", "structdiscord__ret__welcome__screen.html#a9cbc7ed433e24edb526fd9c56d5ff394", null ],
-    [ "high_p", "structdiscord__ret__welcome__screen.html#ad947e49ad7ecc2f8ed13ea74640fbeb5", null ],
+    [ "cleanup", "structdiscord__ret__welcome__screen.html#aded40d06abacf7ec9d53846dbd26ebac", null ],
+    [ "keep", "structdiscord__ret__welcome__screen.html#a29d6f17bf55299e840cce1ba60111b71", null ],
+    [ "high_priority", "structdiscord__ret__welcome__screen.html#a582c67d67a070c1ead5f11f86d400737", null ],
+    [ "fail", "structdiscord__ret__welcome__screen.html#a053c134203a4c01d1dcbd5d25dc06632", null ],
+    [ "done", "structdiscord__ret__welcome__screen.html#a533cdd6dc4a93e82f56af29c6a13a4fc", null ],
     [ "sync", "structdiscord__ret__welcome__screen.html#a0a0505e1d0f0d55398e1c2c933fb8372", null ]
 ];

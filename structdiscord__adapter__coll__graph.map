@@ -1,5 +1,0 @@
-<map id="discord_adapter" name="discord_adapter">
-<area shape="rect" id="node1" title="The handle used for performing HTTP Requests." alt="" coords="97,95,224,121"/>
-<area shape="rect" id="node2" href="$structdiscord__refcounter.html" title="Automatically cleanup user data." alt="" coords="5,5,148,32"/>
-<area shape="rect" id="node3" href="$structdiscord__ratelimiter.html" title="The ratelimiter struct for handling ratelimiting." alt="" coords="172,5,317,32"/>
-</map>

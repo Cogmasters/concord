@@ -1,9 +1,10 @@
 var structdiscord__ret__invite =
 [
-    [ "done", "structdiscord__ret__invite.html#a4c1969820a77f466eb971f5418a686f9", null ],
-    [ "fail", "structdiscord__ret__invite.html#ae03f1d176fad0aec5522da19ee6d9109", null ],
     [ "data", "structdiscord__ret__invite.html#a95e9882ecc78cceb70cdae96fcc3984c", null ],
-    [ "cleanup", "structdiscord__ret__invite.html#a6d003974e4d686419c108d014fe064f7", null ],
-    [ "high_p", "structdiscord__ret__invite.html#a94bcea526545dc835152811295e3d60e", null ],
+    [ "cleanup", "structdiscord__ret__invite.html#a8d705e9c8aad82057e46b8bbf7a17902", null ],
+    [ "keep", "structdiscord__ret__invite.html#a467f0f49ca107a8eff5c3428e2676559", null ],
+    [ "high_priority", "structdiscord__ret__invite.html#aab69a81fbecbcaa44127a098611936ed", null ],
+    [ "fail", "structdiscord__ret__invite.html#a8dc7274df59bd9f5597a38f26ba27f42", null ],
+    [ "done", "structdiscord__ret__invite.html#a2580f1eb8ddeca7902f3ba3715005548", null ],
     [ "sync", "structdiscord__ret__invite.html#aee552d4712d381a4c77c138284d204e1", null ]
 ];

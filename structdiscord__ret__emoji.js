@@ -1,9 +1,10 @@
 var structdiscord__ret__emoji =
 [
-    [ "done", "structdiscord__ret__emoji.html#a898debf3beba6696edcb664c61c28e6f", null ],
-    [ "fail", "structdiscord__ret__emoji.html#a375074d1be0eda2a3408798bb83c49ad", null ],
     [ "data", "structdiscord__ret__emoji.html#a937a01db9fa42397a75599616431d9ac", null ],
-    [ "cleanup", "structdiscord__ret__emoji.html#a0fe3821e5daa3fa9d7d50c633d4e1706", null ],
-    [ "high_p", "structdiscord__ret__emoji.html#ae5b51179224a0a9dfd3c771c556d567e", null ],
+    [ "cleanup", "structdiscord__ret__emoji.html#aa4da9f6ab0547c1fd590241ebbedfe3f", null ],
+    [ "keep", "structdiscord__ret__emoji.html#a85ad22558794da2babd7d1b2bab0960c", null ],
+    [ "high_priority", "structdiscord__ret__emoji.html#a9161e3905e24e3433434986c841d2758", null ],
+    [ "fail", "structdiscord__ret__emoji.html#a65b6bc082402cf735a646c925867208e", null ],
+    [ "done", "structdiscord__ret__emoji.html#a483f00b8a0436fac6f4106a5a942d77d", null ],
     [ "sync", "structdiscord__ret__emoji.html#a30f36adcbe580f87b1b55a132088aeaf", null ]
 ];

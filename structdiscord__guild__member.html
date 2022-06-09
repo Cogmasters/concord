@@ -125,6 +125,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a05e1d193f2e7aae1f0c66fc01487438e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4eaf2ad700c9aae6432051bec8cee96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild__member.html#ac4eaf2ad700c9aae6432051bec8cee96">communication_disabled_until</a></td></tr>
 <tr class="separator:ac4eaf2ad700c9aae6432051bec8cee96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e398708e5b687ad01ec2bbf0f662ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild__member.html#ac0e398708e5b687ad01ec2bbf0f662ad">guild_id</a></td></tr>
+<tr class="separator:ac0e398708e5b687ad01ec2bbf0f662ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
@@ -147,7 +149,7 @@ Data Fields</h2></td></tr>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#_a4">audit-log.c</a>, <a class="el" href="guild_8c-example.html#_a24">guild.c</a>, and <a class="el" href="voice_8c-example.html#_a30">voice.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#_a5">audit-log.c</a>, and <a class="el" href="guild_8c-example.html#_a32">guild.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a0030aec69b89e140cc432044de4474e5" name="a0030aec69b89e140cc432044de4474e5"></a>
@@ -162,7 +164,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the user this guild member represents </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a5">audit-log.c</a>, <a class="el" href="fetch-messages_8c-example.html#a17">fetch-messages.c</a>, <a class="el" href="guild_8c-example.html#a25">guild.c</a>, <a class="el" href="slash-commands_8c-example.html#a32">slash-commands.c</a>, and <a class="el" href="voice_8c-example.html#a31">voice.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a6">audit-log.c</a>, <a class="el" href="fetch-messages_8c-example.html#a17">fetch-messages.c</a>, <a class="el" href="guild_8c-example.html#a33">guild.c</a>, and <a class="el" href="slash-commands_8c-example.html#a29">slash-commands.c</a>.</dd>
 </dl>
 
 </div>
@@ -179,7 +181,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >this user's guild nickname </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a8">audit-log.c</a>, and <a class="el" href="fetch-messages_8c-example.html#a19">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a19">fetch-messages.c</a>.</dd>
 </dl>
 
 </div>
@@ -316,6 +318,23 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >when the user's timeout will expire and the user will be able to communicate in the guild again, null or a time in the past if the user is not timed out </p>
+
+</div>
+</div>
+<a id="ac0e398708e5b687ad01ec2bbf0f662ad" name="ac0e398708e5b687ad01ec2bbf0f662ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e398708e5b687ad01ec2bbf0f662ad">&#9670;&nbsp;</a></span>guild_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> discord_guild_member::guild_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the guild id </p><dl class="section note"><dt>Note</dt><dd>extra field for <code>Guild Member Add</code> event </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a7">audit-log.c</a>.</dd>
+</dl>
 
 </div>
 </div>

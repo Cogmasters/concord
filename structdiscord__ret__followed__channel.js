@@ -1,9 +1,10 @@
 var structdiscord__ret__followed__channel =
 [
-    [ "done", "structdiscord__ret__followed__channel.html#a8dfd337b8e79dbf0a88c3692000a24ad", null ],
-    [ "fail", "structdiscord__ret__followed__channel.html#a0a212e770067e1065eaff948fcce7ab3", null ],
     [ "data", "structdiscord__ret__followed__channel.html#a29a64879a2b9d7a51bc505a03bf38055", null ],
-    [ "cleanup", "structdiscord__ret__followed__channel.html#ad835cb8db60345f81d59832e83eb48a8", null ],
-    [ "high_p", "structdiscord__ret__followed__channel.html#acdc65f4ae24cb1a91a40392524bec4fc", null ],
+    [ "cleanup", "structdiscord__ret__followed__channel.html#a07b03916820826b7016910227fa06c03", null ],
+    [ "keep", "structdiscord__ret__followed__channel.html#a6f7a27137d692da627d35d2f11fd891d", null ],
+    [ "high_priority", "structdiscord__ret__followed__channel.html#abb5700796874884f316f7ffa33b059c6", null ],
+    [ "fail", "structdiscord__ret__followed__channel.html#ae53f74c925b720dd09780c23cb041d62", null ],
+    [ "done", "structdiscord__ret__followed__channel.html#afc95aecead8f6d3c91eb7921eb58f80d", null ],
     [ "sync", "structdiscord__ret__followed__channel.html#a9a177c8879b343bbfcc1c6fc01bd14b3", null ]
 ];

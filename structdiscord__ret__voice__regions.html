@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('structdiscord__ret__voice__regions.htm
 <p>Request's return context.  
  <a href="structdiscord__ret__voice__regions.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="discord-templates_8h_source.html">discord-templates.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_ret_voice_regions:</div>
 <div class="dyncontent">
@@ -106,56 +106,24 @@ Collaboration diagram for discord_ret_voice_regions:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a9255aa1e20f9a555344113983030c337"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a9255aa1e20f9a555344113983030c337">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>, const struct <a class="el" href="structdiscord__voice__regions.html">discord_voice_regions</a> *ret)</td></tr>
-<tr class="separator:a9255aa1e20f9a555344113983030c337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace2de5ca810115a31e769a4c0f65736e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#ace2de5ca810115a31e769a4c0f65736e">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> code, void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>)</td></tr>
-<tr class="separator:ace2de5ca810115a31e769a4c0f65736e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adba2182b0dbaeaabdfe47b3f727bb539"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a></td></tr>
 <tr class="separator:adba2182b0dbaeaabdfe47b3f727bb539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6866f887674bd9eb39acd393389a8778"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a6866f887674bd9eb39acd393389a8778">cleanup</a> )(void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>)</td></tr>
-<tr class="separator:a6866f887674bd9eb39acd393389a8778"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7a8083d42a2be7da161471f4c20e41e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#aa7a8083d42a2be7da161471f4c20e41e">high_p</a></td></tr>
-<tr class="separator:aa7a8083d42a2be7da161471f4c20e41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace817699a42d1202b5cc7a94d8d4baa3"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#ace817699a42d1202b5cc7a94d8d4baa3">cleanup</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>)</td></tr>
+<tr class="separator:ace817699a42d1202b5cc7a94d8d4baa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fa56a677430f3bd642c6b5d9f100e33"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a3fa56a677430f3bd642c6b5d9f100e33">keep</a></td></tr>
+<tr class="separator:a3fa56a677430f3bd642c6b5d9f100e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96633fb35927ca28bce50577721a06d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a96633fb35927ca28bce50577721a06d8">high_priority</a></td></tr>
+<tr class="separator:a96633fb35927ca28bce50577721a06d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82138b417ac2435d6f394281cdec8fc2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a82138b417ac2435d6f394281cdec8fc2">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
+<tr class="separator:a82138b417ac2435d6f394281cdec8fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07c9ab7ec3d78420efafad894e30ef14"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a07c9ab7ec3d78420efafad894e30ef14">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__voice__regions.html">discord_voice_regions</a> *ret)</td></tr>
+<tr class="separator:a07c9ab7ec3d78420efafad894e30ef14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37e8d3b215a33748e608a13351d56c67"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__voice__regions.html">discord_voice_regions</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__voice__regions.html#a37e8d3b215a33748e608a13351d56c67">sync</a></td></tr>
 <tr class="separator:a37e8d3b215a33748e608a13351d56c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="voice_8c-example.html#_a17">voice.c</a>.</dd>
-</dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a9255aa1e20f9a555344113983030c337" name="a9255aa1e20f9a555344113983030c337"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9255aa1e20f9a555344113983030c337">&#9670;&nbsp;</a></span>done</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* discord_ret_voice_regions::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>, const struct <a class="el" href="structdiscord__voice__regions.html">discord_voice_regions</a> *ret)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >optional callback to be executed on a successful request </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="voice_8c-example.html#a18">voice.c</a>.</dd>
-</dl>
-
-</div>
-</div>
-<a id="ace2de5ca810115a31e769a4c0f65736e" name="ace2de5ca810115a31e769a4c0f65736e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace2de5ca810115a31e769a4c0f65736e">&#9670;&nbsp;</a></span>fail</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* discord_ret_voice_regions::fail) (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> code, void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >optional callback to be executed on a failed request </p>
-
-</div>
-</div>
 <a id="adba2182b0dbaeaabdfe47b3f727bb539" name="adba2182b0dbaeaabdfe47b3f727bb539"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adba2182b0dbaeaabdfe47b3f727bb539">&#9670;&nbsp;</a></span>data</h2>
 
@@ -167,39 +135,82 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >user arbitrary data to be retrieved at <code>done</code> or <code>fail</code> callbacks </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="voice_8c-example.html#a20">voice.c</a>.</dd>
-</dl>
+<p >user arbitrary data to be passed to <code>done</code> or <code>fail</code> callbacks </p>
 
 </div>
 </div>
-<a id="a6866f887674bd9eb39acd393389a8778" name="a6866f887674bd9eb39acd393389a8778"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6866f887674bd9eb39acd393389a8778">&#9670;&nbsp;</a></span>cleanup</h2>
+<a id="ace817699a42d1202b5cc7a94d8d4baa3" name="ace817699a42d1202b5cc7a94d8d4baa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace817699a42d1202b5cc7a94d8d4baa3">&#9670;&nbsp;</a></span>cleanup</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_voice_regions::cleanup) (void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>)</td>
+          <td class="memname">void(* discord_ret_voice_regions::cleanup) (struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539">data</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >cleanup for when <code>data</code> is no longer needed </p><dl class="section note"><dt>Note</dt><dd>this only has to be defined once, it shall be called once <code>data</code> is no longer referenced by any callback </dd></dl>
+<p >cleanup method to be called for <code>data</code>, once its no longer being referenced </p>
 
 </div>
 </div>
-<a id="aa7a8083d42a2be7da161471f4c20e41e" name="aa7a8083d42a2be7da161471f4c20e41e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7a8083d42a2be7da161471f4c20e41e">&#9670;&nbsp;</a></span>high_p</h2>
+<a id="a3fa56a677430f3bd642c6b5d9f100e33" name="a3fa56a677430f3bd642c6b5d9f100e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fa56a677430f3bd642c6b5d9f100e33">&#9670;&nbsp;</a></span>keep</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool discord_ret_voice_regions::high_p</td>
+          <td class="memname">const void* discord_ret_voice_regions::keep</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >if <code>true</code> then request will take priority over already enqueued requests </p>
+<p >Concord callback parameter the client wish to keep reference </p>
+
+</div>
+</div>
+<a id="a96633fb35927ca28bce50577721a06d8" name="a96633fb35927ca28bce50577721a06d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96633fb35927ca28bce50577721a06d8">&#9670;&nbsp;</a></span>high_priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_ret_voice_regions::high_priority</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >if <code>true</code> then request will be prioritized over already enqueued requests </p>
+
+</div>
+</div>
+<a id="a82138b417ac2435d6f394281cdec8fc2" name="a82138b417ac2435d6f394281cdec8fc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82138b417ac2435d6f394281cdec8fc2">&#9670;&nbsp;</a></span>fail</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* discord_ret_voice_regions::fail) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >optional callback to be executed on a failed request </p>
+
+</div>
+</div>
+<a id="a07c9ab7ec3d78420efafad894e30ef14" name="a07c9ab7ec3d78420efafad894e30ef14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07c9ab7ec3d78420efafad894e30ef14">&#9670;&nbsp;</a></span>done</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* discord_ret_voice_regions::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__voice__regions.html">discord_voice_regions</a> *ret)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >optional callback to be executed on a successful request </p>
 
 </div>
 </div>
@@ -214,12 +225,12 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-templates_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
+<p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-response_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/<a class="el" href="discord-templates_8h_source.html">discord-templates.h</a></li>
+<li>include/<a class="el" href="discord-response_8h_source.html">discord-response.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

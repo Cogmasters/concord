@@ -1,6 +1,7 @@
 var discord_request_8h =
 [
-    [ "DISCORD_REQ_INIT", "discord-request_8h.html#a9e79d2ef1b5a587d140136ea6c80c253", null ],
-    [ "DISCORD_REQ_LIST_INIT", "discord-request_8h.html#a1d6cc36a562bead8eb6b63e24d6d12db", null ],
-    [ "DISCORD_REQ_BLANK_INIT", "discord-request_8h.html#ad4484f1fbb7c1a5292a7c4e7c9437bc1", null ]
+    [ "discord_ret_default_fields", "structdiscord__ret__default__fields.html", null ],
+    [ "DISCORD_ATTR_INIT", "discord-request_8h.html#aaebf290db02074487d40973bfc2dff7c", null ],
+    [ "DISCORD_ATTR_LIST_INIT", "discord-request_8h.html#abe4d5f28e2fe461435003976cde42f79", null ],
+    [ "DISCORD_ATTR_BLANK_INIT", "discord-request_8h.html#a9eb1ad2723069663d9c07b6d177a1369", null ]
 ];

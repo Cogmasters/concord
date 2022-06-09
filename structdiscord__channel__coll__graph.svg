@@ -69,7 +69,7 @@
 <g id="node5" class="node">
 <title>Node7</title>
 <g id="a_node5"><a xlink:href="structdiscord__thread__member.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="399,-67.5 399,-86.5 534,-86.5 534,-67.5 399,-67.5"/>
+<polygon fill="none" stroke="black" points="399,-67.5 399,-86.5 534,-86.5 534,-67.5 399,-67.5"/>
 <text text-anchor="middle" x="466.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_thread_member</text>
 </a>
 </g>

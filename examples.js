@@ -1,5 +1,6 @@
 var examples =
 [
+    [ "timers.c", "timers_8c-example.html", null ],
     [ "slash-commands.c", "slash-commands_8c-example.html", null ],
     [ "slash-commands2.c", "slash-commands2_8c-example.html", null ],
     [ "audit-log.c", "audit-log_8c-example.html", null ],
@@ -9,7 +10,6 @@ var examples =
     [ "manual-dm.c", "manual-dm_8c-example.html", null ],
     [ "pin.c", "pin_8c-example.html", null ],
     [ "reaction.c", "reaction_8c-example.html", null ],
-    [ "timers.c", "timers_8c-example.html", null ],
     [ "emoji.c", "emoji_8c-example.html", null ],
     [ "guild.c", "guild_8c-example.html", null ],
     [ "ban.c", "ban_8c-example.html", null ],

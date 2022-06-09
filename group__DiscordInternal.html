@@ -101,29 +101,35 @@ $(document).ready(function(){initNavTree('group__DiscordInternal.html',''); init
 <div class="dynheader">
 Collaboration diagram for Internal implementation details:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordInternal.svg" width="412" height="184"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordInternal.svg" width="470" height="332"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:group__DiscordInternalAdapter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalAdapter.html">REST API</a></td></tr>
-<tr class="memdesc:group__DiscordInternalAdapter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to the Discord REST API. <br /></td></tr>
+<tr class="memitem:group__DiscordInternalTimer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html">Timer API</a></td></tr>
+<tr class="memdesc:group__DiscordInternalTimer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback scheduling API. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__DiscordInternalREST"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html">REST API</a></td></tr>
+<tr class="memdesc:group__DiscordInternalREST"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to the Discord REST API. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__DiscordInternalGateway"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html">WebSockets API</a></td></tr>
 <tr class="memdesc:group__DiscordInternalGateway"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to the Discord Gateway API. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__DiscordInternalTimer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html">Timer API</a></td></tr>
-<tr class="memdesc:group__DiscordInternalTimer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback scheduling API. <br /></td></tr>
+<tr class="memitem:group__DiscordInternalRefcount"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html">Reference counter</a></td></tr>
+<tr class="memdesc:group__DiscordInternalRefcount"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle automatic cleanup of user's data. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__DiscordInternalMessageCommands"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html">Message Commands API</a></td></tr>
+<tr class="memdesc:group__DiscordInternalMessageCommands"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Message Commands API for registering and parsing user commands. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__DiscordInternalWorker"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalWorker.html">Global threadpool</a></td></tr>
+<tr class="memdesc:group__DiscordInternalWorker"><td class="mdescLeft">&#160;</td><td class="mdescRight">A global threadpool for worker-threads handling. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:discord-internal_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html">discord-internal.h</a></td></tr>
 <tr class="memdesc:discord-internal_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal functions and datatypes. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:discord-request_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html">discord-request.h</a></td></tr>
-<tr class="memdesc:discord-request_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic macros for initializing a <a class="el" href="structdiscord__request.html">discord_request</a>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -144,6 +150,10 @@ Macros</h2></td></tr>
 <tr class="memitem:ga69f4288287a2a9df3630d10e3e208f09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">ASSERT_NOT_OOB</a>(nbytes,  destsz)&#160;&#160;&#160;    ASSERT_S((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td></tr>
 <tr class="memdesc:ga69f4288287a2a9df3630d10e3e208f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut for checking OOB-write attempts.  <a href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">More...</a><br /></td></tr>
 <tr class="separator:ga69f4288287a2a9df3630d10e3e208f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga6f54459e4a3ef7fae49a92fd6dee7103">DISCORD_ENDPT_LEN</a>&#160;&#160;&#160;512</td></tr>
+<tr class="separator:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga576294a6f05bf60dbf54a275d3c61f8b">DISCORD_ROUTE_LEN</a>&#160;&#160;&#160;256</td></tr>
+<tr class="separator:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Documentation useful when developing or debugging Concord itself. </p>
@@ -195,13 +205,14 @@ Macros</h2></td></tr>
 <p>log and return <code>code</code> if <code>expect</code> condition is false </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">expect</td><td>the expected outcome </td></tr>
-    <tr><td class="paramname">client</td><td>the discord client </td></tr>
-    <tr><td class="paramname">error</td><td>return CCORDcode error </td></tr>
-    <tr><td class="paramname">reason</td><td>for return </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">client</td><td>the Discord client </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">expect</td><td>the expected outcome </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">code</td><td>return CCORDcode error code </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reason</td><td>for return </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>the provided <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <code>code</code> parameter </dd></dl>
 
 </div>
 </div>
@@ -235,11 +246,41 @@ Macros</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>unsigned values are expected</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nbytes</td><td>amount of bytes to be written </td></tr>
-    <tr><td class="paramname">destsz</td><td>size of dest in bytes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nbytes</td><td>amount of bytes to be written </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">destsz</td><td>size of dest in bytes </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga6f54459e4a3ef7fae49a92fd6dee7103" name="ga6f54459e4a3ef7fae49a92fd6dee7103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f54459e4a3ef7fae49a92fd6dee7103">&#9670;&nbsp;</a></span>DISCORD_ENDPT_LEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DISCORD_ENDPT_LEN&#160;&#160;&#160;512</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >URL endpoint threshold length </p>
+
+</div>
+</div>
+<a id="ga576294a6f05bf60dbf54a275d3c61f8b" name="ga576294a6f05bf60dbf54a275d3c61f8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga576294a6f05bf60dbf54a275d3c61f8b">&#9670;&nbsp;</a></span>DISCORD_ROUTE_LEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DISCORD_ROUTE_LEN&#160;&#160;&#160;256</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Route's unique key threshold length </p>
 
 </div>
 </div>

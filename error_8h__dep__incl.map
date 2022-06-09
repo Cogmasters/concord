@@ -1,5 +1,6 @@
 <map id="core/error.h" name="core/error.h">
-<area shape="rect" id="node1" title=" " alt="" coords="109,5,205,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="214,5,310,32"/>
 <area shape="rect" id="node2" href="$websockets_8h.html" title=" " alt="" coords="5,80,148,107"/>
-<area shape="rect" id="node3" href="$discord_8h.html" title="Public functions and datatypes." alt="" coords="172,80,304,107"/>
+<area shape="rect" id="node3" href="$discord-worker_8h.html" title="Global threadpool." alt="" coords="172,80,352,107"/>
+<area shape="rect" id="node4" href="$discord_8h.html" title="Public functions and datatypes." alt="" coords="376,80,508,107"/>
 </map>

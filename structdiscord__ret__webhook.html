@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('structdiscord__ret__webhook.html','');
 <p>Request's return context.  
  <a href="structdiscord__ret__webhook.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="discord-templates_8h_source.html">discord-templates.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_ret_webhook:</div>
 <div class="dyncontent">
@@ -106,16 +106,18 @@ Collaboration diagram for discord_ret_webhook:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ae0822eb062ba0823b4b5be05e4d6266d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#ae0822eb062ba0823b4b5be05e4d6266d">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *ret)</td></tr>
-<tr class="separator:ae0822eb062ba0823b4b5be05e4d6266d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a731b872d01f622f41d61b7776af6001a"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a731b872d01f622f41d61b7776af6001a">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> code, void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>)</td></tr>
-<tr class="separator:a731b872d01f622f41d61b7776af6001a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa27653d68a90d788d976fe777529ff9a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a></td></tr>
 <tr class="separator:aa27653d68a90d788d976fe777529ff9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a030b553bf4817a8ac1a0e443a7276fc5"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a030b553bf4817a8ac1a0e443a7276fc5">cleanup</a> )(void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>)</td></tr>
-<tr class="separator:a030b553bf4817a8ac1a0e443a7276fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a13b575ccd1cb9088138d15adafe1f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a3a13b575ccd1cb9088138d15adafe1f6">high_p</a></td></tr>
-<tr class="separator:a3a13b575ccd1cb9088138d15adafe1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f41c58e765b5f1cb56970e05f46fc20"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a4f41c58e765b5f1cb56970e05f46fc20">cleanup</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>)</td></tr>
+<tr class="separator:a4f41c58e765b5f1cb56970e05f46fc20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44809cd5a887ac5548edccac06346239"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a44809cd5a887ac5548edccac06346239">keep</a></td></tr>
+<tr class="separator:a44809cd5a887ac5548edccac06346239"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aefa9473deb7214e2ecfeed8e5f55e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a1aefa9473deb7214e2ecfeed8e5f55e5">high_priority</a></td></tr>
+<tr class="separator:a1aefa9473deb7214e2ecfeed8e5f55e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe87240245cebc249f5d13b30374e83d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#abe87240245cebc249f5d13b30374e83d">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
+<tr class="separator:abe87240245cebc249f5d13b30374e83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b5746a50bda9f97bca971cb4b481641"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a1b5746a50bda9f97bca971cb4b481641">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *ret)</td></tr>
+<tr class="separator:a1b5746a50bda9f97bca971cb4b481641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3f5d51d7b09163adca988373419da19"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#ab3f5d51d7b09163adca988373419da19">sync</a></td></tr>
 <tr class="separator:ab3f5d51d7b09163adca988373419da19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -124,36 +126,6 @@ Data Fields</h2></td></tr>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#_a3">webhook.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="ae0822eb062ba0823b4b5be05e4d6266d" name="ae0822eb062ba0823b4b5be05e4d6266d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0822eb062ba0823b4b5be05e4d6266d">&#9670;&nbsp;</a></span>done</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* discord_ret_webhook::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *ret)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >optional callback to be executed on a successful request </p>
-
-</div>
-</div>
-<a id="a731b872d01f622f41d61b7776af6001a" name="a731b872d01f622f41d61b7776af6001a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a731b872d01f622f41d61b7776af6001a">&#9670;&nbsp;</a></span>fail</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* discord_ret_webhook::fail) (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> code, void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >optional callback to be executed on a failed request </p>
-
-</div>
-</div>
 <a id="aa27653d68a90d788d976fe777529ff9a" name="aa27653d68a90d788d976fe777529ff9a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa27653d68a90d788d976fe777529ff9a">&#9670;&nbsp;</a></span>data</h2>
 
@@ -165,37 +137,82 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >user arbitrary data to be retrieved at <code>done</code> or <code>fail</code> callbacks </p>
+<p >user arbitrary data to be passed to <code>done</code> or <code>fail</code> callbacks </p>
 
 </div>
 </div>
-<a id="a030b553bf4817a8ac1a0e443a7276fc5" name="a030b553bf4817a8ac1a0e443a7276fc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a030b553bf4817a8ac1a0e443a7276fc5">&#9670;&nbsp;</a></span>cleanup</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* discord_ret_webhook::cleanup) (void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >cleanup for when <code>data</code> is no longer needed </p><dl class="section note"><dt>Note</dt><dd>this only has to be defined once, it shall be called once <code>data</code> is no longer referenced by any callback </dd></dl>
-
-</div>
-</div>
-<a id="a3a13b575ccd1cb9088138d15adafe1f6" name="a3a13b575ccd1cb9088138d15adafe1f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a13b575ccd1cb9088138d15adafe1f6">&#9670;&nbsp;</a></span>high_p</h2>
+<a id="a4f41c58e765b5f1cb56970e05f46fc20" name="a4f41c58e765b5f1cb56970e05f46fc20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f41c58e765b5f1cb56970e05f46fc20">&#9670;&nbsp;</a></span>cleanup</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool discord_ret_webhook::high_p</td>
+          <td class="memname">void(* discord_ret_webhook::cleanup) (struct <a class="el" href="structdiscord.html">discord</a> *client, void *<a class="el" href="structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a">data</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >if <code>true</code> then request will take priority over already enqueued requests </p>
+<p >cleanup method to be called for <code>data</code>, once its no longer being referenced </p>
+
+</div>
+</div>
+<a id="a44809cd5a887ac5548edccac06346239" name="a44809cd5a887ac5548edccac06346239"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44809cd5a887ac5548edccac06346239">&#9670;&nbsp;</a></span>keep</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const void* discord_ret_webhook::keep</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Concord callback parameter the client wish to keep reference </p>
+
+</div>
+</div>
+<a id="a1aefa9473deb7214e2ecfeed8e5f55e5" name="a1aefa9473deb7214e2ecfeed8e5f55e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1aefa9473deb7214e2ecfeed8e5f55e5">&#9670;&nbsp;</a></span>high_priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_ret_webhook::high_priority</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >if <code>true</code> then request will be prioritized over already enqueued requests </p>
+
+</div>
+</div>
+<a id="abe87240245cebc249f5d13b30374e83d" name="abe87240245cebc249f5d13b30374e83d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe87240245cebc249f5d13b30374e83d">&#9670;&nbsp;</a></span>fail</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* discord_ret_webhook::fail) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >optional callback to be executed on a failed request </p>
+
+</div>
+</div>
+<a id="a1b5746a50bda9f97bca971cb4b481641" name="a1b5746a50bda9f97bca971cb4b481641"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b5746a50bda9f97bca971cb4b481641">&#9670;&nbsp;</a></span>done</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* discord_ret_webhook::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *ret)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >optional callback to be executed on a successful request </p>
 
 </div>
 </div>
@@ -210,14 +227,14 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-templates_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
+<p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-response_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#a4">webhook.c</a>.</dd>
 </dl>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/<a class="el" href="discord-templates_8h_source.html">discord-templates.h</a></li>
+<li>include/<a class="el" href="discord-response_8h_source.html">discord-response.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

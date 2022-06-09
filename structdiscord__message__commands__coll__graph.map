@@ -1,0 +1,5 @@
+<map id="discord_message_commands" name="discord_message_commands">
+<area shape="rect" id="node1" title="The handle for storing user&#39;s message commands." alt="" coords="5,95,220,121"/>
+<area shape="rect" id="node3" href="$structdiscord.html" title="The Discord client handler." alt="" coords="78,193,147,219"/>
+<area shape="rect" id="node2" href="$structccord__szbuf.html" title="Generic sized buffer." alt="" coords="63,5,162,32"/>
+</map>

@@ -1,43 +1,48 @@
 var group__DiscordAPIInteractionsApplicationCommand =
 [
     [ "discord_ret_application_command", "structdiscord__ret__application__command.html", [
-      [ "done", "structdiscord__ret__application__command.html#af9a241413e02c8ec7439cf7082978603", null ],
-      [ "fail", "structdiscord__ret__application__command.html#a56710df111e67f5f876d2038f35cd908", null ],
       [ "data", "structdiscord__ret__application__command.html#a657e1c543f57f89cecdee6ba4ba765cf", null ],
-      [ "cleanup", "structdiscord__ret__application__command.html#abb9f5fa0e1527cf43652effa14d96aa5", null ],
-      [ "high_p", "structdiscord__ret__application__command.html#ac23d4f56080fdf3c38abeea19e693c97", null ],
+      [ "cleanup", "structdiscord__ret__application__command.html#adf2fab487386fdf694299ab2943852fe", null ],
+      [ "keep", "structdiscord__ret__application__command.html#ad20ca3e5d6870d1a96ea99013e1ede62", null ],
+      [ "high_priority", "structdiscord__ret__application__command.html#a7afd04893115ef46661fe708a8ad0013", null ],
+      [ "fail", "structdiscord__ret__application__command.html#a034eaaafe4e70defd9d763c16d01b74b", null ],
+      [ "done", "structdiscord__ret__application__command.html#a2bfc44f166e84ecbbc84daf33f316acc", null ],
       [ "sync", "structdiscord__ret__application__command.html#ac28489e1de0c039fb4063a58709cab56", null ]
     ] ],
     [ "discord_ret_application_commands", "structdiscord__ret__application__commands.html", [
-      [ "done", "structdiscord__ret__application__commands.html#a9e1bf992280cb6d335218352294f15fd", null ],
-      [ "fail", "structdiscord__ret__application__commands.html#a101b300f3e563967bd1a4ed3fd73e5e0", null ],
       [ "data", "structdiscord__ret__application__commands.html#aa35aabdca3a505f714964e95f68cbc0c", null ],
-      [ "cleanup", "structdiscord__ret__application__commands.html#ab3bf0b79b2050405e8bc20f67651eae4", null ],
-      [ "high_p", "structdiscord__ret__application__commands.html#ac6e42baa112fb7bdcd60fb947ad74a3e", null ],
+      [ "cleanup", "structdiscord__ret__application__commands.html#ac6931ca63066f84f1948cd23604e6ad1", null ],
+      [ "keep", "structdiscord__ret__application__commands.html#a04ac0051ce0672aa9fac62e2e78825d9", null ],
+      [ "high_priority", "structdiscord__ret__application__commands.html#a3628a1845e04f77b6d44ee31fbee9235", null ],
+      [ "fail", "structdiscord__ret__application__commands.html#a9aac5a1d814831e12d189debb06fe253", null ],
+      [ "done", "structdiscord__ret__application__commands.html#a6ec4088b80747f944079b1c6cfe497bf", null ],
       [ "sync", "structdiscord__ret__application__commands.html#a5834c1c8e1d8e75ece3ac936d4b42c85", null ]
     ] ],
     [ "discord_ret_application_command_permission", "structdiscord__ret__application__command__permission.html", [
-      [ "done", "structdiscord__ret__application__command__permission.html#a3781925ad384ce889b3df3187c40f749", null ],
-      [ "fail", "structdiscord__ret__application__command__permission.html#a30e97b2a3f8575042d226e0d2a78d6b9", null ],
       [ "data", "structdiscord__ret__application__command__permission.html#a1767f833f0b8c95b173a8be7cd0e4f20", null ],
-      [ "cleanup", "structdiscord__ret__application__command__permission.html#a5d520157a34c3eb60c44ac8d64f28660", null ],
-      [ "high_p", "structdiscord__ret__application__command__permission.html#a27f5aa01ffbe20032e720db4c7f799cf", null ],
+      [ "cleanup", "structdiscord__ret__application__command__permission.html#a897047b19cacaaba98050614f11420da", null ],
+      [ "keep", "structdiscord__ret__application__command__permission.html#a4da2a8fcc8fbc1b6137b5a97201a9ece", null ],
+      [ "high_priority", "structdiscord__ret__application__command__permission.html#a1c2c6c3cf01404ff655495c4f4d1377f", null ],
+      [ "fail", "structdiscord__ret__application__command__permission.html#ab8c9eba78b12298c4dfda97fe6a7f25e", null ],
+      [ "done", "structdiscord__ret__application__command__permission.html#a7c7268ab97065c1b449587f632ccf43e", null ],
       [ "sync", "structdiscord__ret__application__command__permission.html#ac95a746b1f895df8e8fb7123f26b5f84", null ]
     ] ],
     [ "discord_ret_application_command_permissions", "structdiscord__ret__application__command__permissions.html", [
-      [ "done", "structdiscord__ret__application__command__permissions.html#a49585588241d74ce15a1c7484d6d7e97", null ],
-      [ "fail", "structdiscord__ret__application__command__permissions.html#a5ad856bd43a937fe3e52c30bed1aeaf7", null ],
       [ "data", "structdiscord__ret__application__command__permissions.html#afb590c94214dd88ff5c04c96e74c15e8", null ],
-      [ "cleanup", "structdiscord__ret__application__command__permissions.html#a74c5ab8633bbc72d0a204c50fe3751e8", null ],
-      [ "high_p", "structdiscord__ret__application__command__permissions.html#a4edc8ba309d73d3212dd9537c0b658d7", null ],
+      [ "cleanup", "structdiscord__ret__application__command__permissions.html#ab857a70fa6bc31b09f635c9459f3de8a", null ],
+      [ "keep", "structdiscord__ret__application__command__permissions.html#a224d7830d2de7d9f72f478192fbefe3f", null ],
+      [ "high_priority", "structdiscord__ret__application__command__permissions.html#ad7efc0dcf9508120a79ce7302d5c2ff3", null ],
+      [ "fail", "structdiscord__ret__application__command__permissions.html#a9fb6a45f359b7bd6d4a27cd857bdf4f6", null ],
+      [ "done", "structdiscord__ret__application__command__permissions.html#ae584dffa4a7159d4b1d43f9450e4bb39", null ],
       [ "sync", "structdiscord__ret__application__command__permissions.html#a9acfd3806e04462c04fcd10be4ff166f", null ]
     ] ],
     [ "discord_ret_guild_application_command_permissions", "structdiscord__ret__guild__application__command__permissions.html", [
-      [ "done", "structdiscord__ret__guild__application__command__permissions.html#a46f167574ac70d77edec86ca79ea080c", null ],
-      [ "fail", "structdiscord__ret__guild__application__command__permissions.html#a5d22d0de56eda5cd05e2f1ae5efe140c", null ],
       [ "data", "structdiscord__ret__guild__application__command__permissions.html#ada0de1e64f7a35b634052c72b23b82f7", null ],
-      [ "cleanup", "structdiscord__ret__guild__application__command__permissions.html#ab2dfc2360f823d82d9d9d7188057815a", null ],
-      [ "high_p", "structdiscord__ret__guild__application__command__permissions.html#af028f1210b274a22a768a800be9c9b63", null ],
+      [ "cleanup", "structdiscord__ret__guild__application__command__permissions.html#a56d3e4492e44a8a23eb0a981098fe8a8", null ],
+      [ "keep", "structdiscord__ret__guild__application__command__permissions.html#a5e55e4e941b38cab6ee06cd2a8396c98", null ],
+      [ "high_priority", "structdiscord__ret__guild__application__command__permissions.html#a79cbcd23715477a6cdf11023fc99c855", null ],
+      [ "fail", "structdiscord__ret__guild__application__command__permissions.html#ab3889b1bc542cc7971bd6de243e979e6", null ],
+      [ "done", "structdiscord__ret__guild__application__command__permissions.html#a0e6555d93c599a285c0641c84a19b219", null ],
       [ "sync", "structdiscord__ret__guild__application__command__permissions.html#ab1a1aa422bea2468257efa33931d60d5", null ]
     ] ],
     [ "discord_get_global_application_commands", "group__DiscordAPIInteractionsApplicationCommand.html#gabc67ef5d190dd51f0a10207e809264a4", null ],

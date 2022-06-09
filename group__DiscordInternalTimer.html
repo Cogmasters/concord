@@ -110,30 +110,33 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac6c4cd848c1604641d3e81044b5595e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gac6c4cd848c1604641d3e81044b5595e0">discord_timers_init</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
-<tr class="memdesc:gac6c4cd848c1604641d3e81044b5595e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">prepare timers for usage  <a href="group__DiscordInternalTimer.html#gac6c4cd848c1604641d3e81044b5595e0">More...</a><br /></td></tr>
-<tr class="separator:gac6c4cd848c1604641d3e81044b5595e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaecdf1274fa5bffadff6070a008fa5a8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gaecdf1274fa5bffadff6070a008fa5a8a">discord_timers_cleanup</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
-<tr class="memdesc:gaecdf1274fa5bffadff6070a008fa5a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">cleanup timers and call cancel any running ones  <a href="group__DiscordInternalTimer.html#gaecdf1274fa5bffadff6070a008fa5a8a">More...</a><br /></td></tr>
-<tr class="separator:gaecdf1274fa5bffadff6070a008fa5a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae0fbfdd1cf1370ccff07b8c6bad9baa9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gae0fbfdd1cf1370ccff07b8c6bad9baa9">discord_timers_init</a> (struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers)</td></tr>
+<tr class="memdesc:gae0fbfdd1cf1370ccff07b8c6bad9baa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare timers for usage.  <a href="group__DiscordInternalTimer.html#gae0fbfdd1cf1370ccff07b8c6bad9baa9">More...</a><br /></td></tr>
+<tr class="separator:gae0fbfdd1cf1370ccff07b8c6bad9baa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6bf3ef6a2ccc045f060ca2e9d342403a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga6bf3ef6a2ccc045f060ca2e9d342403a">discord_timers_cleanup</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers)</td></tr>
+<tr class="memdesc:ga6bf3ef6a2ccc045f060ca2e9d342403a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup timers and call cancel any running ones.  <a href="group__DiscordInternalTimer.html#ga6bf3ef6a2ccc045f060ca2e9d342403a">More...</a><br /></td></tr>
+<tr class="separator:ga6bf3ef6a2ccc045f060ca2e9d342403a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga238902133893ba4c7e7f52680c242ec7"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga238902133893ba4c7e7f52680c242ec7">discord_timers_get_next_trigger</a> (struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *const timers[], size_t n, int64_t now, int64_t max_time)</td></tr>
+<tr class="memdesc:ga238902133893ba4c7e7f52680c242ec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get earliest trigger time from a group of timers.  <a href="group__DiscordInternalTimer.html#ga238902133893ba4c7e7f52680c242ec7">More...</a><br /></td></tr>
+<tr class="separator:ga238902133893ba4c7e7f52680c242ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc">discord_timers_run</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers)</td></tr>
-<tr class="memdesc:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">run all timers that are due  <a href="group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc">More...</a><br /></td></tr>
+<tr class="memdesc:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run all timers that are due.  <a href="group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc">More...</a><br /></td></tr>
 <tr class="separator:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4eebc4192161c78f1f61b7b7130cf472"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472">_discord_timer_ctl</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
-<tr class="memdesc:ga4eebc4192161c78f1f61b7b7130cf472"><td class="mdescLeft">&#160;</td><td class="mdescRight">modifies or creates a timer  <a href="group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472">More...</a><br /></td></tr>
+<tr class="memdesc:ga4eebc4192161c78f1f61b7b7130cf472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies or creates a timer.  <a href="group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472">More...</a><br /></td></tr>
 <tr class="separator:ga4eebc4192161c78f1f61b7b7130cf472"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393">discord_internal_timer_ctl</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
-<tr class="memdesc:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="mdescLeft">&#160;</td><td class="mdescRight">modifies or creates a timer  <a href="group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393">More...</a><br /></td></tr>
+<tr class="memdesc:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies or creates a timer.  <a href="group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393">More...</a><br /></td></tr>
 <tr class="separator:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842">discord_internal_timer</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> cb, void *data, int64_t delay)</td></tr>
-<tr class="memdesc:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a one shot timer that automatically deletes itself upon completion  <a href="group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842">More...</a><br /></td></tr>
+<tr class="memdesc:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a one shot timer that automatically deletes itself upon completion.  <a href="group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842">More...</a><br /></td></tr>
 <tr class="separator:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Callback scheduling API. </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gac6c4cd848c1604641d3e81044b5595e0" name="gac6c4cd848c1604641d3e81044b5595e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac6c4cd848c1604641d3e81044b5595e0">&#9670;&nbsp;</a></span>discord_timers_init()</h2>
+<a id="gae0fbfdd1cf1370ccff07b8c6bad9baa9" name="gae0fbfdd1cf1370ccff07b8c6bad9baa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae0fbfdd1cf1370ccff07b8c6bad9baa9">&#9670;&nbsp;</a></span>discord_timers_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,25 +144,25 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void discord_timers_init </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
-          <td class="paramname"><em>client</em></td><td>)</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *&#160;</td>
+          <td class="paramname"><em>timers</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>prepare timers for usage </p>
+<p>Prepare timers for usage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">timers</td><td>the 'struct <a class="el" href="structdiscord__timers.html">discord_timers</a>' to init </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="gaecdf1274fa5bffadff6070a008fa5a8a" name="gaecdf1274fa5bffadff6070a008fa5a8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaecdf1274fa5bffadff6070a008fa5a8a">&#9670;&nbsp;</a></span>discord_timers_cleanup()</h2>
+<a id="ga6bf3ef6a2ccc045f060ca2e9d342403a" name="ga6bf3ef6a2ccc045f060ca2e9d342403a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6bf3ef6a2ccc045f060ca2e9d342403a">&#9670;&nbsp;</a></span>discord_timers_cleanup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,19 +171,82 @@ Functions</h2></td></tr>
           <td class="memname">void discord_timers_cleanup </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
-          <td class="paramname"><em>client</em></td><td>)</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *&#160;</td>
+          <td class="paramname"><em>timers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>cleanup timers and call cancel any running ones </p>
+<p>Cleanup timers and call cancel any running ones. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">timers</td><td>the 'struct <a class="el" href="structdiscord__timers.html">discord_timers</a>' to cleanup </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga238902133893ba4c7e7f52680c242ec7" name="ga238902133893ba4c7e7f52680c242ec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga238902133893ba4c7e7f52680c242ec7">&#9670;&nbsp;</a></span>discord_timers_get_next_trigger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t discord_timers_get_next_trigger </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *const&#160;</td>
+          <td class="paramname"><em>timers</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>now</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>max_time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get earliest trigger time from a group of timers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timers</td><td>array of timers </td></tr>
+    <tr><td class="paramname">n</td><td>number of timers in array </td></tr>
+    <tr><td class="paramname">now</td><td>current time </td></tr>
+    <tr><td class="paramname">max_time</td><td>max time to allowed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>time in microseconds until next timer, or max </dd></dl>
 
 </div>
 </div>
@@ -210,7 +276,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>run all timers that are due </p>
+<p>Run all timers that are due. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
@@ -253,7 +319,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>modifies or creates a timer </p>
+<p>Modifies or creates a timer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
@@ -292,7 +358,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>modifies or creates a timer </p>
+<p>Modifies or creates a timer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
@@ -300,7 +366,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>unsigned the id of the timer </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the id of the timer </dd></dl>
 
 </div>
 </div>
@@ -342,7 +408,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>creates a one shot timer that automatically deletes itself upon completion </p>
+<p>Creates a one shot timer that automatically deletes itself upon completion. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
@@ -352,7 +418,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>unsigned </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the id of the timer </dd></dl>
 
 </div>
 </div>

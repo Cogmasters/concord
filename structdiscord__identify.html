@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('structdiscord__identify.html',''); ini
 <div class="dynheader">
 Collaboration diagram for discord_identify:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__identify__coll__graph.svg" width="424" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__identify__coll__graph.svg" width="523" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -111,6 +111,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a6882ef0bbc7c6a2a8e4c74f0e4e92208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8b32bb5a6bffcce92129e0be6b9e43"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__identify.html#acb8b32bb5a6bffcce92129e0be6b9e43">large_threshold</a></td></tr>
 <tr class="separator:acb8b32bb5a6bffcce92129e0be6b9e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11ecdbc8c64de16a88a8c567dd04123b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structintegers.html">integers</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__identify.html#a11ecdbc8c64de16a88a8c567dd04123b">shard</a></td></tr>
+<tr class="separator:a11ecdbc8c64de16a88a8c567dd04123b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb3727dba6564c5f1903da26250cf801"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__identify.html#afb3727dba6564c5f1903da26250cf801">presence</a></td></tr>
 <tr class="separator:afb3727dba6564c5f1903da26250cf801"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cce9dbf0bde245a7964636e7d8d2f5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__identify.html#a9cce9dbf0bde245a7964636e7d8d2f5e">intents</a></td></tr>
@@ -195,6 +197,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >value between 50 and 250, total number of members where the gateway will stop sending offline members in the guild member list </p>
+
+</div>
+</div>
+<a id="a11ecdbc8c64de16a88a8c567dd04123b" name="a11ecdbc8c64de16a88a8c567dd04123b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11ecdbc8c64de16a88a8c567dd04123b">&#9670;&nbsp;</a></span>shard</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structintegers.html">integers</a>* discord_identify::shard</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >array of two integers (shard_id, num_shards) </p>
 
 </div>
 </div>

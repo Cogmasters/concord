@@ -1,19 +1,21 @@
 var group__DiscordAPIEmoji =
 [
     [ "discord_ret_emoji", "structdiscord__ret__emoji.html", [
-      [ "done", "structdiscord__ret__emoji.html#a898debf3beba6696edcb664c61c28e6f", null ],
-      [ "fail", "structdiscord__ret__emoji.html#a375074d1be0eda2a3408798bb83c49ad", null ],
       [ "data", "structdiscord__ret__emoji.html#a937a01db9fa42397a75599616431d9ac", null ],
-      [ "cleanup", "structdiscord__ret__emoji.html#a0fe3821e5daa3fa9d7d50c633d4e1706", null ],
-      [ "high_p", "structdiscord__ret__emoji.html#ae5b51179224a0a9dfd3c771c556d567e", null ],
+      [ "cleanup", "structdiscord__ret__emoji.html#aa4da9f6ab0547c1fd590241ebbedfe3f", null ],
+      [ "keep", "structdiscord__ret__emoji.html#a85ad22558794da2babd7d1b2bab0960c", null ],
+      [ "high_priority", "structdiscord__ret__emoji.html#a9161e3905e24e3433434986c841d2758", null ],
+      [ "fail", "structdiscord__ret__emoji.html#a65b6bc082402cf735a646c925867208e", null ],
+      [ "done", "structdiscord__ret__emoji.html#a483f00b8a0436fac6f4106a5a942d77d", null ],
       [ "sync", "structdiscord__ret__emoji.html#a30f36adcbe580f87b1b55a132088aeaf", null ]
     ] ],
     [ "discord_ret_emojis", "structdiscord__ret__emojis.html", [
-      [ "done", "structdiscord__ret__emojis.html#a11f4db470e39be0680f3cefbf568a2a3", null ],
-      [ "fail", "structdiscord__ret__emojis.html#a5e25b2f9f7b87038f60f13b1827e27f1", null ],
       [ "data", "structdiscord__ret__emojis.html#a1e887af9287e2e83c2089a636d5cb0a4", null ],
-      [ "cleanup", "structdiscord__ret__emojis.html#aea774a3c93a897a4694890ac066dd809", null ],
-      [ "high_p", "structdiscord__ret__emojis.html#a59e7974821d1d1069a15e16259b2fe06", null ],
+      [ "cleanup", "structdiscord__ret__emojis.html#ab6ce5bb37fc04d9c085e977d56d6ff7f", null ],
+      [ "keep", "structdiscord__ret__emojis.html#a8e578dc0e6079a42e7f1db9bfc750036", null ],
+      [ "high_priority", "structdiscord__ret__emojis.html#a042efe857501da1bad907c2912281099", null ],
+      [ "fail", "structdiscord__ret__emojis.html#a5268f8f2e33c65ded60dc1f94318bd92", null ],
+      [ "done", "structdiscord__ret__emojis.html#ae0874c82104a72846ac79abdea31c75f", null ],
       [ "sync", "structdiscord__ret__emojis.html#a25fc1b98198ca80b9fa5eb787bcbbc68", null ]
     ] ],
     [ "discord_list_guild_emojis", "group__DiscordAPIEmoji.html#ga398e2164fb7163fc5f9528e6b1003b10", null ],

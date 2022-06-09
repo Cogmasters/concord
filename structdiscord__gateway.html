@@ -93,14 +93,14 @@ $(document).ready(function(){initNavTree('structdiscord__gateway.html',''); init
 </div><!--header-->
 <div class="contents">
 
-<p>The handle used for establishing a WebSockets connection.  
+<p>The handle used for interfacing with Discord's Gateway API.  
  <a href="structdiscord__gateway.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-internal_8h_source.html">discord-internal.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_gateway:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__gateway__coll__graph.svg" width="446" height="543"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__gateway__coll__graph.svg" width="687" height="248"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -112,112 +112,38 @@ Data Fields</h2></td></tr>
 <tr class="separator:a14f4f4117925f91a02e3b9a47cb50475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adaaced2674818e71a975c2995d708175"><td class="memItemLeft" align="right" valign="top">CURLM *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#adaaced2674818e71a975c2995d708175">mhandle</a></td></tr>
 <tr class="separator:adaaced2674818e71a975c2995d708175"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8c96adbf1bc99f84864b5dd29463fa9"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a62cd9f7c5bed834c5cdc33f8ef3b6838"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a04beccbf4215366ff17d43ad40b34657">interval</a></td></tr>
-<tr class="separator:a62cd9f7c5bed834c5cdc33f8ef3b6838"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4194f55f5dd0f31a8bc9b4af15f607a7"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a6c791b7ef63e5ed100b9a66733a9240d">hbeat</a></td></tr>
-<tr class="separator:a4194f55f5dd0f31a8bc9b4af15f607a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c223b59717ac0864fa850a2d444b58f"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a4f318b0eb4f8a151fa23236df46ae2cf">now</a></td></tr>
-<tr class="separator:a4c223b59717ac0864fa850a2d444b58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8c681d7124767a000fb14279c7cb032"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ac1320096e8a0c5b2e718fabfe368168b">identify</a></td></tr>
-<tr class="separator:aa8c681d7124767a000fb14279c7cb032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbc6c0a2380ce5a3459affce7a44d530"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#acbea890300ce3159105c4735dcfff30f">event</a></td></tr>
-<tr class="separator:adbc6c0a2380ce5a3459affce7a44d530"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b7b901009e3869c02636b325601ba6b"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#aa69001076c00c9267f759d6d69eec050">ping_ms</a></td></tr>
-<tr class="separator:a4b7b901009e3869c02636b325601ba6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b118798db60e192e9415ac01ec68b26"><td class="memItemLeft" >&#160;&#160;&#160;pthread_rwlock_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a86a693dff385bbf55e34f7c254463fd7">rwlock</a></td></tr>
-<tr class="separator:a0b118798db60e192e9415ac01ec68b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8c96adbf1bc99f84864b5dd29463fa9"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#ab8c96adbf1bc99f84864b5dd29463fa9">timer</a></td></tr>
-<tr class="separator:ab8c96adbf1bc99f84864b5dd29463fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5bb05c24b00d69d13e03e349b86c83"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a075ae59a26aa799daa808d74aed195b2"><td class="memItemLeft" >&#160;&#160;&#160;int64_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a7498626264e15e0965ab77d66c700137">hbeat_interval</a></td></tr>
+<tr class="separator:a075ae59a26aa799daa808d74aed195b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadb504428fc34c2edc6e6852ff4ab816"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a4f318b0eb4f8a151fa23236df46ae2cf">now</a></td></tr>
+<tr class="separator:aadb504428fc34c2edc6e6852ff4ab816"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e87998421f5d67f9f3cedd0e1b671b"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a15cdc971a43f1fbbb4a9dabee20445bc">hbeat_last</a></td></tr>
+<tr class="separator:a95e87998421f5d67f9f3cedd0e1b671b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4d84978da6208190c7b5f88aa7ef846"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ab97ed571bb1e73d49d6ae86855a9869b">identify_last</a></td></tr>
+<tr class="separator:ac4d84978da6208190c7b5f88aa7ef846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d655330f19a5dfc14e7389014c1787a"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#acbea890300ce3159105c4735dcfff30f">event</a></td></tr>
+<tr class="separator:a2d655330f19a5dfc14e7389014c1787a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe846e8c892273e4e3482fdccddb99f9"><td class="memItemLeft" >&#160;&#160;&#160;unsigned&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a4c281b0af2bd6a0672d543d6deacae6f">hbeat_timer</a></td></tr>
+<tr class="separator:afe846e8c892273e4e3482fdccddb99f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c6bf8203630ada0282ac2970be05d1"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#aa69001076c00c9267f759d6d69eec050">ping_ms</a></td></tr>
+<tr class="separator:a44c6bf8203630ada0282ac2970be05d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36697eb247e9c4cb74d89c02f15fa469"><td class="memItemLeft" >&#160;&#160;&#160;pthread_rwlock_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a86a693dff385bbf55e34f7c254463fd7">rwlock</a></td></tr>
+<tr class="separator:a36697eb247e9c4cb74d89c02f15fa469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5bb05c24b00d69d13e03e349b86c83"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#acc5bb05c24b00d69d13e03e349b86c83">timer</a></td></tr>
+<tr class="separator:acc5bb05c24b00d69d13e03e349b86c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add6cd3f50c50094ad169844597e123ab"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__identify.html">discord_identify</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#add6cd3f50c50094ad169844597e123ab">id</a></td></tr>
 <tr class="separator:add6cd3f50c50094ad169844597e123ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5de10fc0f2047d8ceb1c68ccce71c22e"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a55b3a59df601052f89575318e53f8dd6"><td class="memItemLeft" >&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a3a758f591a57c3bc1e48993da6bcaabb">is_ready</a></td></tr>
-<tr class="separator:a55b3a59df601052f89575318e53f8dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb96a2f8ece1829a59e37032dcb36744"><td class="memItemLeft" >&#160;&#160;&#160;char&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a0335d2e943de3ae0db1b7cf1a19aa7c2">id</a> [64]</td></tr>
-<tr class="separator:abb96a2f8ece1829a59e37032dcb36744"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35a617c2ce02fe5e7c01e07de43ef918"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a438976bf2fb1a6c0dd83d11de5be94d2">shards</a></td></tr>
-<tr class="separator:a35a617c2ce02fe5e7c01e07de43ef918"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05fe5d30dffcb67f0ab12a585fae453b"><td class="memItemLeft" >&#160;&#160;&#160;struct <a class="el" href="structdiscord__session__start__limit.html">discord_session_start_limit</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#add84bafb16142a86da119a37720ede68">start_limit</a></td></tr>
-<tr class="separator:a05fe5d30dffcb67f0ab12a585fae453b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af535f5952b22ebeef1db43ec704b9070"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a4d58ec3fd04ea64b272d5dd520c71512">concurrent</a></td></tr>
-<tr class="separator:af535f5952b22ebeef1db43ec704b9070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31fa143b0c1cb56f0baa6b5508d2aa5c"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#adab98dde11f525e604b326824595c21d">event_count</a></td></tr>
-<tr class="separator:a31fa143b0c1cb56f0baa6b5508d2aa5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e80db387e4db21bc949fde52e8ca06e"><td class="memItemLeft" >&#160;&#160;&#160;unsigned&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a5d2404bb7cdaf45ea971142e1202d718">status</a></td></tr>
-<tr class="separator:a0e80db387e4db21bc949fde52e8ca06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3017aa8af28c4c6568ad6a7943c3b74"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a7832b8053b175399f5b406bb1782c1e2"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ae1bca7721ed89ea3f64bdc28f63bcba7">enable</a></td></tr>
-<tr class="separator:a7832b8053b175399f5b406bb1782c1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b247cc635a4199d4f0817537a84b012"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a0c1cf462499400d561f776f98f3226d7">attempt</a></td></tr>
-<tr class="separator:a3b247cc635a4199d4f0817537a84b012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7da8f801cefd224ccf699f3cace503ac"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a2c73d65b2490525a2fdd0e42551d3b1d">limit</a></td></tr>
-<tr class="separator:a7da8f801cefd224ccf699f3cace503ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3017aa8af28c4c6568ad6a7943c3b74"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ad4252b05cdb1e7a1927ebba810c0668d">retry</a></td></tr>
-<tr class="separator:ae3017aa8af28c4c6568ad6a7943c3b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5de10fc0f2047d8ceb1c68ccce71c22e"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a5de10fc0f2047d8ceb1c68ccce71c22e">session</a></td></tr>
-<tr class="separator:a5de10fc0f2047d8ceb1c68ccce71c22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ea28b9687c7e4480447bf3e2965c5c2"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a4ea28b9687c7e4480447bf3e2965c5c2">json</a></td></tr>
-<tr class="separator:a4ea28b9687c7e4480447bf3e2965c5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a545df9845d351948da77ca4bea48652a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a545df9845d351948da77ca4bea48652a">length</a></td></tr>
-<tr class="separator:a545df9845d351948da77ca4bea48652a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a531aa675a770b98653a36319f9359f55"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:ac535995761aec78e9c306587bf029867"><td class="memItemLeft" >&#160;&#160;&#160;jsmnf_pair *&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ab2114a64231d25e676a6a1aeae8bce12">pairs</a></td></tr>
-<tr class="separator:ac535995761aec78e9c306587bf029867"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a068abc87ce31bebe2ad8ce823f6c59b0"><td class="memItemLeft" >&#160;&#160;&#160;unsigned&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a2401fad01e4f50e9a19ed1c5b5648a11">npairs</a></td></tr>
-<tr class="separator:a068abc87ce31bebe2ad8ce823f6c59b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5279a04339e60d5eb04cf2fe304138b3"><td class="memItemLeft" >&#160;&#160;&#160;jsmntok_t *&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a68efcf906a150ef6fdd595135a9eb8ae">tokens</a></td></tr>
-<tr class="separator:a5279a04339e60d5eb04cf2fe304138b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae20b2b259e0385228530e4b865a0722e"><td class="memItemLeft" >&#160;&#160;&#160;unsigned&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a45ea125b10f21e62ecf2813e7cf77daa">ntokens</a></td></tr>
-<tr class="separator:ae20b2b259e0385228530e4b865a0722e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a531aa675a770b98653a36319f9359f55"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a531aa675a770b98653a36319f9359f55">parse</a></td></tr>
-<tr class="separator:a531aa675a770b98653a36319f9359f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbe75f2a20dccba7387fa4f2c01108de"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a9933cad046ed439baa763f00a67640f2"><td class="memItemLeft" >&#160;&#160;&#160;enum discord_gateway_opcodes&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a56baf6a6c365f558e2fa5b4602d88ea3">opcode</a></td></tr>
-<tr class="separator:a9933cad046ed439baa763f00a67640f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada6117f3d22db2351774155e21bed752"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a82f4ea01c1c1ef97c1d5822f2df195cc">seq</a></td></tr>
-<tr class="separator:ada6117f3d22db2351774155e21bed752"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1d597e62cf18f125452536535556e6b"><td class="memItemLeft" >&#160;&#160;&#160;char&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a16b177d81acbaf1007771d03024a2b6f">name</a> [32]</td></tr>
-<tr class="separator:af1d597e62cf18f125452536535556e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73137a1c4adf59f5094137b16430e3d4"><td class="memItemLeft" >&#160;&#160;&#160;jsmnf_pair *&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#afa984539b4c2197eee9256bdd5a5c0fd">data</a></td></tr>
-<tr class="separator:a73137a1c4adf59f5094137b16430e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbe75f2a20dccba7387fa4f2c01108de"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#adbe75f2a20dccba7387fa4f2c01108de">payload</a></td></tr>
-<tr class="separator:adbe75f2a20dccba7387fa4f2c01108de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafcc040b3b6183d049b0bf35568b4a1a"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a1ceb5fe3cc503018c209eac507b725e3"><td class="memItemLeft" >&#160;&#160;&#160;struct sized_buffer&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a75e0773822f26760ac47acb62ee93139">prefix</a></td></tr>
-<tr class="separator:a1ceb5fe3cc503018c209eac507b725e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4075d25b3cee1b699ce2d33ee873d012"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a98fef59db528f797f3417983891e1a0b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#acbd942573fb44bab8fe7b5870fb39d34">start</a></td></tr>
-<tr class="separator:a98fef59db528f797f3417983891e1a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a870559d22fc5a1e7de35af2b343f49ad"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;size_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#af9748239d5f0bbfca4e9a87977579a06">size</a></td></tr>
-<tr class="separator:a870559d22fc5a1e7de35af2b343f49ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae14d8b158c93c396a0a23cf6683504e5"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;<a class="el" href="group__DiscordEventCallbackTypes.html#ga82dafc0a8a26d937ea17e9f6ad686dbe">discord_ev_message</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#abfed206a63d5ae495354e907f6854d07">cb</a></td></tr>
-<tr class="separator:ae14d8b158c93c396a0a23cf6683504e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4075d25b3cee1b699ce2d33ee873d012"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ad9bd07e3c6c04399171ac7a7438270ec">pool</a></td></tr>
-<tr class="separator:a4075d25b3cee1b699ce2d33ee873d012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ca5d8807bdf1401b0ed6699e38fb8eb"><td class="memItemLeft" >
-&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a98fef59db528f797f3417983891e1a0b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#acbd942573fb44bab8fe7b5870fb39d34">start</a></td></tr>
-<tr class="separator:a98fef59db528f797f3417983891e1a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a870559d22fc5a1e7de35af2b343f49ad"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;size_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#af9748239d5f0bbfca4e9a87977579a06">size</a></td></tr>
-<tr class="separator:a870559d22fc5a1e7de35af2b343f49ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae14d8b158c93c396a0a23cf6683504e5"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;<a class="el" href="group__DiscordEventCallbackTypes.html#ga82dafc0a8a26d937ea17e9f6ad686dbe">discord_ev_message</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#abfed206a63d5ae495354e907f6854d07">cb</a></td></tr>
-<tr class="separator:ae14d8b158c93c396a0a23cf6683504e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ca5d8807bdf1401b0ed6699e38fb8eb"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<b>fallback</b></td></tr>
-<tr class="separator:a0ca5d8807bdf1401b0ed6699e38fb8eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1edeb90710edf36fefa54eb45f13b1a"><td class="memItemLeft" >&#160;&#160;&#160;size_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a5d2e791438771d483b788b7f6a635b6f">amt</a></td></tr>
-<tr class="separator:aa1edeb90710edf36fefa54eb45f13b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68c07a914fbdaaf7bac99ea954f9289e"><td class="memItemLeft" >&#160;&#160;&#160;size_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ad88c952a09c79514d9bf5920c3f05bf6">cap</a></td></tr>
-<tr class="separator:a68c07a914fbdaaf7bac99ea954f9289e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b98f0e0c3e73510db641a1d9643b832"><td class="memItemLeft" >&#160;&#160;&#160;struct <a class="el" href="structdiscord__gateway__cbs.html">discord_gateway_cbs</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a37d8eda465d7fe829272bafde7efd847">cbs</a></td></tr>
-<tr class="separator:a2b98f0e0c3e73510db641a1d9643b832"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef16048ac11181703707934f3ae557a"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__DiscordEvent.html#gae0a25d76096eb35fb3f093e345fef8b9">discord_ev_scheduler</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a38fe47e02a4b9b8bd50390e708bfcabd">scheduler</a></td></tr>
-<tr class="separator:a7ef16048ac11181703707934f3ae557a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafcc040b3b6183d049b0bf35568b4a1a"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#aafcc040b3b6183d049b0bf35568b4a1a">cmds</a></td></tr>
-<tr class="separator:aafcc040b3b6183d049b0bf35568b4a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c5b90fc646ef6c047bf09ed99dedab5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__gateway__session.html">discord_gateway_session</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a5c5b90fc646ef6c047bf09ed99dedab5">session</a></td></tr>
+<tr class="separator:a5c5b90fc646ef6c047bf09ed99dedab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27bc7f5da52b61b8285c19cc54333a32"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__gateway__payload.html">discord_gateway_payload</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a27bc7f5da52b61b8285c19cc54333a32">payload</a></td></tr>
+<tr class="separator:a27bc7f5da52b61b8285c19cc54333a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b4de3401302e0bc6eb35f09000f0c08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordInternalGateway.html#ga3e14383e89f8790ccd05c8e926b394e4">discord_ev</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a3b4de3401302e0bc6eb35f09000f0c08">cbs</a> [<a class="el" href="docs_2api_2gateway_8h.html#a90ebb76de1682ce02a67a08b0510145ba1966631be40759f1164d26238cc8bcb3">DISCORD_EV_MAX</a>]</td></tr>
+<tr class="separator:a3b4de3401302e0bc6eb35f09000f0c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38fe47e02a4b9b8bd50390e708bfcabd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordEvent.html#gae0a25d76096eb35fb3f093e345fef8b9">discord_ev_scheduler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html#a38fe47e02a4b9b8bd50390e708bfcabd">scheduler</a></td></tr>
+<tr class="separator:a38fe47e02a4b9b8bd50390e708bfcabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >The handle used for establishing a WebSockets connection. </p>
+<div class="textblock"><p >The handle used for interfacing with Discord's Gateway API. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a8e220d0205d4f7e8c8dab44f73b2725c" name="a8e220d0205d4f7e8c8dab44f73b2725c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e220d0205d4f7e8c8dab44f73b2725c">&#9670;&nbsp;</a></span>conf</h2>
@@ -230,7 +156,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >DISCORD_GATEWAY logging module </p>
+<p ><code>DISCORD_GATEWAY</code> logging module </p>
 
 </div>
 </div>
@@ -264,33 +190,18 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a04beccbf4215366ff17d43ad40b34657" name="a04beccbf4215366ff17d43ad40b34657"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04beccbf4215366ff17d43ad40b34657">&#9670;&nbsp;</a></span>interval</h2>
+<a id="a7498626264e15e0965ab77d66c700137" name="a7498626264e15e0965ab77d66c700137"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7498626264e15e0965ab77d66c700137">&#9670;&nbsp;</a></span>hbeat_interval</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_gateway::interval</td>
+          <td class="memname">int64_t discord_gateway::hbeat_interval</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >fixed interval between heartbeats </p>
-
-</div>
-</div>
-<a id="a6c791b7ef63e5ed100b9a66733a9240d" name="a6c791b7ef63e5ed100b9a66733a9240d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c791b7ef63e5ed100b9a66733a9240d">&#9670;&nbsp;</a></span>hbeat</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_gateway::hbeat</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >last heartbeat pulse timestamp </p>
+<p >fixed milliseconds interval between heartbeats </p><dl class="section note"><dt>Note</dt><dd>obtained at <code>HELLO</code> </dd></dl>
 
 </div>
 </div>
@@ -305,22 +216,37 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Gateway's concept of "now" </p>
+<p >Gateway's concept of "now" </p><dl class="section note"><dt>Note</dt><dd>updated at <a class="el" href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb" title="Check and manage on-going Gateway session.">discord_gateway_perform()</a> </dd></dl>
 
 </div>
 </div>
-<a id="ac1320096e8a0c5b2e718fabfe368168b" name="ac1320096e8a0c5b2e718fabfe368168b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1320096e8a0c5b2e718fabfe368168b">&#9670;&nbsp;</a></span>identify</h2>
+<a id="a15cdc971a43f1fbbb4a9dabee20445bc" name="a15cdc971a43f1fbbb4a9dabee20445bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15cdc971a43f1fbbb4a9dabee20445bc">&#9670;&nbsp;</a></span>hbeat_last</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_gateway::identify</td>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_gateway::hbeat_last</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >timestamp of last succesful identify request </p>
+<p >last heartbeat pulse timestamp </p><dl class="section note"><dt>Note</dt><dd>first sent at <code>READY</code> and <code>RESUME</code>, then updated every <code>hbeat_interval</code> </dd></dl>
+
+</div>
+</div>
+<a id="ab97ed571bb1e73d49d6ae86855a9869b" name="ab97ed571bb1e73d49d6ae86855a9869b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab97ed571bb1e73d49d6ae86855a9869b">&#9670;&nbsp;</a></span>identify_last</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_gateway::identify_last</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >timestamp of last succesful identify request </p><dl class="section note"><dt>Note</dt><dd>updated at <a class="el" href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb" title="Trigger the initial handshake with the gateway.">discord_gateway_send_identify()</a> </dd></dl>
 
 </div>
 </div>
@@ -335,7 +261,22 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >timestamp of last succesful event timestamp in ms (resets every 60s) </p>
+<p >timestamp of last succesful event </p><dl class="section note"><dt>Note</dt><dd>resets every 60s </dd></dl>
+
+</div>
+</div>
+<a id="a4c281b0af2bd6a0672d543d6deacae6f" name="a4c281b0af2bd6a0672d543d6deacae6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c281b0af2bd6a0672d543d6deacae6f">&#9670;&nbsp;</a></span>hbeat_timer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned discord_gateway::hbeat_timer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >timer id for heartbeat timer </p>
 
 </div>
 </div>
@@ -350,7 +291,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >latency obtained from HEARTBEAT and HEARTBEAT_ACK interval </p>
+<p >latency obtained from <code>HEARTBEAT</code> and <code>HEARTBEAT_ACK</code> response interval </p>
 
 </div>
 </div>
@@ -370,8 +311,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="ab8c96adbf1bc99f84864b5dd29463fa9" name="ab8c96adbf1bc99f84864b5dd29463fa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8c96adbf1bc99f84864b5dd29463fa9">&#9670;&nbsp;</a></span></h2>
+<a id="acc5bb05c24b00d69d13e03e349b86c83" name="acc5bb05c24b00d69d13e03e349b86c83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5bb05c24b00d69d13e03e349b86c83">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -386,7 +327,7 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <a id="add6cd3f50c50094ad169844597e123ab" name="add6cd3f50c50094ad169844597e123ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add6cd3f50c50094ad169844597e123ab">&#9670;&nbsp;</a></span>id <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#add6cd3f50c50094ad169844597e123ab">&#9670;&nbsp;</a></span>id</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,179 +341,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a3a758f591a57c3bc1e48993da6bcaabb" name="a3a758f591a57c3bc1e48993da6bcaabb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a758f591a57c3bc1e48993da6bcaabb">&#9670;&nbsp;</a></span>is_ready</h2>
+<a id="a5c5b90fc646ef6c047bf09ed99dedab5" name="a5c5b90fc646ef6c047bf09ed99dedab5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c5b90fc646ef6c047bf09ed99dedab5">&#9670;&nbsp;</a></span>session</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool discord_gateway::is_ready</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >whether client is ready to start sending/receiving events </p>
-
-</div>
-</div>
-<a id="a0335d2e943de3ae0db1b7cf1a19aa7c2" name="a0335d2e943de3ae0db1b7cf1a19aa7c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0335d2e943de3ae0db1b7cf1a19aa7c2">&#9670;&nbsp;</a></span>id <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char discord_gateway::id[64]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >session id for resuming lost connections </p>
-
-</div>
-</div>
-<a id="a438976bf2fb1a6c0dd83d11de5be94d2" name="a438976bf2fb1a6c0dd83d11de5be94d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a438976bf2fb1a6c0dd83d11de5be94d2">&#9670;&nbsp;</a></span>shards</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int discord_gateway::shards</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >amount of shards being used by this session </p>
-
-</div>
-</div>
-<a id="add84bafb16142a86da119a37720ede68" name="add84bafb16142a86da119a37720ede68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add84bafb16142a86da119a37720ede68">&#9670;&nbsp;</a></span>start_limit</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__session__start__limit.html">discord_session_start_limit</a> discord_gateway::start_limit</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >session limits </p>
-
-</div>
-</div>
-<a id="a4d58ec3fd04ea64b272d5dd520c71512" name="a4d58ec3fd04ea64b272d5dd520c71512"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d58ec3fd04ea64b272d5dd520c71512">&#9670;&nbsp;</a></span>concurrent</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int discord_gateway::concurrent</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >active concurrent sessions </p>
-
-</div>
-</div>
-<a id="adab98dde11f525e604b326824595c21d" name="adab98dde11f525e604b326824595c21d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adab98dde11f525e604b326824595c21d">&#9670;&nbsp;</a></span>event_count</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int discord_gateway::event_count</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >event counter to avoid reaching limit of 120 events per 60 sec </p>
-
-</div>
-</div>
-<a id="a5d2404bb7cdaf45ea971142e1202d718" name="a5d2404bb7cdaf45ea971142e1202d718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d2404bb7cdaf45ea971142e1202d718">&#9670;&nbsp;</a></span>status</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned discord_gateway::status</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p ><a class="el" href="group__DiscordInternalGatewaySessionStatus.html">Client's session status</a> </p>
-
-</div>
-</div>
-<a id="ae1bca7721ed89ea3f64bdc28f63bcba7" name="ae1bca7721ed89ea3f64bdc28f63bcba7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bca7721ed89ea3f64bdc28f63bcba7">&#9670;&nbsp;</a></span>enable</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool discord_gateway::enable</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >will attempt reconnecting if true </p>
-
-</div>
-</div>
-<a id="a0c1cf462499400d561f776f98f3226d7" name="a0c1cf462499400d561f776f98f3226d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c1cf462499400d561f776f98f3226d7">&#9670;&nbsp;</a></span>attempt</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int discord_gateway::attempt</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current retry attempt (resets to 0 when succesful) </p>
-
-</div>
-</div>
-<a id="a2c73d65b2490525a2fdd0e42551d3b1d" name="a2c73d65b2490525a2fdd0e42551d3b1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c73d65b2490525a2fdd0e42551d3b1d">&#9670;&nbsp;</a></span>limit</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int discord_gateway::limit</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >max amount of retries before giving up </p>
-
-</div>
-</div>
-<a id="ad4252b05cdb1e7a1927ebba810c0668d" name="ad4252b05cdb1e7a1927ebba810c0668d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4252b05cdb1e7a1927ebba810c0668d">&#9670;&nbsp;</a></span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  discord_gateway::retry</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >retry connection structure </p>
-
-</div>
-</div>
-<a id="a5de10fc0f2047d8ceb1c68ccce71c22e" name="a5de10fc0f2047d8ceb1c68ccce71c22e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5de10fc0f2047d8ceb1c68ccce71c22e">&#9670;&nbsp;</a></span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  * discord_gateway::session</td>
+          <td class="memname">struct <a class="el" href="structdiscord__gateway__session.html">discord_gateway_session</a>* discord_gateway::session</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -580,179 +356,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a4ea28b9687c7e4480447bf3e2965c5c2" name="a4ea28b9687c7e4480447bf3e2965c5c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ea28b9687c7e4480447bf3e2965c5c2">&#9670;&nbsp;</a></span>json</h2>
+<a id="a27bc7f5da52b61b8285c19cc54333a32" name="a27bc7f5da52b61b8285c19cc54333a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27bc7f5da52b61b8285c19cc54333a32">&#9670;&nbsp;</a></span>payload</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* discord_gateway::json</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current iteration JSON string data </p>
-
-</div>
-</div>
-<a id="a545df9845d351948da77ca4bea48652a" name="a545df9845d351948da77ca4bea48652a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a545df9845d351948da77ca4bea48652a">&#9670;&nbsp;</a></span>length</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t discord_gateway::length</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current iteration JSON string data length </p>
-
-</div>
-</div>
-<a id="ab2114a64231d25e676a6a1aeae8bce12" name="ab2114a64231d25e676a6a1aeae8bce12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2114a64231d25e676a6a1aeae8bce12">&#9670;&nbsp;</a></span>pairs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">jsmnf_pair* discord_gateway::pairs</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current iteration JSON key/value pairs </p>
-
-</div>
-</div>
-<a id="a2401fad01e4f50e9a19ed1c5b5648a11" name="a2401fad01e4f50e9a19ed1c5b5648a11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2401fad01e4f50e9a19ed1c5b5648a11">&#9670;&nbsp;</a></span>npairs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned discord_gateway::npairs</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current iteration number of JSON key/value pairs </p>
-
-</div>
-</div>
-<a id="a68efcf906a150ef6fdd595135a9eb8ae" name="a68efcf906a150ef6fdd595135a9eb8ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68efcf906a150ef6fdd595135a9eb8ae">&#9670;&nbsp;</a></span>tokens</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">jsmntok_t* discord_gateway::tokens</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current iteration JSON tokens (fed to <code>jsmnf_pair</code>) </p>
-
-</div>
-</div>
-<a id="a45ea125b10f21e62ecf2813e7cf77daa" name="a45ea125b10f21e62ecf2813e7cf77daa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45ea125b10f21e62ecf2813e7cf77daa">&#9670;&nbsp;</a></span>ntokens</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned discord_gateway::ntokens</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >current iteration number of JSON tokens </p>
-
-</div>
-</div>
-<a id="a531aa675a770b98653a36319f9359f55" name="a531aa675a770b98653a36319f9359f55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a531aa675a770b98653a36319f9359f55">&#9670;&nbsp;</a></span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  discord_gateway::parse</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >parse JSON tokens into a <code>jsmnf_pairs</code> key/value pairs hashtable </p>
-
-</div>
-</div>
-<a id="a56baf6a6c365f558e2fa5b4602d88ea3" name="a56baf6a6c365f558e2fa5b4602d88ea3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56baf6a6c365f558e2fa5b4602d88ea3">&#9670;&nbsp;</a></span>opcode</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum discord_gateway_opcodes discord_gateway::opcode</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >field 'op' </p>
-
-</div>
-</div>
-<a id="a82f4ea01c1c1ef97c1d5822f2df195cc" name="a82f4ea01c1c1ef97c1d5822f2df195cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82f4ea01c1c1ef97c1d5822f2df195cc">&#9670;&nbsp;</a></span>seq</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int discord_gateway::seq</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >field 's' </p>
-
-</div>
-</div>
-<a id="a16b177d81acbaf1007771d03024a2b6f" name="a16b177d81acbaf1007771d03024a2b6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16b177d81acbaf1007771d03024a2b6f">&#9670;&nbsp;</a></span>name</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char discord_gateway::name[32]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >field 't' </p>
-
-</div>
-</div>
-<a id="afa984539b4c2197eee9256bdd5a5c0fd" name="afa984539b4c2197eee9256bdd5a5c0fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa984539b4c2197eee9256bdd5a5c0fd">&#9670;&nbsp;</a></span>data</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">jsmnf_pair* discord_gateway::data</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >field 'd' </p>
-
-</div>
-</div>
-<a id="adbe75f2a20dccba7387fa4f2c01108de" name="adbe75f2a20dccba7387fa4f2c01108de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbe75f2a20dccba7387fa4f2c01108de">&#9670;&nbsp;</a></span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  discord_gateway::payload</td>
+          <td class="memname">struct <a class="el" href="structdiscord__gateway__payload.html">discord_gateway_payload</a> discord_gateway::payload</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -760,123 +371,18 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a75e0773822f26760ac47acb62ee93139" name="a75e0773822f26760ac47acb62ee93139"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75e0773822f26760ac47acb62ee93139">&#9670;&nbsp;</a></span>prefix</h2>
+<a id="a3b4de3401302e0bc6eb35f09000f0c08" name="a3b4de3401302e0bc6eb35f09000f0c08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b4de3401302e0bc6eb35f09000f0c08">&#9670;&nbsp;</a></span>cbs</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct sized_buffer discord_gateway::prefix</td>
+          <td class="memname"><a class="el" href="group__DiscordInternalGateway.html#ga3e14383e89f8790ccd05c8e926b394e4">discord_ev</a> discord_gateway::cbs[<a class="el" href="docs_2api_2gateway_8h.html#a90ebb76de1682ce02a67a08b0510145ba1966631be40759f1164d26238cc8bcb3">DISCORD_EV_MAX</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >the prefix expected for every command </p>
-
-</div>
-</div>
-<a id="acbd942573fb44bab8fe7b5870fb39d34" name="acbd942573fb44bab8fe7b5870fb39d34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbd942573fb44bab8fe7b5870fb39d34">&#9670;&nbsp;</a></span>start</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* discord_gateway::start</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >the command string contents </p>
-
-</div>
-</div>
-<a id="af9748239d5f0bbfca4e9a87977579a06" name="af9748239d5f0bbfca4e9a87977579a06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9748239d5f0bbfca4e9a87977579a06">&#9670;&nbsp;</a></span>size</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t discord_gateway::size</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >the command string length </p>
-
-</div>
-</div>
-<a id="abfed206a63d5ae495354e907f6854d07" name="abfed206a63d5ae495354e907f6854d07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfed206a63d5ae495354e907f6854d07">&#9670;&nbsp;</a></span>cb</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__DiscordEventCallbackTypes.html#ga82dafc0a8a26d937ea17e9f6ad686dbe">discord_ev_message</a> discord_gateway::cb</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >the assigned callback for the command </p>
-
-</div>
-</div>
-<a id="ad9bd07e3c6c04399171ac7a7438270ec" name="ad9bd07e3c6c04399171ac7a7438270ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9bd07e3c6c04399171ac7a7438270ec">&#9670;&nbsp;</a></span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  * discord_gateway::pool</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >user's command/callback pair </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordEvent.html#ga6298fda7dd0a6e17e06866fb11c12f5f" title="Set command/callback pair.">discord_set_on_command()</a> </dd></dl>
-
-</div>
-</div>
-<a id="a5d2e791438771d483b788b7f6a635b6f" name="a5d2e791438771d483b788b7f6a635b6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d2e791438771d483b788b7f6a635b6f">&#9670;&nbsp;</a></span>amt</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t discord_gateway::amt</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >amount of command/callback pairs in pool </p>
-
-</div>
-</div>
-<a id="ad88c952a09c79514d9bf5920c3f05bf6" name="ad88c952a09c79514d9bf5920c3f05bf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad88c952a09c79514d9bf5920c3f05bf6">&#9670;&nbsp;</a></span>cap</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t discord_gateway::cap</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >actual size of command/callback pairs in pool </p>
-
-</div>
-</div>
-<a id="a37d8eda465d7fe829272bafde7efd847" name="a37d8eda465d7fe829272bafde7efd847"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37d8eda465d7fe829272bafde7efd847">&#9670;&nbsp;</a></span>cbs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__gateway__cbs.html">discord_gateway_cbs</a> discord_gateway::cbs</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >the user's callbacks for Discord events </p>
+<p >the user's callbacks for Discord events </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>should be cast to the original callback signature before calling, otherwise its UB </dd></dl>
 
 </div>
 </div>
@@ -892,21 +398,6 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the event scheduler callback </p>
-
-</div>
-</div>
-<a id="aafcc040b3b6183d049b0bf35568b4a1a" name="aafcc040b3b6183d049b0bf35568b4a1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafcc040b3b6183d049b0bf35568b4a1a">&#9670;&nbsp;</a></span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  discord_gateway::cmds</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >user-commands structure </p>
 
 </div>
 </div>

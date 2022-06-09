@@ -89,60 +89,85 @@ $(document).ready(function(){initNavTree('structdiscord__request.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle"><div class="title">discord_request Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalAdapter.html">REST API</a></div></div></div>
+  <div class="headertitle"><div class="title">discord_request Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalREST.html">REST API</a> &raquo; <a class="el" href="group__DiscordInternalRESTRequest.html">Request's handling</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Behavior of request return struct.  
+<p>Individual requests that are scheduled to run asynchronously.  
  <a href="structdiscord__request.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-internal_8h_source.html">discord-internal.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_request:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__request__coll__graph.svg" width="492" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__request__coll__graph.svg" width="664" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ace6fe1351bd2316314fd25b410a203ed"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__generic.html">discord_generic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#ace6fe1351bd2316314fd25b410a203ed">gnrc</a></td></tr>
-<tr class="separator:ace6fe1351bd2316314fd25b410a203ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f326145e13a927896bde641478e879f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__ret__generic.html">discord_ret_generic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a6f326145e13a927896bde641478e879f">ret</a></td></tr>
-<tr class="separator:a6f326145e13a927896bde641478e879f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b87e65a2a2ab8c8c88ce7b8230e8e2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__ret__dispatch.html">discord_ret_dispatch</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a17b87e65a2a2ab8c8c88ce7b8230e8e2">dispatch</a></td></tr>
+<tr class="separator:a17b87e65a2a2ab8c8c88ce7b8230e8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adac9ad4793c3a54c40c8978c72ae3191"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__ret__response.html">discord_ret_response</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#adac9ad4793c3a54c40c8978c72ae3191">response</a></td></tr>
+<tr class="separator:adac9ad4793c3a54c40c8978c72ae3191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ff7b77bceecdf17b422c808fbfdb20"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a23ff7b77bceecdf17b422c808fbfdb20">attachments</a></td></tr>
 <tr class="separator:a23ff7b77bceecdf17b422c808fbfdb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6762b7187f58f7591e4a36f9da8e13a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#ab6762b7187f58f7591e4a36f9da8e13a">b</a></td></tr>
+<tr class="separator:ab6762b7187f58f7591e4a36f9da8e13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f2cdbfe773ff7c378a0f647ec59c764"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structccord__szbuf__reusable.html">ccord_szbuf_reusable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a1f2cdbfe773ff7c378a0f647ec59c764">body</a></td></tr>
+<tr class="separator:a1f2cdbfe773ff7c378a0f647ec59c764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f520f489e4996116c22569618fe78b2"><td class="memItemLeft" align="right" valign="top">enum http_method&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a9f520f489e4996116c22569618fe78b2">method</a></td></tr>
+<tr class="separator:a9f520f489e4996116c22569618fe78b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08f6806647a9906226c247a5e79e78c"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#aa08f6806647a9906226c247a5e79e78c">endpoint</a> [512]</td></tr>
+<tr class="separator:aa08f6806647a9906226c247a5e79e78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab54b99fa5005580bd7b876291b8b280e"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#ab54b99fa5005580bd7b876291b8b280e">key</a> [256]</td></tr>
+<tr class="separator:ab54b99fa5005580bd7b876291b8b280e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae531c4a10ac70cae3ce093012f06bc7e"><td class="memItemLeft" align="right" valign="top">struct ua_conn *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#ae531c4a10ac70cae3ce093012f06bc7e">conn</a></td></tr>
+<tr class="separator:ae531c4a10ac70cae3ce093012f06bc7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addca26013b49921db7ebb2dde9046771"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#addca26013b49921db7ebb2dde9046771">code</a></td></tr>
+<tr class="separator:addca26013b49921db7ebb2dde9046771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa26956d1dbfedbadd91ace4edcb4f76e"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#aa26956d1dbfedbadd91ace4edcb4f76e">wait_ms</a></td></tr>
+<tr class="separator:aa26956d1dbfedbadd91ace4edcb4f76e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa455cda252215cbfcad4e1261e0a8005"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#aa455cda252215cbfcad4e1261e0a8005">retry_attempt</a></td></tr>
+<tr class="separator:aa455cda252215cbfcad4e1261e0a8005"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d8db1a4f5f850b00a22eae786d28ddb"><td class="memItemLeft" align="right" valign="top">pthread_cond_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a9d8db1a4f5f850b00a22eae786d28ddb">cond</a></td></tr>
+<tr class="separator:a9d8db1a4f5f850b00a22eae786d28ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a256e09b791b90669041f617439ec79e0"><td class="memItemLeft" align="right" valign="top">QUEUE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a256e09b791b90669041f617439ec79e0">entry</a></td></tr>
+<tr class="separator:a256e09b791b90669041f617439ec79e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Behavior of request return struct. </p>
+<div class="textblock"><p >Individual requests that are scheduled to run asynchronously. </p>
+<dl class="section note"><dt>Note</dt><dd>this struct <b>SHOULD NOT</b> be handled from the <code>REST</code> manager thread </dd>
+<dd>
+its fields are aligned with <a class="el" href="structdiscord__attributes.html">discord_attributes</a> </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="ace6fe1351bd2316314fd25b410a203ed" name="ace6fe1351bd2316314fd25b410a203ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace6fe1351bd2316314fd25b410a203ed">&#9670;&nbsp;</a></span>gnrc</h2>
+<a id="a17b87e65a2a2ab8c8c88ce7b8230e8e2" name="a17b87e65a2a2ab8c8c88ce7b8230e8e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17b87e65a2a2ab8c8c88ce7b8230e8e2">&#9670;&nbsp;</a></span>dispatch</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__generic.html">discord_generic</a> discord_request::gnrc</td>
+          <td class="memname">struct <a class="el" href="structdiscord__ret__dispatch.html">discord_ret_dispatch</a> discord_request::dispatch</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >request response's return datatype attributes </p>
+<p >attributes set by client for request dispatch behavior </p>
 
 </div>
 </div>
-<a id="a6f326145e13a927896bde641478e879f" name="a6f326145e13a927896bde641478e879f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f326145e13a927896bde641478e879f">&#9670;&nbsp;</a></span>ret</h2>
+<a id="adac9ad4793c3a54c40c8978c72ae3191" name="adac9ad4793c3a54c40c8978c72ae3191"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adac9ad4793c3a54c40c8978c72ae3191">&#9670;&nbsp;</a></span>response</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__ret__generic.html">discord_ret_generic</a> discord_request::ret</td>
+          <td class="memname">struct <a class="el" href="structdiscord__ret__response.html">discord_ret_response</a> discord_request::response</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >request attributes set by client </p>
+<p >information for parsing response into a datatype (if possible) </p>
 
 </div>
 </div>
@@ -157,7 +182,172 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >in case of HTTP_MIMEPOST, provide attachments </p>
+<p >in case of <code>HTTP_MIMEPOST</code> provide attachments for file transfer </p>
+
+</div>
+</div>
+<a id="ab6762b7187f58f7591e4a36f9da8e13a" name="ab6762b7187f58f7591e4a36f9da8e13a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6762b7187f58f7591e4a36f9da8e13a">&#9670;&nbsp;</a></span>b</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a>* discord_request::b</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the request's bucket </p>
+
+</div>
+</div>
+<a id="a1f2cdbfe773ff7c378a0f647ec59c764" name="a1f2cdbfe773ff7c378a0f647ec59c764"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f2cdbfe773ff7c378a0f647ec59c764">&#9670;&nbsp;</a></span>body</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structccord__szbuf__reusable.html">ccord_szbuf_reusable</a> discord_request::body</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >request body handle </p><dl class="section note"><dt>Note</dt><dd>buffer is kept and reused </dd></dl>
+
+</div>
+</div>
+<a id="a9f520f489e4996116c22569618fe78b2" name="a9f520f489e4996116c22569618fe78b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f520f489e4996116c22569618fe78b2">&#9670;&nbsp;</a></span>method</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum http_method discord_request::method</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the request's http method </p>
+
+</div>
+</div>
+<a id="aa08f6806647a9906226c247a5e79e78c" name="aa08f6806647a9906226c247a5e79e78c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa08f6806647a9906226c247a5e79e78c">&#9670;&nbsp;</a></span>endpoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char discord_request::endpoint[512]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the request's endpoint </p>
+
+</div>
+</div>
+<a id="ab54b99fa5005580bd7b876291b8b280e" name="ab54b99fa5005580bd7b876291b8b280e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab54b99fa5005580bd7b876291b8b280e">&#9670;&nbsp;</a></span>key</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char discord_request::key[256]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the request bucket's key </p>
+
+</div>
+</div>
+<a id="ae531c4a10ac70cae3ce093012f06bc7e" name="ae531c4a10ac70cae3ce093012f06bc7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae531c4a10ac70cae3ce093012f06bc7e">&#9670;&nbsp;</a></span>conn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct ua_conn* discord_request::conn</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the connection handler assigned </p>
+
+</div>
+</div>
+<a id="addca26013b49921db7ebb2dde9046771" name="addca26013b49921db7ebb2dde9046771"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addca26013b49921db7ebb2dde9046771">&#9670;&nbsp;</a></span>code</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_request::code</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >request's status code </p>
+
+</div>
+</div>
+<a id="aa26956d1dbfedbadd91ace4edcb4f76e" name="aa26956d1dbfedbadd91ace4edcb4f76e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa26956d1dbfedbadd91ace4edcb4f76e">&#9670;&nbsp;</a></span>wait_ms</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t discord_request::wait_ms</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >how long to wait for in case of request being ratelimited </p>
+
+</div>
+</div>
+<a id="aa455cda252215cbfcad4e1261e0a8005" name="aa455cda252215cbfcad4e1261e0a8005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa455cda252215cbfcad4e1261e0a8005">&#9670;&nbsp;</a></span>retry_attempt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_request::retry_attempt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >current retry attempt (stop at rest-&gt;retry_limit) </p>
+
+</div>
+</div>
+<a id="a9d8db1a4f5f850b00a22eae786d28ddb" name="a9d8db1a4f5f850b00a22eae786d28ddb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d8db1a4f5f850b00a22eae786d28ddb">&#9670;&nbsp;</a></span>cond</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_cond_t* discord_request::cond</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >synchronize synchronous requests </p>
+
+</div>
+</div>
+<a id="a256e09b791b90669041f617439ec79e0" name="a256e09b791b90669041f617439ec79e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a256e09b791b90669041f617439ec79e0">&#9670;&nbsp;</a></span>entry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QUEUE discord_request::entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >entry for <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> and <a class="el" href="structdiscord__bucket.html">discord_bucket</a> queues </p>
 
 </div>
 </div>

@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('structdiscord__refcounter.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle"><div class="title">discord_refcounter Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalAdapter.html">REST API</a> &raquo; <a class="el" href="group__DiscordInternalAdapterRefcount.html">Reference counter</a></div></div></div>
+  <div class="headertitle"><div class="title">discord_refcounter Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalRefcount.html">Reference counter</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -108,6 +108,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:aa528a37fff706b9aa8d4a93079e342f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72a75de0eed1da2f98d15b7352e358d9"><td class="memItemLeft" align="right" valign="top">struct _discord_ref *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__refcounter.html#a72a75de0eed1da2f98d15b7352e358d9">refs</a></td></tr>
 <tr class="separator:a72a75de0eed1da2f98d15b7352e358d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f29bd55416b56930fe5b3878f733ce3"><td class="memItemLeft" align="right" valign="top">pthread_mutex_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__refcounter.html#a2f29bd55416b56930fe5b3878f733ce3">g_lock</a></td></tr>
+<tr class="separator:a2f29bd55416b56930fe5b3878f733ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Automatically cleanup user data. </p>
@@ -124,7 +126,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >DISCORD_REFCOUNT logging module </p>
+<p ><code>DISCORD_REFCOUNT</code> logging module </p>
 
 </div>
 </div>
@@ -169,7 +171,22 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >individual user's data held for automatic cleanup </p><dl class="section note"><dt>Note</dt><dd>datatype declared at discord-adapter_refcount.c </dd></dl>
+<p >individual user's data held for automatic cleanup </p><dl class="section note"><dt>Note</dt><dd>datatype declared at discord-refcount.c </dd></dl>
+
+</div>
+</div>
+<a id="a2f29bd55416b56930fe5b3878f733ce3" name="a2f29bd55416b56930fe5b3878f733ce3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f29bd55416b56930fe5b3878f733ce3">&#9670;&nbsp;</a></span>g_lock</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_mutex_t* discord_refcounter::g_lock</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >global lock </p>
 
 </div>
 </div>

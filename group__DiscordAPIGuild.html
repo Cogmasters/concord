@@ -324,7 +324,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the guild with given id. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>missing query parameters </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>missing query parameters </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If with_counts is set to true, this endpoint will also return approximate_member_count and approximate_presence_count for the guild</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -532,7 +532,7 @@ Fires a <code>Guild Update</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__channels.html">discord_ret_channels</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a24">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#a42">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a24">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#a49">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -592,7 +592,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__channel.html">discord_ret_channel</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a12">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a13">channel.c</a>.</dd>
 </dl>
 
 </div>
@@ -701,7 +701,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__guild__member.html">discord_ret_guild_member</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a30">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a37">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1034,7 +1034,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 </div><div class="memdoc">
 
 <p>Modify the nickname of the current user in a guild. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>use <a class="el" href="group__DiscordAPIGuild.html#ga0cbfb35c503c499ae1fa83377ef4ce4f" title="Modifies the current member in the guild.">discord_modify_current_member()</a> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>use <a class="el" href="group__DiscordAPIGuild.html#ga0cbfb35c503c499ae1fa83377ef4ce4f" title="Modifies the current member in the guild.">discord_modify_current_member()</a> instead </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1108,7 +1108,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a14">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a21">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1173,7 +1173,7 @@ Fires a <code>Guild Member Update</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a15">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a22">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1395,7 +1395,7 @@ Fires a <code>Guild Ban Add</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a10">ban.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a13">ban.c</a>.</dd>
 </dl>
 
 </div>
@@ -1453,7 +1453,7 @@ Fires a <code>Guild Ban Remove</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a12">ban.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a15">ban.c</a>.</dd>
 </dl>
 
 </div>
@@ -1501,7 +1501,7 @@ Fires a <code>Guild Ban Remove</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__roles.html">discord_ret_roles</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a22">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a31">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1559,7 +1559,7 @@ Fires a <code>Guild Role Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__role.html">discord_ret_role</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a11">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a18">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1989,7 +1989,7 @@ Fires a <code>Guild Role Delete</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a13">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a20">guild.c</a>.</dd>
 </dl>
 
 </div>

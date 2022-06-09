@@ -1,0 +1,6 @@
+<map id="discord_attributes" name="discord_attributes">
+<area shape="rect" id="node1" title="Request to be performed." alt="" coords="197,95,335,121"/>
+<area shape="rect" id="node2" href="$structdiscord__ret__dispatch.html" title="Generic request dispatcher." alt="" coords="5,5,161,32"/>
+<area shape="rect" id="node3" href="$structdiscord__ret__response.html" title="Attributes of response datatype." alt="" coords="186,5,346,32"/>
+<area shape="rect" id="node4" href="$structdiscord__attachments.html" title=" " alt="" coords="371,5,529,32"/>
+</map>

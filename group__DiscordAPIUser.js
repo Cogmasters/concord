@@ -2,27 +2,30 @@ var group__DiscordAPIUser =
 [
     [ "User flags", "group__DiscordAPIUserFlags.html", "group__DiscordAPIUserFlags" ],
     [ "discord_ret_user", "structdiscord__ret__user.html", [
-      [ "done", "structdiscord__ret__user.html#adc136bf986a45e7ec781aeecec3bf9ca", null ],
-      [ "fail", "structdiscord__ret__user.html#a712447f2cd074652f0ad37f4f8c91961", null ],
       [ "data", "structdiscord__ret__user.html#a21a8f6a3505750f6c295a5b767625132", null ],
-      [ "cleanup", "structdiscord__ret__user.html#af22cf34706a2fc1710d926d159269a42", null ],
-      [ "high_p", "structdiscord__ret__user.html#a549d3767dcc992dc36cb3fe3194967a9", null ],
+      [ "cleanup", "structdiscord__ret__user.html#a2323d5ffc4f96b5715d96cde14818d2d", null ],
+      [ "keep", "structdiscord__ret__user.html#a2833fc68c082f1e1c0190b6987cb15b7", null ],
+      [ "high_priority", "structdiscord__ret__user.html#a96946e30ecebf0646779db7c90d179f5", null ],
+      [ "fail", "structdiscord__ret__user.html#a36ac11069e874d8687622ce7059adcbc", null ],
+      [ "done", "structdiscord__ret__user.html#aa019de685f98fb20031cb8b293a50365", null ],
       [ "sync", "structdiscord__ret__user.html#a87de4fb512200f1804a8b597316cf4c0", null ]
     ] ],
     [ "discord_ret_users", "structdiscord__ret__users.html", [
-      [ "done", "structdiscord__ret__users.html#abef97301d7be2b472a422999ee0e7b5a", null ],
-      [ "fail", "structdiscord__ret__users.html#a1780634b727eb90a97f6663d75cd219c", null ],
       [ "data", "structdiscord__ret__users.html#a9cd67a296e2a14285d39729d33940d27", null ],
-      [ "cleanup", "structdiscord__ret__users.html#ac5cf4ad1ddbb7ac33c6034de36fb4fa7", null ],
-      [ "high_p", "structdiscord__ret__users.html#a7b305fd8202267ee6724b886ba681225", null ],
+      [ "cleanup", "structdiscord__ret__users.html#ab298af87a6d301b6d80549f6720b4f73", null ],
+      [ "keep", "structdiscord__ret__users.html#a45fc8421cde27be5d1c4196c9496fcad", null ],
+      [ "high_priority", "structdiscord__ret__users.html#acf46d4a3cbb81215a2314400f3e452c6", null ],
+      [ "fail", "structdiscord__ret__users.html#a1047fdce7c69349f176fae55f1cf81a8", null ],
+      [ "done", "structdiscord__ret__users.html#a116f975ace45b0dd0f789fc08111259b", null ],
       [ "sync", "structdiscord__ret__users.html#a36acc44e6ddd8ecf95a18a23c0e5afa0", null ]
     ] ],
     [ "discord_ret_connections", "structdiscord__ret__connections.html", [
-      [ "done", "structdiscord__ret__connections.html#ae623aca256725ce4fbdc260121faeffe", null ],
-      [ "fail", "structdiscord__ret__connections.html#a14f38487485fbcd255dfe524dcd7d48f", null ],
       [ "data", "structdiscord__ret__connections.html#a864aeb46d756b950d823d6cad1b65310", null ],
-      [ "cleanup", "structdiscord__ret__connections.html#a8d10812ee779128719304b83b3cd7f36", null ],
-      [ "high_p", "structdiscord__ret__connections.html#a1fa357bdb2a8e6fc58f15e008b5b550a", null ],
+      [ "cleanup", "structdiscord__ret__connections.html#ad7ffed94023a0b99c29b8fffd97542e1", null ],
+      [ "keep", "structdiscord__ret__connections.html#a96667911dfc319efdaea7d5f18a5855c", null ],
+      [ "high_priority", "structdiscord__ret__connections.html#a3c48aaacd6a6d5378369e71ec94ce2be", null ],
+      [ "fail", "structdiscord__ret__connections.html#a917f46590ec5688568afdc94d6d9083e", null ],
+      [ "done", "structdiscord__ret__connections.html#aac744f0492cbc077f4bcd444739c6910", null ],
       [ "sync", "structdiscord__ret__connections.html#ad83afcca5187a6a22bc61c72c75eb3b0", null ]
     ] ],
     [ "discord_get_current_user", "group__DiscordAPIUser.html#ga6410f99ceb70c990115aeb2d0e5d2918", null ],

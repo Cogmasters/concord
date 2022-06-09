@@ -92,6 +92,8 @@ $(document).ready(function(){initNavTree('structdiscord__integration.html',''); 
   <div class="headertitle"><div class="title">discord_integration Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="docs_2api_2guild_8h_source.html">guild.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_integration:</div>
 <div class="dyncontent">
@@ -131,8 +133,31 @@ Data Fields</h2></td></tr>
 <tr class="separator:a3d6ea0c0e7e93b2d341b1a4c8a958a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13756e0b842cb07fca06161c4b554257"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__integration__application.html">discord_integration_application</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__integration.html#a13756e0b842cb07fca06161c4b554257">application</a></td></tr>
 <tr class="separator:a13756e0b842cb07fca06161c4b554257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47c49b031f9bfa2bbbd81e2f4bcdefce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__integration.html#a47c49b031f9bfa2bbbd81e2f4bcdefce">guild_id</a></td></tr>
+<tr class="separator:a47c49b031f9bfa2bbbd81e2f4bcdefce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Field Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p ><b>Public methods</b></p><ul>
+<li>Initializer:<ul>
+<li><code>discord_integration_init(struct discord_integration *this)</code></li>
+</ul>
+</li>
+<li>Cleanup:<ul>
+<li><code>discord_integration_cleanup(struct discord_integration *this)</code></li>
+</ul>
+</li>
+<li>JSON Decoder:<ul>
+<li><code>discord_integration_from_json(const char json[], size_t len, struct discord_integration *this)</code></li>
+<li><code>discord_integration_from_jsmnf(jsmnf *root, const char json[], struct discord_integration *this)</code></li>
+</ul>
+</li>
+<li>JSON Encoder:<ul>
+<li><code>discord_integration_to_json(char buf[], size_t size, const struct discord_integration *this)</code></li>
+<li><code>discord_integration_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_integration *this)</code> </li>
+</ul>
+</li>
+</ul>
+</div><h2 class="groupheader">Field Documentation</h2>
 <a id="aaa12c7bae0795d2a71718c420eb7c41a" name="aaa12c7bae0795d2a71718c420eb7c41a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaa12c7bae0795d2a71718c420eb7c41a">&#9670;&nbsp;</a></span>id</h2>
 
@@ -355,6 +380,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the bot/OAuth2 application for discord integrations </p>
+
+</div>
+</div>
+<a id="a47c49b031f9bfa2bbbd81e2f4bcdefce" name="a47c49b031f9bfa2bbbd81e2f4bcdefce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47c49b031f9bfa2bbbd81e2f4bcdefce">&#9670;&nbsp;</a></span>guild_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> discord_integration::guild_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >id of the guild </p><dl class="section note"><dt>Note</dt><dd>extra field that may be included at <code>Integration Create</code> or <code>Integration Update</code> </dd></dl>
 
 </div>
 </div>

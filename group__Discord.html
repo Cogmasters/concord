@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('group__Discord.html',''); initResizabl
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Client</div></div>
 </div><!--header-->
@@ -106,11 +107,11 @@ Collaboration diagram for Client:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:group__DiscordEvent"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordEvent.html">Events</a></td></tr>
-<tr class="memdesc:group__DiscordEvent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord public Events API supported by Concord. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__DiscordTimer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html">Timer</a></td></tr>
 <tr class="memdesc:group__DiscordTimer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule callbacks to be called in the future. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__DiscordEvent"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordEvent.html">Events</a></td></tr>
+<tr class="memdesc:group__DiscordEvent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord public Events API supported by Concord. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -119,14 +120,29 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord client handler.  <a href="structdiscord.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gad1073edb612b01eb8a277d2acf4183a0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gad1073edb612b01eb8a277d2acf4183a0">discord_claim</a>(client,  param)&#160;&#160;&#160;(__discord_claim(client, param), param)</td></tr>
+<tr class="memdesc:gad1073edb612b01eb8a277d2acf4183a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim ownership of a function parameter provided by Concord.  <a href="group__Discord.html#gad1073edb612b01eb8a277d2acf4183a0">More...</a><br /></td></tr>
+<tr class="separator:gad1073edb612b01eb8a277d2acf4183a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gaff572a95f2f1b2c03c0796111d579086"><td class="memItemLeft" align="right" valign="top"><a id="gaff572a95f2f1b2c03c0796111d579086" name="gaff572a95f2f1b2c03c0796111d579086"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__discord_claim</b> (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *data)</td></tr>
+<tr class="separator:gaff572a95f2f1b2c03c0796111d579086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga1f34f5e41cb03767910e9ba3f90207d4">discord_unclaim</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *data)</td></tr>
+<tr class="memdesc:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unclaim ownership of a function parameter provided by Concord.  <a href="group__Discord.html#ga1f34f5e41cb03767910e9ba3f90207d4">More...</a><br /></td></tr>
+<tr class="separator:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a> (const char token[])</td></tr>
 <tr class="memdesc:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by its token.  <a href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">More...</a><br /></td></tr>
 <tr class="separator:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a> (const char config_file[])</td></tr>
-<tr class="memdesc:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by a bot.config file.  <a href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb">More...</a><br /></td></tr>
+<tr class="memdesc:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by a <code>config.json</code> file.  <a href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb">More...</a><br /></td></tr>
 <tr class="separator:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4486003ffab83de397c0bebb74b3307"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gac4486003ffab83de397c0bebb74b3307">discord_config_get_field</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, char *const path[], unsigned depth)</td></tr>
+<tr class="memdesc:gac4486003ffab83de397c0bebb74b3307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the contents from the config file field.  <a href="group__Discord.html#gac4486003ffab83de397c0bebb74b3307">More...</a><br /></td></tr>
+<tr class="separator:gac4486003ffab83de397c0bebb74b3307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3c811f8a8aac3dc37a2027ffbeb13cf5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga3c811f8a8aac3dc37a2027ffbeb13cf5">discord_clone</a> (const struct <a class="el" href="structdiscord.html">discord</a> *orig)</td></tr>
 <tr class="memdesc:ga3c811f8a8aac3dc37a2027ffbeb13cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone a discord client.  <a href="group__Discord.html#ga3c811f8a8aac3dc37a2027ffbeb13cf5">More...</a><br /></td></tr>
 <tr class="separator:ga3c811f8a8aac3dc37a2027ffbeb13cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,8 +168,17 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga74e4cd8487be005d63e8b62eba477ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive user arbitrary data stored with <a class="el" href="group__Discord.html#gab4be84906e3794c24a69b781b2271656" title="Store user arbitrary data that can be retrieved by discord_get_data()">discord_set_data()</a>  <a href="group__Discord.html#ga74e4cd8487be005d63e8b62eba477ca4">More...</a><br /></td></tr>
 <tr class="separator:ga74e4cd8487be005d63e8b62eba477ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaed8749c82a27a024a0deae053aac67c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gaed8749c82a27a024a0deae053aac67c8">discord_set_presence</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *presence)</td></tr>
-<tr class="memdesc:gaed8749c82a27a024a0deae053aac67c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Client presence state.  <a href="group__Discord.html#gaed8749c82a27a024a0deae053aac67c8">More...</a><br /></td></tr>
+<tr class="memdesc:gaed8749c82a27a024a0deae053aac67c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the client presence status.  <a href="group__Discord.html#gaed8749c82a27a024a0deae053aac67c8">More...</a><br /></td></tr>
 <tr class="separator:gaed8749c82a27a024a0deae053aac67c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad633301a38218a7f70c29ea6af5eb993"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gad633301a38218a7f70c29ea6af5eb993">discord_request_guild_members</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *request)</td></tr>
+<tr class="memdesc:gad633301a38218a7f70c29ea6af5eb993"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request all members for a guild or a list of guilds.  <a href="group__Discord.html#gad633301a38218a7f70c29ea6af5eb993">More...</a><br /></td></tr>
+<tr class="separator:gad633301a38218a7f70c29ea6af5eb993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacb174879d5c775b529d1cae1088db98f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gacb174879d5c775b529d1cae1088db98f">discord_update_voice_state</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *update)</td></tr>
+<tr class="memdesc:gacb174879d5c775b529d1cae1088db98f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent when a client wants to join, move or disconnect from a voice channel.  <a href="group__Discord.html#gacb174879d5c775b529d1cae1088db98f">More...</a><br /></td></tr>
+<tr class="separator:gacb174879d5c775b529d1cae1088db98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gaf38ef8861fa17efd95a5b374da6ef67f">discord_update_presence</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *presence)</td></tr>
+<tr class="memdesc:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the client presence status.  <a href="group__Discord.html#gaf38ef8861fa17efd95a5b374da6ef67f">More...</a><br /></td></tr>
+<tr class="separator:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8a6d0002445738ace70f5eb2b22ca471"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga8a6d0002445738ace70f5eb2b22ca471">discord_get_ping</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga8a6d0002445738ace70f5eb2b22ca471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the client WebSockets ping.  <a href="group__Discord.html#ga8a6d0002445738ace70f5eb2b22ca471">More...</a><br /></td></tr>
 <tr class="separator:ga8a6d0002445738ace70f5eb2b22ca471"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,7 +197,86 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Functions and datatypes for the client. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gad1073edb612b01eb8a277d2acf4183a0" name="gad1073edb612b01eb8a277d2acf4183a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad1073edb612b01eb8a277d2acf4183a0">&#9670;&nbsp;</a></span>discord_claim</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define discord_claim</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">client, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">param&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(__discord_claim(client, param), param)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Claim ownership of a function parameter provided by Concord. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Discord.html#ga1f34f5e41cb03767910e9ba3f90207d4" title="Unclaim ownership of a function parameter provided by Concord.">discord_unclaim()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">param</td><td>a function parameter provided by Concord </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer to <code>param</code> (for one-liners) </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga1f34f5e41cb03767910e9ba3f90207d4" name="ga1f34f5e41cb03767910e9ba3f90207d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f34f5e41cb03767910e9ba3f90207d4">&#9670;&nbsp;</a></span>discord_unclaim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_unclaim </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Unclaim ownership of a function parameter provided by Concord. </p>
+<dl class="section note"><dt>Note</dt><dd>this will trigger the cleanup method of the parameter, so this should only be called when you no longer plan to use it </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Discord.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">param</td><td>a function parameter provided by Concord, that has been previously claimed with <a class="el" href="group__Discord.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gacd52a9fc58a1fcb9b4719a5cedd70f5d" name="gacd52a9fc58a1fcb9b4719a5cedd70f5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gacd52a9fc58a1fcb9b4719a5cedd70f5d">&#9670;&nbsp;</a></span>discord_init()</h2>
 
@@ -219,16 +323,62 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Create a Discord Client handle by a bot.config file. </p>
+<p>Create a Discord Client handle by a <code>config.json</code> file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">config_file</td><td>the bot.config file name </td></tr>
+    <tr><td class="paramname">config_file</td><td>the <code>config.json</code> file name </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the newly created Discord Client handle </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a32">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a14">ban.c</a>, <a class="el" href="channel_8c-example.html#a47">channel.c</a>, <a class="el" href="components_8c-example.html#a32">components.c</a>, <a class="el" href="embed_8c-example.html#a32">embed.c</a>, <a class="el" href="emoji_8c-example.html#a28">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a41">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a22">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a44">guild.c</a>, <a class="el" href="invite_8c-example.html#a21">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a21">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a23">pin.c</a>, <a class="el" href="reaction_8c-example.html#a30">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a42">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a48">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a11">timers.c</a>, and <a class="el" href="voice_8c-example.html#a37">voice.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a40">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a17">ban.c</a>, <a class="el" href="channel_8c-example.html#a50">channel.c</a>, <a class="el" href="components_8c-example.html#a34">components.c</a>, <a class="el" href="embed_8c-example.html#a34">embed.c</a>, <a class="el" href="emoji_8c-example.html#a32">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a41">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a25">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a51">guild.c</a>, <a class="el" href="invite_8c-example.html#a24">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a22">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a27">pin.c</a>, <a class="el" href="reaction_8c-example.html#a34">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a39">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a51">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a11">timers.c</a>.</dd>
 </dl>
+
+</div>
+</div>
+<a id="gac4486003ffab83de397c0bebb74b3307" name="gac4486003ffab83de397c0bebb74b3307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac4486003ffab83de397c0bebb74b3307">&#9670;&nbsp;</a></span>discord_config_get_field()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a> discord_config_get_field </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *const&#160;</td>
+          <td class="paramname"><em>path</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>depth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the contents from the config file field. </p>
+<dl class="section note"><dt>Note</dt><dd>only works if your bot has been initialized with <a class="el" href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb" title="Create a Discord Client handle by a config.json file.">discord_config_init()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb" title="Create a Discord Client handle by a config.json file.">discord_config_init()</a> </td></tr>
+    <tr><td class="paramname">path</td><td>the JSON key path </td></tr>
+    <tr><td class="paramname">depth</td><td>the path depth </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a read-only sized buffer containing the field's contents </dd></dl>
 
 </div>
 </div>
@@ -282,7 +432,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a40">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a20">ban.c</a>, <a class="el" href="channel_8c-example.html#a58">channel.c</a>, <a class="el" href="components_8c-example.html#a38">components.c</a>, <a class="el" href="embed_8c-example.html#a37">embed.c</a>, <a class="el" href="emoji_8c-example.html#a33">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a42">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a27">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a52">guild.c</a>, <a class="el" href="invite_8c-example.html#a26">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a26">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a28">pin.c</a>, <a class="el" href="reaction_8c-example.html#a35">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a48">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a55">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a15">timers.c</a>, <a class="el" href="voice_8c-example.html#a42">voice.c</a>, and <a class="el" href="webhook_8c-example.html#a12">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a48">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a23">ban.c</a>, <a class="el" href="channel_8c-example.html#a61">channel.c</a>, <a class="el" href="components_8c-example.html#a40">components.c</a>, <a class="el" href="embed_8c-example.html#a39">embed.c</a>, <a class="el" href="emoji_8c-example.html#a37">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a42">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a30">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a59">guild.c</a>, <a class="el" href="invite_8c-example.html#a29">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a27">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a32">pin.c</a>, <a class="el" href="reaction_8c-example.html#a39">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a45">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a58">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a15">timers.c</a>, and <a class="el" href="webhook_8c-example.html#a12">webhook.c</a>.</dd>
 </dl>
 
 </div>
@@ -311,8 +461,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>the returned structure should NOT be modified </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a3">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a3">ban.c</a>, <a class="el" href="channel_8c-example.html#a3">channel.c</a>, <a class="el" href="components_8c-example.html#a3">components.c</a>, <a class="el" href="embed_8c-example.html#a3">embed.c</a>, <a class="el" href="emoji_8c-example.html#a3">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a3">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a3">guild.c</a>, <a class="el" href="invite_8c-example.html#a3">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a3">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a3">pin.c</a>, <a class="el" href="reaction_8c-example.html#a3">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a3">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a3">slash-commands2.c</a>, and <a class="el" href="voice_8c-example.html#a6">voice.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -340,7 +488,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a39">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a19">ban.c</a>, <a class="el" href="channel_8c-example.html#a57">channel.c</a>, <a class="el" href="components_8c-example.html#a37">components.c</a>, <a class="el" href="embed_8c-example.html#a36">embed.c</a>, <a class="el" href="emoji_8c-example.html#a32">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a26">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a51">guild.c</a>, <a class="el" href="invite_8c-example.html#a25">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a25">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a27">pin.c</a>, <a class="el" href="reaction_8c-example.html#a34">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a47">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a54">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a14">timers.c</a>, and <a class="el" href="voice_8c-example.html#a41">voice.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a47">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a22">ban.c</a>, <a class="el" href="channel_8c-example.html#a60">channel.c</a>, <a class="el" href="components_8c-example.html#a39">components.c</a>, <a class="el" href="embed_8c-example.html#a38">embed.c</a>, <a class="el" href="emoji_8c-example.html#a36">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a29">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a58">guild.c</a>, <a class="el" href="invite_8c-example.html#a28">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a26">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a31">pin.c</a>, <a class="el" href="reaction_8c-example.html#a38">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a44">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a57">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a14">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -503,12 +651,125 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the Client presence state. </p>
+<p>Set the client presence status. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>since v2.0.0, use <a class="el" href="group__Discord.html#gaf38ef8861fa17efd95a5b374da6ef67f" title="Update the client presence status.">discord_update_presence()</a> instead </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordAPIGatewayHelper.html#gad324d4ad01181ed785b092b261d6b726" title="Helper function to add presence activities.">discord_presence_add_activity()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
-    <tr><td class="paramname">presence</td><td>change the client's status to it </td></tr>
+    <tr><td class="paramname">presence</td><td>status to update the client's to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gad633301a38218a7f70c29ea6af5eb993" name="gad633301a38218a7f70c29ea6af5eb993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad633301a38218a7f70c29ea6af5eb993">&#9670;&nbsp;</a></span>discord_request_guild_members()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Request all members for a guild or a list of guilds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">request</td><td>request guild members information </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gacb174879d5c775b529d1cae1088db98f" name="gacb174879d5c775b529d1cae1088db98f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacb174879d5c775b529d1cae1088db98f">&#9670;&nbsp;</a></span>discord_update_voice_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *&#160;</td>
+          <td class="paramname"><em>update</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sent when a client wants to join, move or disconnect from a voice channel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">update</td><td>request guild members information </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaf38ef8861fa17efd95a5b374da6ef67f" name="gaf38ef8861fa17efd95a5b374da6ef67f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf38ef8861fa17efd95a5b374da6ef67f">&#9670;&nbsp;</a></span>discord_update_presence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_update_presence </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *&#160;</td>
+          <td class="paramname"><em>presence</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update the client presence status. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordAPIGatewayHelper.html#gad324d4ad01181ed785b092b261d6b726" title="Helper function to add presence activities.">discord_presence_add_activity()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">presence</td><td>status to update the client's to </td></tr>
   </table>
   </dd>
 </dl>
@@ -567,7 +828,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the timestamp in milliseconds </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#a8">embed.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#a10">embed.c</a>.</dd>
 </dl>
 
 </div>

@@ -1,5 +1,0 @@
-<map id="discord_context" name="discord_context">
-<area shape="rect" id="node1" title="Context of individual requests that are scheduled to run asynchronously." alt="" coords="79,95,204,121"/>
-<area shape="rect" id="node2" href="$structdiscord__request.html" title="Behavior of request return struct." alt="" coords="5,5,131,32"/>
-<area shape="rect" id="node3" href="$structdiscord__bucket.html" title="The Discord bucket for handling per&#45;group ratelimits." alt="" coords="155,5,274,32"/>
-</map>

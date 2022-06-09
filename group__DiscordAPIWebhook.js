@@ -1,19 +1,21 @@
 var group__DiscordAPIWebhook =
 [
     [ "discord_ret_webhook", "structdiscord__ret__webhook.html", [
-      [ "done", "structdiscord__ret__webhook.html#ae0822eb062ba0823b4b5be05e4d6266d", null ],
-      [ "fail", "structdiscord__ret__webhook.html#a731b872d01f622f41d61b7776af6001a", null ],
       [ "data", "structdiscord__ret__webhook.html#aa27653d68a90d788d976fe777529ff9a", null ],
-      [ "cleanup", "structdiscord__ret__webhook.html#a030b553bf4817a8ac1a0e443a7276fc5", null ],
-      [ "high_p", "structdiscord__ret__webhook.html#a3a13b575ccd1cb9088138d15adafe1f6", null ],
+      [ "cleanup", "structdiscord__ret__webhook.html#a4f41c58e765b5f1cb56970e05f46fc20", null ],
+      [ "keep", "structdiscord__ret__webhook.html#a44809cd5a887ac5548edccac06346239", null ],
+      [ "high_priority", "structdiscord__ret__webhook.html#a1aefa9473deb7214e2ecfeed8e5f55e5", null ],
+      [ "fail", "structdiscord__ret__webhook.html#abe87240245cebc249f5d13b30374e83d", null ],
+      [ "done", "structdiscord__ret__webhook.html#a1b5746a50bda9f97bca971cb4b481641", null ],
       [ "sync", "structdiscord__ret__webhook.html#ab3f5d51d7b09163adca988373419da19", null ]
     ] ],
     [ "discord_ret_webhooks", "structdiscord__ret__webhooks.html", [
-      [ "done", "structdiscord__ret__webhooks.html#a2e2d5f240f6db132c04cd80898182d5f", null ],
-      [ "fail", "structdiscord__ret__webhooks.html#ac1df11df0e9c39923b3075efb2af7ec5", null ],
       [ "data", "structdiscord__ret__webhooks.html#ad4b50dc41ed46c1f334993bcb1499330", null ],
-      [ "cleanup", "structdiscord__ret__webhooks.html#a613e64105280b81d86f85af4faacae08", null ],
-      [ "high_p", "structdiscord__ret__webhooks.html#a44ec04e7eaa685cd97152e2f8ee6353e", null ],
+      [ "cleanup", "structdiscord__ret__webhooks.html#ad67e211830ab690deb60e0c747636afb", null ],
+      [ "keep", "structdiscord__ret__webhooks.html#a62c4cd07431fe69b7905c92bbf073d46", null ],
+      [ "high_priority", "structdiscord__ret__webhooks.html#a78f26af9ffcb1470d9c93bcaca3babf1", null ],
+      [ "fail", "structdiscord__ret__webhooks.html#ab8ec1f1fb3af703468a8fc7be3f76421", null ],
+      [ "done", "structdiscord__ret__webhooks.html#aad5a926e1ca01f150ae28bc15f1ee20c", null ],
       [ "sync", "structdiscord__ret__webhooks.html#a3b2d802dbe3d72ea15e986030e75f577", null ]
     ] ],
     [ "discord_create_webhook", "group__DiscordAPIWebhook.html#ga2cea37fb28d0c46556766af127898f5e", null ],

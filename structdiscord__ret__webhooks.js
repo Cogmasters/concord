@@ -1,9 +1,10 @@
 var structdiscord__ret__webhooks =
 [
-    [ "done", "structdiscord__ret__webhooks.html#a2e2d5f240f6db132c04cd80898182d5f", null ],
-    [ "fail", "structdiscord__ret__webhooks.html#ac1df11df0e9c39923b3075efb2af7ec5", null ],
     [ "data", "structdiscord__ret__webhooks.html#ad4b50dc41ed46c1f334993bcb1499330", null ],
-    [ "cleanup", "structdiscord__ret__webhooks.html#a613e64105280b81d86f85af4faacae08", null ],
-    [ "high_p", "structdiscord__ret__webhooks.html#a44ec04e7eaa685cd97152e2f8ee6353e", null ],
+    [ "cleanup", "structdiscord__ret__webhooks.html#ad67e211830ab690deb60e0c747636afb", null ],
+    [ "keep", "structdiscord__ret__webhooks.html#a62c4cd07431fe69b7905c92bbf073d46", null ],
+    [ "high_priority", "structdiscord__ret__webhooks.html#a78f26af9ffcb1470d9c93bcaca3babf1", null ],
+    [ "fail", "structdiscord__ret__webhooks.html#ab8ec1f1fb3af703468a8fc7be3f76421", null ],
+    [ "done", "structdiscord__ret__webhooks.html#aad5a926e1ca01f150ae28bc15f1ee20c", null ],
     [ "sync", "structdiscord__ret__webhooks.html#a3b2d802dbe3d72ea15e986030e75f577", null ]
 ];

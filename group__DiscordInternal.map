@@ -1,7 +1,10 @@
 <map id="Internal implementation details" name="Internal implementation details">
-<area shape="rect" id="node1" href="$group__Discord.html" title="Functions and datatypes for the client." alt="" coords="314,5,374,31"/>
-<area shape="rect" id="node2" title="Documentation useful when developing or debugging Concord itself." alt="" coords="5,73,185,113"/>
-<area shape="rect" id="node3" href="$group__DiscordInternalAdapter.html" title="Wrapper to the Discord REST API." alt="" coords="304,55,384,80"/>
-<area shape="rect" id="node4" href="$group__DiscordInternalGateway.html" title="Wrapper to the Discord Gateway API." alt="" coords="281,104,407,129"/>
-<area shape="rect" id="node5" href="$group__DiscordInternalTimer.html" title="Callback scheduling API." alt="" coords="301,153,387,179"/>
+<area shape="rect" id="node1" href="$group__Discord.html" title="Functions and datatypes for the client." alt="" coords="343,5,403,31"/>
+<area shape="rect" id="node2" title="Documentation useful when developing or debugging Concord itself." alt="" coords="5,146,185,186"/>
+<area shape="rect" id="node3" href="$group__DiscordInternalGateway.html" title="Wrapper to the Discord Gateway API." alt="" coords="310,55,435,80"/>
+<area shape="rect" id="node4" href="$group__DiscordInternalMessageCommands.html" title="The Message Commands API for registering and parsing user commands." alt="" coords="281,104,464,129"/>
+<area shape="rect" id="node5" href="$group__DiscordInternalREST.html" title="Wrapper to the Discord REST API." alt="" coords="333,153,413,179"/>
+<area shape="rect" id="node6" href="$group__DiscordInternalRefcount.html" title="Handle automatic cleanup of user&#39;s data." alt="" coords="302,203,443,228"/>
+<area shape="rect" id="node7" href="$group__DiscordInternalTimer.html" title="Callback scheduling API." alt="" coords="330,252,415,277"/>
+<area shape="rect" id="node8" href="$group__DiscordInternalWorker.html" title="A global threadpool for worker&#45;threads handling." alt="" coords="303,301,442,327"/>
 </map>

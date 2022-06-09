@@ -88,9 +88,8 @@ $(document).ready(function(){initNavTree('structdiscord__bucket.html',''); initR
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle"><div class="title">discord_bucket Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalAdapter.html">REST API</a> &raquo; <a class="el" href="group__DiscordInternalAdapterRatelimit.html">Ratelimiting</a></div></div></div>
+  <div class="headertitle"><div class="title">discord_bucket Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalREST.html">REST API</a> &raquo; <a class="el" href="group__DiscordInternalRESTRequest.html">Request's handling</a> &raquo; <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html">Ratelimiting</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -98,14 +97,13 @@ $(document).ready(function(){initNavTree('structdiscord__bucket.html',''); initR
  <a href="structdiscord__bucket.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-internal_8h_source.html">discord-internal.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for discord_bucket:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__bucket__coll__graph.svg" width="138" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a0067cc8cd3d71f6380535cf6d552e388"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a0067cc8cd3d71f6380535cf6d552e388">QUEUE</a> (struct <a class="el" href="structdiscord__context.html">discord_context</a>) waitq</td></tr>
-<tr class="separator:a0067cc8cd3d71f6380535cf6d552e388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53a1f67f697b6e47b39ca35978cb8a8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a53a1f67f697b6e47b39ca35978cb8a8c">QUEUE</a> (struct <a class="el" href="structdiscord__context.html">discord_context</a>) busyq</td></tr>
-<tr class="separator:a53a1f67f697b6e47b39ca35978cb8a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a7797c377da508268cc782d00d31c21fb"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a7797c377da508268cc782d00d31c21fb">hash</a> [64]</td></tr>
@@ -116,51 +114,17 @@ Data Fields</h2></td></tr>
 <tr class="separator:a38c38c1c36d5d911f710146df119550d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0966c2079f2043878d948aacd3208007"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a0966c2079f2043878d948aacd3208007">reset_tstamp</a></td></tr>
 <tr class="separator:a0966c2079f2043878d948aacd3208007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a268f5f36225ae82f4640704eea74adf2"><td class="memItemLeft" align="right" valign="top">pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a268f5f36225ae82f4640704eea74adf2">lock</a></td></tr>
-<tr class="separator:a268f5f36225ae82f4640704eea74adf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13f78049335cb5df6eb2ba431174a373"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__request.html">discord_request</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#a13f78049335cb5df6eb2ba431174a373">busy_req</a></td></tr>
+<tr class="separator:a13f78049335cb5df6eb2ba431174a373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9ef4d44da386705f14fe6ce5636ee35"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:ad9ef4d44da386705f14fe6ce5636ee35"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#ad9ef4d44da386705f14fe6ce5636ee35">queues</a></td></tr>
+<tr class="separator:ad9ef4d44da386705f14fe6ce5636ee35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b5618879652daf7b2ae53e697a99f1"><td class="memItemLeft" align="right" valign="top">QUEUE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html#aa1b5618879652daf7b2ae53e697a99f1">entry</a></td></tr>
+<tr class="separator:aa1b5618879652daf7b2ae53e697a99f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The Discord bucket for handling per-group ratelimits. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0067cc8cd3d71f6380535cf6d552e388" name="a0067cc8cd3d71f6380535cf6d552e388"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0067cc8cd3d71f6380535cf6d552e388">&#9670;&nbsp;</a></span>QUEUE() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">discord_bucket::QUEUE </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__context.html">discord_context</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >pending requests </p>
-
-</div>
-</div>
-<a id="a53a1f67f697b6e47b39ca35978cb8a8c" name="a53a1f67f697b6e47b39ca35978cb8a8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53a1f67f697b6e47b39ca35978cb8a8c">&#9670;&nbsp;</a></span>QUEUE() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">discord_bucket::QUEUE </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__context.html">discord_context</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >busy requests </p>
-
-</div>
-</div>
-<h2 class="groupheader">Field Documentation</h2>
+</div><h2 class="groupheader">Field Documentation</h2>
 <a id="a7797c377da508268cc782d00d31c21fb" name="a7797c377da508268cc782d00d31c21fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7797c377da508268cc782d00d31c21fb">&#9670;&nbsp;</a></span>hash</h2>
 
@@ -202,7 +166,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >connections this bucket can do before waiting for cooldown </p>
+<p >connections this bucket can do before pending for cooldown </p>
 
 </div>
 </div>
@@ -221,18 +185,48 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a268f5f36225ae82f4640704eea74adf2" name="a268f5f36225ae82f4640704eea74adf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a268f5f36225ae82f4640704eea74adf2">&#9670;&nbsp;</a></span>lock</h2>
+<a id="a13f78049335cb5df6eb2ba431174a373" name="a13f78049335cb5df6eb2ba431174a373"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13f78049335cb5df6eb2ba431174a373">&#9670;&nbsp;</a></span>busy_req</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">pthread_mutex_t discord_bucket::lock</td>
+          <td class="memname">struct <a class="el" href="structdiscord__request.html">discord_request</a>* discord_bucket::busy_req</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >synchronize ratelimiting between threads </p>
+<p >pointer to this bucket's currently busy request </p><dl class="section note"><dt>Note</dt><dd><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga6cde5ab5d14c9fedd812a8ed78107427">DISCORD_BUCKET_TIMEOUT</a> if bucket is being ratelimited </dd></dl>
+
+</div>
+</div>
+<a id="ad9ef4d44da386705f14fe6ce5636ee35" name="ad9ef4d44da386705f14fe6ce5636ee35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9ef4d44da386705f14fe6ce5636ee35">&#9670;&nbsp;</a></span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  discord_bucket::queues</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >request queues </p>
+
+</div>
+</div>
+<a id="aa1b5618879652daf7b2ae53e697a99f1" name="aa1b5618879652daf7b2ae53e697a99f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1b5618879652daf7b2ae53e697a99f1">&#9670;&nbsp;</a></span>entry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QUEUE discord_bucket::entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >entry for <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> pending buckets queue </p>
 
 </div>
 </div>

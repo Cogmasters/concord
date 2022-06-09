@@ -1,0 +1,4 @@
+<map id="discord_requestor" name="discord_requestor">
+<area shape="rect" id="node1" title="The handle used for handling asynchronous requests." alt="" coords="9,95,147,121"/>
+<area shape="rect" id="node2" href="$structdiscord__ratelimiter.html" title="The ratelimiter struct for handling ratelimiting." alt="" coords="5,5,151,32"/>
+</map>

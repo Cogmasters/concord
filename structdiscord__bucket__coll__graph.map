@@ -1,0 +1,4 @@
+<map id="discord_bucket" name="discord_bucket">
+<area shape="rect" id="node1" title="The Discord bucket for handling per&#45;group ratelimits." alt="" coords="9,5,127,32"/>
+<area shape="rect" id="node2" href="$structdiscord__request.html" title="Individual requests that are scheduled to run asynchronously." alt="" coords="5,95,131,121"/>
+</map>

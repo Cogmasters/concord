@@ -1,0 +1,4 @@
+<map id="Ratelimiting" name="Ratelimiting">
+<area shape="rect" id="node1" href="$group__DiscordInternalRESTRequest.html" title="Store, manage and dispatch individual requests." alt="" coords="5,5,152,31"/>
+<area shape="rect" id="node2" title="Enforce ratelimiting per the official Discord Documentation." alt="" coords="200,5,303,31"/>
+</map>

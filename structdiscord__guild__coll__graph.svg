@@ -130,57 +130,57 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="156.42,-173.46 146.22,-176.33 155.98,-180.44 156.42,-173.46"/>
 <text text-anchor="middle" x="224.5" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00"> presences</text>
 </g>
-<!-- Node33 -->
+<!-- Node34 -->
 <g id="node9" class="node">
-<title>Node33</title>
+<title>Node34</title>
 <g id="a_node9"><a xlink:href="structdiscord__welcome__screen.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="3.5,-126 3.5,-145 142.5,-145 142.5,-126 3.5,-126"/>
 <text text-anchor="middle" x="73" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00">discord_welcome_screen</text>
 </a>
 </g>
 </g>
-<!-- Node33&#45;&gt;Node1 -->
+<!-- Node34&#45;&gt;Node1 -->
 <g id="edge8" class="edge">
-<title>Node33&#45;&gt;Node1</title>
+<title>Node34&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M153.05,-135.69C193.81,-138.22 243.53,-145.18 285,-162.5 304.42,-170.61 322.83,-187.12 333.38,-197.73"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="153.07,-132.19 142.9,-135.14 152.69,-139.18 153.07,-132.19"/>
 <text text-anchor="middle" x="224.5" y="-165.5" font-family="Helvetica,sans-Serif" font-size="10.00"> welcome_screen</text>
 </g>
-<!-- Node36 -->
+<!-- Node37 -->
 <g id="node10" class="node">
-<title>Node36</title>
+<title>Node37</title>
 <g id="a_node10"><a xlink:href="structdiscord__stage__instances.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="orangered" points="5,-88 5,-107 141,-107 141,-88 5,-88"/>
 <text text-anchor="middle" x="73" y="-95" font-family="Helvetica,sans-Serif" font-size="10.00">discord_stage_instances</text>
 </a>
 </g>
 </g>
-<!-- Node36&#45;&gt;Node1 -->
+<!-- Node37&#45;&gt;Node1 -->
 <g id="edge9" class="edge">
-<title>Node36&#45;&gt;Node1</title>
+<title>Node37&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M151.65,-91.08C193.89,-91.17 245.45,-97.39 285,-121.5 314.6,-139.54 332.25,-179.26 339.14,-197.72"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="151.37,-87.58 141.4,-91.18 151.43,-94.58 151.37,-87.58"/>
 <text text-anchor="middle" x="224.5" y="-124.5" font-family="Helvetica,sans-Serif" font-size="10.00"> stage_instances</text>
 </g>
-<!-- Node38 -->
+<!-- Node39 -->
 <g id="node11" class="node">
-<title>Node38</title>
+<title>Node39</title>
 <g id="a_node11"><a xlink:href="structdiscord__stickers.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="orangered" points="25.5,-50 25.5,-69 120.5,-69 120.5,-50 25.5,-50"/>
 <text text-anchor="middle" x="73" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00">discord_stickers</text>
 </a>
 </g>
 </g>
-<!-- Node38&#45;&gt;Node1 -->
+<!-- Node39&#45;&gt;Node1 -->
 <g id="edge10" class="edge">
-<title>Node38&#45;&gt;Node1</title>
+<title>Node39&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M130.62,-48.9C176.44,-43.57 240.46,-43.85 285,-75.5 326.97,-105.33 338.63,-172.62 341.58,-197.77"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="130.02,-45.45 120.55,-50.2 130.91,-52.39 130.02,-45.45"/>
 <text text-anchor="middle" x="224.5" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00"> stickers</text>
 </g>
-<!-- Node40 -->
+<!-- Node41 -->
 <g id="node12" class="node">
-<title>Node40</title>
+<title>Node41</title>
 <g id="a_node12"><a xlink:href="structdiscord__guild__scheduled__events.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="5,-0.5 5,-30.5 141,-30.5 141,-0.5 5,-0.5"/>
 <text text-anchor="start" x="13" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_guild_scheduled</text>
@@ -188,9 +188,9 @@
 </a>
 </g>
 </g>
-<!-- Node40&#45;&gt;Node1 -->
+<!-- Node41&#45;&gt;Node1 -->
 <g id="edge11" class="edge">
-<title>Node40&#45;&gt;Node1</title>
+<title>Node41&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M151.25,-1.77C194.85,1.56 247.86,-2.36 285,-31.5 338.86,-73.77 342.9,-167.54 342.74,-197.85"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="150.9,1.72 141.25,-2.67 151.52,-5.26 150.9,1.72"/>
 <text text-anchor="middle" x="224.5" y="-34.5" font-family="Helvetica,sans-Serif" font-size="10.00"> guild_scheduled_events</text>

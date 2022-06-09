@@ -1,0 +1,5 @@
+<map id="Request&apos;s handling" name="Request&apos;s handling">
+<area shape="rect" id="node1" href="$group__DiscordInternalREST.html" title="Wrapper to the Discord REST API." alt="" coords="5,5,85,31"/>
+<area shape="rect" id="node2" title="Store, manage and dispatch individual requests." alt="" coords="133,5,280,31"/>
+<area shape="rect" id="node3" href="$group__DiscordInternalRESTRequestRatelimit.html" title="Enforce ratelimiting per the official Discord Documentation." alt="" coords="328,5,431,31"/>
+</map>
