@@ -1,13 +1,13 @@
-<div align="center">
-  <br />
-  <p>
-    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord" /></a>
-  </p>
-  <br />
-  <p>
-    <br> <a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
-  </p>
-</div>
+[migrating-shield]: https://img.shields.io/badge/Gist-Migrating%20from%20v1-yellow
+[migrating-link]: https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b
+[migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
+[discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
+[discord-invite]: https://discord.gg/Y7Xa6MA82v
+
+<img align="center" src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
+
+[ ![discord-shield][] ][discord-invite]
+[ ![migrating-shield][] ][migrating-link]
 
 # Concord - C Discord API library
 
@@ -338,7 +338,7 @@ For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us
 
 ## Support
 
-Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
+Problems? Check out our [Discord Server][discord-invite]
 
 ## Contributing
 
@@ -351,4 +351,5 @@ All kinds of contributions are welcome, all we ask is to abide to our [guideline
 
 ## Useful links
 
-- [Migrating from Orca](https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e)
+- [Migrating from V1][migrating-link]
+- [Migrating from Orca][migrating-orca-link]
