@@ -87,7 +87,7 @@ PUB_STRUCT(discord_guild)
   /** icon hash */
     FIELD_PTR(icon, char, *)
   /** icon hash, returned when in the template object */
-  COND_WRITE(this->icon_hash != NULL)
+  COND_WRITE(self->icon_hash != NULL)
     FIELD_PTR(icon_hash, char, *)
   COND_END
   /** splash hash */
@@ -99,7 +99,7 @@ PUB_STRUCT(discord_guild)
   /** id of owner */
     FIELD_SNOWFLAKE(owner_id)
   /** total permissions for the user in the guild (excludes overwrites) */
-  COND_WRITE(this->permissions != NULL)
+  COND_WRITE(self->permissions != NULL)
     FIELD_PTR(permissions, char, *)
   COND_END
   /** id of afk channel */
@@ -136,7 +136,7 @@ PUB_STRUCT(discord_guild)
        guidelines */
     FIELD_SNOWFLAKE(rules_channel_id)
   /** when this guild was joined at */
-  COND_WRITE(this->joined_at != 0)
+  COND_WRITE(self->joined_at != 0)
     FIELD_TIMESTAMP(joined_at)
   COND_END
   /** true if this is considered a large guild */
@@ -146,34 +146,34 @@ PUB_STRUCT(discord_guild)
   /** total number of members in this guild */
     FIELD(member_count, int, 0)
   /** states of members currently in voice channels; lacks `guild_id` */
-  COND_WRITE(this->voice_states != NULL)
+  COND_WRITE(self->voice_states != NULL)
     FIELD_STRUCT_PTR(voice_states, discord_voice_states, *)
   COND_END
   /** users in the guild */
-  COND_WRITE(this->members != NULL)
+  COND_WRITE(self->members != NULL)
     FIELD_STRUCT_PTR(members, discord_guild_members, *)
   COND_END
   /** channels in the guild */
-  COND_WRITE(this->channels != NULL)
+  COND_WRITE(self->channels != NULL)
     FIELD_STRUCT_PTR(channels, discord_channels, *)
   COND_END
   /** all active threads in the guild that current user has permission to
        view */
-  COND_WRITE(this->threads != NULL)
+  COND_WRITE(self->threads != NULL)
     FIELD_STRUCT_PTR(threads, discord_channels, *)
   COND_END
   /** presences of the members in the guild, will only include non-offline
        members if the size is greater than `large threshold` */
-  COND_WRITE(this->presences != NULL)
+  COND_WRITE(self->presences != NULL)
     FIELD_STRUCT_PTR(presences, discord_presence_updates, *)
   COND_END
   /** the maximum number of presences for the guild (null is always
        returned, apart from the largest of guilds) */
-  COND_WRITE(this->max_presences != 0)
+  COND_WRITE(self->max_presences != 0)
     FIELD(max_presences, int, 0)
   COND_END
   /** the maximum number of members for the guild */
-  COND_WRITE(this->max_members != 0)
+  COND_WRITE(self->max_members != 0)
     FIELD(max_members, int, 0)
   COND_END
   /** the vanity url code for the guild */
@@ -193,34 +193,34 @@ PUB_STRUCT(discord_guild)
        receive notices from Discord */
     FIELD_SNOWFLAKE(public_updates_channel_id)
   /** the maximum amount of users in a video channel */
-  COND_WRITE(this->max_video_channel_users != 0)
+  COND_WRITE(self->max_video_channel_users != 0)
     FIELD(max_video_channel_users, int, 0)
   COND_END
   /** approximate number of members in this guild */
-  COND_WRITE(this->approximate_member_count != 0)
+  COND_WRITE(self->approximate_member_count != 0)
     FIELD(approximate_member_count, int, 0)
   COND_END
   /** approximate number of non-offline members in this guild */
-  COND_WRITE(this->approximate_presence_count != 0)
+  COND_WRITE(self->approximate_presence_count != 0)
     FIELD(approximate_presence_count, int, 0)
   COND_END
   /** the welcome screen of a Community guild, shown to new members, returned
        in an invite's guild object */
-  COND_WRITE(this->welcome_screen != NULL)
+  COND_WRITE(self->welcome_screen != NULL)
     FIELD_STRUCT_PTR(welcome_screen, discord_welcome_screen, *)
   COND_END
   /** guild NSFW level */
     FIELD_ENUM(nsfw_level, discord_guild_nsfw_level)
   /** stage instances in the guild */
-  COND_WRITE(this->stage_instances != NULL)
+  COND_WRITE(self->stage_instances != NULL)
     FIELD_STRUCT_PTR(stage_instances, discord_stage_instances, *)
   COND_END
   /** custom guild stickers */
-  COND_WRITE(this->stickers != NULL)
+  COND_WRITE(self->stickers != NULL)
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
   COND_END
   /** the scheduled events in the guilds */
-  COND_WRITE(this->guild_scheduled_events != NULL)
+  COND_WRITE(self->guild_scheduled_events != NULL)
     FIELD_STRUCT_PTR(guild_scheduled_events, discord_guild_scheduled_events, *)
   COND_END
   /** whether the guild has the boost progress bar enabled */
@@ -283,15 +283,15 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_guild_member} */
 PUB_STRUCT(discord_guild_member)
   /** the user this guild member represents */
-  COND_WRITE(this->user != NULL)
+  COND_WRITE(self->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
   /** this user's guild nickname */
-  COND_WRITE(this->nick != NULL)
+  COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
   COND_END
   /** the member's guild avatar hash */
-  COND_WRITE(this->avatar != NULL)
+  COND_WRITE(self->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
   /** array of role object IDs */
@@ -299,7 +299,7 @@ PUB_STRUCT(discord_guild_member)
   /** when the user joined the guild */
     FIELD_TIMESTAMP(joined_at)
   /** when the user started boosting the guild */
-  COND_WRITE(this->premium_since != 0)
+  COND_WRITE(self->premium_since != 0)
     FIELD_TIMESTAMP(premium_since)
   COND_END
   /** whether the user is deafened in voice channels */
@@ -311,13 +311,15 @@ PUB_STRUCT(discord_guild_member)
     FIELD(pending, bool, false)
   /** total permission of the member in the channel, including overwrites,
        returned when in the interaction object */
-  COND_WRITE(this->permissions != NULL)
+  COND_WRITE(self->permissions != NULL)
     FIELD_PTR(permissions, char, *)
   COND_END
   /** when the user's timeout will expire and the user will be able to
        communicate in the guild again, null or a time in the past if the
        user is not timed out */
     FIELD_TIMESTAMP(communication_disabled_until)
+  /** the guild id @note extra field for `Guild Member Add` event */
+    FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_guild_members} */
@@ -325,7 +327,8 @@ PUB_LIST(discord_guild_members)
     LISTTYPE_STRUCT(discord_guild_member)
 LIST_END
 
-STRUCT(discord_integration)
+/** @CCORD_pub_struct{discord_integration} */
+PUB_STRUCT(discord_integration)
   /** integration id */
     FIELD_SNOWFLAKE(id)
   /** integration name */
@@ -357,6 +360,9 @@ STRUCT(discord_integration)
     FIELD(revoked, bool, false)
   /** the bot/OAuth2 application for discord integrations */
     FIELD_STRUCT_PTR(application, discord_integration_application, *)
+  /** id of the guild @note extra field that may be included at
+   *    `Integration Create` or `Integration Update` */
+    FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
 LIST(discord_integrations)
@@ -382,7 +388,7 @@ STRUCT(discord_integration_application)
   /** the summary of the app */
     FIELD_PTR(summary, char, *)
   /** the bot associated with this application */
-  COND_WRITE(this->bot != NULL)
+  COND_WRITE(self->bot != NULL)
     FIELD_STRUCT_PTR(bot, discord_user, *)
   COND_END
 STRUCT_END
@@ -405,7 +411,7 @@ PUB_STRUCT(discord_welcome_screen)
   /** the server description shown in the welcome screen */
     FIELD_PTR(description, char, *)
   /** the channels shown in the welcome screen, up to 5 */
-  COND_WRITE(this->welcome_channels != NULL)
+  COND_WRITE(self->welcome_channels != NULL)
     FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channels, *)
   COND_END
 STRUCT_END
@@ -435,12 +441,12 @@ PUB_STRUCT(discord_create_guild)
   /** name of the guild (2-100 charaters) */
     FIELD_PTR(name, char, *)
   /** voice region ID @deprecated deprecated field */
-  COND_WRITE(this->region != NULL)
+  COND_WRITE(self->region != NULL)
     FIELD_PTR(region, char, *)
   COND_END
   /** base64 1024x1024 png/jpeg/gif image for the guild icon (can be
        animated gif when the server has the `ANIMATED_ICON` feature) */
-  COND_WRITE(this->icon != NULL)
+  COND_WRITE(self->icon != NULL)
     FIELD_PTR(icon, char, *)
   COND_END
   /** verification level */
@@ -450,15 +456,15 @@ PUB_STRUCT(discord_create_guild)
   /** explicit content filter level */
     FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
   /** new guild roles */
-  COND_WRITE(this->roles != NULL)
+  COND_WRITE(self->roles != NULL)
     FIELD_STRUCT_PTR(roles, discord_roles, *)
   COND_END
   /** new guild's channels */
-  COND_WRITE(this->channels != NULL)
+  COND_WRITE(self->channels != NULL)
     FIELD_STRUCT_PTR(channels, discord_channels, *)
   COND_END
   /** ID for afk channel */
-  COND_WRITE(this->afk_channel_id != 0)
+  COND_WRITE(self->afk_channel_id != 0)
     FIELD_SNOWFLAKE(afk_channel_id)
   COND_END
   /** afk timeout in seconds */
@@ -529,11 +535,11 @@ PUB_STRUCT(discord_create_guild_channel)
   /** channel topic (0-1024 characters) */
     FIELD_PTR(topic, char, *)
   /** the bitrate (in bits) of the voice channel (voice only) */
-  COND_WRITE(this->bitrate != 0)
+  COND_WRITE(self->bitrate != 0)
     FIELD(bitrate, int, 0)
   COND_END
   /** the user limit of the voice channel (voice only) */
-  COND_WRITE(this->user_limit != 0)
+  COND_WRITE(self->user_limit != 0)
     FIELD(user_limit, int, 0)
   COND_END
   /** amount of seconds a user has to wait before sending another message
@@ -545,7 +551,7 @@ PUB_STRUCT(discord_create_guild_channel)
   /** the channel's permission overwrites */
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   /** ID of the parent category for a channel */
-  COND_WRITE(this->parent_id != 0)
+  COND_WRITE(self->parent_id != 0)
     FIELD_SNOWFLAKE(parent_id)
   COND_END
   /** whether the channel is nsfw */
@@ -556,14 +562,14 @@ STRUCT(discord_modify_guild_channel_position)
   /** channel ID */
     FIELD_SNOWFLAKE(id)
   /** sorting position of the channel */
-  COND_WRITE(this->position != 0)
+  COND_WRITE(self->position != 0)
     FIELD(position, int, 0)
   COND_END
   /** syncs the permission overwrites with the new parent, if moving to a new
        category */
     FIELD(lock_category, bool, false)
   /** the new parent ID for the channel that is moved */
-  COND_WRITE(this->parent_id != 0)
+  COND_WRITE(self->parent_id != 0)
     FIELD_SNOWFLAKE(parent_id)
   COND_END
 STRUCT_END
@@ -635,7 +641,7 @@ PUB_STRUCT(discord_modify_guild_member)
        to NULL to remove timeout. WIll throw a @ref CCORD_HTTP_ERROR (403)
        error if the user has the `ADMINISTRATOR` permission or is the owner
        of the guild */
-  COND_WRITE(this->communication_disabled_until != 0)
+  COND_WRITE(self->communication_disabled_until != 0)
     FIELD_TIMESTAMP(communication_disabled_until)
   COND_END
 STRUCT_END
@@ -643,7 +649,7 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_current_member} */
 PUB_STRUCT(discord_modify_current_member)
   /** value to set user's nickname to */
-  COND_WRITE(this->nick != NULL)
+  COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
   COND_END
 STRUCT_END
@@ -651,7 +657,7 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_current_user_nick} */
 PUB_STRUCT(discord_modify_current_user_nick)
   /** value to set user's nickname to */
-  COND_WRITE(this->nick != NULL)
+  COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
   COND_END
 STRUCT_END
@@ -659,11 +665,11 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_guild_ban} */
 PUB_STRUCT(discord_create_guild_ban)
   /** number of days to delete messages for (0-7) */
-  COND_WRITE(this->delete_message_days >= 0 && this->delete_message_days <= 7)
+  COND_WRITE(self->delete_message_days >= 0 && self->delete_message_days <= 7)
     FIELD(delete_message_days, int, 0)
   COND_END
   /** reason for the ban @deprecated deprecated field */
-  COND_WRITE(this->reason != NULL)
+  COND_WRITE(self->reason != NULL)
     FIELD_PTR(reason, char, *)
   COND_END
 STRUCT_END
@@ -691,7 +697,7 @@ STRUCT(discord_modify_guild_role_position)
   /** role */
     FIELD_SNOWFLAKE(id)
   /** sorting position of the role */
-  COND_WRITE(this->position != 0)
+  COND_WRITE(self->position != 0)
     FIELD(position, int, 0)
   COND_END
 STRUCT_END
@@ -723,7 +729,7 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_guild_prune_count)
   /** number of days to count prune for (1-30) */
-  COND_WRITE(this->count != 0)
+  COND_WRITE(self->count != 0)
     FIELD(count, int, 7)
   COND_END
   /** role(s) to include */
@@ -734,7 +740,7 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_begin_guild_prune} */
 PUB_STRUCT(discord_begin_guild_prune)
   /** number of days to prune */
-  COND_WRITE(this->days != 0)
+  COND_WRITE(self->days != 0)
     FIELD(days, int, 7)
   COND_END
   /** whether 'pruned' is returned, discouraged for large guilds */
@@ -742,7 +748,7 @@ PUB_STRUCT(discord_begin_guild_prune)
   /** role(s) to include */
     FIELD_STRUCT_PTR(include_roles, snowflakes, *)
   /** reason for the prune @deprecated deprecated field */
-  COND_WRITE(this->reason != NULL)
+  COND_WRITE(self->reason != NULL)
     FIELD_PTR(reason, char, *)
   COND_END
 STRUCT_END
@@ -751,7 +757,7 @@ STRUCT_END
 STRUCT(discord_get_guild_widget_image)
   /** style of the widget image returned
        @see https://discord.com/developers/docs/resources/guild#membership-screening-object-widget-style-options */
-  COND_WRITE(this->style != NULL)
+  COND_WRITE(self->style != NULL)
     FIELD_PTR(style, char, *)
   COND_END
 STRUCT_END
@@ -764,7 +770,7 @@ PUB_STRUCT(discord_modify_guild_welcome_screen)
   /** channels linked in the welcome screen and their display options */
     FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channels, *)
   /** the server description to show in the welcome screen */
-  COND_WRITE(this->description != NULL)
+  COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)
   COND_END
 STRUCT_END
@@ -777,7 +783,7 @@ PUB_STRUCT(discord_modify_current_user_voice_state)
     FIELD(suppress, bool, false)
   /* TODO: should be able to write `null` */
   /** set the user's request to speak */
-  COND_WRITE(this->request_to_speak_timestamp != 0)
+  COND_WRITE(self->request_to_speak_timestamp != 0)
     FIELD_TIMESTAMP(request_to_speak_timestamp)
   COND_END
 STRUCT_END

@@ -96,12 +96,22 @@ struct ua_attr {
     struct logconf *conf;
 };
 
+/** @brief Read-only generic sized buffer */
+struct ua_szbuf_readonly {
+    /** the buffer's start */
+    const char *start;
+    /** the buffer's size in bytes */
+    size_t size;
+};
+
 /** @brief Connection attributes */
 struct ua_conn_attr {
     /** the HTTP method of this transfer (GET, POST, ...) */
     enum http_method method;
     /** the optional request body, can be NULL */
-    struct sized_buffer *body;
+    char *body;
+    /** the request body size */
+    size_t body_size;
     /** the endpoint to be appended to the base URL */
     char *endpoint;
     /** optional base_url to override ua_set_url(), can be NULL */
@@ -337,17 +347,18 @@ void ua_info_cleanup(struct ua_info *info);
  *
  * @param info handle containing information on previous request
  * @param field the header field to fetch the value
- * @return a sized_buffer containing the field's value
+ * @return a @ref ua_szbuf_readonly containing the field's value
  */
-struct sized_buffer ua_info_get_header(struct ua_info *info, char field[]);
+struct ua_szbuf_readonly ua_info_get_header(struct ua_info *info,
+                                            char field[]);
 
 /**
  * @brief Get the response body
  *
  * @param info handle containing information on previous request
- * @return a sized_buffer containing the response body
+ * @return a @ref ua_szbuf_readonly containing the response body
  */
-struct sized_buffer ua_info_get_body(struct ua_info *info);
+struct ua_szbuf_readonly ua_info_get_body(struct ua_info *info);
 
 #ifdef __cplusplus
 }

@@ -1,77 +1,81 @@
 /**
  * @file discord-request.h
- * @ingroup DiscordInternal
+ * @ingroup DiscordInternalREST
  * @author Cogmasters
- * @brief Generic macros for initializing a @ref discord_request
+ * @brief Generic macros for initializing a @ref discord_attributes
  */
 
 #ifndef DISCORD_REQUEST_H
 #define DISCORD_REQUEST_H
 
-#define _RET_SAFECOPY_TYPED(dest, src)                                        \
+/* helper typedefs for casting */
+typedef void (*cast_done_typed)(struct discord *,
+                                struct discord_response *,
+                                const void *);
+typedef void (*cast_init)(void *);
+typedef void (*cast_cleanup)(void *);
+typedef size_t (*cast_from_json)(const char *, size_t, void *);
+
+/* helper typedef for getting sizeof of `struct discord_ret` common fields */
+typedef struct {
+    DISCORD_RET_DEFAULT_FIELDS;
+} discord_ret_default_fields;
+
+#define _RET_COPY_TYPED(dest, src)                                            \
     do {                                                                      \
+        memcpy(&(dest), &(src), sizeof(discord_ret_default_fields));          \
         (dest).has_type = true;                                               \
-        (dest).done.typed = (void (*)(struct discord * client, void *data,    \
-                                      const void *ret))(src)                  \
-                                .done;                                        \
-        (dest).fail = (src).fail;                                             \
-        (dest).data = (src).data;                                             \
-        (dest).cleanup = (src).cleanup;                                       \
-        (dest).high_p = (src).high_p;                                         \
+        (dest).done.typed = (cast_done_typed)(src).done;                      \
         (dest).sync = (src).sync;                                             \
     } while (0)
 
-#define _RET_SAFECOPY_TYPELESS(dest, src)                                     \
+#define _RET_COPY_TYPELESS(dest, src)                                         \
     do {                                                                      \
+        memcpy(&(dest), &(src), sizeof(discord_ret_default_fields));          \
         (dest).has_type = false;                                              \
         (dest).done.typeless = (src).done;                                    \
-        (dest).fail = (src).fail;                                             \
-        (dest).data = (src).data;                                             \
-        (dest).cleanup = (src).cleanup;                                       \
-        (dest).high_p = (src).high_p;                                         \
         (dest).sync = (void *)(src).sync;                                     \
     } while (0)
 
 /**
  * @brief Helper for setting attributes for a specs-generated return struct
  *
- * @param req request handler to be initialized
+ * @param attr attributes handler to be initialized
  * @param type datatype of the struct
- * @param ret request attributes
+ * @param ret dispatch attributes
  */
-#define DISCORD_REQ_INIT(req, type, ret)                                      \
+#define DISCORD_ATTR_INIT(attr, type, ret)                                    \
     do {                                                                      \
-        (req).gnrc.size = sizeof(struct type);                                \
-        (req).gnrc.init = (void (*)(void *))type##_init;                      \
-        (req).gnrc.from_json =                                                \
-            (size_t(*)(const char *, size_t, void *))type##_from_json;        \
-        (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
-        if (ret) _RET_SAFECOPY_TYPED(req.ret, *ret);                          \
+        (attr).response.size = sizeof(struct type);                           \
+        (attr).response.init = (cast_init)type##_init;                        \
+        (attr).response.from_json = (cast_from_json)type##_from_json;         \
+        (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \
+        if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \
     } while (0)
 
 /**
  * @brief Helper for setting attributes for a specs-generated list
  *
- * @param req request handler to be initialized
+ * @param attr attributes handler to be initialized
  * @param type datatype of the list
- * @param ret request attributes
+ * @param ret dispatch attributes
  */
-#define DISCORD_REQ_LIST_INIT(req, type, ret)                                 \
+#define DISCORD_ATTR_LIST_INIT(attr, type, ret)                               \
     do {                                                                      \
-        (req).gnrc.size = sizeof(struct type);                                \
-        (req).gnrc.from_json =                                                \
-            (size_t(*)(const char *, size_t, void *))type##_from_json;        \
-        (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
-        if (ret) _RET_SAFECOPY_TYPED(req.ret, *ret);                          \
+        (attr).response.size = sizeof(struct type);                           \
+        (attr).response.from_json = (cast_from_json)type##_from_json;         \
+        (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \
+        if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \
     } while (0)
 
 /**
- * @brief Helper for setting request attributes expecting no response
+ * @brief Helper for setting attributes for attruests that doensn't expect a
+ *      response object
  *
- * @param req request handler to be initialized
- * @param ret request attributes
+ * @param attr attributes handler to be initialized
+ * @param ret dispatch attributes
  */
-#define DISCORD_REQ_BLANK_INIT(req, ret)                                      \
-    if (ret) _RET_SAFECOPY_TYPELESS(req.ret, *ret)
+#define DISCORD_ATTR_BLANK_INIT(attr, ret)                                    \
+    if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret)
 
 #endif /* DISCORD_REQUEST_H */

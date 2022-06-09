@@ -1,7 +1,11 @@
+/* Modified by Lucas Müller (muller.lucas@hotmail.com), 16 May 2022 
+ * - add __chash_init() and __chash_free() as a non-malloc option
+ */
+
 #ifndef CWARE_LIBCHASH_H
 #define CWARE_LIBCHASH_H
 
-#define CWARE_LIBCHASH_VERSION  "2.0.0"
+#define CWARE_LIBCHASH_VERSION  "x.0.0"
 
 /* How big heap-allocated hashtables are by default */
 #ifndef CHASH_INITIAL_SIZE
@@ -222,18 +226,20 @@ do {                                                                 \
 
 
 
-
 /* operations */
-#define chash_init(hashtable, namespace)                              \
-    NULL;                                                             \
-                                                                      \
-    (hashtable) = malloc(sizeof((*(hashtable))));                     \
+#define __chash_init(hashtable, namespace)                            \
     (hashtable)->CHASH_LENGTH_FIELD = 0;                              \
     (hashtable)->CHASH_CAPACITY_FIELD = CHASH_INITIAL_SIZE;           \
     (hashtable)->CHASH_BUCKETS_FIELD = malloc(CHASH_INITIAL_SIZE      \
                       * sizeof(*((hashtable)->CHASH_BUCKETS_FIELD))); \
     memset((hashtable)->CHASH_BUCKETS_FIELD, 0,                       \
     sizeof(*((hashtable)->CHASH_BUCKETS_FIELD)) * CHASH_INITIAL_SIZE)
+
+#define chash_init(hashtable, namespace)                              \
+    NULL;                                                             \
+                                                                      \
+    (hashtable) = malloc(sizeof((*(hashtable))));                     \
+    __chash_init(hashtable, namespace)
 
 #define chash_init_stack(hashtable, buffer, _length, namespace)               \
     (*(hashtable));                                                           \
@@ -378,6 +384,34 @@ do {                                                                       \
   storage = ((hashtable)->CHASH_BUCKETS_FIELD + __CHASH_HASH);             \
 } while(0)
 
+#define __chash_free(hashtable, namespace)                                  \
+do {                                                                        \
+  __chash_assert_nonnull(__chash_free, hashtable);                          \
+  __chash_assert_nonnull(__chash_free, (hashtable)->CHASH_BUCKETS_FIELD);   \
+  (hashtable)->CHASH_CAPACITY_FIELD--;                                      \
+                                                                            \
+  while((hashtable)->CHASH_CAPACITY_FIELD != -1) {                          \
+    if((hashtable)->CHASH_BUCKETS_FIELD[(hashtable)->CHASH_CAPACITY_FIELD]  \
+                                      .CHASH_STATE_FIELD != CHASH_FILLED) { \
+      (hashtable)->CHASH_CAPACITY_FIELD--;                                  \
+      continue;                                                             \
+    }                                                                       \
+                                                                            \
+    namespace ##_FREE_KEY(                                                  \
+      (hashtable)->CHASH_BUCKETS_FIELD[(hashtable)->CHASH_CAPACITY_FIELD]   \
+            .CHASH_KEY_FIELD);                                              \
+    namespace ##_FREE_VALUE(                                                \
+      (hashtable)->CHASH_BUCKETS_FIELD[(hashtable)->CHASH_CAPACITY_FIELD]   \
+            .CHASH_VALUE_FIELD);                                            \
+    (hashtable)->CHASH_CAPACITY_FIELD--;                                    \
+    (hashtable)->CHASH_LENGTH_FIELD--;                                      \
+  }                                                                         \
+                                                                            \
+  if((namespace ## _HEAP) == 1) {                                           \
+    free((hashtable)->CHASH_BUCKETS_FIELD);                                 \
+  }                                                                         \
+} while(0)
+
 #define chash_free(hashtable, namespace)                                    \
 do {                                                                        \
   __chash_assert_nonnull(chash_free, hashtable);                            \
@@ -405,7 +439,7 @@ do {                                                                        \
     free((hashtable)->CHASH_BUCKETS_FIELD);                                 \
     free((hashtable));                                                      \
   }                                                                         \
-} while(0);
+} while(0)
 
 #define chash_is_full(hashtable, namespace) \
     (((hashtable)->CHASH_LENGTH_FIELD) == ((hashtable)->CHASH_CAPACITY_FIELD))

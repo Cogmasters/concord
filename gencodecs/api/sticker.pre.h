@@ -21,7 +21,7 @@ PUB_STRUCT(discord_sticker)
   /** ID of the sticker */
     FIELD_SNOWFLAKE(id)
   /** for standard stickers, ID of the pack the sticker is from */
-  COND_WRITE(this->pack_id != 0)
+  COND_WRITE(self->pack_id != 0)
     FIELD_SNOWFLAKE(pack_id)
   COND_END
   /** name of the sticker */
@@ -31,22 +31,22 @@ PUB_STRUCT(discord_sticker)
   /** autocomplete/suggestion tags for the sticker (max 200 characters) */
     FIELD_PTR(tags, char, *)
   /** type of sticker */
-  COND_WRITE(this->type != 0)
+  COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_sticker_types)
   COND_END
   /** type of sticker format */
-  COND_WRITE(this->format_type != 0)
+  COND_WRITE(self->format_type != 0)
     FIELD_ENUM(format_type, discord_sticker_format_types)
   COND_END
   /** whether this guild sticker can be used, may be false due to loss of
        Server Boosts */
     FIELD(available, bool, false)
   /** ID of the guild that owns this sticker */
-  COND_WRITE(this->guild_id != 0)
+  COND_WRITE(self->guild_id != 0)
     FIELD_SNOWFLAKE(guild_id)
   COND_END
   /** the user that uploaded the guild sticker */
-  COND_WRITE(this->user != NULL)
+  COND_WRITE(self->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
   /** the standard sticker's sort order within its pack */
@@ -63,7 +63,7 @@ STRUCT(discord_sticker_item)
   /** name of the sticker */
     FIELD_PTR(name, char, *)
   /** type of sticker format */
-  COND_WRITE(this->format_type != 0)
+  COND_WRITE(self->format_type != 0)
     FIELD_ENUM(format_type, discord_sticker_format_types)
   COND_END
 STRUCT_END
@@ -76,7 +76,7 @@ STRUCT(discord_sticker_pack)
   /** ID of the sticker */
     FIELD_SNOWFLAKE(id)
   /** the stickers in the pack */
-  COND_WRITE(this->stickers != NULL)
+  COND_WRITE(self->stickers != NULL)
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
   COND_END
   /** name of the sticker pack */
@@ -84,13 +84,13 @@ STRUCT(discord_sticker_pack)
   /** ID of the pack's SKU */
     FIELD_SNOWFLAKE(sku_id)
   /** ID of a sticker in the pack which is shown as the pack's icon */
-  COND_WRITE(this->cover_sticker_id != 0)
+  COND_WRITE(self->cover_sticker_id != 0)
     FIELD_SNOWFLAKE(cover_sticker_id)
   COND_END
   /** description of the sticker pack */
     FIELD_PTR(description, char, *)
   /** ID of the sticker pack's banner image */
-  COND_WRITE(this->banner_asset_id != 0)
+  COND_WRITE(self->banner_asset_id != 0)
     FIELD_SNOWFLAKE(banner_asset_id)
   COND_END
 STRUCT_END

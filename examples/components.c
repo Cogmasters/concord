@@ -67,18 +67,16 @@ char JSON[] =
     "]\n";
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Components-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
-on_dynamic(struct discord *client, const struct discord_message *msg)
+on_dynamic(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_components components = { 0 };
     discord_components_from_json(JSON, sizeof(JSON), &components);
@@ -88,16 +86,16 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
                    "you play?",
         .components = &components
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 
     /* must cleanup 'components' afterwards */
     discord_components_cleanup(&components);
 }
 
 void
-on_static(struct discord *client, const struct discord_message *msg)
+on_static(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_select_option select_options[] = {
         {
@@ -166,19 +164,19 @@ on_static(struct discord *client, const struct discord_message *msg)
             },
     };
 
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_interaction_create(struct discord *client,
-                      const struct discord_interaction *interaction)
+                      const struct discord_interaction *event)
 {
-    log_info("Interaction %" PRIu64 " received", interaction->id);
+    log_info("Interaction %" PRIu64 " received", event->id);
 
-    if (!interaction->data || !interaction->data->values) return;
+    if (!event->data || !event->data->values) return;
 
     char values[1024];
-    strings_to_json(values, sizeof(values), interaction->data->values);
+    strings_to_json(values, sizeof(values), event->data->values);
 
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text),
@@ -196,8 +194,8 @@ on_interaction_create(struct discord *client,
                 .flags = DISCORD_MESSAGE_EPHEMERAL // 1 << 6
             }
     };
-    discord_create_interaction_response(client, interaction->id,
-                                        interaction->token, &params, NULL);
+    discord_create_interaction_response(client, event->id, event->token,
+                                        &params, NULL);
 }
 
 int

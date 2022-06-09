@@ -59,18 +59,16 @@ char JSON[] = "{\n"
               "}";
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Embed-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
-on_dynamic(struct discord *client, const struct discord_message *msg)
+on_dynamic(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     /* load a embed from the json string */
     struct discord_embed embed = { 0 };
@@ -85,16 +83,16 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
                 .array = &embed,
             },
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 
     /* must cleanup 'embed' afterwards */
     discord_embed_cleanup(&embed);
 }
 
 void
-on_static(struct discord *client, const struct discord_message *msg)
+on_static(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_embed_field fields[] = {
         {
@@ -146,13 +144,13 @@ on_static(struct discord *client, const struct discord_message *msg)
                 .array = embeds,
             },
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-on_builder(struct discord *client, const struct discord_message *msg)
+on_builder(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_embed embed = {
         .color = 0x3498DB,
@@ -184,7 +182,7 @@ on_builder(struct discord *client, const struct discord_message *msg)
                 .array = &embed,
             },
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 
     /* must cleanup 'embed' afterwards */
     discord_embed_cleanup(&embed);

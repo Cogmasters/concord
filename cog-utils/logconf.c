@@ -7,6 +7,7 @@
 #include <unistd.h> /* getpid() */
 
 #include "logconf.h"
+#include "cog-utils.h"
 
 #define JSMN_STRICT
 #define JSMN_HEADER
@@ -83,8 +84,8 @@ void
 logconf_http(struct logconf *conf,
              struct loginfo *p_info,
              char url[],
-             struct sized_buffer header,
-             struct sized_buffer body,
+             struct logconf_szbuf header,
+             struct logconf_szbuf body,
              char label_fmt[],
              ...)
 {
@@ -319,10 +320,10 @@ logconf_cleanup(struct logconf *conf)
     memset(conf, 0, sizeof *conf);
 }
 
-struct sized_buffer
+struct logconf_field
 logconf_get_field(struct logconf *conf, char *const path[], unsigned depth)
 {
-    struct sized_buffer field = { 0 };
+    struct logconf_field field = { 0 };
     jsmn_parser parser;
     jsmntok_t tokens[256];
 

@@ -10,10 +10,10 @@ CCORDcode
 discord_list_voice_regions(struct discord *client,
                            struct discord_ret_voice_regions *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
-    DISCORD_REQ_LIST_INIT(req, discord_voice_regions, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_voice_regions, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/voice/regions");
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/voice/regions");
 }

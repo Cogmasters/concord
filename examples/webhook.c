@@ -47,14 +47,16 @@ main(int argc, char *argv[])
     /* Get Webhook */
     {
         struct discord_ret_webhook ret = { .sync = DISCORD_SYNC_FLAG };
-        discord_get_webhook_with_token(client, webhook_id, webhook_token, &ret);
+        discord_get_webhook_with_token(client, webhook_id, webhook_token,
+                                       &ret);
     }
 
     /* Execute Webhook */
     {
         struct discord_ret ret = { .sync = true };
         struct discord_execute_webhook params = { .content = "Hello World!" };
-        discord_execute_webhook(client, webhook_id, webhook_token, &params, &ret);
+        discord_execute_webhook(client, webhook_id, webhook_token, &params,
+                                &ret);
     }
 
     free(webhook_token);

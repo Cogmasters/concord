@@ -21,26 +21,24 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 log_on_app_create(struct discord *client,
-                  const struct discord_application_command *cmd)
+                  const struct discord_application_command *event)
 {
-    log_info("Application Command %s created", cmd->name);
+    log_info("Application Command %s created", event->name);
 }
 
 void
 on_slash_command_create(struct discord *client,
-                        const struct discord_message *msg)
+                        const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_application_command_option_choice gender_choices[] = {
         {
@@ -94,7 +92,6 @@ on_slash_command_create(struct discord *client,
     };
 
     struct discord_create_guild_application_command params = {
-        .type = DISCORD_APPLICATION_CHAT_INPUT,
         .name = "fill-form",
         .description = "A slash command example for form filling",
         .default_permission = true,
@@ -106,27 +103,27 @@ on_slash_command_create(struct discord *client,
     };
 
     /* Create slash command */
-    discord_create_guild_application_command(client, g_app_id, msg->guild_id,
+    discord_create_guild_application_command(client, g_app_id, event->guild_id,
                                              &params, NULL);
 }
 
 void
 on_interaction_create(struct discord *client,
-                      const struct discord_interaction *interaction)
+                      const struct discord_interaction *event)
 {
     /* We're only interested on slash commands */
-    if (interaction->type != DISCORD_INTERACTION_APPLICATION_COMMAND) return;
+    if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND) return;
     /* Return in case user input is missing for some reason */
-    if (!interaction->data || !interaction->data->options) return;
+    if (!event->data || !event->data->options) return;
 
     char *nick = "blank";
     int pets = 0;
     char *gender = "blank";
     u64snowflake channel_id = 0;
 
-    for (int i = 0; i < interaction->data->options->size; ++i) {
-        char *name = interaction->data->options->array[i].name;
-        char *value = interaction->data->options->array[i].value;
+    for (int i = 0; i < event->data->options->size; ++i) {
+        char *name = event->data->options->array[i].name;
+        char *value = event->data->options->array[i].value;
 
         if (0 == strcmp(name, "nick"))
             nick = value;
@@ -145,15 +142,15 @@ on_interaction_create(struct discord *client,
              "Pets: %d\n"
              "Gender: %s\n"
              "Favorite channel: <#%" PRIu64 ">\n",
-             interaction->member->user->id, nick, pets, gender, channel_id);
+             event->member->user->id, nick, pets, gender, channel_id);
 
     struct discord_interaction_response params = {
         .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
         .data = &(struct discord_interaction_callback_data){ .content = buf }
     };
 
-    discord_create_interaction_response(client, interaction->id,
-                                        interaction->token, &params, NULL);
+    discord_create_interaction_response(client, event->id, event->token,
+                                        &params, NULL);
 }
 
 int

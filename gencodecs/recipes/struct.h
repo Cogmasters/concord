@@ -69,65 +69,65 @@
 #ifdef GENCODECS_HEADER
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
-    void _type##_init(struct _type *this);                                    \
-    void _type##_cleanup(struct _type *this);
+    void _type##_init(struct _type *self);                                    \
+    void _type##_cleanup(struct _type *self);
 #define GENCODECS_PUB_LIST(_type)                                             \
-    void _type##_cleanup(struct _type *this);
+    void _type##_cleanup(struct _type *self);
 
 #include "gencodecs-gen.pre.h"
 
 #elif defined(GENCODECS_FORWARD)
 
 #define GENCODECS_STRUCT(_type)                                               \
-    static void _type##_init(struct _type *this);                             \
-    static void _type##_cleanup(struct _type *this);
+    static void _type##_init(struct _type *self);                             \
+    static void _type##_cleanup(struct _type *self);
 #define GENCODECS_LIST(_type)                                                 \
-    static void _type##_cleanup(struct _type *this);
+    static void _type##_cleanup(struct _type *self);
 
 #include "gencodecs-gen.pre.h"
 
 #else
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
-    void _type##_init(struct _type *this)                                     \
+    void _type##_init(struct _type *self)                                     \
     {
 #define GENCODECS_STRUCT(_type)                                               \
     static GENCODECS_PUB_STRUCT(_type)
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
-        this->_name = _default_value;
+        self->_name = _default_value;
 #define GENCODECS_FIELD_PRINTF(_name, _type, printf_type, _scanf_type)        \
-        this->_name = (_type)0;
+        self->_name = (_type)0;
 #define GENCODECS_STRUCT_END                                                  \
     }
 
 #include "gencodecs-gen.pre.h"
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
-    void _type##_cleanup(struct _type *this)                                  \
+    void _type##_cleanup(struct _type *self)                                  \
     {
 #define GENCODECS_STRUCT(_type)                                               \
     static GENCODECS_PUB_STRUCT(_type)
 #define GENCODECS_FIELD(_name, _type, _default_value)                         \
-        (void)this->_name;
+        (void)self->_name;
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
-        _cleanup(this->_name, _type);
+        _cleanup(self->_name, _type);
 #define GENCODECS_STRUCT_END                                                  \
     }
 
 #define GENCODECS_PUB_LIST(_type)                                             \
-    void _type##_cleanup(struct _type *this)                                  \
+    void _type##_cleanup(struct _type *self)                                  \
     {
 #define GENCODECS_LIST(_type)                                                 \
     static GENCODECS_PUB_LIST(_type)
 #define GENCODECS_LISTTYPE(_type)                                             \
-        __carray_free(this, _type, NULL, NULL);
+        __carray_free(self, _type, NULL, NULL);
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
-        __carray_free(this, struct _type, NULL,                               \
+        __carray_free(self, struct _type, NULL,                               \
                       _type##_cleanup(&__CARRAY_OPERAND_A));
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
-        __carray_free(this, _type _decor, NULL, free(__CARRAY_OPERAND_A));
+        __carray_free(self, _type _decor, NULL, free(__CARRAY_OPERAND_A));
 #define GENCODECS_LIST_END                                                    \
     }
 

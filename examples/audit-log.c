@@ -21,97 +21,89 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Audit-Log-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 log_on_guild_member_add(struct discord *client,
-                        u64snowflake guild_id,
-                        const struct discord_guild_member *member)
+                        const struct discord_guild_member *event)
 {
-    log_info("%s#%s joined guild %" PRIu64, member->user->username,
-             member->user->discriminator, guild_id);
+    log_info("%s#%s joined guild %" PRIu64, event->user->username,
+             event->user->discriminator, event->guild_id);
 }
 
 void
 log_on_guild_member_update(struct discord *client,
-                           u64snowflake guild_id,
-                           const struct discord_guild_member *member)
+                           const struct discord_guild_member_update *event)
 {
     char nick[128] = "";
 
-    if (member->nick && *member->nick)
-        snprintf(nick, sizeof(nick), " (%s)", member->nick);
+    if (event->nick && *event->nick)
+        snprintf(nick, sizeof(nick), " (%s)", event->nick);
 
-    log_info("%s#%s%s updated (guild %" PRIu64 ")", member->user->username,
-             member->user->discriminator, nick, guild_id);
+    log_info("%s#%s%s updated (guild %" PRIu64 ")", event->user->username,
+             event->user->discriminator, nick, event->guild_id);
 }
 
 void
 log_on_guild_member_remove(struct discord *client,
-                           u64snowflake guild_id,
-                           const struct discord_user *user)
+                           const struct discord_guild_member_remove *event)
 {
-    log_info("%s#%s left guild %" PRIu64, user->username, user->discriminator,
-             guild_id);
+    log_info("%s#%s left guild %" PRIu64, event->user->username,
+             event->user->discriminator, event->guild_id);
 }
 
 void
 done(struct discord *client,
-     void *data,
+     struct discord_response *resp,
      const struct discord_audit_log *audit_log)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
 
     if (!audit_log->audit_log_entries || !audit_log->audit_log_entries->size) {
         log_warn("No audit log entries found!");
         return;
     }
 
-    struct discord_audit_log_entry *entry = &audit_log->audit_log_entries->array[0];
+    struct discord_audit_log_entry *entry =
+        &audit_log->audit_log_entries->array[0];
 
     char text[1028];
     snprintf(text, sizeof(text), "<@!%" PRIu64 "> has created <#%" PRIu64 ">!",
              entry->user_id, entry->target_id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-fail(struct discord *client, CCORDcode code, void *data)
+fail(struct discord *client, struct discord_response *resp)
 {
-    (void)data;
+    (void)resp;
 
     log_error("Couldn't retrieve audit log: %s",
-              discord_strerror(code, client));
+              discord_strerror(resp->code, client));
 }
 
 void
 on_audit_channel_create(struct discord *client,
-                        const struct discord_message *msg)
+                        const struct discord_message *event)
 {
-    if (msg->author->bot) return;
-
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    if (event->author->bot) return;
 
     struct discord_ret_audit_log ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
     struct discord_get_guild_audit_log params = {
-        .user_id = msg->author->id,
+        .user_id = event->author->id,
         .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE,
     };
-    discord_get_guild_audit_log(client, msg->guild_id, &params, &ret);
+    discord_get_guild_audit_log(client, event->guild_id, &params, &ret);
 }
 
 int

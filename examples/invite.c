@@ -18,75 +18,67 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Invite-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
-done(struct discord *client, void *data, const struct discord_invite *invite)
+done(struct discord *client,
+     struct discord_response *resp,
+     const struct discord_invite *invite)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "Success: https://discord.gg/%s",
              invite->code);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-fail(struct discord *client, CCORDcode code, void *data)
+fail(struct discord *client, struct discord_response *resp)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
 
     struct discord_create_message params = {
         .content = "Couldn't perform operation."
     };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-on_invite_get(struct discord *client, const struct discord_message *msg)
+on_invite_get(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
-
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    if (event->author->bot) return;
 
     struct discord_ret_invite ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
 
     struct discord_get_invite params = {
         .with_counts = true,
         .with_expiration = true,
     };
-    discord_get_invite(client, msg->content, &params, &ret);
+    discord_get_invite(client, event->content, &params, &ret);
 }
 
 void
-on_invite_delete(struct discord *client, const struct discord_message *msg)
+on_invite_delete(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
-
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    if (event->author->bot) return;
 
     struct discord_ret_invite ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
-    discord_delete_invite(client, msg->content, &ret);
+    discord_delete_invite(client, event->content, &ret);
 }
 
 int

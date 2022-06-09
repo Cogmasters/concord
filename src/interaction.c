@@ -14,8 +14,8 @@ discord_create_interaction_response(
     struct discord_interaction_response *params,
     struct discord_ret_interaction_response *ret)
 {
-    struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[4096];
 
@@ -29,17 +29,17 @@ discord_create_interaction_response(
 
     if (params->data && params->data->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = *params->data->attachments;
+        attr.attachments = *params->data->attachments;
     }
     else {
         method = HTTP_POST;
     }
 
-    DISCORD_REQ_INIT(req, discord_interaction_response, ret);
+    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/interactions/%" PRIu64 "/%s/callback",
-                               interaction_id, interaction_token);
+    return discord_rest_run(&client->rest, &attr, &body, method,
+                            "/interactions/%" PRIu64 "/%s/callback",
+                            interaction_id, interaction_token);
 }
 
 CCORDcode
@@ -49,17 +49,17 @@ discord_get_original_interaction_response(
     const char interaction_token[],
     struct discord_ret_interaction_response *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_REQ_INIT(req, discord_interaction_response, ret);
+    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64 "/%s/messages/@original",
-                               application_id, interaction_token);
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64 "/%s/messages/@original",
+                            application_id, interaction_token);
 }
 
 CCORDcode
@@ -70,8 +70,8 @@ discord_edit_original_interaction_response(
     struct discord_edit_original_interaction_response *params,
     struct discord_ret_interaction_response *ret)
 {
-    struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
 
@@ -86,17 +86,17 @@ discord_edit_original_interaction_response(
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = *params->attachments;
+        attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
 
-    DISCORD_REQ_INIT(req, discord_interaction_response, ret);
+    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s/messages/@original",
-                               application_id, interaction_token);
+    return discord_rest_run(&client->rest, &attr, &body, method,
+                            "/webhooks/%" PRIu64 "/%s/messages/@original",
+                            application_id, interaction_token);
 }
 
 CCORDcode
@@ -105,17 +105,17 @@ discord_delete_original_interaction_response(struct discord *client,
                                              const char interaction_token[],
                                              struct discord_ret *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_REQ_BLANK_INIT(req, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64 "/%s/messages/@original",
-                               application_id, interaction_token);
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64 "/%s/messages/@original",
+                            application_id, interaction_token);
 }
 
 CCORDcode
@@ -125,8 +125,8 @@ discord_create_followup_message(struct discord *client,
                                 struct discord_create_followup_message *params,
                                 struct discord_ret_webhook *ret)
 {
-    struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
     char query[4096] = "";
@@ -148,17 +148,17 @@ discord_create_followup_message(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = *params->attachments;
+        attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
     }
 
-    DISCORD_REQ_INIT(req, discord_webhook, ret);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s%s%s", application_id,
-                               interaction_token, *query ? "?" : "", query);
+    return discord_rest_run(&client->rest, &attr, &body, method,
+                            "/webhooks/%" PRIu64 "/%s%s%s", application_id,
+                            interaction_token, *query ? "?" : "", query);
 }
 
 CCORDcode
@@ -168,18 +168,18 @@ discord_get_followup_message(struct discord *client,
                              u64snowflake message_id,
                              struct discord_ret_message *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_REQ_INIT(req, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/webhooks/%" PRIu64 "/%s/%" PRIu64,
-                               application_id, interaction_token, message_id);
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/webhooks/%" PRIu64 "/%s/%" PRIu64,
+                            application_id, interaction_token, message_id);
 }
 
 CCORDcode
@@ -190,8 +190,8 @@ discord_edit_followup_message(struct discord *client,
                               struct discord_edit_followup_message *params,
                               struct discord_ret_message *ret)
 {
-    struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
 
@@ -207,17 +207,17 @@ discord_edit_followup_message(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = *params->attachments;
+        attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
 
-    DISCORD_REQ_INIT(req, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, method,
-                               "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
-                               application_id, interaction_token, message_id);
+    return discord_rest_run(&client->rest, &attr, &body, method,
+                            "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
+                            application_id, interaction_token, message_id);
 }
 
 CCORDcode
@@ -227,16 +227,16 @@ discord_delete_followup_message(struct discord *client,
                                 u64snowflake message_id,
                                 struct discord_ret *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_REQ_BLANK_INIT(req, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret);
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
-                               "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
-                               application_id, interaction_token, message_id);
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
+                            "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
+                            application_id, interaction_token, message_id);
 }

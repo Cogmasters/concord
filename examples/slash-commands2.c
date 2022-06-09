@@ -35,46 +35,44 @@ print_help(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 log_on_app_create(struct discord *client,
-                  const struct discord_application_command *cmd)
+                  const struct discord_application_command *event)
 {
-    log_info("Application Command %s created", cmd->name);
+    log_info("Application Command %s created", event->name);
 }
 
 void
 log_on_app_update(struct discord *client,
-                  const struct discord_application_command *cmd)
+                  const struct discord_application_command *event)
 {
-    log_info("Application Command %s updated", cmd->name);
+    log_info("Application Command %s updated", event->name);
 }
 
 void
 log_on_app_delete(struct discord *client,
-                  const struct discord_application_command *cmd)
+                  const struct discord_application_command *event)
 {
-    log_info("Application Command %s deleted", cmd->name);
+    log_info("Application Command %s deleted", event->name);
 }
 
 void
-fail_interaction_create(struct discord *client, CCORDcode code, void *data)
+fail_interaction_create(struct discord *client, struct discord_response *resp)
 {
-    log_error("%s", discord_strerror(code, client));
+    log_error("%s", discord_strerror(resp->code, client));
 }
 
 void
 on_interaction_create(struct discord *client,
-                      const struct discord_interaction *interaction)
+                      const struct discord_interaction *event)
 {
-    log_info("Interaction %" PRIu64 " received", interaction->id);
+    log_info("Interaction %" PRIu64 " received", event->id);
 
     struct discord_interaction_callback_data data = {
         .content = "Hello World!",
@@ -88,8 +86,8 @@ on_interaction_create(struct discord *client,
         .fail = &fail_interaction_create
     };
 
-    discord_create_interaction_response(client, interaction->id,
-                                        interaction->token, &params, &ret);
+    discord_create_interaction_response(client, event->id, event->token,
+                                        &params, &ret);
 }
 
 void *

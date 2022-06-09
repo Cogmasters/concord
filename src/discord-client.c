@@ -1,37 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> /* isgraph() */
 #include <errno.h>
 
 #include "discord.h"
 #include "discord-internal.h"
+#include "discord-worker.h"
 #include "cog-utils.h"
 
 static void
 _discord_init(struct discord *new_client)
 {
     ccord_global_init();
-    discord_timers_init(new_client);
+    discord_timers_init(&new_client->timers.internal);
+    discord_timers_init(&new_client->timers.user);
     new_client->io_poller = io_poller_create();
-    discord_adapter_init(&new_client->adapter, &new_client->conf,
-                         &new_client->token);
+
+    new_client->workers = calloc(1, sizeof *new_client->workers);
+    ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),
+             "Couldn't initialize Client's mutex");
+    ASSERT_S(!pthread_cond_init(&new_client->workers->cond, NULL),
+             "Couldn't initialize Client's cond");
+
+    discord_refcounter_init(&new_client->refcounter, &new_client->conf);
+    discord_message_commands_init(&new_client->commands, &new_client->conf);
+    discord_rest_init(&new_client->rest, &new_client->conf, new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
-                         &new_client->token);
-#ifdef HAS_DISCORD_VOICE
+                         new_client->token);
+#ifdef CCORD_VOICE
     discord_voice_connections_init(new_client);
-#endif /* HAS_DISCORD_VOICE */
+#endif
 
-    /* fetch the client user structure */
-    if (new_client->token.size) {
-        struct discord_ret_user ret = { 0 };
-        CCORDcode code;
-
-        ret.sync = &new_client->self;
-        code = discord_get_current_user(new_client, &ret);
+    if (new_client->token) { /* fetch client's user structure */
+        CCORDcode code =
+            discord_get_current_user(new_client, &(struct discord_ret_user){
+                                                     .sync = &new_client->self,
+                                                 });
         ASSERT_S(CCORD_OK == code, "Couldn't fetch client's user object");
     }
-
     new_client->is_original = true;
 }
 
@@ -45,8 +51,7 @@ discord_init(const char token[])
     /* silence terminal input by default */
     logconf_set_quiet(&new_client->conf, true);
 
-    new_client->token.start = (char *)token;
-    new_client->token.size = token ? cog_str_bounds_check(token, 128) : 0;
+    if (token && *token) cog_strndup(token, strlen(token), &new_client->token);
 
     _discord_init(new_client);
 
@@ -56,8 +61,8 @@ discord_init(const char token[])
 struct discord *
 discord_config_init(const char config_file[])
 {
+    struct ccord_szbuf_readonly field;
     struct discord *new_client;
-    char *path[] = { "discord", "token" };
     FILE *fp;
 
     fp = fopen(config_file, "rb");
@@ -69,15 +74,46 @@ discord_config_init(const char config_file[])
 
     fclose(fp);
 
-    new_client->token = logconf_get_field(&new_client->conf, path,
-                                          sizeof(path) / sizeof *path);
-    if (!strncmp("YOUR-BOT-TOKEN", new_client->token.start,
-                 new_client->token.size))
-    {
-        memset(&new_client->token, 0, sizeof(new_client->token));
-    }
+    field = discord_config_get_field(new_client,
+                                     (char *[2]){ "discord", "token" }, 2);
+    if (field.size && 0 != strncmp("YOUR-BOT-TOKEN", field.start, field.size))
+        cog_strndup(field.start, field.size, &new_client->token);
 
     _discord_init(new_client);
+
+    /* check for default prefix in config file */
+    field = discord_config_get_field(
+        new_client, (char *[2]){ "discord", "default_prefix" }, 2);
+    if (field.size) {
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
+
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, field.start, field.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, field.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                bool enable_prefix = false;
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, field.start, "enable", 6)))
+                    enable_prefix = ('t' == field.start[f->v.pos]);
+
+                if (enable_prefix
+                    && (f = jsmnf_find(pairs, field.start, "prefix", 6))) {
+                    discord_message_commands_set_prefix(&new_client->commands,
+                                                        field.start + f->v.pos,
+                                                        f->v.len);
+                }
+            }
+        }
+    }
 
     return new_client;
 }
@@ -86,14 +122,16 @@ static void
 _discord_clone_gateway(struct discord_gateway *clone,
                        const struct discord_gateway *orig)
 {
-    const size_t n =
-        orig->parse.npairs - (size_t)(orig->payload.data - orig->parse.pairs);
+    const size_t n = orig->payload.json.npairs
+                     - (size_t)(orig->payload.data - orig->payload.json.pairs);
 
-    clone->payload.data = malloc(n * sizeof *orig->parse.pairs);
+    clone->payload.data = malloc(n * sizeof *orig->payload.json.pairs);
     memcpy(clone->payload.data, orig->payload.data,
-           n * sizeof *orig->parse.pairs);
+           n * sizeof *orig->payload.json.pairs);
 
-    clone->length = cog_strndup(orig->json, orig->length, &clone->json);
+    clone->payload.json.size =
+        cog_strndup(orig->payload.json.start, orig->payload.json.size,
+                    &clone->payload.json.start);
 }
 
 struct discord *
@@ -113,7 +151,7 @@ static void
 _discord_clone_gateway_cleanup(struct discord_gateway *clone)
 {
     free(clone->payload.data);
-    free(clone->json);
+    free(clone->payload.json.start);
 }
 
 static void
@@ -125,19 +163,27 @@ _discord_clone_cleanup(struct discord *client)
 void
 discord_cleanup(struct discord *client)
 {
-    if (client->is_original) {
-        discord_timers_cleanup(client);
-        logconf_cleanup(&client->conf);
-        discord_adapter_cleanup(&client->adapter);
-        discord_gateway_cleanup(&client->gw);
-        discord_user_cleanup(&client->self);
-        io_poller_destroy(client->io_poller);
-#ifdef HAS_DISCORD_VOICE
-        discord_voice_connections_cleanup(client);
-#endif /* HAS_DISCORD_VOICE */
+    if (!client->is_original) {
+        _discord_clone_cleanup(client);
     }
     else {
-        _discord_clone_cleanup(client);
+        discord_worker_join(client);
+        discord_rest_cleanup(&client->rest);
+        discord_gateway_cleanup(&client->gw);
+        discord_message_commands_cleanup(&client->commands);
+#ifdef CCORD_VOICE
+        discord_voice_connections_cleanup(client);
+#endif
+        discord_user_cleanup(&client->self);
+        io_poller_destroy(client->io_poller);
+        discord_refcounter_cleanup(&client->refcounter);
+        discord_timers_cleanup(client, &client->timers.user);
+        discord_timers_cleanup(client, &client->timers.internal);
+        logconf_cleanup(&client->conf);
+        if (client->token) free(client->token);
+        pthread_mutex_destroy(&client->workers->lock);
+        pthread_cond_destroy(&client->workers->cond);
+        free(client->workers);
     }
     free(client);
 }
@@ -229,14 +275,12 @@ discord_remove_intents(struct discord *client, uint64_t code)
 }
 
 void
-discord_set_prefix(struct discord *client, char *prefix)
+discord_set_prefix(struct discord *client, const char prefix[])
 {
     if (!prefix || !*prefix) return;
 
-    if (client->gw.cmds.prefix.start) free(client->gw.cmds.prefix.start);
-
-    client->gw.cmds.prefix.size =
-        cog_strndup(prefix, strlen(prefix), &client->gw.cmds.prefix.start);
+    discord_message_commands_set_prefix(&client->commands, prefix,
+                                        strlen(prefix));
 }
 
 const struct discord_user *
@@ -250,74 +294,29 @@ discord_set_on_command(struct discord *client,
                        char command[],
                        discord_ev_message callback)
 {
-    const size_t cmd_len = command ? strlen(command) : 0;
-    size_t i;
+    size_t length = (!command || !*command) ? 0 : strlen(command);
 
-    /* fallback callback if prefix is detected, but command isn't specified */
-    if (client->gw.cmds.prefix.size && !cmd_len) {
-        client->gw.cmds.fallback.cb = callback;
-        return;
-    }
-
-    /* if command is already set then modify it */
-    for (i = 0; i < client->gw.cmds.amt; i++) {
-        if (cmd_len == client->gw.cmds.pool[i].size
-            && 0 == strcmp(command, client->gw.cmds.pool[i].start))
-        {
-            goto _modify;
-        }
-    }
-
-    if (i == client->gw.cmds.cap) {
-        size_t cap = 8;
-        void *tmp;
-
-        while (cap <= i)
-            cap <<= 1;
-
-        tmp =
-            realloc(client->gw.cmds.pool, cap * sizeof(*client->gw.cmds.pool));
-        if (!tmp) return;
-
-        client->gw.cmds.pool = tmp;
-        client->gw.cmds.cap = cap;
-    }
-
-    ++client->gw.cmds.amt;
-    client->gw.cmds.pool[i].size =
-        cog_strndup(command, cmd_len, &client->gw.cmds.pool[i].start);
-
-_modify:
-    client->gw.cmds.pool[i].cb = callback;
-
+    discord_message_commands_append(&client->commands, command, length,
+                                    callback);
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
 discord_set_on_commands(struct discord *client,
-                        discord_ev_message callback,
-                        ...)
+                        char *const commands[],
+                        int amount,
+                        discord_ev_message callback)
 {
-    char *command = NULL;
-    va_list commands;
-
-    va_start(commands, callback);
-
-    command = va_arg(commands, char *);
-    while (command != NULL) {
-        discord_set_on_command(client, command, callback);
-        command = va_arg(commands, char *);
-    }
-
-    va_end(commands);
+    for (int i = 0; i < amount; ++i)
+        discord_set_on_command(client, commands[i], callback);
 }
 
 void
 discord_set_event_scheduler(struct discord *client,
                             discord_ev_scheduler callback)
 {
-    client->gw.cmds.scheduler = callback;
+    client->gw.scheduler = callback;
 }
 
 void
@@ -334,24 +333,24 @@ discord_reconnect(struct discord *client, bool resume)
 }
 
 void
-discord_set_on_ready(struct discord *client, discord_ev_idle callback)
+discord_set_on_ready(struct discord *client, discord_ev_ready callback)
 {
-    client->gw.cmds.cbs.on_ready = callback;
+    client->gw.cbs[DISCORD_EV_READY] = (discord_ev)callback;
 }
 
 void
 discord_set_on_guild_role_create(struct discord *client,
-                                 discord_ev_guild_role callback)
+                                 discord_ev_guild_role_create callback)
 {
-    client->gw.cmds.cbs.on_guild_role_create = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_ROLE_CREATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
 void
 discord_set_on_guild_role_update(struct discord *client,
-                                 discord_ev_guild_role callback)
+                                 discord_ev_guild_role_update callback)
 {
-    client->gw.cmds.cbs.on_guild_role_update = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_ROLE_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -359,7 +358,7 @@ void
 discord_set_on_guild_role_delete(struct discord *client,
                                  discord_ev_guild_role_delete callback)
 {
-    client->gw.cmds.cbs.on_guild_role_delete = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_ROLE_DELETE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -367,15 +366,15 @@ void
 discord_set_on_guild_member_add(struct discord *client,
                                 discord_ev_guild_member callback)
 {
-    client->gw.cmds.cbs.on_guild_member_add = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_MEMBER_ADD] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
 void
 discord_set_on_guild_member_update(struct discord *client,
-                                   discord_ev_guild_member callback)
+                                   discord_ev_guild_member_update callback)
 {
-    client->gw.cmds.cbs.on_guild_member_update = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_MEMBER_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
@@ -383,23 +382,23 @@ void
 discord_set_on_guild_member_remove(struct discord *client,
                                    discord_ev_guild_member_remove callback)
 {
-    client->gw.cmds.cbs.on_guild_member_remove = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_MEMBER_REMOVE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
 void
 discord_set_on_guild_ban_add(struct discord *client,
-                             discord_ev_guild_ban callback)
+                             discord_ev_guild_ban_add callback)
 {
-    client->gw.cmds.cbs.on_guild_ban_add = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_BAN_ADD] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_BANS);
 }
 
 void
 discord_set_on_guild_ban_remove(struct discord *client,
-                                discord_ev_guild_ban callback)
+                                discord_ev_guild_ban_remove callback)
 {
-    client->gw.cmds.cbs.on_guild_ban_remove = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_BAN_REMOVE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_BANS);
 }
 
@@ -407,28 +406,31 @@ void
 discord_set_on_application_command_create(
     struct discord *client, discord_ev_application_command callback)
 {
-    client->gw.cmds.cbs.on_application_command_create = callback;
+    client->gw.cbs[DISCORD_EV_APPLICATION_COMMAND_CREATE] =
+        (discord_ev)callback;
 }
 
 void
 discord_set_on_application_command_update(
     struct discord *client, discord_ev_application_command callback)
 {
-    client->gw.cmds.cbs.on_application_command_update = callback;
+    client->gw.cbs[DISCORD_EV_APPLICATION_COMMAND_UPDATE] =
+        (discord_ev)callback;
 }
 
 void
 discord_set_on_application_command_delete(
     struct discord *client, discord_ev_application_command callback)
 {
-    client->gw.cmds.cbs.on_application_command_delete = callback;
+    client->gw.cbs[DISCORD_EV_APPLICATION_COMMAND_DELETE] =
+        (discord_ev)callback;
 }
 
 void
 discord_set_on_channel_create(struct discord *client,
                               discord_ev_channel callback)
 {
-    client->gw.cmds.cbs.on_channel_create = callback;
+    client->gw.cbs[DISCORD_EV_CHANNEL_CREATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -436,7 +438,7 @@ void
 discord_set_on_channel_update(struct discord *client,
                               discord_ev_channel callback)
 {
-    client->gw.cmds.cbs.on_channel_update = callback;
+    client->gw.cbs[DISCORD_EV_CHANNEL_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -444,7 +446,7 @@ void
 discord_set_on_channel_delete(struct discord *client,
                               discord_ev_channel callback)
 {
-    client->gw.cmds.cbs.on_channel_delete = callback;
+    client->gw.cbs[DISCORD_EV_CHANNEL_DELETE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -452,7 +454,7 @@ void
 discord_set_on_channel_pins_update(struct discord *client,
                                    discord_ev_channel_pins_update callback)
 {
-    client->gw.cmds.cbs.on_channel_pins_update = callback;
+    client->gw.cbs[DISCORD_EV_CHANNEL_PINS_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -460,7 +462,7 @@ void
 discord_set_on_thread_create(struct discord *client,
                              discord_ev_channel callback)
 {
-    client->gw.cmds.cbs.on_thread_create = callback;
+    client->gw.cbs[DISCORD_EV_THREAD_CREATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -468,7 +470,7 @@ void
 discord_set_on_thread_update(struct discord *client,
                              discord_ev_channel callback)
 {
-    client->gw.cmds.cbs.on_thread_update = callback;
+    client->gw.cbs[DISCORD_EV_THREAD_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -476,29 +478,28 @@ void
 discord_set_on_thread_delete(struct discord *client,
                              discord_ev_channel callback)
 {
-    client->gw.cmds.cbs.on_thread_delete = callback;
+    client->gw.cbs[DISCORD_EV_THREAD_DELETE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
 void
 discord_set_on_guild_create(struct discord *client, discord_ev_guild callback)
 {
-    client->gw.cmds.cbs.on_guild_create = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_CREATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
 void
 discord_set_on_guild_update(struct discord *client, discord_ev_guild callback)
 {
-    client->gw.cmds.cbs.on_guild_update = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
 void
-discord_set_on_guild_delete(struct discord *client,
-                            discord_ev_guild_delete callback)
+discord_set_on_guild_delete(struct discord *client, discord_ev_guild callback)
 {
-    client->gw.cmds.cbs.on_guild_delete = callback;
+    client->gw.cbs[DISCORD_EV_GUILD_DELETE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
@@ -506,7 +507,7 @@ void
 discord_set_on_message_create(struct discord *client,
                               discord_ev_message callback)
 {
-    client->gw.cmds.cbs.on_message_create = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_CREATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
@@ -515,7 +516,7 @@ void
 discord_set_on_message_update(struct discord *client,
                               discord_ev_message callback)
 {
-    client->gw.cmds.cbs.on_message_update = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
@@ -524,7 +525,7 @@ void
 discord_set_on_message_delete(struct discord *client,
                               discord_ev_message_delete callback)
 {
-    client->gw.cmds.cbs.on_message_delete = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_DELETE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
@@ -533,7 +534,7 @@ void
 discord_set_on_message_delete_bulk(struct discord *client,
                                    discord_ev_message_delete_bulk callback)
 {
-    client->gw.cmds.cbs.on_message_delete_bulk = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_DELETE_BULK] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
@@ -542,7 +543,7 @@ void
 discord_set_on_message_reaction_add(struct discord *client,
                                     discord_ev_message_reaction_add callback)
 {
-    client->gw.cmds.cbs.on_message_reaction_add = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_REACTION_ADD] = (discord_ev)callback;
     discord_add_intents(client,
                         DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS
                             | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
@@ -552,7 +553,7 @@ void
 discord_set_on_message_reaction_remove(
     struct discord *client, discord_ev_message_reaction_remove callback)
 {
-    client->gw.cmds.cbs.on_message_reaction_remove = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_REACTION_REMOVE] = (discord_ev)callback;
     discord_add_intents(client,
                         DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS
                             | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
@@ -562,7 +563,8 @@ void
 discord_set_on_message_reaction_remove_all(
     struct discord *client, discord_ev_message_reaction_remove_all callback)
 {
-    client->gw.cmds.cbs.on_message_reaction_remove_all = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_REACTION_REMOVE_ALL] =
+        (discord_ev)callback;
     discord_add_intents(client,
                         DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS
                             | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
@@ -572,7 +574,8 @@ void
 discord_set_on_message_reaction_remove_emoji(
     struct discord *client, discord_ev_message_reaction_remove_emoji callback)
 {
-    client->gw.cmds.cbs.on_message_reaction_remove_emoji = callback;
+    client->gw.cbs[DISCORD_EV_MESSAGE_REACTION_REMOVE_EMOJI] =
+        (discord_ev)callback;
     discord_add_intents(client,
                         DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS
                             | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
@@ -582,14 +585,14 @@ void
 discord_set_on_interaction_create(struct discord *client,
                                   discord_ev_interaction callback)
 {
-    client->gw.cmds.cbs.on_interaction_create = callback;
+    client->gw.cbs[DISCORD_EV_INTERACTION_CREATE] = (discord_ev)callback;
 }
 
 void
 discord_set_on_voice_state_update(struct discord *client,
                                   discord_ev_voice_state_update callback)
 {
-    client->gw.cmds.cbs.on_voice_state_update = callback;
+    client->gw.cbs[DISCORD_EV_VOICE_STATE_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
 }
 
@@ -597,16 +600,37 @@ void
 discord_set_on_voice_server_update(struct discord *client,
                                    discord_ev_voice_server_update callback)
 {
-    client->gw.cmds.cbs.on_voice_server_update = callback;
+    client->gw.cbs[DISCORD_EV_VOICE_SERVER_UPDATE] = (discord_ev)callback;
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
 }
 
+/* deprecated, use discord_update_presence() instead */
 void
 discord_set_presence(struct discord *client,
                      struct discord_presence_update *presence)
 {
-    memcpy(client->gw.id.presence, presence, sizeof *presence);
-    discord_gateway_send_presence_update(&client->gw);
+    discord_gateway_send_presence_update(&client->gw, presence);
+}
+
+void
+discord_request_guild_members(struct discord *client,
+                              struct discord_request_guild_members *request)
+{
+    discord_gateway_send_request_guild_members(&client->gw, request);
+}
+
+void
+discord_update_voice_state(struct discord *client,
+                           struct discord_update_voice_state *update)
+{
+    discord_gateway_send_update_voice_state(&client->gw, update);
+}
+
+void
+discord_update_presence(struct discord *client,
+                        struct discord_presence_update *presence)
+{
+    discord_gateway_send_presence_update(&client->gw, presence);
 }
 
 int
@@ -644,4 +668,28 @@ struct io_poller *
 discord_get_io_poller(struct discord *client)
 {
     return client->io_poller;
+}
+
+struct ccord_szbuf_readonly
+discord_config_get_field(struct discord *client,
+                         char *const path[],
+                         unsigned depth)
+{
+    struct logconf_field field = logconf_get_field(&client->conf, path, depth);
+
+    return (struct ccord_szbuf_readonly){ field.start, field.size };
+}
+
+void
+__discord_claim(struct discord *client, const void *param)
+{
+    ASSERT_S(discord_refcounter_claim(&client->refcounter, (void *)param),
+             "Failed attempt to claim non-Concord function parameter");
+}
+
+void
+discord_unclaim(struct discord *client, const void *param)
+{
+    ASSERT_S(discord_refcounter_unclaim(&client->refcounter, (void *)param),
+             "Failed attempt to unclaim non-Concord function parameter");
 }

@@ -9,11 +9,11 @@ PUB_STRUCT(discord_emoji)
   /** emoji name */
     FIELD_PTR(name, char, *)
   /** roles allowed to use this emoji */
-  COND_WRITE(this->roles != NULL)
+  COND_WRITE(self->roles != NULL)
     FIELD_STRUCT_PTR(roles, discord_roles, *)
   COND_END
   /** user that created this emoji */
-  COND_WRITE(this->user != NULL)
+  COND_WRITE(self->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
   /** whether this emoji must be wrapped in colons */
@@ -44,7 +44,7 @@ PUB_STRUCT(discord_create_guild_emoji)
   /** the 128x128 emoji image */
     FIELD_PTR(image, char, *)
   /** roles allowed to use this emoji */
-  COND_WRITE(this->roles != NULL)
+  COND_WRITE(self->roles != NULL)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
   COND_END
 STRUCT_END
@@ -57,7 +57,7 @@ PUB_STRUCT(discord_modify_guild_emoji)
   /** the 128x128 emoji image */
     FIELD_PTR(image, char, *)
   /** roles allowed to use this emoji */
-  COND_WRITE(this->roles != NULL)
+  COND_WRITE(self->roles != NULL)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
   COND_END
 STRUCT_END

@@ -33,6 +33,14 @@ struct io_poller *io_poller_create(void);
 void io_poller_destroy(struct io_poller *io);
 
 /**
+ * @brief wakeup the thread listening to this io_poller
+ * 
+ * @param io the io_poller to wake up
+ */
+void
+io_poller_wakeup(struct io_poller *io);
+
+/**
  * @brief wait for events to be triggered
  * @param io the io_poller to poll on
  * @param milliseconds -1 for infinity, or ms to poll for

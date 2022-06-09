@@ -31,25 +31,25 @@ char *SPAM[] = {
 };
 
 void
-on_spam_async(struct discord *client, const struct discord_message *msg)
+on_spam_async(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     for (size_t i = 0; i < 10; ++i) {
         struct discord_create_message params = { .content = SPAM[i] };
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, event->channel_id, &params, NULL);
     }
 }
 
 void
-on_spam_sync(struct discord *client, const struct discord_message *msg)
+on_spam_sync(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     for (size_t i = 0; i < 10; ++i) {
         struct discord_ret_message ret = { .sync = DISCORD_SYNC_FLAG };
         struct discord_create_message params = { .content = SPAM[i] };
-        discord_create_message(client, msg->channel_id, &params, &ret);
+        discord_create_message(client, event->channel_id, &params, &ret);
     }
 }
 

@@ -51,6 +51,8 @@ check_sync_fetch_nothing(void *data)
     u64snowflake ch_id = *(u64snowflake *)data;
     struct discord_ret ret = { 0 };
 
+    if (!ch_id) SKIPm("Missing channel_id from config.json");
+
     ret.sync = true;
     ASSERT_EQ(CCORD_OK, discord_trigger_typing_indicator(CLIENT, ch_id, &ret));
 
@@ -71,10 +73,11 @@ check_sync_trigger_error_on_bogus_parameter(void)
 
 SUITE(synchronous)
 {
-    /* get test-channel id */
-    struct logconf *conf = discord_get_logconf(CLIENT);
     char *path[] = { "test", "channel_id" };
-    struct sized_buffer json = logconf_get_field(conf, path, 2);
+
+    /* get test-channel id */
+    struct ccord_szbuf_readonly json =
+        discord_config_get_field(CLIENT, path, 2);
     u64snowflake channel_id = strtoull(json.start, NULL, 10);
 
     RUN_TEST(check_sync_fetch_object);
@@ -84,26 +87,23 @@ SUITE(synchronous)
 }
 
 void
-on_done(struct discord *client, void *data)
+on_done(struct discord *client, struct discord_response *resp)
 {
-    *(CCORDcode *)data = CCORD_OK;
+    *(CCORDcode *)resp->data = resp->code;
     discord_shutdown(client);
 }
 
 void
-on_done1(struct discord *client, void *data, const void *obj)
+on_done1(struct discord *client,
+         struct discord_response *resp,
+         const void *obj)
 {
-    on_done(client, data);
+    (void)obj;
+    on_done(client, resp);
 }
 
-#define DONE1_CAST(_type) void (*)(struct discord *, void *, const _type *)
-
-void
-on_fail(struct discord *client, CCORDcode code, void *data)
-{
-    *(CCORDcode *)data = code;
-    discord_shutdown(client);
-}
+#define DONE1_CAST(_type)                                                     \
+    void (*)(struct discord *, struct discord_response *, const _type *)
 
 TEST
 check_async_fetch_object(void)
@@ -112,7 +112,7 @@ check_async_fetch_object(void)
     CCORDcode result = CCORD_OK;
 
     ret.done = (DONE1_CAST(struct discord_user))on_done1;
-    ret.fail = on_fail;
+    ret.fail = on_done;
     ret.data = &result;
     discord_get_current_user(CLIENT, &ret);
 
@@ -129,7 +129,7 @@ check_async_fetch_array(void)
     CCORDcode result = CCORD_OK;
 
     ret.done = (DONE1_CAST(struct discord_guilds))on_done1;
-    ret.fail = on_fail;
+    ret.fail = on_done;
     ret.data = &result;
     discord_get_current_user_guilds(CLIENT, &ret);
 
@@ -146,8 +146,9 @@ check_async_fetch_nothing(void *data)
     struct discord_ret ret = { 0 };
     CCORDcode result = CCORD_OK;
 
-    ret.done = on_done;
-    ret.fail = on_fail;
+    if (!ch_id) SKIPm("Missing channel_id from config.json");
+
+    ret.fail = ret.done = on_done;
     ret.data = &result;
     discord_trigger_typing_indicator(CLIENT, ch_id, &ret);
 
@@ -165,7 +166,7 @@ check_async_trigger_error_on_bogus_parameter(void)
     CCORDcode result = CCORD_OK;
 
     ret.done = (DONE1_CAST(struct discord_channel))on_done1;
-    ret.fail = on_fail;
+    ret.fail = on_done;
     ret.data = &result;
     discord_delete_channel(CLIENT, BOGUS_ID, &ret);
 
@@ -177,10 +178,11 @@ check_async_trigger_error_on_bogus_parameter(void)
 
 SUITE(asynchronous)
 {
-    /* get test-channel id */
-    struct logconf *conf = discord_get_logconf(CLIENT);
     char *path[] = { "test", "channel_id" };
-    struct sized_buffer json = logconf_get_field(conf, path, 2);
+
+    /* get test-channel id */
+    struct ccord_szbuf_readonly json =
+        discord_config_get_field(CLIENT, path, 2);
     u64snowflake channel_id = strtoull(json.start, NULL, 10);
 
     RUN_TEST(check_async_fetch_object);

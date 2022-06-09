@@ -19,81 +19,70 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Copycat-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 on_reaction_add(struct discord *client,
-                u64snowflake user_id,
-                u64snowflake channel_id,
-                u64snowflake message_id,
-                u64snowflake guild_id,
-                const struct discord_guild_member *member,
-                const struct discord_emoji *emoji)
+                const struct discord_message_reaction_add *event)
 {
-    if (member->user->bot) return;
+    if (event->member->user->bot) return;
 
-    discord_create_reaction(client, channel_id, message_id, emoji->id,
-                            emoji->name, NULL);
+    discord_create_reaction(client, event->channel_id, event->message_id,
+                            event->emoji->id, event->emoji->name, NULL);
 }
 
 void
-on_message_create(struct discord *client, const struct discord_message *msg)
+on_message_create(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_create_message params = { 
-                   .content = msg->content,
-                   .message_reference = !msg->referenced_message
+                   .content = event->content,
+                   .message_reference = !event->referenced_message
                            ? NULL
                            : &(struct discord_message_reference){
-                               .message_id = msg->referenced_message->id,
-                               .channel_id = msg->channel_id,
-                               .guild_id = msg->guild_id,
+                               .message_id = event->referenced_message->id,
+                               .channel_id = event->channel_id,
+                               .guild_id = event->guild_id,
                            },
                     };
 
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-on_message_update(struct discord *client, const struct discord_message *msg)
+on_message_update(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
     struct discord_create_message params = { .content =
                                                  "I see what you did there." };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_message_delete(struct discord *client,
-                  u64snowflake id,
-                  u64snowflake channel_id,
-                  u64snowflake guild_id)
+                  const struct discord_message_delete *event)
 {
     struct discord_create_message params = {
         .content = "Did that message just disappear?"
     };
-    discord_create_message(client, channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_message_delete_bulk(struct discord *client,
-                       const struct snowflakes *ids,
-                       u64snowflake channel_id,
-                       u64snowflake guild_id)
+                       const struct discord_message_delete_bulk *event)
 {
     char text[128];
-    sprintf(text, "Where did those %d messages go?", ids->size);
+    sprintf(text, "Where did those %d messages go?", event->ids->size);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 int

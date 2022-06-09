@@ -1,47 +1,93 @@
+[migrating-shield]: https://img.shields.io/badge/Gist-Migrating%20from%20v1-yellow
+[migrating-link]: https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b
+[migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
+[discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
+[discord-invite]: https://discord.gg/Y7Xa6MA82v
+
 <div align="center">
-  <br />
-  <p>
-    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord" /></a>
-  </p>
-  <br />
-  <p>
-    <br> <a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
-  </p>
+<img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
 </div>
 
 # Concord - C Discord API library
+
+[ ![discord-shield][] ][discord-invite]
+[ ![migrating-shield][] ][migrating-link]
 
 ## About
 
 Concord is an asynchronous C99 Discord API library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
-### Minimal example
+### Examples
+
+*The following are minimalistic examples, refer to [`examples/`](examples/) for a better overview.*
+
+#### Slash Commands (new method)
 
 ```c
 #include <string.h>
 #include <concord/discord.h>
 
-void on_ready(struct discord *client) {
-  const struct discord_user *bot = discord_get_self(client);
-  log_info("Logged in as %s!", bot->username);
+void on_ready(struct discord *client, const struct discord_ready *event) {
+    struct discord_create_guild_application_command params = {
+        .name = "ping",
+        .description = "Ping command!"
+    };
+    discord_create_guild_application_command(client, event->application->id,
+                                             GUILD_ID, &params, NULL);
 }
 
-void on_message(struct discord *client, const struct discord_message *msg) {
-  if (strcmp(msg->content, "ping") != 0)
-    return; /* ignore messages that aren't 'ping' */
+void on_interaction(struct discord *client, const struct discord_interaction *event) {
+    if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND)
+        return; /* return if interaction isn't a slash command */
 
-  struct discord_create_message params = { .content = "pong" };
-  discord_create_message(client, msg->channel_id, &params, NULL);
+    for (int i = 0; i < event->data->options->size; ++i) {
+        char *command_name = event->data->options->array[i].name;
+
+        if (strcmp(command_name, "ping") == 0) {
+              struct discord_interaction_response params = {
+                    .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+                    .data = &(struct discord_interaction_callback_data){
+                          .content = "pong"
+                    }
+              };
+              discord_create_interaction_response(client, event->id,
+                                                  event->token, &params, NULL);
+        }
+    }
 }
 
 int main(void) {
-  struct discord *client = discord_init(BOT_TOKEN);
-  discord_set_on_ready(client, &on_ready);
-  discord_set_on_message_create(client, &on_message);
-  discord_run(client);
+    struct discord *client = discord_init(BOT_TOKEN);
+    discord_set_on_ready(client, &on_ready);
+    discord_set_on_interaction_create(client, &on_interaction);
+    discord_run(client);
 }
 ```
-*This is a minimalistic example, refer to [`examples/`](examples/) for a better overview.*
+
+#### Message Commands (old method)
+
+```c
+#include <string.h>
+#include <concord/discord.h>
+
+void on_ready(struct discord *client, const struct discord_ready *event) {
+    log_info("Logged in as %s!", event->user->username);
+}
+
+void on_message(struct discord *client, const struct discord_message *event) {
+    if (strcmp(event->content, "ping") == 0) {
+        struct discord_create_message params = { .content = "pong" };
+        discord_create_message(client, event->channel_id, &params, NULL);
+    }
+}
+
+int main(void) {
+    struct discord *client = discord_init(BOT_TOKEN);
+    discord_set_on_ready(client, &on_ready);
+    discord_set_on_message_create(client, &on_message);
+    discord_run(client);
+}
+```
 
 ## Supported operating systems (minimum requirements)
 * GNU/Linux 4.x
@@ -134,28 +180,6 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 $ CFLAGS="-pthread -lpthread" make
 ```
 
-#### Special compilation flags
-
-The following section outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities. Example:
-
-```console
-$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
-```
-
-* `-DCCORD_SIGINTCATCH`
-    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
-* `-DCCORD_VOICE`
-    * Enable experimental Voice Connection handling.
-* `-DCCORD_DEBUG_WEBSOCKETS`
-    * Enable verbose debugging for WebSockets communication.
-* `-DCCORD_DEBUG_ADAPTER`
-    * Enable verbose debugging for REST communication.
-
-#### Dynamic Linking Support
-If you wish to produce a dynamically-linked version of Concord, use
-`make -f Makefile.dynamic`. Note that this Makefile is intended only for
-GNU-style compilers, like `gcc` or `clang`. 
-
 ### Configuring Concord
 
 The following outlines the default fields of `config.json`
@@ -206,6 +230,34 @@ Type a message in any channel the bot is part of and the bot should send an exac
 #### Terminate Copycat-Bot
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
+
+### Configure your build
+
+The following outlines special flags and targets to override the default Makefile build with additional functionalities.
+
+#### Special compilation flags
+
+* `-DCCORD_SIGINTCATCH`
+    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
+* `-DCCORD_DEBUG_WEBSOCKETS`
+    * Enable verbose debugging for WebSockets communication.
+* `-DCCORD_DEBUG_HTTP`
+    * Enable verbose debugging for HTTP communication.
+
+*Example:*
+```console
+$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
+```
+
+#### Special targets
+
+* `make shared`
+    * Produce a dynamically-linked version of Concord. This Makefile is intented for GNU-style compilers, such as `gcc` or `clang`.
+
+* `make voice`
+    * Enable experimental Voice Connection handling - not production ready.
+* `make debug`
+    * Same as enabling `-DCCORD_DEBUG_WEBSOCKETS` and `-DCCORD_DEBUG_HTTP`
 
 ## Installing Concord
 
@@ -288,7 +340,7 @@ For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us
 
 ## Support
 
-Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
+Problems? Check out our [Discord Server][discord-invite]
 
 ## Contributing
 
@@ -301,4 +353,5 @@ All kinds of contributions are welcome, all we ask is to abide to our [guideline
 
 ## Useful links
 
-- [Migrating from Orca](https://gist.github.com/lcsmuller/a5f2b205c3871888656b86825db90187)
+- [Migrating from V1][migrating-link]
+- [Migrating from Orca][migrating-orca-link]

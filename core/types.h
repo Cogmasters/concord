@@ -40,6 +40,32 @@ typedef uint64_t u64bitmask;
  */
 typedef char json_char;
 
+/** @brief Generic sized buffer */
+struct ccord_szbuf {
+    /** the buffer's start */
+    char *start;
+    /** the buffer's size in bytes */
+    size_t size;
+};
+
+/** @brief Read-only generic sized buffer */
+struct ccord_szbuf_readonly {
+    /** the buffer's start */
+    const char *start;
+    /** the buffer's size in bytes */
+    size_t size;
+};
+
+/** @brief Reusable generic sized buffer */
+struct ccord_szbuf_reusable {
+    /** the buffer's start */
+    char *start;
+    /** the buffer's relative size in bytes */
+    size_t size;
+    /** the buffer's real size in bytes */
+    size_t realsize;
+};
+
 /** @} ConcordTypes */
 
 #endif /* CONCORD_TYPES_H */

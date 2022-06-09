@@ -16,12 +16,10 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Presence-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 
     struct discord_activity activities[] = {
         {
@@ -42,7 +40,7 @@ on_ready(struct discord *client)
         .since = discord_timestamp(client),
     };
 
-    discord_set_presence(client, &status);
+    discord_update_presence(client, &status);
 }
 
 int

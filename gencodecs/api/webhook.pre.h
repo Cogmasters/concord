@@ -17,7 +17,7 @@ PUB_STRUCT(discord_webhook)
   /** the ID of the webhook */
     FIELD_SNOWFLAKE(id)
   /** the type of the webhook */
-  COND_WRITE(this->type != 0)
+  COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_webhook_types)
   COND_END
   /** the guild ID this webhook is for, if any */
@@ -26,7 +26,7 @@ PUB_STRUCT(discord_webhook)
     FIELD_SNOWFLAKE(channel_id)
   /** the user this webhook was created by (not returned when getting a
        webhook with its token) */
-  COND_WRITE(this->user != NULL)
+  COND_WRITE(self->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
   /** the default name of the webhook */
@@ -37,7 +37,7 @@ PUB_STRUCT(discord_webhook)
     FIELD_SNOWFLAKE(application_id)
   /** the guild of the channel that this webhook is following (returned for
        Channel Follower Webhooks) */
-  COND_WRITE(this->source_channel != NULL)
+  COND_WRITE(self->source_channel != NULL)
     FIELD_STRUCT_PTR(source_channel, discord_channel, *)
   COND_END
   /** the url used for executing the webhook (returned by the webhooks
@@ -60,7 +60,7 @@ PUB_STRUCT(discord_create_webhook)
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
   /** image for the default webhook avatar */
-  COND_WRITE(this->avatar != NULL)
+  COND_WRITE(self->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
 STRUCT_END
@@ -71,7 +71,7 @@ PUB_STRUCT(discord_modify_webhook)
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
   /** image for the default webhook avatar */
-  COND_WRITE(this->avatar != NULL)
+  COND_WRITE(self->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
   /** the new channel ID for this webhook should be moved to */
@@ -84,7 +84,7 @@ PUB_STRUCT(discord_modify_webhook_with_token)
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
   /** image for the default webhook avatar */
-  COND_WRITE(this->avatar != NULL)
+  COND_WRITE(self->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
 STRUCT_END
@@ -112,24 +112,24 @@ PUB_STRUCT(discord_execute_webhook)
   /** true if this is a TTS message */
     FIELD(tts, bool, false)
   /** embedded `rich` content */
-  COND_WRITE(this->embeds != NULL)
+  COND_WRITE(self->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** attachment objects with filename and description */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        `SUPPRESS_EMBEDS` can be set) */
-  COND_WRITE(this->flags != 0)
+  COND_WRITE(self->flags != 0)
     FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
@@ -137,7 +137,7 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_webhook_message)
   /** ID of the thread the message is in */
-  COND_WRITE(this->thread_id != 0)
+  COND_WRITE(self->thread_id != 0)
     FIELD_SNOWFLAKE(thread_id)
   COND_END
 STRUCT_END
@@ -155,19 +155,19 @@ PUB_STRUCT(discord_edit_webhook_message)
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
   /** embedded `rich` content */
-  COND_WRITE(this->embeds != NULL)
+  COND_WRITE(self->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
   /** allowed mentions for the message */
-  COND_WRITE(this->allowed_mentions != NULL)
+  COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
   /** the components to include with the message */
-  COND_WRITE(this->components != NULL)
+  COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /** attached files to keep and possible descriptions for new files */
-  COND_WRITE(this->attachments != NULL)
+  COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
@@ -175,7 +175,7 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_delete_webhook_message)
   /** ID of the thread the message is in */
-  COND_WRITE(this->thread_id != 0)
+  COND_WRITE(self->thread_id != 0)
     FIELD_SNOWFLAKE(thread_id)
   COND_END
 STRUCT_END

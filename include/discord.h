@@ -11,6 +11,10 @@
 #ifndef DISCORD_H
 #define DISCORD_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #include <inttypes.h>
 #include <stdbool.h>
 
@@ -31,7 +35,7 @@ struct discord;
 #ifdef CCORD_VOICE
 #include "discord-voice.h"
 #endif /* CCORD_VOICE */
-#include "discord-templates.h"
+#include "discord-response.h"
 
 /** @defgroup DiscordConstants Constants
  * @brief Macros for constants defined by Discord
@@ -122,7 +126,7 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 #include "voice.h"
 #include "webhook.h"
 #include "gateway.h"
-/** @defgroup DiscordAPIInteractions Interactions API
+/** @defgroup DiscordAPIInteractions Interactions
  *   @brief Interactions public API supported by Concord
  *  @{ */
 #include "application_command.h"
@@ -140,6 +144,29 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 #include "discord-events.h"
 
 /**
+ * @brief Claim ownership of a function parameter provided by Concord
+ * @see discord_unclaim()
+ *
+ * @param client the client initialized with discord_init()
+ * @param param a function parameter provided by Concord
+ * @return pointer to `param` (for one-liners)
+ */
+#define discord_claim(client, param) (__discord_claim(client, param), param)
+void __discord_claim(struct discord *client, const void *data);
+
+/**
+ * @brief Unclaim ownership of a function parameter provided by Concord
+ * @note this will trigger the cleanup method of the parameter, so this should
+ *      only be called when you no longer plan to use it
+ * @see discord_claim()
+ *
+ * @param client the client initialized with discord_init()
+ * @param param a function parameter provided by Concord, that has been
+ *      previously claimed with discord_claim()
+ */
+void discord_unclaim(struct discord *client, const void *data);
+
+/**
  * @brief Create a Discord Client handle by its token
  * @see discord_get_logconf() to configure logging behavior
  *
@@ -149,12 +176,25 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 struct discord *discord_init(const char token[]);
 
 /**
- * @brief Create a Discord Client handle by a bot.config file
+ * @brief Create a Discord Client handle by a `config.json` file
  *
- * @param config_file the bot.config file name
+ * @param config_file the `config.json` file name
  * @return the newly created Discord Client handle
  */
 struct discord *discord_config_init(const char config_file[]);
+
+/**
+ * @brief Get the contents from the config file field
+ * @note only works if your bot has been initialized with discord_config_init()
+ *
+ * @param client the client created with discord_config_init()
+ * @param path the JSON key path
+ * @param depth the path depth
+ * @return a read-only sized buffer containing the field's contents
+ */
+struct ccord_szbuf_readonly discord_config_get_field(struct discord *client,
+                                                     char *const path[],
+                                                     unsigned depth);
 
 /**
  * @brief Clone a discord client
@@ -230,14 +270,44 @@ void *discord_set_data(struct discord *client, void *data);
 void *discord_get_data(struct discord *client);
 
 /**
- * @brief Set the Client presence state
+ * @brief Set the client presence status
+ * @deprecated since v2.0.0, use discord_update_presence() instead
  * @see discord_presence_add_activity()
  *
  * @param client the client created with discord_init()
- * @param presence change the client's status to it
+ * @param presence status to update the client's to
  */
 void discord_set_presence(struct discord *client,
                           struct discord_presence_update *presence);
+
+/**
+ * @brief Request all members for a guild or a list of guilds
+ *
+ * @param client the client created with discord_init()
+ * @param request request guild members information
+ */
+void discord_request_guild_members(
+    struct discord *client, struct discord_request_guild_members *request);
+
+/**
+ * @brief Sent when a client wants to join, move or disconnect from a voice
+ *      channel
+ *
+ * @param client the client created with discord_init()
+ * @param update request guild members information
+ */
+void discord_update_voice_state(struct discord *client,
+                                struct discord_update_voice_state *update);
+
+/**
+ * @brief Update the client presence status
+ * @see discord_presence_add_activity()
+ *
+ * @param client the client created with discord_init()
+ * @param presence status to update the client's to
+ */
+void discord_update_presence(struct discord *client,
+                             struct discord_presence_update *presence);
 
 /**
  * @brief Get the client WebSockets ping
@@ -437,5 +507,9 @@ bool discord_timer_cancel_and_delete(struct discord *client, unsigned id);
 
 /** @} DiscordTimer */
 /** @} Discord */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* DISCORD_H */

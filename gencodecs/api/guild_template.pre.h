@@ -37,7 +37,7 @@ PUB_STRUCT(discord_create_guild_from_guild_template)
   /** name of the guild (2-100 characters) */
     FIELD_PTR(name, char, *)
   /** base64 128x128 image for the guild icon */
-  COND_WRITE(this->icon != NULL)
+  COND_WRITE(self->icon != NULL)
     FIELD_PTR(icon, char, *)
   COND_END
 STRUCT_END
@@ -47,7 +47,7 @@ PUB_STRUCT(discord_create_guild_template)
   /** name of the template (1-100 characters) */
     FIELD_PTR(name, char, *)
   /** description for the template (0-120 characters) */
-  COND_WRITE(this->description != NULL)
+  COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)
   COND_END
 STRUCT_END
@@ -55,11 +55,11 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_guild_template} */
 PUB_STRUCT(discord_modify_guild_template)
   /** name of the template (1-100 characters) */
-  COND_WRITE(this->name != NULL)
+  COND_WRITE(self->name != NULL)
     FIELD_PTR(name, char, *)
   COND_END
   /** description for the template (0-120 characters) */
-  COND_WRITE(this->description != NULL)
+  COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)
   COND_END
 STRUCT_END

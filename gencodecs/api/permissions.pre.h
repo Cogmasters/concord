@@ -111,11 +111,11 @@ PUB_STRUCT(discord_role)
   /** if this role is pinned in the user listing */
     FIELD(hoist, bool, false)
   /** role icon hash */
-  COND_WRITE(this->icon != NULL)
+  COND_WRITE(self->icon != NULL)
     FIELD_PTR(icon, char, *)
   COND_END
   /** role unicode emoji */
-  COND_WRITE(this->unicode_emoji != NULL)
+  COND_WRITE(self->unicode_emoji != NULL)
     FIELD_PTR(unicode_emoji, char, *)
   COND_END
   /** position of this role */
@@ -127,7 +127,7 @@ PUB_STRUCT(discord_role)
   /** whether this roleis mentionable */
     FIELD(mentionable, bool, false)
   /** the tags this role has */
-  COND_WRITE(this->tags != NULL)
+  COND_WRITE(self->tags != NULL)
     FIELD_STRUCT_PTR(tags, discord_role_tag, *)
   COND_END
 STRUCT_END
@@ -139,11 +139,11 @@ LIST_END
 
 STRUCT(discord_role_tag)
   /** the id of the bot this role belongs to */
-  COND_WRITE(this->bot_id != 0)
+  COND_WRITE(self->bot_id != 0)
     FIELD_SNOWFLAKE(bot_id)
   COND_END
   /** the id of the integration this role belongs to */
-  COND_WRITE(this->integration_id != 0)
+  COND_WRITE(self->integration_id != 0)
     FIELD_SNOWFLAKE(integration_id)
   COND_END
   /** whether this is the guild's premium subscribe role */

@@ -24,87 +24,85 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Channel-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 log_on_channel_create(struct discord *client,
-                      const struct discord_channel *channel)
+                      const struct discord_channel *event)
 {
-    log_info("Channel %s (%" PRIu64 ") created", channel->name, channel->id);
+    log_info("Channel %s (%" PRIu64 ") created", event->name, event->id);
 }
 
 void
 log_on_channel_update(struct discord *client,
-                      const struct discord_channel *channel)
+                      const struct discord_channel *event)
 {
-    log_info("Channel %s (%" PRIu64 ") updated", channel->name, channel->id);
+    log_info("Channel %s (%" PRIu64 ") updated", event->name, event->id);
 }
 
 void
 log_on_channel_delete(struct discord *client,
-                      const struct discord_channel *channel)
+                      const struct discord_channel *event)
 {
-    log_info("Channel %s (%" PRIu64 ") deleted", channel->name, channel->id);
+    log_info("Channel %s (%" PRIu64 ") deleted", event->name, event->id);
 }
 
 void
 log_on_thread_create(struct discord *client,
-                     const struct discord_channel *thread)
+                     const struct discord_channel *event)
 {
-    log_info("Thread %s (%" PRIu64 ") created", thread->name, thread->id);
+    log_info("Thread %s (%" PRIu64 ") created", event->name, event->id);
 }
 
 void
 log_on_thread_update(struct discord *client,
-                     const struct discord_channel *thread)
+                     const struct discord_channel *event)
 {
-    log_info("Thread %s (%" PRIu64 ") updated", thread->name, thread->id);
+    log_info("Thread %s (%" PRIu64 ") updated", event->name, event->id);
 }
 
 void
 log_on_thread_delete(struct discord *client,
-                     const struct discord_channel *thread)
+                     const struct discord_channel *event)
 {
-    log_info("Thread %s (%" PRIu64 ") deleted", thread->name, thread->id);
+    log_info("Thread %s (%" PRIu64 ") deleted", event->name, event->id);
 }
 
 void
-on_channel_create(struct discord *client, const struct discord_message *msg)
+on_channel_create(struct discord *client, const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    struct discord_create_guild_channel params = { .name = msg->content };
-    discord_create_guild_channel(client, msg->guild_id, &params, NULL);
+    struct discord_create_guild_channel params = { .name = event->content };
+    discord_create_guild_channel(client, event->guild_id, &params, NULL);
 }
 
 void
 on_channel_rename_this(struct discord *client,
-                       const struct discord_message *msg)
+                       const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    struct discord_modify_channel params = { .name = msg->content };
-    discord_modify_channel(client, msg->channel_id, &params, NULL);
+    struct discord_modify_channel params = { .name = event->content };
+    discord_modify_channel(client, event->channel_id, &params, NULL);
 }
 
 void
 on_channel_delete_this(struct discord *client,
-                       const struct discord_message *msg)
+                       const struct discord_message *event)
 {
-    if (msg->author->bot) return;
+    if (event->author->bot) return;
 
-    discord_delete_channel(client, msg->channel_id, NULL);
+    discord_delete_channel(client, event->channel_id, NULL);
 }
 
 void
 done_get_channel_invites(struct discord *client,
-                         void *data,
+                         struct discord_response *resp,
                          const struct discord_invites *invites)
 {
     if (!invites->size) {
@@ -112,133 +110,120 @@ done_get_channel_invites(struct discord *client,
         return;
     }
 
-    u64snowflake *channel_id = data;
-
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text), "%d invite links created.", invites->size);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-fail_get_channel_invites(struct discord *client, CCORDcode code, void *data)
+fail_get_channel_invites(struct discord *client, struct discord_response *resp)
 {
-    (void)data;
-
-    log_info("Couldn't fetch invites: %s", discord_strerror(code, client));
+    log_info("Couldn't fetch invites: %s",
+             discord_strerror(resp->code, client));
 }
 
 void
 on_channel_get_invites(struct discord *client,
-                       const struct discord_message *msg)
+                       const struct discord_message *event)
 {
-    if (msg->author->bot) return;
-
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    if (event->author->bot) return;
 
     struct discord_ret_invites ret = {
         .done = &done_get_channel_invites,
         .fail = &fail_get_channel_invites,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
-    discord_get_channel_invites(client, msg->channel_id, &ret);
+    discord_get_channel_invites(client, event->channel_id, &ret);
 }
 
 void
 done_create_channel_invite(struct discord *client,
-                           void *data,
+                           struct discord_response *resp,
                            const struct discord_invite *invite)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
     char text[256];
 
     snprintf(text, sizeof(text), "https://discord.gg/%s", invite->code);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-fail_create_channel_invite(struct discord *client, CCORDcode code, void *data)
+fail_create_channel_invite(struct discord *client,
+                           struct discord_response *resp)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
 
     struct discord_create_message params = {
         .content = "Couldn't create invite",
     };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_channel_create_invite(struct discord *client,
-                         const struct discord_message *msg)
+                         const struct discord_message *event)
 {
-    if (msg->author->bot) return;
-
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    if (event->author->bot) return;
 
     struct discord_ret_invite ret = {
         .done = &done_create_channel_invite,
         .fail = &fail_create_channel_invite,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
-    discord_create_channel_invite(client, msg->channel_id, NULL, &ret);
+    discord_create_channel_invite(client, event->channel_id, NULL, &ret);
 }
 
 void
 done_start_thread(struct discord *client,
-                  void *data,
+                  struct discord_response *resp,
                   const struct discord_channel *thread)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
     char text[1024];
 
-    snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">", *channel_id);
+    snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">", thread->id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-fail_start_thread(struct discord *client, CCORDcode code, void *data)
+fail_start_thread(struct discord *client, struct discord_response *resp)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
     char text[1024];
 
     snprintf(text, sizeof(text), "Couldn't create thread: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_channel_start_thread(struct discord *client,
-                        const struct discord_message *msg)
+                        const struct discord_message *event)
 {
-    if (msg->author->bot) return;
-
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
+    if (event->author->bot) return;
 
     struct discord_ret_channel ret = {
         .done = &done_start_thread,
         .fail = &fail_start_thread,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
 
-    if (msg->message_reference) {
+    if (event->message_reference) {
         struct discord_start_thread_with_message params = {
             .name = "new_thread",
         };
-        discord_start_thread_with_message(client, msg->channel_id,
-                                          msg->message_reference->message_id,
+        discord_start_thread_with_message(client, event->channel_id,
+                                          event->message_reference->message_id,
                                           &params, &ret);
     }
     else {
@@ -246,8 +231,8 @@ on_channel_start_thread(struct discord *client,
             .name = "new_thread",
             .type = DISCORD_CHANNEL_GUILD_PUBLIC_THREAD,
         };
-        discord_start_thread_without_message(client, msg->channel_id, &params,
-                                             &ret);
+        discord_start_thread_without_message(client, event->channel_id,
+                                             &params, &ret);
     }
 }
 

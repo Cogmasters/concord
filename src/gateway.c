@@ -16,8 +16,8 @@ discord_disconnect_guild_member(struct discord *client,
                                 u64snowflake user_id,
                                 struct discord_ret_guild_member *ret)
 {
-    struct discord_request req = { 0 };
-    struct sized_buffer body;
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
     char buf[128];
     jsonb b;
 
@@ -36,45 +36,49 @@ discord_disconnect_guild_member(struct discord *client,
     body.start = buf;
     body.size = b.pos;
 
-    DISCORD_REQ_INIT(req, discord_guild_member, ret);
+    DISCORD_ATTR_INIT(attr, discord_guild_member, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
-                               "/guilds/%" PRIu64 "/members/%" PRIu64,
-                               guild_id, user_id);
+    return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
+                            user_id);
 }
 
 /******************************************************************************
  * REST functions
  ******************************************************************************/
 
-CCORDcode
-discord_get_gateway(struct discord *client, struct sized_buffer *ret)
+static size_t
+_ccord_szbuf_from_json(const char str[], size_t len, void *p_buf)
 {
-    struct discord_request req = { 0 };
-
-    CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
-
-    req.gnrc.from_json =
-        (size_t(*)(const char *, size_t, void *))cog_sized_buffer_from_json;
-    req.ret.has_type = true;
-    req.ret.sync = ret;
-
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/gateway");
+    struct ccord_szbuf *buf = p_buf;
+    return buf->size = cog_strndup(str, len, &buf->start);
 }
 
 CCORDcode
-discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
+discord_get_gateway(struct discord *client, struct ccord_szbuf *ret)
 {
-    struct discord_request req = { 0 };
+    struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
-    req.gnrc.from_json =
-        (size_t(*)(const char *, size_t, void *))cog_sized_buffer_from_json;
-    req.ret.has_type = true;
-    req.ret.sync = ret;
+    attr.response.from_json = &_ccord_szbuf_from_json;
+    attr.dispatch.has_type = true;
+    attr.dispatch.sync = ret;
 
-    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
-                               "/gateway/bot");
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET, "/gateway");
+}
+
+CCORDcode
+discord_get_gateway_bot(struct discord *client, struct ccord_szbuf *ret)
+{
+    struct discord_attributes attr = { 0 };
+
+    CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
+
+    attr.response.from_json = &_ccord_szbuf_from_json;
+    attr.dispatch.has_type = true;
+    attr.dispatch.sync = ret;
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/gateway/bot");
 }

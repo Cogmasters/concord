@@ -19,20 +19,18 @@ print_usage(void)
 }
 
 void
-on_ready(struct discord *client)
+on_ready(struct discord *client, const struct discord_ready *event)
 {
-    const struct discord_user *bot = discord_get_self(client);
-
     log_info("Guild-Bot succesfully connected to Discord as %s#%s!",
-             bot->username, bot->discriminator);
+             event->user->username, event->user->discriminator);
 }
 
 void
 done(struct discord *client,
-     void *data,
+     struct discord_response *resp,
      const struct discord_guild_template *template)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text),
@@ -41,50 +39,42 @@ done(struct discord *client,
              template->name, template->description, template->creator_id);
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
-fail(struct discord *client, CCORDcode code, void *data)
+fail(struct discord *client, struct discord_response *resp)
 {
-    u64snowflake *channel_id = data;
+    const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text), "Couldn't perform operation: %s",
-             discord_strerror(code, client));
+             discord_strerror(resp->code, client));
 
     struct discord_create_message params = { .content = text };
-    discord_create_message(client, *channel_id, &params, NULL);
+    discord_create_message(client, event->channel_id, &params, NULL);
 }
 
 void
 on_get_guild_template(struct discord *client,
-                      const struct discord_message *msg)
+                      const struct discord_message *event)
 {
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
-
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
-    discord_get_guild_template(client, msg->content, &ret);
+    discord_get_guild_template(client, event->content, &ret);
 }
 
 void
 on_create_guild_template(struct discord *client,
-                         const struct discord_message *msg)
+                         const struct discord_message *event)
 {
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
-
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
 
     struct discord_create_guild_template params = {
@@ -92,24 +82,20 @@ on_create_guild_template(struct discord *client,
         .description = "This is a new server template created with Concord!"
     };
 
-    discord_create_guild_template(client, msg->guild_id, &params, &ret);
+    discord_create_guild_template(client, event->guild_id, &params, &ret);
 }
 
 void
 on_sync_guild_template(struct discord *client,
-                       const struct discord_message *msg)
+                       const struct discord_message *event)
 {
-    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
-    *channel_id = msg->channel_id;
-
     struct discord_ret_guild_template ret = {
         .done = &done,
         .fail = &fail,
-        .data = channel_id,
-        .cleanup = &free,
+        .keep = event,
     };
 
-    discord_sync_guild_template(client, msg->guild_id, msg->content, &ret);
+    discord_sync_guild_template(client, event->guild_id, event->content, &ret);
 }
 
 int
