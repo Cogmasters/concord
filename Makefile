@@ -105,9 +105,11 @@ gencodecs:
 
 $(ARLIB): $(OBJS) | $(LIBDIR)
 	$(AR) $(ARFLAGS) $@ $?
+
 $(SOLIB): $(OBJS) | $(LIBDIR)
 	$(CC) -shared $(LDFLAGS) -o $@ $<
-$(DLIB): $(OBJS) | $(LIBDIR)
+
+$(DYLIB): $(OBJS) | $(LIBDIR)
 	$(CC) -dynamiclib $(DLFLAGS) -o $@ $<
 
 $(LIBDIR):
