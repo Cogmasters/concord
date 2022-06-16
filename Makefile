@@ -130,7 +130,7 @@ install:
 	install -d $(PREFIX)/lib/
 	install -m 644 $(ARLIB) $(PREFIX)/lib/
 	install -m 644 $(SOLIB) $(PREFIX)/lib/
-	install -m 644 $(DLIB) $(PREFIX)/lib/
+	install -m 644 $(DYLIB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
 	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(CORE_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(GENCODECS_DIR)/*.h $(PREFIX)/include/concord/
