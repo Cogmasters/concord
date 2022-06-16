@@ -146,37 +146,61 @@ ENUM_END
 
 STRUCT(discord_activity)
   /** the activity's name */
+  COND_WRITE(self->name != NULL)
     FIELD_PTR(name, char, *)
+  COND_END
   /** activity type */
     FIELD_ENUM(type, discord_activity_types)
   /** stream url, is validated when type is 1 */
+  COND_WRITE(self->type == 1 && self->url != NULL)
     FIELD_PTR(url, char, *)
-  /** unix timestamp (in milliseconds)of when the activity was added to the
+  COND_END
+  /** unix timestamp (in milliseconds) of when the activity was added to the
        user's session */
+  COND_WRITE(self->created_at != 0)
     FIELD_TIMESTAMP(created_at)
+  COND_END
   /** unix timestamps for start and/or end of the game */
+  COND_WRITE(self->timestamps != NULL)
     FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
+  COND_END
   /** application ID for the game */
+  COND_WRITE(self->application_id != 0)
     FIELD_SNOWFLAKE(application_id)
+  COND_END
   /** what the player is currently doing */
+  COND_WRITE(self->details != NULL)
     FIELD_PTR(details, char, *)
+  COND_END
   /** the user's current party status */
+  COND_WRITE(self->state != NULL)
     FIELD_PTR(state, char, *)
+  COND_END
   /** the emoji used for a custom status */
+  COND_WRITE(self->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_activity_emoji, *)
+  COND_END
   /** information for the current party of the player */
+  COND_WRITE(self->party != NULL)
     FIELD_STRUCT_PTR(party, discord_activity_party, *)
+  COND_END
   /** images for the presence and their hover texts */
+  COND_WRITE(self->assets != NULL)
     FIELD_STRUCT_PTR(assets, discord_activity_assets, *)
+  COND_END
   /** secrets for Rich Presence joining and spectating */
+  COND_WRITE(self->secrets != NULL)
     FIELD_STRUCT_PTR(secrets, discord_activity_secrets, *)
+  COND_END
   /** whether or not the activity is an instanced game session */
     FIELD(instance, bool, false)
   /** activity flags bitwise mask, describes what they payload includes
         @see @ref DiscordActivityFlags */
     FIELD_BITMASK(flags)
   /** the custom buttons shown in the Rich Presence (max 2) */
+  COND_WRITE(self->buttons != NULL)
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
+  COND_END
 STRUCT_END
 
 LIST(discord_activities)
