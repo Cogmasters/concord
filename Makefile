@@ -65,8 +65,8 @@ SOLIB   = $(LIBDIR)/libdiscord.so
 SOFLAGS = -fPIC
 LDFLAGS = -lcurl
 
-DLIB	= $(LIBDIR)/libdiscord.dylib
-DLFLAGS = -fPIC #-fPIC is default anyways
+DYLIB	= $(LIBDIR)/libdiscord.dylib
+DYFLAGS = -fPIC 
 
 WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
@@ -82,9 +82,9 @@ shared:
 	@ $(MAKE) clean
 	@ $(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
 
-dynamic_osx:
+shared_osx:
 	@ $(MAKE) clean
-	@ $(MAKE) CFLAGS="$(DLFLAGS) $(CFLAGS)" $(DLIB)
+	@ $(MAKE) CFLAGS="$(DYFLAGS) $(CFLAGS)" $(DYLIB)
 
 voice:
 	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE" \
