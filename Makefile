@@ -82,7 +82,7 @@ shared:
 	@ $(MAKE) clean
 	@ $(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
 
-dynamic:
+dynamic_osx:
 	@ $(MAKE) clean
 	@ $(MAKE) CFLAGS="$(DLFLAGS) $(CFLAGS)" $(DLIB)
 
