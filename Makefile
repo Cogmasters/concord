@@ -65,6 +65,9 @@ SOLIB   = $(LIBDIR)/libdiscord.so
 SOFLAGS = -fPIC
 LDFLAGS = -lcurl
 
+DLIB	= $(LIBDIR)/libdiscord.dylib
+DLFLAGS = -fPIC #-fPIC is default anyways
+
 WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
@@ -78,6 +81,10 @@ all: $(ARLIB)
 shared: 
 	@ $(MAKE) clean
 	@ $(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
+
+dynamic:
+	@ $(MAKE) clean
+	@ $(MAKE) CFLAGS="$(DLFLAGS) $(CFLAGS)" $(DLIB)
 
 voice:
 	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE" \
@@ -100,6 +107,8 @@ $(ARLIB): $(OBJS) | $(LIBDIR)
 	$(AR) $(ARFLAGS) $@ $?
 $(SOLIB): $(OBJS) | $(LIBDIR)
 	$(CC) -shared $(LDFLAGS) -o $@ $<
+$(DLIB): $(OBJS) | $(LIBDIR)
+	$(CC) -dynamiclib $(DLFLAGS) -o $@ $<
 
 $(LIBDIR):
 	@ mkdir -p $@
@@ -119,6 +128,7 @@ install:
 	install -d $(PREFIX)/lib/
 	install -m 644 $(ARLIB) $(PREFIX)/lib/
 	install -m 644 $(SOLIB) $(PREFIX)/lib/
+	install -m 644 $(DLIB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
 	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(CORE_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(GENCODECS_DIR)/*.h $(PREFIX)/include/concord/
