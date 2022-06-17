@@ -252,7 +252,7 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 #### Special targets
 
 * `make shared`
-    * Produce a dynamically-linked version of Concord. This Makefile is intented for GNU-style compilers, such as `gcc` or `clang`.
+    * Produce a dynamically-linked version of Concord. This Makefile is intended for GNU-style compilers, such as `gcc` or `clang`.
 
 * `make voice`
     * Enable experimental Voice Connection handling - not production ready.

@@ -35,6 +35,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/discord-rest_request.o      \
                 $(SRC_DIR)/discord-rest_ratelimit.o    \
                 $(SRC_DIR)/discord-client.o            \
+                $(SRC_DIR)/discord-events.o            \
                 $(SRC_DIR)/discord-loop.o              \
                 $(SRC_DIR)/discord-gateway.o           \
                 $(SRC_DIR)/discord-gateway_dispatch.o  \

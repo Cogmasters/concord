@@ -28,13 +28,6 @@ on_ready(struct discord *client, const struct discord_ready *event)
 }
 
 void
-log_on_app_create(struct discord *client,
-                  const struct discord_application_command *event)
-{
-    log_info("Application Command %s created", event->name);
-}
-
-void
 on_slash_command_create(struct discord *client,
                         const struct discord_message *event)
 {
@@ -168,7 +161,6 @@ main(int argc, char *argv[])
 
     discord_set_on_command(client, "!slash_create", &on_slash_command_create);
     discord_set_on_ready(client, &on_ready);
-    discord_set_on_application_command_create(client, &log_on_app_create);
     discord_set_on_interaction_create(client, &on_interaction_create);
 
     print_usage();

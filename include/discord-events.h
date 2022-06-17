@@ -95,9 +95,9 @@ typedef void (*discord_ev_idle)(struct discord *client);
 typedef void (*discord_ev_ready)(struct discord *client,
                                  const struct discord_ready *event);
 
-/** @brief Application Command callback */
-typedef void (*discord_ev_application_command)(
-    struct discord *client, const struct discord_application_command *event);
+/** @brief Resumed callback */
+typedef void (*discord_ev_resumed)(struct discord *client,
+                                   const struct discord_resume *event);
 
 /** @brief Channel callback */
 typedef void (*discord_ev_channel)(struct discord *client,
@@ -305,7 +305,7 @@ void discord_set_on_idle(struct discord *client, discord_ev_idle callback);
 void discord_set_on_cycle(struct discord *client, discord_ev_idle callback);
 
 /**
- * @brief Triggers when the client is ready
+ * @brief Triggers when the client session is ready
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -313,31 +313,13 @@ void discord_set_on_cycle(struct discord *client, discord_ev_idle callback);
 void discord_set_on_ready(struct discord *client, discord_ev_ready callback);
 
 /**
- * @brief Triggers when a application command is created
+ * @brief Triggers when the client is session is resumed
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_application_command_create(
-    struct discord *client, discord_ev_application_command callback);
-
-/**
- * @brief Triggers when a application command is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback to be triggered on event
- */
-void discord_set_on_application_command_update(
-    struct discord *client, discord_ev_application_command callback);
-
-/**
- * @brief Triggers when a application command is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback to be triggered on event
- */
-void discord_set_on_application_command_delete(
-    struct discord *client, discord_ev_application_command callback);
+void discord_set_on_resumed(struct discord *client,
+                            discord_ev_resumed callback);
 
 /**
  * @brief Triggers when a channel is created
@@ -403,6 +385,35 @@ void discord_set_on_thread_delete(struct discord *client,
                                   discord_ev_channel callback);
 
 /**
+ * @brief Triggers when the current user gains access to a channel
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_thread_list_sync(struct discord *client,
+                                     discord_ev_thread_list_sync callback);
+
+/**
+ * @brief Triggers when a thread the bot is in gets updated
+ * @note For bots, this event largely is just a signal that you are a member of
+ *      the thread
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_thread_member_update(struct discord *client,
+                                         discord_ev_thread_member callback);
+
+/**
+ * @brief Triggers when someone is added or removed from a thread
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_thread_members_update(
+    struct discord *client, discord_ev_thread_members_update callback);
+
+/**
  * @brief Triggers when a guild is created
  *
  * @param client the client created with discord_init()
@@ -430,31 +441,49 @@ void discord_set_on_guild_delete(struct discord *client,
                                  discord_ev_guild callback);
 
 /**
- * @brief Triggers when a guild role is created
+ * @brief Triggers when a user is banned from a guild
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_guild_role_create(struct discord *client,
-                                      discord_ev_guild_role_create callback);
+void
+discord_set_on_guild_ban_add(struct discord *client, discord_ev_guild_ban_add callback);
 
 /**
- * @brief Triggers when a guild role is updated
+ * @brief Triggers when a user is unbanned from a guild
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_guild_role_update(struct discord *client,
-                                      discord_ev_guild_role_update callback);
+void
+discord_set_on_guild_ban_remove(struct discord *client, discord_ev_guild_ban_remove callback);
 
 /**
- * @brief Triggers when a guild role is deleted
+ * @brief Triggers when a guild emojis are updated
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_guild_role_delete(struct discord *client,
-                                      discord_ev_guild_role_delete callback);
+void
+discord_set_on_guild_emojis_update(struct discord *client, discord_ev_guild_emojis_update callback);
+
+/**
+ * @brief Triggers when a guild stickers are updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void
+discord_set_on_guild_stickers_update(struct discord *client, discord_ev_guild_stickers_update callback);
+
+/**
+ * @brief Triggers when a guild integrations are updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void
+discord_set_on_guild_integrations_update(struct discord *client, discord_ev_guild_integrations_update callback);
 
 /**
  * @brief Triggers when a guild member is added
@@ -484,22 +513,40 @@ void discord_set_on_guild_member_remove(
     struct discord *client, discord_ev_guild_member_remove callback);
 
 /**
- * @brief Triggers when a guild ban is added
+ * @brief Triggers in response to discord_request_guild_members()
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_guild_ban_add(struct discord *client,
-                                  discord_ev_guild_ban_add callback);
+void
+discord_set_on_guild_members_chunk(struct discord *client, discord_ev_guild_members_chunk callback);
 
 /**
- * @brief Triggers when a guild ban is removed
+ * @brief Triggers when a guild role is created
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void discord_set_on_guild_ban_remove(struct discord *client,
-                                     discord_ev_guild_ban_remove callback);
+void discord_set_on_guild_role_create(struct discord *client,
+                                      discord_ev_guild_role_create callback);
+
+/**
+ * @brief Triggers when a guild role is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_role_update(struct discord *client,
+                                      discord_ev_guild_role_update callback);
+
+/**
+ * @brief Triggers when a guild role is deleted
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_role_delete(struct discord *client,
+                                      discord_ev_guild_role_delete callback);
 
 /**
  * @brief Triggers when a interaction is created
