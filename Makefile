@@ -65,7 +65,7 @@ SOLIB   = $(LIBDIR)/libdiscord.so
 SOFLAGS = -fPIC
 LDFLAGS = -lcurl
 
-DYLIB	= $(LIBDIR)/libdiscord.dylib
+DYLIB   = $(LIBDIR)/libdiscord.dylib
 DYFLAGS = -fPIC 
 
 WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
@@ -110,7 +110,7 @@ $(SOLIB): $(OBJS) | $(LIBDIR)
 	$(CC) -shared $(LDFLAGS) -o $@ $<
 
 $(DYLIB): $(OBJS) | $(LIBDIR)
-	$(CC) -dynamiclib $(DLFLAGS) -o $@ $<
+	$(CC) -dynamiclib $(DYFLAGS) -o $@ $<
 
 $(LIBDIR):
 	@ mkdir -p $@
