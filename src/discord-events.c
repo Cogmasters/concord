@@ -127,6 +127,43 @@ discord_set_on_application_command_permissions_update(
 }
 
 void
+discord_set_on_auto_moderation_rule_create(
+    struct discord *client, discord_ev_auto_moderation_rule callback)
+{
+    client->gw.cbs[DISCORD_EV_AUTO_MODERATION_RULE_CREATE] =
+        (discord_ev)callback;
+    discord_add_intents(client, DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION);
+}
+
+void
+discord_set_on_auto_moderation_rule_update(
+    struct discord *client, discord_ev_auto_moderation_rule callback)
+{
+    client->gw.cbs[DISCORD_EV_AUTO_MODERATION_RULE_UPDATE] =
+        (discord_ev)callback;
+    discord_add_intents(client, DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION);
+}
+
+void
+discord_set_on_auto_moderation_rule_delete(
+    struct discord *client, discord_ev_auto_moderation_rule callback)
+{
+    client->gw.cbs[DISCORD_EV_AUTO_MODERATION_RULE_DELETE] =
+        (discord_ev)callback;
+    discord_add_intents(client, DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION);
+}
+
+void
+discord_set_on_auto_moderation_action_execution(
+    struct discord *client,
+    discord_ev_auto_moderation_action_execution callback)
+{
+    client->gw.cbs[DISCORD_EV_AUTO_MODERATION_ACTION_EXECUTION] =
+        (discord_ev)callback;
+    discord_add_intents(client, DISCORD_GATEWAY_AUTO_MODERATION_EXECUTION);
+}
+
+void
 discord_set_on_channel_create(struct discord *client,
                               discord_ev_channel callback)
 {

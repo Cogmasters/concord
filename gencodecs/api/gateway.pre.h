@@ -430,6 +430,33 @@ PUB_STRUCT(discord_ready)
     FIELD_STRUCT_PTR(application, discord_application, *)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_auto_moderation_action_execution} */
+PUB_STRUCT(discord_auto_moderation_action_execution)
+  /** the id of the guild in which action was executed */
+    FIELD_SNOWFLAKE(guild_id)
+  /** the action which was executed */
+    FIELD_STRUCT_PTR(action, discord_auto_moderation_action, *)
+  /** the trigger typeof rule which was triggered */
+    FIELD_ENUM(rule_trigger_type, discord_auto_moderation_trigger_types)
+  /** the id of the user which generated the content which triggered the rule */
+    FIELD_SNOWFLAKE(user_id)
+  /** the id of the channel in which user content was posted */
+    FIELD_SNOWFLAKE(channel_id)
+  /** the id of any user message which content belongs to */
+    FIELD_SNOWFLAKE(message_id)
+  /**
+   * the id of any system auto moderation messages posted as a result of 
+   *        this action
+   */
+    FIELD_SNOWFLAKE(alert_system_message_id)
+  /** the user generated text content */
+    FIELD_PTR(content, char, *)
+  /** the word or phrase configured in the rule that triggered the rule */
+    FIELD_PTR(matched_keyword, char, *)
+  /** the substring in content that triggered the rule */
+    FIELD_PTR(matched_content, char, *)
+STRUCT_END
+
 /** @CCORD_pub_struct{discord_thread_list_sync} */
 PUB_STRUCT(discord_thread_list_sync)
   /** the id of the guild */

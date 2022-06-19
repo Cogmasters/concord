@@ -148,6 +148,14 @@ typedef void (*discord_ev_application_command_permissions)(
     struct discord *client,
     const struct discord_application_command_permissions *event);
 
+/** @brief Auto Moderation Rule callback */
+typedef void (*discord_ev_auto_moderation_rule)(
+    struct discord *client, const struct discord_auto_moderation_rule *event);
+/** @brief Auto Moderation Action Execution callback */
+typedef void (*discord_ev_auto_moderation_action_execution)(
+    struct discord *client,
+    const struct discord_auto_moderation_action_execution *event);
+
 /** @brief Channel callback */
 typedef void (*discord_ev_channel)(struct discord *client,
                                    const struct discord_channel *event);
@@ -373,6 +381,52 @@ void discord_set_on_ready(struct discord *client, discord_ev_ready callback);
 void discord_set_on_application_command_permissions_update(
     struct discord *client,
     discord_ev_application_command_permissions callback);
+
+/**
+ * @brief Triggers when an auto moderation rule is created
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_auto_moderation_rule_create(
+    struct discord *client, discord_ev_auto_moderation_rule callback);
+
+/**
+ * @brief Triggers when an auto moderation rule is updated
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_auto_moderation_rule_update(
+    struct discord *client, discord_ev_auto_moderation_rule callback);
+
+/**
+ * @brief Triggers when an auto moderation rule is deleted
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_auto_moderation_rule_delete(
+    struct discord *client, discord_ev_auto_moderation_rule callback);
+
+/**
+ * @brief Triggers when an auto moderation rule is triggered and an execution
+ *      is executed (e.g a message was blocked)
+ * @note This implicitly sets @ref DISCORD_GATEWAY_AUTO_MODERATION_EXECUTION
+ *      intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_auto_moderation_action_execution(
+    struct discord *client,
+    discord_ev_auto_moderation_action_execution callback);
 
 /**
  * @brief Triggers when a channel is created

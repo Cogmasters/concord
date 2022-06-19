@@ -24,6 +24,14 @@ static const struct {
     [DISCORD_EV_READY] = INIT(discord_ready),
     [DISCORD_EV_APPLICATION_COMMAND_PERMISSIONS_UPDATE] =
         INIT(discord_application_command_permissions),
+    [DISCORD_EV_AUTO_MODERATION_RULE_CREATE] =
+        INIT(discord_auto_moderation_rule),
+    [DISCORD_EV_AUTO_MODERATION_RULE_UPDATE] =
+        INIT(discord_auto_moderation_rule),
+    [DISCORD_EV_AUTO_MODERATION_RULE_DELETE] =
+        INIT(discord_auto_moderation_rule),
+    [DISCORD_EV_AUTO_MODERATION_ACTION_EXECUTION] =
+        INIT(discord_auto_moderation_action_execution),
     [DISCORD_EV_CHANNEL_CREATE] = INIT(discord_channel),
     [DISCORD_EV_CHANNEL_UPDATE] = INIT(discord_channel),
     [DISCORD_EV_CHANNEL_DELETE] = INIT(discord_channel),
