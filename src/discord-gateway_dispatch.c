@@ -5,7 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-#define INIT(type, event_name)                                                \
+#define INIT(type)                                                            \
     {                                                                         \
         sizeof(struct type),                                                  \
             (size_t(*)(jsmnf_pair *, const char *, void *))type##_from_jsmnf, \
@@ -21,90 +21,72 @@ static const struct {
     /** event's cleanup */
     void (*cleanup)(void *);
 } dispatch[] = {
-    [DISCORD_EV_READY] = INIT(discord_ready, ready),
-    [DISCORD_EV_APPLICATION_COMMAND_CREATE] =
-        INIT(discord_application_command, application_command_create),
-    [DISCORD_EV_APPLICATION_COMMAND_UPDATE] =
-        INIT(discord_application_command, application_command_update),
-    [DISCORD_EV_APPLICATION_COMMAND_DELETE] =
-        INIT(discord_application_command, application_command_delete),
-    [DISCORD_EV_CHANNEL_CREATE] = INIT(discord_channel, channel_create),
-    [DISCORD_EV_CHANNEL_UPDATE] = INIT(discord_channel, channel_update),
-    [DISCORD_EV_CHANNEL_DELETE] = INIT(discord_channel, channel_delete),
-    [DISCORD_EV_CHANNEL_PINS_UPDATE] =
-        INIT(discord_channel_pins_update, channel_pins_update),
-    [DISCORD_EV_THREAD_CREATE] = INIT(discord_channel, thread_create),
-    [DISCORD_EV_THREAD_UPDATE] = INIT(discord_channel, thread_update),
-    [DISCORD_EV_THREAD_DELETE] = INIT(discord_channel, thread_delete),
-    [DISCORD_EV_THREAD_LIST_SYNC] =
-        INIT(discord_thread_list_sync, thread_list_sync),
-    [DISCORD_EV_THREAD_MEMBER_UPDATE] =
-        INIT(discord_thread_member, thread_member_update),
-    [DISCORD_EV_THREAD_MEMBERS_UPDATE] =
-        INIT(discord_thread_members_update, thread_members_update),
-    [DISCORD_EV_GUILD_CREATE] = INIT(discord_guild, guild_create),
-    [DISCORD_EV_GUILD_UPDATE] = INIT(discord_guild, guild_update),
-    [DISCORD_EV_GUILD_DELETE] = INIT(discord_guild, guild_delete),
-    [DISCORD_EV_GUILD_BAN_ADD] = INIT(discord_guild_ban_add, guild_ban_add),
-    [DISCORD_EV_GUILD_BAN_REMOVE] =
-        INIT(discord_guild_ban_remove, guild_ban_remove),
-    [DISCORD_EV_GUILD_EMOJIS_UPDATE] =
-        INIT(discord_guild_emojis_update, guild_emojis_update),
-    [DISCORD_EV_GUILD_STICKERS_UPDATE] =
-        INIT(discord_guild_stickers_update, guild_stickers_update),
+    [DISCORD_EV_READY] = INIT(discord_ready),
+    [DISCORD_EV_RESUMED] = INIT(discord_resume),
+    [DISCORD_EV_APPLICATION_COMMAND_PERMISSIONS_UPDATE] =
+        INIT(discord_application_command_permissions),
+    [DISCORD_EV_CHANNEL_CREATE] = INIT(discord_channel),
+    [DISCORD_EV_CHANNEL_UPDATE] = INIT(discord_channel),
+    [DISCORD_EV_CHANNEL_DELETE] = INIT(discord_channel),
+    [DISCORD_EV_CHANNEL_PINS_UPDATE] = INIT(discord_channel_pins_update),
+    [DISCORD_EV_THREAD_CREATE] = INIT(discord_channel),
+    [DISCORD_EV_THREAD_UPDATE] = INIT(discord_channel),
+    [DISCORD_EV_THREAD_DELETE] = INIT(discord_channel),
+    [DISCORD_EV_THREAD_LIST_SYNC] = INIT(discord_thread_list_sync),
+    [DISCORD_EV_THREAD_MEMBER_UPDATE] = INIT(discord_thread_member),
+    [DISCORD_EV_THREAD_MEMBERS_UPDATE] = INIT(discord_thread_members_update),
+    [DISCORD_EV_GUILD_CREATE] = INIT(discord_guild),
+    [DISCORD_EV_GUILD_UPDATE] = INIT(discord_guild),
+    [DISCORD_EV_GUILD_DELETE] = INIT(discord_guild),
+    [DISCORD_EV_GUILD_BAN_ADD] = INIT(discord_guild_ban_add),
+    [DISCORD_EV_GUILD_BAN_REMOVE] = INIT(discord_guild_ban_remove),
+    [DISCORD_EV_GUILD_EMOJIS_UPDATE] = INIT(discord_guild_emojis_update),
+    [DISCORD_EV_GUILD_STICKERS_UPDATE] = INIT(discord_guild_stickers_update),
     [DISCORD_EV_GUILD_INTEGRATIONS_UPDATE] =
-        INIT(discord_guild_integrations_update, guild_integrations_update),
-    [DISCORD_EV_GUILD_MEMBER_ADD] =
-        INIT(discord_guild_member, guild_member_add),
-    [DISCORD_EV_GUILD_MEMBER_UPDATE] =
-        INIT(discord_guild_member_update, guild_member_update),
-    [DISCORD_EV_GUILD_MEMBER_REMOVE] =
-        INIT(discord_guild_member_remove, guild_member_remove),
-    [DISCORD_EV_GUILD_ROLE_CREATE] =
-        INIT(discord_guild_role_create, guild_role_create),
-    [DISCORD_EV_GUILD_ROLE_UPDATE] =
-        INIT(discord_guild_role_update, guild_role_update),
-    [DISCORD_EV_GUILD_ROLE_DELETE] =
-        INIT(discord_guild_role_delete, guild_role_delete),
-    [DISCORD_EV_INTEGRATION_CREATE] =
-        INIT(discord_integration, integration_create),
-    [DISCORD_EV_INTEGRATION_UPDATE] =
-        INIT(discord_integration, integration_update),
-    [DISCORD_EV_INTEGRATION_DELETE] =
-        INIT(discord_integration_delete, integration_delete),
-    [DISCORD_EV_INTERACTION_CREATE] =
-        INIT(discord_interaction, interaction_create),
-    [DISCORD_EV_INVITE_CREATE] = INIT(discord_invite_create, invite_create),
-    [DISCORD_EV_INVITE_DELETE] = INIT(discord_invite_delete, invite_delete),
-    [DISCORD_EV_MESSAGE_CREATE] = INIT(discord_message, message_create),
-    [DISCORD_EV_MESSAGE_UPDATE] = INIT(discord_message, message_update),
-    [DISCORD_EV_MESSAGE_DELETE] = INIT(discord_message_delete, message_delete),
-    [DISCORD_EV_MESSAGE_DELETE_BULK] =
-        INIT(discord_message_delete_bulk, message_delete_bulk),
-    [DISCORD_EV_MESSAGE_REACTION_ADD] =
-        INIT(discord_message_reaction_add, message_reaction_add),
+        INIT(discord_guild_integrations_update),
+    [DISCORD_EV_GUILD_MEMBER_ADD] = INIT(discord_guild_member),
+    [DISCORD_EV_GUILD_MEMBER_UPDATE] = INIT(discord_guild_member_update),
+    [DISCORD_EV_GUILD_MEMBER_REMOVE] = INIT(discord_guild_member_remove),
+    [DISCORD_EV_GUILD_MEMBERS_CHUNK] = INIT(discord_guild_members_chunk),
+    [DISCORD_EV_GUILD_ROLE_CREATE] = INIT(discord_guild_role_create),
+    [DISCORD_EV_GUILD_ROLE_UPDATE] = INIT(discord_guild_role_update),
+    [DISCORD_EV_GUILD_ROLE_DELETE] = INIT(discord_guild_role_delete),
+    [DISCORD_EV_GUILD_SCHEDULED_EVENT_CREATE] =
+        INIT(discord_guild_scheduled_event),
+    [DISCORD_EV_GUILD_SCHEDULED_EVENT_UPDATE] =
+        INIT(discord_guild_scheduled_event),
+    [DISCORD_EV_GUILD_SCHEDULED_EVENT_DELETE] =
+        INIT(discord_guild_scheduled_event),
+    [DISCORD_EV_GUILD_SCHEDULED_EVENT_USER_ADD] =
+        INIT(discord_guild_scheduled_event_user_add),
+    [DISCORD_EV_GUILD_SCHEDULED_EVENT_USER_REMOVE] =
+        INIT(discord_guild_scheduled_event_user_remove),
+    [DISCORD_EV_INTEGRATION_CREATE] = INIT(discord_integration),
+    [DISCORD_EV_INTEGRATION_UPDATE] = INIT(discord_integration),
+    [DISCORD_EV_INTEGRATION_DELETE] = INIT(discord_integration_delete),
+    [DISCORD_EV_INTERACTION_CREATE] = INIT(discord_interaction),
+    [DISCORD_EV_INVITE_CREATE] = INIT(discord_invite_create),
+    [DISCORD_EV_INVITE_DELETE] = INIT(discord_invite_delete),
+    [DISCORD_EV_MESSAGE_CREATE] = INIT(discord_message),
+    [DISCORD_EV_MESSAGE_UPDATE] = INIT(discord_message),
+    [DISCORD_EV_MESSAGE_DELETE] = INIT(discord_message_delete),
+    [DISCORD_EV_MESSAGE_DELETE_BULK] = INIT(discord_message_delete_bulk),
+    [DISCORD_EV_MESSAGE_REACTION_ADD] = INIT(discord_message_reaction_add),
     [DISCORD_EV_MESSAGE_REACTION_REMOVE] =
-        INIT(discord_message_reaction_remove, message_reaction_remove),
+        INIT(discord_message_reaction_remove),
     [DISCORD_EV_MESSAGE_REACTION_REMOVE_ALL] =
-        INIT(discord_message_reaction_remove_all, message_reaction_remove_all),
-    [DISCORD_EV_MESSAGE_REACTION_REMOVE_EMOJI] = INIT(
-        discord_message_reaction_remove_emoji, message_reaction_remove_emoji),
-    [DISCORD_EV_PRESENCE_UPDATE] =
-        INIT(discord_presence_update, presence_update),
-    [DISCORD_EV_STAGE_INSTANCE_CREATE] =
-        INIT(discord_stage_instance, stage_instance_create),
-    [DISCORD_EV_STAGE_INSTANCE_UPDATE] =
-        INIT(discord_stage_instance, stage_instance_update),
-    [DISCORD_EV_STAGE_INSTANCE_DELETE] =
-        INIT(discord_stage_instance, stage_instance_delete),
-    [DISCORD_EV_TYPING_START] = INIT(discord_typing_start, typing_start),
-    [DISCORD_EV_USER_UPDATE] = INIT(discord_user, user_update),
-    [DISCORD_EV_VOICE_STATE_UPDATE] =
-        INIT(discord_voice_state, voice_state_update),
-    [DISCORD_EV_VOICE_SERVER_UPDATE] =
-        INIT(discord_voice_server_update, voice_server_update),
-    [DISCORD_EV_WEBHOOKS_UPDATE] =
-        INIT(discord_webhooks_update, webhooks_update),
+        INIT(discord_message_reaction_remove_all),
+    [DISCORD_EV_MESSAGE_REACTION_REMOVE_EMOJI] =
+        INIT(discord_message_reaction_remove_emoji),
+    [DISCORD_EV_PRESENCE_UPDATE] = INIT(discord_presence_update),
+    [DISCORD_EV_STAGE_INSTANCE_CREATE] = INIT(discord_stage_instance),
+    [DISCORD_EV_STAGE_INSTANCE_UPDATE] = INIT(discord_stage_instance),
+    [DISCORD_EV_STAGE_INSTANCE_DELETE] = INIT(discord_stage_instance),
+    [DISCORD_EV_TYPING_START] = INIT(discord_typing_start),
+    [DISCORD_EV_USER_UPDATE] = INIT(discord_user),
+    [DISCORD_EV_VOICE_STATE_UPDATE] = INIT(discord_voice_state),
+    [DISCORD_EV_VOICE_SERVER_UPDATE] = INIT(discord_voice_server_update),
+    [DISCORD_EV_WEBHOOKS_UPDATE] = INIT(discord_webhooks_update),
 };
 
 void

@@ -1,15 +1,64 @@
 /**
  * @file discord-events.h
  * @author Cogmasters
- * @brief Listen and react to Discord events
+ * @brief Listen, react and trigger Discord Gateway events
  */
 
 #ifndef DISCORD_EVENTS_H
 #define DISCORD_EVENTS_H
 
-/** @defgroup DiscordEvent Events
+/** @defgroup DiscordCommands Commands
  *  @ingroup Discord
- * @brief The Discord public Events API supported by Concord
+ * @brief Requests made by the client to the Gateway socket
+ *  @{ */
+
+/**
+ * @brief Request all members for a guild or a list of guilds
+ * @see
+ * https://discord.com/developers/docs/topics/gateway#request-guild-members
+ *
+ * @param client the client created with discord_init()
+ * @param request request guild members information
+ */
+void discord_request_guild_members(
+    struct discord *client, struct discord_request_guild_members *request);
+
+/**
+ * @brief Sent when a client wants to join, move or disconnect from a voice
+ *      channel
+ *
+ * @param client the client created with discord_init()
+ * @param update request guild members information
+ */
+void discord_update_voice_state(struct discord *client,
+                                struct discord_update_voice_state *update);
+
+/**
+ * @brief Update the client presence status
+ * @see discord_presence_add_activity()
+ *
+ * @param client the client created with discord_init()
+ * @param presence status to update the client's to
+ */
+void discord_update_presence(struct discord *client,
+                             struct discord_presence_update *presence);
+
+/**
+ * @brief Set the client presence status
+ * @deprecated since v2.0.0, use discord_update_presence() instead
+ * @see discord_presence_add_activity()
+ *
+ * @param client the client created with discord_init()
+ * @param presence status to update the client's to
+ */
+void discord_set_presence(struct discord *client,
+                          struct discord_presence_update *presence);
+
+/** @} DiscordCommands */
+
+/** @defgroup DiscordEvents Events
+ *  @ingroup Discord
+ * @brief Events sent over the Gateway socket to the client
  *  @{ */
 
 /**
@@ -69,7 +118,6 @@ void discord_add_intents(struct discord *client, uint64_t code);
  * @param client the client created with discord_init()
  * @param code the intents opcode, can be set as bitmask operation
  *        Ex: 1 << 0 | 1 << 1 | 1 << 4
- *
  */
 void discord_remove_intents(struct discord *client, uint64_t code);
 
@@ -84,7 +132,7 @@ void discord_remove_intents(struct discord *client, uint64_t code);
  */
 void discord_set_prefix(struct discord *client, const char prefix[]);
 
-/** @defgroup DiscordEventCallbackTypes Callback types
+/** @defgroup DiscordEventsCallbacks Events callbacks
  * @brief Callback types for Discord events
  *  @{ */
 
@@ -98,6 +146,11 @@ typedef void (*discord_ev_ready)(struct discord *client,
 /** @brief Resumed callback */
 typedef void (*discord_ev_resumed)(struct discord *client,
                                    const struct discord_resume *event);
+
+/** @brief Application Command Permissions callback */
+typedef void (*discord_ev_application_command_permissions)(
+    struct discord *client,
+    const struct discord_application_command_permissions *event);
 
 /** @brief Channel callback */
 typedef void (*discord_ev_channel)(struct discord *client,
@@ -157,6 +210,9 @@ typedef void (*discord_ev_guild_role_update)(
 typedef void (*discord_ev_guild_role_delete)(
     struct discord *client, const struct discord_guild_role_delete *event);
 
+/** @brief Guild Scheduled Event callback */
+typedef void (*discord_ev_guild_scheduled_event)(
+    struct discord *client, const struct discord_guild_scheduled_event *event);
 /** @brief Guild Scheduled Event User Add callback */
 typedef void (*discord_ev_guild_scheduled_event_user_add)(
     struct discord *client,
@@ -237,7 +293,7 @@ typedef void (*discord_ev_webhooks_update)(
 typedef void (*discord_ev_interaction)(
     struct discord *client, const struct discord_interaction *event);
 
-/** @} DiscordEventCallbackTypes */
+/** @} DiscordEventsCallbacks */
 
 /**
  * @brief Set command/callback pair
@@ -322,7 +378,18 @@ void discord_set_on_resumed(struct discord *client,
                             discord_ev_resumed callback);
 
 /**
+ * @brief Triggers when an application command permission is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_application_command_permissions_update(
+    struct discord *client,
+    discord_ev_application_command_permissions callback);
+
+/**
  * @brief Triggers when a channel is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -332,6 +399,7 @@ void discord_set_on_channel_create(struct discord *client,
 
 /**
  * @brief Triggers when a channel is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -341,6 +409,7 @@ void discord_set_on_channel_update(struct discord *client,
 
 /**
  * @brief Triggers when a channel is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -350,6 +419,8 @@ void discord_set_on_channel_delete(struct discord *client,
 
 /**
  * @brief Triggers when a channel pin is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -359,6 +430,7 @@ void discord_set_on_channel_pins_update(
 
 /**
  * @brief Triggers when a thread is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -368,6 +440,7 @@ void discord_set_on_thread_create(struct discord *client,
 
 /**
  * @brief Triggers when a thread is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -377,6 +450,7 @@ void discord_set_on_thread_update(struct discord *client,
 
 /**
  * @brief Triggers when a thread is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -386,6 +460,7 @@ void discord_set_on_thread_delete(struct discord *client,
 
 /**
  * @brief Triggers when the current user gains access to a channel
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -397,6 +472,7 @@ void discord_set_on_thread_list_sync(struct discord *client,
  * @brief Triggers when a thread the bot is in gets updated
  * @note For bots, this event largely is just a signal that you are a member of
  *      the thread
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -406,6 +482,8 @@ void discord_set_on_thread_member_update(struct discord *client,
 
 /**
  * @brief Triggers when someone is added or removed from a thread
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS and
+ *      @ref DISCORD_GATEWAY_GUILD_MEMBERS intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -415,6 +493,7 @@ void discord_set_on_thread_members_update(
 
 /**
  * @brief Triggers when a guild is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -424,6 +503,7 @@ void discord_set_on_guild_create(struct discord *client,
 
 /**
  * @brief Triggers when a guild is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -433,6 +513,7 @@ void discord_set_on_guild_update(struct discord *client,
 
 /**
  * @brief Triggers when a guild is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -442,51 +523,60 @@ void discord_set_on_guild_delete(struct discord *client,
 
 /**
  * @brief Triggers when a user is banned from a guild
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_BANS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void
-discord_set_on_guild_ban_add(struct discord *client, discord_ev_guild_ban_add callback);
+void discord_set_on_guild_ban_add(struct discord *client,
+                                  discord_ev_guild_ban_add callback);
 
 /**
  * @brief Triggers when a user is unbanned from a guild
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_BANS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void
-discord_set_on_guild_ban_remove(struct discord *client, discord_ev_guild_ban_remove callback);
+void discord_set_on_guild_ban_remove(struct discord *client,
+                                     discord_ev_guild_ban_remove callback);
 
 /**
  * @brief Triggers when a guild emojis are updated
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_GUILD_EMOJIS_AND_STICKERS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void
-discord_set_on_guild_emojis_update(struct discord *client, discord_ev_guild_emojis_update callback);
+void discord_set_on_guild_emojis_update(
+    struct discord *client, discord_ev_guild_emojis_update callback);
 
 /**
  * @brief Triggers when a guild stickers are updated
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_GUILD_EMOJIS_AND_STICKERS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void
-discord_set_on_guild_stickers_update(struct discord *client, discord_ev_guild_stickers_update callback);
+void discord_set_on_guild_stickers_update(
+    struct discord *client, discord_ev_guild_stickers_update callback);
 
 /**
  * @brief Triggers when a guild integrations are updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
+ *      intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void
-discord_set_on_guild_integrations_update(struct discord *client, discord_ev_guild_integrations_update callback);
+void discord_set_on_guild_integrations_update(
+    struct discord *client, discord_ev_guild_integrations_update callback);
 
 /**
  * @brief Triggers when a guild member is added
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MEMBERS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -496,6 +586,7 @@ void discord_set_on_guild_member_add(struct discord *client,
 
 /**
  * @brief Triggers when a guild member is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MEMBERS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -505,6 +596,7 @@ void discord_set_on_guild_member_update(
 
 /**
  * @brief Triggers when a guild member is removed
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MEMBERS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -518,11 +610,12 @@ void discord_set_on_guild_member_remove(
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
-void
-discord_set_on_guild_members_chunk(struct discord *client, discord_ev_guild_members_chunk callback);
+void discord_set_on_guild_members_chunk(
+    struct discord *client, discord_ev_guild_members_chunk callback);
 
 /**
  * @brief Triggers when a guild role is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -532,6 +625,7 @@ void discord_set_on_guild_role_create(struct discord *client,
 
 /**
  * @brief Triggers when a guild role is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -541,6 +635,7 @@ void discord_set_on_guild_role_update(struct discord *client,
 
 /**
  * @brief Triggers when a guild role is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -549,7 +644,98 @@ void discord_set_on_guild_role_delete(struct discord *client,
                                       discord_ev_guild_role_delete callback);
 
 /**
- * @brief Triggers when a interaction is created
+ * @brief Triggers when a guild scheduled event is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_scheduled_event_create(
+    struct discord *client, discord_ev_guild_scheduled_event callback);
+
+/**
+ * @brief Triggers when a guild scheduled event is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_scheduled_event_update(
+    struct discord *client, discord_ev_guild_scheduled_event callback);
+
+/**
+ * @brief Triggers when a guild scheduled event is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_scheduled_event_delete(
+    struct discord *client, discord_ev_guild_scheduled_event callback);
+
+/**
+ * @brief Triggers when a user subscribes to a guild scheduled event
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_scheduled_event_user_add(
+    struct discord *client,
+    discord_ev_guild_scheduled_event_user_add callback);
+
+/**
+ * @brief Triggers when a user unsubscribes from a guild scheduled event
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_guild_scheduled_event_user_remove(
+    struct discord *client,
+    discord_ev_guild_scheduled_event_user_remove callback);
+
+/**
+ * @brief Triggers when a guild integration is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_integration_create(struct discord *client,
+                                       discord_ev_integration callback);
+
+/**
+ * @brief Triggers when a guild integration is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
+ * intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_integration_update(struct discord *client,
+                                       discord_ev_integration callback);
+
+/**
+ * @brief Triggers when a guild integration is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
+ *      intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_integration_delete(struct discord *client,
+                                       discord_ev_integration_delete callback);
+
+/**
+ * @brief Triggers when user has used an interaction, such as an application
+ *      command
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -558,7 +744,29 @@ void discord_set_on_interaction_create(struct discord *client,
                                        discord_ev_interaction callback);
 
 /**
+ * @brief Triggers when an invite to a channel has been created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INVITES intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_invite_create(struct discord *client,
+                                  discord_ev_invite_create callback);
+
+/**
+ * @brief Triggers when an invite to a channel has been deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INVITES intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_invite_delete(struct discord *client,
+                                  discord_ev_invite_delete callback);
+
+/**
  * @brief Triggers when a message is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -568,6 +776,8 @@ void discord_set_on_message_create(struct discord *client,
 
 /**
  * @brief Triggers when a message is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -577,6 +787,8 @@ void discord_set_on_message_update(struct discord *client,
 
 /**
  * @brief Triggers when a message is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -586,6 +798,8 @@ void discord_set_on_message_delete(struct discord *client,
 
 /**
  * @brief Triggers when messages are deleted in bulk
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES
+ *      intent
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -595,6 +809,9 @@ void discord_set_on_message_delete_bulk(
 
 /**
  * @brief Triggers when a message reaction is added
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -604,6 +821,9 @@ void discord_set_on_message_reaction_add(
 
 /**
  * @brief Triggers when a message reaction is removed
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -613,6 +833,9 @@ void discord_set_on_message_reaction_remove(
 
 /**
  * @brief Triggers when all message reactions are removed
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -625,12 +848,75 @@ void discord_set_on_message_reaction_remove_all(
 /**
  * @brief Triggers when all instances of a particular reaction is removed from
  *      a message
+ * @note This implicitly sets
+ *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_reaction_remove_emoji(
     struct discord *client, discord_ev_message_reaction_remove_emoji callback);
+
+/**
+ * @brief Triggers when user presence is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_PRESENCES intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_presence_update(struct discord *client,
+                                    discord_ev_presence_update callback);
+
+/**
+ * @brief Triggers when a stage instance is created
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_stage_instance_create(struct discord *client,
+                                          discord_ev_stage_instance callback);
+
+/**
+ * @brief Triggers when a stage instance is updated
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_stage_instance_update(struct discord *client,
+                                          discord_ev_stage_instance callback);
+
+/**
+ * @brief Triggers when a stage instance is deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_stage_instance_delete(struct discord *client,
+                                          discord_ev_stage_instance callback);
+
+/**
+ * @brief Triggers when user starts typing in a channel
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGE_TYPING and
+ *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING intents
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_typing_start(struct discord *client,
+                                 discord_ev_typing_start callback);
+
+/**
+ * @brief Triggers when properties about a user changed
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_user_update(struct discord *client,
+                                discord_ev_user callback);
 
 /**
  * @brief Triggers when a voice state is updated
@@ -650,6 +936,16 @@ void discord_set_on_voice_state_update(struct discord *client,
 void discord_set_on_voice_server_update(
     struct discord *client, discord_ev_voice_server_update callback);
 
-/** @} DiscordEvent */
+/**
+ * @brief Triggers when guild channel has been created, updated or deleted
+ * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_WEBHOOKS intent
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ */
+void discord_set_on_webhooks_update(struct discord *client,
+                                    discord_ev_webhooks_update callback);
+
+/** @} DiscordEvents */
 
 #endif /* DISCORD_EVENTS_H */

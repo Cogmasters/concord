@@ -9,7 +9,7 @@
 PP_DEFINE(DISCORD_GATEWAY_GUILDS 1 << 0)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_MEMBERS 1 << 1)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_BANS 1 << 2)
-PP_DEFINE(DISCORD_GATEWAY_GUILD_EMOJIS 1 << 3)
+PP_DEFINE(DISCORD_GATEWAY_GUILD_EMOJIS_AND_STICKERS 1 << 3)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_INTEGRATIONS 1 << 4)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_WEBHOOKS 1 << 5)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_INVITES 1 << 6)
@@ -21,6 +21,10 @@ PP_DEFINE(DISCORD_GATEWAY_GUILD_MESSAGE_TYPING 1 << 11)
 PP_DEFINE(DISCORD_GATEWAY_DIRECT_MESSAGES 1 << 12)
 PP_DEFINE(DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS 1 << 13)
 PP_DEFINE(DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING 1 << 14)
+PP_DEFINE(DISCORD_GATEWAY_MESSAGE_CONTENT 1 << 15)
+PP_DEFINE(DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS 1 << 16)
+PP_DEFINE(DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION 1 << 20)
+PP_DEFINE(DISCORD_GATEWAY_AUTO_MODERATION_EXECUTION 1 << 21)
 /** @} DiscordInternalGatewayIntents */
 
 /** @defgroup DiscordActivityFlags Gateway activity flags
@@ -71,7 +75,8 @@ ENUM(discord_gateway_opcodes)
 ENUM_END
 
 ENUM(discord_gateway_events)
-    ENUMERATOR(DISCORD_EV_READY, = 0)
+    ENUMERATOR(DISCORD_EV_NONE, = 0)
+    ENUMERATOR(DISCORD_EV_READY, )
     ENUMERATOR(DISCORD_EV_RESUMED, )
     ENUMERATOR(DISCORD_EV_RECONNECT, )
     ENUMERATOR(DISCORD_EV_INVALID_SESSION, )
@@ -317,6 +322,16 @@ LIST(discord_presence_updates)
     LISTTYPE_STRUCT(discord_presence_update)
 LIST_END
 
+/** @CCORD_pub_struct{discord_resume} */
+PUB_STRUCT(discord_resume)
+  /** session token */
+    FIELD_PTR(token, char, *)
+  /** session id */
+    FIELD_PTR(session_id, char, *)
+  /** last sequence number received */
+    FIELD(seq, int, 0)
+STRUCT_END
+
 /* gateway command payloads only need to be encoded into JSON */
 #if !defined(GENCODECS_ON_JSON_DECODER)
 
@@ -357,16 +372,6 @@ STRUCT(discord_identify_connection)
     FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
                  GENCODECS_JSON_ENCODER_PTR_char,
                  GENCODECS_JSON_DECODER_PTR_char, NULL)
-STRUCT_END
-
-/** @CCORD_pub_struct{discord_resume} */
-PUB_STRUCT(discord_resume)
-  /** session token */
-    FIELD_PTR(token, char, *)
-  /** session id */
-    FIELD_PTR(session_id, char, *)
-  /** last sequence number received */
-    FIELD(seq, int, 0)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_request_guild_members} */
