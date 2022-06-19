@@ -1,8 +1,8 @@
 #include "custom.pre.h"
 
-#include "permissions.pre.h"
 #include "application.pre.h"
 #include "audit_log.pre.h"
+#include "auto_moderation.pre.h"
 #include "invite.pre.h"
 #include "channel.pre.h"
 #include "emoji.pre.h"
@@ -16,6 +16,7 @@
 #include "webhook.pre.h"
 
 #include "gateway.pre.h"
+#include "permissions.pre.h"
 #include "teams.pre.h"
 #include "voice_connections.pre.h"
 

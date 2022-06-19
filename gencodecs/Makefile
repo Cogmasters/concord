@@ -19,10 +19,11 @@ OUT_C   := discord_codecs.c
 OUT_H   := discord_codecs.h
 OUT_O   := discord_codecs.o
 
-# Generate individual headers, useful for docs generation
+# Generate individual headers for doxygen's parsing
 HEADERS = $(API_DIR)/application.h \
           $(API_DIR)/application_commands.h \
           $(API_DIR)/audit_log.h \
+          $(API_DIR)/auto_moderation.h \
           $(API_DIR)/channel.h \
           $(API_DIR)/custom.h \
           $(API_DIR)/emoji.h \
