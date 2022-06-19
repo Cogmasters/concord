@@ -118,12 +118,6 @@ discord_set_on_ready(struct discord *client, discord_ev_ready callback)
 }
 
 void
-discord_set_on_resumed(struct discord *client, discord_ev_resumed callback)
-{
-    client->gw.cbs[DISCORD_EV_RESUMED] = (discord_ev)callback;
-}
-
-void
 discord_set_on_application_command_permissions_update(
     struct discord *client,
     discord_ev_application_command_permissions callback)

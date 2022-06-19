@@ -37,6 +37,8 @@ struct discord;
 #endif /* CCORD_VOICE */
 #include "discord-response.h"
 
+/** @defgroup DiscordClient Client */
+
 /** @defgroup DiscordConstants Constants
  * @brief Macros for constants defined by Discord
  * @note macros assume the worst-case scenario for strings, where each
@@ -135,8 +137,8 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 
 /** @} DiscordAPI */
 
-/** @defgroup Discord Client
- *   @brief Functions and datatypes for the client
+/** @addtogroup DiscordClient
+ *   @brief Client functions and datatypes
  *  @{ */
 
 /** @struct discord */
@@ -311,7 +313,7 @@ struct logconf *discord_get_logconf(struct discord *client);
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
 
-/** @defgroup DiscordTimer Timer
+/** @addtogroup DiscordTimer Timer
  * @brief Schedule callbacks to be called in the future
  *  @{ */
 
@@ -466,7 +468,7 @@ bool discord_timer_cancel_and_delete(struct discord *client, unsigned id);
  * Demonstrates the Timer API for callback scheduling */
 
 /** @} DiscordTimer */
-/** @} Discord */
+/** @} DiscordClient */
 
 #ifdef __cplusplus
 }

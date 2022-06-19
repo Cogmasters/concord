@@ -22,7 +22,6 @@ static const struct {
     void (*cleanup)(void *);
 } dispatch[] = {
     [DISCORD_EV_READY] = INIT(discord_ready),
-    [DISCORD_EV_RESUMED] = INIT(discord_resume),
     [DISCORD_EV_APPLICATION_COMMAND_PERMISSIONS_UPDATE] =
         INIT(discord_application_command_permissions),
     [DISCORD_EV_CHANNEL_CREATE] = INIT(discord_channel),

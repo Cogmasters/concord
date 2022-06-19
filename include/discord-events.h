@@ -8,7 +8,7 @@
 #define DISCORD_EVENTS_H
 
 /** @defgroup DiscordCommands Commands
- *  @ingroup Discord
+ * @ingroup DiscordClient
  * @brief Requests made by the client to the Gateway socket
  *  @{ */
 
@@ -57,7 +57,7 @@ void discord_set_presence(struct discord *client,
 /** @} DiscordCommands */
 
 /** @defgroup DiscordEvents Events
- *  @ingroup Discord
+ * @ingroup DiscordClient
  * @brief Events sent over the Gateway socket to the client
  *  @{ */
 
@@ -142,10 +142,6 @@ typedef void (*discord_ev_idle)(struct discord *client);
 /** @brief Ready callback */
 typedef void (*discord_ev_ready)(struct discord *client,
                                  const struct discord_ready *event);
-
-/** @brief Resumed callback */
-typedef void (*discord_ev_resumed)(struct discord *client,
-                                   const struct discord_resume *event);
 
 /** @brief Application Command Permissions callback */
 typedef void (*discord_ev_application_command_permissions)(
@@ -367,15 +363,6 @@ void discord_set_on_cycle(struct discord *client, discord_ev_idle callback);
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_ready(struct discord *client, discord_ev_ready callback);
-
-/**
- * @brief Triggers when the client is session is resumed
- *
- * @param client the client created with discord_init()
- * @param callback the callback to be triggered on event
- */
-void discord_set_on_resumed(struct discord *client,
-                            discord_ev_resumed callback);
 
 /**
  * @brief Triggers when an application command permission is updated

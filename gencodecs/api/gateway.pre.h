@@ -322,16 +322,6 @@ LIST(discord_presence_updates)
     LISTTYPE_STRUCT(discord_presence_update)
 LIST_END
 
-/** @CCORD_pub_struct{discord_resume} */
-PUB_STRUCT(discord_resume)
-  /** session token */
-    FIELD_PTR(token, char, *)
-  /** session id */
-    FIELD_PTR(session_id, char, *)
-  /** last sequence number received */
-    FIELD(seq, int, 0)
-STRUCT_END
-
 /* gateway command payloads only need to be encoded into JSON */
 #if !defined(GENCODECS_ON_JSON_DECODER)
 
@@ -372,6 +362,16 @@ STRUCT(discord_identify_connection)
     FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
                  GENCODECS_JSON_ENCODER_PTR_char,
                  GENCODECS_JSON_DECODER_PTR_char, NULL)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_resume} */
+PUB_STRUCT(discord_resume)
+  /** session token */
+    FIELD_PTR(token, char, *)
+  /** session id */
+    FIELD_PTR(session_id, char, *)
+  /** last sequence number received */
+    FIELD(seq, int, 0)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_request_guild_members} */
