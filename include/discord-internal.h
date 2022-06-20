@@ -1181,7 +1181,7 @@ struct discord {
     } * workers;
 
 #ifdef CCORD_VOICE
-    struct discord_voice vcs[DISCORD_MAX_VCS];
+    struct discord_voice *vcs;
     struct discord_voice_evcallbacks voice_cbs;
 #endif /* CCORD_VOICE */
 };
