@@ -1,23 +1,23 @@
 TOP = ..
 CC  = cc
 
-PP    := ./gencodecs-pp
-PPOBJ := gencodecs-pp.o
+PP     = gencodecs-pp
+PP_OBJ = $(PP).o
 
-API_DIR      = api
-INCLUDE_DIR  = $(TOP)/include
-COGUTILS_DIR = $(TOP)/cog-utils
-CORE_DIR     = $(TOP)/core
-THIRDP_DIR   = $(TOP)/core/third-party
-DOCS_DIR     = $(TOP)/docs
+API_DIR     = api
+INCLUDE_DIR = $(TOP)/include
+CORE_DIR    = $(TOP)/core
+THIRDP_DIR  = $(CORE_DIR)/third-party
+DOCS_DIR    = $(TOP)/docs
 
-# Main preprocessor input file
-INP_PRE := discord_codecs.pre.h
-
-# Single-files to be generated
-OUT_C   := discord_codecs.c
-OUT_H   := discord_codecs.h
-OUT_O   := discord_codecs.o
+# Input file name without its extension
+INPUT_NO_EXT = discord_codecs
+# Input file to be preprocessed
+INPUT        = $(INPUT_NO_EXT).pre.h
+# Resulting single-file amalgamations after preprocessing input file
+OUT_C        = $(INPUT_NO_EXT).c
+OUT_H        = $(INPUT_NO_EXT).h
+OUT_O        = $(INPUT_NO_EXT).o
 
 # Generate individual headers for doxygen's parsing
 HEADERS = $(API_DIR)/application.h \
@@ -43,7 +43,7 @@ HEADERS = $(API_DIR)/application.h \
           $(API_DIR)/voice_connections.h \
           $(API_DIR)/webhook.h
 
-CFLAGS += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR)
+CFLAGS += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR)
 DFLAGS += -DGENCODECS_INIT -DGENCODECS_JSON_ENCODER -DGENCODECS_JSON_DECODER
 
 # Convert 'folder/hello_world.pre.h' -> 'FOLDER_HELLO_WORLD_H'
@@ -56,27 +56,23 @@ all: $(OUT_O)
 $(OUT_O): $(OUT_C) $(OUT_H)
 	$(CC) -c $(CFLAGS) $< -o $@
 
-.SUFFIXES: .c .o
-.c.o:
-	$(CC) -c $(CFLAGS) $< -o $@
+$(PP): $(PP_OBJ)
+	$(CC) -o $@ $<
 
-$(PP): $(PPOBJ)
-	$(CC) -o $(PP) $(PPOBJ)
-
-$(OUT_H): $(INP_PRE) $(PP)
+$(OUT_H): $(INPUT) $(PP)
 	@ echo "Generating header"
 	@ echo "#ifndef $(HEADER_TAG)" > $@
 	@ echo "#define $(HEADER_TAG)" >> $@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -nostdinc -P $(INP_PRE) | $(PP) >> $@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER $(DFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -nostdinc -P $(INPUT) | ./$(PP) >> $@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER $(DFLAGS) -nostdinc -P $(INPUT) | ./$(PP) >> $@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
 
-$(OUT_C): $(INP_PRE) $(PP)
+$(OUT_C): $(INPUT) $(PP)
 	@ echo "Generating forward definitions"
 	@ echo "#include \"$(OUT_H)\"" > $(OUT_C)
-	$(CPP) $(CFLAGS) -DGENCODECS_FORWARD -DGENCODECS_DATA $(DFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
+	$(CPP) $(CFLAGS) -DGENCODECS_FORWARD -DGENCODECS_DATA $(DFLAGS) -nostdinc -P $(INPUT) | ./$(PP) >> $(OUT_C)
 	@ echo "Generating source"	
-	$(CPP) $(CFLAGS) -DGENCODECS_DATA $(DFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
+	$(CPP) $(CFLAGS) -DGENCODECS_DATA $(DFLAGS) -nostdinc -P $(INPUT) | ./$(PP) >> $(OUT_C)
 
 docs: $(HEADERS)
 
@@ -87,18 +83,18 @@ $(HEADERS): $(PP)
 	@ echo $(DOXYGEN_DESC) > $(DOCS_DIR)/$@
 	@ echo "#ifndef $(HEADER_TAG)" >> $(DOCS_DIR)/$@
 	@ echo "#define $(HEADER_TAG)" >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -DGENCODECS_READ=\"$<\"-nostdinc -P -CC $(INP_PRE) | $(PP) >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" $(DFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -DGENCODECS_READ=\"$<\"-nostdinc -P -CC $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" $(DFLAGS) -nostdinc -P $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $(DOCS_DIR)/$@
 
 echo:
 	@ echo 'HEADERS: $(HEADERS)'
-	@ echo 'INP_PRE: $(INP_PRE)'
+	@ echo 'INPUT: $(INPUT)'
 	@ echo 'OUT_H: $(OUT_H)'
 	@ echo 'OUT_C: $(OUT_C)'
 	@ echo 'OUT_O: $(OUT_O)'
 
 clean:
-	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(PPOBJ) $(DOCS_DIR)/$(API_DIR)/*.h *.dSYM
+	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(PP_OBJ) $(DOCS_DIR)/$(API_DIR)/*.h *.dSYM
 
-.PHONY: clean docs
+.PHONY: docs echo clean

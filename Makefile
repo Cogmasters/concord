@@ -10,7 +10,6 @@ CORE_DIR      = core
 THIRDP_DIR    = $(CORE_DIR)/third-party
 EXAMPLES_DIR  = examples
 TEST_DIR      = test
-CCORDDOCS_DIR = concord-docs
 
 GENCODECS_HDR = $(GENCODECS_DIR)/discord_codecs.h
 
@@ -53,6 +52,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/user.o                      \
                 $(SRC_DIR)/voice.o                     \
                 $(SRC_DIR)/webhook.o
+VOICE_OBJS    = $(SRC_DIR)/discord-voice.o
 
 OBJS = $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
 
@@ -78,20 +78,17 @@ all: $(ARLIB)
 
 shared: 
 	@ $(MAKE) clean
-	@ $(MAKE) CFLAGS="$(SOFLAGS) $(CFLAGS)" $(SOLIB)
+	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) $(SOLIB)
 
 shared_osx:
 	@ $(MAKE) clean
-	@ $(MAKE) CFLAGS="$(DYFLAGS) $(CFLAGS)" $(DYLIB)
+	@ CFLAGS="$(DYFLAGS) $(CFLAGS)" $(MAKE) $(DYLIB)
 
 voice:
-	@ $(MAKE) clean
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE"
-	          OBJS="$(OBJS) $(SRC_DIR)/discord-voice.o"
+	@ CFLAGS="$(CFLAGS) -DCCORD_VOICE" $(MAKE) OBJS="$(OBJS) $(VOICE_OBJS)"
 
 debug:
-	@ $(MAKE) clean
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP"
+	@ CFLAGS="$(CFLAGS) -DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" $(MAKE)
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -140,9 +137,10 @@ echo:
 	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
 	@ echo -e 'THIRDP_OBJS: $(THIRDP_OBJS)\n'
 	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
+	@ echo -e 'VOICE_OBJS: $(VOICE_OBJS)\n'
 
 clean: 
-	@ $(RM) $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
+	@ $(RM) $(OBJS) $(VOICE_OBJS)
 	@ $(RM) -r $(LIBDIR)
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean

@@ -2,8 +2,8 @@
 TOP = ..
 CC ?= gcc
 
-COGUTILS_DIR  = $(TOP)/cog-utils
 CORE_DIR      = $(TOP)/core
+THIRDP_DIR    = $(CORE_DIR)/third-party
 INCLUDE_DIR   = $(TOP)/include
 GENCODECS_DIR = $(TOP)/gencodecs
 
@@ -32,16 +32,15 @@ BOTS       = 8ball \
              webhook \
              timers
 
-CFLAGS  = -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
-          -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
-          -O0 -g -pthread -Wall
+CFLAGS  = -O0 -g -pthread -Wall \
+          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) -I$(GENCODECS_DIR)
 LDFLAGS = -L$(TOP)/lib
 LDLIBS  = -ldiscord -lcurl
 
 all: $(BOTS)
 
 voice:
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE" BOTS="$(BOTS) $(VOICE_BOTS)" all
+	@ CFLAGS="$(CFLAGS) -DCCORD_VOICE" $(MAKE) BOTS="$(BOTS) $(VOICE_BOTS)"
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
