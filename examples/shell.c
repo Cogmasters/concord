@@ -8,6 +8,7 @@
 #include <inttypes.h> /* SCNu64 */
 
 #include "discord.h"
+#include "log.h"
 
 u64snowflake g_sudo_id;
 

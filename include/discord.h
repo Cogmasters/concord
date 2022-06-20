@@ -18,7 +18,6 @@ extern "C" {
 #include <inttypes.h>
 #include <stdbool.h>
 
-#include "logconf.h"
 #include "error.h"
 #include "types.h"
 #include "concord-once.h"

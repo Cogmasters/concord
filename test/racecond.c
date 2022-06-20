@@ -9,6 +9,7 @@
 #include "jsmn-find.h"
 
 #include "discord.h"
+#include "log.h"
 
 #define THREADPOOL_SIZE "4"
 #define PREFIX          "!"

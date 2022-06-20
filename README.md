@@ -69,6 +69,7 @@ int main(void) {
 ```c
 #include <string.h>
 #include <concord/discord.h>
+#include <concord/log.h>
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
     log_info("Logged in as %s!", event->user->username);
@@ -83,6 +84,7 @@ void on_message(struct discord *client, const struct discord_message *event) {
 
 int main(void) {
     struct discord *client = discord_init(BOT_TOKEN);
+    discord_add_intent(client, 1 << 15); // required for message contents
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message);
     discord_run(client);
@@ -271,14 +273,14 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 # make install
 ```
 
-This will install the headers and libary files into $PREFIX. You can override this as such:
+This will install the headers and library files into $PREFIX. You can override this as such:
 ```console
 # PREFIX=/opt/concord make install
 ```
 
 ### Included dependencies
 
-The following are `stable` and well documented dependencies that are packaged with Concord that can be included to your projects:
+The following are `stable` and well documented dependencies that are packaged with Concord and can be included to your projects:
 
 | File                                                  | Description                                        |
 |-------------------------------------------------------|----------------------------------------------------|
@@ -289,13 +291,11 @@ The following are `stable` and well documented dependencies that are packaged wi
 | [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
 | [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |
 
-\* *Concord uses its own modified version and they may be not up to date with the original*
+\* *Concord uses its own modified version that may be not up to date with the original*
 
 Note that included headers must be `concord/` prefixed:
 ```c
 #include <concord/discord.h>
-
-#include <concord/cog-utils.h>
 #include <concord/log.h>
 ```
 

@@ -6,6 +6,7 @@
 #include <inttypes.h> /* SCNu64, PRIu64 */
 
 #include "discord.h"
+#include "log.h"
 
 u64snowflake g_app_id;
 
