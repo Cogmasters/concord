@@ -351,17 +351,11 @@ STRUCT_END
 
 STRUCT(discord_identify_connection)
   /** your operating system */
-    FIELD_CUSTOM(os, "$os", char, *, INIT_BLANK, CLEANUP_PTR,
-                 GENCODECS_JSON_ENCODER_PTR_char, 
-                 GENCODECS_JSON_DECODER_PTR_char, NULL)
+    FIELD_PTR(os, char, *)
   /** your library name */
-    FIELD_CUSTOM(browser, "$browser", char, *, INIT_BLANK, CLEANUP_PTR,
-                 GENCODECS_JSON_ENCODER_PTR_char,
-                 GENCODECS_JSON_DECODER_PTR_char, NULL)
+    FIELD_PTR(browser, char, *)
   /** your library name */
-    FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
-                 GENCODECS_JSON_ENCODER_PTR_char,
-                 GENCODECS_JSON_DECODER_PTR_char, NULL)
+    FIELD_PTR(device, char, *)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_resume} */
