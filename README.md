@@ -15,7 +15,7 @@
 
 ## About
 
-Concord is an asynchronous C99 Discord API library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
+Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
 ### Examples
 
@@ -90,6 +90,7 @@ int main(void) {
 ```
 
 ## Supported operating systems (minimum requirements)
+
 * GNU/Linux 4.x
 * FreeBSD 12
 * NetBSD 8.1
@@ -98,6 +99,8 @@ int main(void) {
 * Mac OS X 10.9
 
 ## Build Instructions
+
+The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
 
 ### On Windows
 
@@ -109,8 +112,6 @@ int main(void) {
 * Note: you will likely need to include `-L/usr/local/lib -I/usr/local/include` on your `gcc` command, or in your `CFLAGS` variable in your Makefile for your bot.
 
 ### On Linux, BSD, and Mac OS X
-
-The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
 
 #### Ubuntu and Debian
 
@@ -143,21 +144,21 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
-### Setting up your environment
+## Setting up your environment
 
-#### Clone Concord into your workspace
+### Clone Concord into your workspace
 
 ```console
 $ git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
-#### Compile Concord 
+### Compile Concord
 
 ```console
 $ make
 ```
 
-#### Special notes for non-Linux systems
+### Special notes for non-Linux systems
 
 You might run into trouble with the compiler and linker not finding your Libcurl headers. You can do something like this:
 ```console
@@ -180,7 +181,7 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 $ CFLAGS="-pthread -lpthread" make
 ```
 
-### Configuring Concord
+## Configuring Concord
 
 The following outlines the default fields of `config.json`
 ```js
@@ -207,7 +208,7 @@ The following outlines the default fields of `config.json`
 }
 ```
 
-### Test Copycat-Bot
+## Test Copycat-Bot
 
 1. Get your bot token and add it to `config.json`, 
    by assigning it to discord's "token" field. There are 
@@ -223,19 +224,19 @@ The following outlines the default fields of `config.json`
    $ cd examples && ./copycat
    ```
 
-#### Get Copycat-Bot Response
+### Get Copycat-Bot Response
 
 Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.
 
-#### Terminate Copycat-Bot
+### Terminate Copycat-Bot
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
 
-### Configure your build
+## Configure your build
 
 The following outlines special flags and targets to override the default Makefile build with additional functionalities.
 
-#### Special compilation flags
+### Special compilation flags
 
 * `-DCCORD_SIGINTCATCH`
     * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
@@ -249,7 +250,7 @@ The following outlines special flags and targets to override the default Makefil
 $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 ```
 
-#### Special targets
+### Special targets
 
 * `make shared`
     * Produce a dynamically-linked version of Concord. This Makefile is intended for GNU-style compilers, such as `gcc` or `clang`.
@@ -275,9 +276,27 @@ This will install the headers and libary files into $PREFIX. You can override th
 # PREFIX=/opt/concord make install
 ```
 
+### Included dependencies
+
+The following are `stable` and well documented dependencies that are packaged with Concord that can be included to your projects:
+
+| File                                                  | Description                                        |
+|-------------------------------------------------------|----------------------------------------------------|
+| [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
+| [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
+| [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
+| [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
+| [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
+| [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |
+
+\* *Concord uses its own modified version and they may be not up to date with the original*
+
 Note that included headers must be `concord/` prefixed:
 ```c
 #include <concord/discord.h>
+
+#include <concord/cog-utils.h>
+#include <concord/log.h>
 ```
 
 ### Standalone executable
@@ -296,6 +315,7 @@ $ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 
 #### UNIX C compilers
 ##### This includes the following compilers:
+
 * IBM XL C/C++ (AIX, z/OS, possibly IBM i)
 * Sun/Oracle Studio (Solaris)
 * IRIX MIPSpro C++ (IRIX) -- NOTE: currently not supported
