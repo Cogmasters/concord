@@ -264,18 +264,3 @@ cog_timestamp_us(void)
   }
   return 0;
 }
-
-/* this can be used for checking if a user-given string does not
- *  exceeds a arbitrary threshold length */
-size_t
-cog_str_bounds_check(const char *str, const size_t threshold_len)
-{
-  size_t i;
-
-  if (!str) return SIZE_MAX; /* Missing string */
-
-  for (i = 0; i < threshold_len; ++i) {
-    if ('\0' == str[i]) return i; /* bound check succeeded */
-  }
-  return 0; /* bound check failed */
-}

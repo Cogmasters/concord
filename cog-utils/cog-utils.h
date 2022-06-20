@@ -130,16 +130,6 @@ uint64_t cog_timestamp_ms(void);
  */
 uint64_t cog_timestamp_us(void);
 
-/**
- * @brief Check if arbitrary string length is exceeded
- *
- * @param str the string to be checked
- * @param threshold_len maximum length for success
- * @return the string length on success, SIZE_MAX on `NULL` string, and 0 if
- *        string length is greater than threshold
- */
-size_t cog_str_bounds_check(const char *str, const size_t threshold_len);
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
