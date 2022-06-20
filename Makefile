@@ -3,10 +3,8 @@ CC     ?= gcc
 
 SRC_DIR       = src
 INCLUDE_DIR   = include
-OBJDIR        = obj
 LIBDIR        = lib
 DOCS_DIR      = docs
-COGUTILS_DIR  = cog-utils
 GENCODECS_DIR = gencodecs
 CORE_DIR      = core
 THIRDP_DIR    = $(CORE_DIR)/third-party
@@ -15,20 +13,20 @@ TEST_DIR      = test
 CCORDDOCS_DIR = concord-docs
 
 GENCODECS_HDR = $(GENCODECS_DIR)/discord_codecs.h
-GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 
-COGUTILS_OBJS = $(COGUTILS_DIR)/cog-utils.o  \
-                $(COGUTILS_DIR)/log.o        \
-                $(COGUTILS_DIR)/logconf.o    \
-                $(COGUTILS_DIR)/json-build.o \
-                $(COGUTILS_DIR)/jsmn-find.o
-CORE_OBJS     = $(CORE_DIR)/user-agent.o \
-                $(CORE_DIR)/websockets.o \
-                $(CORE_DIR)/io_poller.o
-THIRDP_OBJS   = $(THIRDP_DIR)/sha1.o           \
-                $(THIRDP_DIR)/curl-websocket.o \
-                $(THIRDP_DIR)/threadpool.o     \
-                $(THIRDP_DIR)/priority_queue.o
+GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
+CORE_OBJS     = $(CORE_DIR)/cog-utils.o  \
+                $(CORE_DIR)/io_poller.o  \
+                $(CORE_DIR)/user-agent.o \
+                $(CORE_DIR)/websockets.o
+THIRDP_OBJS   = $(THIRDP_DIR)/curl-websocket.o \
+                $(THIRDP_DIR)/jsmn-find.o      \
+                $(THIRDP_DIR)/json-build.o     \
+                $(THIRDP_DIR)/log.o            \
+                $(THIRDP_DIR)/logconf.o        \
+                $(THIRDP_DIR)/priority_queue.o \
+                $(THIRDP_DIR)/sha1.o           \
+                $(THIRDP_DIR)/threadpool.o
 DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/discord-refcount.o          \
                 $(SRC_DIR)/discord-rest.o              \
@@ -56,8 +54,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/voice.o                     \
                 $(SRC_DIR)/webhook.o
 
-OBJS = $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
-       $(GENCODECS_OBJ)
+OBJS = $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
 
 ARLIB   = $(LIBDIR)/libdiscord.a
 ARFLAGS = -cqsv
@@ -70,9 +67,9 @@ DYLIB   = $(LIBDIR)/libdiscord.dylib
 DYFLAGS = -fPIC 
 
 WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
-CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
-          -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
-          -I$(GENCODECS_DIR) -I$(PREFIX)/include -DLOG_USE_COLOR
+CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR      \
+          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) -I$(GENCODECS_DIR) \
+          -I$(PREFIX)/include
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
@@ -88,12 +85,13 @@ shared_osx:
 	@ $(MAKE) CFLAGS="$(DYFLAGS) $(CFLAGS)" $(DYLIB)
 
 voice:
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE" \
-	          OBJS="$(OBJS) $(SRC_DIR)/discord-voice.o" all
+	@ $(MAKE) clean
+	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE"
+	          OBJS="$(OBJS) $(SRC_DIR)/discord-voice.o"
 
 debug:
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" \
-	          all
+	@ $(MAKE) clean
+	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP"
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -116,25 +114,20 @@ $(DYLIB): $(OBJS) | $(LIBDIR)
 $(LIBDIR):
 	@ mkdir -p $@
 
-$(OBJS): $(GENCODECS_HDR) | $(OBJDIR)
+$(OBJS): $(GENCODECS_HDR)
 
 $(GENCODECS_HDR): gencodecs
 
-$(OBJDIR):
-	@ mkdir -p $@/$(THIRDP_DIR) $@/$(COGUTILS_DIR) $@/$(SRC_DIR) \
-	           $@/$(GENCODECS_DIR)
-
-.IGNORE:
 install:
 	@ mkdir -p $(PREFIX)/lib/
 	@ mkdir -p $(PREFIX)/include/concord
 	install -d $(PREFIX)/lib/
-	install -m 644 $(ARLIB) $(PREFIX)/lib/
-	install -m 644 $(SOLIB) $(PREFIX)/lib/
-	install -m 644 $(DYLIB) $(PREFIX)/lib/
+	install -m 644 $(ARLIB) $(PREFIX)/lib/                              \
+	  || install -m 644 $(SOLIB) $(PREFIX)/lib/                         \
+	  || install -m 644 $(DYLIB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
-	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(CORE_DIR)/*.h  \
-	               $(THIRDP_DIR)/*.h $(GENCODECS_DIR)/*.h $(PREFIX)/include/concord/
+	install -m 644 $(INCLUDE_DIR)/*.h $(CORE_DIR)/*.h $(THIRDP_DIR)/*.h \
+	               $(GENCODECS_DIR)/*.h $(PREFIX)/include/concord/
 
 docs:
 	@ $(MAKE) -C $(GENCODECS_DIR) docs
@@ -143,13 +136,13 @@ echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
-	@ echo -e 'COGUTILS_OBJS: $(COGUTILS_OBJS)\n'
+	@ echo -e 'GENCODECS_OBJ: $(GENCODECS_OBJ)\n'
 	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
+	@ echo -e 'THIRDP_OBJS: $(THIRDP_OBJS)\n'
 	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
-	@ echo -e 'OBJS: $(OBJS)\n'
 
 clean: 
-	@ $(RM) $(GENCODECS_OBJS) $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
+	@ $(RM) $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
 	@ $(RM) -r $(LIBDIR)
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean
