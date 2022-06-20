@@ -630,9 +630,6 @@ void discord_rest_stop_buckets(struct discord_rest *rest);
  * @brief Wrapper to the Discord Gateway API
  *  @{ */
 
-/** Generic event callback */
-typedef void (*discord_ev)(struct discord *client, void *event);
-
 /** @defgroup DiscordInternalGatewaySessionStatus Client's session status
  * @brief Client's session status
  *  @{ */
@@ -704,6 +701,12 @@ struct discord_gateway_payload {
     jsmnf_pair *data;
 };
 
+/** A generic event callback for casting */
+typedef void (*discord_ev_event)(struct discord *client, const void *event);
+/** An event callback for @ref DISCORD_EV_MESSAGE_CREATE */
+typedef void (*discord_ev_message)(struct discord *client,
+                                   const struct discord_message *event);
+
 /** @brief The handle used for interfacing with Discord's Gateway API */
 struct discord_gateway {
     /** `DISCORD_GATEWAY` logging module */
@@ -766,7 +769,7 @@ struct discord_gateway {
      * @todo should be cast to the original callback signature before calling,
      *      otherwise its UB
      */
-    discord_ev cbs[DISCORD_EV_MAX];
+    discord_ev_event cbs[DISCORD_EV_MAX];
     /** the event scheduler callback */
     discord_ev_scheduler scheduler;
 };
@@ -1154,15 +1157,15 @@ struct discord {
     /** wakeup timer handle */
     struct {
         /** callback to be triggered on timer's timeout */
-        discord_ev_idle cb;
+        void (*cb)(struct discord *client);
         /** the id of the wake timer */
         unsigned id;
     } wakeup_timer;
 
     /** triggers when idle */
-    discord_ev_idle on_idle;
+    void (*on_idle)(struct discord *client);
     /** triggers once per loop cycle */
-    discord_ev_idle on_cycle;
+    void (*on_cycle)(struct discord *client);
 
     /** user arbitrary data @see discord_set_data() */
     void *data;
