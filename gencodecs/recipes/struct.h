@@ -58,7 +58,7 @@
 
 #undef GENCODECS_PP
 #undef GENCODECS_PP_DEFINE
-#include "gencodecs-gen.pre.h"
+#include "gencodecs-gen.PRE.H"
 #define GENCODECS_PP(_description)
 #define GENCODECS_PP_DEFINE(_description)
 
@@ -74,7 +74,7 @@
 #define GENCODECS_PUB_LIST(_type)                                             \
     void _type##_cleanup(struct _type *self);
 
-#include "gencodecs-gen.pre.h"
+#include "gencodecs-gen.PRE.H"
 
 #elif defined(GENCODECS_FORWARD)
 
@@ -84,7 +84,7 @@
 #define GENCODECS_LIST(_type)                                                 \
     static void _type##_cleanup(struct _type *self);
 
-#include "gencodecs-gen.pre.h"
+#include "gencodecs-gen.PRE.H"
 
 #else
 
@@ -101,7 +101,7 @@
 #define GENCODECS_STRUCT_END                                                  \
     }
 
-#include "gencodecs-gen.pre.h"
+#include "gencodecs-gen.PRE.H"
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
     void _type##_cleanup(struct _type *self)                                  \
@@ -131,7 +131,7 @@
 #define GENCODECS_LIST_END                                                    \
     }
 
-#include "gencodecs-gen.pre.h"
+#include "gencodecs-gen.PRE.H"
 
 #endif /* GENCODECS_HEADER */
 #endif /* GENCODECS_INIT */

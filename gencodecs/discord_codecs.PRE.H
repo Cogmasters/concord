@@ -67,7 +67,7 @@ PP_INCLUDE("types.h")
 
 /* if GENCODECS_READ is not specified then generate for all files */
 #ifndef GENCODECS_READ
-#   define GENCODECS_READ "all.pre.h"
+#   define GENCODECS_READ "all.PRE.H"
 #endif
 
-#include "gencodecs-process.pre.h"
+#include "gencodecs-process.PRE.H"

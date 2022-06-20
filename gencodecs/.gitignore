@@ -3,7 +3,7 @@
 # But these
 !api
 !recipes
-!*.pre.h
+!*.PRE.H
 !gencodecs.h
 !gencodecs-pp.c
 !Makefile

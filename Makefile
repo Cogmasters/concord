@@ -11,6 +11,7 @@ THIRDP_DIR    = $(CORE_DIR)/third-party
 EXAMPLES_DIR  = examples
 TEST_DIR      = test
 
+# this file is used to check if gencodecs files have been generated
 GENCODECS_HDR = $(GENCODECS_DIR)/discord_codecs.h
 
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
@@ -54,7 +55,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/webhook.o
 VOICE_OBJS    = $(SRC_DIR)/discord-voice.o
 
-OBJS = $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
+OBJS += $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
 
 ARLIB   = $(LIBDIR)/libdiscord.a
 ARFLAGS = -cqsv
@@ -78,17 +79,17 @@ all: $(ARLIB)
 
 shared: 
 	@ $(MAKE) clean
-	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) $(SOLIB)
+	@ CFLAGS=$(SOFLAGS) $(MAKE) $(SOLIB)
 
 shared_osx:
 	@ $(MAKE) clean
-	@ CFLAGS="$(DYFLAGS) $(CFLAGS)" $(MAKE) $(DYLIB)
+	@ CFLAGS=$(DYFLAGS) $(MAKE) $(DYLIB)
 
 voice:
-	@ CFLAGS="$(CFLAGS) -DCCORD_VOICE" $(MAKE) OBJS="$(OBJS) $(VOICE_OBJS)"
+	@ CFLAGS=-DCCORD_VOICE OBJS=$(VOICE_OBJS) $(MAKE)
 
 debug:
-	@ CFLAGS="$(CFLAGS) -DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" $(MAKE)
+	@ CFLAGS="-DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" $(MAKE)
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -140,7 +141,7 @@ echo:
 	@ echo -e 'VOICE_OBJS: $(VOICE_OBJS)\n'
 
 clean: 
-	@ $(RM) $(OBJS) $(VOICE_OBJS)
+	@ $(RM) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) $(VOICE_OBJS)
 	@ $(RM) -r $(LIBDIR)
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean

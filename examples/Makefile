@@ -7,8 +7,7 @@ THIRDP_DIR    = $(CORE_DIR)/third-party
 INCLUDE_DIR   = $(TOP)/include
 GENCODECS_DIR = $(TOP)/gencodecs
 
-VOICE_BOTS = voice-join
-BOTS       = 8ball \
+STD_BOTS   = 8ball \
              audit-log \
              ban \
              channel \
@@ -31,22 +30,26 @@ BOTS       = 8ball \
              spam \
              webhook \
              timers
+VOICE_BOTS = voice-join
 
-CFLAGS  = -O0 -g -pthread -Wall \
-          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) -I$(GENCODECS_DIR)
-LDFLAGS = -L$(TOP)/lib
-LDLIBS  = -ldiscord -lcurl
+BOTS += $(STD_BOTS)
+
+CFLAGS  += -O0 -g -pthread -Wall \
+           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) -I$(GENCODECS_DIR)
+LDFLAGS  = -L$(TOP)/lib
+LDLIBS   = -ldiscord -lcurl
 
 all: $(BOTS)
 
 voice:
-	@ CFLAGS="$(CFLAGS) -DCCORD_VOICE" $(MAKE) BOTS="$(BOTS) $(VOICE_BOTS)"
+	@ CFLAGS=-DCCORD_VOICE BOTS=$(VOICE_BOTS) $(MAKE)
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
-	@ echo -e 'BOTS: $(BOTS)\n'
+	@ echo -e 'STD_BOTS: $(STD_BOTS)\n'
+	@ echo -e 'VOICE_BOTS: $(VOICE_BOTS)\n'
 
 clean:
-	@ $(RM) $(BOTS) $(VOICE_BOTS)
+	@ $(RM) $(STD_BOTS) $(VOICE_BOTS)
 
 .PHONY: all echo clean
