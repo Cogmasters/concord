@@ -529,7 +529,8 @@ discord_gateway_init(struct discord_gateway *gw,
     /* client connection status */
     gw->session = calloc(1, sizeof *gw->session);
     gw->session->retry.enable = true;
-    gw->session->retry.limit = 5; /* FIXME: shouldn't be a hard limit */
+    /* default infinite retries TODO: configurable */
+    gw->session->retry.limit = -1;
 
     /* default callbacks */
     gw->scheduler = _discord_on_scheduler_default;
@@ -703,7 +704,7 @@ discord_gateway_start(struct discord_gateway *gw)
 {
     struct ccord_szbuf json = { 0 };
 
-    if (gw->session->retry.attempt >= gw->session->retry.limit) {
+    if (gw->session->retry.attempt == gw->session->retry.limit) {
         logconf_fatal(&gw->conf,
                       "Failed reconnecting to Discord after %d tries",
                       gw->session->retry.limit);
