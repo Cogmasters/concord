@@ -100,17 +100,14 @@ examples: all
 gencodecs:
 	@ $(MAKE) -C $(GENCODECS_DIR)
 
-$(ARLIB): $(OBJS) | $(LIBDIR)
+$(ARLIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $?
 
-$(SOLIB): $(OBJS) | $(LIBDIR)
+$(SOLIB): $(OBJS)
 	$(CC) -shared $(LDFLAGS) -o $@ $<
 
-$(DYLIB): $(OBJS) | $(LIBDIR)
+$(DYLIB): $(OBJS)
 	$(CC) -dynamiclib $(DYFLAGS) -o $@ $<
-
-$(LIBDIR):
-	@ mkdir -p $@
 
 $(OBJS): $(GENCODECS_HDR)
 
@@ -142,7 +139,7 @@ echo:
 
 clean: 
 	@ $(RM) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) $(VOICE_OBJS)
-	@ $(RM) -r $(LIBDIR)
+	@ $(RM) -r $(LIBDIR)/*
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean
 
