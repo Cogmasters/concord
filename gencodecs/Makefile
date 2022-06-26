@@ -83,8 +83,8 @@ $(HEADERS): $(INPUT) $(PP)
 	@ echo $(DOXYGEN_DESC) > $(DOCS_DIR)/$@
 	@ echo "#ifndef $(HEADER_TAG)" >> $(DOCS_DIR)/$@
 	@ echo "#define $(HEADER_TAG)" >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -DGENCODECS_READ=$< $(CPPFLAGS) -CC $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=$< $(CPPFLAGS) $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -DGENCODECS_READ=\"$<\" $(CPPFLAGS) -CC $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" $(CPPFLAGS) $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $(DOCS_DIR)/$@
 
 echo:
