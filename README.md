@@ -86,7 +86,7 @@ void on_message(struct discord *client, const struct discord_message *event) {
 
 int main(void) {
     struct discord *client = discord_init(BOT_TOKEN);
-    discord_add_intent(client, 1 << 15); // required for message contents
+    discord_add_intent(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message);
     discord_run(client);
@@ -187,7 +187,7 @@ $ CFLAGS="-pthread -lpthread" make
 
 ## Configuring Concord
 
-[discord\_config\_init()][discord-config-init] is the initialization method that allows configuring your bot without requiring recompiling.
+[discord\_config\_init()][discord-config-init] is the initialization method that allows configuring your bot without recompiling.
 
 The following outlines `config.json` fields:
 ```js

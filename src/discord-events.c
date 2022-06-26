@@ -97,7 +97,8 @@ discord_set_on_command(struct discord *client,
 
     discord_message_commands_append(&client->commands, command, length, cb);
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
-                                    | DISCORD_GATEWAY_DIRECT_MESSAGES);
+                                    | DISCORD_GATEWAY_DIRECT_MESSAGES
+                                    | DISCORD_GATEWAY_MESSAGE_CONTENT);
 }
 
 void

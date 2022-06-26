@@ -23,8 +23,16 @@ extern "C" {
 #include "concord-once.h"
 #include "io_poller.h"
 
-#define DISCORD_API_BASE_URL       "https://discord.com/api/v9"
-#define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
+#ifndef DISCORD_VERSION
+/**
+ * @brief The Discord API version to use
+ * @warning only change this if you know what you are doing!
+ */
+#define DISCORD_VERSION "10"
+#endif
+
+#define DISCORD_API_BASE_URL       "https://discord.com/api/v" DISCORD_VERSION
+#define DISCORD_GATEWAY_URL_SUFFIX "?v=" DISCORD_VERSION "&encoding=json"
 
 /* forward declaration */
 struct discord;
@@ -189,7 +197,8 @@ struct discord *discord_config_init(const char config_file[]);
  * @note your bot **MUST** have been initialized with discord_config_init()
  *
  * @code{.c}
- * // Assume we want to extract the following config.json field's 'foo' and 'bar':
+ * // Assume we want to extract the following config.json field's 'foo' and
+ * 'bar':
  * // "field": { "foo": "a string", "bar": 1234 }
  *
  * ...
