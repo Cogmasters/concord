@@ -2,6 +2,7 @@
 *
 # But these
 !.vscode
+!core
 !docs
 !doxygen-awesome-css
 !examples
