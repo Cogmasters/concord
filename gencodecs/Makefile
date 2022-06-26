@@ -20,32 +20,32 @@ OUT_H        = $(INPUT_NO_EXT).h
 OUT_O        = $(INPUT_NO_EXT).o
 
 # Generate individual headers for doxygen's parsing
-HEADERS = $(API_DIR)/application.h \
-          $(API_DIR)/application_commands.h \
-          $(API_DIR)/audit_log.h \
-          $(API_DIR)/auto_moderation.h \
-          $(API_DIR)/channel.h \
-          $(API_DIR)/custom.h \
-          $(API_DIR)/emoji.h \
-          $(API_DIR)/gateway.h \
-          $(API_DIR)/guild.h \
+HEADERS = $(API_DIR)/application.h           \
+          $(API_DIR)/application_commands.h  \
+          $(API_DIR)/audit_log.h             \
+          $(API_DIR)/auto_moderation.h       \
+          $(API_DIR)/channel.h               \
+          $(API_DIR)/custom.h                \
+          $(API_DIR)/emoji.h                 \
+          $(API_DIR)/gateway.h               \
+          $(API_DIR)/guild.h                 \
           $(API_DIR)/guild_scheduled_event.h \
-          $(API_DIR)/guild_template.h \
-          $(API_DIR)/interactions.h \
-          $(API_DIR)/invite.h \
-          $(API_DIR)/message_components.h \
-          $(API_DIR)/permissions.h \
-          $(API_DIR)/stage_instance.h \
-          $(API_DIR)/sticker.h \
-          $(API_DIR)/teams.h \
-          $(API_DIR)/user.h \
-          $(API_DIR)/voice.h \
-          $(API_DIR)/voice_connections.h \
+          $(API_DIR)/guild_template.h        \
+          $(API_DIR)/interactions.h          \
+          $(API_DIR)/invite.h                \
+          $(API_DIR)/message_components.h    \
+          $(API_DIR)/permissions.h           \
+          $(API_DIR)/stage_instance.h        \
+          $(API_DIR)/sticker.h               \
+          $(API_DIR)/teams.h                 \
+          $(API_DIR)/user.h                  \
+          $(API_DIR)/voice.h                 \
+          $(API_DIR)/voice_connections.h     \
           $(API_DIR)/webhook.h
 
-CFLAGS   = -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR)
-DFLAGS   = -DGENCODECS_INIT -DGENCODECS_JSON_ENCODER -DGENCODECS_JSON_DECODER
-CPPFLAGS = -nostdinc -P
+CFLAGS   += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR)
+DFLAGS   += -DGENCODECS_INIT -DGENCODECS_JSON_ENCODER -DGENCODECS_JSON_DECODER
+CPPFLAGS += -nostdinc -P
 
 # Convert 'foo/bar_baz.PRE.H' -> 'FOO_BAR_BAZ_H'
 HEADER_TAG   = "$$(echo '$<' | sed -e 's/\(.*\)\.PRE.H/\1/' | sed -e 's/\//_/' | tr '[:lower:]' '[:upper:]')_H"
@@ -83,8 +83,8 @@ $(HEADERS): $(INPUT) $(PP)
 	@ echo $(DOXYGEN_DESC) > $(DOCS_DIR)/$@
 	@ echo "#ifndef $(HEADER_TAG)" >> $(DOCS_DIR)/$@
 	@ echo "#define $(HEADER_TAG)" >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -DGENCODECS_READ=\"$<\" $(CPPFLAGS) -CC $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" $(CPPFLAGS) $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA -DGENCODECS_READ=$< $(CPPFLAGS) -CC $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=$< $(CPPFLAGS) $(INPUT) | ./$(PP) >> $(DOCS_DIR)/$@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $(DOCS_DIR)/$@
 
 echo:
@@ -95,6 +95,6 @@ echo:
 	@ echo 'OUT_O: $(OUT_O)'
 
 clean:
-	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(DOCS_DIR)/$(API_DIR)/*.h *.dSYM
+	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(DOCS_DIR)/$(API_DIR)/*.h
 
 .PHONY: docs echo clean

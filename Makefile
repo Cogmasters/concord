@@ -11,15 +11,12 @@ THIRDP_DIR    = $(CORE_DIR)/third-party
 EXAMPLES_DIR  = examples
 TEST_DIR      = test
 
-# this file is used to check if gencodecs files have been generated
-GENCODECS_HDR = $(GENCODECS_DIR)/discord_codecs.h
-
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
-CORE_OBJS     = $(CORE_DIR)/cog-utils.o  \
-                $(CORE_DIR)/io_poller.o  \
-                $(CORE_DIR)/user-agent.o \
-                $(CORE_DIR)/websockets.o
-THIRDP_OBJS   = $(THIRDP_DIR)/curl-websocket.o \
+CORE_OBJS     = $(CORE_DIR)/cog-utils.o        \
+                $(CORE_DIR)/io_poller.o        \
+                $(CORE_DIR)/user-agent.o       \
+                $(CORE_DIR)/websockets.o       \
+                $(THIRDP_DIR)/curl-websocket.o \
                 $(THIRDP_DIR)/jsmn-find.o      \
                 $(THIRDP_DIR)/json-build.o     \
                 $(THIRDP_DIR)/log.o            \
@@ -55,7 +52,7 @@ DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
                 $(SRC_DIR)/webhook.o
 VOICE_OBJS    = $(SRC_DIR)/discord-voice.o
 
-OBJS += $(GENCODECS_OBJ) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
+OBJS += $(DISCORD_OBJS)
 
 ARLIB   = $(LIBDIR)/libdiscord.a
 ARFLAGS = -cqsv
@@ -72,9 +69,6 @@ CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR      \
           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) -I$(GENCODECS_DIR) \
           -I$(PREFIX)/include
 
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
-
 all: $(ARLIB)
 
 shared: 
@@ -85,33 +79,22 @@ shared_osx:
 	@ $(MAKE) clean
 	@ CFLAGS=$(DYFLAGS) $(MAKE) $(DYLIB)
 
-voice:
-	@ CFLAGS=-DCCORD_VOICE OBJS=$(VOICE_OBJS) $(MAKE)
+$(ARLIB): $(CORE_OBJS) $(GENCODECS_OBJ) $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
 
-debug:
-	@ CFLAGS="-DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" $(MAKE)
+$(SOLIB): $(CORE_OBJS) $(GENCODECS_OBJ) $(OBJS)
+	$(CC) -shared $(LDFLAGS) -o $@ $^
 
-test: all
-	@ $(MAKE) -C $(TEST_DIR)
+$(DYLIB): $(CORE_OBJS) $(GENCODECS_OBJ) $(OBJS)
+	$(CC) -dynamiclib $(DYFLAGS) -o $@ $^
 
-examples: all
-	@ $(MAKE) -C $(EXAMPLES_DIR)
+$(OBJS): $(GENCODECS_OBJ)
 
-gencodecs:
+$(GENCODECS_OBJ):
 	@ $(MAKE) -C $(GENCODECS_DIR)
 
-$(ARLIB): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $?
-
-$(SOLIB): $(OBJS)
-	$(CC) -shared $(LDFLAGS) -o $@ $<
-
-$(DYLIB): $(OBJS)
-	$(CC) -dynamiclib $(DYFLAGS) -o $@ $<
-
-$(OBJS): $(GENCODECS_HDR)
-
-$(GENCODECS_HDR): gencodecs
+$(CORE_OBJS):
+	@ $(MAKE) -C $(CORE_DIR)
 
 install:
 	@ mkdir -p $(PREFIX)/lib/
@@ -133,17 +116,27 @@ echo:
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'GENCODECS_OBJ: $(GENCODECS_OBJ)\n'
 	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
-	@ echo -e 'THIRDP_OBJS: $(THIRDP_OBJS)\n'
 	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
 	@ echo -e 'VOICE_OBJS: $(VOICE_OBJS)\n'
 
+voice:
+	@ CFLAGS=-DCCORD_VOICE OBJS=$(VOICE_OBJS) $(MAKE)
+
+debug:
+	@ CFLAGS="-DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" $(MAKE)
+
+test: all
+	@ $(MAKE) -C $(TEST_DIR)
+
+examples: all
+	@ $(MAKE) -C $(EXAMPLES_DIR)
+
 clean: 
-	@ $(RM) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) $(VOICE_OBJS)
+	@ $(RM) $(DISCORD_OBJS) $(VOICE_OBJS) *.o
 	@ $(RM) -r $(LIBDIR)/*
+	@ $(MAKE) -C $(CORE_DIR) clean
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean
-
-purge: clean
 	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
-.PHONY: test examples install echo clean purge docs gencodecs
+.PHONY: test examples install echo clean docs
