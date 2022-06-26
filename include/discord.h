@@ -197,8 +197,7 @@ struct discord *discord_config_init(const char config_file[]);
  * @note your bot **MUST** have been initialized with discord_config_init()
  *
  * @code{.c}
- * // Assume we want to extract the following config.json field's 'foo' and
- * 'bar':
+ * // Assume the following custom config.json field to be extracted
  * // "field": { "foo": "a string", "bar": 1234 }
  *
  * ...
