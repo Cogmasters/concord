@@ -4,7 +4,6 @@ CC  = cc
 API_DIR     = api
 INCLUDE_DIR = $(TOP)/include
 CORE_DIR    = $(TOP)/core
-THIRDP_DIR  = $(CORE_DIR)/third-party
 DOCS_DIR    = $(TOP)/docs
 
 # Gencodecs preprocessor (used after the CPP)
@@ -12,12 +11,13 @@ PP = gencodecs-pp
 
 # Input file name without its extension
 INPUT_NO_EXT = discord_codecs
+
 # Input file to be preprocessed
-INPUT        = $(INPUT_NO_EXT).PRE.H
+INPUT = $(INPUT_NO_EXT).PRE.H
 # Resulting single-file amalgamations after preprocessing input file
-OUT_C        = $(INPUT_NO_EXT).c
-OUT_H        = $(INPUT_NO_EXT).h
-OUT_O        = $(INPUT_NO_EXT).o
+OUT_C = $(INPUT_NO_EXT).c
+OUT_H = $(INPUT_NO_EXT).h
+OUT_O = $(INPUT_NO_EXT).o
 
 # Generate individual headers for doxygen's parsing
 HEADERS = $(API_DIR)/application.h           \
@@ -43,7 +43,7 @@ HEADERS = $(API_DIR)/application.h           \
           $(API_DIR)/voice_connections.h     \
           $(API_DIR)/webhook.h
 
-CFLAGS   += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR)
+CFLAGS   += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR)
 DFLAGS   += -DGENCODECS_INIT -DGENCODECS_JSON_ENCODER -DGENCODECS_JSON_DECODER
 CPPFLAGS += -nostdinc -P
 
@@ -54,7 +54,7 @@ DOXYGEN_DESC = "/**\n @file $@\n @author Cogmasters\n @brief Generated code\n*/"
 
 all: $(OUT_O)
 
-docs: $(HEADERS)
+headers: $(HEADERS)
 
 $(PP): $(PP).c
 	$(CC) $(CFLAGS) $< -o $@
@@ -97,4 +97,4 @@ echo:
 clean:
 	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(DOCS_DIR)/$(API_DIR)/*.h
 
-.PHONY: docs echo clean
+.PHONY: headers echo clean

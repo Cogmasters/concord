@@ -3,7 +3,6 @@ TOP = ..
 CC ?= gcc
 
 CORE_DIR      = $(TOP)/core
-THIRDP_DIR    = $(CORE_DIR)/third-party
 INCLUDE_DIR   = $(TOP)/include
 GENCODECS_DIR = $(TOP)/gencodecs
 
@@ -35,7 +34,7 @@ VOICE_BOTS = voice-join
 BOTS += $(STD_BOTS)
 
 CFLAGS  += -O0 -g -pthread -Wall \
-           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) -I$(GENCODECS_DIR)
+           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR)
 LDFLAGS  = -L$(TOP)/lib
 LDLIBS   = -ldiscord -lcurl
 

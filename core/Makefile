@@ -1,29 +1,27 @@
 CC ?= gcc
 
-CORE_DIR   = .
-THIRDP_DIR = third-party
+OBJS = cog-utils.o      \
+       io_poller.o      \
+       user-agent.o     \
+       websockets.o     \
+       curl-websocket.o \
+       jsmn-find.o      \
+       json-build.o     \
+       log.o            \
+       logconf.o        \
+       priority_queue.o \
+       sha1.o           \
+       threadpool.o
 
-OBJS = cog-utils.o                    \
-       io_poller.o                    \
-       user-agent.o                   \
-       websockets.o                   \
-       $(THIRDP_DIR)/curl-websocket.o \
-       $(THIRDP_DIR)/jsmn-find.o      \
-       $(THIRDP_DIR)/json-build.o     \
-       $(THIRDP_DIR)/log.o            \
-       $(THIRDP_DIR)/logconf.o        \
-       $(THIRDP_DIR)/priority_queue.o \
-       $(THIRDP_DIR)/sha1.o           \
-       $(THIRDP_DIR)/threadpool.o
-
-WFLAGS += -Wall -Wextra -Wpedantic
+WFLAGS  = -Wall -Wextra -Wpedantic
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
-          -I$(CORE_DIR) -I$(THIRDP_DIR) # $(WFLAGS)
+          -I. # $(WFLAGS)
 
 all: $(OBJS)
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
+	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 
 clean: 
