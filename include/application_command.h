@@ -2,6 +2,7 @@
  * @file application_command.h
  * @author Cogmasters
  * @brief Application Command public functions and datatypes
+ * @todo application_id should be cached and used when its input value is `0` 
  */
 
 #ifndef DISCORD_APPLICATION_COMMAND_H

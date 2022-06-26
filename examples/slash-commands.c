@@ -26,6 +26,8 @@ on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
+
+    g_app_id = event->application->id;
 }
 
 void
@@ -166,14 +168,6 @@ main(int argc, char *argv[])
 
     print_usage();
     fgetc(stdin); // wait for input
-
-    printf("Please provide a valid application id in order to test the Slash "
-           "Commands functionality, it can be obtained from: "
-           "https://discord.com/developers/applications\n");
-    do {
-        printf("Application ID:\n");
-        fscanf(stdin, "%" SCNu64, &g_app_id);
-    } while (!g_app_id || errno == ERANGE);
 
     discord_run(client);
 
