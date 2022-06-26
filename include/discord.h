@@ -186,7 +186,26 @@ struct discord *discord_config_init(const char config_file[]);
 
 /**
  * @brief Get the contents from the config file field
- * @note only works if your bot has been initialized with discord_config_init()
+ * @note your bot **MUST** have been initialized with discord_config_init()
+ *
+ * @code{.c}
+ * // Assume we want to extract the following config.json field's 'foo' and 'bar':
+ * // "field": { "foo": "a string", "bar": 1234 }
+ *
+ * ...
+ * struct ccord_szbuf_readonly value;
+ * char foo[128];
+ * long bar;
+ *
+ * // field.foo
+ * value = discord_config_get_field(client, (char *[2]){ "field", "foo" }, 2);
+ * snprintf(foo, sizeof(foo), "%.*s", (int)value.size, value.start);
+ * // field.bar
+ * value = discord_config_get_field(client, (char *[2]){ "field", "bar" }, 2);
+ * bar = strtol(value.start, NULL, 10);
+ *
+ * printf("%s %ld", foo, bar); // "a string" 1234
+ * @endcode
  *
  * @param client the client created with discord_config_init()
  * @param path the JSON key path

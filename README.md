@@ -3,6 +3,8 @@
 [migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
+[discord-config-init]: https://cogmasters.github.io/concord/group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb
+[discord-config-get-field]: https://cogmasters.github.io/concord/group__Discord.html#gac4486003ffab83de397c0bebb74b3307
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
@@ -185,7 +187,9 @@ $ CFLAGS="-pthread -lpthread" make
 
 ## Configuring Concord
 
-The following outlines the default fields of `config.json`
+[discord\_config\_init()][discord-config-init] is the initialization method that allows configuring your bot without requiring recompiling.
+
+The following outlines `config.json` fields:
 ```js
 {
   "logging": { // logging directives
@@ -206,9 +210,11 @@ The following outlines the default fields of `config.json`
       "enable": false,                 // enable default command prefix
       "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
     }
-  }
+  },
+  ... // here you can add your custom fields *
 }
 ```
+\* *Your custom field contents can be fetched with [discord\_config\_get\_field()][discord-config-get-field]*
 
 ## Test Copycat-Bot
 
