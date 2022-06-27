@@ -1,5 +1,7 @@
 CC ?= gcc
 
+PREFIX ?= /usr/local
+
 OBJS = cog-utils.o      \
        io_poller.o      \
        user-agent.o     \
@@ -15,7 +17,7 @@ OBJS = cog-utils.o      \
 
 WFLAGS  = -Wall -Wextra -Wpedantic
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
-          -I. # $(WFLAGS)
+          -I. -I$(PREFIX)/include # $(WFLAGS)
 
 all: $(OBJS)
 
