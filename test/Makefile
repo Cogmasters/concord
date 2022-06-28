@@ -23,6 +23,6 @@ echo:
 	@ echo -e 'TESTS: $(TESTS)\n'
 
 clean:
-	@ $(RM) $(TESTS)
+	@ rm -f $(TESTS)
 
 .PHONY: all echo clean

@@ -62,6 +62,9 @@ ARFLAGS = -cqsv
 SOFLAGS = -fPIC
 DYFLAGS = -fPIC 
 
+.c.o:
+	$(CC) -c $(CFLAGS) $(WFLAGS) -o $@ $<
+
 all: static
 
 static: $(ARLIB)
@@ -82,9 +85,6 @@ deps:
 	@ $(MAKE) -C $(GENCODECS_DIR)
 	@ $(MAKE) $(OBJS)
 
-.c.o:
-	$(CC) -c $(CFLAGS) $(WFLAGS) -o $@ $<
-
 echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'PREFIX: $(PREFIX)\n'
@@ -98,8 +98,8 @@ voice:
 	@ CFLAGS=-DCCORD_VOICE OBJS="$(VOICE_OBJS)" $(MAKE)
 
 clean: 
-	@ $(RM) -r $(LIBDIR)/*
-	@ $(RM) $(OBJS) $(VOICE_OBJS)
+	@ rm -rf $(LIBDIR)/*
+	@ rm -f $(OBJS) $(VOICE_OBJS)
 	@ $(MAKE) -C $(CORE_DIR) clean
 purge: clean
 	@ $(MAKE) -C $(GENCODECS_DIR) clean

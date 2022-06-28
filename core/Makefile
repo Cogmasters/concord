@@ -27,6 +27,6 @@ echo:
 	@ echo -e 'OBJS: $(OBJS)\n'
 
 clean: 
-	@ $(RM) $(OBJS)
+	@ rm -f $(OBJS)
 
 .PHONY: echo clean

@@ -49,6 +49,6 @@ echo:
 	@ echo -e 'VOICE_BOTS: $(VOICE_BOTS)\n'
 
 clean:
-	@ $(RM) $(STD_BOTS) $(VOICE_BOTS)
+	@ rm -f $(STD_BOTS) $(VOICE_BOTS)
 
 .PHONY: all echo clean

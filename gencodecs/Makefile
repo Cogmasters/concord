@@ -54,13 +54,11 @@ DOXYGEN_DESC = "/**\n @file $@\n @author Cogmasters\n @brief Generated code\n*/"
 
 all: $(OUT_O)
 
-headers: $(HEADERS)
-
 $(PP): $(PP).c
 	$(CC) $(CFLAGS) $< -o $@
+
 $(OUT_O): $(OUT_C) $(OUT_H)
 	$(CC) -c $(CFLAGS) $< -o $@
-
 $(OUT_H): $(INPUT) $(PP)
 	@ echo "Generating header"
 	@ echo "#ifndef $(HEADER_TAG)" > $@
@@ -68,13 +66,14 @@ $(OUT_H): $(INPUT) $(PP)
 	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA $(CPPFLAGS) $(INPUT) | ./$(PP) >> $@
 	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_HEADER $(CPPFLAGS) $(INPUT) | ./$(PP) >> $@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
-
 $(OUT_C): $(INPUT) $(PP)
 	@ echo "Generating forward definitions"
 	@ echo "#include \"$(OUT_H)\"" > $(OUT_C)
 	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_FORWARD -DGENCODECS_DATA $(CPPFLAGS) $(INPUT) | ./$(PP) >> $(OUT_C)
 	@ echo "Generating source"	
 	$(CPP) $(CFLAGS) $(DFLAGS) -DGENCODECS_DATA $(CPPFLAGS) $(INPUT) | ./$(PP) >> $(OUT_C)
+
+headers: $(HEADERS)
 
 $(HEADERS): $(INPUT) $(PP)
 
@@ -95,6 +94,6 @@ echo:
 	@ echo 'OUT_O: $(OUT_O)'
 
 clean:
-	@ $(RM) $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(DOCS_DIR)/$(API_DIR)/*.h
+	@ rm -f $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(DOCS_DIR)/$(API_DIR)/*.h
 
 .PHONY: headers echo clean
