@@ -13,7 +13,7 @@ PP = gencodecs-pp
 INPUT_NO_EXT = discord_codecs
 
 # Input file to be preprocessed
-INPUT = $(INPUT_NO_EXT).PRE.H
+INPUT = $(INPUT_NO_EXT).PRE.h
 # Resulting single-file amalgamations after preprocessing input file
 OUT_C = $(INPUT_NO_EXT).c
 OUT_H = $(INPUT_NO_EXT).h
@@ -47,8 +47,8 @@ CFLAGS   += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR)
 DFLAGS   += -DGENCODECS_INIT -DGENCODECS_JSON_ENCODER -DGENCODECS_JSON_DECODER
 CPPFLAGS += -nostdinc -P
 
-# Convert 'foo/bar_baz.PRE.H' -> 'FOO_BAR_BAZ_H'
-HEADER_TAG   = "$$(echo '$<' | sed -e 's/\(.*\)\.PRE.H/\1/' | sed -e 's/\//_/' | tr '[:lower:]' '[:upper:]')_H"
+# Convert 'foo/bar_baz.PRE.h' -> 'FOO_BAR_BAZ_H'
+HEADER_TAG   = "$$(echo '$<' | sed -e 's/\(.*\)\.PRE.h/\1/' | sed -e 's/\//_/' | tr '[:lower:]' '[:upper:]')_H"
 # Doxygen file description
 DOXYGEN_DESC = "/**\n @file $@\n @author Cogmasters\n @brief Generated code\n*/"
 
@@ -77,8 +77,8 @@ headers: $(HEADERS)
 
 $(HEADERS): $(INPUT) $(PP)
 
-.SUFFIXES: .PRE.H .h
-.PRE.H.h:
+.SUFFIXES: .PRE.h .h
+.PRE.h.h:
 	@ echo $(DOXYGEN_DESC) > $(DOCS_DIR)/$@
 	@ echo "#ifndef $(HEADER_TAG)" >> $(DOCS_DIR)/$@
 	@ echo "#define $(HEADER_TAG)" >> $(DOCS_DIR)/$@
