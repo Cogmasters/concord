@@ -13,10 +13,8 @@ jobs:
 
       - name: Dependencies
         run: |
-          echo "Installing build-essential"
-          sudo apt-get install -y build-essential
           echo "Installing libcurl"
-          sudo apt-get install -y libcurl4-openssl-dev
+          sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Run Makefile
         run: |
