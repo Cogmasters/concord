@@ -117,22 +117,24 @@ The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl fro
 
 ### On Linux, BSD, and Mac OS X
 
+*(note -- `#` means that you should be running as root)*
+
 #### Ubuntu and Debian
 
 ```console
-$ sudo apt install -y build-essential libcurl4-openssl-dev
+# apt update && apt install -y libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```console
-$ sudo xbps-install -S libcurl-devel
+# xbps-install -S libcurl-devel
 ```
 
 #### Alpine
 
 ```console
-$ sudo apk add curl-dev
+# apk add curl-dev
 ```
 
 #### FreeBSD
