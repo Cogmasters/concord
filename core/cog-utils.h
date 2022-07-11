@@ -107,7 +107,6 @@ size_t cog_asprintf(char **strp, const char fmt[], ...);
  */
 int cog_sleep_ms(const long tms);
 
-
 /**
  * @brief Sleep for amount of microseconds
  *
