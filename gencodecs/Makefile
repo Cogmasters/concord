@@ -43,7 +43,8 @@ HEADERS = $(API_DIR)/application.h           \
           $(API_DIR)/voice_connections.h     \
           $(API_DIR)/webhook.h
 
-CFLAGS   += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR)
+CFLAGS   ?= -O2
+CFLAGS   += -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(CORE_DIR)
 DFLAGS   += -DGENCODECS_INIT -DGENCODECS_JSON_ENCODER -DGENCODECS_JSON_DECODER
 CPPFLAGS += -nostdinc -P
 

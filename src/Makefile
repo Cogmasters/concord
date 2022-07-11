@@ -51,7 +51,8 @@ OBJS += concord-once.o             \
         webhook.o
 
 WFLAGS  = -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
-CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
+CFLAGS ?= -O2
+CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR) -I$(PREFIX)/include
 
 ARLIB = $(LIBDIR)/libdiscord.a

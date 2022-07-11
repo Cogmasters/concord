@@ -50,7 +50,7 @@ on_io_poller_wakeup(struct io_poller *io,
                     void *user_data)
 {
     char buf[0x1000];
-    read(io->wakeup_fds[0], buf, sizeof buf);
+    (void)!read(io->wakeup_fds[0], buf, sizeof buf);
 }
 
 struct io_poller *
@@ -97,7 +97,7 @@ void
 io_poller_wakeup(struct io_poller *io)
 {
     char buf = 0;
-    write(io->wakeup_fds[1], &buf, sizeof buf);
+    (void)!write(io->wakeup_fds[1], &buf, sizeof buf);
 }
 
 int

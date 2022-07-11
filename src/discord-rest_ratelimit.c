@@ -327,7 +327,7 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
     else if (reset.size) {
         struct ua_szbuf_readonly date = ua_info_get_header(info, "date");
         /* get approximate elapsed time since request */
-        struct PsnipClockTimespec ts;
+        struct PsnipClockTimespec ts = { 0 };
         /* the Discord time in milliseconds */
         u64unix_ms server;
         /* the Discord time + request's elapsed time */

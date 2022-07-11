@@ -22,11 +22,14 @@ cog_load_whole_file_fp(FILE *fp, size_t *len)
   long fsize = ftell(fp);
   fseek(fp, 0, SEEK_SET);
 
+  if (-1 == fsize) return NULL;
+
   char *str = malloc(fsize + 1);
-
   str[fsize] = '\0';
-  fread(str, 1, fsize, fp);
-
+  if (!fread(str, 1, fsize, fp)) {
+      free(str);
+      str = NULL;
+  }
   if (len) *len = fsize;
 
   return str;

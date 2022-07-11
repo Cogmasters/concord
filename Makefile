@@ -13,8 +13,9 @@ CORE_DIR      = core
 EXAMPLES_DIR  = examples
 TEST_DIR      = test
 
-SOFLAGS = -fPIC
-DYFLAGS = -fPIC 
+SOFLAGS     = -fPIC
+DYFLAGS     = -fPIC 
+DEBUG_FLAGS = -O0 -g
 
 all: static
 
@@ -51,9 +52,9 @@ echo:
 voice:
 	@ $(MAKE) -C $(SRC_DIR) $@
 debug:
-	@ CFLAGS="-DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_HTTP" $(MAKE)
+	@ CFLAGS="$(DEBUG_FLAGS)" $(MAKE)
 
-test: all
+test: debug
 	@ $(MAKE) -C $(TEST_DIR)
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
