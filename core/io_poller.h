@@ -8,8 +8,8 @@
  * @brief The flags to poll for
  */
 enum io_poller_events {
-  IO_POLLER_IN  = 1 << 0,
-  IO_POLLER_OUT = 1 << 1,
+    IO_POLLER_IN = 1 << 0,
+    IO_POLLER_OUT = 1 << 1,
 };
 
 /**
@@ -34,11 +34,10 @@ void io_poller_destroy(struct io_poller *io);
 
 /**
  * @brief wakeup the thread listening to this io_poller
- * 
+ *
  * @param io the io_poller to wake up
  */
-void
-io_poller_wakeup(struct io_poller *io);
+void io_poller_wakeup(struct io_poller *io);
 
 /**
  * @brief wait for events to be triggered
@@ -81,9 +80,9 @@ bool io_poller_socket_del(struct io_poller *io, io_poller_socket sock);
 /**
  * @brief callback for when curl multi should be performed on
  */
-typedef int (*io_poller_curl_cb)(struct io_poller *io,
-                                 CURLM *multi,
-                                 void *user_data);
+typedef int (*io_poller_curl_multi_cb)(struct io_poller *io,
+                                       CURLM *multi,
+                                       void *user_data);
 
 /**
  * @brief add or modifies a curl multi to watch list
@@ -95,7 +94,7 @@ typedef int (*io_poller_curl_cb)(struct io_poller *io,
  */
 bool io_poller_curlm_add(struct io_poller *io,
                          CURLM *multi,
-                         io_poller_curl_cb cb,
+                         io_poller_curl_multi_cb cb,
                          void *user_data);
 
 /**

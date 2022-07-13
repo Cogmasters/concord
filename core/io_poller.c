@@ -91,7 +91,7 @@ struct io_curlm {
     CURLM *multi;
     struct io_poller *io_poller;
     struct fd_map *fds;
-    io_poller_curl_cb cb;
+    io_poller_curl_multi_cb cb;
     int64_t timeout;
     void *user_data;
     int running;
@@ -460,7 +460,7 @@ curl_timer_cb(CURLM *multi, long timeout_ms, void *userp)
 bool
 io_poller_curlm_add(struct io_poller *io,
                     CURLM *multi,
-                    io_poller_curl_cb cb,
+                    io_poller_curl_multi_cb cb,
                     void *user_data)
 {
     struct io_curlm *io_curlm;
