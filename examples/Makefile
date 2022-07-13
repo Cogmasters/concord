@@ -28,7 +28,8 @@ STD_BOTS   = 8ball \
              slash-commands2 \
              spam \
              webhook \
-             timers
+             timers \
+             curl
 VOICE_BOTS = voice-join
 
 BOTS += $(STD_BOTS)
