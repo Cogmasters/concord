@@ -1,0 +1,15 @@
+core, utilities, API coverage, documentation:
+    Lucas Müller <müller.lucas@proton.me>
+
+timers, IO polling, priority queue:
+    (Anotra) <github.com/Anotra>
+
+chash, carray, type-safety improvements, API coverage:
+    (tarbomb) <github.com/tarbomb>
+
+portability, build-system, documentation:
+    (HackerSmacker) <github.com/HackerSmacker>
+
+API coverage:
+    Tristan Wellman (__Oblivion__) <github.com/TristanWellman>
+    (Azbantium) <github.com/Azbantium>
