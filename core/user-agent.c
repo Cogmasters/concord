@@ -254,6 +254,37 @@ ua_conn_add_header(struct ua_conn *conn,
         curl_slist_append(conn->header, buf);
 }
 
+void
+ua_conn_remove_header(struct ua_conn *conn, const char field[])
+{
+    size_t fieldlen = strlen(field);
+    struct curl_slist *node, *prev = NULL;
+    char *ptr;
+
+    /* check for match in existing fields */
+    for (node = conn->header; node != NULL; prev = node, node = node->next) {
+        if (!(ptr = strchr(node->data, ':')))
+            ERR("Missing ':' in header:\n\t%s", node->data);
+
+        if (fieldlen == (size_t)(ptr - node->data)
+            && 0 == strncasecmp(node->data, field, fieldlen))
+        {
+            if (!prev)
+                conn->header = node->next;
+            else
+                prev->next = node->next;
+
+            /* FIXME: For some reason, cygwin builds will abort on this
+             * free() */
+#ifndef __CYGWIN__
+            free(node->data);
+            free(node);
+#endif
+            return;
+        }
+    }
+}
+
 char *
 ua_conn_print_header(struct ua_conn *conn, char *buf, size_t bufsize)
 {
