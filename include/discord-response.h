@@ -101,6 +101,7 @@ DISCORD_RETURN(bans);
 DISCORD_RETURN(role);
 DISCORD_RETURN(roles);
 DISCORD_RETURN(welcome_screen);
+DISCORD_RETURN(prune_count);
 /** @} DiscordAPIGuild */
 
 /** @addtogroup DiscordAPIGuildTemplate

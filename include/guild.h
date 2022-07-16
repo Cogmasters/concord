@@ -391,6 +391,25 @@ CCORDcode discord_create_guild_role(struct discord *client,
                                     struct discord_ret_role *ret);
 
 /**
+ * @brief Returns the number of members that would be removed in a prune
+ *      operation
+ * @note Requires the KICK_MEMBERS permission
+ * @note By default will not remove users with roles. You can include specific
+ *      roles in your prune by providing the `params.include_roles` value
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to be checked
+ * @param params request parameters
+ * @CCORD_ret_obj{ret,prune_count}
+ * @CCORD_return
+ */
+CCORDcode discord_get_guild_prune_count(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_get_guild_prune_count *params,
+    struct discord_ret_prune_count *ret);
+
+/**
  * @brief Begin guild prune operation
  * @note Discord recommends for larger servers to set "compute_prune_count" to
  *       false
