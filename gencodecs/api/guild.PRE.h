@@ -258,14 +258,16 @@ PUB_STRUCT(discord_guild_preview)
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
 STRUCT_END
 
-STRUCT(discord_guild_widget_setting)
+/** @CCORD_pub_struct{discord_guild_widget_settings} */
+PUB_STRUCT(discord_guild_widget_settings)
   /** whether the widget is enabled */
     FIELD(enabled, bool, false)
   /** the widget channel ID */
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
 
-STRUCT(discord_get_guild_widget)
+/** @CCORD_pub_struct{discord_guild_widget} */
+PUB_STRUCT(discord_guild_widget)
   /** guild id */
     FIELD_SNOWFLAKE(id)
   /** guild name (2-100 characters) */
@@ -365,7 +367,7 @@ PUB_STRUCT(discord_integration)
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
-LIST(discord_integrations)
+PUB_LIST(discord_integrations)
     LISTTYPE_STRUCT(discord_integration)
 LIST_END
 

@@ -96,11 +96,14 @@ DISCORD_RETURN(guilds);
 DISCORD_RETURN(guild_preview);
 DISCORD_RETURN(guild_member);
 DISCORD_RETURN(guild_members);
+DISCORD_RETURN(guild_widget);
+DISCORD_RETURN(guild_widget_settings);
 DISCORD_RETURN(ban);
 DISCORD_RETURN(bans);
 DISCORD_RETURN(role);
 DISCORD_RETURN(roles);
 DISCORD_RETURN(welcome_screen);
+DISCORD_RETURN(integrations);
 DISCORD_RETURN(prune_count);
 /** @} DiscordAPIGuild */
 
