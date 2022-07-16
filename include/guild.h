@@ -427,9 +427,23 @@ CCORDcode discord_begin_guild_prune(struct discord *client,
                                     struct discord_ret *ret);
 
 /**
- * @brief Get guild invites
+ * @brief Get voice regions (includes VIP servers when the guild is
+ *      VIP-enabled)
  *
- * @note requires the MANAGE_GUILD permission
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get voice regions from
+ * @CCORD_ret_obj{ret,voice_regions}
+ * @CCORD_return
+ */
+CCORDcode discord_get_guild_voice_regions(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_ret_voice_regions *ret);
+
+/**
+ * @brief Get guild invites
+ * @note requires the `MANAGE_GUILD` permission
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get invites from
  * @CCORD_ret_obj{ret,invites}
@@ -438,6 +452,19 @@ CCORDcode discord_begin_guild_prune(struct discord *client,
 CCORDcode discord_get_guild_invites(struct discord *client,
                                     u64snowflake guild_id,
                                     struct discord_ret_invites *ret);
+
+/**
+ * @brief Get guild integrations
+ * @note requires the `MANAGE_GUILD` permission
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get integrations from
+ * @CCORD_ret_obj{ret,integrations}
+ * @CCORD_return
+ */
+CCORDcode discord_get_guild_integrations(struct discord *client,
+                                         u64snowflake guild_id,
+                                         struct discord_ret_integrations *ret);
 
 /**
  * @brief Deletes the integration for the guild. It will also delete any
@@ -457,8 +484,50 @@ CCORDcode discord_delete_guild_integrations(struct discord *client,
                                             struct discord_ret *ret);
 
 /**
+ * @brief Get a guild widget settings
+ * @note requires the `MANAGE_GUILD` permission
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get widget settings from
+ * @CCORD_ret_obj{ret,guild_widget_settings}
+ * @CCORD_return
+ */
+CCORDcode discord_get_guild_widget_settings(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_ret_guild_widget_settings *ret);
+
+/**
+ * @brief Modify a guild widget settings
+ * @note requires the `MANAGE_GUILD` permission
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to modify the widget settings
+ *      from
+ * @param param request parameters
+ * @CCORD_ret_obj{ret,guild_widget_settings}
+ * @CCORD_return
+ */
+CCORDcode discord_modify_guild_widget(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_guild_widget_settings *params,
+    struct discord_ret_guild_widget_settings *ret);
+
+/**
+ * @brief Get the widget for the guild
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get the widget from
+ * @CCORD_ret_obj{ret,guild_widget}
+ * @CCORD_return
+ */
+CCORDcode discord_get_guild_widget(struct discord *client,
+                                   u64snowflake guild_id,
+                                   struct discord_ret_guild_widget *ret);
+
+/**
  * @brief Get invite from a given guild
- * @note Requires the MANAGE_GUILD permission
  *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get vanity url from
@@ -468,6 +537,24 @@ CCORDcode discord_delete_guild_integrations(struct discord *client,
 CCORDcode discord_get_guild_vanity_url(struct discord *client,
                                        u64snowflake guild_id,
                                        struct discord_ret_invite *ret);
+
+/* TODO: handle ContentType: image/png and add 'struct discord_png' */
+#if 0
+/**
+ * @brief Get a PNG image widget for the guild
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get a PNG widget image from
+ * @param params request parameters
+ * @CCORD_ret_obj{ret,png}
+ * @CCORD_return
+ */
+CCORDcode discord_get_guild_widget_image(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_get_guild_widget_image *params,
+    struct discord_ret_png *ret);
+#endif
 
 /**
  * @brief Get the Welcome Screen for the guild
@@ -481,6 +568,59 @@ CCORDcode discord_get_guild_welcome_screen(
     struct discord *client,
     u64snowflake guild_id,
     struct discord_ret_welcome_screen *ret);
+
+/**
+ * @brief Modify the Welcome Screen for the guild
+ * @note requires the `MANAGE_GUILD` permission
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to modify welcome screen of
+ * @param params request parameters
+ * @CCORD_ret_obj{ret,welcome_screen}
+ * @CCORD_return
+ */
+CCORDcode discord_modify_guild_welcome_screen(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_modify_guild_welcome_screen *params,
+    struct discord_ret_welcome_screen *ret);
+
+/**
+ * @brief Updates the current user's voice state
+ * @see Caveats
+ * https://discord.com/developers/docs/resources/guild#modify-current-user-voice-state-caveats
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to modify the current user's
+ *      voice state
+ * @param params request parameters
+ * @CCORD_ret{ret}
+ * @CCORD_return
+ */
+CCORDcode discord_modify_current_user_voice_state(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_modify_current_user_voice_state *params,
+    struct discord_ret *ret);
+
+/**
+ * @brief Updates user's voice state
+ * @see Caveats
+ * https://discord.com/developers/docs/resources/guild#modify-user-voice-state-caveats
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to modify the user's voice state
+ * @param user_id the unique id of user to have its voice state modified
+ * @param params request parameters
+ * @CCORD_ret{ret}
+ * @CCORD_return
+ */
+CCORDcode discord_modify_user_voice_state(
+    struct discord *client,
+    u64snowflake guild_id,
+    u64snowflake user_id,
+    struct discord_modify_user_voice_state *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Modify the positions of a given role list for the guild
