@@ -203,7 +203,7 @@ This document outlines the Discord API currently supported by Concord.
 - [x] [Modify Guild Role Positions](https://discord.com/developers/docs/resources/guild#modify-guild-role-positions)
 - [x] [Modify Guild Role](https://discord.com/developers/docs/resources/guild#modify-guild-role)
 - [x] [Delete Guild Role](https://discord.com/developers/docs/resources/guild#delete-guild-role)
-- [ ] [Get Guild Prune Count](https://discord.com/developers/docs/resources/guild#get-guild-prune-count)
+- [x] [Get Guild Prune Count](https://discord.com/developers/docs/resources/guild#get-guild-prune-count)
 - [x] [Begin Guild Prune](https://discord.com/developers/docs/resources/guild#begin-guild-prune)
 - [ ] [Get Guild Voice Regions](https://discord.com/developers/docs/resources/guild#get-guild-voice-regions)
 - [x] [Get Guild Invites](https://discord.com/developers/docs/resources/guild#get-guild-invites)

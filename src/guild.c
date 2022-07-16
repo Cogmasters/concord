@@ -592,6 +592,51 @@ discord_delete_guild_role(struct discord *client,
 }
 
 CCORDcode
+discord_get_guild_prune_count(struct discord *client,
+                              u64snowflake guild_id,
+                              struct discord_get_guild_prune_count *params,
+                              struct discord_ret_prune_count *ret)
+{
+    struct discord_attributes attr = { 0 };
+    char query[1024] = "";
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (params) {
+        int offset = 0;
+
+        if (params->days) {
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                               "days=%d", params->days);
+            ASSERT_NOT_OOB(offset, sizeof(query));
+        }
+        if (params->include_roles && params->include_roles->size) {
+            int i = 0;
+
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                               "%sinclude_roles=", *query ? "&" : "");
+            ASSERT_NOT_OOB(offset, sizeof(query));
+
+            for (; i < params->include_roles->size - 1; ++i) {
+                offset +=
+                    snprintf(query + offset, sizeof(query) - (size_t)offset,
+                             "%" PRIu64 ",", params->include_roles->array[i]);
+                ASSERT_NOT_OOB(offset, sizeof(query));
+            }
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                               "%" PRIu64, params->include_roles->array[i]);
+            ASSERT_NOT_OOB(offset, sizeof(query));
+        }
+    }
+
+    DISCORD_ATTR_INIT(attr, discord_prune_count, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/prune%s%s", guild_id,
+                            *query ? "?" : "", query);
+}
+
+CCORDcode
 discord_begin_guild_prune(struct discord *client,
                           u64snowflake guild_id,
                           struct discord_begin_guild_prune *params,
