@@ -494,10 +494,14 @@ _discord_on_scheduler_default(struct discord *a,
 }
 
 static int
-_discord_on_gateway_perform(struct io_poller *io, CURLM *mhandle, void *p_gw)
+_discord_on_gateway_perform(struct io_poller *io,
+                            CURLM *mhandle,
+                            enum io_poller_events events,
+                            void *p_gw)
 {
     (void)io;
     (void)mhandle;
+    (void)events;
     return discord_gateway_perform(p_gw);
 }
 
@@ -517,7 +521,7 @@ discord_gateway_init(struct discord_gateway *gw,
 
     /* Web-Sockets handler */
     gw->mhandle = curl_multi_init();
-    io_poller_curlm_add(client->io_poller, gw->mhandle,
+    io_poller_curlm_add(client->io_poller, gw->mhandle, 0,
                         _discord_on_gateway_perform, gw);
     gw->ws = ws_init(&cbs, gw->mhandle, &attr);
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");

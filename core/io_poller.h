@@ -10,6 +10,9 @@
 enum io_poller_events {
     IO_POLLER_IN = 1 << 0,
     IO_POLLER_OUT = 1 << 1,
+    IO_POLLER_REMOVED = 1 << 8,
+    IO_POLLER_ADDED = 1 << 9,
+    IO_POLLER_UPDATED = 1 << 10,
 };
 
 /**
@@ -34,7 +37,7 @@ void io_poller_destroy(struct io_poller *io);
 
 /**
  * @brief set user data for io_poller
- * 
+ *
  * @param io
  * @param data user data
  */
@@ -42,7 +45,7 @@ void io_poller_set_data(struct io_poller *io, void *data);
 
 /**
  * @brief get user data from io_poller
- * 
+ *
  * @param io
  * @param data user data
  */
@@ -98,18 +101,21 @@ bool io_poller_socket_del(struct io_poller *io, io_poller_socket sock);
  */
 typedef int (*io_poller_curl_multi_cb)(struct io_poller *io,
                                        CURLM *multi,
+                                       enum io_poller_events events,
                                        void *user_data);
 
 /**
  * @brief add or modifies a curl multi to watch list
  * @param io the io_poller to add curl multi to
  * @param multi the curl multi to add or modify
+ * @param multi the events to watch for
  * @param cb the callback for when curl multi should be performed on
  * @param user_data custom user data
  * @return true on success
  */
 bool io_poller_curlm_add(struct io_poller *io,
                          CURLM *multi,
+                         enum io_poller_events events,
                          io_poller_curl_multi_cb cb,
                          void *user_data);
 

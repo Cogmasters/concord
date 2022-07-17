@@ -43,6 +43,7 @@
 struct io_poller_element {
     void *user_data;
     io_poller_cb cb;
+    enum io_poller_events events;
     enum io_poller_events revents;
     io_poller_socket fd;
 #if defined(IO_POLLER_USE_POLL)
@@ -94,6 +95,7 @@ struct io_curlm {
     io_poller_curl_multi_cb cb;
     int64_t timeout;
     void *user_data;
+    enum io_poller_events events;
     int running;
     bool should_perform;
 };
@@ -177,7 +179,7 @@ io_poller_destroy(struct io_poller *io)
 
     for (int i = 0; i < io->fd_map.watch->capacity; ++i) {
         if (io->fd_map.watch->buckets[i].state != CHASH_FILLED) continue;
-        free(io->fd_map.watch->buckets[i].value);
+        io_poller_socket_del(io, io->fd_map.watch->buckets[i].key);
     }
     chash_free(io->fd_map.watch, FD_MAP);
     chash_free(io->fd_map.ready, FD_MAP);
@@ -308,8 +310,8 @@ io_poller_perform(struct io_poller *io)
         struct io_curlm *io_curlm = io->curlm_map->buckets[i].value;
         if (io_curlm->should_perform) {
             io_curlm->should_perform = false;
-            int res = io_curlm->cb(io, io_curlm->multi, io_curlm->user_data);
-            if (res) return res;
+            int r = io_curlm->cb(io, io_curlm->multi, 0, io_curlm->user_data);
+            if (r) return r;
         }
     }
 
@@ -336,6 +338,7 @@ io_poller_socket_add(struct io_poller *io,
 
     val->fd = fd;
     val->cb = cb;
+    val->events = events;
     val->user_data = user_data;
 #if defined(IO_POLLER_USE_SELECT)
     if (events & IO_POLLER_IN)
@@ -382,6 +385,13 @@ io_poller_socket_add(struct io_poller *io,
     if (0 != epoll_ctl(io->epfd, ctl, fd, &event)) goto fail;
 #endif
     if (!found) chash_assign(io->fd_map.watch, fd, val, FD_MAP);
+
+    if (found && (val->events & IO_POLLER_UPDATED))
+        val->cb(io, IO_POLLER_UPDATED, val->user_data);
+
+    if (!found && val->events & IO_POLLER_ADDED)
+        val->cb(io, IO_POLLER_ADDED, val->user_data);
+
     return true;
 fail:
     if (!found) free(val);
@@ -412,6 +422,8 @@ io_poller_socket_del(struct io_poller *io, io_poller_socket fd)
     found = chash_contains(io->fd_map.ready, fd, found, FD_MAP);
     if (found) chash_delete(io->fd_map.ready, fd, FD_MAP);
     chash_delete(io->fd_map.watch, fd, FD_MAP);
+    if (val->events & IO_POLLER_REMOVED)
+        val->cb(io, IO_POLLER_REMOVED, val->user_data);
     free(val);
     return true;
 }
@@ -472,6 +484,7 @@ curl_timer_cb(CURLM *multi, long timeout_ms, void *userp)
 bool
 io_poller_curlm_add(struct io_poller *io,
                     CURLM *multi,
+                    enum io_poller_events events,
                     io_poller_curl_multi_cb cb,
                     void *user_data)
 {
@@ -491,7 +504,13 @@ io_poller_curlm_add(struct io_poller *io,
         chash_assign(io->curlm_map, (intptr_t)multi, io_curlm, INTPTR_MAP);
     }
     io_curlm->cb = cb;
+    io_curlm->events = events;
     io_curlm->user_data = user_data;
+
+    if (!found && (events & IO_POLLER_ADDED))
+        cb(io, multi, IO_POLLER_ADDED, user_data);
+    if (found && (events & IO_POLLER_UPDATED))
+        cb(io, multi, IO_POLLER_UPDATED, user_data);
     return true;
 }
 
@@ -512,6 +531,8 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
     curl_multi_setopt(multi, CURLMOPT_SOCKETFUNCTION, NULL);
     curl_multi_setopt(multi, CURLMOPT_SOCKETDATA, NULL);
     chash_free(io_curlm->fds, FD_MAP);
+    if (io_curlm->events & IO_POLLER_REMOVED)
+        io_curlm->cb(io, multi, IO_POLLER_REMOVED, io_curlm->user_data);
     chash_delete(io->curlm_map, multi, INTPTR_MAP);
     return false;
 }

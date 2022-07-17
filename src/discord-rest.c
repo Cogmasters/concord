@@ -50,10 +50,14 @@ _discord_rest_manager(void *p_rest)
 }
 
 static int
-_discord_on_rest_perform(struct io_poller *io, CURLM *mhandle, void *p_rest)
+_discord_on_rest_perform(struct io_poller *io,
+                         CURLM *mhandle,
+                         enum io_poller_events events,
+                         void *p_rest)
 {
     (void)io;
     (void)mhandle;
+    (void)events;
     return _discord_rest_perform(p_rest);
 }
 
@@ -71,7 +75,7 @@ discord_rest_init(struct discord_rest *rest,
 
     rest->io_poller = io_poller_create();
     discord_requestor_init(&rest->requestor, &rest->conf, token);
-    io_poller_curlm_add(rest->io_poller, rest->requestor.mhandle,
+    io_poller_curlm_add(rest->io_poller, rest->requestor.mhandle, 0,
                         &_discord_on_rest_perform, rest);
 
     rest->tpool = threadpool_create(1, 1024, 0);
