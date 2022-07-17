@@ -73,6 +73,8 @@ int io_poller_poll(struct io_poller *io, int milliseconds);
  */
 int io_poller_perform(struct io_poller *io);
 
+void *io_poller_socket_get_data(struct io_poller *io, io_poller_socket fd);
+
 /**
  * @brief adds or modifies a socket or file descriptor to watch list
  * @param io the io_poller to add socket to
@@ -103,6 +105,8 @@ typedef int (*io_poller_curl_multi_cb)(struct io_poller *io,
                                        CURLM *multi,
                                        enum io_poller_events events,
                                        void *user_data);
+
+void *io_poller_curlm_get_data(struct io_poller *io, CURLM *multi);
 
 /**
  * @brief add or modifies a curl multi to watch list

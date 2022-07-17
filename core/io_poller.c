@@ -317,6 +317,18 @@ io_poller_perform(struct io_poller *io)
 
     return 0;
 }
+
+void *
+io_poller_socket_get_data(struct io_poller *io, io_poller_socket fd)
+{
+
+    struct io_poller_element *val;
+    int found = chash_contains(io->fd_map.watch, fd, found, FD_MAP);
+    if (!found) return NULL;
+    val = chash_lookup(io->fd_map.watch, fd, val, FD_MAP);
+    return val->user_data;
+}
+
 bool
 io_poller_socket_add(struct io_poller *io,
                      io_poller_socket fd,
@@ -479,6 +491,19 @@ curl_timer_cb(CURLM *multi, long timeout_ms, void *userp)
         io_curlm->timeout = cog_timestamp_ms() + timeout_ms;
     }
     return CURLM_OK;
+}
+
+void *
+io_poller_curlm_get_data(struct io_poller *io, CURLM *multi)
+{
+
+    struct io_curlm *io_curlm;
+    bool found = chash_contains(io->curlm_map, multi, found, INTPTR_MAP);
+    if (!found) return NULL;
+
+    io_curlm =
+        chash_lookup(io->curlm_map, (intptr_t)multi, io_curlm, INTPTR_MAP);
+    return io_curlm->user_data;
 }
 
 bool
