@@ -113,6 +113,13 @@ DISCORD_RETURN(integrations);
 DISCORD_RETURN(prune_count);
 /** @} DiscordAPIGuild */
 
+/** @addtogroup DiscordAPIGuildScheduledEvent
+ *  @{ */
+DISCORD_RETURN(guild_scheduled_event);
+DISCORD_RETURN(guild_scheduled_events);
+DISCORD_RETURN(guild_scheduled_event_users);
+/** @} DiscordAPIGuildScheduledEvent */
+
 /** @addtogroup DiscordAPIGuildTemplate
  *  @{ */
 DISCORD_RETURN(guild_template);
