@@ -99,6 +99,7 @@ struct io_curlm {
 };
 
 struct io_poller {
+    void *data;
     struct {
         struct fd_map *ready;
         struct fd_map *watch;
@@ -188,6 +189,18 @@ io_poller_destroy(struct io_poller *io)
 #endif
 
     free(io);
+}
+
+void
+io_poller_set_data(struct io_poller *io, void *data)
+{
+    io->data = data;
+}
+
+void *
+io_poller_get_data(struct io_poller *io)
+{
+    return io->data;
 }
 
 void
@@ -394,8 +407,7 @@ io_poller_socket_del(struct io_poller *io, io_poller_socket fd)
         last->poll_position = val->poll_position;
     }
 #elif defined(IO_POLLER_USE_EPOLL)
-    if (0 != epoll_ctl(io->epfd, EPOLL_CTL_DEL, fd, NULL))
-        return false;
+    if (0 != epoll_ctl(io->epfd, EPOLL_CTL_DEL, fd, NULL)) return false;
 #endif
     found = chash_contains(io->fd_map.ready, fd, found, FD_MAP);
     if (found) chash_delete(io->fd_map.ready, fd, FD_MAP);

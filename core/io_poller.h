@@ -33,6 +33,22 @@ struct io_poller *io_poller_create(void);
 void io_poller_destroy(struct io_poller *io);
 
 /**
+ * @brief set user data for io_poller
+ * 
+ * @param io
+ * @param data user data
+ */
+void io_poller_set_data(struct io_poller *io, void *data);
+
+/**
+ * @brief get user data from io_poller
+ * 
+ * @param io
+ * @param data user data
+ */
+void *io_poller_get_data(struct io_poller *io);
+
+/**
  * @brief wakeup the thread listening to this io_poller
  *
  * @param io the io_poller to wake up
