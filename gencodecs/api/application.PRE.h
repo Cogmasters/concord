@@ -69,3 +69,11 @@ PUB_STRUCT(discord_application)
   /** the application's public flags @see DiscordApplicationFlags */
     FIELD_BITMASK(flags)
 STRUCT_END
+
+/** @CCORD_pub_struct{discord_install_params} */
+PUB_STRUCT(discord_install_params)
+  /** the scopes to add the application to the server with */
+    FIELD_STRUCT_PTR(scopes, strings, *)
+  /** the permissions to request for the bot role */
+    FIELD_BITMASK(permissions)
+STRUCT_END

@@ -64,7 +64,7 @@ This document outlines the Discord API currently supported by Concord.
 ### Application
 - [x] [Application Structure](https://discord.com/developers/docs/resources/application#application-object-application-structure)
 - [x] [Application Flags](https://discord.com/developers/docs/resources/application#application-object-application-flags)
-- [ ] [Install Params Structure](https://discord.com/developers/docs/resources/application#install-params-object-install-params-structure)
+- [x] [Install Params Structure](https://discord.com/developers/docs/resources/application#install-params-object-install-params-structure)
 ### Audit Log
 - [x] [Audit Log Structure](https://discord.com/developers/docs/resources/audit-log#audit-log-object)
 - [x] [Audit Log Entry Structure](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object)
