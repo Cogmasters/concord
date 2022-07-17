@@ -1,7 +1,7 @@
 core, utilities, API coverage, documentation:
-    Lucas Müller <müller.lucas@proton.me>
+    Lucas Müller (lcsmuller) <müller.lucas@proton.me>
 
-timers, IO polling, priority queue:
+timers, IO polling improvements, priority queue:
     (Anotra) <github.com/Anotra>
 
 chash, carray, type-safety improvements, API coverage:
