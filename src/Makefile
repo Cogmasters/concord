@@ -45,6 +45,7 @@ OBJS += concord-once.o             \
         emoji.o                    \
         gateway.o                  \
         guild.o                    \
+        guild_scheduled_event.o    \
         guild_template.o           \
         invite.o                   \
         user.o                     \
