@@ -258,14 +258,16 @@ PUB_STRUCT(discord_guild_preview)
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
 STRUCT_END
 
-STRUCT(discord_guild_widget_setting)
+/** @CCORD_pub_struct{discord_guild_widget_settings} */
+PUB_STRUCT(discord_guild_widget_settings)
   /** whether the widget is enabled */
     FIELD(enabled, bool, false)
   /** the widget channel ID */
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
 
-STRUCT(discord_get_guild_widget)
+/** @CCORD_pub_struct{discord_guild_widget} */
+PUB_STRUCT(discord_guild_widget)
   /** guild id */
     FIELD_SNOWFLAKE(id)
   /** guild name (2-100 characters) */
@@ -365,7 +367,7 @@ PUB_STRUCT(discord_integration)
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
 
-LIST(discord_integrations)
+PUB_LIST(discord_integrations)
     LISTTYPE_STRUCT(discord_integration)
 LIST_END
 
@@ -431,6 +433,11 @@ STRUCT_END
 LIST(discord_welcome_screen_channels)
     LISTTYPE_STRUCT(discord_welcome_screen_channel)
 LIST_END
+
+/** @CCORD_pub_struct{discord_prune_count} */
+PUB_STRUCT(discord_prune_count)
+    FIELD(pruned, int, 0)
+STRUCT_END
 
 /*****************************************************************************
  * Guild REST parameters
@@ -729,8 +736,8 @@ STRUCT_END
 #if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_guild_prune_count)
   /** number of days to count prune for (1-30) */
-  COND_WRITE(self->count != 0)
-    FIELD(count, int, 7)
+  COND_WRITE(self->days >= 1 && self->days <= 30)
+    FIELD(days, int, 7)
   COND_END
   /** role(s) to include */
     FIELD_STRUCT_PTR(include_roles, snowflakes, *)

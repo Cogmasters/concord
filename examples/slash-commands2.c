@@ -8,6 +8,7 @@
 #include <inttypes.h> /* SCNu64 */
 
 #include "discord.h"
+#include "log.h"
 
 u64snowflake g_app_id;
 
@@ -39,27 +40,6 @@ on_ready(struct discord *client, const struct discord_ready *event)
 {
     log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
              event->user->username, event->user->discriminator);
-}
-
-void
-log_on_app_create(struct discord *client,
-                  const struct discord_application_command *event)
-{
-    log_info("Application Command %s created", event->name);
-}
-
-void
-log_on_app_update(struct discord *client,
-                  const struct discord_application_command *event)
-{
-    log_info("Application Command %s updated", event->name);
-}
-
-void
-log_on_app_delete(struct discord *client,
-                  const struct discord_application_command *event)
-{
-    log_info("Application Command %s deleted", event->name);
 }
 
 void
@@ -291,9 +271,6 @@ main(int argc, char *argv[])
     assert(NULL != client && "Could not initialize client");
 
     discord_set_on_ready(client, &on_ready);
-    discord_set_on_application_command_create(client, &log_on_app_create);
-    discord_set_on_application_command_update(client, &log_on_app_update);
-    discord_set_on_application_command_delete(client, &log_on_app_delete);
     discord_set_on_interaction_create(client, &on_interaction_create);
 
     print_usage();

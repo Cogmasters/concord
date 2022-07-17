@@ -3,7 +3,9 @@
  * **************************************************************************/
 
 /** @defgroup DiscordApplicationFlags Application flags
+ * @ingroup DiscordConstants
  *  @{ */
+
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_PRESENCE 1 << 12)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED 1 << 13)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS 1 << 14)
@@ -12,6 +14,7 @@ PP_DEFINE(DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT 1 << 16)
 PP_DEFINE(DISCORD_APPLICATION_EMBEDDED 1 << 17)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT 1 << 18)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED 1 << 19)
+
 /** @} DiscordApplicationFlags */
 
 /** @CCORD_pub_struct{discord_application} */
@@ -65,4 +68,12 @@ PUB_STRUCT(discord_application)
     FIELD_PTR(cover_image, char, *)
   /** the application's public flags @see DiscordApplicationFlags */
     FIELD_BITMASK(flags)
+STRUCT_END
+
+/** @CCORD_pub_struct{discord_install_params} */
+PUB_STRUCT(discord_install_params)
+  /** the scopes to add the application to the server with */
+    FIELD_STRUCT_PTR(scopes, strings, *)
+  /** the permissions to request for the bot role */
+    FIELD_BITMASK(permissions)
 STRUCT_END

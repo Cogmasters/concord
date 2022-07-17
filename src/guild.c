@@ -592,6 +592,51 @@ discord_delete_guild_role(struct discord *client,
 }
 
 CCORDcode
+discord_get_guild_prune_count(struct discord *client,
+                              u64snowflake guild_id,
+                              struct discord_get_guild_prune_count *params,
+                              struct discord_ret_prune_count *ret)
+{
+    struct discord_attributes attr = { 0 };
+    char query[1024] = "";
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (params) {
+        int offset = 0;
+
+        if (params->days) {
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                               "days=%d", params->days);
+            ASSERT_NOT_OOB(offset, sizeof(query));
+        }
+        if (params->include_roles && params->include_roles->size) {
+            int i = 0;
+
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                               "%sinclude_roles=", *query ? "&" : "");
+            ASSERT_NOT_OOB(offset, sizeof(query));
+
+            for (; i < params->include_roles->size - 1; ++i) {
+                offset +=
+                    snprintf(query + offset, sizeof(query) - (size_t)offset,
+                             "%" PRIu64 ",", params->include_roles->array[i]);
+                ASSERT_NOT_OOB(offset, sizeof(query));
+            }
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                               "%" PRIu64, params->include_roles->array[i]);
+            ASSERT_NOT_OOB(offset, sizeof(query));
+        }
+    }
+
+    DISCORD_ATTR_INIT(attr, discord_prune_count, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/prune%s%s", guild_id,
+                            *query ? "?" : "", query);
+}
+
+CCORDcode
 discord_begin_guild_prune(struct discord *client,
                           u64snowflake guild_id,
                           struct discord_begin_guild_prune *params,
@@ -617,6 +662,21 @@ discord_begin_guild_prune(struct discord *client,
 }
 
 CCORDcode
+discord_get_guild_voice_regions(struct discord *client,
+                                u64snowflake guild_id,
+                                struct discord_ret_voice_regions *ret)
+{
+    struct discord_attributes attr = { 0 };
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_ATTR_LIST_INIT(attr, discord_voice_regions, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/regions", guild_id);
+}
+
+CCORDcode
 discord_get_guild_invites(struct discord *client,
                           u64snowflake guild_id,
                           struct discord_ret_invites *ret)
@@ -629,6 +689,21 @@ discord_get_guild_invites(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/invites", guild_id);
+}
+
+CCORDcode
+discord_get_guild_integrations(struct discord *client,
+                               u64snowflake guild_id,
+                               struct discord_ret_integrations *ret)
+{
+    struct discord_attributes attr = { 0 };
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_ATTR_LIST_INIT(attr, discord_integrations, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/integrations", guild_id);
 }
 
 CCORDcode
@@ -650,6 +725,60 @@ discord_delete_guild_integrations(struct discord *client,
 }
 
 CCORDcode
+discord_get_guild_widget_settings(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_ret_guild_widget_settings *ret)
+{
+    struct discord_attributes attr = { 0 };
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_ATTR_INIT(attr, discord_guild_widget_settings, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/widget", guild_id);
+}
+
+CCORDcode
+discord_modify_guild_widget(struct discord *client,
+                            u64snowflake guild_id,
+                            struct discord_guild_widget_settings *params,
+                            struct discord_ret_guild_widget_settings *ret)
+{
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
+    char buf[512];
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_guild_widget_settings_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_INIT(attr, discord_guild_widget_settings, ret);
+
+    return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/widget", guild_id);
+}
+
+CCORDcode
+discord_get_guild_widget(struct discord *client,
+                         u64snowflake guild_id,
+                         struct discord_ret_guild_widget *ret)
+{
+    struct discord_attributes attr = { 0 };
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_ATTR_INIT(attr, discord_guild_widget_settings, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/widget.json", guild_id);
+}
+
+CCORDcode
 discord_get_guild_vanity_url(struct discord *client,
                              u64snowflake guild_id,
                              struct discord_ret_invite *ret)
@@ -664,6 +793,27 @@ discord_get_guild_vanity_url(struct discord *client,
                             "/guilds/%" PRIu64 "/vanity-url", guild_id);
 }
 
+/* TODO: handle ContentType: image/png and add 'struct discord_png' */
+#if 0
+CCORDcode
+discord_get_guild_widget_image(struct discord *client,
+                               u64snowflake guild_id,
+                               struct discord_get_guild_widget_image *params,
+                               struct discord_ret *ret)
+{
+    struct discord_attributes attr = { 0 };
+    char *query = (params && params->style) ? params->style : "";
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_ATTR_BLANK_INIT(attr, ret);
+
+    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
+                            "/guilds/%" PRIu64 "/widget.png%s%s", guild_id,
+                            *query ? "?" : "", query);
+}
+#endif
+
 CCORDcode
 discord_get_guild_welcome_screen(struct discord *client,
                                  u64snowflake guild_id,
@@ -677,4 +827,74 @@ discord_get_guild_welcome_screen(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/welcome-screen", guild_id);
+}
+
+CCORDcode
+discord_modify_guild_welcome_screen(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_modify_guild_welcome_screen *params,
+    struct discord_ret_welcome_screen *ret)
+{
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
+    char buf[4096];
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_modify_guild_welcome_screen_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_INIT(attr, discord_welcome_screen, ret);
+
+    return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/welcome-screen", guild_id);
+}
+
+CCORDcode
+discord_modify_current_user_voice_state(
+    struct discord *client,
+    u64snowflake guild_id,
+    struct discord_modify_current_user_voice_state *params,
+    struct discord_ret *ret)
+{
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
+    char buf[512];
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    body.size = discord_modify_current_user_voice_state_to_json(
+        buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_BLANK_INIT(attr, ret);
+
+    return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/voice-states/@me", guild_id);
+}
+
+CCORDcode
+discord_modify_user_voice_state(struct discord *client,
+                                u64snowflake guild_id,
+                                u64snowflake user_id,
+                                struct discord_modify_user_voice_state *params,
+                                struct discord_ret *ret)
+{
+    struct discord_attributes attr = { 0 };
+    struct ccord_szbuf body;
+    char buf[512];
+
+    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_modify_user_voice_state_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_BLANK_INIT(attr, ret);
+
+    return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
+                            "/guilds/%" PRIu64 "/voice-states/%" PRIu64,
+                            guild_id, user_id);
 }

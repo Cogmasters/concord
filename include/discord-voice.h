@@ -7,16 +7,14 @@
 #ifndef DISCORD_VOICE_CONNECTIONS_H
 #define DISCORD_VOICE_CONNECTIONS_H
 
-#include <time.h>
-#include <pthread.h>
-#include <curl/curl.h>
-
-struct discord_voice; /* forward declaration */
 
 #define DISCORD_VCS_URL_SUFFIX "?v=4"
-
 /* TODO: add to DiscordLimitsGeneral group */
 #define DISCORD_MAX_VCS 512
+
+/* forward declaration */
+struct discord_voice;
+/**/
 
 /**
  * @brief Idle callback
@@ -75,119 +73,6 @@ struct discord_voice_evcallbacks {
     void (*on_ready)(struct discord_voice *vc);
     void (*on_session_descriptor)(struct discord_voice *vc);
     void (*on_udp_server_connected)(struct discord_voice *vc);
-};
-/**
- * @brief Discord Voice Connection handle, contain information
- *        about its active session.
- *
- * @note struct discord_voice are reused on a guild basis, because there can
- *        be only one active struct discord_voice session per guild.
- * @see discord_voice_join()
- * @see discord_voice_get_vc()
- */
-struct discord_voice {
-    /** `DISCORD_VOICE` logging module */
-    struct logconf conf;
-    /** the session guild id @note obtained from discord_voice_join() */
-    u64snowflake guild_id;
-    /** the session channel id @note obtained from discord_voice_join() */
-    u64snowflake channel_id;
-    /** @note obtained from on_voice_server_update() */
-    /** the session token @note obtained from on_voice_server_update() */
-    char token[128];
-    /** the new session token after a voice region change @note obtained from
-     * on_voice_server_update() */
-    char new_token[128];
-    /** the new url after a voice region change @note obtained from
-     * on_voice_server_update() */
-    char new_url[512];
-    /** @note obtained from on_voice_state_update()
-     * the session id @note obtained from on_voice_state_update() */
-    char session_id[128];
-    CURLM *mhandle;
-    /** the websockets handle that binds to Discord Voice Connections */
-    struct websockets *ws;
-
-    /** @brief handle reconnect logic */
-    /* reconnect structure */
-    struct {
-        /** will attempt reconnecting if true */
-        bool enable;
-        /** current reconnect attempt (resets to 0 when succesful) */
-        unsigned char attempt;
-        /** max amount of reconnects before giving up */
-        unsigned char threshold;
-    } reconnect;
-
-    /** will attempt to resume session if connection shutsdown */
-    bool is_resumable;
-    /** redirect to a different voice server */
-    bool is_redirect;
-    /** can start sending/receiving additional events to discord */
-    bool is_ready;
-
-    /** current iteration JSON string data */
-    char *json;
-    /** current iteration JSON string data length */
-    size_t length;
-
-    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
-    struct {
-        /** current iteration JSON key/value pairs */
-        jsmnf_pair *pairs;
-        /** current iteration number of JSON key/value pairs */
-        unsigned npairs;
-        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
-        jsmntok_t *tokens;
-        /** current iteration number of JSON tokens */
-        unsigned ntokens;
-    } parse;
-
-    /** voice payload structure */
-    struct {
-        /** field 'op' */
-        enum discord_voice_opcodes opcode;
-        /** field 'd' */
-        jsmnf_pair *data;
-    } payload;
-
-    /** heartbeat structure */
-    struct {
-        /** fixed interval between heartbeats */
-        u64unix_ms interval_ms;
-        /** start pulse timestamp in milliseconds */
-        u64unix_ms tstamp;
-    } hbeat;
-
-    /** latency between client and websockets server, calculated by the
-     * interval between HEARTBEAT and HEARTBEAT_ACK */
-    int ping_ms;
-
-    /** if true shutdown websockets connection as soon as possible */
-    bool shutdown;
-
-    struct {
-        int ssrc;
-        int server_port;
-        char server_ip[256];
-        char digest[256];
-        char unique_key[128];
-        int audio_udp_pid;
-        uintmax_t start_time;
-    } udp_service;
-
-    struct discord_voice_evcallbacks *p_voice_cbs;
-
-    /**
-     * @brief Interval to divide the received packets
-     *
-     * 0 store in one file
-     * n store packets received every n minutes in a new file
-     */
-    int recv_interval;
-
-    /** pointer to client this struct is part of */
-    struct discord *p_client;
 };
 
 /**

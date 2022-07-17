@@ -35,7 +35,8 @@ ENUM_END
 
 ENUM(discord_application_command_permission_types)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_ROLE, = 1)
-    ENUMERATOR_LAST(DISCORD_APPLICATION_PERMISSION_USER, = 2)
+    ENUMERATOR(DISCORD_APPLICATION_PERMISSION_USER, = 2)
+    ENUMERATOR_LAST(DISCORD_APPLICATION_PERMISSION_CHANNEL, = 3)
 ENUM_END
 
 PUB_STRUCT(discord_application_command)
@@ -60,8 +61,16 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  /** whether the command is enabled by default when the app is added to a
-       guild */
+  /** Set of @ref DiscordPermissions represented as a bit set */
+  COND_WRITE(self->default_member_permissions != 0)
+    FIELD_BITMASK(default_member_permissions)
+  COND_END
+  /** 
+   * Indicates whether the command is available in DMs with the app, only
+   *    for globally-scoped commands. By default, commands are invisible.
+   */
+    FIELD(dm_permission, bool, false)
+  /** @deprecated use `default_member_permissions` instead */
   COND_WRITE(self->default_permission != true)
     FIELD(default_permission, bool, true)
   COND_END
@@ -192,8 +201,16 @@ PUB_STRUCT(discord_create_global_application_command)
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  /** whether the command is enabled by default when the app is added to a
-       guild */
+  /** Set of @ref DiscordPermissions represented as a bit set */
+  COND_WRITE(self->default_member_permissions != 0)
+    FIELD_BITMASK(default_member_permissions)
+  COND_END
+  /** 
+   * Indicates whether the command is available in DMs with the app, only
+   *    for globally-scoped commands. By default, commands are invisible.
+   */
+    FIELD(dm_permission, bool, false)
+  /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
   /** the type of command, default `1` if not set */
   COND_WRITE(self->type != 0)
@@ -210,8 +227,16 @@ PUB_STRUCT(discord_edit_global_application_command)
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  /** whether the command is enabled by default when the app is added to a
-       guild */
+  /** Set of @ref DiscordPermissions represented as a bit set */
+  COND_WRITE(self->default_member_permissions != 0)
+    FIELD_BITMASK(default_member_permissions)
+  COND_END
+  /** 
+   * Indicates whether the command is available in DMs with the app, only
+   *    for globally-scoped commands. By default, commands are invisible.
+   */
+    FIELD(dm_permission, bool, false)
+  /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
 STRUCT_END
 
@@ -224,8 +249,16 @@ PUB_STRUCT(discord_create_guild_application_command)
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  /** whether the command is enabled by default when the app is added to a
-       guild */
+  /** Set of @ref DiscordPermissions represented as a bit set */
+  COND_WRITE(self->default_member_permissions != 0)
+    FIELD_BITMASK(default_member_permissions)
+  COND_END
+  /** 
+   * Indicates whether the command is available in DMs with the app, only
+   *    for globally-scoped commands. By default, commands are invisible.
+   */
+    FIELD(dm_permission, bool, false)
+  /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
   /** the type of command, default `1` if not set */
   COND_WRITE(self->type != 0)
@@ -242,9 +275,44 @@ PUB_STRUCT(discord_edit_guild_application_command)
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  /** whether the command is enabled by default when the app is added to a
-       guild */
+  /** Set of @ref DiscordPermissions represented as a bit set */
+  COND_WRITE(self->default_member_permissions != 0)
+    FIELD_BITMASK(default_member_permissions)
+  COND_END
+  /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+STRUCT_END
+
+PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
+  /** ID of the command, if known */
+    FIELD_SNOWFLAKE(id)
+  /** Name of the command, 1-32 characters */
+    FIELD_PTR(name, char, *)
+  /** Localization dictionary for the `name` field. Values follow the same
+   *    restriction as `name` */
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  /** 1-100 character description */
+    FIELD_PTR(description, char, *)
+  /** Localization dictionary for the `description` field. Values follow the
+   *    same restriction as `description` */
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  /** the parameters for the command */
+  COND_WRITE(self->options != NULL)
+    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+  COND_END
+  /** Set of @ref DiscordPermissions represented as a bit set */
+  COND_WRITE(self->default_member_permissions != 0)
+    FIELD_BITMASK(default_member_permissions)
+  COND_END
+  /** 
+   * Indicates whether the command is available in DMs with the app, only
+   *    for globally-scoped commands. By default, commands are invisible.
+   */
+    FIELD(dm_permission, bool, false)
+  /** one of application command types */
+  COND_WRITE(self->type != 0)
+    FIELD_ENUM(type, discord_application_command_types)
+  COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_edit_application_command_permissions)

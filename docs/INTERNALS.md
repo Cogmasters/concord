@@ -29,9 +29,8 @@ encoding or decoding of an object with JSON. For this purpose we created our own
 for wrapping and generating API objects.
 
 - `gencodecs/`: This is the folder we write our definitions for code-generation, it 
-    contains gencodecs macros that are fed to `gencodecs/Makefile`. To generate code
-    from scratch simply run `make gencodecs`, the code will be located at
-    `gencodecs/discord-codecs.h` and `gencodecs/discord-codecs.c`.
+    contains gencodecs macros that are fed to `gencodecs/Makefile`. The generated
+    code will be located at `gencodecs/discord-codecs.h` and `gencodecs/discord-codecs.c`.
 
 ## Examples
 

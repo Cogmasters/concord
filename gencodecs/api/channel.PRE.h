@@ -57,7 +57,11 @@ ENUM(discord_channel_types)
        `MANAGE_THREADS` permission */
     ENUMERATOR(DISCORD_CHANNEL_GUILD_PRIVATE_THREAD, = 12)
   /** a voice channel for hosting events with an audience */
-    ENUMERATOR_LAST(DISCORD_CHANNEL_GUILD_STAGE_VOICE, = 13)
+    ENUMERATOR(DISCORD_CHANNEL_GUILD_STAGE_VOICE, = 13)
+  /** the channel in a hub containing the listed servers */
+    ENUMERATOR(DISCORD_CHANNEL_GUILD_DIRECTORY, = 14)
+  /** a channel that can only contain threads */
+    ENUMERATOR_LAST(DISCORD_CHANNEL_GUILD_FORUM, = 15)
 ENUM_END
 
 ENUM(discord_video_quality_modes)

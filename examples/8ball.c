@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "discord.h"
+#include "log.h"
 
 void
 print_usage(void)

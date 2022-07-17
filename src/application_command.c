@@ -115,7 +115,7 @@ discord_delete_global_application_command(struct discord *client,
 }
 
 CCORDcode
-discord_bulk_overwrite_global_application_command(
+discord_bulk_overwrite_global_application_commands(
     struct discord *client,
     u64snowflake application_id,
     struct discord_application_commands *params,
@@ -262,11 +262,11 @@ discord_delete_guild_application_command(struct discord *client,
 }
 
 CCORDcode
-discord_bulk_overwrite_guild_application_command(
+discord_bulk_overwrite_guild_application_commands(
     struct discord *client,
     u64snowflake application_id,
     u64snowflake guild_id,
-    struct discord_application_commands *params,
+    struct discord_bulk_overwrite_guild_application_commands *params,
     struct discord_ret_application_commands *ret)
 {
     struct discord_attributes attr = { 0 };
@@ -277,7 +277,8 @@ discord_bulk_overwrite_guild_application_command(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_application_commands_to_json(buf, sizeof(buf), params);
+    body.size = discord_bulk_overwrite_guild_application_commands_to_json(
+        buf, sizeof(buf), params);
     body.start = buf;
 
     DISCORD_ATTR_LIST_INIT(attr, discord_application_commands, ret);
@@ -357,32 +358,4 @@ discord_edit_application_command_permissions(
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
                             "/commands/%" PRIu64 "/permissions",
                             application_id, guild_id, command_id);
-}
-
-CCORDcode
-discord_batch_edit_application_command_permissions(
-    struct discord *client,
-    u64snowflake application_id,
-    u64snowflake guild_id,
-    struct discord_guild_application_command_permissions *params,
-    struct discord_ret_guild_application_command_permissions *ret)
-{
-    struct discord_attributes attr = { 0 };
-    struct ccord_szbuf body;
-    char buf[8192];
-
-    CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-
-    body.size = discord_guild_application_command_permissions_to_json(
-        buf, sizeof(buf), params);
-    body.start = buf;
-
-    DISCORD_ATTR_LIST_INIT(attr, discord_application_command_permissions, ret);
-
-    return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
-                            "/applications/%" PRIu64 "/guilds/%" PRIu64
-                            "/commands/permissions",
-                            application_id, guild_id);
 }

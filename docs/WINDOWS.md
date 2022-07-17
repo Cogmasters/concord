@@ -25,12 +25,14 @@ to do so. Simply pass `CC=clang make` to your Cygwin shell and Clang will be
 used in lieu of GNU C.
 
 ## Microsoft Visual C/C++
+
 As it stands right now, MSVC is not supported at all. At the current instant, 
-Concord's Makefiles require a GNU Make. This will change in the near future. 
-However, Concord itself cannot be compiled with MSVC, due to a lack of POSIX
-compliance on behalf of Windows. 
+Concord's Makefiles are for UNIX systems, and does not produce anything when
+ran with `nmake`. This will change in the near future.  However, Concord itself
+cannot be compiled with MSVC, due to a lack of POSIX compliance on behalf of Windows. 
 
 ## Other compilers
+
 The following compilers are **not** supported:
 - OpenWatcom
 - Turbo C/C++ (or Borland C/C++)

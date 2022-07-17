@@ -13,15 +13,11 @@ jobs:
 
       - name: Dependencies
         run: |
-          echo "Installing build-essential"
-          sudo apt-get install -y build-essential
           echo "Installing libcurl"
-          sudo apt-get install -y libcurl4-openssl-dev
+          sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Run Makefile
         run: |
-          echo "Cleanup"
-          make purge
           echo "Building"
           make all
           echo "Building examples"
@@ -29,17 +25,15 @@ jobs:
           echo "Building tests"
           make test
           echo "Building voice"
-          make voice
+          make clean && make voice
 
       - name: Run Makefile with parallelism
         run: |
-          echo "Cleanup"
-          make purge
           echo "Building with parallelism"
-          make all -j$(nproc)
+          make clean && make all -j$(nproc)
           echo "Building examples with parallelism"
-          make examples -j$(nproc)
+          make clean && make examples -j$(nproc)
           echo "Building tests with parallelism"
-          make test -j$(nproc)
+          make clean && make test -j$(nproc)
           echo "Building voice with parallelism"
-          make voice -j$(nproc)
+          make clean && make voice -j$(nproc)

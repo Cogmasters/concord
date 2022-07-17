@@ -4,6 +4,7 @@
 #include <inttypes.h>
 
 #include "discord.h"
+#include "log.h"
 
 static void
 print_timer_info(struct discord_timer *timer)

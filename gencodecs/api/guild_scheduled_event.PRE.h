@@ -68,17 +68,17 @@ PUB_STRUCT(discord_guild_scheduled_event)
     FIELD_PTR(image, char, *)
 STRUCT_END
 
-/** @CCORD_pub_list{discord_guild_scheduled_events} */
-PUB_LIST(discord_guild_scheduled_events)
-    LISTTYPE_STRUCT(discord_guild_scheduled_event)
-LIST_END
-
 STRUCT(discord_guild_scheduled_event_entity_metadata)
   /** location of the event (1-100 characters) */
   COND_WRITE(self->location != NULL)
     FIELD_PTR(location, char, *)
   COND_END
 STRUCT_END
+
+/** @CCORD_pub_list{discord_guild_scheduled_events} */
+PUB_LIST(discord_guild_scheduled_events)
+    LISTTYPE_STRUCT(discord_guild_scheduled_event)
+LIST_END
 
 STRUCT(discord_guild_scheduled_event_user)
   /** the scheduled event ID which the user subscribed to */
@@ -94,15 +94,21 @@ STRUCT(discord_guild_scheduled_event_user)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_guild_scheduled_event_users} */
+PUB_LIST(discord_guild_scheduled_event_users)
+    LISTTYPE_STRUCT(discord_guild_scheduled_event_user)
+LIST_END
+
 /*****************************************************************************
  * Guild Scheduled Event REST parameters
  * **************************************************************************/
 
-/** @CCORD_pub_struct{discord_list_scheduled_events_for_guild} */
-PUB_STRUCT(discord_list_scheduled_events_for_guild)
+#if defined(GENCODECS_ON_STRUCT)
+STRUCT(discord_list_guild_scheduled_events)
   /** include number of users subscribed to each event */
     FIELD(with_user_count, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_guild_scheduled_event} */
 PUB_STRUCT(discord_create_guild_scheduled_event)
@@ -116,6 +122,10 @@ PUB_STRUCT(discord_create_guild_scheduled_event)
   COND_END
   /** the name of the scheduled event */
     FIELD_PTR(name, char, *)
+  /** the privacy level of the scheduled event */
+  COND_WRITE(self->privacy_level != 0)
+    FIELD_ENUM(privacy_level, discord_guild_scheduled_event_privacy_level)
+  COND_END
   /** the time the scheduled event will start */
   COND_WRITE(self->scheduled_start_time != 0)
     FIELD_TIMESTAMP(scheduled_start_time)
@@ -138,11 +148,12 @@ PUB_STRUCT(discord_create_guild_scheduled_event)
   COND_END
 STRUCT_END
 
-/** @CCORD_pub_struct{discord_get_guild_scheduled_event} */
-PUB_STRUCT(discord_get_guild_scheduled_event)
+#if defined(GENCODECS_ON_STRUCT)
+STRUCT(discord_get_guild_scheduled_event)
   /** include number of users subscribed to each event */
     FIELD(with_user_count, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_scheduled_event} */
 PUB_STRUCT(discord_modify_guild_scheduled_event)
@@ -182,8 +193,8 @@ PUB_STRUCT(discord_modify_guild_scheduled_event)
   COND_END
 STRUCT_END
 
-/** @CCORD_pub_struct{discord_get_guild_scheduled_event_users} */
-PUB_STRUCT(discord_get_guild_scheduled_event_users)
+#if defined(GENCODECS_ON_STRUCT)
+STRUCT(discord_get_guild_scheduled_event_users)
   /** number of users to return (up to maximum of 100) */
     FIELD(limit, int, 0)
   /** include guild member data if exists */
@@ -197,3 +208,4 @@ PUB_STRUCT(discord_get_guild_scheduled_event_users)
     FIELD_SNOWFLAKE(after)
   COND_END
 STRUCT_END
+#endif

@@ -274,6 +274,14 @@ void ua_conn_add_header(struct ua_conn *conn,
                         const char value[]);
 
 /**
+ * @brief Remove a header field
+ *
+ * @param conn the connection handle
+ * @param field header's field to be removed
+ */
+void ua_conn_remove_header(struct ua_conn *conn, const char field[]);
+
+/**
  * @brief Fill a buffer with the request header
  *
  * @param conn the connection handle

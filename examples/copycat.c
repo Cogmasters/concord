@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
+#include "log.h"
 
 void
 print_usage(void)
@@ -97,6 +98,8 @@ main(int argc, char *argv[])
     ccord_global_init();
     struct discord *client = discord_config_init(config_file);
     assert(NULL != client && "Couldn't initialize client");
+
+    discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
 
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message_create);

@@ -453,9 +453,10 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
         ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
         ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
     }
-    else {
+    else if (req->body.size)
         ua_conn_add_header(req->conn, "Content-Type", "application/json");
-    }
+    else
+        ua_conn_remove_header(req->conn, "Content-Type");
 
     ua_conn_setup(req->conn, &(struct ua_conn_attr){
                                  .method = req->method,

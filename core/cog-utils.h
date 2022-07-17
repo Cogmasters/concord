@@ -107,7 +107,6 @@ size_t cog_asprintf(char **strp, const char fmt[], ...);
  */
 int cog_sleep_ms(const long tms);
 
-
 /**
  * @brief Sleep for amount of microseconds
  *
@@ -129,16 +128,6 @@ uint64_t cog_timestamp_ms(void);
  * @return the timestamp on success, 0 on failure
  */
 uint64_t cog_timestamp_us(void);
-
-/**
- * @brief Check if arbitrary string length is exceeded
- *
- * @param str the string to be checked
- * @param threshold_len maximum length for success
- * @return the string length on success, SIZE_MAX on `NULL` string, and 0 if
- *        string length is greater than threshold
- */
-size_t cog_str_bounds_check(const char *str, const size_t threshold_len);
 
 #ifdef __cplusplus
 }
