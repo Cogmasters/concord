@@ -126,6 +126,7 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
  *  @{ */
 
 #include "audit_log.h"
+#include "auto_moderation.h"
 #include "invite.h"
 #include "channel.h"
 #include "emoji.h"

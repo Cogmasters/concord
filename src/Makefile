@@ -38,6 +38,7 @@ OBJS += concord-once.o             \
         discord-misc.o             \
         discord-worker.o           \
         application_command.o      \
+        auto_moderation.o          \
         interaction.o              \
         audit_log.o                \
         channel.o                  \
