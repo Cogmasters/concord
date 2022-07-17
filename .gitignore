@@ -9,11 +9,13 @@
 !examples
 !gencodecs
 !include
+!include/*.h
 !lib
 !lib/.gitkeep
 !licenses
 !scripts
 !src
+!src/*.c
 !templates
 !test
 !.clang-format

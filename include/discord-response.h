@@ -72,6 +72,12 @@ struct discord_ret {
 DISCORD_RETURN(audit_log);
 /** @} DiscordAPIAuditLog */
 
+/** @addtogroup DiscordAPIAutoModeration
+ *  @{ */
+DISCORD_RETURN(auto_moderation_rule);
+DISCORD_RETURN(auto_moderation_rules);
+/** @} DiscordAPIAutoModeration */
+
 /** @addtogroup DiscordAPIChannel
  *  @{ */
 DISCORD_RETURN(channel);

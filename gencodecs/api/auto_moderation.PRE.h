@@ -130,6 +130,11 @@ PUB_STRUCT(discord_auto_moderation_rule)
     FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_auto_moderation_rules} */
+PUB_LIST(discord_auto_moderation_rules)
+    LISTTYPE_STRUCT(discord_auto_moderation_rule)
+LIST_END
+
 #endif /* GENCODECS_ON_JSON_ENCODER */
 
 /*****************************************************************************
