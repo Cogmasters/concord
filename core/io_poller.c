@@ -348,10 +348,6 @@ io_poller_socket_add(struct io_poller *io,
     else if (!(val = calloc(1, sizeof *val)))
         return false;
 
-    val->fd = fd;
-    val->cb = cb;
-    val->events = events;
-    val->user_data = user_data;
 #if defined(IO_POLLER_USE_SELECT)
     if (events & IO_POLLER_IN)
         FD_SET(fd, &io->select.rset);
@@ -388,7 +384,6 @@ io_poller_socket_add(struct io_poller *io,
     pfd->events = 0;
     if (events & IO_POLLER_IN) pfd->events |= POLLIN;
     if (events & IO_POLLER_OUT) pfd->events |= POLLOUT;
-
 #elif defined(IO_POLLER_USE_EPOLL)
     struct epoll_event event = { .data.ptr = val };
     if (events & IO_POLLER_IN) event.events |= EPOLLIN;
@@ -396,6 +391,12 @@ io_poller_socket_add(struct io_poller *io,
     const int ctl = found ? EPOLL_CTL_MOD : EPOLL_CTL_ADD;
     if (0 != epoll_ctl(io->epfd, ctl, fd, &event)) goto fail;
 #endif
+
+    val->fd = fd;
+    val->cb = cb;
+    val->events = events;
+    val->user_data = user_data;
+
     if (!found) chash_assign(io->fd_map.watch, fd, val, FD_MAP);
 
     if (found && (val->events & IO_POLLER_UPDATED))
