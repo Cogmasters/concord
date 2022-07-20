@@ -166,7 +166,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR(
@@ -208,7 +208,7 @@ discord_gateway_send_resume(struct discord_gateway *gw,
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR("SEND",
@@ -267,7 +267,7 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR(
@@ -310,7 +310,7 @@ discord_gateway_send_request_guild_members(
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " REQUEST_GUILD_MEMBERS "
@@ -346,7 +346,7 @@ discord_gateway_send_update_voice_state(
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR(
@@ -387,7 +387,7 @@ discord_gateway_send_presence_update(struct discord_gateway *gw,
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " PRESENCE UPDATE (%d "

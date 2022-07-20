@@ -281,7 +281,7 @@ _discord_on_invalid_session(struct discord_gateway *gw)
     }
 
     ws_close(gw->ws, opcode, reason, SIZE_MAX);
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+    io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 }
 
 static void
@@ -295,7 +295,7 @@ _discord_on_reconnect(struct discord_gateway *gw)
     ws_close(gw->ws,
              (enum ws_close_reason)DISCORD_GATEWAY_CLOSE_REASON_RECONNECT,
              reason, sizeof(reason));
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+    io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 }
 
 static void
@@ -797,7 +797,7 @@ discord_gateway_shutdown(struct discord_gateway *gw)
     gw->session->status = DISCORD_SESSION_SHUTDOWN;
 
     ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+    io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 }
 
 void
@@ -818,5 +818,5 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
     }
 
     ws_close(gw->ws, opcode, reason, sizeof(reason));
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+    io_poller_curlm_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 }

@@ -139,6 +139,6 @@ bool io_poller_curlm_del(struct io_poller *io, CURLM *multi);
  * @param multi the multi that should be performed
  * @return true on success
  */
-bool io_poller_curlm_enable_perform(struct io_poller *io, CURLM *multi);
+bool io_poller_curlm_perform(struct io_poller *io, CURLM *multi);
 
 #endif // CONCORD_IO_POLLER_H

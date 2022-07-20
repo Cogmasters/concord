@@ -571,7 +571,7 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
 }
 
 bool
-io_poller_curlm_enable_perform(struct io_poller *io, CURLM *multi)
+io_poller_curlm_perform(struct io_poller *io, CURLM *multi)
 {
     struct io_curlm *io_curlm;
     bool found =
