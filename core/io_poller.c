@@ -125,6 +125,7 @@ struct io_poller {
 };
 
 static void on_io_poller_wakeup(struct io_poller *io,
+                                io_poller_socket socket,
                                 enum io_poller_events events,
                                 void *user_data);
 
@@ -214,10 +215,12 @@ io_poller_wakeup(struct io_poller *io)
 
 static void
 on_io_poller_wakeup(struct io_poller *io,
+                    io_poller_socket socket,
                     enum io_poller_events events,
                     void *user_data)
 {
     char buf[0x1000];
+    (void)socket;
     (void)!read(io->wakeup_fds[0], buf, sizeof buf);
 }
 
@@ -302,7 +305,7 @@ io_poller_perform(struct io_poller *io)
         chash_delete(io->fd_map.ready, fd, FD_MAP);
         enum io_poller_events revents = val->revents;
         val->revents = 0;
-        val->cb(io, revents, val->user_data);
+        val->cb(io, fd, revents, val->user_data);
     }
 
     for (int i = 0; i < io->curlm_map->capacity; i++) {
@@ -400,10 +403,10 @@ io_poller_socket_add(struct io_poller *io,
     if (!found) chash_assign(io->fd_map.watch, fd, val, FD_MAP);
 
     if (found && (val->events & IO_POLLER_UPDATED))
-        val->cb(io, IO_POLLER_UPDATED, val->user_data);
+        val->cb(io, fd, IO_POLLER_UPDATED, val->user_data);
 
     if (!found && val->events & IO_POLLER_ADDED)
-        val->cb(io, IO_POLLER_ADDED, val->user_data);
+        val->cb(io, fd, IO_POLLER_ADDED, val->user_data);
 
     return true;
 fail:
@@ -436,15 +439,19 @@ io_poller_socket_del(struct io_poller *io, io_poller_socket fd)
     if (found) chash_delete(io->fd_map.ready, fd, FD_MAP);
     chash_delete(io->fd_map.watch, fd, FD_MAP);
     if (val->events & IO_POLLER_REMOVED)
-        val->cb(io, IO_POLLER_REMOVED, val->user_data);
+        val->cb(io, fd, IO_POLLER_REMOVED, val->user_data);
     free(val);
     return true;
 }
 
 static void
-io_curl_cb(struct io_poller *io, enum io_poller_events events, void *user_data)
+io_curl_cb(struct io_poller *io,
+           io_poller_socket socket,
+           enum io_poller_events events,
+           void *user_data)
 {
     (void)io;
+    (void)socket;
     (void)events;
     ((struct io_curlm *)user_data)->should_perform = true;
 }

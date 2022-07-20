@@ -29,6 +29,7 @@ struct io_poller;
  * @brief callback for when an event is triggered by the socket
  */
 typedef void (*io_poller_cb)(struct io_poller *io,
+                             io_poller_socket socket,
                              enum io_poller_events events,
                              void *user_data);
 
@@ -102,9 +103,9 @@ bool io_poller_socket_del(struct io_poller *io, io_poller_socket sock);
  * @brief callback for when curl multi should be performed on
  */
 typedef int (*io_poller_curlm_cb)(struct io_poller *io,
-                                       CURLM *multi,
-                                       enum io_poller_events events,
-                                       void *user_data);
+                                  CURLM *multi,
+                                  enum io_poller_events events,
+                                  void *user_data);
 
 void *io_poller_curlm_get_data(struct io_poller *io, CURLM *multi);
 
