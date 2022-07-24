@@ -34,6 +34,7 @@ HEADERS = $(API_DIR)/application.h           \
           $(API_DIR)/interactions.h          \
           $(API_DIR)/invite.h                \
           $(API_DIR)/message_components.h    \
+          $(API_DIR)/oauth2.h                \
           $(API_DIR)/permissions.h           \
           $(API_DIR)/stage_instance.h        \
           $(API_DIR)/sticker.h               \

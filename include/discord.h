@@ -137,6 +137,7 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 #include "voice.h"
 #include "webhook.h"
 #include "gateway.h"
+#include "oauth2.h"
 /** @defgroup DiscordAPIInteractions Interactions
  *   @brief Interactions public API supported by Concord
  *  @{ */

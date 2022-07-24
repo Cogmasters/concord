@@ -67,6 +67,12 @@ struct discord_ret {
 /** @brief flag for enabling `sync` mode without expecting a datatype return */
 #define DISCORD_SYNC_FLAG ((void *)-1)
 
+/** @addtogroup DiscordAPIOAuth2
+ *  @{ */
+DISCORD_RETURN(application);
+DISCORD_RETURN(auth_response);
+/** @} DiscordAPIOAuth2 */
+
 /** @addtogroup DiscordAPIAuditLog
  *  @{ */
 DISCORD_RETURN(audit_log);

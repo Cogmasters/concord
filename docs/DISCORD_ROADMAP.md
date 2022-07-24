@@ -316,6 +316,9 @@ This document outlines the Discord API currently supported by Concord.
 - [x] [Commands and Events](https://discord.com/developers/docs/topics/gateway#commands-and-events)
 - [x] [Get Gateway](https://discord.com/developers/docs/topics/gateway#get-gateway)
 - [x] [Get Gateway Bot](https://discord.com/developers/docs/topics/gateway#get-gateway-bot)
+### OAuth2
+- [x] [Get Current Bot Application Information](https://discord.com/developers/docs/topics/oauth2#get-current-bot-application-information)
+- [x] [Get Current Authorization Information](https://discord.com/developers/docs/topics/oauth2#get-current-authorization-information)
 ### Opcodes and Status Codes
 - [x] [Gateway Opcodes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes)
 - [x] [Gateway Close Event Codes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes)

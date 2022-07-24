@@ -16,6 +16,7 @@
 #include "webhook.PRE.h"
 
 #include "gateway.PRE.h"
+#include "oauth2.PRE.h"
 #include "permissions.PRE.h"
 #include "teams.PRE.h"
 #include "voice_connections.PRE.h"
