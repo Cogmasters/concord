@@ -40,19 +40,15 @@ void on_interaction(struct discord *client, const struct discord_interaction *ev
     if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND)
         return; /* return if interaction isn't a slash command */
 
-    for (int i = 0; i < event->data->options->size; ++i) {
-        char *command_name = event->data->options->array[i].name;
-
-        if (strcmp(command_name, "ping") == 0) {
-              struct discord_interaction_response params = {
-                    .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-                    .data = &(struct discord_interaction_callback_data){
-                          .content = "pong"
-                    }
-              };
-              discord_create_interaction_response(client, event->id,
-                                                  event->token, &params, NULL);
-        }
+    if (strcmp(event->data->name, "ping") == 0) {
+          struct discord_interaction_response params = {
+                .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+                .data = &(struct discord_interaction_callback_data){
+                      .content = "pong"
+                }
+          };
+          discord_create_interaction_response(client, event->id,
+                                              event->token, &params, NULL);
     }
 }
 
