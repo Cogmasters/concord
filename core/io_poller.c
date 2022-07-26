@@ -49,7 +49,7 @@ on_io_poller_wakeup(struct io_poller *io,
                     enum io_poller_events events,
                     void *user_data)
 {
-    char buf[0x1000];
+    char buf[0x10000];
     (void)!read(io->wakeup_fds[0], buf, sizeof buf);
 }
 
@@ -65,6 +65,8 @@ io_poller_create(void)
             if (0 == pipe(io->wakeup_fds)) {
                 int flags = fcntl(io->wakeup_fds[0], F_GETFL);
                 fcntl(io->wakeup_fds[0], F_SETFL, flags | O_NONBLOCK);
+                flags = fcntl(io->wakeup_fds[1], F_GETFL);
+                fcntl(io->wakeup_fds[1], F_SETFL, flags | O_NONBLOCK);
 
                 io_poller_socket_add(io, io->wakeup_fds[0], IO_POLLER_IN,
                                      on_io_poller_wakeup, NULL);
