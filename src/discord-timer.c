@@ -127,8 +127,9 @@ _discord_timer_ctl_no_lock(struct discord *client,
 
 #define UNLOCK_TIMERS(timers)                                                 \
     do {                                                                      \
-        if (!timers.active.is_active) io_poller_wakeup(timers.io);            \
+        bool should_wakeup = !timers.active.is_active;                        \
         pthread_mutex_unlock(&timers.lock);                                   \
+        if (should_wakeup) io_poller_wakeup(timers.io);                       \
     } while (0)
 
 unsigned
