@@ -12,9 +12,9 @@ static void
 _discord_init(struct discord *new_client)
 {
     ccord_global_init();
-    discord_timers_init(&new_client->timers.internal);
-    discord_timers_init(&new_client->timers.user);
     new_client->io_poller = io_poller_create();
+    discord_timers_init(&new_client->timers.internal, new_client->io_poller);
+    discord_timers_init(&new_client->timers.user, new_client->io_poller);
 
     new_client->workers = calloc(1, sizeof *new_client->workers);
     ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),

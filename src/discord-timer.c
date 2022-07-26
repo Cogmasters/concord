@@ -20,10 +20,13 @@ cmp_timers(const void *a, const void *b)
 }
 
 void
-discord_timers_init(struct discord_timers *timers)
+discord_timers_init(struct discord_timers *timers, struct io_poller *io)
 {
     timers->q = priority_queue_create(
         sizeof(int64_t), sizeof(struct discord_timer), cmp_timers, 0);
+    timers->io = io;
+    pthread_mutex_init(&timers->lock, NULL);
+    pthread_cond_init(&timers->cond, NULL);
 }
 
 static void
@@ -40,6 +43,8 @@ discord_timers_cancel_all(struct discord *client,
 void
 discord_timers_cleanup(struct discord *client, struct discord_timers *timers)
 {
+    pthread_cond_destroy(&timers->cond);
+    pthread_mutex_destroy(&timers->lock);
     priority_queue_set_max_capacity(timers->q, 0);
     discord_timers_cancel_all(client, timers);
     priority_queue_destroy(timers->q);
@@ -68,9 +73,9 @@ discord_timers_get_next_trigger(struct discord_timers *const timers[],
 }
 
 unsigned
-_discord_timer_ctl(struct discord *client,
-                   struct discord_timers *timers,
-                   struct discord_timer *timer_ret)
+_discord_timer_ctl_no_lock(struct discord *client,
+                           struct discord_timers *timers,
+                           struct discord_timer *timer_ret)
 {
     struct discord_timer timer;
     memcpy(&timer, timer_ret, sizeof timer);
@@ -109,6 +114,34 @@ _discord_timer_ctl(struct discord *client,
     }
 }
 
+#define LOCK_TIMERS(timers)                                                   \
+    do {                                                                      \
+        pthread_mutex_lock(&timers.lock);                                     \
+        if (timers.active.is_active                                           \
+            && !pthread_equal(pthread_self(), timers.active.thread))          \
+            pthread_cond_wait(&timers.cond, &timers.lock);                    \
+    } while (0);
+
+#define UNLOCK_TIMERS(timers)                                                 \
+    do {                                                                      \
+        if (timers.active.is_active                                           \
+            && !pthread_equal(pthread_self(), timers.active.thread))          \
+            io_poller_wakeup(timers.io);                                      \
+        pthread_mutex_unlock(&timers.lock);                                   \
+    } while (0)
+
+unsigned
+_discord_timer_ctl(struct discord *client,
+                   struct discord_timers *timers,
+                   struct discord_timer *timer_ret)
+
+{
+    LOCK_TIMERS((*timers));
+    unsigned id = _discord_timer_ctl_no_lock(client, timers, timer_ret);
+    UNLOCK_TIMERS((*timers));
+    return id;
+}
+
 #define TIMER_TRY_DELETE                                                      \
     if (timer.flags & DISCORD_TIMER_DELETE) {                                 \
         priority_queue_del(timers->q, timer.id);                              \
@@ -122,8 +155,12 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
     int64_t now = (int64_t)discord_timestamp_us(client);
     const int64_t start_time = now;
 
+    pthread_mutex_lock(&timers->lock);
+    timers->active.is_active = true;
+    timers->active.thread = pthread_self();
     struct discord_timer timer;
     timers->active.timer = &timer;
+    pthread_mutex_unlock(&timers->lock);
 
     timers->active.skip_update_phase = false;
     for (int64_t trigger, max_iterations = 100000;
@@ -174,7 +211,12 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS;
         priority_queue_update(timers->q, timer.id, &next, &timer);
     }
+
+    pthread_mutex_lock(&timers->lock);
+    timers->active.is_active = false;
     timers->active.timer = NULL;
+    pthread_cond_broadcast(&timers->cond);
+    pthread_mutex_unlock(&timers->lock);
 }
 
 unsigned
@@ -248,7 +290,9 @@ discord_timer_get(struct discord *client,
                   struct discord_timer *timer)
 {
     if (!id) return 0;
+    LOCK_TIMERS(client->timers.user);
     timer->id = priority_queue_get(client->timers.user.q, id, NULL, timer);
+    UNLOCK_TIMERS(client->timers.user);
     return timer->id;
 }
 
@@ -264,26 +308,33 @@ discord_timer_disable_update_if_active(struct discord_timers *timers,
 bool
 discord_timer_start(struct discord *client, unsigned id)
 {
+    bool result = 0;
     struct discord_timer timer;
+    LOCK_TIMERS(client->timers.user);
     discord_timer_disable_update_if_active(&client->timers.user, id);
-    if (discord_timer_get(client, id, &timer)) {
+    if (priority_queue_get(client->timers.user.q, id, NULL, &timer)) {
         if (timer.delay < 0) timer.delay = 0;
-        return discord_timer_ctl(client, &timer);
+        result =
+            _discord_timer_ctl_no_lock(client, &client->timers.user, &timer);
     }
-    return false;
+    UNLOCK_TIMERS(client->timers.user);
+    return result;
 }
 
 bool
 discord_timer_stop(struct discord *client, unsigned id)
 {
+    bool result = 0;
     struct discord_timer timer;
+    LOCK_TIMERS(client->timers.user);
     discord_timer_disable_update_if_active(&client->timers.user, id);
-    if (discord_timer_get(client, id, &timer)) {
+    if (priority_queue_get(client->timers.user.q, id, NULL, &timer)) {
         int64_t disabled = -1;
-        return priority_queue_update(client->timers.user.q, id, &disabled,
-                                     &timer);
+        result = priority_queue_update(client->timers.user.q, id, &disabled,
+                                       &timer);
     }
-    return false;
+    UNLOCK_TIMERS(client->timers.user);
+    return result;
 }
 
 static bool
@@ -291,15 +342,18 @@ discord_timer_add_flags(struct discord *client,
                         unsigned id,
                         enum discord_timer_flags flags)
 {
+    bool result = 0;
     struct discord_timer timer;
+    LOCK_TIMERS(client->timers.user);
     discord_timer_disable_update_if_active(&client->timers.user, id);
-    if (discord_timer_get(client, id, &timer)) {
+    if (priority_queue_get(client->timers.user.q, id, NULL, &timer)) {
         timer.flags |= flags;
         int64_t run_now = 0;
-        return priority_queue_update(client->timers.user.q, id, &run_now,
-                                     &timer);
+        result =
+            priority_queue_update(client->timers.user.q, id, &run_now, &timer);
     }
-    return false;
+    UNLOCK_TIMERS(client->timers.user);
+    return result;
 }
 
 bool

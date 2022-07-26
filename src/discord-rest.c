@@ -67,9 +67,9 @@ discord_rest_init(struct discord_rest *rest,
     else
         logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
 
-    discord_timers_init(&rest->timers);
-
     rest->io_poller = io_poller_create();
+    discord_timers_init(&rest->timers, rest->io_poller);
+
     discord_requestor_init(&rest->requestor, &rest->conf, token);
     io_poller_curlm_add(rest->io_poller, rest->requestor.mhandle,
                         &_discord_on_rest_perform, rest);
