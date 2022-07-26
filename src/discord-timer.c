@@ -75,7 +75,7 @@ discord_timers_get_next_trigger(struct discord_timers *const timers[],
     return max_time;
 }
 
-unsigned
+static unsigned
 _discord_timer_ctl_no_lock(struct discord *client,
                            struct discord_timers *timers,
                            struct discord_timer *timer_ret)
@@ -127,9 +127,7 @@ _discord_timer_ctl_no_lock(struct discord *client,
 
 #define UNLOCK_TIMERS(timers)                                                 \
     do {                                                                      \
-        if (timers.active.is_active                                           \
-            && !pthread_equal(pthread_self(), timers.active.thread))          \
-            io_poller_wakeup(timers.io);                                      \
+        if (!timers.active.is_active) io_poller_wakeup(timers.io);            \
         pthread_mutex_unlock(&timers.lock);                                   \
     } while (0)
 
@@ -158,12 +156,11 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
     int64_t now = (int64_t)discord_timestamp_us(client);
     const int64_t start_time = now;
 
-    if (0 != pthread_mutex_trylock(&timers->lock)) return;
+    pthread_mutex_lock(&timers->lock);
     timers->active.is_active = true;
     timers->active.thread = pthread_self();
     struct discord_timer timer;
     timers->active.timer = &timer;
-    pthread_mutex_unlock(&timers->lock);
 
     timers->active.skip_update_phase = false;
     for (int64_t trigger, max_iterations = 100000;
@@ -186,8 +183,12 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
 
             if (timer.repeat > 0) timer.repeat--;
         }
-
-        if (timer.cb) timer.cb(client, &timer);
+        if (timer.cb) {
+            discord_ev_timer cb = timer.cb;
+            pthread_mutex_unlock(&timers->lock);
+            cb(client, &timer);
+            pthread_mutex_lock(&timers->lock);
+        }
         if (timers->active.skip_update_phase) {
             timers->active.skip_update_phase = false;
             continue;
@@ -215,7 +216,6 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         priority_queue_update(timers->q, timer.id, &next, &timer);
     }
 
-    pthread_mutex_lock(&timers->lock);
     timers->active.is_active = false;
     timers->active.timer = NULL;
     pthread_cond_broadcast(&timers->cond);
