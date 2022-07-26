@@ -60,6 +60,8 @@ discord_timers_get_next_trigger(struct discord_timers *const timers[],
 
     for (unsigned i = 0; i < n; i++) {
         int64_t trigger;
+        if (0 != pthread_mutex_trylock(&timers[i]->lock)) return 0;
+
         if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
             if (trigger < 0) continue;
 
@@ -68,6 +70,7 @@ discord_timers_get_next_trigger(struct discord_timers *const timers[],
             else if (max_time > trigger - now)
                 max_time = trigger - now;
         }
+        pthread_mutex_unlock(&timers[i]->lock);
     }
     return max_time;
 }
@@ -155,7 +158,7 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
     int64_t now = (int64_t)discord_timestamp_us(client);
     const int64_t start_time = now;
 
-    pthread_mutex_lock(&timers->lock);
+    if (0 != pthread_mutex_trylock(&timers->lock)) return;
     timers->active.is_active = true;
     timers->active.thread = pthread_self();
     struct discord_timer timer;
