@@ -86,10 +86,15 @@ extern "C" {
 
 struct discord_timers {
     priority_queue *q;
+    struct io_poller *io;
     struct {
+        bool is_active;
+        pthread_t thread;
         struct discord_timer *timer;
         bool skip_update_phase;
     } active;
+    pthread_mutex_t lock;
+    pthread_cond_t cond;
 };
 
 /**
@@ -97,7 +102,7 @@ struct discord_timers {
  *
  * @param timers the 'struct discord_timers' to init
  */
-void discord_timers_init(struct discord_timers *timers);
+void discord_timers_init(struct discord_timers *timers, struct io_poller *io);
 
 /**
  * @brief Cleanup timers and call cancel any running ones
