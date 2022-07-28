@@ -1,4 +1,4 @@
-core, utilities, API coverage, documentation:
+core, utilities, gencodecs, API coverage, documentation:
     Lucas Müller (lcsmuller) <müller.lucas@proton.me>
 
 timers, IO polling improvements, priority queue:
