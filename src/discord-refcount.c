@@ -23,8 +23,6 @@
 struct _discord_refvalue {
     /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
     void *data;
-    /** whether cleanup expects a client parameter */
-    bool expects_client;
     /**
      * cleanup for when `data` is no longer needed
      * @note this only has to be assigned once, it is automatically called once
@@ -42,6 +40,8 @@ struct _discord_refvalue {
     int visits;
     /** whether `data` cleanup should also be followed by a free() */
     bool should_free;
+    /** whether cleanup expects a client parameter */
+    bool expects_client;
 };
 
 struct _discord_ref {
