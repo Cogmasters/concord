@@ -43,11 +43,12 @@ discord_timers_cancel_all(struct discord *client,
 void
 discord_timers_cleanup(struct discord *client, struct discord_timers *timers)
 {
-    pthread_cond_destroy(&timers->cond);
-    pthread_mutex_destroy(&timers->lock);
     priority_queue_set_max_capacity(timers->q, 0);
     discord_timers_cancel_all(client, timers);
+    pthread_cond_destroy(&timers->cond);
+    pthread_mutex_destroy(&timers->lock);
     priority_queue_destroy(timers->q);
+    memset(timers, 0, sizeof *timers);
 }
 
 int64_t
