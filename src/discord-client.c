@@ -175,10 +175,10 @@ discord_cleanup(struct discord *client)
         discord_voice_connections_cleanup(client);
 #endif
         discord_user_cleanup(&client->self);
-        io_poller_destroy(client->io_poller);
         discord_refcounter_cleanup(&client->refcounter);
         discord_timers_cleanup(client, &client->timers.user);
         discord_timers_cleanup(client, &client->timers.internal);
+        io_poller_destroy(client->io_poller);
         logconf_cleanup(&client->conf);
         if (client->token) free(client->token);
         pthread_mutex_destroy(&client->workers->lock);
