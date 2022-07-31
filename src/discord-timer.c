@@ -64,13 +64,14 @@ discord_timers_get_next_trigger(struct discord_timers *const timers[],
         if (0 != pthread_mutex_trylock(&timers[i]->lock)) return 0;
 
         if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
-            if (trigger < 0) continue;
+            if (trigger < 0) goto unlock;
 
             if (trigger <= now)
                 max_time = 0;
             else if (max_time > trigger - now)
                 max_time = trigger - now;
         }
+    unlock:
         pthread_mutex_unlock(&timers[i]->lock);
     }
     return max_time;
