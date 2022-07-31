@@ -82,8 +82,13 @@ discord_rest_init(struct discord_rest *rest,
 void
 discord_rest_cleanup(struct discord_rest *rest)
 {
+    /* wake up every ms until thread shutdown */
+    _discord_timer_ctl(CLIENT(rest, rest), &rest->timers,
+                       &(struct discord_timer){
+                           .interval = 1,
+                           .repeat = -1,
+                       });
     /* cleanup REST managing thread */
-    io_poller_wakeup(rest->io_poller);
     threadpool_destroy(rest->tpool, threadpool_graceful);
     /* cleanup discovered buckets */
     discord_timers_cleanup(CLIENT(rest, rest), &rest->timers);
