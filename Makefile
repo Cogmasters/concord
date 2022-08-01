@@ -17,6 +17,9 @@ SOFLAGS     = -fPIC
 DYFLAGS     = -fPIC 
 DEBUG_FLAGS = -O0 -g
 
+GIT_BRANCHES = master dev
+GIT_TARGETS  = latest latest-dev
+
 all: static
 
 static:
@@ -66,10 +69,13 @@ clean:
 purge: clean
 	@ $(MAKE) -C $(SRC_DIR) $@
 
-master dev:
-	make purge
-	git switch $@ 
-	git pull
-	make
+latest: master
+latest-dev: dev
 
-.PHONY: test examples install echo clean purge docs static shared shared_osx main master
+$(GIT_BRANCHES):
+	$(MAKE) purge
+	git switch $@
+	git pull
+	$(MAKE)
+
+.PHONY: test examples install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
