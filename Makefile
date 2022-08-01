@@ -66,4 +66,10 @@ clean:
 purge: clean
 	@ $(MAKE) -C $(SRC_DIR) $@
 
-.PHONY: test examples install echo clean purge docs static shared shared_osx
+master dev:
+	make purge
+	git switch $@ 
+	git pull
+	make
+
+.PHONY: test examples install echo clean purge docs static shared shared_osx main master
