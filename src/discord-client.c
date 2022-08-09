@@ -8,6 +8,48 @@
 #include "discord-worker.h"
 #include "cog-utils.h"
 
+static size_t
+_parse_env(char **dest, char *end, const char **src)
+{
+    const char *p = ++*src;
+    if ('{' != *p++) return 0;
+    const char *begin = p;
+    while (*p != '}')
+        if (!*p++) return 0;
+
+    char env_name[0x1000];
+    if ((int)sizeof env_name <= snprintf(env_name, sizeof env_name, "%.*s",
+                                         (int)(p - begin), begin))
+        return 0;
+    char *env_str = getenv(env_name);
+    if (!env_str) return 0;
+    int env_len = (int)strlen(env_str);
+    if (end - *dest < env_len) return 0;
+    sprintf(*dest, "%s", env_str);
+    *dest += env_len;
+    *src = p + 1;
+    return (size_t)env_len;
+}
+
+static bool
+_parse_init_string(char *dest, size_t dest_size, const char *src)
+{
+    while (*src) {
+        if (*src == '$') {
+            size_t len = _parse_env(&dest, dest + dest_size, &src);
+            if (!len) return false;
+            dest_size -= len;
+        }
+        else {
+            *dest++ = *src++;
+            dest_size--;
+        }
+        if (!dest_size) return false;
+    }
+    *dest = 0;
+    return true;
+}
+
 static void
 _discord_init(struct discord *new_client)
 {
@@ -45,13 +87,15 @@ struct discord *
 discord_init(const char token[])
 {
     struct discord *new_client;
-
+    char parsed_token[4096];
+    if (!_parse_init_string(parsed_token, sizeof parsed_token, token))
+        return NULL;
     new_client = calloc(1, sizeof *new_client);
     logconf_setup(&new_client->conf, "DISCORD", NULL);
     /* silence terminal input by default */
     logconf_set_quiet(&new_client->conf, true);
-
-    if (token && *token) cog_strndup(token, strlen(token), &new_client->token);
+    if (token && *token)
+        cog_strndup(parsed_token, strlen(parsed_token), &new_client->token);
 
     _discord_init(new_client);
 
@@ -64,9 +108,12 @@ discord_config_init(const char config_file[])
     struct ccord_szbuf_readonly field;
     struct discord *new_client;
     FILE *fp;
-
-    fp = fopen(config_file, "rb");
-    VASSERT_S(fp != NULL, "Couldn't open '%s': %s", config_file,
+    char parsed_config_file[4096];
+    if (!_parse_init_string(parsed_config_file, sizeof parsed_config_file,
+                            config_file))
+        return NULL;
+    fp = fopen(parsed_config_file, "rb");
+    VASSERT_S(fp != NULL, "Couldn't open '%s': %s", parsed_config_file,
               strerror(errno));
 
     new_client = calloc(1, sizeof *new_client);
