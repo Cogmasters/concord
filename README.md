@@ -98,6 +98,8 @@ int main(void) {
 * GNU/Hurd 0.9
 * Mac OS X 10.9
 
+*Note: big-endian processors running certain OSes like SPARC Solaris, PowerPC AIX, System Z z/OS or Linux, or MIPS IRIX are NOT supported. There are currently a few issues that prevent some of the logic from correctly on big-endian systems. This will be fixed soon.*
+
 ## Build Instructions
 
 The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
