@@ -36,6 +36,7 @@ LIST_END
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_create_stage_instance} */
+#if !defined(GENCODECS_ON_JSON_ENCODER)
 PUB_STRUCT(discord_create_stage_instance)
   /** the ID of the stage channel */
     FIELD_SNOWFLAKE(channel_id)
@@ -46,8 +47,10 @@ PUB_STRUCT(discord_create_stage_instance)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_stage_instance} */
+#if !defined(GENCODECS_ON_JSON_ENCODER)
 PUB_STRUCT(discord_modify_stage_instance)
   /** the topic of the Stage instance (1-120 characters) */
     FIELD_PTR(topic, char, *)
@@ -56,3 +59,4 @@ PUB_STRUCT(discord_modify_stage_instance)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
 STRUCT_END
+#endif

@@ -138,6 +138,11 @@ DISCORD_RETURN(invite);
 DISCORD_RETURN(invites);
 /** @} DiscordAPIInvite */
 
+/** @addtogroup DiscordAPIStageInstance
+ *  @{ */
+DISCORD_RETURN(stage_instance);
+/** @} DiscordAPIStageInstance */
+
 /** @addtogroup DiscordAPISticker
  *  @{ */
 DISCORD_RETURN(sticker);

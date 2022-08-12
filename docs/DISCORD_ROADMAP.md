@@ -249,10 +249,10 @@ This document outlines the Discord API currently supported by Concord.
 ### Stage Instance
 - [x] [Stage Instance Structure](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object-stage-instance-structure)
 - [x] [Privacy Level](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object-privacy-level)
-- [ ] [Create Stage Instance](https://discord.com/developers/docs/resources/stage-instance#create-stage-instance)
-- [ ] [Get Stage Instance](https://discord.com/developers/docs/resources/stage-instance#get-stage-instance)
-- [ ] [Modify Stage Instance](https://discord.com/developers/docs/resources/stage-instance#modify-stage-instance)
-- [ ] [Delete Stage Instance](https://discord.com/developers/docs/resources/stage-instance#delete-stage-instance)
+- [x] [Create Stage Instance](https://discord.com/developers/docs/resources/stage-instance#create-stage-instance)
+- [x] [Get Stage Instance](https://discord.com/developers/docs/resources/stage-instance#get-stage-instance)
+- [x] [Modify Stage Instance](https://discord.com/developers/docs/resources/stage-instance#modify-stage-instance)
+- [x] [Delete Stage Instance](https://discord.com/developers/docs/resources/stage-instance#delete-stage-instance)
 ### Sticker
 - [x] [Sticker Structure](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-structure)
 - [x] [Sticker Types](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types)
