@@ -129,6 +129,7 @@ DISCORD_RETURN(guild_scheduled_event_users);
 /** @addtogroup DiscordAPIGuildTemplate
  *  @{ */
 DISCORD_RETURN(guild_template);
+DISCORD_RETURN(guild_templates);
 /** @} DiscordAPIGuildTemplate */
 
 /** @addtogroup DiscordAPIInvite

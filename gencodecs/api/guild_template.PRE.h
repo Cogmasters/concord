@@ -28,6 +28,11 @@ PUB_STRUCT(discord_guild_template)
     FIELD(is_dirty, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_guild_templates} */
+PUB_LIST(discord_guild_templates)
+    LISTTYPE_STRUCT(discord_guild_template)
+LIST_END
+
 /*****************************************************************************
  * Guild Template REST parameters
  * **************************************************************************/
