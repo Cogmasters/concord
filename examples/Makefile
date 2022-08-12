@@ -1,6 +1,6 @@
 # This Makefile assumes the top folder has been built
 TOP = ..
-CC ?= gcc
+CC = gcc
 
 CORE_DIR      = $(TOP)/core
 INCLUDE_DIR   = $(TOP)/include

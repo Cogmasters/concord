@@ -1,7 +1,7 @@
 TOP  = ..
-CC  ?= gcc
+CC   = gcc
 
-PREFIX ?= /usr/local
+PREFIX = /usr/local
 
 INCLUDE_DIR   = $(TOP)/include
 LIBDIR        = $(TOP)/lib
@@ -54,7 +54,7 @@ OBJS += concord-once.o             \
         webhook.o
 
 WFLAGS  = -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
-CFLAGS ?= -O2
+CFLAGS  = -O2
 CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR) -I$(PREFIX)/include
 
