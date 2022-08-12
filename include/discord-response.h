@@ -138,6 +138,13 @@ DISCORD_RETURN(invite);
 DISCORD_RETURN(invites);
 /** @} DiscordAPIInvite */
 
+/** @addtogroup DiscordAPISticker
+ *  @{ */
+DISCORD_RETURN(sticker);
+DISCORD_RETURN(stickers);
+DISCORD_RETURN(list_nitro_sticker_packs);
+/** @} DiscordAPISticker */
+
 /** @addtogroup DiscordAPIUser
  *  @{ */
 DISCORD_RETURN(user);

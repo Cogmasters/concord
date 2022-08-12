@@ -133,6 +133,7 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 #include "guild.h"
 #include "guild_scheduled_event.h"
 #include "guild_template.h"
+#include "sticker.h"
 #include "user.h"
 #include "voice.h"
 #include "webhook.h"

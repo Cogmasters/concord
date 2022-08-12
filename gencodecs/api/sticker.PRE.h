@@ -53,9 +53,12 @@ PUB_STRUCT(discord_sticker)
     FIELD(sort_value, int, 0)
 STRUCT_END
 
-LIST(discord_stickers)
+/** @CCORD_pub_list{discord_stickers} */
+#if !defined(GENCODECS_ON_JSON_DECODING)
+PUB_LIST(discord_stickers)
     LISTTYPE_STRUCT(discord_sticker)
 LIST_END
+#endif
 
 STRUCT(discord_sticker_item)
   /** ID of the sticker */
@@ -95,9 +98,24 @@ STRUCT(discord_sticker_pack)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_list_nitro_sticker_packs} */
+#if !defined(GENCODECS_ON_JSON_DECODING)
+PUB_LIST(discord_sticker_packs)
+    LISTTYPE_STRUCT(discord_sticker_pack)
+LIST_END
+#endif
+
 /*****************************************************************************
  * Sticker REST parameters
  * **************************************************************************/
+
+/** @CCORD_pub_struct{discord_list_nitro_sticker_packs} */
+#if !defined(GENCODECS_ON_JSON_ENCODING)
+PUB_STRUCT(discord_list_nitro_sticker_packs)
+  /** array of sticker pack objects */
+    FIELD_STRUCT_PTR(sticker_packs, discord_sticker_packs, *)
+STRUCT_END
+#endif
 
 #if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_create_guild_sticker)
