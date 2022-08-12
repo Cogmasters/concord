@@ -16,7 +16,6 @@ OBJS = cog-utils.o      \
        threadpool.o
 
 WFLAGS  = -Wall -Wextra -Wpedantic
-CFLAGS  = -O2
 CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
           -I. -I$(PREFIX)/include # $(WFLAGS)
 
