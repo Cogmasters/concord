@@ -1,5 +1,4 @@
 TOP = ..
-CC  = cc
 
 API_DIR     = api
 INCLUDE_DIR = $(TOP)/include

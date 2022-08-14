@@ -1,5 +1,3 @@
-CC = gcc
-
 PREFIX = /usr/local
 
 OBJS = cog-utils.o      \

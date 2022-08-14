@@ -1,5 +1,4 @@
 TOP  = ..
-CC   = gcc
 
 PREFIX = /usr/local
 

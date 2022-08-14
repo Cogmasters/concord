@@ -1,5 +1,3 @@
-CC ?= gcc
-
 PREFIX          ?= /usr/local
 DESTINCLUDE_DIR  = $(PREFIX)/include/concord
 DESTLIBDIR       = $(PREFIX)/lib
