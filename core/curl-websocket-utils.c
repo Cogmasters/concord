@@ -157,6 +157,13 @@ _cws_header_has_prefix(const char *buffer, const size_t buflen, const char *pref
     return strncasecmp(buffer, prefix, prefixlen) == 0;
 }
 
+#if 0
+/* The __BYTE_ORDER__ define is GCC-specific.
+   Possible solutions include using
+   autoconfs AC_C_BIGENDIAN macro and dropping the API.
+   I will implement an API breaking solution which drops the
+   "ntoh"/"hton" API in favor of
+   portable int<=> bytes functions. --cancername */
 static inline void
 _cws_hton(void *mem, uint8_t len)
 {
@@ -194,3 +201,45 @@ _cws_ntoh(void *mem, uint8_t len)
     }
 #endif
 }
+#endif
+
+/**
+ * Converts an integer *i* into a byte sequence *b* of length *n*.
+ * Only the *n* least significant bytes are considered.
+ * The bytes are in **big-endian** (LSB first) order.
+ * @param [in]  i The system-dependent integer to be converted.
+ * @param [in]  n The number of bytes to convert.
+ * @param [out] b The output bytes. Must be able to hold
+ *                at least n bytes.
+ */
+static inline void
+_cws_itob_be(uint64_t i, size_t n, void *b)
+{
+    uint8_t *o = b;
+    for(size_t j = 0; j < n; j++)
+        o[n-j-1] = (i >> (8 * j)) & 0xFF;
+}
+
+/**
+ * Converts a byte sequence *b* of length *n* into an integer *i*.
+ * Only *n* bytes of *b* are considered.
+ * The bytes are in **big-endian** (LSB first) order.
+ * @param [out] i A pointer to an unsigned 64-bit integer of unspecified representation.
+ * @param [in]  n The number of bytes to convert.
+ * @param [in]  b The input bytes. Must be hold at least *n* bytes.
+ */
+static inline void
+_cws_btoi_be(uint64_t *i, size_t n, void *b)
+{
+    uint8_t *o = b;
+    uint64_t r = 0;
+    for(size_t j = 0; j < n; j++)
+        r = (r << 8) | (o[j]);
+    *i = r;
+}
+
+#define CWS_BTOI_BE(_x, _n, _b) do {               \
+        uint64_t _tmp;                             \
+        _cws_btoi_be(&_tmp, (_n), (_b));           \
+        *(_x) = _tmp;                              \
+    } while(0)

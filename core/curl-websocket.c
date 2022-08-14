@@ -257,13 +257,17 @@ _cws_send(struct cws_data *priv, enum cws_opcode opcode, const void *msg, size_t
 
     if (fh.payload_len == 127) {
         uint64_t payload_len = msglen;
-        _cws_hton(&payload_len, sizeof(payload_len));
-        if (!_cws_write(priv, &payload_len, sizeof(payload_len)))
+        uint8_t tmpbuf[sizeof(payload_len)];
+
+        _cws_itob_be(payload_len, sizeof(payload_len), tmpbuf);
+        if (!_cws_write(priv, tmpbuf, sizeof(payload_len)))
             return false;
     } else if (fh.payload_len == 126) {
         uint16_t payload_len = msglen;
-        _cws_hton(&payload_len, sizeof(payload_len));
-        if (!_cws_write(priv, &payload_len, sizeof(payload_len)))
+        uint8_t tmpbuf[sizeof(payload_len)];
+
+        _cws_itob_be(payload_len, sizeof(payload_len), tmpbuf);
+        if (!_cws_write(priv, &tmpbuf, sizeof(payload_len)))
             return false;
     }
 
@@ -396,8 +400,7 @@ cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, siz
 
     len = sizeof(uint16_t) + reason_text_len;
     p = malloc(len);
-    memcpy(p, &r, sizeof(uint16_t));
-    _cws_hton(p, sizeof(uint16_t));
+    _cws_itob_be(r, sizeof(uint16_t), p);
     if (reason_text_len)
         memcpy(p + sizeof(uint16_t), reason_text, reason_text_len);
 
@@ -632,8 +635,9 @@ _cws_dispatch(struct cws_data *priv)
 
         if (priv->recv.current.used >= sizeof(uint16_t)) {
             uint16_t r;
-            memcpy(&r, priv->recv.current.payload, sizeof(uint16_t));
-            _cws_ntoh(&r, sizeof(r));
+
+            CWS_BTOI_BE(&r, sizeof(r), priv->recv.current.payload);
+
             if (!cws_close_reason_is_valid(r)) {
                 cws_close(priv->easy, CWS_CLOSE_REASON_PROTOCOL_ERROR, "invalid close reason", SIZE_MAX);
                 r = CWS_CLOSE_REASON_PROTOCOL_ERROR;
@@ -729,17 +733,14 @@ _cws_process_frame(struct cws_data *priv, const char *buffer, size_t len)
         } else if (priv->recv.needed == sizeof(struct cws_frame_header) + sizeof(uint16_t)) {
             uint16_t plen;
 
-            memcpy(&plen,
-                   priv->recv.tmpbuf + sizeof(struct cws_frame_header),
-                   sizeof(plen));
-            _cws_ntoh(&plen, sizeof(plen));
+            CWS_BTOI_BE(&plen, sizeof(plen),  priv->recv.tmpbuf + sizeof(struct cws_frame_header));
+
             frame_len = plen;
         } else if (priv->recv.needed == sizeof(struct cws_frame_header) + sizeof(uint64_t)) {
             uint64_t plen;
 
-            memcpy(&plen, priv->recv.tmpbuf + sizeof(struct cws_frame_header),
-                   sizeof(plen));
-            _cws_ntoh(&plen, sizeof(plen));
+            CWS_BTOI_BE(&plen, sizeof(plen), priv->recv.tmpbuf + sizeof(struct cws_frame_header));
+
             frame_len = plen;
         } else {
             fprintf(stderr,"needed=%u, done=%u", priv->recv.needed, priv->recv.done);
@@ -1048,7 +1049,7 @@ cws_add_header(CURL *easy, const char field[],  const char value[])
             abort();
         }
         if (field_len == p - node->data
-            && 0 == strncasecmp(node->data, field, field_len)) 
+            && 0 == strncasecmp(node->data, field, field_len))
         {
             if (strlen(node->data) < bufret) {
                 free(node->data);
