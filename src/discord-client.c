@@ -222,6 +222,8 @@ discord_cleanup(struct discord *client)
         discord_voice_connections_cleanup(client);
 #endif
         discord_user_cleanup(&client->self);
+        if (client->cache.cleanup)
+            client->cache.cleanup(client);
         discord_refcounter_cleanup(&client->refcounter);
         discord_timers_cleanup(client, &client->timers.user);
         discord_timers_cleanup(client, &client->timers.internal);

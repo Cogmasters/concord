@@ -777,10 +777,11 @@ struct discord_gateway {
     struct discord_gateway_payload payload;
     /**
      * the user's callbacks for Discord events
+     * @note index 0 for cache callbacks, index 1 for user callbacks
      * @todo should be cast to the original callback signature before calling,
      *      otherwise its UB
      */
-    discord_ev_event cbs[DISCORD_EV_MAX];
+    discord_ev_event cbs[2][DISCORD_EV_MAX];
     /** the event scheduler callback */
     discord_ev_scheduler scheduler;
 };
@@ -1135,6 +1136,17 @@ bool discord_message_commands_try_perform(
 
 /** @} DiscordInternalMessageCommands */
 
+/** @defgroup DiscordInternalCache Cache API
+ * @brief The Cache API for storage and retrieval of Discord data
+ *  @{ */
+
+struct discord_cache {
+    struct _discord_cache_data *data;
+    void (*cleanup)(struct discord *client);
+};
+
+/** @} DiscordInternalCache */
+
 /**
  * @brief The Discord client handler
  *
@@ -1162,6 +1174,8 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+    /** the handle for registering and retrieving Discord data */
+    struct discord_cache cache;
 
     struct {
         struct discord_timers internal;
