@@ -302,6 +302,14 @@ void *discord_set_data(struct discord *client, void *data);
  */
 void *discord_get_data(struct discord *client);
 
+
+enum discord_cache_options {
+    DISCORD_CACHE_GUILDS = 1,
+};
+
+void discord_enable_cache(struct discord *client,
+                          enum discord_cache_options options);
+
 /**
  * @brief Get the client WebSockets ping
  * @note Only works after a connection has been established via discord_run()

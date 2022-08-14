@@ -110,7 +110,7 @@ discord_gateway_dispatch(struct discord_gateway *gw)
         }
     /* fall-through */
     default:
-        if (gw->cbs[event]) {
+        if (gw->cbs[0][event] || gw->cbs[1][event]) {
             void *event_data = calloc(1, dispatch[event].size);
 
             dispatch[event].from_jsmnf(gw->payload.data,
@@ -123,7 +123,8 @@ discord_gateway_dispatch(struct discord_gateway *gw)
                                                 event_data,
                                                 dispatch[event].cleanup, true);
             }
-            gw->cbs[event](client, event_data);
+            if (gw->cbs[0][event]) gw->cbs[0][event](client, event_data);
+            if (gw->cbs[1][event]) gw->cbs[1][event](client, event_data);
             discord_refcounter_decr(&client->refcounter, event_data);
         }
         break;
