@@ -44,6 +44,12 @@ install:
 	install -m 644 $(INCLUDE_DIR)/*.h $(CORE_DIR)/*.h $(GENCODECS_DIR)/*.h \
 	               $(DESTINCLUDE_DIR)
 
+uninstall:
+	rm -rf $(PREFIX)/include/concord
+	rm -rf $(PREFIX)/lib/libdiscord.a
+	rm -rf $(PREFIX)/lib/libdiscord.so
+	rm -rf $(PREFIX)/lib/libdiscord.dylib
+
 docs:
 	@ $(MAKE) -C $(GENCODECS_DIR) headers
 
@@ -78,4 +84,4 @@ $(GIT_BRANCHES):
 	git pull
 	$(MAKE)
 
-.PHONY: test examples install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
+.PHONY: test examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
