@@ -239,6 +239,8 @@ _discord_on_dispatch(struct discord_gateway *gw)
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
 
+        if (client->cache.on_shard_resumed)
+            client->cache.on_shard_resumed(client, &gw->id);
         discord_gateway_send_heartbeat(gw, gw->payload.seq);
         break;
     default:
@@ -356,7 +358,13 @@ _ws_on_close(void *p_gw,
         reason);
 
     /* user-triggered shutdown */
-    if (gw->session->status & DISCORD_SESSION_SHUTDOWN) return;
+    if (gw->session->status & DISCORD_SESSION_SHUTDOWN) {
+        if (CLIENT(gw, gw)->cache.on_shard_disconnected)
+            CLIENT(gw, gw)->cache.on_shard_disconnected(
+                CLIENT(gw, gw), &gw->id,
+                gw->session->status & DISCORD_SESSION_RESUMABLE);
+        return;
+    }
 
     /* mark as in the process of being shutdown */
     gw->session->status |= DISCORD_SESSION_SHUTDOWN;
@@ -400,6 +408,10 @@ _ws_on_close(void *p_gw,
         gw->session->retry.enable = true;
         break;
     }
+    if (CLIENT(gw, gw)->cache.on_shard_disconnected)
+        CLIENT(gw, gw)->cache.on_shard_disconnected(
+            CLIENT(gw, gw), &gw->id,
+            gw->session->status & DISCORD_SESSION_RESUMABLE);
 }
 
 static bool
