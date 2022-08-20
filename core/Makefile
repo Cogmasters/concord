@@ -10,6 +10,7 @@ OBJS = cog-utils.o      \
        log.o            \
        logconf.o        \
        priority_queue.o \
+       anomap.o         \
        sha1.o           \
        threadpool.o
 

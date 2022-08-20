@@ -17,6 +17,7 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/log.o            \
                 $(CORE_DIR)/logconf.o        \
                 $(CORE_DIR)/priority_queue.o \
+                $(CORE_DIR)/anomap.o         \
                 $(CORE_DIR)/sha1.o           \
                 $(CORE_DIR)/threadpool.o
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
