@@ -69,7 +69,7 @@ struct discord;
  * @brief Max length for embed fields
  *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       4 * 256 + 1
-#define DISCORD_EMBED_DESCRIPTION_LEN 4 * 2048 + 1
+#define DISCORD_EMBED_DESCRIPTION_LEN 4 * 4096 + 1
 #define DISCORD_EMBED_MAX_FIELDS      25
 #define DISCORD_EMBED_FIELD_NAME_LEN  4 * 256 + 1
 #define DISCORD_EMBED_FIELD_VALUE_LEN 4 * 1024 + 1
