@@ -9,6 +9,7 @@ GENCODECS_DIR = $(TOP)/gencodecs
 STD_BOTS   = 8ball \
              audit-log \
              ban \
+             cache \
              channel \
              components \
              copycat \
