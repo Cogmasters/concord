@@ -1140,9 +1140,24 @@ bool discord_message_commands_try_perform(
  * @brief The Cache API for storage and retrieval of Discord data
  *  @{ */
 
+/**
+ * @brief The Discord Cache control handler
+ * 
+ */
 struct discord_cache {
     struct _discord_cache_data *data;
     void (*cleanup)(struct discord *client);
+
+    /** gateway should call this when a shard has lost connection */
+    void (*on_shard_disconnected)(struct discord *client,
+                                  const struct discord_identify *ident,
+                                  bool resumable);
+    /** gateway should call this when a shard has resumed */
+    void (*on_shard_resumed)(struct discord *client,
+                             const struct discord_identify *ident);
+    /** gateway should call this when a shard has reconnected */
+    void (*on_shard_reconnected)(struct discord *client,
+                                 const struct discord_identify *ident);
 };
 
 /** @} DiscordInternalCache */
