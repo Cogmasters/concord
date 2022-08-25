@@ -41,22 +41,30 @@ ENUM_END
 
 PUB_STRUCT(discord_application_command)
   /** unique ID of the command */
+  COND_WRITE(self->id != 0)
     FIELD_SNOWFLAKE(id)
+  COND_END
   /** one of application command types */
   COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
   /** unique ID of the parent application */
+  COND_WRITE(self->application_id != 0)
     FIELD_SNOWFLAKE(application_id)
+  COND_END
   COND_WRITE(self->guild_id != 0)
   /** guild ID of the command, if not global */
     FIELD_SNOWFLAKE(guild_id)
   COND_END
   /** 1-32 character name */
+  COND_WRITE(self->name != NULL)
     FIELD_PTR(name, char, *)
+  COND_END
   /** 1-100 character description for `CHAT_INPUT` commands, empty string
        for `USER` and `MESSAGE` commands */
+  COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)
+  COND_END
   /** the parameters for the command, max 25 */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
@@ -69,14 +77,18 @@ PUB_STRUCT(discord_application_command)
    * Indicates whether the command is available in DMs with the app, only
    *    for globally-scoped commands. By default, commands are invisible.
    */
+  COND_WRITE(self->dm_permission != false)
     FIELD(dm_permission, bool, false)
+  COND_END
   /** @deprecated use `default_member_permissions` instead */
   COND_WRITE(self->default_permission != true)
     FIELD(default_permission, bool, true)
   COND_END
   /** autoincrementing version identifier updated during substantial
        record changes */
+  COND_WRITE(self->version != 0)
     FIELD_SNOWFLAKE(version)
+  COND_END
 STRUCT_END
 
 PUB_LIST(discord_application_commands)
