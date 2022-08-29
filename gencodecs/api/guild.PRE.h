@@ -17,6 +17,7 @@ PP_DEFINE(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATION_REPLIES 1 << 3)
 
 /** @} DiscordAPIGuildSystemChannelFlags */
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_message_notification_level)
   /** members will receive notifications for all messages by default */
     ENUMERATOR(DISCORD_MESSAGE_NOTIFICATION_ALL_MESSAGES, = 0)
@@ -24,7 +25,9 @@ ENUM(discord_message_notification_level)
        them by default */
     ENUMERATOR_LAST(DISCORD_MESSAGE_NOTIFICATION_ONLY_MESSAGES, = 1)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_explicit_content_filter_level)
   /** media content will not be scanned */
     ENUMERATOR(DISCORD_EXPLICIT_CONTENT_DISABLED, = 0)
@@ -33,14 +36,18 @@ ENUM(discord_explicit_content_filter_level)
   /** media content sent by all members will be scanned */
     ENUMERATOR_LAST(DISCORD_MESSAGE_NOTIFICATION_ALL_MEMBERS, = 2)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_mfa_level)
   /** guild has no MFA/2FA requirement for moderation actions */
     ENUMERATOR(DISCORD_MFA_NONE, = 0)
   /** guild has a 2FA requirement for moderation actions */
     ENUMERATOR_LAST(DISCORD_MFA_ELEVATED, = 1)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_verification_level)
   /** unrestricted */
     ENUMERATOR(DISCORD_VERIFICATION_NONE, = 0)
@@ -53,14 +60,18 @@ ENUM(discord_verification_level)
   /** must have a verified phone number */
     ENUMERATOR_LAST(DISCORD_VERIFICATION_VERY_HIGH, = 4)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_guild_nsfw_level)
     ENUMERATOR(DISCORD_GUILD_NSFW_DEFAULT, = 0)
     ENUMERATOR(DISCORD_GUILD_NSFW_EXPLICIT, = 1)
     ENUMERATOR(DISCORD_GUILD_NSFW_SAFE, = 2)
     ENUMERATOR_LAST(DISCORD_GUILD_NSFW_AGE_RESTRICTED, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_premium_tier)
   /** guild has not unlocked any Server Boost perks */
     ENUMERATOR(DISCORD_PREMIUM_TIER_NONE, = 0)
@@ -71,13 +82,17 @@ ENUM(discord_premium_tier)
   /** guild has unlocked Server Boost level 3 perks */
     ENUMERATOR_LAST(DISCORD_PREMIUM_TIER_3, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_integration_expire_behaviors)
     ENUMERATOR(DISCORD_INTEGRATION_REMOVE_ROLE, = 0)
     ENUMERATOR_LAST(DISCORD_INTEGRATION_KICK, = 1)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild)
   /** guild id */
     FIELD_SNOWFLAKE(id)
@@ -226,13 +241,17 @@ PUB_STRUCT(discord_guild)
   /** whether the guild has the boost progress bar enabled */
     FIELD(premium_progress_bar_enabled, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_guilds} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_guilds)
     LISTTYPE_STRUCT(discord_guild)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_preview} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_preview)
   /** guild id */
     FIELD_SNOWFLAKE(id)
@@ -257,16 +276,20 @@ PUB_STRUCT(discord_guild_preview)
   /** custom guild stickers */
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_widget_settings} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_widget_settings)
   /** whether the widget is enabled */
     FIELD(enabled, bool, false)
   /** the widget channel ID */
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_widget} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_widget)
   /** guild id */
     FIELD_SNOWFLAKE(id)
@@ -281,8 +304,10 @@ PUB_STRUCT(discord_guild_widget)
   /** number of online members in this guild */
     FIELD(presence_count, int, 0)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_member} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_member)
   /** the user this guild member represents */
   COND_WRITE(self->user != NULL)
@@ -323,13 +348,17 @@ PUB_STRUCT(discord_guild_member)
   /** the guild id @note extra field for `Guild Member Add` event */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_guild_members} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_guild_members)
     LISTTYPE_STRUCT(discord_guild_member)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_integration} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_integration)
   /** integration id */
     FIELD_SNOWFLAKE(id)
@@ -366,18 +395,24 @@ PUB_STRUCT(discord_integration)
    *    `Integration Create` or `Integration Update` */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_integrations)
     LISTTYPE_STRUCT(discord_integration)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_integration_account)
   /** id of the account */
     FIELD_PTR(id, char, *)
   /** name of the account */
     FIELD_PTR(name, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_integration_application)
   /** the id of the app */
     FIELD_SNOWFLAKE(id)
@@ -394,21 +429,27 @@ STRUCT(discord_integration_application)
     FIELD_STRUCT_PTR(bot, discord_user, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_ban} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_ban)
   /** the reason for the ban */
     FIELD_PTR(reason, char, *)
   /** the banned user */
     FIELD_STRUCT_PTR(user, discord_user, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_bans} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_bans)
     LISTTYPE_STRUCT(discord_ban)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_welcome_screen} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_welcome_screen)
   /** the server description shown in the welcome screen */
     FIELD_PTR(description, char, *)
@@ -417,7 +458,9 @@ PUB_STRUCT(discord_welcome_screen)
     FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channels, *)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_welcome_screen_channel)
   /** the channel's id */
     FIELD_SNOWFLAKE(channel_id)
@@ -429,21 +472,27 @@ STRUCT(discord_welcome_screen_channel)
        no emoji is set */
     FIELD_PTR(emoji_name, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_welcome_screen_channels)
     LISTTYPE_STRUCT(discord_welcome_screen_channel)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_prune_count} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_prune_count)
     FIELD(pruned, int, 0)
 STRUCT_END
+#endif
 
 /*****************************************************************************
  * Guild REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_create_guild} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild)
   /** name of the guild (2-100 charaters) */
     FIELD_PTR(name, char, *)
@@ -482,8 +531,10 @@ PUB_STRUCT(discord_create_guild)
   /** @ref DiscordAPIGuildSystemChannelFlags */
     FIELD_BITMASK(system_channel_flags)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild)
   /** guild name */
     FIELD_PTR(name, char, *)
@@ -532,8 +583,10 @@ PUB_STRUCT(discord_modify_guild)
   /** whether the guild's boost progress bar should be enabled */
     FIELD(premium_progress_bar_enabled, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_guild_channel} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_channel)
   /** channel name (1-100 characters) */
     FIELD_PTR(name, char, *)
@@ -564,7 +617,9 @@ PUB_STRUCT(discord_create_guild_channel)
   /** whether the channel is nsfw */
     FIELD(nsfw, bool, false)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_modify_guild_channel_position)
   /** channel ID */
     FIELD_SNOWFLAKE(id)
@@ -580,13 +635,17 @@ STRUCT(discord_modify_guild_channel_position)
     FIELD_SNOWFLAKE(parent_id)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_modify_guild_channel_positions} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_modify_guild_channel_positions)
     LISTTYPE_STRUCT(discord_modify_guild_channel_position)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_list_active_guild_threads} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_list_active_guild_threads)
   /** the active threads */
     FIELD_STRUCT_PTR(threads, discord_channels, *)
@@ -594,8 +653,9 @@ PUB_STRUCT(discord_list_active_guild_threads)
        joined */
     FIELD_STRUCT_PTR(members, discord_thread_members, *)
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_list_guild_members)
   /** max number of members to return (1-1000) */
     FIELD(limit, int, 0)
@@ -604,7 +664,7 @@ STRUCT(discord_list_guild_members)
 STRUCT_END
 #endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_search_guild_members)
   /** query string to match username(s) and nickname(s) against */
     FIELD_PTR(query, char, *)
@@ -614,6 +674,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_add_guild_member} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_add_guild_member)
   /** an oauth2 access token granted with the `guild.join` to the bot's
        application for the user you want to add in the guild */
@@ -627,8 +688,10 @@ PUB_STRUCT(discord_add_guild_member)
   /** whether the user is deafened in voice channels */
     FIELD(deaf, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_member} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_member)
   /** value to set user's nickname to */
     FIELD_PTR(nick, char, *)
@@ -652,24 +715,30 @@ PUB_STRUCT(discord_modify_guild_member)
     FIELD_TIMESTAMP(communication_disabled_until)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_current_member} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_current_member)
   /** value to set user's nickname to */
   COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_current_user_nick} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_current_user_nick)
   /** value to set user's nickname to */
   COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_guild_ban} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_ban)
   /** number of days to delete messages for (0-7) */
   COND_WRITE(self->delete_message_days >= 0 && self->delete_message_days <= 7)
@@ -680,8 +749,10 @@ PUB_STRUCT(discord_create_guild_ban)
     FIELD_PTR(reason, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_guild_role} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_role)
   /** name of the role */
     FIELD_PTR(name, char, *)
@@ -699,7 +770,9 @@ PUB_STRUCT(discord_create_guild_role)
   /** whether the role should be mentionable */
     FIELD(mentionable, bool, false)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_modify_guild_role_position)
   /** role */
     FIELD_SNOWFLAKE(id)
@@ -708,13 +781,17 @@ STRUCT(discord_modify_guild_role_position)
     FIELD(position, int, 0)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_modify_guild_role_positions} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_modify_guild_role_positions)
     LISTTYPE_STRUCT(discord_modify_guild_role_position)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_role} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_role)
   /** name of the role */
     FIELD_PTR(name, char, *)
@@ -732,8 +809,9 @@ PUB_STRUCT(discord_modify_guild_role)
   /** whether the role should be mentionable */
     FIELD(mentionable, bool, false)
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_guild_prune_count)
   /** number of days to count prune for (1-30) */
   COND_WRITE(self->days >= 1 && self->days <= 30)
@@ -745,6 +823,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_begin_guild_prune} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_begin_guild_prune)
   /** number of days to prune */
   COND_WRITE(self->days != 0)
@@ -759,8 +838,9 @@ PUB_STRUCT(discord_begin_guild_prune)
     FIELD_PTR(reason, char, *)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_guild_widget_image)
   /** style of the widget image returned
        @see https://discord.com/developers/docs/resources/guild#membership-screening-object-widget-style-options */
@@ -771,6 +851,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_modify_guild_welcome_screen} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_welcome_screen)
   /** whether the welcome screen is enabled */
     FIELD(enabled, bool, false)
@@ -781,8 +862,10 @@ PUB_STRUCT(discord_modify_guild_welcome_screen)
     FIELD_PTR(description, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_current_user_voice_state} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_current_user_voice_state)
   /** the ID of the channel the user is currently in */
     FIELD_SNOWFLAKE(channel_id)
@@ -794,11 +877,14 @@ PUB_STRUCT(discord_modify_current_user_voice_state)
     FIELD_TIMESTAMP(request_to_speak_timestamp)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_user_voice_state} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_user_voice_state)
   /** the ID of the channel the user is currently in */
     FIELD_SNOWFLAKE(channel_id)
   /** toggles the user's suppress state */
     FIELD(suppress, bool, false)
 STRUCT_END
+#endif

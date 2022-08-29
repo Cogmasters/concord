@@ -2,6 +2,7 @@
  * Application Commands Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_application_command_types)
   /** Slash commands: a text-based command that shows up when a user 
        types `/` */
@@ -13,7 +14,9 @@ ENUM(discord_application_command_types)
        right clicks or tap on a message */
     ENUMERATOR_LAST(DISCORD_APPLICATION_MESSAGE, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_application_command_option_types)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_SUB_COMMAND, = 1)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP, = 2)
@@ -32,13 +35,17 @@ ENUM(discord_application_command_option_types)
   /** @ref discord_attachment object */
     ENUMERATOR_LAST(DISCORD_APPLICATION_OPTION_ATTACHMENT, = 11)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_application_command_permission_types)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_ROLE, = 1)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_USER, = 2)
     ENUMERATOR_LAST(DISCORD_APPLICATION_PERMISSION_CHANNEL, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_application_command)
   /** unique ID of the command */
   COND_WRITE(self->id != 0)
@@ -90,11 +97,15 @@ PUB_STRUCT(discord_application_command)
     FIELD_SNOWFLAKE(version)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_application_commands)
     LISTTYPE_STRUCT(discord_application_command)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_application_command_option)
   /** value of application command option type */
     FIELD_ENUM(type, discord_application_command_option_types)
@@ -133,11 +144,15 @@ STRUCT(discord_application_command_option)
     FIELD(autocomplete, bool, false)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_application_command_options)
     LISTTYPE_STRUCT(discord_application_command_option)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_application_command_option_choice)
   /** 1-100 character choice name */
     FIELD_PTR(name, char, *)
@@ -145,11 +160,15 @@ STRUCT(discord_application_command_option_choice)
        string the value must be enclosed with escaped commas, ex: `\"hi\"` */
     FIELD_PTR(value, json_char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_application_command_option_choices)
     LISTTYPE_STRUCT(discord_application_command_option_choice)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_application_command_interaction_data_option)
   /** the name of the parameter */
     FIELD_PTR(name, char, *)
@@ -167,11 +186,15 @@ STRUCT(discord_application_command_interaction_data_option)
   /** true if this option is the currently focused option for autocomplete */
     FIELD(focused, bool, false)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_application_command_interaction_data_options)
     LISTTYPE_STRUCT(discord_application_command_interaction_data_option)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_guild_application_command_permission)
   /** the ID of the command */
     FIELD_SNOWFLAKE(id)
@@ -182,11 +205,15 @@ STRUCT(discord_guild_application_command_permission)
   /** the permissions for the command in the guild */
     FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_guild_application_command_permissions)
     LISTTYPE_STRUCT(discord_guild_application_command_permission)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_application_command_permission)
   /** the ID of the role or user */
     FIELD_SNOWFLAKE(id)
@@ -195,15 +222,19 @@ PUB_STRUCT(discord_application_command_permission)
   /** `true` to allow, `false` to disallow */
     FIELD(permission, bool, false)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_application_command_permissions)
     LISTTYPE_STRUCT(discord_application_command_permission)
 LIST_END
+#endif
 
 /*****************************************************************************
  * Application Commands REST parameters
  * **************************************************************************/
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_global_application_command)
   /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
@@ -229,7 +260,9 @@ PUB_STRUCT(discord_create_global_application_command)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_global_application_command)
   /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
@@ -251,7 +284,9 @@ PUB_STRUCT(discord_edit_global_application_command)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_application_command)
   /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
@@ -277,7 +312,9 @@ PUB_STRUCT(discord_create_guild_application_command)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_guild_application_command)
   /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
@@ -294,7 +331,9 @@ PUB_STRUCT(discord_edit_guild_application_command)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
   /** ID of the command, if known */
     FIELD_SNOWFLAKE(id)
@@ -326,10 +365,13 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_application_command_permissions)
   /** the permissions for the command in the guild */
   COND_WRITE(self->permissions != NULL)
     FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
   COND_END
 STRUCT_END
+#endif

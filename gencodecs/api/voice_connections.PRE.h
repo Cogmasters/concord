@@ -15,6 +15,7 @@ PP_DEFINE(DISCORD_VOICE_PRIORITY 1 << 2)
 
 /** @} DiscordVoiceSpeakingFlags */
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_voice_close_opcodes)
   /** You sent an invalid opcode */
     ENUMERATOR(DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE, = 4001)
@@ -42,7 +43,9 @@ ENUM(discord_voice_close_opcodes)
   /** Discord didn't recognize the encryption */
     ENUMERATOR_LAST(DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE, = 4016)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_voice_opcodes)
   /** Begin a voice websocket connection */
     ENUMERATOR(DISCORD_VOICE_IDENTIFY, = 0)
@@ -68,3 +71,4 @@ ENUM(discord_voice_opcodes)
     ENUMERATOR(DISCORD_VOICE_CLIENT_DISCONNECT, = 13)
     ENUMERATOR_LAST(DISCORD_VOICE_CODEC, = 14)
 ENUM_END
+#endif

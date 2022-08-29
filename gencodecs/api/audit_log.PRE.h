@@ -2,6 +2,7 @@
  * Audit Logs Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_audit_log_events)
     ENUMERATOR(DISCORD_AUDIT_LOG_GUILD_UPDATE, = 1)
     ENUMERATOR(DISCORD_AUDIT_LOG_CHANNEL_CREATE, = 10)
@@ -56,8 +57,10 @@ ENUM(discord_audit_log_events)
     ENUMERATOR(DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_DELETE, = 142)
     ENUMERATOR_LAST(DISCORD_AUDIT_LOG_AUTO_MODERATION_BLOCK_MESSAGE, = 143)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_audit_log} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_audit_log)
   /** list of audit log entries */
   COND_WRITE(self->audit_log_entries != NULL)
@@ -84,7 +87,9 @@ PUB_STRUCT(discord_audit_log)
     FIELD_STRUCT_PTR(webhooks, discord_webhooks, *)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_audit_log_entry)
   /** ID of the affected entity (webhook, user, role, etc.) */
     FIELD_SNOWFLAKE(target_id)
@@ -107,11 +112,15 @@ STRUCT(discord_audit_log_entry)
   /** the reason for the change (0-512) characters */
     FIELD_PTR(reason, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_audit_log_entries)
     LISTTYPE_STRUCT(discord_audit_log_entry)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_optional_audit_entry_info)
   /** channel in which the entities were targeted */
     FIELD_SNOWFLAKE(channel_id)
@@ -130,11 +139,15 @@ STRUCT(discord_optional_audit_entry_info)
   /** type of overwritten entity - 0 for role or 1 for \"member\" */
     FIELD_PTR(type, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_optional_audit_entry_infos)
     LISTTYPE_STRUCT(discord_optional_audit_entry_info)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_audit_log_change)
   /** new value of the key */
     FIELD_PTR(new_value, json_char, *)
@@ -143,16 +156,19 @@ STRUCT(discord_audit_log_change)
   /** name of audit log change key */
     FIELD_PTR(key, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_audit_log_changes)
     LISTTYPE_STRUCT(discord_audit_log_change)
 LIST_END
+#endif
 
 /*****************************************************************************
  * Audit Logs REST parameters
  * **************************************************************************/
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_guild_audit_log)
   /** filter the log for actions made by a user */
     FIELD_SNOWFLAKE(user_id)

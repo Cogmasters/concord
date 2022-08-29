@@ -101,6 +101,7 @@ PP_DEFINE(DISCORD_PERM_MODERATE_MEMBERS 1 << 40)
 /** @} DiscordPermissions */
 
 /** @CCORD_pub_struct{discord_role} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_role)
   /** role id */
     FIELD_SNOWFLAKE(id)
@@ -131,12 +132,16 @@ PUB_STRUCT(discord_role)
     FIELD_STRUCT_PTR(tags, discord_role_tag, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_roles} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_roles)
     LISTTYPE_STRUCT(discord_role)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_role_tag)
   /** the id of the bot this role belongs to */
   COND_WRITE(self->bot_id != 0)
@@ -149,3 +154,4 @@ STRUCT(discord_role_tag)
   /** whether this is the guild's premium subscribe role */
     FIELD(premium_subscribe, bool, false)
 STRUCT_END
+#endif

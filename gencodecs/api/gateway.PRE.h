@@ -42,6 +42,7 @@ PP_DEFINE(DISCORD_ACTIVITY_PARTY_PRIVACY_VOICE_CHANNEL 1 << 7)
 PP_DEFINE(DISCORD_ACTIVITY_EMBEDDED 1 << 8)
 /** @} DiscordActivityFlags */
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_gateway_close_opcodes)
     ENUMERATOR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR, = 4000)
     ENUMERATOR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE, = 4001)
@@ -59,7 +60,9 @@ ENUM(discord_gateway_close_opcodes)
     ENUMERATOR(DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS, = 4014)
     ENUMERATOR_LAST(DISCORD_GATEWAY_CLOSE_REASON_RECONNECT, = 4900)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_gateway_opcodes)
     ENUMERATOR(DISCORD_GATEWAY_DISPATCH, = 0)
     ENUMERATOR(DISCORD_GATEWAY_HEARTBEAT, = 1)
@@ -73,7 +76,9 @@ ENUM(discord_gateway_opcodes)
     ENUMERATOR(DISCORD_GATEWAY_HELLO, = 10)
     ENUMERATOR_LAST(DISCORD_GATEWAY_HEARTBEAT_ACK, = 11)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_activity_types)
   /** Format: \"Playing {name}\" */
     ENUMERATOR(DISCORD_ACTIVITY_GAME, = 0)
@@ -88,7 +93,9 @@ ENUM(discord_activity_types)
   /** Format: \"Competing in {name}\" */
     ENUMERATOR_LAST(DISCORD_ACTIVITY_COMPETING, = 5)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity)
   /** the activity's name */
   COND_WRITE(self->name != NULL)
@@ -147,18 +154,24 @@ STRUCT(discord_activity)
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_activities)
     LISTTYPE_STRUCT(discord_activity)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity_timestamps)
   /** unix timestamp (in milliseconds)of when the activity started */
     FIELD_TIMESTAMP(start)
   /** unix timestamp (in milliseconds)of when the activity ends */
     FIELD_TIMESTAMP(end)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity_emoji)
   /** the name of the emoji */
     FIELD_PTR(name, char, *)
@@ -167,7 +180,9 @@ STRUCT(discord_activity_emoji)
   /** whether this emoji is animated */
     FIELD(animated, bool, false)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity_party)
   /** the ID of the party */
     FIELD_PTR(id, char, *)
@@ -175,7 +190,9 @@ STRUCT(discord_activity_party)
        integers (current_size, max_size) */
     FIELD_STRUCT_PTR(size, integers, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity_assets)
   /** activity large asset image */
     FIELD_PTR(large_image, char, *)
@@ -186,7 +203,9 @@ STRUCT(discord_activity_assets)
   /** text displayed when hovering over the small image of the activity */
     FIELD_PTR(small_text, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity_secrets)
   /** the secret for joining a party */
     FIELD_PTR(join, char, *)
@@ -195,19 +214,25 @@ STRUCT(discord_activity_secrets)
   /** the secret for a specific instanced match */
     FIELD_PTR(match, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_activity_button)
   /** the text shown on the button (1-32 characters) */
     FIELD_PTR(label, char, *)
   /** the url opened when clicking the button (1-512 characters) */
     FIELD_PTR(url, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_activity_buttons)
     LISTTYPE_STRUCT(discord_activity_button)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_presence_update} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_presence_update)
   /** the user presence is being updated for */
   COND_WRITE(self->user != NULL)
@@ -237,7 +262,9 @@ PUB_STRUCT(discord_presence_update)
   /** whether or not the client is afk */
     FIELD(afk, bool, false)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_client_status)
   /** the user's status set for an active desktop (Windows, Linux, Mac) 
    *    application session */
@@ -249,15 +276,18 @@ STRUCT(discord_client_status)
    *    application session */
     FIELD_PTR(web, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_presence_updates)
     LISTTYPE_STRUCT(discord_presence_update)
 LIST_END
+#endif
 
-/* gateway command payloads only need to be encoded into JSON */
-#if !defined(GENCODECS_ON_JSON_DECODER)
+/* GATEWAY COMMAND PAYLOADS ONLY NEED TO BE ENCODED INTO JSON */
 
 /** @CCORD_pub_struct{discord_identify} */
+#if GENCODECS_RECIPE & (DATA | JSON_ENCODER)
 PUB_STRUCT(discord_identify)
   /** authentication token */
     FIELD_PTR(token, char, *)
@@ -280,7 +310,9 @@ PUB_STRUCT(discord_identify)
        @see @ref DiscordInternalGatewayIntents */
     FIELD_BITMASK(intents)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON_ENCODER)
 STRUCT(discord_identify_connection)
   /** your operating system */
     FIELD_PTR(os, char, *)
@@ -289,8 +321,10 @@ STRUCT(discord_identify_connection)
   /** your library name */
     FIELD_PTR(device, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_resume} */
+#if GENCODECS_RECIPE & (DATA | JSON_ENCODER)
 PUB_STRUCT(discord_resume)
   /** session token */
     FIELD_PTR(token, char, *)
@@ -299,8 +333,10 @@ PUB_STRUCT(discord_resume)
   /** last sequence number received */
     FIELD(seq, int, 0)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_request_guild_members} */
+#if GENCODECS_RECIPE & (DATA | JSON_ENCODER)
 PUB_STRUCT(discord_request_guild_members)
   /** id of the guild to get members for */
     FIELD_SNOWFLAKE(guild_id)
@@ -321,8 +357,10 @@ PUB_STRUCT(discord_request_guild_members)
     FIELD_PTR(nonce, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_update_voice_state} */
+#if GENCODECS_RECIPE & (DATA | JSON_ENCODER)
 PUB_STRUCT(discord_update_voice_state)
   /** ID of the guild */
     FIELD_SNOWFLAKE(guild_id)
@@ -333,13 +371,12 @@ PUB_STRUCT(discord_update_voice_state)
   /** is the client deafened */
     FIELD(self_deaf, bool, false)
 STRUCT_END
+#endif
 
-#endif /* GENCODECS_ON_JSON_DECODER */
-
-/* event payloads only need to be decoded into structs */
-#if !defined(GENCODECS_ON_JSON_ENCODER)
+/* EVENT PAYLOADS ONLY NEED TO BE DECODED INTO STRUCTS */
 
 /** @CCORD_pub_struct{discord_ready} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_ready)
   /** gateway version */
     FIELD(v, int, 0)
@@ -355,8 +392,10 @@ PUB_STRUCT(discord_ready)
   /** contains `id` and `flags` */
     FIELD_STRUCT_PTR(application, discord_application, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_auto_moderation_action_execution} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_auto_moderation_action_execution)
   /** the id of the guild in which action was executed */
     FIELD_SNOWFLAKE(guild_id)
@@ -382,8 +421,10 @@ PUB_STRUCT(discord_auto_moderation_action_execution)
   /** the substring in content that triggered the rule */
     FIELD_PTR(matched_content, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_thread_list_sync} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_thread_list_sync)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
@@ -400,11 +441,13 @@ PUB_STRUCT(discord_thread_list_sync)
    *    indicating which threads the current user has been added to */
     FIELD_STRUCT_PTR(members, discord_thread_members, *)
 STRUCT_END
+#endif
 
 /** 
  * @CCORD_pub_struct{discord_thread_members_update}
  * @todo `added_members` may include guild_members and presence objects
  */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_thread_members_update)
   /** the id of the thread */
     FIELD_SNOWFLAKE(id)
@@ -417,8 +460,10 @@ PUB_STRUCT(discord_thread_members_update)
   /** the id of the users who were removed from the thread */
     FIELD_STRUCT_PTR(removed_member_ids, snowflakes, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_channel_pins_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_channel_pins_update)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
@@ -427,54 +472,68 @@ PUB_STRUCT(discord_channel_pins_update)
   /** the time at which the most recent pinned message was pinned */
     FIELD_TIMESTAMP(last_pin_timestamp)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_ban_add} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_ban_add)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the banned user */
     FIELD_STRUCT_PTR(user, discord_user, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_ban_remove} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_ban_remove)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the unbanned user */
     FIELD_STRUCT_PTR(user, discord_user, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_emojis_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_emojis_update)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** array of emojis */
     FIELD_STRUCT_PTR(emojis, discord_emojis, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_stickers_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_stickers_update)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** array of stickers */
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_integrations_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_integrations_update)
   /** id of the guild whose integrations were updated */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_member_remove} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_member_remove)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the user who was removed */
     FIELD_STRUCT_PTR(user, discord_user, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_member_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_member_update)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
@@ -503,8 +562,10 @@ PUB_STRUCT(discord_guild_member_update)
    *    user is not timed out */
     FIELD_TIMESTAMP(communication_disabled_until)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_members_chunk} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_members_chunk)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
@@ -524,32 +585,40 @@ PUB_STRUCT(discord_guild_members_chunk)
   /** the nonce used in the `Guild Members Request` */
     FIELD_PTR(nonce, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_role_create} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_role_create)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the role created */
     FIELD_STRUCT_PTR(role, discord_role, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_role_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_role_update)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the role updated */
     FIELD_STRUCT_PTR(role, discord_role, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_role_delete} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_role_delete)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the id of the role */
     FIELD_SNOWFLAKE(role_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_scheduled_event_user_add} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_scheduled_event_user_add)
   /** id of the guild scheduled event */
     FIELD_SNOWFLAKE(guild_scheduled_event_id)
@@ -558,8 +627,10 @@ PUB_STRUCT(discord_guild_scheduled_event_user_add)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_scheduled_event_user_remove} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_guild_scheduled_event_user_remove)
   /** id of the guild scheduled event */
     FIELD_SNOWFLAKE(guild_scheduled_event_id)
@@ -568,8 +639,10 @@ PUB_STRUCT(discord_guild_scheduled_event_user_remove)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_integration_delete} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_integration_delete)
   /** integration id */
     FIELD_SNOWFLAKE(id)
@@ -578,8 +651,10 @@ PUB_STRUCT(discord_integration_delete)
   /** id of the bot/OAuth2 application for this Discord integration */
     FIELD_SNOWFLAKE(application_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_invite_create} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_invite_create)
   /** the channel the invite is for */
     FIELD_SNOWFLAKE(channel_id)
@@ -608,8 +683,10 @@ PUB_STRUCT(discord_invite_create)
   /** how many times the invite has been used (always 0) */
     FIELD(uses, int, 0)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_invite_delete} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_invite_delete)
   /** the channel of the invite */
     FIELD_SNOWFLAKE(channel_id)
@@ -618,8 +695,10 @@ PUB_STRUCT(discord_invite_delete)
   /** the unique invite code */
     FIELD_PTR(code, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_message_delete} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_delete)
   /** the id of the message */
     FIELD_SNOWFLAKE(id)
@@ -628,8 +707,10 @@ PUB_STRUCT(discord_message_delete)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_message_delete_bulk} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_delete_bulk)
   /** the ids of the messages */
     FIELD_STRUCT_PTR(ids, snowflakes, *)
@@ -638,8 +719,10 @@ PUB_STRUCT(discord_message_delete_bulk)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_message_reaction_add} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_reaction_add)
   /** the id of the user */
     FIELD_SNOWFLAKE(user_id)
@@ -654,8 +737,10 @@ PUB_STRUCT(discord_message_reaction_add)
   /** the emoji used to react */
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_message_reaction_remove} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_reaction_remove)
   /** the id of the user */
     FIELD_SNOWFLAKE(user_id)
@@ -668,8 +753,10 @@ PUB_STRUCT(discord_message_reaction_remove)
   /** the emoji used to react */
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_message_reaction_remove_all} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_reaction_remove_all)
   /** the id of the channel */
     FIELD_SNOWFLAKE(channel_id)
@@ -678,8 +765,10 @@ PUB_STRUCT(discord_message_reaction_remove_all)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_message_reaction_remove_emoji} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_reaction_remove_emoji)
   /** the id of the channel */
     FIELD_SNOWFLAKE(channel_id)
@@ -690,8 +779,10 @@ PUB_STRUCT(discord_message_reaction_remove_emoji)
   /** the emoji that was removed */
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_typing_start} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_typing_start)
   /** id of the channel */
     FIELD_SNOWFLAKE(channel_id)
@@ -704,8 +795,10 @@ PUB_STRUCT(discord_typing_start)
   /** the member who started typing if this happened in a guild */
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_voice_server_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_voice_server_update)
   /** voice connection token */
     FIELD_PTR(token, char, *)
@@ -714,16 +807,20 @@ PUB_STRUCT(discord_voice_server_update)
   /** the voice server host */
     FIELD_PTR(endpoint, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_webhooks_update} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_webhooks_update)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** id of the channel */
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_session_start_limit} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_session_start_limit)
   /** the total number of session starts the current user is allowed */
     FIELD(total, int, 0)
@@ -734,5 +831,4 @@ PUB_STRUCT(discord_session_start_limit)
   /** the number of identify requests allowed per 5 seconds */
     FIELD(max_concurrency, int, 0)
 STRUCT_END
-
-#endif /* GENCODECS_ON_JSON_ENCODER */
+#endif

@@ -3,6 +3,7 @@
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_emoji} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_emoji)
   /** emoji ID */
     FIELD_SNOWFLAKE(id)
@@ -26,17 +27,21 @@ PUB_STRUCT(discord_emoji)
        Boosts */
     FIELD(available, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_emojis} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_emojis)
     LISTTYPE_STRUCT(discord_emoji)
 LIST_END
+#endif
 
 /*****************************************************************************
  * Emoji REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_create_guild_emoji} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_emoji)
   /** name of the emoji */
     FIELD_PTR(name, char, *)
@@ -48,8 +53,10 @@ PUB_STRUCT(discord_create_guild_emoji)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_emoji} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_emoji)
   /** name of the emoji */
     FIELD_PTR(name, char, *)
@@ -61,3 +68,4 @@ PUB_STRUCT(discord_modify_guild_emoji)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
   COND_END
 STRUCT_END
+#endif

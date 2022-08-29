@@ -40,20 +40,25 @@ PP_DEFINE(DISCORD_USER_BOT_HTTP_INTERACTIONS 1 << 19)
 
 /** @} DiscordAPIUserFlags */
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_premium_types)
     ENUMERATOR(DISCORD_PREMIUM_NONE, = 0)
     ENUMERATOR(DISCORD_PREMIUM_NITRO_CLASSIC, = 1)
     ENUMERATOR_LAST(DISCORD_PREMIUM_NITRO, = 2)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_visibility_types)
   /** invisible to everyone except the user themselves */
     ENUMERATOR(DISCORD_VISIBILITY_NONE, = 0)
   /** visible to everyone */
     ENUMERATOR_LAST(DISCORD_VISIBILITY_EVERYONE, = 1)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_user} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_user)
   /** the user's ID */
     FIELD_SNOWFLAKE(id)
@@ -90,12 +95,16 @@ PUB_STRUCT(discord_user)
   /** the public @ref DiscordAPIUserFlags on a user's account */
     FIELD_BITMASK(public_flags)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_users} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_users)
     LISTTYPE_STRUCT(discord_user)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_connection)
   /** ID of the connection account */
     FIELD_SNOWFLAKE(id)
@@ -119,17 +128,21 @@ STRUCT(discord_connection)
   /** visibility of this connection */
     FIELD_ENUM(visibility, discord_visibility_types)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_connections} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_connections)
     LISTTYPE_STRUCT(discord_connection)
 LIST_END
+#endif
 
 /*****************************************************************************
  * User REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_modify_current_user} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_current_user)
   /** user's username, if changed may cause the user's discriminator to be
        randomized */
@@ -141,8 +154,9 @@ PUB_STRUCT(discord_modify_current_user)
     FIELD_PTR(avatar, char, *)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_current_user_guilds)
   /** get guilds before this guild ID */
   COND_WRITE(self->before != 0)
@@ -160,14 +174,17 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_create_dm} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_dm)
   /** the recipient to open a DM channel with */
   COND_WRITE(self->recipient_id != 0)
     FIELD_SNOWFLAKE(recipient_id)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_group_dm} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_group_dm)
   /** access tokens of users that have grantes your app `gdm.join` scope */
   COND_WRITE(self->access_tokens != NULL)
@@ -178,3 +195,4 @@ PUB_STRUCT(discord_create_group_dm)
     FIELD_STRUCT_PTR(nicks, strings, *)
   COND_END
 STRUCT_END
+#endif

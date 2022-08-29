@@ -3,6 +3,7 @@
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_guild_template} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_template)
   /** the template code (unique ID) */
     FIELD_PTR(code, char, *)
@@ -27,17 +28,21 @@ PUB_STRUCT(discord_guild_template)
   /** whether the template has unsynced changes */
     FIELD(is_dirty, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_guild_templates} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_guild_templates)
     LISTTYPE_STRUCT(discord_guild_template)
 LIST_END
+#endif
 
 /*****************************************************************************
  * Guild Template REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_create_guild_from_guild_template} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_from_guild_template)
   /** name of the guild (2-100 characters) */
     FIELD_PTR(name, char, *)
@@ -46,8 +51,10 @@ PUB_STRUCT(discord_create_guild_from_guild_template)
     FIELD_PTR(icon, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_guild_template} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_template)
   /** name of the template (1-100 characters) */
     FIELD_PTR(name, char, *)
@@ -56,8 +63,10 @@ PUB_STRUCT(discord_create_guild_template)
     FIELD_PTR(description, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_template} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_template)
   /** name of the template (1-100 characters) */
   COND_WRITE(self->name != NULL)
@@ -68,3 +77,4 @@ PUB_STRUCT(discord_modify_guild_template)
     FIELD_PTR(description, char, *)
   COND_END
 STRUCT_END
+#endif

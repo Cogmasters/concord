@@ -3,6 +3,7 @@
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_auth_response} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_auth_response)
   /** the current application */
     FIELD_STRUCT_PTR(application, discord_application, *)
@@ -14,4 +15,4 @@ PUB_STRUCT(discord_auth_response)
    *    `identify` scope */
     FIELD_STRUCT_PTR(user, discord_user, *)
 STRUCT_END
-
+#endif

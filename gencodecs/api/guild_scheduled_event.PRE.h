@@ -2,25 +2,32 @@
  * Guild Scheduled Event Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_guild_scheduled_event_privacy_level)
   /** the scheduled event is only accessible to guild members */
     ENUMERATOR_LAST(DISCORD_GUILD_SCHEDULED_EVENT_GUILD_ONLY, = 2)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_guild_scheduled_event_entity_types)
     ENUMERATOR(DISCORD_GUILD_SCHEDULED_EVENT_ENTITY_STAGE_INSTANCE, = 1)
     ENUMERATOR(DISCORD_GUILD_SCHEDULED_EVENT_ENTITY_VOICE, = 2)
     ENUMERATOR_LAST(DISCORD_GUILD_SCHEDULED_EVENT_ENTITY_EXTERNAL, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_guild_scheduled_event_status)
     ENUMERATOR(DISCORD_GUILD_SCHEDULED_EVENT_SCHEDULED, = 1)
     ENUMERATOR(DISCORD_GUILD_SCHEDULED_EVENT_ACTIVE, = 2)
     ENUMERATOR(DISCORD_GUILD_SCHEDULED_EVENT_COMPLETED, = 3)
     ENUMERATOR_LAST(DISCORD_GUILD_SCHEDULED_EVENT_CANCELED, = 4)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_guild_scheduled_event} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_scheduled_event)
   /** the ID of the scheduled event */
     FIELD_SNOWFLAKE(id)
@@ -67,19 +74,25 @@ PUB_STRUCT(discord_guild_scheduled_event)
   /** the cover image hashof the scheduled event */
     FIELD_PTR(image, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_guild_scheduled_event_entity_metadata)
   /** location of the event (1-100 characters) */
   COND_WRITE(self->location != NULL)
     FIELD_PTR(location, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_guild_scheduled_events} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_guild_scheduled_events)
     LISTTYPE_STRUCT(discord_guild_scheduled_event)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_guild_scheduled_event_user)
   /** the scheduled event ID which the user subscribed to */
     FIELD_SNOWFLAKE(guild_scheduled_event_id)
@@ -93,17 +106,20 @@ STRUCT(discord_guild_scheduled_event_user)
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_guild_scheduled_event_users} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_guild_scheduled_event_users)
     LISTTYPE_STRUCT(discord_guild_scheduled_event_user)
 LIST_END
+#endif
 
 /*****************************************************************************
  * Guild Scheduled Event REST parameters
  * **************************************************************************/
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_list_guild_scheduled_events)
   /** include number of users subscribed to each event */
     FIELD(with_user_count, bool, false)
@@ -111,6 +127,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_create_guild_scheduled_event} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_scheduled_event)
   /** the channel ID of the scheduled event */
   COND_WRITE(self->channel_id != 0)
@@ -147,8 +164,9 @@ PUB_STRUCT(discord_create_guild_scheduled_event)
     FIELD_PTR(image, char, *)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_guild_scheduled_event)
   /** include number of users subscribed to each event */
     FIELD(with_user_count, bool, false)
@@ -156,6 +174,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_modify_guild_scheduled_event} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_scheduled_event)
   /** the channel ID of the scheduled event */
   COND_WRITE(self->channel_id != 0)
@@ -192,8 +211,9 @@ PUB_STRUCT(discord_modify_guild_scheduled_event)
     FIELD_PTR(image, char, *)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_guild_scheduled_event_users)
   /** number of users to return (up to maximum of 100) */
     FIELD(limit, int, 0)
