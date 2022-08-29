@@ -2,7 +2,9 @@
 *
 # But these
 !api
+!api/*
 !recipes
+!recipes/*
 !*.PRE.h
 !gencodecs.h
 !gencodecs-pp.c

@@ -2,12 +2,15 @@
  * Teams Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_membership_state)
     ENUMERATOR(DISCORD_MEMBERSHIP_INVITED, = 1)
     ENUMERATOR_LAST(DISCORD_MEMBERSHIP_ACCEPTED, = 2)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_team} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_team)
   /** a hash image of the team's icon */
     FIELD_PTR(icon, char, *)
@@ -22,7 +25,9 @@ PUB_STRUCT(discord_team)
   /** the user ID of the current team owner */
     FIELD_SNOWFLAKE(owner_user_id)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_team_member)
   /** the user's membership state on the team */
     FIELD_ENUM(membership_state, discord_membership_state)
@@ -37,7 +42,10 @@ STRUCT(discord_team_member)
     FIELD_STRUCT_PTR(user, discord_user, *)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_team_members)
     LISTTYPE_STRUCT(discord_team_member)
 LIST_END
+#endif

@@ -2,6 +2,7 @@
  * Sticker Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_sticker_types)
   /** an official sticker in a pack, part of Nitro or in a removed
        purchasable pack */
@@ -9,14 +10,18 @@ ENUM(discord_sticker_types)
   /** a sticker uploaded to a Boosted guild for the guild's members */
     ENUMERATOR_LAST(DISCORD_STICKER_GUILD, = 2)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_sticker_format_types)
     ENUMERATOR(DISCORD_STICKER_FORMAT_PNG, = 1)
     ENUMERATOR(DISCORD_STICKER_FORMAT_APNG, = 2)
     ENUMERATOR_LAST(DISCORD_STICKER_FORMAT_LOTTIE, = 3)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_sticker} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_sticker)
   /** ID of the sticker */
     FIELD_SNOWFLAKE(id)
@@ -52,14 +57,16 @@ PUB_STRUCT(discord_sticker)
   /** the standard sticker's sort order within its pack */
     FIELD(sort_value, int, 0)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_stickers} */
-#if !defined(GENCODECS_ON_JSON_DECODING)
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_stickers)
     LISTTYPE_STRUCT(discord_sticker)
 LIST_END
 #endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_sticker_item)
   /** ID of the sticker */
     FIELD_SNOWFLAKE(id)
@@ -70,11 +77,15 @@ STRUCT(discord_sticker_item)
     FIELD_ENUM(format_type, discord_sticker_format_types)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_sticker_items)
     LISTTYPE_STRUCT(discord_sticker_item)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_sticker_pack)
   /** ID of the sticker */
     FIELD_SNOWFLAKE(id)
@@ -97,9 +108,10 @@ STRUCT(discord_sticker_pack)
     FIELD_SNOWFLAKE(banner_asset_id)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_list_nitro_sticker_packs} */
-#if !defined(GENCODECS_ON_JSON_DECODING)
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_sticker_packs)
     LISTTYPE_STRUCT(discord_sticker_pack)
 LIST_END
@@ -110,14 +122,14 @@ LIST_END
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_list_nitro_sticker_packs} */
-#if !defined(GENCODECS_ON_JSON_ENCODING)
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_list_nitro_sticker_packs)
   /** array of sticker pack objects */
     FIELD_STRUCT_PTR(sticker_packs, discord_sticker_packs, *)
 STRUCT_END
 #endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_create_guild_sticker)
   /** name of the sticker (2-30 characters) */
     FIELD_PTR(name, char, *)
@@ -132,6 +144,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_modify_guild_sticker} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_sticker)
   /** name of the sticker (2-30 characters) */
     FIELD_PTR(name, char, *)
@@ -140,3 +153,4 @@ PUB_STRUCT(discord_modify_guild_sticker)
   /** autocomplete/suggestion tags for the sticker (max 200 characters) */
     FIELD_PTR(tags, char, *)
 STRUCT_END
+#endif

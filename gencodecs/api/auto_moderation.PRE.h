@@ -3,6 +3,7 @@
  * **************************************************************************/
 
 /** @brief Characterizes the type of content which can trigger the rule */
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_auto_moderation_trigger_types)
   /**
    * check if content contains words from a user defined list of keywords
@@ -25,7 +26,9 @@ ENUM(discord_auto_moderation_trigger_types)
    */
     ENUMERATOR_LAST(DISCORD_AUTO_MODERATION_KEYWORD_PRESET, = 4)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_auto_moderation_keyword_preset_types)
     /** words that may be considered forms of swearing or cursing */
     ENUMERATOR(DISCORD_AUTO_MODERATION_PROFANITY, = 1)
@@ -34,12 +37,16 @@ ENUM(discord_auto_moderation_keyword_preset_types)
     /** personal insults or words that may be considered hate speech */
     ENUMERATOR_LAST(DISCORD_AUTO_MODERATION_SLURS, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_auto_moderation_event_types)
     /** when a member sends or edits a message in the guild */
     ENUMERATOR_LAST(DISCORD_AUTO_MODERATION_MESSAGE_SEND, = 1)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_auto_moderation_action_types)
     /** blocks the content of a message according to the rule */
     ENUMERATOR(DISCORD_AUTO_MODERATION_ACTION_BLOCK_MESSAGE, = 1)
@@ -48,7 +55,9 @@ ENUM(discord_auto_moderation_action_types)
     /** timeout user for a specified duration */
     ENUMERATOR_LAST(DISCORD_AUTO_MODERATION_ACTION_TIMEOUT, = 3)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_auto_moderation_trigger_metadata)
   /**
    * substrings which will be searched for in content
@@ -62,7 +71,9 @@ STRUCT(discord_auto_moderation_trigger_metadata)
    */
     FIELD_STRUCT_PTR(presets, integers, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_auto_moderation_action)
   /** the type of action */
   COND_WRITE(self->type != 0)
@@ -75,11 +86,15 @@ STRUCT(discord_auto_moderation_action)
     FIELD_STRUCT_PTR(metadata, discord_auto_moderation_action_metadata, *)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_auto_moderation_actions)
     LISTTYPE_STRUCT(discord_auto_moderation_action)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_auto_moderation_action_metadata)
   /** 
    * channel to which user content should be logged
@@ -97,10 +112,10 @@ STRUCT(discord_auto_moderation_action_metadata)
     FIELD(duration_seconds, int, 0)
   COND_END
 STRUCT_END
-
-#if !defined(GENCODECS_ON_JSON_ENCODER)
+#endif
 
 /** @CCORD_pub_struct{discord_auto_moderation_rule} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_auto_moderation_rule)
   /** the ID of this rule */
     FIELD_SNOWFLAKE(id)
@@ -129,19 +144,21 @@ PUB_STRUCT(discord_auto_moderation_rule)
   /** the channel ids that should not be affected by the rule (Maximum of 50) */
     FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_auto_moderation_rules} */
+#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_LIST(discord_auto_moderation_rules)
     LISTTYPE_STRUCT(discord_auto_moderation_rule)
 LIST_END
-
-#endif /* GENCODECS_ON_JSON_ENCODER */
+#endif
 
 /*****************************************************************************
  * Auto Moderation REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_create_auto_moderation_rule} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_auto_moderation_rule)
   /** the rule name */
     FIELD_PTR(name, char, *)
@@ -172,8 +189,10 @@ PUB_STRUCT(discord_create_auto_moderation_rule)
     FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_auto_moderation_rule} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_auto_moderation_rule)
   /** the rule name */
     FIELD_PTR(name, char, *)
@@ -200,3 +219,4 @@ PUB_STRUCT(discord_modify_auto_moderation_rule)
     FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
   COND_END
 STRUCT_END
+#endif

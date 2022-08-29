@@ -2,6 +2,7 @@
  * Interactions Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_interaction_types)
     ENUMERATOR(DISCORD_INTERACTION_PING, = 1)
     ENUMERATOR(DISCORD_INTERACTION_APPLICATION_COMMAND, = 2)
@@ -9,7 +10,9 @@ ENUM(discord_interaction_types)
     ENUMERATOR(DISCORD_INTERACTION_APPLICATION_COMMAND_AUTOCOMPLETE, = 4)
     ENUMERATOR_LAST(DISCORD_INTERACTION_MODAL_SUBMIT, = 5)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_interaction_callback_types)
   /** ACK a @ref DISCORD_INTERACTION_PING */
     ENUMERATOR(DISCORD_INTERACTION_PONG, = 1)
@@ -28,8 +31,10 @@ ENUM(discord_interaction_callback_types)
   /** respond to an interaction with a popup modal */
     ENUMERATOR_LAST(DISCORD_INTERACTION_MODAL, = 9)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_interaction} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_interaction)
   /** ID of the interaction */
     FIELD_SNOWFLAKE(id)
@@ -58,7 +63,9 @@ PUB_STRUCT(discord_interaction)
   /** the guild preferred locale, if invoked in a guild */
     FIELD_PTR(guild_locale, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_interaction_data)
   /** the ID of the invoked command */
     FIELD_SNOWFLAKE(id)
@@ -81,7 +88,9 @@ STRUCT(discord_interaction_data)
   /** the values submitted by the user */
     FIELD_STRUCT_PTR(components, discord_components, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_resolved_data)
   /** the IDs and @ref discord_user datatypes */
     FIELD_STRUCT_PTR(users, snowflakes, *)
@@ -96,7 +105,9 @@ STRUCT(discord_resolved_data)
   /** the IDs and partial @ref discord_attachment datatypes */
     FIELD_STRUCT_PTR(attachments, snowflakes, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_message_interaction)
   /** ID of the interaction */
     FIELD_SNOWFLAKE(id)
@@ -109,8 +120,10 @@ STRUCT(discord_message_interaction)
   /** the member who invoked the interaction in the guild */
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_interaction_response} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_interaction_response)
   /** interaction callback type */
     FIELD_ENUM(type, discord_interaction_callback_types)
@@ -119,7 +132,9 @@ PUB_STRUCT(discord_interaction_response)
     FIELD_STRUCT_PTR(data, discord_interaction_callback_data, *)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_interaction_callback_data)
   /** message components */
   COND_WRITE(self->components != NULL)
@@ -157,19 +172,20 @@ STRUCT(discord_interaction_callback_data)
   /** the title of the popup modal */
     FIELD_PTR(title, char, *)
 STRUCT_END
+#endif
 
 /*****************************************************************************
  * Interactions REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_edit_original_interaction_response} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_original_interaction_response)
   /* QUERY FIELDS */
-#if !defined(GENCODECS_ON_JSON)
+#if !(GENCODECS_RECIPE & JSON)
   /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
 #endif
-
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -190,11 +206,13 @@ PUB_STRUCT(discord_edit_original_interaction_response)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_followup_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_followup_message)
   /* QUERY FIELDS */
-#if !defined(GENCODECS_ON_JSON)
+#if !(GENCODECS_RECIPE & JSON)
   /** waits for server confirmation of message send before response, and
        returns the created message body (defaults to `false`; when `false` a
        message that is not saved does not return an error) */
@@ -203,7 +221,6 @@ PUB_STRUCT(discord_create_followup_message)
        thread will automatically be unarchived */
     FIELD_SNOWFLAKE(thread_id)
 #endif
-
   /* JSON FIELDS */
   /** override the default avatar of the webhook */
     FIELD_PTR(avatar_url, char, *)
@@ -231,15 +248,16 @@ PUB_STRUCT(discord_create_followup_message)
     FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_edit_followup_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_followup_message)
   /* QUERY FIELDS */
-#if !defined(GENCODECS_ON_JSON)
+#if !(GENCODECS_RECIPE & JSON)
   /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
 #endif
-
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -260,3 +278,4 @@ PUB_STRUCT(discord_edit_followup_message)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
+#endif

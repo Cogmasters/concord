@@ -18,6 +18,7 @@ PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED 1 << 19)
 /** @} DiscordApplicationFlags */
 
 /** @CCORD_pub_struct{discord_application} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_application)
   /** the ID of the app */
     FIELD_SNOWFLAKE(id)
@@ -69,11 +70,14 @@ PUB_STRUCT(discord_application)
   /** the application's public flags @see DiscordApplicationFlags */
     FIELD_BITMASK(flags)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_install_params} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_install_params)
   /** the scopes to add the application to the server with */
     FIELD_STRUCT_PTR(scopes, strings, *)
   /** the permissions to request for the bot role */
     FIELD_BITMASK(permissions)
 STRUCT_END
+#endif

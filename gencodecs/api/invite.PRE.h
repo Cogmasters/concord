@@ -2,12 +2,15 @@
  * Invite Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_invite_target_types)
     ENUMERATOR(DISCORD_INVITE_TARGET_STREAM, = 1)
     ENUMERATOR_LAST(DISCORD_INVITE_TARGET_EMBEDDED_APPLICATION, = 2)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_invite} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_invite)
   /** the invite code (unique ID) */
     FIELD_PTR(code, char, *)
@@ -54,12 +57,16 @@ PUB_STRUCT(discord_invite)
     FIELD_STRUCT_PTR(guild_scheduled_event, discord_guild_scheduled_event, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_invites} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_invites)
     LISTTYPE_STRUCT(discord_invite)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_invite_metadata)
   /** number of times this invite has been used */
     FIELD(uses, int, 0)
@@ -74,7 +81,9 @@ STRUCT(discord_invite_metadata)
     FIELD_TIMESTAMP(created_at)
   COND_END
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_invite_stage_instance)
   /** the members speaking in the Stage */
   COND_WRITE(self->members != NULL)
@@ -87,12 +96,14 @@ STRUCT(discord_invite_stage_instance)
   /** the topic of the Stage instance (1-120 characters) */
     FIELD_PTR(topic, char, *)
 STRUCT_END
+#endif
 
 /*****************************************************************************
  * Invite REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_get_invite} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_get_invite)
   /** whether the invite should contain approximate member counts */
     FIELD(with_counts, bool, false)
@@ -103,3 +114,4 @@ PUB_STRUCT(discord_get_invite)
     FIELD_SNOWFLAKE(guild_scheduled_event_id)
   COND_END
 STRUCT_END
+#endif

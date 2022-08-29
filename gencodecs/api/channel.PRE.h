@@ -31,6 +31,7 @@ PP_DEFINE(DISCORD_MESSAGE_FAILED_TO_MENTION_SOME_ROLES_IN_THREAD 1 << 8)
 
 /** @} DiscordAPIChannelMessageFlags */
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_channel_types)
   /** a text channel within a server */
     ENUMERATOR(DISCORD_CHANNEL_GUILD_TEXT, = 0)
@@ -63,14 +64,18 @@ ENUM(discord_channel_types)
   /** a channel that can only contain threads */
     ENUMERATOR_LAST(DISCORD_CHANNEL_GUILD_FORUM, = 15)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_video_quality_modes)
   /** Discord chooses the quality for optimal performance */
     ENUMERATOR(DISCORD_VIDEO_QUALITY_AUTO, = 1)
   /** 720p */
     ENUMERATOR_LAST(DISCORD_VIDEO_QUALITY_FULL, = 2)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_message_types)
     ENUMERATOR(DISCORD_MESSAGE_DEFAULT, = 0)
     ENUMERATOR(DISCORD_MESSAGE_RECIPIENT_ADD, = 1)
@@ -96,15 +101,19 @@ ENUM(discord_message_types)
     ENUMERATOR(DISCORD_MESSAGE_GUILD_INVITE_REMINDER, = 22)
     ENUMERATOR_LAST(DISCORD_MESSAGE_CONTEXT_MENU_COMMAND, = 22)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_message_activity_types)
     ENUMERATOR(DISCORD_MESSAGE_ACTIVITY_JOIN, = 1)
     ENUMERATOR(DISCORD_MESSAGE_ACTIVITY_SPECTATE, = 2)
     ENUMERATOR(DISCORD_MESSAGE_ACTIVITY_LISTEN, = 3)
     ENUMERATOR_LAST(DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST, = 5)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_channel} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_channel)
   /** the ID of this channel */
     FIELD_SNOWFLAKE(id)
@@ -173,13 +182,17 @@ PUB_STRUCT(discord_channel)
        on a application command interaction */
     FIELD_PTR(permissions, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_channels} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_channels)
     LISTTYPE_STRUCT(discord_channel)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_message)
   /** ID of the message */
     FIELD_SNOWFLAKE(id)
@@ -249,19 +262,25 @@ PUB_STRUCT(discord_message)
   /** sent if the message contains stickers */
     FIELD_STRUCT_PTR(sticker_items, discord_sticker_items, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_messages} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_messages)
     LISTTYPE_STRUCT(discord_message)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_message_activity)
   /** type of message activity */
     FIELD_ENUM(type, discord_message_activity_types)
   /** party_id from a Rich Presence event */
     FIELD_PTR(party_id, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_message_reference)
   /** id of the originating message */
     FIELD_SNOWFLAKE(message_id)
@@ -273,15 +292,19 @@ STRUCT(discord_message_reference)
        instead of sending as normal (non-reply) message, default true */
     FIELD(fail_if_not_exists, bool, true)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_followed_channel} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_followed_channel)
   /** source channel id */
     FIELD_SNOWFLAKE(channel_id)
   /** created target webhook id */
     FIELD_SNOWFLAKE(webhook_id)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_reaction)
   /** times this emoji has been used to react */
     FIELD(count, int, 0)
@@ -290,11 +313,15 @@ STRUCT(discord_reaction)
   /** emoji information */
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_reactions)
     LISTTYPE_STRUCT(discord_reaction)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_overwrite)
   /** role or user id */
     FIELD_SNOWFLAKE(id)
@@ -305,11 +332,15 @@ STRUCT(discord_overwrite)
   /** @ref DiscordPermissions bit set */
     FIELD_SNOWFLAKE(deny)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 LIST(discord_overwrites)
     LISTTYPE_STRUCT(discord_overwrite)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_thread_metadata)
   /** whether the thread is archived */
     FIELD(archived, bool, false)
@@ -329,8 +360,10 @@ STRUCT(discord_thread_metadata)
        created after 2022-01-09 */
     FIELD_TIMESTAMP(create_timestamp)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_thread_member} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_thread_member)
   /** the id of the thread */
     FIELD_SNOWFLAKE(id)
@@ -343,15 +376,19 @@ PUB_STRUCT(discord_thread_member)
   /** the id of the guild @note used at `Thread Member Update` */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_thread_members} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_thread_members)
     LISTTYPE_STRUCT(discord_thread_member)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_attachment)
-#if !defined(GENCODECS_ON_JSON)
   /** the file contents */
+#if !(GENCODECS_RECIPE & JSON)
     FIELD_PTR(content, char, *)
 #endif
   /** attachment ID */
@@ -385,13 +422,17 @@ STRUCT(discord_attachment)
   /** whether this attachment is ephemeral */
     FIELD(ephemeral, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_attachments} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_attachments)
     LISTTYPE_STRUCT(discord_attachment)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed)
   /** title of embed */
     FIELD_PTR(title, char, *)
@@ -435,13 +476,17 @@ PUB_STRUCT(discord_embed)
     FIELD_STRUCT_PTR(fields, discord_embed_fields, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_embeds} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_embeds)
     LISTTYPE_STRUCT(discord_embed)
 LIST_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_thumbnail} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_thumbnail)
   /** source url of thumbnail (only supports http(s) and attachments) */
     FIELD_PTR(url, char, *)
@@ -458,8 +503,10 @@ PUB_STRUCT(discord_embed_thumbnail)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_video} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_video)
   /** source url of video */
   COND_WRITE(self->url != NULL)
@@ -478,8 +525,10 @@ PUB_STRUCT(discord_embed_video)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_image} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_image)
   /** source url of image (only supports http(s) and attachments) */
     FIELD_PTR(url, char, *)
@@ -496,8 +545,10 @@ PUB_STRUCT(discord_embed_image)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_provider} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_provider)
   /** name of provider */
   COND_WRITE(self->name != NULL)
@@ -508,8 +559,10 @@ PUB_STRUCT(discord_embed_provider)
     FIELD_PTR(url, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_author} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_author)
   /** name of author */
     FIELD_PTR(name, char, *)
@@ -526,8 +579,10 @@ PUB_STRUCT(discord_embed_author)
     FIELD_PTR(proxy_icon_url, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_footer} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_footer)
   /** footer text */
     FIELD_PTR(text, char, *)
@@ -540,8 +595,10 @@ PUB_STRUCT(discord_embed_footer)
     FIELD_PTR(proxy_icon_url, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_embed_field} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed_field)
   /** name of the field */
     FIELD_PTR(name, char, *)
@@ -552,12 +609,16 @@ PUB_STRUCT(discord_embed_field)
                  GENCODECS_JSON_ENCODER_bool, GENCODECS_JSON_DECODER_bool,
                  false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_embed_fields} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_embed_fields)
     LISTTYPE_STRUCT(discord_embed_field)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_channel_mention)
   /** ID of the channel */
     FIELD_SNOWFLAKE(id)
@@ -568,7 +629,9 @@ STRUCT(discord_channel_mention)
   /** the name of the channel */
     FIELD_PTR(name, char, *)
 STRUCT_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_allowed_mention)
   /** An array of allowed mention tpes to parse from the content */
     FIELD_STRUCT_PTR(parse, strings, *)
@@ -580,8 +643,10 @@ STRUCT(discord_allowed_mention)
        replied to (default false) */
     FIELD(replied_user, bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_thread_response_body} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_thread_response_body)
   /** the archived threads */
     FIELD_STRUCT_PTR(threads, discord_channels, *)
@@ -592,12 +657,14 @@ PUB_STRUCT(discord_thread_response_body)
        on a subsequent call */
     FIELD(has_more, bool, false)
 STRUCT_END
+#endif
 
 /*****************************************************************************
  * Channel REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_modify_channel} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_channel)
   /** 1-100 character channel name */
     FIELD_PTR(name, char, *)
@@ -665,8 +732,9 @@ PUB_STRUCT(discord_modify_channel)
        available on private threads */
     FIELD(invitable, bool, false)
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 PUB_STRUCT(discord_get_channel_messages)
   /** get messages around this message ID */
   COND_WRITE(self->around != 0)
@@ -688,6 +756,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_create_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_message)
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -721,8 +790,9 @@ PUB_STRUCT(discord_create_message)
     FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 PUB_STRUCT(discord_get_reactions)
   /** get users after this user ID */
   COND_WRITE(self->after != 0)
@@ -736,6 +806,7 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_edit_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_message)
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -759,14 +830,18 @@ PUB_STRUCT(discord_edit_message)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_bulk_delete_messages} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_bulk_delete_messages)
   /** an array of message ids to delete (2-100) */
     FIELD_STRUCT_PTR(messages, snowflakes, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_edit_channel_permissions} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_channel_permissions)
   /** the bitwise value of all allowed permissions (default \"0\")
         @see @ref DiscordPermissions */
@@ -781,8 +856,10 @@ PUB_STRUCT(discord_edit_channel_permissions)
   /** 0 for a role or 1 for a member */
     FIELD(type, int, 0)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_channel_invite} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_channel_invite)
   /** duration of invite in seconds before expiry, or 0 for never. between
        0 and 604800 (7 days) */
@@ -817,24 +894,30 @@ PUB_STRUCT(discord_create_channel_invite)
     FIELD_SNOWFLAKE(target_application_id)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_follow_news_channel} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_follow_news_channel)
   /** id of target channel */
   COND_WRITE(self->webhook_channel_id != 0)
     FIELD_SNOWFLAKE(webhook_channel_id)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_group_dm_add_recipient} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_group_dm_add_recipient)
   /** access token of a user that has granted your app the `gdm.join` scope */
     FIELD_PTR(access_token, char, *)
   /** nickname of the user being added */
     FIELD_PTR(nick, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_start_thread_with_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_start_thread_with_message)
   /** 1-100 character channel name */
     FIELD_PTR(name, char, *)
@@ -850,8 +933,10 @@ PUB_STRUCT(discord_start_thread_with_message)
     FIELD(rate_limit_per_user, int, 0)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_start_thread_without_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_start_thread_without_message)
   /** 1-100 character channel name */
     FIELD_PTR(name, char, *)
@@ -872,8 +957,10 @@ PUB_STRUCT(discord_start_thread_without_message)
     FIELD(rate_limit_per_user, int, 0)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_list_active_threads} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_list_active_threads)
   /** the active threads */
   COND_WRITE(self->threads != NULL)
@@ -888,3 +975,4 @@ PUB_STRUCT(discord_list_active_threads)
        on a subsequent call */
     FIELD(has_more, bool, false)
 STRUCT_END
+#endif

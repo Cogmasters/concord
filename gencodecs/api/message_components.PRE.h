@@ -2,6 +2,7 @@
  * Message Components Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_component_types)
   /** a container for the other components */
     ENUMERATOR(DISCORD_COMPONENT_ACTION_ROW, = 1)
@@ -12,7 +13,9 @@ ENUM(discord_component_types)
   /** a text input object */
     ENUMERATOR_LAST(DISCORD_COMPONENT_TEXT_INPUT, = 4)
 ENUM_END
+#endif
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_component_styles)
   /* button styles */
   /** blurple */
@@ -31,8 +34,10 @@ ENUM(discord_component_styles)
   /** a multi-line input */
     ENUMERATOR_LAST(DISCORD_TEXT_PARAGRAPH, = 2)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_component} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_component)
   /** component type */
   COND_WRITE(self->type != 0)
@@ -82,12 +87,16 @@ PUB_STRUCT(discord_component)
   /** a pre-filled value for this component */
     FIELD_PTR(value, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_components} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_components)
     LISTTYPE_STRUCT(discord_component)
 LIST_END
+#endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_select_option)
   /** the user-facing name of the option, max 100 characters */
     FIELD_PTR(label, char, *)
@@ -104,8 +113,11 @@ STRUCT(discord_select_option)
                  CLEANUP_BLANK, GENCODECS_JSON_ENCODER_bool, 
                  GENCODECS_JSON_DECODER_bool, false)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_select_options} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_select_options)
     LISTTYPE_STRUCT(discord_select_option)
 LIST_END
+#endif

@@ -2,6 +2,7 @@
  * Webhook Datatypes
  * **************************************************************************/
 
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_webhook_types)
   /** Incoming Webhooks can post messages to channels with a generated token */
     ENUMERATOR(DISCORD_WEBHOOK_INCOMING, = 1)
@@ -11,8 +12,10 @@ ENUM(discord_webhook_types)
   /** Application webhooks are webhooks used with Interactions */
     ENUMERATOR_LAST(DISCORD_WEBHOOK_APPLICATION, = 3)
 ENUM_END
+#endif
 
 /** @CCORD_pub_struct{discord_webhook} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_webhook)
   /** the ID of the webhook */
     FIELD_SNOWFLAKE(id)
@@ -44,17 +47,21 @@ PUB_STRUCT(discord_webhook)
        OAuth2 flow */
     FIELD_PTR(url, char, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_list{discord_webhooks} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_webhooks)
     LISTTYPE_STRUCT(discord_webhook)
 LIST_END
+#endif
 
 /*****************************************************************************
  * Webhook REST parameters
  * **************************************************************************/
 
 /** @CCORD_pub_struct{discord_create_webhook} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_webhook)
   /** name of the webhook (1-80 characters) */
     FIELD_PTR(name, char, *)
@@ -64,8 +71,10 @@ PUB_STRUCT(discord_create_webhook)
     FIELD_PTR(avatar, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_webhook} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_webhook)
   /** the default name of the webhook */
     FIELD_PTR(name, char, *)
@@ -77,8 +86,10 @@ PUB_STRUCT(discord_modify_webhook)
   /** the new channel ID for this webhook should be moved to */
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_webhook_with_token} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_webhook_with_token)
   /** the default name of the webhook */
     FIELD_PTR(name, char, *)
@@ -88,11 +99,13 @@ PUB_STRUCT(discord_modify_webhook_with_token)
     FIELD_PTR(avatar, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_execute_webhook} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_execute_webhook)
   /* QUERY FIELDS */
-#if !defined(GENCODECS_ON_JSON)
+#if !(GENCODECS_RECIPE & JSON)
   /** waits for server confirmation of message send before response, and
        returns the created message body (defaults to `false`; when `false` a
        message that is not saved does not return an error) */
@@ -101,7 +114,6 @@ PUB_STRUCT(discord_execute_webhook)
        thread will automatically be unarchived */
     FIELD_SNOWFLAKE(thread_id)
 #endif
-
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -133,8 +145,9 @@ PUB_STRUCT(discord_execute_webhook)
     FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_webhook_message)
   /** ID of the thread the message is in */
   COND_WRITE(self->thread_id != 0)
@@ -144,13 +157,13 @@ STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_edit_webhook_message} */
+#if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_webhook_message)
   /* QUERY FIELDS */
-#if !defined(GENCODECS_ON_JSON)
+#if !(GENCODECS_RECIPE & JSON)
   /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
 #endif
-
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -171,8 +184,9 @@ PUB_STRUCT(discord_edit_webhook_message)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
+#endif
 
-#if defined(GENCODECS_ON_STRUCT)
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_delete_webhook_message)
   /** ID of the thread the message is in */
   COND_WRITE(self->thread_id != 0)
