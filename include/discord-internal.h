@@ -656,6 +656,8 @@ struct discord_gateway_session {
     int shards;
     /** the session base url */
     char base_url[256];
+    /** the base url for resuming */
+    char resume_url[256];
     /** session limits */
     struct discord_session_start_limit start_limit;
     /** active concurrent sessions */

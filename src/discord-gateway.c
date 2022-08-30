@@ -215,6 +215,19 @@ _discord_on_dispatch(struct discord_gateway *gw)
                      (int)f->v.len, gw->payload.json.start + f->v.pos);
         ASSERT_S(*gw->session->id, "Missing session_id from READY event");
 
+        if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
+                            "resume_gateway_url", 18)))
+        {
+            const char *url = gw->payload.json.start + f->v.pos;
+            int url_len = (int)f->v.len;
+
+            url_len = snprintf(gw->session->resume_url,
+                               sizeof(gw->session->resume_url),
+                               "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len,
+                               url, ('/' == url[url_len - 1]) ? "" : "/");
+            ASSERT_NOT_OOB(url_len, sizeof(gw->session->resume_url));
+        }
+
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
 
@@ -688,8 +701,8 @@ _discord_gateway_session_from_json(struct discord_gateway_session *session,
         int url_len = (int)f->v.len;
 
         url_len = snprintf(session->base_url, sizeof(session->base_url),
-                           "%.*s%c" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
-                           ('/' == url[url_len - 1]) ? '\0' : '/');
+                           "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
+                           ('/' == url[url_len - 1]) ? "" : "/");
         ASSERT_NOT_OOB(url_len, sizeof(session->base_url));
     }
     if ((f = jsmnf_find(pairs, text, "shards", 6)))
@@ -733,7 +746,16 @@ discord_gateway_start(struct discord_gateway *gw)
         return CCORD_DISCORD_RATELIMIT;
     }
 
-    ws_set_url(gw->ws, gw->session->base_url, NULL);
+    if (gw->session->status & DISCORD_SESSION_RESUMABLE
+        && *gw->session->resume_url)
+    {
+        ws_set_url(gw->ws, gw->session->resume_url, NULL);
+        *gw->session->resume_url = '\0';
+    }
+    else {
+        ws_set_url(gw->ws, gw->session->base_url, NULL);
+    }
+
 #ifndef CCORD_DEBUG_WEBSOCKETS
     ws_start(gw->ws);
 #else
