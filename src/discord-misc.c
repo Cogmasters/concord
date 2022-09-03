@@ -35,7 +35,7 @@ discord_embed_set_footer(struct discord_embed *embed,
 void
 discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 {
-    char buf[2048];
+    char buf[DISCORD_EMBED_TITLE_LEN];
     va_list args;
     int len;
 
@@ -53,7 +53,7 @@ discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 void
 discord_embed_set_description(struct discord_embed *embed, char format[], ...)
 {
-    char buf[2048];
+    char buf[DISCORD_EMBED_DESCRIPTION_LEN];
     va_list args;
     int len;
 

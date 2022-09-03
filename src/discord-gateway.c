@@ -85,13 +85,17 @@ _discord_on_hello(struct discord_gateway *gw)
     if (!strcmp(#event, str)) return DISCORD_EV_##event
 
 static enum discord_gateway_events
-_discord_gateway_event_eval(char name[])
+_discord_gateway_event_eval(const char name[])
 {
     RETURN_IF_MATCH(READY, name);
     RETURN_IF_MATCH(RESUMED, name);
-    RETURN_IF_MATCH(APPLICATION_COMMAND_CREATE, name);
-    RETURN_IF_MATCH(APPLICATION_COMMAND_UPDATE, name);
-    RETURN_IF_MATCH(APPLICATION_COMMAND_DELETE, name);
+    RETURN_IF_MATCH(RECONNECT, name);
+    RETURN_IF_MATCH(INVALID_SESSION, name);
+    RETURN_IF_MATCH(APPLICATION_COMMAND_PERMISSIONS_UPDATE, name);
+    RETURN_IF_MATCH(AUTO_MODERATION_RULE_CREATE, name);
+    RETURN_IF_MATCH(AUTO_MODERATION_RULE_UPDATE, name);
+    RETURN_IF_MATCH(AUTO_MODERATION_RULE_DELETE, name);
+    RETURN_IF_MATCH(AUTO_MODERATION_ACTION_EXECUTION, name);
     RETURN_IF_MATCH(CHANNEL_CREATE, name);
     RETURN_IF_MATCH(CHANNEL_UPDATE, name);
     RETURN_IF_MATCH(CHANNEL_DELETE, name);
@@ -117,6 +121,11 @@ _discord_gateway_event_eval(char name[])
     RETURN_IF_MATCH(GUILD_ROLE_CREATE, name);
     RETURN_IF_MATCH(GUILD_ROLE_UPDATE, name);
     RETURN_IF_MATCH(GUILD_ROLE_DELETE, name);
+    RETURN_IF_MATCH(GUILD_SCHEDULED_EVENT_CREATE, name);
+    RETURN_IF_MATCH(GUILD_SCHEDULED_EVENT_UPDATE, name);
+    RETURN_IF_MATCH(GUILD_SCHEDULED_EVENT_DELETE, name);
+    RETURN_IF_MATCH(GUILD_SCHEDULED_EVENT_USER_ADD, name);
+    RETURN_IF_MATCH(GUILD_SCHEDULED_EVENT_USER_REMOVE, name);
     RETURN_IF_MATCH(INTEGRATION_CREATE, name);
     RETURN_IF_MATCH(INTEGRATION_UPDATE, name);
     RETURN_IF_MATCH(INTEGRATION_DELETE, name);
@@ -205,6 +214,19 @@ _discord_on_dispatch(struct discord_gateway *gw)
             snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
                      (int)f->v.len, gw->payload.json.start + f->v.pos);
         ASSERT_S(*gw->session->id, "Missing session_id from READY event");
+
+        if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
+                            "resume_gateway_url", 18)))
+        {
+            const char *url = gw->payload.json.start + f->v.pos;
+            int url_len = (int)f->v.len;
+
+            url_len = snprintf(gw->session->resume_url,
+                               sizeof(gw->session->resume_url),
+                               "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len,
+                               url, ('/' == url[url_len - 1]) ? "" : "/");
+            ASSERT_NOT_OOB(url_len, sizeof(gw->session->resume_url));
+        }
 
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
@@ -520,7 +542,8 @@ discord_gateway_init(struct discord_gateway *gw,
     /* client connection status */
     gw->session = calloc(1, sizeof *gw->session);
     gw->session->retry.enable = true;
-    gw->session->retry.limit = 5; /* FIXME: shouldn't be a hard limit */
+    /* default infinite retries TODO: configurable */
+    gw->session->retry.limit = -1;
 
     /* default callbacks */
     gw->scheduler = _discord_on_scheduler_default;
@@ -678,8 +701,8 @@ _discord_gateway_session_from_json(struct discord_gateway_session *session,
         int url_len = (int)f->v.len;
 
         url_len = snprintf(session->base_url, sizeof(session->base_url),
-                           "%.*s%c" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
-                           ('/' == url[url_len - 1]) ? '\0' : '/');
+                           "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
+                           ('/' == url[url_len - 1]) ? "" : "/");
         ASSERT_NOT_OOB(url_len, sizeof(session->base_url));
     }
     if ((f = jsmnf_find(pairs, text, "shards", 6)))
@@ -694,7 +717,7 @@ discord_gateway_start(struct discord_gateway *gw)
 {
     struct ccord_szbuf json = { 0 };
 
-    if (gw->session->retry.attempt >= gw->session->retry.limit) {
+    if (gw->session->retry.attempt == gw->session->retry.limit) {
         logconf_fatal(&gw->conf,
                       "Failed reconnecting to Discord after %d tries",
                       gw->session->retry.limit);
@@ -723,7 +746,16 @@ discord_gateway_start(struct discord_gateway *gw)
         return CCORD_DISCORD_RATELIMIT;
     }
 
-    ws_set_url(gw->ws, gw->session->base_url, NULL);
+    if (gw->session->status & DISCORD_SESSION_RESUMABLE
+        && *gw->session->resume_url)
+    {
+        ws_set_url(gw->ws, gw->session->resume_url, NULL);
+        *gw->session->resume_url = '\0';
+    }
+    else {
+        ws_set_url(gw->ws, gw->session->base_url, NULL);
+    }
+
 #ifndef CCORD_DEBUG_WEBSOCKETS
     ws_start(gw->ws);
 #else

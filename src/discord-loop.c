@@ -25,7 +25,8 @@ discord_set_next_wakeup(struct discord *client, int64_t delay)
 }
 
 void
-discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
+discord_set_on_wakeup(struct discord *client,
+                      void (*callback)(struct discord *client))
 {
     client->wakeup_timer.cb = callback;
     if (client->wakeup_timer.id) {
@@ -38,13 +39,15 @@ discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
 }
 
 void
-discord_set_on_idle(struct discord *client, discord_ev_idle callback)
+discord_set_on_idle(struct discord *client,
+                    void (*callback)(struct discord *client))
 {
     client->on_idle = callback;
 }
 
 void
-discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
+discord_set_on_cycle(struct discord *client,
+                     void (*callback)(struct discord *client))
 {
     client->on_cycle = callback;
 }
@@ -84,7 +87,7 @@ discord_run(struct discord *client)
                                 poll_time / 1000);
 
             now = (int64_t)discord_timestamp_us(client);
-            
+
             if (0 == poll_result) {
 
                 if (client->on_idle) {

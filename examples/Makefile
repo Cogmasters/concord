@@ -1,14 +1,12 @@
 # This Makefile assumes the top folder has been built
 TOP = ..
-CC ?= gcc
+CC = gcc
 
-COGUTILS_DIR  = $(TOP)/cog-utils
 CORE_DIR      = $(TOP)/core
 INCLUDE_DIR   = $(TOP)/include
 GENCODECS_DIR = $(TOP)/gencodecs
 
-VOICE_BOTS = voice-join
-BOTS       = 8ball \
+STD_BOTS   = 8ball \
              audit-log \
              ban \
              channel \
@@ -31,23 +29,26 @@ BOTS       = 8ball \
              spam \
              webhook \
              timers
+VOICE_BOTS = voice-join
 
-CFLAGS  = -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
-          -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
-          -O0 -g -pthread -Wall
-LDFLAGS = -L$(TOP)/lib
-LDLIBS  = -ldiscord -lcurl
+BOTS += $(STD_BOTS)
+
+CFLAGS  += -O0 -g -pthread -Wall \
+           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR)
+LDFLAGS  = -L$(TOP)/lib
+LDLIBS   = -ldiscord -lcurl
 
 all: $(BOTS)
 
 voice:
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DCCORD_VOICE" BOTS="$(BOTS) $(VOICE_BOTS)" all
+	@ CFLAGS=-DCCORD_VOICE BOTS=$(VOICE_BOTS) $(MAKE)
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
-	@ echo -e 'BOTS: $(BOTS)\n'
+	@ echo -e 'STD_BOTS: $(STD_BOTS)\n'
+	@ echo -e 'VOICE_BOTS: $(VOICE_BOTS)\n'
 
 clean:
-	@ $(RM) $(BOTS) $(VOICE_BOTS)
+	@ rm -f $(STD_BOTS) $(VOICE_BOTS)
 
 .PHONY: all echo clean

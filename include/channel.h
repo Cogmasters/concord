@@ -278,7 +278,7 @@ CCORDcode discord_delete_message(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
- * @param messages the null-terminated list of messages to be deleted
+ * @param messages the list of messages to be deleted
  * @CCORD_ret{ret}
  * @CCORD_return
  */

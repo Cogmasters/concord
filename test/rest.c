@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "discord-internal.h"
 
 #include "greatest.h"
 

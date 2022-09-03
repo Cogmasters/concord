@@ -2,6 +2,7 @@
  * @file application_command.h
  * @author Cogmasters
  * @brief Application Command public functions and datatypes
+ * @todo application_id should be cached and used when its input value is `0`
  */
 
 #ifndef DISCORD_APPLICATION_COMMAND_H
@@ -101,7 +102,7 @@ CCORDcode discord_delete_global_application_command(
  * @CCORD_ret_obj{ret,application_commands}
  * @CCORD_return
  */
-CCORDcode discord_bulk_overwrite_global_application_command(
+CCORDcode discord_bulk_overwrite_global_application_commands(
     struct discord *client,
     u64snowflake application_id,
     struct discord_application_commands *params,
@@ -206,11 +207,11 @@ CCORDcode discord_delete_guild_application_command(struct discord *client,
  * @CCORD_ret_obj{ret,application_commands}
  * @CCORD_return
  */
-CCORDcode discord_bulk_overwrite_guild_application_command(
+CCORDcode discord_bulk_overwrite_guild_application_commands(
     struct discord *client,
     u64snowflake application_id,
     u64snowflake guild_id,
-    struct discord_application_commands *params,
+    struct discord_bulk_overwrite_guild_application_commands *params,
     struct discord_ret_application_commands *ret);
 
 /**
@@ -264,27 +265,6 @@ CCORDcode discord_edit_application_command_permissions(
     u64snowflake command_id,
     struct discord_edit_application_command_permissions *params,
     struct discord_ret_application_command_permission *ret);
-
-/**
- * @brief Batch edits permissions for all commands in a guild
- * @note You can only add up to 10 permission overwrites for a command
- * @warning This will overwrite all types of application commands: slash
- *       commands, user commands, and message commands
- *
- * @param client the client created with discord_init()
- * @param application_id the unique id of the parent application
- * @param guild_id the guild where the commands are located
- * @param params the request parameters, a list of guild application commands
- *       permissions
- * @CCORD_ret_obj{ret,guild_application_command_permissions}
- * @CCORD_return
- */
-CCORDcode discord_batch_edit_application_command_permissions(
-    struct discord *client,
-    u64snowflake application_id,
-    u64snowflake guild_id,
-    struct discord_guild_application_command_permissions *params,
-    struct discord_ret_guild_application_command_permissions *ret);
 
 /** @example slash-commands.c
  * Demonstrates registering and reacting to slash commands */

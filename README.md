@@ -3,6 +3,8 @@
 [migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
+[discord-config-init]: https://cogmasters.github.io/concord/group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb
+[discord-config-get-field]: https://cogmasters.github.io/concord/group__Discord.html#gac4486003ffab83de397c0bebb74b3307
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
@@ -15,7 +17,7 @@
 
 ## About
 
-Concord is an asynchronous C99 Discord API library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
+Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
 ### Examples
 
@@ -65,6 +67,7 @@ int main(void) {
 ```c
 #include <string.h>
 #include <concord/discord.h>
+#include <concord/log.h>
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
     log_info("Logged in as %s!", event->user->username);
@@ -79,6 +82,7 @@ void on_message(struct discord *client, const struct discord_message *event) {
 
 int main(void) {
     struct discord *client = discord_init(BOT_TOKEN);
+    discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message);
     discord_run(client);
@@ -86,6 +90,7 @@ int main(void) {
 ```
 
 ## Supported operating systems (minimum requirements)
+
 * GNU/Linux 4.x
 * FreeBSD 12
 * NetBSD 8.1
@@ -93,7 +98,11 @@ int main(void) {
 * GNU/Hurd 0.9
 * Mac OS X 10.9
 
+*Note: big-endian processors running certain OSes like SPARC Solaris, PowerPC AIX, System Z z/OS or Linux, or MIPS IRIX are NOT supported. There are currently a few issues that prevent some of the logic from correctly on big-endian systems. This will be fixed soon.*
+
 ## Build Instructions
+
+The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
 
 ### On Windows
 
@@ -106,24 +115,24 @@ int main(void) {
 
 ### On Linux, BSD, and Mac OS X
 
-The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
+*(note -- `#` means that you should be running as root)*
 
 #### Ubuntu and Debian
 
 ```console
-$ sudo apt install -y build-essential libcurl4-openssl-dev
+# apt update && apt install -y libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```console
-$ sudo xbps-install -S libcurl-devel
+# xbps-install -S libcurl-devel
 ```
 
 #### Alpine
 
 ```console
-$ sudo apk add curl-dev
+# apk add curl-dev
 ```
 
 #### FreeBSD
@@ -139,21 +148,21 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
-### Setting up your environment
+## Setting up your environment
 
-#### Clone Concord into your workspace
+### Clone Concord into your workspace
 
 ```console
 $ git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
-#### Compile Concord 
+### Compile Concord
 
 ```console
 $ make
 ```
 
-#### Special notes for non-Linux systems
+### Special notes for non-Linux systems
 
 You might run into trouble with the compiler and linker not finding your Libcurl headers. You can do something like this:
 ```console
@@ -176,9 +185,11 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 $ CFLAGS="-pthread -lpthread" make
 ```
 
-### Configuring Concord
+## Configuring Concord
 
-The following outlines the default fields of `config.json`
+[discord\_config\_init()][discord-config-init] is the initialization method that allows configuring your bot without recompiling.
+
+The following outlines `config.json` fields:
 ```js
 {
   "logging": { // logging directives
@@ -199,11 +210,13 @@ The following outlines the default fields of `config.json`
       "enable": false,                 // enable default command prefix
       "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
     }
-  }
+  },
+  ... // here you can add your custom fields *
 }
 ```
+\* *Your custom field contents can be fetched with [discord\_config\_get\_field()][discord-config-get-field]*
 
-### Test Copycat-Bot
+## Test Copycat-Bot
 
 1. Get your bot token and add it to `config.json`, 
    by assigning it to discord's "token" field. There are 
@@ -219,19 +232,19 @@ The following outlines the default fields of `config.json`
    $ cd examples && ./copycat
    ```
 
-#### Get Copycat-Bot Response
+### Get Copycat-Bot Response
 
 Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.
 
-#### Terminate Copycat-Bot
+### Terminate Copycat-Bot
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
 
-### Configure your build
+## Configure your build
 
 The following outlines special flags and targets to override the default Makefile build with additional functionalities.
 
-#### Special compilation flags
+### Special compilation flags
 
 * `-DCCORD_SIGINTCATCH`
     * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
@@ -245,18 +258,16 @@ The following outlines special flags and targets to override the default Makefil
 $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 ```
 
-#### Special targets
+### Special targets
 
 * `make shared`
-    * Produce a dynamically-linked version of Concord. This Makefile is intented for GNU-style compilers, such as `gcc` or `clang`.
-
+    * Produce a dynamically-linked version of Concord. This Makefile is intended for GNU-style compilers, such as `gcc` or `clang`.
 * `make shared_osx`
     * Produce a dynamically-linked version of Concord, for OS X and Darwin systems. 
-
 * `make voice`
     * Enable experimental Voice Connection handling - not production ready.
 * `make debug`
-    * Same as enabling `-DCCORD_DEBUG_WEBSOCKETS` and `-DCCORD_DEBUG_HTTP`
+    * Enable some flags useful while developing, such as `-O0` and `-g`
 
 ## Installing Concord
 
@@ -266,14 +277,30 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
 # make install
 ```
 
-This will install the headers and libary files into $PREFIX. You can override this as such:
+This will install the headers and library files into $PREFIX. You can override this as such:
 ```console
 # PREFIX=/opt/concord make install
 ```
 
+### Included dependencies
+
+The following are `stable` and well documented dependencies that are packaged with Concord and can be included to your projects:
+
+| File                                                  | Description                                        |
+|-------------------------------------------------------|----------------------------------------------------|
+| [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
+| [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
+| [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
+| [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
+| [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
+| [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |
+
+\* *Concord uses its own modified version that may be not up to date with the original*
+
 Note that included headers must be `concord/` prefixed:
 ```c
 #include <concord/discord.h>
+#include <concord/log.h>
 ```
 
 ### Standalone executable
@@ -292,6 +319,7 @@ $ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 
 #### UNIX C compilers
 ##### This includes the following compilers:
+
 * IBM XL C/C++ (AIX, z/OS, possibly IBM i)
 * Sun/Oracle Studio (Solaris)
 * IRIX MIPSpro C++ (IRIX) -- NOTE: currently not supported

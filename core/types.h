@@ -3,6 +3,9 @@
 #ifndef CONCORD_TYPES_H
 #define CONCORD_TYPES_H
 
+#include <stddef.h>
+#include <stdint.h>
+
 /** @defgroup ConcordTypes Primitives
  *  @brief Commonly used datatypes
  *

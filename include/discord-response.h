@@ -67,10 +67,22 @@ struct discord_ret {
 /** @brief flag for enabling `sync` mode without expecting a datatype return */
 #define DISCORD_SYNC_FLAG ((void *)-1)
 
+/** @addtogroup DiscordAPIOAuth2
+ *  @{ */
+DISCORD_RETURN(application);
+DISCORD_RETURN(auth_response);
+/** @} DiscordAPIOAuth2 */
+
 /** @addtogroup DiscordAPIAuditLog
  *  @{ */
 DISCORD_RETURN(audit_log);
 /** @} DiscordAPIAuditLog */
+
+/** @addtogroup DiscordAPIAutoModeration
+ *  @{ */
+DISCORD_RETURN(auto_moderation_rule);
+DISCORD_RETURN(auto_moderation_rules);
+/** @} DiscordAPIAutoModeration */
 
 /** @addtogroup DiscordAPIChannel
  *  @{ */
@@ -96,16 +108,28 @@ DISCORD_RETURN(guilds);
 DISCORD_RETURN(guild_preview);
 DISCORD_RETURN(guild_member);
 DISCORD_RETURN(guild_members);
+DISCORD_RETURN(guild_widget);
+DISCORD_RETURN(guild_widget_settings);
 DISCORD_RETURN(ban);
 DISCORD_RETURN(bans);
 DISCORD_RETURN(role);
 DISCORD_RETURN(roles);
 DISCORD_RETURN(welcome_screen);
+DISCORD_RETURN(integrations);
+DISCORD_RETURN(prune_count);
 /** @} DiscordAPIGuild */
+
+/** @addtogroup DiscordAPIGuildScheduledEvent
+ *  @{ */
+DISCORD_RETURN(guild_scheduled_event);
+DISCORD_RETURN(guild_scheduled_events);
+DISCORD_RETURN(guild_scheduled_event_users);
+/** @} DiscordAPIGuildScheduledEvent */
 
 /** @addtogroup DiscordAPIGuildTemplate
  *  @{ */
 DISCORD_RETURN(guild_template);
+DISCORD_RETURN(guild_templates);
 /** @} DiscordAPIGuildTemplate */
 
 /** @addtogroup DiscordAPIInvite
@@ -113,6 +137,18 @@ DISCORD_RETURN(guild_template);
 DISCORD_RETURN(invite);
 DISCORD_RETURN(invites);
 /** @} DiscordAPIInvite */
+
+/** @addtogroup DiscordAPIStageInstance
+ *  @{ */
+DISCORD_RETURN(stage_instance);
+/** @} DiscordAPIStageInstance */
+
+/** @addtogroup DiscordAPISticker
+ *  @{ */
+DISCORD_RETURN(sticker);
+DISCORD_RETURN(stickers);
+DISCORD_RETURN(list_nitro_sticker_packs);
+/** @} DiscordAPISticker */
 
 /** @addtogroup DiscordAPIUser
  *  @{ */

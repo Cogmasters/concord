@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <inttypes.h>
+
 #include "discord.h"
 
 void

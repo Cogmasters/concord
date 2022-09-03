@@ -18,14 +18,21 @@ extern "C" {
 #include <inttypes.h>
 #include <stdbool.h>
 
-#include "logconf.h"
 #include "error.h"
 #include "types.h"
 #include "concord-once.h"
 #include "io_poller.h"
 
-#define DISCORD_API_BASE_URL       "https://discord.com/api/v9"
-#define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
+#ifndef DISCORD_VERSION
+/**
+ * @brief The Discord API version to use
+ * @warning only change this if you know what you are doing!
+ */
+#define DISCORD_VERSION "10"
+#endif
+
+#define DISCORD_API_BASE_URL       "https://discord.com/api/v" DISCORD_VERSION
+#define DISCORD_GATEWAY_URL_SUFFIX "?v=" DISCORD_VERSION "&encoding=json"
 
 /* forward declaration */
 struct discord;
@@ -36,6 +43,8 @@ struct discord;
 #include "discord-voice.h"
 #endif /* CCORD_VOICE */
 #include "discord-response.h"
+
+/** @defgroup DiscordClient Client */
 
 /** @defgroup DiscordConstants Constants
  * @brief Macros for constants defined by Discord
@@ -60,7 +69,7 @@ struct discord;
  * @brief Max length for embed fields
  *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       4 * 256 + 1
-#define DISCORD_EMBED_DESCRIPTION_LEN 4 * 2048 + 1
+#define DISCORD_EMBED_DESCRIPTION_LEN 4 * 4096 + 1
 #define DISCORD_EMBED_MAX_FIELDS      25
 #define DISCORD_EMBED_FIELD_NAME_LEN  4 * 256 + 1
 #define DISCORD_EMBED_FIELD_VALUE_LEN 4 * 1024 + 1
@@ -117,15 +126,20 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
  *  @{ */
 
 #include "audit_log.h"
+#include "auto_moderation.h"
 #include "invite.h"
 #include "channel.h"
 #include "emoji.h"
 #include "guild.h"
+#include "guild_scheduled_event.h"
 #include "guild_template.h"
+#include "stage_instance.h"
+#include "sticker.h"
 #include "user.h"
 #include "voice.h"
 #include "webhook.h"
 #include "gateway.h"
+#include "oauth2.h"
 /** @defgroup DiscordAPIInteractions Interactions
  *   @brief Interactions public API supported by Concord
  *  @{ */
@@ -135,8 +149,8 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 
 /** @} DiscordAPI */
 
-/** @defgroup Discord Client
- *   @brief Functions and datatypes for the client
+/** @addtogroup DiscordClient
+ *   @brief Client functions and datatypes
  *  @{ */
 
 /** @struct discord */
@@ -185,7 +199,26 @@ struct discord *discord_config_init(const char config_file[]);
 
 /**
  * @brief Get the contents from the config file field
- * @note only works if your bot has been initialized with discord_config_init()
+ * @note your bot **MUST** have been initialized with discord_config_init()
+ *
+ * @code{.c}
+ * // Assume the following custom config.json field to be extracted
+ * // "field": { "foo": "a string", "bar": 1234 }
+ *
+ * ...
+ * struct ccord_szbuf_readonly value;
+ * char foo[128];
+ * long bar;
+ *
+ * // field.foo
+ * value = discord_config_get_field(client, (char *[2]){ "field", "foo" }, 2);
+ * snprintf(foo, sizeof(foo), "%.*s", (int)value.size, value.start);
+ * // field.bar
+ * value = discord_config_get_field(client, (char *[2]){ "field", "bar" }, 2);
+ * bar = strtol(value.start, NULL, 10);
+ *
+ * printf("%s %ld", foo, bar); // "a string" 1234
+ * @endcode
  *
  * @param client the client created with discord_config_init()
  * @param path the JSON key path
@@ -270,46 +303,6 @@ void *discord_set_data(struct discord *client, void *data);
 void *discord_get_data(struct discord *client);
 
 /**
- * @brief Set the client presence status
- * @deprecated since v2.0.0, use discord_update_presence() instead
- * @see discord_presence_add_activity()
- *
- * @param client the client created with discord_init()
- * @param presence status to update the client's to
- */
-void discord_set_presence(struct discord *client,
-                          struct discord_presence_update *presence);
-
-/**
- * @brief Request all members for a guild or a list of guilds
- *
- * @param client the client created with discord_init()
- * @param request request guild members information
- */
-void discord_request_guild_members(
-    struct discord *client, struct discord_request_guild_members *request);
-
-/**
- * @brief Sent when a client wants to join, move or disconnect from a voice
- *      channel
- *
- * @param client the client created with discord_init()
- * @param update request guild members information
- */
-void discord_update_voice_state(struct discord *client,
-                                struct discord_update_voice_state *update);
-
-/**
- * @brief Update the client presence status
- * @see discord_presence_add_activity()
- *
- * @param client the client created with discord_init()
- * @param presence status to update the client's to
- */
-void discord_update_presence(struct discord *client,
-                             struct discord_presence_update *presence);
-
-/**
  * @brief Get the client WebSockets ping
  * @note Only works after a connection has been established via discord_run()
  *
@@ -351,7 +344,7 @@ struct logconf *discord_get_logconf(struct discord *client);
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
 
-/** @defgroup DiscordTimer Timer
+/** @addtogroup DiscordTimer Timer
  * @brief Schedule callbacks to be called in the future
  *  @{ */
 
@@ -506,7 +499,7 @@ bool discord_timer_cancel_and_delete(struct discord *client, unsigned id);
  * Demonstrates the Timer API for callback scheduling */
 
 /** @} DiscordTimer */
-/** @} Discord */
+/** @} DiscordClient */
 
 #ifdef __cplusplus
 }

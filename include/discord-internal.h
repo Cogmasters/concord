@@ -86,10 +86,15 @@ extern "C" {
 
 struct discord_timers {
     priority_queue *q;
+    struct io_poller *io;
     struct {
+        bool is_active;
+        pthread_t thread;
         struct discord_timer *timer;
         bool skip_update_phase;
     } active;
+    pthread_mutex_t lock;
+    pthread_cond_t cond;
 };
 
 /**
@@ -97,7 +102,7 @@ struct discord_timers {
  *
  * @param timers the 'struct discord_timers' to init
  */
-void discord_timers_init(struct discord_timers *timers);
+void discord_timers_init(struct discord_timers *timers, struct io_poller *io);
 
 /**
  * @brief Cleanup timers and call cancel any running ones
@@ -630,9 +635,6 @@ void discord_rest_stop_buckets(struct discord_rest *rest);
  * @brief Wrapper to the Discord Gateway API
  *  @{ */
 
-/** Generic event callback */
-typedef void (*discord_ev)(struct discord *client, void *event);
-
 /** @defgroup DiscordInternalGatewaySessionStatus Client's session status
  * @brief Client's session status
  *  @{ */
@@ -654,6 +656,8 @@ struct discord_gateway_session {
     int shards;
     /** the session base url */
     char base_url[256];
+    /** the base url for resuming */
+    char resume_url[256];
     /** session limits */
     struct discord_session_start_limit start_limit;
     /** active concurrent sessions */
@@ -703,6 +707,12 @@ struct discord_gateway_payload {
     /** field 'd' */
     jsmnf_pair *data;
 };
+
+/** A generic event callback for casting */
+typedef void (*discord_ev_event)(struct discord *client, const void *event);
+/** An event callback for @ref DISCORD_EV_MESSAGE_CREATE */
+typedef void (*discord_ev_message)(struct discord *client,
+                                   const struct discord_message *event);
 
 /** @brief The handle used for interfacing with Discord's Gateway API */
 struct discord_gateway {
@@ -766,7 +776,7 @@ struct discord_gateway {
      * @todo should be cast to the original callback signature before calling,
      *      otherwise its UB
      */
-    discord_ev cbs[DISCORD_EV_MAX];
+    discord_ev_event cbs[DISCORD_EV_MAX];
     /** the event scheduler callback */
     discord_ev_scheduler scheduler;
 };
@@ -1154,15 +1164,15 @@ struct discord {
     /** wakeup timer handle */
     struct {
         /** callback to be triggered on timer's timeout */
-        discord_ev_idle cb;
+        void (*cb)(struct discord *client);
         /** the id of the wake timer */
         unsigned id;
     } wakeup_timer;
 
     /** triggers when idle */
-    discord_ev_idle on_idle;
+    void (*on_idle)(struct discord *client);
     /** triggers once per loop cycle */
-    discord_ev_idle on_cycle;
+    void (*on_cycle)(struct discord *client);
 
     /** user arbitrary data @see discord_set_data() */
     void *data;
@@ -1178,7 +1188,7 @@ struct discord {
     } * workers;
 
 #ifdef CCORD_VOICE
-    struct discord_voice vcs[DISCORD_MAX_VCS];
+    struct discord_voice *vcs;
     struct discord_voice_evcallbacks voice_cbs;
 #endif /* CCORD_VOICE */
 };
