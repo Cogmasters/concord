@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('interactions_8h.html',''); initResizab
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for interactions.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interactions_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interactions_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -137,15 +137,24 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:acedb17c68eab684a8d0f908bd4af4c3e"><td class="memItemLeft" align="right" valign="top"><a id="acedb17c68eab684a8d0f908bd4af4c3e" name="acedb17c68eab684a8d0f908bd4af4c3e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_types</b> { <br />
-&#160;&#160;<b>DISCORD_INTERACTION_PING</b> = 1
-, <b>DISCORD_INTERACTION_APPLICATION_COMMAND</b> = 2
-, <b>DISCORD_INTERACTION_MESSAGE_COMPONENT</b> = 3
-, <b>DISCORD_INTERACTION_APPLICATION_COMMAND_AUTOCOMPLETE</b> = 4
+<tr class="memitem:acedb17c68eab684a8d0f908bd4af4c3e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3e">discord_interaction_types</a> { <br />
+&#160;&#160;<a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3eaa47817a0acf35b30b3c3657b7c2d0075">DISCORD_INTERACTION_PING</a> = 1
+, <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372">DISCORD_INTERACTION_APPLICATION_COMMAND</a> = 2
+, <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3ea2628808d3fdb6a32b6ea2b24182c6203">DISCORD_INTERACTION_MESSAGE_COMPONENT</a> = 3
+, <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3ea0f9e20f1c8483332e2261f7f4c27863c">DISCORD_INTERACTION_APPLICATION_COMMAND_AUTOCOMPLETE</a> = 4
 , <br />
-&#160;&#160;<b>DISCORD_INTERACTION_MODAL_SUBMIT</b> = 5
+&#160;&#160;<a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3eac7850aeefc741aec30068fedcd3b3dd0">DISCORD_INTERACTION_MODAL_SUBMIT</a> = 5
 <br />
  }</td></tr>
 <tr class="separator:acedb17c68eab684a8d0f908bd4af4c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,101 +173,135 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3beb54018519012505768b779d1ff714"><td class="memItemLeft" align="right" valign="top"><a id="a3beb54018519012505768b779d1ff714" name="a3beb54018519012505768b779d1ff714"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_init</b> (struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
+<tr class="memitem:a3beb54018519012505768b779d1ff714"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a3beb54018519012505768b779d1ff714">discord_interaction_init</a> (struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
 <tr class="separator:a3beb54018519012505768b779d1ff714"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6348a419ec2fd9c3223dc3cdecb40cae"><td class="memItemLeft" align="right" valign="top"><a id="a6348a419ec2fd9c3223dc3cdecb40cae" name="a6348a419ec2fd9c3223dc3cdecb40cae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_cleanup</b> (struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
+<tr class="memitem:a6348a419ec2fd9c3223dc3cdecb40cae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a6348a419ec2fd9c3223dc3cdecb40cae">discord_interaction_cleanup</a> (struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
 <tr class="separator:a6348a419ec2fd9c3223dc3cdecb40cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaabb4ba88ee073714c4964f39134cb82"><td class="memItemLeft" align="right" valign="top"><a id="aaabb4ba88ee073714c4964f39134cb82" name="aaabb4ba88ee073714c4964f39134cb82"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_response_init</b> (struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
+<tr class="memitem:aaabb4ba88ee073714c4964f39134cb82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#aaabb4ba88ee073714c4964f39134cb82">discord_interaction_response_init</a> (struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
 <tr class="separator:aaabb4ba88ee073714c4964f39134cb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dc0b6e884b177e44a945b8976f18aa5"><td class="memItemLeft" align="right" valign="top"><a id="a2dc0b6e884b177e44a945b8976f18aa5" name="a2dc0b6e884b177e44a945b8976f18aa5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_response_cleanup</b> (struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a2dc0b6e884b177e44a945b8976f18aa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a2dc0b6e884b177e44a945b8976f18aa5">discord_interaction_response_cleanup</a> (struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
 <tr class="separator:a2dc0b6e884b177e44a945b8976f18aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a664159a1f7b9b673bc2959b966c3ed65"><td class="memItemLeft" align="right" valign="top"><a id="a664159a1f7b9b673bc2959b966c3ed65" name="a664159a1f7b9b673bc2959b966c3ed65"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_original_interaction_response_init</b> (struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a664159a1f7b9b673bc2959b966c3ed65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a664159a1f7b9b673bc2959b966c3ed65">discord_edit_original_interaction_response_init</a> (struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
 <tr class="separator:a664159a1f7b9b673bc2959b966c3ed65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a60e60cd5ed2dbdb417d7701b09e165"><td class="memItemLeft" align="right" valign="top"><a id="a8a60e60cd5ed2dbdb417d7701b09e165" name="a8a60e60cd5ed2dbdb417d7701b09e165"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_original_interaction_response_cleanup</b> (struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a8a60e60cd5ed2dbdb417d7701b09e165"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a8a60e60cd5ed2dbdb417d7701b09e165">discord_edit_original_interaction_response_cleanup</a> (struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
 <tr class="separator:a8a60e60cd5ed2dbdb417d7701b09e165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22137a4559380a551f1950f8a96080bb"><td class="memItemLeft" align="right" valign="top"><a id="a22137a4559380a551f1950f8a96080bb" name="a22137a4559380a551f1950f8a96080bb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_followup_message_init</b> (struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
+<tr class="memitem:a22137a4559380a551f1950f8a96080bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a22137a4559380a551f1950f8a96080bb">discord_create_followup_message_init</a> (struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
 <tr class="separator:a22137a4559380a551f1950f8a96080bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64d5cd75d975bd7e4d55ffb82fb188d7"><td class="memItemLeft" align="right" valign="top"><a id="a64d5cd75d975bd7e4d55ffb82fb188d7" name="a64d5cd75d975bd7e4d55ffb82fb188d7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_followup_message_cleanup</b> (struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
+<tr class="memitem:a64d5cd75d975bd7e4d55ffb82fb188d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a64d5cd75d975bd7e4d55ffb82fb188d7">discord_create_followup_message_cleanup</a> (struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
 <tr class="separator:a64d5cd75d975bd7e4d55ffb82fb188d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ba433469f730d504764556c34fa550f"><td class="memItemLeft" align="right" valign="top"><a id="a4ba433469f730d504764556c34fa550f" name="a4ba433469f730d504764556c34fa550f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_followup_message_init</b> (struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
+<tr class="memitem:a4ba433469f730d504764556c34fa550f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a4ba433469f730d504764556c34fa550f">discord_edit_followup_message_init</a> (struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
 <tr class="separator:a4ba433469f730d504764556c34fa550f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad78c33dde0b9510d217925a97472350e"><td class="memItemLeft" align="right" valign="top"><a id="ad78c33dde0b9510d217925a97472350e" name="ad78c33dde0b9510d217925a97472350e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_followup_message_cleanup</b> (struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
+<tr class="memitem:ad78c33dde0b9510d217925a97472350e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#ad78c33dde0b9510d217925a97472350e">discord_edit_followup_message_cleanup</a> (struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
 <tr class="separator:ad78c33dde0b9510d217925a97472350e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a606b014e2e1d25260ba6eadd446554b6"><td class="memItemLeft" align="right" valign="top"><a id="a606b014e2e1d25260ba6eadd446554b6" name="a606b014e2e1d25260ba6eadd446554b6"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
+<tr class="memitem:a606b014e2e1d25260ba6eadd446554b6"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a606b014e2e1d25260ba6eadd446554b6">discord_interaction_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
 <tr class="separator:a606b014e2e1d25260ba6eadd446554b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc945ee41c967d6cdb7e7d253159e6ce"><td class="memItemLeft" align="right" valign="top"><a id="acc945ee41c967d6cdb7e7d253159e6ce" name="acc945ee41c967d6cdb7e7d253159e6ce"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
+<tr class="memitem:acc945ee41c967d6cdb7e7d253159e6ce"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#acc945ee41c967d6cdb7e7d253159e6ce">discord_interaction_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
 <tr class="separator:acc945ee41c967d6cdb7e7d253159e6ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0c59ef36433be74012eff3626fb7a20"><td class="memItemLeft" align="right" valign="top"><a id="af0c59ef36433be74012eff3626fb7a20" name="af0c59ef36433be74012eff3626fb7a20"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_response_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
+<tr class="memitem:af0c59ef36433be74012eff3626fb7a20"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#af0c59ef36433be74012eff3626fb7a20">discord_interaction_response_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
 <tr class="separator:af0c59ef36433be74012eff3626fb7a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73549d9ec03cbd921433e7b63b993077"><td class="memItemLeft" align="right" valign="top"><a id="a73549d9ec03cbd921433e7b63b993077" name="a73549d9ec03cbd921433e7b63b993077"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_response_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a73549d9ec03cbd921433e7b63b993077"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a73549d9ec03cbd921433e7b63b993077">discord_interaction_response_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
 <tr class="separator:a73549d9ec03cbd921433e7b63b993077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a3743c17b6a00cd5f813a9c3488574e"><td class="memItemLeft" align="right" valign="top"><a id="a4a3743c17b6a00cd5f813a9c3488574e" name="a4a3743c17b6a00cd5f813a9c3488574e"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_original_interaction_response_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a4a3743c17b6a00cd5f813a9c3488574e"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a4a3743c17b6a00cd5f813a9c3488574e">discord_edit_original_interaction_response_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
 <tr class="separator:a4a3743c17b6a00cd5f813a9c3488574e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afedb1739b235b81228e7d82fc906d722"><td class="memItemLeft" align="right" valign="top"><a id="afedb1739b235b81228e7d82fc906d722" name="afedb1739b235b81228e7d82fc906d722"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_original_interaction_response_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
+<tr class="memitem:afedb1739b235b81228e7d82fc906d722"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#afedb1739b235b81228e7d82fc906d722">discord_edit_original_interaction_response_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
 <tr class="separator:afedb1739b235b81228e7d82fc906d722"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadfb14878fdd8c355b33975e394ed341"><td class="memItemLeft" align="right" valign="top"><a id="aadfb14878fdd8c355b33975e394ed341" name="aadfb14878fdd8c355b33975e394ed341"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_followup_message_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
+<tr class="memitem:aadfb14878fdd8c355b33975e394ed341"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#aadfb14878fdd8c355b33975e394ed341">discord_create_followup_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
 <tr class="separator:aadfb14878fdd8c355b33975e394ed341"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c3f0cbf43f0ab710b6872ce7e4f283f"><td class="memItemLeft" align="right" valign="top"><a id="a3c3f0cbf43f0ab710b6872ce7e4f283f" name="a3c3f0cbf43f0ab710b6872ce7e4f283f"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_followup_message_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
+<tr class="memitem:a3c3f0cbf43f0ab710b6872ce7e4f283f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a3c3f0cbf43f0ab710b6872ce7e4f283f">discord_create_followup_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
 <tr class="separator:a3c3f0cbf43f0ab710b6872ce7e4f283f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b099794f68e3863320db04a81988cb8"><td class="memItemLeft" align="right" valign="top"><a id="a8b099794f68e3863320db04a81988cb8" name="a8b099794f68e3863320db04a81988cb8"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_followup_message_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
+<tr class="memitem:a8b099794f68e3863320db04a81988cb8"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a8b099794f68e3863320db04a81988cb8">discord_edit_followup_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
 <tr class="separator:a8b099794f68e3863320db04a81988cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a964824c1e9af80bdf4f421e6c60fe8a2"><td class="memItemLeft" align="right" valign="top"><a id="a964824c1e9af80bdf4f421e6c60fe8a2" name="a964824c1e9af80bdf4f421e6c60fe8a2"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_followup_message_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
+<tr class="memitem:a964824c1e9af80bdf4f421e6c60fe8a2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a964824c1e9af80bdf4f421e6c60fe8a2">discord_edit_followup_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
 <tr class="separator:a964824c1e9af80bdf4f421e6c60fe8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f28cc3f2dff757f1aee519fe2079479"><td class="memItemLeft" align="right" valign="top"><a id="a3f28cc3f2dff757f1aee519fe2079479" name="a3f28cc3f2dff757f1aee519fe2079479"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
+<tr class="memitem:a3f28cc3f2dff757f1aee519fe2079479"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a3f28cc3f2dff757f1aee519fe2079479">discord_interaction_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
 <tr class="separator:a3f28cc3f2dff757f1aee519fe2079479"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a439a59c1b4db5ce1afe2ffb3e0acf7db"><td class="memItemLeft" align="right" valign="top"><a id="a439a59c1b4db5ce1afe2ffb3e0acf7db" name="a439a59c1b4db5ce1afe2ffb3e0acf7db"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
+<tr class="memitem:a439a59c1b4db5ce1afe2ffb3e0acf7db"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a439a59c1b4db5ce1afe2ffb3e0acf7db">discord_interaction_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *self)</td></tr>
 <tr class="separator:a439a59c1b4db5ce1afe2ffb3e0acf7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9518ffd1e54f198ed421ae30fe7de0c0"><td class="memItemLeft" align="right" valign="top"><a id="a9518ffd1e54f198ed421ae30fe7de0c0" name="a9518ffd1e54f198ed421ae30fe7de0c0"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_response_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a9518ffd1e54f198ed421ae30fe7de0c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a9518ffd1e54f198ed421ae30fe7de0c0">discord_interaction_response_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
 <tr class="separator:a9518ffd1e54f198ed421ae30fe7de0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad65166fb3b70f9f48eee2c41e2dd5507"><td class="memItemLeft" align="right" valign="top"><a id="ad65166fb3b70f9f48eee2c41e2dd5507" name="ad65166fb3b70f9f48eee2c41e2dd5507"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_interaction_response_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
+<tr class="memitem:ad65166fb3b70f9f48eee2c41e2dd5507"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#ad65166fb3b70f9f48eee2c41e2dd5507">discord_interaction_response_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *self)</td></tr>
 <tr class="separator:ad65166fb3b70f9f48eee2c41e2dd5507"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7969d55ec727ae3326ae6cb578301a24"><td class="memItemLeft" align="right" valign="top"><a id="a7969d55ec727ae3326ae6cb578301a24" name="a7969d55ec727ae3326ae6cb578301a24"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_original_interaction_response_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a7969d55ec727ae3326ae6cb578301a24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a7969d55ec727ae3326ae6cb578301a24">discord_edit_original_interaction_response_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
 <tr class="separator:a7969d55ec727ae3326ae6cb578301a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18cfc1d985280858cf2f75b7d0ef85be"><td class="memItemLeft" align="right" valign="top"><a id="a18cfc1d985280858cf2f75b7d0ef85be" name="a18cfc1d985280858cf2f75b7d0ef85be"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_original_interaction_response_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
+<tr class="memitem:a18cfc1d985280858cf2f75b7d0ef85be"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a18cfc1d985280858cf2f75b7d0ef85be">discord_edit_original_interaction_response_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *self)</td></tr>
 <tr class="separator:a18cfc1d985280858cf2f75b7d0ef85be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46c3ecb452d3ed5dd8039b8d6678ec67"><td class="memItemLeft" align="right" valign="top"><a id="a46c3ecb452d3ed5dd8039b8d6678ec67" name="a46c3ecb452d3ed5dd8039b8d6678ec67"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_followup_message_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
+<tr class="memitem:a46c3ecb452d3ed5dd8039b8d6678ec67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a46c3ecb452d3ed5dd8039b8d6678ec67">discord_create_followup_message_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
 <tr class="separator:a46c3ecb452d3ed5dd8039b8d6678ec67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30ade5fc2c4c69bad24163fa92a43044"><td class="memItemLeft" align="right" valign="top"><a id="a30ade5fc2c4c69bad24163fa92a43044" name="a30ade5fc2c4c69bad24163fa92a43044"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_followup_message_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
+<tr class="memitem:a30ade5fc2c4c69bad24163fa92a43044"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a30ade5fc2c4c69bad24163fa92a43044">discord_create_followup_message_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *self)</td></tr>
 <tr class="separator:a30ade5fc2c4c69bad24163fa92a43044"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97335c299c03d58e35f20890ae963da5"><td class="memItemLeft" align="right" valign="top"><a id="a97335c299c03d58e35f20890ae963da5" name="a97335c299c03d58e35f20890ae963da5"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_followup_message_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
+<tr class="memitem:a97335c299c03d58e35f20890ae963da5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#a97335c299c03d58e35f20890ae963da5">discord_edit_followup_message_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
 <tr class="separator:a97335c299c03d58e35f20890ae963da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7e61a2ca42c7e21fa5fb597fab38b93"><td class="memItemLeft" align="right" valign="top"><a id="af7e61a2ca42c7e21fa5fb597fab38b93" name="af7e61a2ca42c7e21fa5fb597fab38b93"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_followup_message_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
+<tr class="memitem:af7e61a2ca42c7e21fa5fb597fab38b93"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interactions_8h.html#af7e61a2ca42c7e21fa5fb597fab38b93">discord_edit_followup_message_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *self)</td></tr>
 <tr class="separator:af7e61a2ca42c7e21fa5fb597fab38b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="acedb17c68eab684a8d0f908bd4af4c3e" name="acedb17c68eab684a8d0f908bd4af4c3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acedb17c68eab684a8d0f908bd4af4c3e">&#9670;&nbsp;</a></span>discord_interaction_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3e">discord_interaction_types</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acedb17c68eab684a8d0f908bd4af4c3eaa47817a0acf35b30b3c3657b7c2d0075" name="acedb17c68eab684a8d0f908bd4af4c3eaa47817a0acf35b30b3c3657b7c2d0075"></a>DISCORD_INTERACTION_PING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372" name="acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372"></a>DISCORD_INTERACTION_APPLICATION_COMMAND&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acedb17c68eab684a8d0f908bd4af4c3ea2628808d3fdb6a32b6ea2b24182c6203" name="acedb17c68eab684a8d0f908bd4af4c3ea2628808d3fdb6a32b6ea2b24182c6203"></a>DISCORD_INTERACTION_MESSAGE_COMPONENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acedb17c68eab684a8d0f908bd4af4c3ea0f9e20f1c8483332e2261f7f4c27863c" name="acedb17c68eab684a8d0f908bd4af4c3ea0f9e20f1c8483332e2261f7f4c27863c"></a>DISCORD_INTERACTION_APPLICATION_COMMAND_AUTOCOMPLETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acedb17c68eab684a8d0f908bd4af4c3eac7850aeefc741aec30068fedcd3b3dd0" name="acedb17c68eab684a8d0f908bd4af4c3eac7850aeefc741aec30068fedcd3b3dd0"></a>DISCORD_INTERACTION_MODAL_SUBMIT&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="af7a2bdc22799b9d1ac556a6ba7206c83" name="af7a2bdc22799b9d1ac556a6ba7206c83"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7a2bdc22799b9d1ac556a6ba7206c83">&#9670;&nbsp;</a></span>discord_interaction_callback_types</h2>
 
@@ -271,7 +314,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_follow
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af7a2bdc22799b9d1ac556a6ba7206c83a9bcbfe69a431084ab2a611464cc47fc3" name="af7a2bdc22799b9d1ac556a6ba7206c83a9bcbfe69a431084ab2a611464cc47fc3"></a>DISCORD_INTERACTION_PONG&#160;</td><td class="fielddoc"><p >ACK a DISCORD_INTERACTION_PING </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af7a2bdc22799b9d1ac556a6ba7206c83a9bcbfe69a431084ab2a611464cc47fc3" name="af7a2bdc22799b9d1ac556a6ba7206c83a9bcbfe69a431084ab2a611464cc47fc3"></a>DISCORD_INTERACTION_PONG&#160;</td><td class="fielddoc"><p >ACK a <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3eaa47817a0acf35b30b3c3657b7c2d0075">DISCORD_INTERACTION_PING</a> </p>
 </td></tr>
 <tr><td class="fieldname"><a id="af7a2bdc22799b9d1ac556a6ba7206c83a3409efaf45118256f4a33d4b15d76240" name="af7a2bdc22799b9d1ac556a6ba7206c83a3409efaf45118256f4a33d4b15d76240"></a>DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE&#160;</td><td class="fielddoc"><p >respond to an interaction with a message </p>
 </td></tr>
@@ -286,6 +329,897 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_follow
 <tr><td class="fieldname"><a id="af7a2bdc22799b9d1ac556a6ba7206c83acf8595ceb0df76b8b295de6ae9d88a97" name="af7a2bdc22799b9d1ac556a6ba7206c83acf8595ceb0df76b8b295de6ae9d88a97"></a>DISCORD_INTERACTION_MODAL&#160;</td><td class="fielddoc"><p >respond to an interaction with a popup modal </p>
 </td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a3beb54018519012505768b779d1ff714" name="a3beb54018519012505768b779d1ff714"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3beb54018519012505768b779d1ff714">&#9670;&nbsp;</a></span>discord_interaction_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_interaction_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6348a419ec2fd9c3223dc3cdecb40cae" name="a6348a419ec2fd9c3223dc3cdecb40cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6348a419ec2fd9c3223dc3cdecb40cae">&#9670;&nbsp;</a></span>discord_interaction_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_interaction_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaabb4ba88ee073714c4964f39134cb82" name="aaabb4ba88ee073714c4964f39134cb82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaabb4ba88ee073714c4964f39134cb82">&#9670;&nbsp;</a></span>discord_interaction_response_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_interaction_response_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2dc0b6e884b177e44a945b8976f18aa5" name="a2dc0b6e884b177e44a945b8976f18aa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dc0b6e884b177e44a945b8976f18aa5">&#9670;&nbsp;</a></span>discord_interaction_response_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_interaction_response_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a664159a1f7b9b673bc2959b966c3ed65" name="a664159a1f7b9b673bc2959b966c3ed65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a664159a1f7b9b673bc2959b966c3ed65">&#9670;&nbsp;</a></span>discord_edit_original_interaction_response_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_original_interaction_response_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a60e60cd5ed2dbdb417d7701b09e165" name="a8a60e60cd5ed2dbdb417d7701b09e165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a60e60cd5ed2dbdb417d7701b09e165">&#9670;&nbsp;</a></span>discord_edit_original_interaction_response_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_original_interaction_response_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a22137a4559380a551f1950f8a96080bb" name="a22137a4559380a551f1950f8a96080bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22137a4559380a551f1950f8a96080bb">&#9670;&nbsp;</a></span>discord_create_followup_message_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_followup_message_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a64d5cd75d975bd7e4d55ffb82fb188d7" name="a64d5cd75d975bd7e4d55ffb82fb188d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64d5cd75d975bd7e4d55ffb82fb188d7">&#9670;&nbsp;</a></span>discord_create_followup_message_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_followup_message_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ba433469f730d504764556c34fa550f" name="a4ba433469f730d504764556c34fa550f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ba433469f730d504764556c34fa550f">&#9670;&nbsp;</a></span>discord_edit_followup_message_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_followup_message_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad78c33dde0b9510d217925a97472350e" name="ad78c33dde0b9510d217925a97472350e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad78c33dde0b9510d217925a97472350e">&#9670;&nbsp;</a></span>discord_edit_followup_message_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_followup_message_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a606b014e2e1d25260ba6eadd446554b6" name="a606b014e2e1d25260ba6eadd446554b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a606b014e2e1d25260ba6eadd446554b6">&#9670;&nbsp;</a></span>discord_interaction_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_interaction_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc945ee41c967d6cdb7e7d253159e6ce" name="acc945ee41c967d6cdb7e7d253159e6ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc945ee41c967d6cdb7e7d253159e6ce">&#9670;&nbsp;</a></span>discord_interaction_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_interaction_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af0c59ef36433be74012eff3626fb7a20" name="af0c59ef36433be74012eff3626fb7a20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c59ef36433be74012eff3626fb7a20">&#9670;&nbsp;</a></span>discord_interaction_response_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_interaction_response_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a73549d9ec03cbd921433e7b63b993077" name="a73549d9ec03cbd921433e7b63b993077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73549d9ec03cbd921433e7b63b993077">&#9670;&nbsp;</a></span>discord_interaction_response_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_interaction_response_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4a3743c17b6a00cd5f813a9c3488574e" name="a4a3743c17b6a00cd5f813a9c3488574e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a3743c17b6a00cd5f813a9c3488574e">&#9670;&nbsp;</a></span>discord_edit_original_interaction_response_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_edit_original_interaction_response_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afedb1739b235b81228e7d82fc906d722" name="afedb1739b235b81228e7d82fc906d722"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afedb1739b235b81228e7d82fc906d722">&#9670;&nbsp;</a></span>discord_edit_original_interaction_response_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_original_interaction_response_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aadfb14878fdd8c355b33975e394ed341" name="aadfb14878fdd8c355b33975e394ed341"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadfb14878fdd8c355b33975e394ed341">&#9670;&nbsp;</a></span>discord_create_followup_message_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_create_followup_message_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c3f0cbf43f0ab710b6872ce7e4f283f" name="a3c3f0cbf43f0ab710b6872ce7e4f283f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c3f0cbf43f0ab710b6872ce7e4f283f">&#9670;&nbsp;</a></span>discord_create_followup_message_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_followup_message_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8b099794f68e3863320db04a81988cb8" name="a8b099794f68e3863320db04a81988cb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b099794f68e3863320db04a81988cb8">&#9670;&nbsp;</a></span>discord_edit_followup_message_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_edit_followup_message_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a964824c1e9af80bdf4f421e6c60fe8a2" name="a964824c1e9af80bdf4f421e6c60fe8a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a964824c1e9af80bdf4f421e6c60fe8a2">&#9670;&nbsp;</a></span>discord_edit_followup_message_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_followup_message_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3f28cc3f2dff757f1aee519fe2079479" name="a3f28cc3f2dff757f1aee519fe2079479"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f28cc3f2dff757f1aee519fe2079479">&#9670;&nbsp;</a></span>discord_interaction_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_interaction_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a439a59c1b4db5ce1afe2ffb3e0acf7db" name="a439a59c1b4db5ce1afe2ffb3e0acf7db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a439a59c1b4db5ce1afe2ffb3e0acf7db">&#9670;&nbsp;</a></span>discord_interaction_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_interaction_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__interaction.html">discord_interaction</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9518ffd1e54f198ed421ae30fe7de0c0" name="a9518ffd1e54f198ed421ae30fe7de0c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9518ffd1e54f198ed421ae30fe7de0c0">&#9670;&nbsp;</a></span>discord_interaction_response_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_interaction_response_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad65166fb3b70f9f48eee2c41e2dd5507" name="ad65166fb3b70f9f48eee2c41e2dd5507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad65166fb3b70f9f48eee2c41e2dd5507">&#9670;&nbsp;</a></span>discord_interaction_response_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_interaction_response_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7969d55ec727ae3326ae6cb578301a24" name="a7969d55ec727ae3326ae6cb578301a24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7969d55ec727ae3326ae6cb578301a24">&#9670;&nbsp;</a></span>discord_edit_original_interaction_response_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_edit_original_interaction_response_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18cfc1d985280858cf2f75b7d0ef85be" name="a18cfc1d985280858cf2f75b7d0ef85be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18cfc1d985280858cf2f75b7d0ef85be">&#9670;&nbsp;</a></span>discord_edit_original_interaction_response_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_original_interaction_response_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__original__interaction__response.html">discord_edit_original_interaction_response</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a46c3ecb452d3ed5dd8039b8d6678ec67" name="a46c3ecb452d3ed5dd8039b8d6678ec67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46c3ecb452d3ed5dd8039b8d6678ec67">&#9670;&nbsp;</a></span>discord_create_followup_message_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_create_followup_message_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30ade5fc2c4c69bad24163fa92a43044" name="a30ade5fc2c4c69bad24163fa92a43044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30ade5fc2c4c69bad24163fa92a43044">&#9670;&nbsp;</a></span>discord_create_followup_message_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_followup_message_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__followup__message.html">discord_create_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97335c299c03d58e35f20890ae963da5" name="a97335c299c03d58e35f20890ae963da5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97335c299c03d58e35f20890ae963da5">&#9670;&nbsp;</a></span>discord_edit_followup_message_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_edit_followup_message_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af7e61a2ca42c7e21fa5fb597fab38b93" name="af7e61a2ca42c7e21fa5fb597fab38b93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7e61a2ca42c7e21fa5fb597fab38b93">&#9670;&nbsp;</a></span>discord_edit_followup_message_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_followup_message_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__followup__message.html">discord_edit_followup_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

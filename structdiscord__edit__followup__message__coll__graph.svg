@@ -38,7 +38,7 @@
 <g id="node3" class="node">
 <title>Node12</title>
 <g id="a_node3"><a xlink:href="structdiscord__allowed__mention.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="114.5,-78.5 114.5,-97.5 255.5,-97.5 255.5,-78.5 114.5,-78.5"/>
+<polygon fill="none" stroke="red" points="114.5,-78.5 114.5,-97.5 255.5,-97.5 255.5,-78.5 114.5,-78.5"/>
 <text text-anchor="middle" x="185" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_allowed_mention</text>
 </a>
 </g>

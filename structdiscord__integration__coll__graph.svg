@@ -37,7 +37,7 @@
 <g id="node4" class="node">
 <title>Node4</title>
 <g id="a_node4"><a xlink:href="structdiscord__integration__application.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="66,-67.5 66,-97.5 176,-97.5 176,-67.5 66,-67.5"/>
+<polygon fill="none" stroke="black" points="66,-67.5 66,-97.5 176,-97.5 176,-67.5 66,-67.5"/>
 <text text-anchor="start" x="74" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_integration</text>
 <text text-anchor="middle" x="121" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">_application</text>
 </a>
@@ -54,7 +54,7 @@
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="structdiscord__integration__account.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="194,-67.5 194,-97.5 304,-97.5 304,-67.5 194,-67.5"/>
+<polygon fill="none" stroke="black" points="194,-67.5 194,-97.5 304,-97.5 304,-67.5 194,-67.5"/>
 <text text-anchor="start" x="202" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_integration</text>
 <text text-anchor="middle" x="249" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">_account</text>
 </a>

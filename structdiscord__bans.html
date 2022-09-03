@@ -103,31 +103,58 @@ Collaboration diagram for discord_bans:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a6790f7ce4210943059b8e9ccf5e098ca"><td class="memItemLeft" align="right" valign="top"><a id="a6790f7ce4210943059b8e9ccf5e098ca" name="a6790f7ce4210943059b8e9ccf5e098ca"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a6790f7ce4210943059b8e9ccf5e098ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bans.html#a6790f7ce4210943059b8e9ccf5e098ca">size</a></td></tr>
 <tr class="separator:a6790f7ce4210943059b8e9ccf5e098ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab66bbb552624941caa377c6a479a8ac6"><td class="memItemLeft" align="right" valign="top"><a id="ab66bbb552624941caa377c6a479a8ac6" name="ab66bbb552624941caa377c6a479a8ac6"></a>
-struct <a class="el" href="structdiscord__ban.html">discord_ban</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:ab66bbb552624941caa377c6a479a8ac6"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__ban.html">discord_ban</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bans.html#ab66bbb552624941caa377c6a479a8ac6">array</a></td></tr>
 <tr class="separator:ab66bbb552624941caa377c6a479a8ac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_bans_cleanup(struct discord_bans *this)</code></li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#ac5a289cc8cefb0782878b7868b30a460">discord_bans_cleanup(struct discord_bans *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_bans_from_json(const char json[], size_t len, struct discord_bans *this)</code></li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#af3e0dbfd68bf546ea535a76867741125">discord_bans_from_json(const char json[], size_t len, struct discord_bans *this)</a></code></li>
 <li><code>discord_bans_from_jsmnf(jsmnf *root, const char json[], struct discord_bans *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_bans_to_json(char buf[], size_t size, const struct discord_bans *this)</code></li>
-<li><code>discord_bans_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_bans *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#abb5fe92b0368ebba4aa37e09995a8250">discord_bans_to_json(char buf[], size_t size, const struct discord_bans *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#ac4e6f6268558fa12a96582e12f406d1f">discord_bans_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_bans *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a6790f7ce4210943059b8e9ccf5e098ca" name="a6790f7ce4210943059b8e9ccf5e098ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6790f7ce4210943059b8e9ccf5e098ca">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_bans::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab66bbb552624941caa377c6a479a8ac6" name="ab66bbb552624941caa377c6a479a8ac6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab66bbb552624941caa377c6a479a8ac6">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__ban.html">discord_ban</a>* discord_bans::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2guild_8h_source.html">guild.h</a></li>
 </ul>
 </div><!-- contents -->

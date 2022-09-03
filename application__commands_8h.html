@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('application__commands_8h.html',''); in
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for application_commands.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="application__commands_8h__incl.svg" width="946" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="application__commands_8h__incl.svg" width="864" height="202"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -150,8 +150,19 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -161,15 +172,15 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="separator:a57ac2421de18ce66eac17050cefbd5ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15107c5a0de4294624ec30853e25d28b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28b">discord_application_command_option_types</a> { <br />
-&#160;&#160;<b>DISCORD_APPLICATION_OPTION_SUB_COMMAND</b> = 1
-, <b>DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP</b> = 2
-, <b>DISCORD_APPLICATION_OPTION_STRING</b> = 3
+&#160;&#160;<a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28baedc8d7875ea3a7d758cc19eeb38f1a2a">DISCORD_APPLICATION_OPTION_SUB_COMMAND</a> = 1
+, <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba007618d4124b1e72a3c99201ca7a9396">DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP</a> = 2
+, <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba99b815aff81b73607139ded9f2d0984c">DISCORD_APPLICATION_OPTION_STRING</a> = 3
 , <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28baaa99fefe914bbd2145b8c4d63bb0d077">DISCORD_APPLICATION_OPTION_INTEGER</a> = 4
 , <br />
-&#160;&#160;<b>DISCORD_APPLICATION_OPTION_BOOLEAN</b> = 5
-, <b>DISCORD_APPLICATION_OPTION_USER</b> = 6
+&#160;&#160;<a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba8d1f745a3c10d3b516fa5e734c26945b">DISCORD_APPLICATION_OPTION_BOOLEAN</a> = 5
+, <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba73780c270257dfb8c5e9a48cc978ffef">DISCORD_APPLICATION_OPTION_USER</a> = 6
 , <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba668fb8fa30b537b1afbc8e66caba0b77">DISCORD_APPLICATION_OPTION_CHANNEL</a> = 7
-, <b>DISCORD_APPLICATION_OPTION_ROLE</b> = 8
+, <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba718f70c5269610bb53efafc9bb540a26">DISCORD_APPLICATION_OPTION_ROLE</a> = 8
 , <br />
 &#160;&#160;<a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28bade7a15708caabbd74c5449f1f63103a5">DISCORD_APPLICATION_OPTION_MENTIONABLE</a> = 9
 , <a class="el" href="application__commands_8h.html#a15107c5a0de4294624ec30853e25d28ba4f8fa3a2b36bfcbf563c0199502d4d2a">DISCORD_APPLICATION_OPTION_NUMBER</a> = 10
@@ -177,189 +188,188 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a15107c5a0de4294624ec30853e25d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af67b9df36cefd62a9264e7207ef718e2"><td class="memItemLeft" align="right" valign="top"><a id="af67b9df36cefd62a9264e7207ef718e2" name="af67b9df36cefd62a9264e7207ef718e2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_types</b> { <b>DISCORD_APPLICATION_PERMISSION_ROLE</b> = 1
-, <b>DISCORD_APPLICATION_PERMISSION_USER</b> = 2
+<tr class="memitem:af67b9df36cefd62a9264e7207ef718e2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#af67b9df36cefd62a9264e7207ef718e2">discord_application_command_permission_types</a> { <a class="el" href="application__commands_8h.html#af67b9df36cefd62a9264e7207ef718e2a0a729c09e6e922387a5202eca2a9e9fa">DISCORD_APPLICATION_PERMISSION_ROLE</a> = 1
+, <a class="el" href="application__commands_8h.html#af67b9df36cefd62a9264e7207ef718e2a0232762a8068713b9c6e00a8f085aff8">DISCORD_APPLICATION_PERMISSION_USER</a> = 2
+, <a class="el" href="application__commands_8h.html#af67b9df36cefd62a9264e7207ef718e2a831e70ac653e571329d7017d49ac5adf">DISCORD_APPLICATION_PERMISSION_CHANNEL</a> = 3
  }</td></tr>
 <tr class="separator:af67b9df36cefd62a9264e7207ef718e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abb31314358839a030f3207e369e263b1"><td class="memItemLeft" align="right" valign="top"><a id="abb31314358839a030f3207e369e263b1" name="abb31314358839a030f3207e369e263b1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_init</b> (struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
+<tr class="memitem:abb31314358839a030f3207e369e263b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#abb31314358839a030f3207e369e263b1">discord_application_command_init</a> (struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
 <tr class="separator:abb31314358839a030f3207e369e263b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9040df8e4cf2f2f29c1deabf5b7d55a"><td class="memItemLeft" align="right" valign="top"><a id="ac9040df8e4cf2f2f29c1deabf5b7d55a" name="ac9040df8e4cf2f2f29c1deabf5b7d55a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_cleanup</b> (struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
+<tr class="memitem:ac9040df8e4cf2f2f29c1deabf5b7d55a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ac9040df8e4cf2f2f29c1deabf5b7d55a">discord_application_command_cleanup</a> (struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
 <tr class="separator:ac9040df8e4cf2f2f29c1deabf5b7d55a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fc013f6683a6f239b5e818cf593fe06"><td class="memItemLeft" align="right" valign="top"><a id="a3fc013f6683a6f239b5e818cf593fe06" name="a3fc013f6683a6f239b5e818cf593fe06"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_commands_cleanup</b> (struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
+<tr class="memitem:a3fc013f6683a6f239b5e818cf593fe06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a3fc013f6683a6f239b5e818cf593fe06">discord_application_commands_cleanup</a> (struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
 <tr class="separator:a3fc013f6683a6f239b5e818cf593fe06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a182fc0082ceae55deb43a63d4ad1941d"><td class="memItemLeft" align="right" valign="top"><a id="a182fc0082ceae55deb43a63d4ad1941d" name="a182fc0082ceae55deb43a63d4ad1941d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_guild_application_command_permissions_cleanup</b> (struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a182fc0082ceae55deb43a63d4ad1941d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a182fc0082ceae55deb43a63d4ad1941d">discord_guild_application_command_permissions_cleanup</a> (struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a182fc0082ceae55deb43a63d4ad1941d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab67391f2131372867ec25811348773c8"><td class="memItemLeft" align="right" valign="top"><a id="ab67391f2131372867ec25811348773c8" name="ab67391f2131372867ec25811348773c8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_init</b> (struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
+<tr class="memitem:ab67391f2131372867ec25811348773c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ab67391f2131372867ec25811348773c8">discord_application_command_permission_init</a> (struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
 <tr class="separator:ab67391f2131372867ec25811348773c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd95d276aad3c8e4d14bd054d7e1e542"><td class="memItemLeft" align="right" valign="top"><a id="abd95d276aad3c8e4d14bd054d7e1e542" name="abd95d276aad3c8e4d14bd054d7e1e542"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_cleanup</b> (struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
+<tr class="memitem:abd95d276aad3c8e4d14bd054d7e1e542"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#abd95d276aad3c8e4d14bd054d7e1e542">discord_application_command_permission_cleanup</a> (struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
 <tr class="separator:abd95d276aad3c8e4d14bd054d7e1e542"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb15f6cc1cebf7cc23d8a99729aac92f"><td class="memItemLeft" align="right" valign="top"><a id="abb15f6cc1cebf7cc23d8a99729aac92f" name="abb15f6cc1cebf7cc23d8a99729aac92f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permissions_cleanup</b> (struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:abb15f6cc1cebf7cc23d8a99729aac92f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#abb15f6cc1cebf7cc23d8a99729aac92f">discord_application_command_permissions_cleanup</a> (struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:abb15f6cc1cebf7cc23d8a99729aac92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc81191e0d83c25783208c75025848f5"><td class="memItemLeft" align="right" valign="top"><a id="adc81191e0d83c25783208c75025848f5" name="adc81191e0d83c25783208c75025848f5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_global_application_command_init</b> (struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
+<tr class="memitem:adc81191e0d83c25783208c75025848f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#adc81191e0d83c25783208c75025848f5">discord_create_global_application_command_init</a> (struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
 <tr class="separator:adc81191e0d83c25783208c75025848f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a511e5931a6364349061766ea59766397"><td class="memItemLeft" align="right" valign="top"><a id="a511e5931a6364349061766ea59766397" name="a511e5931a6364349061766ea59766397"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_global_application_command_cleanup</b> (struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a511e5931a6364349061766ea59766397"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a511e5931a6364349061766ea59766397">discord_create_global_application_command_cleanup</a> (struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
 <tr class="separator:a511e5931a6364349061766ea59766397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0d7b1d175c10064c79fd84fce8db8d5"><td class="memItemLeft" align="right" valign="top"><a id="aa0d7b1d175c10064c79fd84fce8db8d5" name="aa0d7b1d175c10064c79fd84fce8db8d5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_global_application_command_init</b> (struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
+<tr class="memitem:aa0d7b1d175c10064c79fd84fce8db8d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aa0d7b1d175c10064c79fd84fce8db8d5">discord_edit_global_application_command_init</a> (struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
 <tr class="separator:aa0d7b1d175c10064c79fd84fce8db8d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa17424544dcd013d4b6f01eccfe318b4"><td class="memItemLeft" align="right" valign="top"><a id="aa17424544dcd013d4b6f01eccfe318b4" name="aa17424544dcd013d4b6f01eccfe318b4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_global_application_command_cleanup</b> (struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
+<tr class="memitem:aa17424544dcd013d4b6f01eccfe318b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aa17424544dcd013d4b6f01eccfe318b4">discord_edit_global_application_command_cleanup</a> (struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
 <tr class="separator:aa17424544dcd013d4b6f01eccfe318b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb5aa222bfa77df6cc888e054fb99eb7"><td class="memItemLeft" align="right" valign="top"><a id="afb5aa222bfa77df6cc888e054fb99eb7" name="afb5aa222bfa77df6cc888e054fb99eb7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_application_command_init</b> (struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:afb5aa222bfa77df6cc888e054fb99eb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#afb5aa222bfa77df6cc888e054fb99eb7">discord_create_guild_application_command_init</a> (struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
 <tr class="separator:afb5aa222bfa77df6cc888e054fb99eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac26955f4cc956a7c4cd8bcfb35ea915e"><td class="memItemLeft" align="right" valign="top"><a id="ac26955f4cc956a7c4cd8bcfb35ea915e" name="ac26955f4cc956a7c4cd8bcfb35ea915e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_application_command_cleanup</b> (struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:ac26955f4cc956a7c4cd8bcfb35ea915e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ac26955f4cc956a7c4cd8bcfb35ea915e">discord_create_guild_application_command_cleanup</a> (struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
 <tr class="separator:ac26955f4cc956a7c4cd8bcfb35ea915e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20225c67fdaea76a0d87640b2c2266b8"><td class="memItemLeft" align="right" valign="top"><a id="a20225c67fdaea76a0d87640b2c2266b8" name="a20225c67fdaea76a0d87640b2c2266b8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_guild_application_command_init</b> (struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:a20225c67fdaea76a0d87640b2c2266b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a20225c67fdaea76a0d87640b2c2266b8">discord_edit_guild_application_command_init</a> (struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
 <tr class="separator:a20225c67fdaea76a0d87640b2c2266b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2141417dd39d8eba10451d90712aad9c"><td class="memItemLeft" align="right" valign="top"><a id="a2141417dd39d8eba10451d90712aad9c" name="a2141417dd39d8eba10451d90712aad9c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_guild_application_command_cleanup</b> (struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:a2141417dd39d8eba10451d90712aad9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a2141417dd39d8eba10451d90712aad9c">discord_edit_guild_application_command_cleanup</a> (struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
 <tr class="separator:a2141417dd39d8eba10451d90712aad9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ae1d7f1dc1fae1f28e47c2e4fa33a2a"><td class="memItemLeft" align="right" valign="top"><a id="a6ae1d7f1dc1fae1f28e47c2e4fa33a2a" name="a6ae1d7f1dc1fae1f28e47c2e4fa33a2a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_application_command_permissions_init</b> (struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:ad4101267b821fb741bedd66fb7d33bcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ad4101267b821fb741bedd66fb7d33bcd">discord_bulk_overwrite_guild_application_commands_init</a> (struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *self)</td></tr>
+<tr class="separator:ad4101267b821fb741bedd66fb7d33bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67e51d14b146e063f11764050520d1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ab67e51d14b146e063f11764050520d1f">discord_bulk_overwrite_guild_application_commands_cleanup</a> (struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *self)</td></tr>
+<tr class="separator:ab67e51d14b146e063f11764050520d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ae1d7f1dc1fae1f28e47c2e4fa33a2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a6ae1d7f1dc1fae1f28e47c2e4fa33a2a">discord_edit_application_command_permissions_init</a> (struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a6ae1d7f1dc1fae1f28e47c2e4fa33a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9131078b74a77c6dfc0232f8a78aaf19"><td class="memItemLeft" align="right" valign="top"><a id="a9131078b74a77c6dfc0232f8a78aaf19" name="a9131078b74a77c6dfc0232f8a78aaf19"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_application_command_permissions_cleanup</b> (struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a9131078b74a77c6dfc0232f8a78aaf19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a9131078b74a77c6dfc0232f8a78aaf19">discord_edit_application_command_permissions_cleanup</a> (struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a9131078b74a77c6dfc0232f8a78aaf19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a826be2b8759cdbfa9a3b224d5c5b1143"><td class="memItemLeft" align="right" valign="top"><a id="a826be2b8759cdbfa9a3b224d5c5b1143" name="a826be2b8759cdbfa9a3b224d5c5b1143"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
+<tr class="memitem:a826be2b8759cdbfa9a3b224d5c5b1143"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a826be2b8759cdbfa9a3b224d5c5b1143">discord_application_command_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
 <tr class="separator:a826be2b8759cdbfa9a3b224d5c5b1143"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a034e28f4eef1964ab8a572ec58314682"><td class="memItemLeft" align="right" valign="top"><a id="a034e28f4eef1964ab8a572ec58314682" name="a034e28f4eef1964ab8a572ec58314682"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
+<tr class="memitem:a034e28f4eef1964ab8a572ec58314682"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a034e28f4eef1964ab8a572ec58314682">discord_application_command_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
 <tr class="separator:a034e28f4eef1964ab8a572ec58314682"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecdbac0b3209e14cb5a276c026965492"><td class="memItemLeft" align="right" valign="top"><a id="aecdbac0b3209e14cb5a276c026965492" name="aecdbac0b3209e14cb5a276c026965492"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_commands_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
+<tr class="memitem:aecdbac0b3209e14cb5a276c026965492"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aecdbac0b3209e14cb5a276c026965492">discord_application_commands_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
 <tr class="separator:aecdbac0b3209e14cb5a276c026965492"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3771ad336ca68590f74ba8e6923a6400"><td class="memItemLeft" align="right" valign="top"><a id="a3771ad336ca68590f74ba8e6923a6400" name="a3771ad336ca68590f74ba8e6923a6400"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_commands_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
+<tr class="memitem:a3771ad336ca68590f74ba8e6923a6400"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a3771ad336ca68590f74ba8e6923a6400">discord_application_commands_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
 <tr class="separator:a3771ad336ca68590f74ba8e6923a6400"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed3979b22af07210885dada2e036d2a0"><td class="memItemLeft" align="right" valign="top"><a id="aed3979b22af07210885dada2e036d2a0" name="aed3979b22af07210885dada2e036d2a0"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_guild_application_command_permissions_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:aed3979b22af07210885dada2e036d2a0"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aed3979b22af07210885dada2e036d2a0">discord_guild_application_command_permissions_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:aed3979b22af07210885dada2e036d2a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a029ecec7d68e3fff921c49318d66ccd3"><td class="memItemLeft" align="right" valign="top"><a id="a029ecec7d68e3fff921c49318d66ccd3" name="a029ecec7d68e3fff921c49318d66ccd3"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_guild_application_command_permissions_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a029ecec7d68e3fff921c49318d66ccd3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a029ecec7d68e3fff921c49318d66ccd3">discord_guild_application_command_permissions_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a029ecec7d68e3fff921c49318d66ccd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b47cb4c3fe40ea5b7c9c279d981a761"><td class="memItemLeft" align="right" valign="top"><a id="a1b47cb4c3fe40ea5b7c9c279d981a761" name="a1b47cb4c3fe40ea5b7c9c279d981a761"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
+<tr class="memitem:a1b47cb4c3fe40ea5b7c9c279d981a761"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a1b47cb4c3fe40ea5b7c9c279d981a761">discord_application_command_permission_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
 <tr class="separator:a1b47cb4c3fe40ea5b7c9c279d981a761"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ee411f05f111eec5a8995d9326720fd"><td class="memItemLeft" align="right" valign="top"><a id="a6ee411f05f111eec5a8995d9326720fd" name="a6ee411f05f111eec5a8995d9326720fd"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
+<tr class="memitem:a6ee411f05f111eec5a8995d9326720fd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a6ee411f05f111eec5a8995d9326720fd">discord_application_command_permission_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
 <tr class="separator:a6ee411f05f111eec5a8995d9326720fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a263533aa05758819432edebad339128e"><td class="memItemLeft" align="right" valign="top"><a id="a263533aa05758819432edebad339128e" name="a263533aa05758819432edebad339128e"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permissions_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a263533aa05758819432edebad339128e"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a263533aa05758819432edebad339128e">discord_application_command_permissions_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a263533aa05758819432edebad339128e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10364ee350bf7f6643842450bc3cb804"><td class="memItemLeft" align="right" valign="top"><a id="a10364ee350bf7f6643842450bc3cb804" name="a10364ee350bf7f6643842450bc3cb804"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permissions_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a10364ee350bf7f6643842450bc3cb804"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a10364ee350bf7f6643842450bc3cb804">discord_application_command_permissions_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a10364ee350bf7f6643842450bc3cb804"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0757d58cc0961ab6d8868cabe001a916"><td class="memItemLeft" align="right" valign="top"><a id="a0757d58cc0961ab6d8868cabe001a916" name="a0757d58cc0961ab6d8868cabe001a916"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_global_application_command_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a0757d58cc0961ab6d8868cabe001a916"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a0757d58cc0961ab6d8868cabe001a916">discord_create_global_application_command_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
 <tr class="separator:a0757d58cc0961ab6d8868cabe001a916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e81ae55b7faa0ccaee5188b52d0b66a"><td class="memItemLeft" align="right" valign="top"><a id="a1e81ae55b7faa0ccaee5188b52d0b66a" name="a1e81ae55b7faa0ccaee5188b52d0b66a"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_global_application_command_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a1e81ae55b7faa0ccaee5188b52d0b66a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a1e81ae55b7faa0ccaee5188b52d0b66a">discord_create_global_application_command_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
 <tr class="separator:a1e81ae55b7faa0ccaee5188b52d0b66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28176bcc390e39b02380865814cdf1cd"><td class="memItemLeft" align="right" valign="top"><a id="a28176bcc390e39b02380865814cdf1cd" name="a28176bcc390e39b02380865814cdf1cd"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_global_application_command_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a28176bcc390e39b02380865814cdf1cd"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a28176bcc390e39b02380865814cdf1cd">discord_edit_global_application_command_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
 <tr class="separator:a28176bcc390e39b02380865814cdf1cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6855a60382712b1140075b156b15645e"><td class="memItemLeft" align="right" valign="top"><a id="a6855a60382712b1140075b156b15645e" name="a6855a60382712b1140075b156b15645e"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_global_application_command_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a6855a60382712b1140075b156b15645e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a6855a60382712b1140075b156b15645e">discord_edit_global_application_command_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
 <tr class="separator:a6855a60382712b1140075b156b15645e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33f03ffc42cacdc7a6ca0e949e29f993"><td class="memItemLeft" align="right" valign="top"><a id="a33f03ffc42cacdc7a6ca0e949e29f993" name="a33f03ffc42cacdc7a6ca0e949e29f993"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_application_command_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:a33f03ffc42cacdc7a6ca0e949e29f993"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a33f03ffc42cacdc7a6ca0e949e29f993">discord_create_guild_application_command_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
 <tr class="separator:a33f03ffc42cacdc7a6ca0e949e29f993"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefae14b78e31673226321fada2805588"><td class="memItemLeft" align="right" valign="top"><a id="aefae14b78e31673226321fada2805588" name="aefae14b78e31673226321fada2805588"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_application_command_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:aefae14b78e31673226321fada2805588"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aefae14b78e31673226321fada2805588">discord_create_guild_application_command_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
 <tr class="separator:aefae14b78e31673226321fada2805588"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae32410f3ad6cbe140cb5e9d09949bd84"><td class="memItemLeft" align="right" valign="top"><a id="ae32410f3ad6cbe140cb5e9d09949bd84" name="ae32410f3ad6cbe140cb5e9d09949bd84"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_guild_application_command_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:ae32410f3ad6cbe140cb5e9d09949bd84"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ae32410f3ad6cbe140cb5e9d09949bd84">discord_edit_guild_application_command_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
 <tr class="separator:ae32410f3ad6cbe140cb5e9d09949bd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee34e015cd5b5018f3a887827dda0cf6"><td class="memItemLeft" align="right" valign="top"><a id="aee34e015cd5b5018f3a887827dda0cf6" name="aee34e015cd5b5018f3a887827dda0cf6"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_guild_application_command_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:aee34e015cd5b5018f3a887827dda0cf6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aee34e015cd5b5018f3a887827dda0cf6">discord_edit_guild_application_command_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
 <tr class="separator:aee34e015cd5b5018f3a887827dda0cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57d41c7ee969f841eb9fc7f624da1747"><td class="memItemLeft" align="right" valign="top"><a id="a57d41c7ee969f841eb9fc7f624da1747" name="a57d41c7ee969f841eb9fc7f624da1747"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_application_command_permissions_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:aefe801f500c2e646dc5bd88154e6749d"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aefe801f500c2e646dc5bd88154e6749d">discord_bulk_overwrite_guild_application_commands_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *self)</td></tr>
+<tr class="separator:aefe801f500c2e646dc5bd88154e6749d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8a6c097b5e38f7c00d1a7231320dd7d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ab8a6c097b5e38f7c00d1a7231320dd7d">discord_bulk_overwrite_guild_application_commands_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *self)</td></tr>
+<tr class="separator:ab8a6c097b5e38f7c00d1a7231320dd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57d41c7ee969f841eb9fc7f624da1747"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a57d41c7ee969f841eb9fc7f624da1747">discord_edit_application_command_permissions_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a57d41c7ee969f841eb9fc7f624da1747"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60d1e772acbef8c8b7476ebb6820ff5f"><td class="memItemLeft" align="right" valign="top"><a id="a60d1e772acbef8c8b7476ebb6820ff5f" name="a60d1e772acbef8c8b7476ebb6820ff5f"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_application_command_permissions_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a60d1e772acbef8c8b7476ebb6820ff5f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a60d1e772acbef8c8b7476ebb6820ff5f">discord_edit_application_command_permissions_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a60d1e772acbef8c8b7476ebb6820ff5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a1e8a77119d88b49de464563bb122e9"><td class="memItemLeft" align="right" valign="top"><a id="a7a1e8a77119d88b49de464563bb122e9" name="a7a1e8a77119d88b49de464563bb122e9"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
+<tr class="memitem:a7a1e8a77119d88b49de464563bb122e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a7a1e8a77119d88b49de464563bb122e9">discord_application_command_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
 <tr class="separator:a7a1e8a77119d88b49de464563bb122e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5abc686a9ea42dfe6a1b0cabddbeaf"><td class="memItemLeft" align="right" valign="top"><a id="a0b5abc686a9ea42dfe6a1b0cabddbeaf" name="a0b5abc686a9ea42dfe6a1b0cabddbeaf"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
+<tr class="memitem:a0b5abc686a9ea42dfe6a1b0cabddbeaf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a0b5abc686a9ea42dfe6a1b0cabddbeaf">discord_application_command_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *self)</td></tr>
 <tr class="separator:a0b5abc686a9ea42dfe6a1b0cabddbeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b1edafd9ac3de7dc6f64b6eb87a8e6e"><td class="memItemLeft" align="right" valign="top"><a id="a6b1edafd9ac3de7dc6f64b6eb87a8e6e" name="a6b1edafd9ac3de7dc6f64b6eb87a8e6e"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_commands_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
+<tr class="memitem:a6b1edafd9ac3de7dc6f64b6eb87a8e6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a6b1edafd9ac3de7dc6f64b6eb87a8e6e">discord_application_commands_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
 <tr class="separator:a6b1edafd9ac3de7dc6f64b6eb87a8e6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3f9b04f7ecccecbe8860be0952bdcde"><td class="memItemLeft" align="right" valign="top"><a id="af3f9b04f7ecccecbe8860be0952bdcde" name="af3f9b04f7ecccecbe8860be0952bdcde"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_commands_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
+<tr class="memitem:af3f9b04f7ecccecbe8860be0952bdcde"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#af3f9b04f7ecccecbe8860be0952bdcde">discord_application_commands_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *self)</td></tr>
 <tr class="separator:af3f9b04f7ecccecbe8860be0952bdcde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d65f08e3428e7bb1fd4cb0ecd6165d1"><td class="memItemLeft" align="right" valign="top"><a id="a2d65f08e3428e7bb1fd4cb0ecd6165d1" name="a2d65f08e3428e7bb1fd4cb0ecd6165d1"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_guild_application_command_permissions_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a2d65f08e3428e7bb1fd4cb0ecd6165d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a2d65f08e3428e7bb1fd4cb0ecd6165d1">discord_guild_application_command_permissions_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a2d65f08e3428e7bb1fd4cb0ecd6165d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a335d9920f367457e421133663c63fa2d"><td class="memItemLeft" align="right" valign="top"><a id="a335d9920f367457e421133663c63fa2d" name="a335d9920f367457e421133663c63fa2d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_guild_application_command_permissions_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a335d9920f367457e421133663c63fa2d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a335d9920f367457e421133663c63fa2d">discord_guild_application_command_permissions_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a335d9920f367457e421133663c63fa2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd0a1920fcd03d3955e5b5ad9aa334d2"><td class="memItemLeft" align="right" valign="top"><a id="acd0a1920fcd03d3955e5b5ad9aa334d2" name="acd0a1920fcd03d3955e5b5ad9aa334d2"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
+<tr class="memitem:acd0a1920fcd03d3955e5b5ad9aa334d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#acd0a1920fcd03d3955e5b5ad9aa334d2">discord_application_command_permission_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
 <tr class="separator:acd0a1920fcd03d3955e5b5ad9aa334d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9303628ada14876216fa22c896d7f06"><td class="memItemLeft" align="right" valign="top"><a id="ab9303628ada14876216fa22c896d7f06" name="ab9303628ada14876216fa22c896d7f06"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permission_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
+<tr class="memitem:ab9303628ada14876216fa22c896d7f06"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ab9303628ada14876216fa22c896d7f06">discord_application_command_permission_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *self)</td></tr>
 <tr class="separator:ab9303628ada14876216fa22c896d7f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a364fa339653f9ae9a99e837a328311ab"><td class="memItemLeft" align="right" valign="top"><a id="a364fa339653f9ae9a99e837a328311ab" name="a364fa339653f9ae9a99e837a328311ab"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permissions_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a364fa339653f9ae9a99e837a328311ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a364fa339653f9ae9a99e837a328311ab">discord_application_command_permissions_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a364fa339653f9ae9a99e837a328311ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05db26bd84e2bd6a011b8581ee5eab88"><td class="memItemLeft" align="right" valign="top"><a id="a05db26bd84e2bd6a011b8581ee5eab88" name="a05db26bd84e2bd6a011b8581ee5eab88"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_command_permissions_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a05db26bd84e2bd6a011b8581ee5eab88"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a05db26bd84e2bd6a011b8581ee5eab88">discord_application_command_permissions_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a05db26bd84e2bd6a011b8581ee5eab88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4d66fcc3caed2049845e3ff87b1edb3"><td class="memItemLeft" align="right" valign="top"><a id="ad4d66fcc3caed2049845e3ff87b1edb3" name="ad4d66fcc3caed2049845e3ff87b1edb3"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_global_application_command_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
+<tr class="memitem:ad4d66fcc3caed2049845e3ff87b1edb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ad4d66fcc3caed2049845e3ff87b1edb3">discord_create_global_application_command_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
 <tr class="separator:ad4d66fcc3caed2049845e3ff87b1edb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127ec5ed688225b274f84ec708279c14"><td class="memItemLeft" align="right" valign="top"><a id="a127ec5ed688225b274f84ec708279c14" name="a127ec5ed688225b274f84ec708279c14"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_global_application_command_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a127ec5ed688225b274f84ec708279c14"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a127ec5ed688225b274f84ec708279c14">discord_create_global_application_command_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *self)</td></tr>
 <tr class="separator:a127ec5ed688225b274f84ec708279c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa227efadae5ea6e356e0a4db40da4bc2"><td class="memItemLeft" align="right" valign="top"><a id="aa227efadae5ea6e356e0a4db40da4bc2" name="aa227efadae5ea6e356e0a4db40da4bc2"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_global_application_command_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
+<tr class="memitem:aa227efadae5ea6e356e0a4db40da4bc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#aa227efadae5ea6e356e0a4db40da4bc2">discord_edit_global_application_command_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
 <tr class="separator:aa227efadae5ea6e356e0a4db40da4bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6602372b7f8a5ed440ae2c890b78134d"><td class="memItemLeft" align="right" valign="top"><a id="a6602372b7f8a5ed440ae2c890b78134d" name="a6602372b7f8a5ed440ae2c890b78134d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_global_application_command_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
+<tr class="memitem:a6602372b7f8a5ed440ae2c890b78134d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a6602372b7f8a5ed440ae2c890b78134d">discord_edit_global_application_command_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *self)</td></tr>
 <tr class="separator:a6602372b7f8a5ed440ae2c890b78134d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af85250358dfe32c324e223a6df064115"><td class="memItemLeft" align="right" valign="top"><a id="af85250358dfe32c324e223a6df064115" name="af85250358dfe32c324e223a6df064115"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_application_command_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:af85250358dfe32c324e223a6df064115"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#af85250358dfe32c324e223a6df064115">discord_create_guild_application_command_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
 <tr class="separator:af85250358dfe32c324e223a6df064115"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad853bb010e74ce832e80f47340ed6ba9"><td class="memItemLeft" align="right" valign="top"><a id="ad853bb010e74ce832e80f47340ed6ba9" name="ad853bb010e74ce832e80f47340ed6ba9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_application_command_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:ad853bb010e74ce832e80f47340ed6ba9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ad853bb010e74ce832e80f47340ed6ba9">discord_create_guild_application_command_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *self)</td></tr>
 <tr class="separator:ad853bb010e74ce832e80f47340ed6ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac294befdc470528e2adfe4198001d68d"><td class="memItemLeft" align="right" valign="top"><a id="ac294befdc470528e2adfe4198001d68d" name="ac294befdc470528e2adfe4198001d68d"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_guild_application_command_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:ac294befdc470528e2adfe4198001d68d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#ac294befdc470528e2adfe4198001d68d">discord_edit_guild_application_command_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
 <tr class="separator:ac294befdc470528e2adfe4198001d68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3054ec936d100cd66b5f659431e9ad38"><td class="memItemLeft" align="right" valign="top"><a id="a3054ec936d100cd66b5f659431e9ad38" name="a3054ec936d100cd66b5f659431e9ad38"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_guild_application_command_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
+<tr class="memitem:a3054ec936d100cd66b5f659431e9ad38"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a3054ec936d100cd66b5f659431e9ad38">discord_edit_guild_application_command_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *self)</td></tr>
 <tr class="separator:a3054ec936d100cd66b5f659431e9ad38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d827b888491a87c5dece67b10aa0443"><td class="memItemLeft" align="right" valign="top"><a id="a5d827b888491a87c5dece67b10aa0443" name="a5d827b888491a87c5dece67b10aa0443"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_application_command_permissions_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:a2f4d80aa88decb620e196f1a39cfd38f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a2f4d80aa88decb620e196f1a39cfd38f">discord_bulk_overwrite_guild_application_commands_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *self)</td></tr>
+<tr class="separator:a2f4d80aa88decb620e196f1a39cfd38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f52850309e0729875955fb0f5810d0f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a4f52850309e0729875955fb0f5810d0f">discord_bulk_overwrite_guild_application_commands_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *self)</td></tr>
+<tr class="separator:a4f52850309e0729875955fb0f5810d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d827b888491a87c5dece67b10aa0443"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#a5d827b888491a87c5dece67b10aa0443">discord_edit_application_command_permissions_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:a5d827b888491a87c5dece67b10aa0443"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa42358860288273a2a1cc9bdb3e7698"><td class="memItemLeft" align="right" valign="top"><a id="afa42358860288273a2a1cc9bdb3e7698" name="afa42358860288273a2a1cc9bdb3e7698"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_application_command_permissions_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
+<tr class="memitem:afa42358860288273a2a1cc9bdb3e7698"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application__commands_8h.html#afa42358860288273a2a1cc9bdb3e7698">discord_edit_application_command_permissions_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *self)</td></tr>
 <tr class="separator:afa42358860288273a2a1cc9bdb3e7698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a57ac2421de18ce66eac17050cefbd5ac" name="a57ac2421de18ce66eac17050cefbd5ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57ac2421de18ce66eac17050cefbd5ac">&#9670;&nbsp;</a></span>discord_application_command_types</h2>
 
@@ -394,10 +404,16 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_applic
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28baaa99fefe914bbd2145b8c4d63bb0d077" name="a15107c5a0de4294624ec30853e25d28baaa99fefe914bbd2145b8c4d63bb0d077"></a>DISCORD_APPLICATION_OPTION_INTEGER&#160;</td><td class="fielddoc"><p >Any integer between <code>-2^53</code> and <code>2^53</code> </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28baedc8d7875ea3a7d758cc19eeb38f1a2a" name="a15107c5a0de4294624ec30853e25d28baedc8d7875ea3a7d758cc19eeb38f1a2a"></a>DISCORD_APPLICATION_OPTION_SUB_COMMAND&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba007618d4124b1e72a3c99201ca7a9396" name="a15107c5a0de4294624ec30853e25d28ba007618d4124b1e72a3c99201ca7a9396"></a>DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba99b815aff81b73607139ded9f2d0984c" name="a15107c5a0de4294624ec30853e25d28ba99b815aff81b73607139ded9f2d0984c"></a>DISCORD_APPLICATION_OPTION_STRING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28baaa99fefe914bbd2145b8c4d63bb0d077" name="a15107c5a0de4294624ec30853e25d28baaa99fefe914bbd2145b8c4d63bb0d077"></a>DISCORD_APPLICATION_OPTION_INTEGER&#160;</td><td class="fielddoc"><p >Any integer between <code>-2^53</code> and <code>2^53</code> </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba8d1f745a3c10d3b516fa5e734c26945b" name="a15107c5a0de4294624ec30853e25d28ba8d1f745a3c10d3b516fa5e734c26945b"></a>DISCORD_APPLICATION_OPTION_BOOLEAN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba73780c270257dfb8c5e9a48cc978ffef" name="a15107c5a0de4294624ec30853e25d28ba73780c270257dfb8c5e9a48cc978ffef"></a>DISCORD_APPLICATION_OPTION_USER&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba668fb8fa30b537b1afbc8e66caba0b77" name="a15107c5a0de4294624ec30853e25d28ba668fb8fa30b537b1afbc8e66caba0b77"></a>DISCORD_APPLICATION_OPTION_CHANNEL&#160;</td><td class="fielddoc"><p >Includes all channel types + categories </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba718f70c5269610bb53efafc9bb540a26" name="a15107c5a0de4294624ec30853e25d28ba718f70c5269610bb53efafc9bb540a26"></a>DISCORD_APPLICATION_OPTION_ROLE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28bade7a15708caabbd74c5449f1f63103a5" name="a15107c5a0de4294624ec30853e25d28bade7a15708caabbd74c5449f1f63103a5"></a>DISCORD_APPLICATION_OPTION_MENTIONABLE&#160;</td><td class="fielddoc"><p >Includes users and roles </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba4f8fa3a2b36bfcbf563c0199502d4d2a" name="a15107c5a0de4294624ec30853e25d28ba4f8fa3a2b36bfcbf563c0199502d4d2a"></a>DISCORD_APPLICATION_OPTION_NUMBER&#160;</td><td class="fielddoc"><p >Any double between <code>-2^53</code> and <code>2^53</code> </p>
@@ -405,6 +421,1934 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_applic
 <tr><td class="fieldname"><a id="a15107c5a0de4294624ec30853e25d28ba969ef6c66b64443f4ae313e0d1795e33" name="a15107c5a0de4294624ec30853e25d28ba969ef6c66b64443f4ae313e0d1795e33"></a>DISCORD_APPLICATION_OPTION_ATTACHMENT&#160;</td><td class="fielddoc"><p ><a class="el" href="structdiscord__attachment.html">discord_attachment</a> object </p>
 </td></tr>
 </table>
+
+</div>
+</div>
+<a id="af67b9df36cefd62a9264e7207ef718e2" name="af67b9df36cefd62a9264e7207ef718e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af67b9df36cefd62a9264e7207ef718e2">&#9670;&nbsp;</a></span>discord_application_command_permission_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="application__commands_8h.html#af67b9df36cefd62a9264e7207ef718e2">discord_application_command_permission_types</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af67b9df36cefd62a9264e7207ef718e2a0a729c09e6e922387a5202eca2a9e9fa" name="af67b9df36cefd62a9264e7207ef718e2a0a729c09e6e922387a5202eca2a9e9fa"></a>DISCORD_APPLICATION_PERMISSION_ROLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af67b9df36cefd62a9264e7207ef718e2a0232762a8068713b9c6e00a8f085aff8" name="af67b9df36cefd62a9264e7207ef718e2a0232762a8068713b9c6e00a8f085aff8"></a>DISCORD_APPLICATION_PERMISSION_USER&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af67b9df36cefd62a9264e7207ef718e2a831e70ac653e571329d7017d49ac5adf" name="af67b9df36cefd62a9264e7207ef718e2a831e70ac653e571329d7017d49ac5adf"></a>DISCORD_APPLICATION_PERMISSION_CHANNEL&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="abb31314358839a030f3207e369e263b1" name="abb31314358839a030f3207e369e263b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb31314358839a030f3207e369e263b1">&#9670;&nbsp;</a></span>discord_application_command_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_command_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac9040df8e4cf2f2f29c1deabf5b7d55a" name="ac9040df8e4cf2f2f29c1deabf5b7d55a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9040df8e4cf2f2f29c1deabf5b7d55a">&#9670;&nbsp;</a></span>discord_application_command_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_command_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands2_8c-example.html#a44">slash-commands2.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a3fc013f6683a6f239b5e818cf593fe06" name="a3fc013f6683a6f239b5e818cf593fe06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fc013f6683a6f239b5e818cf593fe06">&#9670;&nbsp;</a></span>discord_application_commands_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_commands_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands2_8c-example.html#a34">slash-commands2.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a182fc0082ceae55deb43a63d4ad1941d" name="a182fc0082ceae55deb43a63d4ad1941d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a182fc0082ceae55deb43a63d4ad1941d">&#9670;&nbsp;</a></span>discord_guild_application_command_permissions_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_guild_application_command_permissions_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab67391f2131372867ec25811348773c8" name="ab67391f2131372867ec25811348773c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67391f2131372867ec25811348773c8">&#9670;&nbsp;</a></span>discord_application_command_permission_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_command_permission_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abd95d276aad3c8e4d14bd054d7e1e542" name="abd95d276aad3c8e4d14bd054d7e1e542"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd95d276aad3c8e4d14bd054d7e1e542">&#9670;&nbsp;</a></span>discord_application_command_permission_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_command_permission_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abb15f6cc1cebf7cc23d8a99729aac92f" name="abb15f6cc1cebf7cc23d8a99729aac92f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb15f6cc1cebf7cc23d8a99729aac92f">&#9670;&nbsp;</a></span>discord_application_command_permissions_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_command_permissions_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adc81191e0d83c25783208c75025848f5" name="adc81191e0d83c25783208c75025848f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc81191e0d83c25783208c75025848f5">&#9670;&nbsp;</a></span>discord_create_global_application_command_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_global_application_command_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a511e5931a6364349061766ea59766397" name="a511e5931a6364349061766ea59766397"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a511e5931a6364349061766ea59766397">&#9670;&nbsp;</a></span>discord_create_global_application_command_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_global_application_command_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0d7b1d175c10064c79fd84fce8db8d5" name="aa0d7b1d175c10064c79fd84fce8db8d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0d7b1d175c10064c79fd84fce8db8d5">&#9670;&nbsp;</a></span>discord_edit_global_application_command_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_global_application_command_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa17424544dcd013d4b6f01eccfe318b4" name="aa17424544dcd013d4b6f01eccfe318b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa17424544dcd013d4b6f01eccfe318b4">&#9670;&nbsp;</a></span>discord_edit_global_application_command_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_global_application_command_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afb5aa222bfa77df6cc888e054fb99eb7" name="afb5aa222bfa77df6cc888e054fb99eb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb5aa222bfa77df6cc888e054fb99eb7">&#9670;&nbsp;</a></span>discord_create_guild_application_command_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_guild_application_command_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac26955f4cc956a7c4cd8bcfb35ea915e" name="ac26955f4cc956a7c4cd8bcfb35ea915e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac26955f4cc956a7c4cd8bcfb35ea915e">&#9670;&nbsp;</a></span>discord_create_guild_application_command_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_guild_application_command_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a20225c67fdaea76a0d87640b2c2266b8" name="a20225c67fdaea76a0d87640b2c2266b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20225c67fdaea76a0d87640b2c2266b8">&#9670;&nbsp;</a></span>discord_edit_guild_application_command_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_guild_application_command_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2141417dd39d8eba10451d90712aad9c" name="a2141417dd39d8eba10451d90712aad9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2141417dd39d8eba10451d90712aad9c">&#9670;&nbsp;</a></span>discord_edit_guild_application_command_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_guild_application_command_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4101267b821fb741bedd66fb7d33bcd" name="ad4101267b821fb741bedd66fb7d33bcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4101267b821fb741bedd66fb7d33bcd">&#9670;&nbsp;</a></span>discord_bulk_overwrite_guild_application_commands_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_bulk_overwrite_guild_application_commands_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab67e51d14b146e063f11764050520d1f" name="ab67e51d14b146e063f11764050520d1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67e51d14b146e063f11764050520d1f">&#9670;&nbsp;</a></span>discord_bulk_overwrite_guild_application_commands_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_bulk_overwrite_guild_application_commands_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6ae1d7f1dc1fae1f28e47c2e4fa33a2a" name="a6ae1d7f1dc1fae1f28e47c2e4fa33a2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ae1d7f1dc1fae1f28e47c2e4fa33a2a">&#9670;&nbsp;</a></span>discord_edit_application_command_permissions_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_application_command_permissions_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9131078b74a77c6dfc0232f8a78aaf19" name="a9131078b74a77c6dfc0232f8a78aaf19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9131078b74a77c6dfc0232f8a78aaf19">&#9670;&nbsp;</a></span>discord_edit_application_command_permissions_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_application_command_permissions_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a826be2b8759cdbfa9a3b224d5c5b1143" name="a826be2b8759cdbfa9a3b224d5c5b1143"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a826be2b8759cdbfa9a3b224d5c5b1143">&#9670;&nbsp;</a></span>discord_application_command_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_application_command_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a034e28f4eef1964ab8a572ec58314682" name="a034e28f4eef1964ab8a572ec58314682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a034e28f4eef1964ab8a572ec58314682">&#9670;&nbsp;</a></span>discord_application_command_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_command_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aecdbac0b3209e14cb5a276c026965492" name="aecdbac0b3209e14cb5a276c026965492"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecdbac0b3209e14cb5a276c026965492">&#9670;&nbsp;</a></span>discord_application_commands_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_application_commands_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3771ad336ca68590f74ba8e6923a6400" name="a3771ad336ca68590f74ba8e6923a6400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3771ad336ca68590f74ba8e6923a6400">&#9670;&nbsp;</a></span>discord_application_commands_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_commands_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aed3979b22af07210885dada2e036d2a0" name="aed3979b22af07210885dada2e036d2a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed3979b22af07210885dada2e036d2a0">&#9670;&nbsp;</a></span>discord_guild_application_command_permissions_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_guild_application_command_permissions_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a029ecec7d68e3fff921c49318d66ccd3" name="a029ecec7d68e3fff921c49318d66ccd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a029ecec7d68e3fff921c49318d66ccd3">&#9670;&nbsp;</a></span>discord_guild_application_command_permissions_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_guild_application_command_permissions_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1b47cb4c3fe40ea5b7c9c279d981a761" name="a1b47cb4c3fe40ea5b7c9c279d981a761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b47cb4c3fe40ea5b7c9c279d981a761">&#9670;&nbsp;</a></span>discord_application_command_permission_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_application_command_permission_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6ee411f05f111eec5a8995d9326720fd" name="a6ee411f05f111eec5a8995d9326720fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee411f05f111eec5a8995d9326720fd">&#9670;&nbsp;</a></span>discord_application_command_permission_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_command_permission_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a263533aa05758819432edebad339128e" name="a263533aa05758819432edebad339128e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a263533aa05758819432edebad339128e">&#9670;&nbsp;</a></span>discord_application_command_permissions_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_application_command_permissions_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10364ee350bf7f6643842450bc3cb804" name="a10364ee350bf7f6643842450bc3cb804"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10364ee350bf7f6643842450bc3cb804">&#9670;&nbsp;</a></span>discord_application_command_permissions_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_command_permissions_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0757d58cc0961ab6d8868cabe001a916" name="a0757d58cc0961ab6d8868cabe001a916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0757d58cc0961ab6d8868cabe001a916">&#9670;&nbsp;</a></span>discord_create_global_application_command_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_create_global_application_command_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1e81ae55b7faa0ccaee5188b52d0b66a" name="a1e81ae55b7faa0ccaee5188b52d0b66a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e81ae55b7faa0ccaee5188b52d0b66a">&#9670;&nbsp;</a></span>discord_create_global_application_command_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_global_application_command_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28176bcc390e39b02380865814cdf1cd" name="a28176bcc390e39b02380865814cdf1cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28176bcc390e39b02380865814cdf1cd">&#9670;&nbsp;</a></span>discord_edit_global_application_command_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_edit_global_application_command_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6855a60382712b1140075b156b15645e" name="a6855a60382712b1140075b156b15645e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6855a60382712b1140075b156b15645e">&#9670;&nbsp;</a></span>discord_edit_global_application_command_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_global_application_command_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a33f03ffc42cacdc7a6ca0e949e29f993" name="a33f03ffc42cacdc7a6ca0e949e29f993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33f03ffc42cacdc7a6ca0e949e29f993">&#9670;&nbsp;</a></span>discord_create_guild_application_command_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_create_guild_application_command_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aefae14b78e31673226321fada2805588" name="aefae14b78e31673226321fada2805588"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefae14b78e31673226321fada2805588">&#9670;&nbsp;</a></span>discord_create_guild_application_command_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_guild_application_command_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae32410f3ad6cbe140cb5e9d09949bd84" name="ae32410f3ad6cbe140cb5e9d09949bd84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae32410f3ad6cbe140cb5e9d09949bd84">&#9670;&nbsp;</a></span>discord_edit_guild_application_command_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_edit_guild_application_command_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aee34e015cd5b5018f3a887827dda0cf6" name="aee34e015cd5b5018f3a887827dda0cf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee34e015cd5b5018f3a887827dda0cf6">&#9670;&nbsp;</a></span>discord_edit_guild_application_command_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_guild_application_command_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aefe801f500c2e646dc5bd88154e6749d" name="aefe801f500c2e646dc5bd88154e6749d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefe801f500c2e646dc5bd88154e6749d">&#9670;&nbsp;</a></span>discord_bulk_overwrite_guild_application_commands_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_bulk_overwrite_guild_application_commands_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8a6c097b5e38f7c00d1a7231320dd7d" name="ab8a6c097b5e38f7c00d1a7231320dd7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8a6c097b5e38f7c00d1a7231320dd7d">&#9670;&nbsp;</a></span>discord_bulk_overwrite_guild_application_commands_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_bulk_overwrite_guild_application_commands_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57d41c7ee969f841eb9fc7f624da1747" name="a57d41c7ee969f841eb9fc7f624da1747"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57d41c7ee969f841eb9fc7f624da1747">&#9670;&nbsp;</a></span>discord_edit_application_command_permissions_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_edit_application_command_permissions_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60d1e772acbef8c8b7476ebb6820ff5f" name="a60d1e772acbef8c8b7476ebb6820ff5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60d1e772acbef8c8b7476ebb6820ff5f">&#9670;&nbsp;</a></span>discord_edit_application_command_permissions_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_application_command_permissions_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7a1e8a77119d88b49de464563bb122e9" name="a7a1e8a77119d88b49de464563bb122e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a1e8a77119d88b49de464563bb122e9">&#9670;&nbsp;</a></span>discord_application_command_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_application_command_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0b5abc686a9ea42dfe6a1b0cabddbeaf" name="a0b5abc686a9ea42dfe6a1b0cabddbeaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b5abc686a9ea42dfe6a1b0cabddbeaf">&#9670;&nbsp;</a></span>discord_application_command_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_command_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__command.html">discord_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6b1edafd9ac3de7dc6f64b6eb87a8e6e" name="a6b1edafd9ac3de7dc6f64b6eb87a8e6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b1edafd9ac3de7dc6f64b6eb87a8e6e">&#9670;&nbsp;</a></span>discord_application_commands_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_application_commands_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af3f9b04f7ecccecbe8860be0952bdcde" name="af3f9b04f7ecccecbe8860be0952bdcde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3f9b04f7ecccecbe8860be0952bdcde">&#9670;&nbsp;</a></span>discord_application_commands_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_commands_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__commands.html">discord_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d65f08e3428e7bb1fd4cb0ecd6165d1" name="a2d65f08e3428e7bb1fd4cb0ecd6165d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d65f08e3428e7bb1fd4cb0ecd6165d1">&#9670;&nbsp;</a></span>discord_guild_application_command_permissions_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_guild_application_command_permissions_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a335d9920f367457e421133663c63fa2d" name="a335d9920f367457e421133663c63fa2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a335d9920f367457e421133663c63fa2d">&#9670;&nbsp;</a></span>discord_guild_application_command_permissions_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_guild_application_command_permissions_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__guild__application__command__permissions.html">discord_guild_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acd0a1920fcd03d3955e5b5ad9aa334d2" name="acd0a1920fcd03d3955e5b5ad9aa334d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd0a1920fcd03d3955e5b5ad9aa334d2">&#9670;&nbsp;</a></span>discord_application_command_permission_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_application_command_permission_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9303628ada14876216fa22c896d7f06" name="ab9303628ada14876216fa22c896d7f06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9303628ada14876216fa22c896d7f06">&#9670;&nbsp;</a></span>discord_application_command_permission_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_command_permission_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__command__permission.html">discord_application_command_permission</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a364fa339653f9ae9a99e837a328311ab" name="a364fa339653f9ae9a99e837a328311ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a364fa339653f9ae9a99e837a328311ab">&#9670;&nbsp;</a></span>discord_application_command_permissions_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_application_command_permissions_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a05db26bd84e2bd6a011b8581ee5eab88" name="a05db26bd84e2bd6a011b8581ee5eab88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05db26bd84e2bd6a011b8581ee5eab88">&#9670;&nbsp;</a></span>discord_application_command_permissions_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_command_permissions_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application__command__permissions.html">discord_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4d66fcc3caed2049845e3ff87b1edb3" name="ad4d66fcc3caed2049845e3ff87b1edb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4d66fcc3caed2049845e3ff87b1edb3">&#9670;&nbsp;</a></span>discord_create_global_application_command_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_create_global_application_command_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a127ec5ed688225b274f84ec708279c14" name="a127ec5ed688225b274f84ec708279c14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a127ec5ed688225b274f84ec708279c14">&#9670;&nbsp;</a></span>discord_create_global_application_command_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_global_application_command_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__global__application__command.html">discord_create_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa227efadae5ea6e356e0a4db40da4bc2" name="aa227efadae5ea6e356e0a4db40da4bc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa227efadae5ea6e356e0a4db40da4bc2">&#9670;&nbsp;</a></span>discord_edit_global_application_command_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_edit_global_application_command_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6602372b7f8a5ed440ae2c890b78134d" name="a6602372b7f8a5ed440ae2c890b78134d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6602372b7f8a5ed440ae2c890b78134d">&#9670;&nbsp;</a></span>discord_edit_global_application_command_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_global_application_command_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__global__application__command.html">discord_edit_global_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af85250358dfe32c324e223a6df064115" name="af85250358dfe32c324e223a6df064115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af85250358dfe32c324e223a6df064115">&#9670;&nbsp;</a></span>discord_create_guild_application_command_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_create_guild_application_command_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad853bb010e74ce832e80f47340ed6ba9" name="ad853bb010e74ce832e80f47340ed6ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad853bb010e74ce832e80f47340ed6ba9">&#9670;&nbsp;</a></span>discord_create_guild_application_command_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_guild_application_command_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac294befdc470528e2adfe4198001d68d" name="ac294befdc470528e2adfe4198001d68d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac294befdc470528e2adfe4198001d68d">&#9670;&nbsp;</a></span>discord_edit_guild_application_command_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_edit_guild_application_command_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3054ec936d100cd66b5f659431e9ad38" name="a3054ec936d100cd66b5f659431e9ad38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3054ec936d100cd66b5f659431e9ad38">&#9670;&nbsp;</a></span>discord_edit_guild_application_command_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_guild_application_command_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__guild__application__command.html">discord_edit_guild_application_command</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2f4d80aa88decb620e196f1a39cfd38f" name="a2f4d80aa88decb620e196f1a39cfd38f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f4d80aa88decb620e196f1a39cfd38f">&#9670;&nbsp;</a></span>discord_bulk_overwrite_guild_application_commands_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_bulk_overwrite_guild_application_commands_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4f52850309e0729875955fb0f5810d0f" name="a4f52850309e0729875955fb0f5810d0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f52850309e0729875955fb0f5810d0f">&#9670;&nbsp;</a></span>discord_bulk_overwrite_guild_application_commands_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_bulk_overwrite_guild_application_commands_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__bulk__overwrite__guild__application__commands.html">discord_bulk_overwrite_guild_application_commands</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d827b888491a87c5dece67b10aa0443" name="a5d827b888491a87c5dece67b10aa0443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d827b888491a87c5dece67b10aa0443">&#9670;&nbsp;</a></span>discord_edit_application_command_permissions_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_edit_application_command_permissions_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afa42358860288273a2a1cc9bdb3e7698" name="afa42358860288273a2a1cc9bdb3e7698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa42358860288273a2a1cc9bdb3e7698">&#9670;&nbsp;</a></span>discord_edit_application_command_permissions_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_application_command_permissions_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__application__command__permissions.html">discord_edit_application_command_permissions</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

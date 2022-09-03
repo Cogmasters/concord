@@ -103,33 +103,64 @@ Collaboration diagram for discord_guild_members:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ab6ddf73a760e0cbbed131069232dbbde"><td class="memItemLeft" align="right" valign="top"><a id="ab6ddf73a760e0cbbed131069232dbbde" name="ab6ddf73a760e0cbbed131069232dbbde"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:ab6ddf73a760e0cbbed131069232dbbde"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild__members.html#ab6ddf73a760e0cbbed131069232dbbde">size</a></td></tr>
 <tr class="separator:ab6ddf73a760e0cbbed131069232dbbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06cec7fd2b98165403475cff0bb92cc1"><td class="memItemLeft" align="right" valign="top"><a id="a06cec7fd2b98165403475cff0bb92cc1" name="a06cec7fd2b98165403475cff0bb92cc1"></a>
-struct <a class="el" href="structdiscord__guild__member.html">discord_guild_member</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a06cec7fd2b98165403475cff0bb92cc1"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__guild__member.html">discord_guild_member</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild__members.html#a06cec7fd2b98165403475cff0bb92cc1">array</a></td></tr>
 <tr class="separator:a06cec7fd2b98165403475cff0bb92cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_guild_members_cleanup(struct discord_guild_members *this)</code></li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#a65124a41dcf376eb5c055a069d312952">discord_guild_members_cleanup(struct discord_guild_members *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_guild_members_from_json(const char json[], size_t len, struct discord_guild_members *this)</code></li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#ac3bcd5b76f3cde7629387645cc429027">discord_guild_members_from_json(const char json[], size_t len, struct discord_guild_members *this)</a></code></li>
 <li><code>discord_guild_members_from_jsmnf(jsmnf *root, const char json[], struct discord_guild_members *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_guild_members_to_json(char buf[], size_t size, const struct discord_guild_members *this)</code></li>
-<li><code>discord_guild_members_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_guild_members *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#aaf8aaa9193db46077a35f3edd0bf65cf">discord_guild_members_to_json(char buf[], size_t size, const struct discord_guild_members *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2guild_8h.html#ae8e0845adc1c848231ce222b4fe07a12">discord_guild_members_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_guild_members *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a10">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a11">fetch-messages.c</a>.</dd>
 </dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="ab6ddf73a760e0cbbed131069232dbbde" name="ab6ddf73a760e0cbbed131069232dbbde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6ddf73a760e0cbbed131069232dbbde">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_guild_members::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a16">fetch-messages.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a06cec7fd2b98165403475cff0bb92cc1" name="a06cec7fd2b98165403475cff0bb92cc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06cec7fd2b98165403475cff0bb92cc1">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__guild__member.html">discord_guild_member</a>* discord_guild_members::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a17">fetch-messages.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2guild_8h_source.html">guild.h</a></li>
 </ul>
 </div><!-- contents -->

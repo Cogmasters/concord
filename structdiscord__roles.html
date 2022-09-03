@@ -103,33 +103,64 @@ Collaboration diagram for discord_roles:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a65b59dc257b12c4486155d42d7f33cea"><td class="memItemLeft" align="right" valign="top"><a id="a65b59dc257b12c4486155d42d7f33cea" name="a65b59dc257b12c4486155d42d7f33cea"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a65b59dc257b12c4486155d42d7f33cea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__roles.html#a65b59dc257b12c4486155d42d7f33cea">size</a></td></tr>
 <tr class="separator:a65b59dc257b12c4486155d42d7f33cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c134e0547b906d99d576332f4595667"><td class="memItemLeft" align="right" valign="top"><a id="a5c134e0547b906d99d576332f4595667" name="a5c134e0547b906d99d576332f4595667"></a>
-struct <a class="el" href="structdiscord__role.html">discord_role</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a5c134e0547b906d99d576332f4595667"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__role.html">discord_role</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__roles.html#a5c134e0547b906d99d576332f4595667">array</a></td></tr>
 <tr class="separator:a5c134e0547b906d99d576332f4595667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_roles_cleanup(struct discord_roles *this)</code></li>
+<li><code><a class="el" href="permissions_8h.html#a20e7ce712fa9e447d70eb9f0c3aef585">discord_roles_cleanup(struct discord_roles *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_roles_from_json(const char json[], size_t len, struct discord_roles *this)</code></li>
+<li><code><a class="el" href="permissions_8h.html#ac1e6f9682d6d2c9422091bfb60dac99a">discord_roles_from_json(const char json[], size_t len, struct discord_roles *this)</a></code></li>
 <li><code>discord_roles_from_jsmnf(jsmnf *root, const char json[], struct discord_roles *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_roles_to_json(char buf[], size_t size, const struct discord_roles *this)</code></li>
-<li><code>discord_roles_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_roles *this)</code> </li>
+<li><code><a class="el" href="permissions_8h.html#aede6621036d49c41b29429acb6b38746">discord_roles_to_json(char buf[], size_t size, const struct discord_roles *this)</a></code></li>
+<li><code><a class="el" href="permissions_8h.html#adc56f24d3e62d46765f3e4b289ffe794">discord_roles_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_roles *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#_a24">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#_a27">guild.c</a>.</dd>
 </dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a65b59dc257b12c4486155d42d7f33cea" name="a65b59dc257b12c4486155d42d7f33cea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65b59dc257b12c4486155d42d7f33cea">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_roles::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a29">guild.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a5c134e0547b906d99d576332f4595667" name="a5c134e0547b906d99d576332f4595667"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c134e0547b906d99d576332f4595667">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__role.html">discord_role</a>* discord_roles::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a30">guild.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="permissions_8h_source.html">permissions.h</a></li>
 </ul>
 </div><!-- contents -->

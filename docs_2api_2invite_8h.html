@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('docs_2api_2invite_8h.html',''); initRe
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for invite.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2invite_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2invite_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -129,71 +129,642 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__get__invite.html">discord_get_invite</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ae2f6139a1e1f07c05ce61b3f62d7905a"><td class="memItemLeft" align="right" valign="top"><a id="ae2f6139a1e1f07c05ce61b3f62d7905a" name="ae2f6139a1e1f07c05ce61b3f62d7905a"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_target_types</b> { <b>DISCORD_INVITE_TARGET_STREAM</b> = 1
-, <b>DISCORD_INVITE_TARGET_EMBEDDED_APPLICATION</b> = 2
+<tr class="memitem:ae2f6139a1e1f07c05ce61b3f62d7905a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#ae2f6139a1e1f07c05ce61b3f62d7905a">discord_invite_target_types</a> { <a class="el" href="docs_2api_2invite_8h.html#ae2f6139a1e1f07c05ce61b3f62d7905aa4aed51b6fbc053b34fda1a7a0fa68fb8">DISCORD_INVITE_TARGET_STREAM</a> = 1
+, <a class="el" href="docs_2api_2invite_8h.html#ae2f6139a1e1f07c05ce61b3f62d7905aa3c5f3c696685e71bfd97067a82f4fcfa">DISCORD_INVITE_TARGET_EMBEDDED_APPLICATION</a> = 2
  }</td></tr>
 <tr class="separator:ae2f6139a1e1f07c05ce61b3f62d7905a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa441f6d4daf6a4b538fe29dabf167c0c"><td class="memItemLeft" align="right" valign="top"><a id="aa441f6d4daf6a4b538fe29dabf167c0c" name="aa441f6d4daf6a4b538fe29dabf167c0c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_init</b> (struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
+<tr class="memitem:aa441f6d4daf6a4b538fe29dabf167c0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#aa441f6d4daf6a4b538fe29dabf167c0c">discord_invite_init</a> (struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
 <tr class="separator:aa441f6d4daf6a4b538fe29dabf167c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab04125b9a5140efcfe32ed44c9c8d800"><td class="memItemLeft" align="right" valign="top"><a id="ab04125b9a5140efcfe32ed44c9c8d800" name="ab04125b9a5140efcfe32ed44c9c8d800"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_cleanup</b> (struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
+<tr class="memitem:ab04125b9a5140efcfe32ed44c9c8d800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#ab04125b9a5140efcfe32ed44c9c8d800">discord_invite_cleanup</a> (struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
 <tr class="separator:ab04125b9a5140efcfe32ed44c9c8d800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ca0d0ebfe60627a3589d95ea957745a"><td class="memItemLeft" align="right" valign="top"><a id="a3ca0d0ebfe60627a3589d95ea957745a" name="a3ca0d0ebfe60627a3589d95ea957745a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invites_cleanup</b> (struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
+<tr class="memitem:a3ca0d0ebfe60627a3589d95ea957745a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a3ca0d0ebfe60627a3589d95ea957745a">discord_invites_cleanup</a> (struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
 <tr class="separator:a3ca0d0ebfe60627a3589d95ea957745a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af75f17245141b159119a433d8380d9ac"><td class="memItemLeft" align="right" valign="top"><a id="af75f17245141b159119a433d8380d9ac" name="af75f17245141b159119a433d8380d9ac"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_get_invite_init</b> (struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
+<tr class="memitem:af75f17245141b159119a433d8380d9ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#af75f17245141b159119a433d8380d9ac">discord_get_invite_init</a> (struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
 <tr class="separator:af75f17245141b159119a433d8380d9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60be82365e9e7faab9bba42a5e647ead"><td class="memItemLeft" align="right" valign="top"><a id="a60be82365e9e7faab9bba42a5e647ead" name="a60be82365e9e7faab9bba42a5e647ead"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_get_invite_cleanup</b> (struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
+<tr class="memitem:a60be82365e9e7faab9bba42a5e647ead"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a60be82365e9e7faab9bba42a5e647ead">discord_get_invite_cleanup</a> (struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
 <tr class="separator:a60be82365e9e7faab9bba42a5e647ead"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11a707f6f4c6c8a6e7c7e6be7867ea5c"><td class="memItemLeft" align="right" valign="top"><a id="a11a707f6f4c6c8a6e7c7e6be7867ea5c" name="a11a707f6f4c6c8a6e7c7e6be7867ea5c"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
+<tr class="memitem:a11a707f6f4c6c8a6e7c7e6be7867ea5c"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a11a707f6f4c6c8a6e7c7e6be7867ea5c">discord_invite_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
 <tr class="separator:a11a707f6f4c6c8a6e7c7e6be7867ea5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2555fb2420028a064b48ccecbe6f52a8"><td class="memItemLeft" align="right" valign="top"><a id="a2555fb2420028a064b48ccecbe6f52a8" name="a2555fb2420028a064b48ccecbe6f52a8"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
+<tr class="memitem:a2555fb2420028a064b48ccecbe6f52a8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a2555fb2420028a064b48ccecbe6f52a8">discord_invite_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
 <tr class="separator:a2555fb2420028a064b48ccecbe6f52a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b99d898d209dd4dbe226b21ba7bb9b1"><td class="memItemLeft" align="right" valign="top"><a id="a7b99d898d209dd4dbe226b21ba7bb9b1" name="a7b99d898d209dd4dbe226b21ba7bb9b1"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invites_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
+<tr class="memitem:a7b99d898d209dd4dbe226b21ba7bb9b1"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a7b99d898d209dd4dbe226b21ba7bb9b1">discord_invites_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
 <tr class="separator:a7b99d898d209dd4dbe226b21ba7bb9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b628d55ab2b4e8637f748e9b08e4798"><td class="memItemLeft" align="right" valign="top"><a id="a4b628d55ab2b4e8637f748e9b08e4798" name="a4b628d55ab2b4e8637f748e9b08e4798"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invites_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
+<tr class="memitem:a4b628d55ab2b4e8637f748e9b08e4798"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a4b628d55ab2b4e8637f748e9b08e4798">discord_invites_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
 <tr class="separator:a4b628d55ab2b4e8637f748e9b08e4798"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46d29868f508cea59d484b163afbd250"><td class="memItemLeft" align="right" valign="top"><a id="a46d29868f508cea59d484b163afbd250" name="a46d29868f508cea59d484b163afbd250"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_get_invite_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
+<tr class="memitem:a46d29868f508cea59d484b163afbd250"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a46d29868f508cea59d484b163afbd250">discord_get_invite_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
 <tr class="separator:a46d29868f508cea59d484b163afbd250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b7f75c444dc0de5f015868f34567fb1"><td class="memItemLeft" align="right" valign="top"><a id="a1b7f75c444dc0de5f015868f34567fb1" name="a1b7f75c444dc0de5f015868f34567fb1"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_get_invite_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
+<tr class="memitem:a1b7f75c444dc0de5f015868f34567fb1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a1b7f75c444dc0de5f015868f34567fb1">discord_get_invite_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
 <tr class="separator:a1b7f75c444dc0de5f015868f34567fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32ff34e408c9964cdd1b6f48986b9205"><td class="memItemLeft" align="right" valign="top"><a id="a32ff34e408c9964cdd1b6f48986b9205" name="a32ff34e408c9964cdd1b6f48986b9205"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
+<tr class="memitem:a32ff34e408c9964cdd1b6f48986b9205"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#a32ff34e408c9964cdd1b6f48986b9205">discord_invite_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
 <tr class="separator:a32ff34e408c9964cdd1b6f48986b9205"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acde2227f27327bc6ca4e954e382322b4"><td class="memItemLeft" align="right" valign="top"><a id="acde2227f27327bc6ca4e954e382322b4" name="acde2227f27327bc6ca4e954e382322b4"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invite_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
+<tr class="memitem:acde2227f27327bc6ca4e954e382322b4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#acde2227f27327bc6ca4e954e382322b4">discord_invite_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *self)</td></tr>
 <tr class="separator:acde2227f27327bc6ca4e954e382322b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade3edab35dcb9d8fbbf882b5d0df3f0f"><td class="memItemLeft" align="right" valign="top"><a id="ade3edab35dcb9d8fbbf882b5d0df3f0f" name="ade3edab35dcb9d8fbbf882b5d0df3f0f"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invites_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
+<tr class="memitem:ade3edab35dcb9d8fbbf882b5d0df3f0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#ade3edab35dcb9d8fbbf882b5d0df3f0f">discord_invites_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
 <tr class="separator:ade3edab35dcb9d8fbbf882b5d0df3f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac05b83dbdf581db80bb60cef4aa19f8"><td class="memItemLeft" align="right" valign="top"><a id="aac05b83dbdf581db80bb60cef4aa19f8" name="aac05b83dbdf581db80bb60cef4aa19f8"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_invites_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
+<tr class="memitem:aac05b83dbdf581db80bb60cef4aa19f8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#aac05b83dbdf581db80bb60cef4aa19f8">discord_invites_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *self)</td></tr>
 <tr class="separator:aac05b83dbdf581db80bb60cef4aa19f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab81d35579f8883826be224bdf56637f6"><td class="memItemLeft" align="right" valign="top"><a id="ab81d35579f8883826be224bdf56637f6" name="ab81d35579f8883826be224bdf56637f6"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_get_invite_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
+<tr class="memitem:ab81d35579f8883826be224bdf56637f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#ab81d35579f8883826be224bdf56637f6">discord_get_invite_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
 <tr class="separator:ab81d35579f8883826be224bdf56637f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf51b58cdb709e18063d7b1631401a78"><td class="memItemLeft" align="right" valign="top"><a id="abf51b58cdb709e18063d7b1631401a78" name="abf51b58cdb709e18063d7b1631401a78"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_get_invite_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
+<tr class="memitem:abf51b58cdb709e18063d7b1631401a78"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2invite_8h.html#abf51b58cdb709e18063d7b1631401a78">discord_get_invite_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *self)</td></tr>
 <tr class="separator:abf51b58cdb709e18063d7b1631401a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ae2f6139a1e1f07c05ce61b3f62d7905a" name="ae2f6139a1e1f07c05ce61b3f62d7905a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2f6139a1e1f07c05ce61b3f62d7905a">&#9670;&nbsp;</a></span>discord_invite_target_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="docs_2api_2invite_8h.html#ae2f6139a1e1f07c05ce61b3f62d7905a">discord_invite_target_types</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae2f6139a1e1f07c05ce61b3f62d7905aa4aed51b6fbc053b34fda1a7a0fa68fb8" name="ae2f6139a1e1f07c05ce61b3f62d7905aa4aed51b6fbc053b34fda1a7a0fa68fb8"></a>DISCORD_INVITE_TARGET_STREAM&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae2f6139a1e1f07c05ce61b3f62d7905aa3c5f3c696685e71bfd97067a82f4fcfa" name="ae2f6139a1e1f07c05ce61b3f62d7905aa3c5f3c696685e71bfd97067a82f4fcfa"></a>DISCORD_INVITE_TARGET_EMBEDDED_APPLICATION&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aa441f6d4daf6a4b538fe29dabf167c0c" name="aa441f6d4daf6a4b538fe29dabf167c0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa441f6d4daf6a4b538fe29dabf167c0c">&#9670;&nbsp;</a></span>discord_invite_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_invite_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab04125b9a5140efcfe32ed44c9c8d800" name="ab04125b9a5140efcfe32ed44c9c8d800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab04125b9a5140efcfe32ed44c9c8d800">&#9670;&nbsp;</a></span>discord_invite_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_invite_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3ca0d0ebfe60627a3589d95ea957745a" name="a3ca0d0ebfe60627a3589d95ea957745a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ca0d0ebfe60627a3589d95ea957745a">&#9670;&nbsp;</a></span>discord_invites_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_invites_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af75f17245141b159119a433d8380d9ac" name="af75f17245141b159119a433d8380d9ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af75f17245141b159119a433d8380d9ac">&#9670;&nbsp;</a></span>discord_get_invite_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_get_invite_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60be82365e9e7faab9bba42a5e647ead" name="a60be82365e9e7faab9bba42a5e647ead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60be82365e9e7faab9bba42a5e647ead">&#9670;&nbsp;</a></span>discord_get_invite_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_get_invite_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11a707f6f4c6c8a6e7c7e6be7867ea5c" name="a11a707f6f4c6c8a6e7c7e6be7867ea5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11a707f6f4c6c8a6e7c7e6be7867ea5c">&#9670;&nbsp;</a></span>discord_invite_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_invite_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2555fb2420028a064b48ccecbe6f52a8" name="a2555fb2420028a064b48ccecbe6f52a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2555fb2420028a064b48ccecbe6f52a8">&#9670;&nbsp;</a></span>discord_invite_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_invite_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7b99d898d209dd4dbe226b21ba7bb9b1" name="a7b99d898d209dd4dbe226b21ba7bb9b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b99d898d209dd4dbe226b21ba7bb9b1">&#9670;&nbsp;</a></span>discord_invites_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_invites_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b628d55ab2b4e8637f748e9b08e4798" name="a4b628d55ab2b4e8637f748e9b08e4798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b628d55ab2b4e8637f748e9b08e4798">&#9670;&nbsp;</a></span>discord_invites_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_invites_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a46d29868f508cea59d484b163afbd250" name="a46d29868f508cea59d484b163afbd250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d29868f508cea59d484b163afbd250">&#9670;&nbsp;</a></span>discord_get_invite_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_get_invite_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1b7f75c444dc0de5f015868f34567fb1" name="a1b7f75c444dc0de5f015868f34567fb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b7f75c444dc0de5f015868f34567fb1">&#9670;&nbsp;</a></span>discord_get_invite_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_get_invite_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32ff34e408c9964cdd1b6f48986b9205" name="a32ff34e408c9964cdd1b6f48986b9205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32ff34e408c9964cdd1b6f48986b9205">&#9670;&nbsp;</a></span>discord_invite_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_invite_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acde2227f27327bc6ca4e954e382322b4" name="acde2227f27327bc6ca4e954e382322b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acde2227f27327bc6ca4e954e382322b4">&#9670;&nbsp;</a></span>discord_invite_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_invite_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ade3edab35dcb9d8fbbf882b5d0df3f0f" name="ade3edab35dcb9d8fbbf882b5d0df3f0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade3edab35dcb9d8fbbf882b5d0df3f0f">&#9670;&nbsp;</a></span>discord_invites_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_invites_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac05b83dbdf581db80bb60cef4aa19f8" name="aac05b83dbdf581db80bb60cef4aa19f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac05b83dbdf581db80bb60cef4aa19f8">&#9670;&nbsp;</a></span>discord_invites_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_invites_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab81d35579f8883826be224bdf56637f6" name="ab81d35579f8883826be224bdf56637f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab81d35579f8883826be224bdf56637f6">&#9670;&nbsp;</a></span>discord_get_invite_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_get_invite_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abf51b58cdb709e18063d7b1631401a78" name="abf51b58cdb709e18063d7b1631401a78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf51b58cdb709e18063d7b1631401a78">&#9670;&nbsp;</a></span>discord_get_invite_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_get_invite_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__get__invite.html">discord_get_invite</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

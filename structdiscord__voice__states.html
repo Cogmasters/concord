@@ -103,31 +103,58 @@ Collaboration diagram for discord_voice_states:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a6fc2c35697e563f057f0701857d3c2ba"><td class="memItemLeft" align="right" valign="top"><a id="a6fc2c35697e563f057f0701857d3c2ba" name="a6fc2c35697e563f057f0701857d3c2ba"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a6fc2c35697e563f057f0701857d3c2ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__voice__states.html#a6fc2c35697e563f057f0701857d3c2ba">size</a></td></tr>
 <tr class="separator:a6fc2c35697e563f057f0701857d3c2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cc269a69655c22e215743648c66dd0c"><td class="memItemLeft" align="right" valign="top"><a id="a2cc269a69655c22e215743648c66dd0c" name="a2cc269a69655c22e215743648c66dd0c"></a>
-struct <a class="el" href="structdiscord__voice__state.html">discord_voice_state</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a2cc269a69655c22e215743648c66dd0c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__voice__state.html">discord_voice_state</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__voice__states.html#a2cc269a69655c22e215743648c66dd0c">array</a></td></tr>
 <tr class="separator:a2cc269a69655c22e215743648c66dd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_voice_states_cleanup(struct discord_voice_states *this)</code></li>
+<li><code><a class="el" href="docs_2api_2voice_8h.html#a2c62f15174fa86c8bf1760343405d12e">discord_voice_states_cleanup(struct discord_voice_states *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_voice_states_from_json(const char json[], size_t len, struct discord_voice_states *this)</code></li>
+<li><code><a class="el" href="docs_2api_2voice_8h.html#a7303b7e8eb418b35ec185acfb30ed975">discord_voice_states_from_json(const char json[], size_t len, struct discord_voice_states *this)</a></code></li>
 <li><code>discord_voice_states_from_jsmnf(jsmnf *root, const char json[], struct discord_voice_states *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_voice_states_to_json(char buf[], size_t size, const struct discord_voice_states *this)</code></li>
-<li><code>discord_voice_states_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_voice_states *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2voice_8h.html#a597326715c195b33b5ec608a21218070">discord_voice_states_to_json(char buf[], size_t size, const struct discord_voice_states *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2voice_8h.html#ac2d252e5d7b4fcf220000f010ece6bc2">discord_voice_states_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_voice_states *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a6fc2c35697e563f057f0701857d3c2ba" name="a6fc2c35697e563f057f0701857d3c2ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fc2c35697e563f057f0701857d3c2ba">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_voice_states::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2cc269a69655c22e215743648c66dd0c" name="a2cc269a69655c22e215743648c66dd0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cc269a69655c22e215743648c66dd0c">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__voice__state.html">discord_voice_state</a>* discord_voice_states::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2voice_8h_source.html">voice.h</a></li>
 </ul>
 </div><!-- contents -->

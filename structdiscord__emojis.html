@@ -103,33 +103,64 @@ Collaboration diagram for discord_emojis:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a9f2363e889421cd5fca8553880ea3356"><td class="memItemLeft" align="right" valign="top"><a id="a9f2363e889421cd5fca8553880ea3356" name="a9f2363e889421cd5fca8553880ea3356"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a9f2363e889421cd5fca8553880ea3356"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__emojis.html#a9f2363e889421cd5fca8553880ea3356">size</a></td></tr>
 <tr class="separator:a9f2363e889421cd5fca8553880ea3356"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6438855ceaeb49d1918b3f1f0137b901"><td class="memItemLeft" align="right" valign="top"><a id="a6438855ceaeb49d1918b3f1f0137b901" name="a6438855ceaeb49d1918b3f1f0137b901"></a>
-struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a6438855ceaeb49d1918b3f1f0137b901"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__emojis.html#a6438855ceaeb49d1918b3f1f0137b901">array</a></td></tr>
 <tr class="separator:a6438855ceaeb49d1918b3f1f0137b901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_emojis_cleanup(struct discord_emojis *this)</code></li>
+<li><code><a class="el" href="docs_2api_2emoji_8h.html#a7a39c7498e4d460666d35d52abea69e9">discord_emojis_cleanup(struct discord_emojis *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_emojis_from_json(const char json[], size_t len, struct discord_emojis *this)</code></li>
+<li><code><a class="el" href="docs_2api_2emoji_8h.html#a36d0e55271eb338eb52f72dcb0bde112">discord_emojis_from_json(const char json[], size_t len, struct discord_emojis *this)</a></code></li>
 <li><code>discord_emojis_from_jsmnf(jsmnf *root, const char json[], struct discord_emojis *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_emojis_to_json(char buf[], size_t size, const struct discord_emojis *this)</code></li>
-<li><code>discord_emojis_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_emojis *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2emoji_8h.html#a9898796dcb1042ff2d4b0c8a001c85e2">discord_emojis_to_json(char buf[], size_t size, const struct discord_emojis *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2emoji_8h.html#ac56389be26d1e1c829dcb92d18742935">discord_emojis_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_emojis *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#_a6">emoji.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#_a7">emoji.c</a>.</dd>
 </dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a9f2363e889421cd5fca8553880ea3356" name="a9f2363e889421cd5fca8553880ea3356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f2363e889421cd5fca8553880ea3356">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_emojis::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#a10">emoji.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a6438855ceaeb49d1918b3f1f0137b901" name="a6438855ceaeb49d1918b3f1f0137b901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6438855ceaeb49d1918b3f1f0137b901">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a>* discord_emojis::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#a11">emoji.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2emoji_8h_source.html">emoji.h</a></li>
 </ul>
 </div><!-- contents -->

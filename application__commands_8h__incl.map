@@ -1,12 +1,12 @@
 <map id="docs/api/application_commands.h" name="docs/api/application_commands.h">
-<area shape="rect" id="node1" title="Generated code." alt="" coords="389,5,541,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,95,80,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="104,95,187,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="211,95,298,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="322,95,395,121"/>
-<area shape="rect" id="node6" title=" " alt="" coords="420,95,511,121"/>
-<area shape="rect" id="node7" href="$types_8h.html" title=" " alt="" coords="535,95,606,121"/>
-<area shape="rect" id="node8" title=" " alt="" coords="631,95,697,121"/>
-<area shape="rect" id="node9" title=" " alt="" coords="722,95,817,121"/>
-<area shape="rect" id="node10" title=" " alt="" coords="841,95,940,121"/>
+<area shape="rect" id="node1" title="Generated code." alt="" coords="309,5,461,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="499,169,574,196"/>
+<area shape="rect" id="node3" title=" " alt="" coords="23,95,106,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="131,95,217,121"/>
+<area shape="rect" id="node5" href="$carray_8h.html" title=" " alt="" coords="241,95,315,121"/>
+<area shape="rect" id="node6" href="$cog-utils_8h.html" title=" " alt="" coords="339,95,430,121"/>
+<area shape="rect" id="node7" href="$types_8h.html" title=" " alt="" coords="455,95,525,121"/>
+<area shape="rect" id="node8" href="$jsmn_8h.html" title=" " alt="" coords="550,95,617,121"/>
+<area shape="rect" id="node9" href="$jsmn-find_8h.html" title=" " alt="" coords="641,95,736,121"/>
+<area shape="rect" id="node10" href="$json-build_8h.html" title=" " alt="" coords="761,95,859,121"/>
 </map>

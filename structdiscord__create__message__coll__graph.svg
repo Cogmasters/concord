@@ -37,7 +37,7 @@
 <g id="node3" class="node">
 <title>Node12</title>
 <g id="a_node3"><a xlink:href="structdiscord__allowed__mention.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="141,-114.5 141,-133.5 282,-133.5 282,-114.5 141,-114.5"/>
+<polygon fill="none" stroke="red" points="141,-114.5 141,-133.5 282,-133.5 282,-114.5 141,-114.5"/>
 <text text-anchor="middle" x="211.5" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_allowed_mention</text>
 </a>
 </g>
@@ -77,7 +77,7 @@
 <g id="node5" class="node">
 <title>Node15</title>
 <g id="a_node5"><a xlink:href="structdiscord__message__reference.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="135,-76.5 135,-95.5 288,-95.5 288,-76.5 135,-76.5"/>
+<polygon fill="none" stroke="black" points="135,-76.5 135,-95.5 288,-95.5 288,-76.5 135,-76.5"/>
 <text text-anchor="middle" x="211.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_message_reference</text>
 </a>
 </g>

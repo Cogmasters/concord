@@ -21,7 +21,7 @@
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="structdiscord__resolved__data.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="1,-136.5 1,-155.5 127,-155.5 127,-136.5 1,-136.5"/>
+<polygon fill="none" stroke="red" points="1,-136.5 1,-155.5 127,-155.5 127,-136.5 1,-136.5"/>
 <text text-anchor="middle" x="64" y="-143.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_resolved_data</text>
 </a>
 </g>
@@ -37,7 +37,7 @@
 <g id="node3" class="node">
 <title>Node4</title>
 <g id="a_node3"><a xlink:href="structdiscord__application__command__interaction__data__options.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="0,-76.5 0,-117.5 128,-117.5 128,-76.5 0,-76.5"/>
+<polygon fill="none" stroke="red" points="0,-76.5 0,-117.5 128,-117.5 128,-76.5 0,-76.5"/>
 <text text-anchor="start" x="8" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_application</text>
 <text text-anchor="start" x="8" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">_command_interaction</text>
 <text text-anchor="middle" x="64" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">_data_options</text>

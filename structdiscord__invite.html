@@ -111,7 +111,7 @@ Data Fields</h2></td></tr>
 <tr class="separator:aa2377631804b4cd4514a1c7c5f3fc3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04dba3a1894eec73b7d3d8d1667c8615"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__user.html">discord_user</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__invite.html#a04dba3a1894eec73b7d3d8d1667c8615">inviter</a></td></tr>
 <tr class="separator:a04dba3a1894eec73b7d3d8d1667c8615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ebf8ba0a5a8c20a449f89135874ca10"><td class="memItemLeft" align="right" valign="top">enum discord_invite_target_types&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__invite.html#a3ebf8ba0a5a8c20a449f89135874ca10">target_type</a></td></tr>
+<tr class="memitem:a3ebf8ba0a5a8c20a449f89135874ca10"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="docs_2api_2invite_8h.html#ae2f6139a1e1f07c05ce61b3f62d7905a">discord_invite_target_types</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__invite.html#a3ebf8ba0a5a8c20a449f89135874ca10">target_type</a></td></tr>
 <tr class="separator:a3ebf8ba0a5a8c20a449f89135874ca10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4a8f95f668a44854cc380edc02a4284"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__user.html">discord_user</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__invite.html#ae4a8f95f668a44854cc380edc02a4284">target_user</a></td></tr>
 <tr class="separator:ae4a8f95f668a44854cc380edc02a4284"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,25 +131,25 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Initializer:<ul>
-<li><code>discord_invite_init(struct discord_invite *this)</code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#aa441f6d4daf6a4b538fe29dabf167c0c">discord_invite_init(struct discord_invite *this)</a></code></li>
 </ul>
 </li>
 <li>Cleanup:<ul>
-<li><code>discord_invite_cleanup(struct discord_invite *this)</code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#ab04125b9a5140efcfe32ed44c9c8d800">discord_invite_cleanup(struct discord_invite *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_invite_from_json(const char json[], size_t len, struct discord_invite *this)</code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#a2555fb2420028a064b48ccecbe6f52a8">discord_invite_from_json(const char json[], size_t len, struct discord_invite *this)</a></code></li>
 <li><code>discord_invite_from_jsmnf(jsmnf *root, const char json[], struct discord_invite *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_invite_to_json(char buf[], size_t size, const struct discord_invite *this)</code></li>
-<li><code>discord_invite_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_invite *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#acde2227f27327bc6ca4e954e382322b4">discord_invite_to_json(char buf[], size_t size, const struct discord_invite *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#a32ff34e408c9964cdd1b6f48986b9205">discord_invite_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_invite *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#_a32">channel.c</a>, and <a class="el" href="invite_8c-example.html#_a6">invite.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#_a34">channel.c</a>, and <a class="el" href="invite_8c-example.html#_a7">invite.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a935de1f04625fa8c0afccee06ea1a468" name="a935de1f04625fa8c0afccee06ea1a468"></a>
@@ -164,7 +164,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the invite code (unique ID) </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a33">channel.c</a>, and <a class="el" href="invite_8c-example.html#a9">invite.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a35">channel.c</a>, and <a class="el" href="invite_8c-example.html#a10">invite.c</a>.</dd>
 </dl>
 
 </div>
@@ -221,7 +221,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum discord_invite_target_types discord_invite::target_type</td>
+          <td class="memname">enum <a class="el" href="docs_2api_2invite_8h.html#ae2f6139a1e1f07c05ce61b3f62d7905a">discord_invite_target_types</a> discord_invite::target_type</td>
         </tr>
       </table>
 </div><div class="memdoc">

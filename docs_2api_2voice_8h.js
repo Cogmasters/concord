@@ -1,7 +1,26 @@
 var docs_2api_2voice_8h =
 [
     [ "discord_voice_state", "structdiscord__voice__state.html", "structdiscord__voice__state" ],
-    [ "discord_voice_states", "structdiscord__voice__states.html", null ],
+    [ "discord_voice_states", "structdiscord__voice__states.html", "structdiscord__voice__states" ],
     [ "discord_voice_region", "structdiscord__voice__region.html", "structdiscord__voice__region" ],
-    [ "discord_voice_regions", "structdiscord__voice__regions.html", null ]
+    [ "discord_voice_regions", "structdiscord__voice__regions.html", "structdiscord__voice__regions" ],
+    [ "JSMN_STRICT", "docs_2api_2voice_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
+    [ "JSMN_HEADER", "docs_2api_2voice_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
+    [ "JSONB_HEADER", "docs_2api_2voice_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
+    [ "discord_voice_state_init", "docs_2api_2voice_8h.html#a74980919be5d06fd93f4212f7a0362d0", null ],
+    [ "discord_voice_state_cleanup", "docs_2api_2voice_8h.html#ac8b730f598509d2011e8dd4b0b6ae30f", null ],
+    [ "discord_voice_states_cleanup", "docs_2api_2voice_8h.html#a2c62f15174fa86c8bf1760343405d12e", null ],
+    [ "discord_voice_regions_cleanup", "docs_2api_2voice_8h.html#a475330fe8ce34207be3d5cb86d7f4bcb", null ],
+    [ "discord_voice_state_from_jsmnf", "docs_2api_2voice_8h.html#a9fc7b5b2b6a45cbc8e20926f0f1a8315", null ],
+    [ "discord_voice_state_from_json", "docs_2api_2voice_8h.html#afa559e8e726fdf61bc7edb062b033772", null ],
+    [ "discord_voice_states_from_jsmnf", "docs_2api_2voice_8h.html#ab2aaadd1d942e35b2595418c894ef266", null ],
+    [ "discord_voice_states_from_json", "docs_2api_2voice_8h.html#a7303b7e8eb418b35ec185acfb30ed975", null ],
+    [ "discord_voice_regions_from_jsmnf", "docs_2api_2voice_8h.html#ace7a227bcec370728ecc0def5aeb29e6", null ],
+    [ "discord_voice_regions_from_json", "docs_2api_2voice_8h.html#a9ca63e850d3c21aa9e306fa2a4eb47d7", null ],
+    [ "discord_voice_state_to_jsonb", "docs_2api_2voice_8h.html#ab06006b0aaf4b6a5228f218090dd8cd1", null ],
+    [ "discord_voice_state_to_json", "docs_2api_2voice_8h.html#ab7ab270ac8627da681d3f5f2b21e60ba", null ],
+    [ "discord_voice_states_to_jsonb", "docs_2api_2voice_8h.html#ac2d252e5d7b4fcf220000f010ece6bc2", null ],
+    [ "discord_voice_states_to_json", "docs_2api_2voice_8h.html#a597326715c195b33b5ec608a21218070", null ],
+    [ "discord_voice_regions_to_jsonb", "docs_2api_2voice_8h.html#a9d0e1ec1becc10050ee049206df12082", null ],
+    [ "discord_voice_regions_to_json", "docs_2api_2voice_8h.html#a59356f31b86803d7932a4b67981c22c1", null ]
 ];

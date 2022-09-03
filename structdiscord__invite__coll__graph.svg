@@ -110,7 +110,7 @@
 <g id="node6" class="node">
 <title>Node49</title>
 <g id="a_node6"><a xlink:href="structdiscord__invite__stage__instance.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="161.5,-0.5 161.5,-30.5 278.5,-30.5 278.5,-0.5 161.5,-0.5"/>
+<polygon fill="none" stroke="red" points="161.5,-0.5 161.5,-30.5 278.5,-30.5 278.5,-0.5 161.5,-0.5"/>
 <text text-anchor="start" x="169.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_invite_stage</text>
 <text text-anchor="middle" x="220" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">_instance</text>
 </a>

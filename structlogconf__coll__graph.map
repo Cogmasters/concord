@@ -1,0 +1,5 @@
+<map id="logconf" name="logconf">
+<area shape="rect" id="node1" title="A stackful and modularized wrapper over the popular &#39;log.c&#39; facilities." alt="" coords="89,95,159,121"/>
+<area shape="rect" id="node2" href="$structlogconf__szbuf.html" title="Generic sized&#45;buffer." alt="" coords="5,5,117,32"/>
+<area shape="rect" id="node3" href="$structlog__Logger.html" title=" " alt="" coords="141,5,235,32"/>
+</map>

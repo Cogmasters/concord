@@ -1,5 +1,8 @@
 var discord_internal_8h =
 [
+    [ "JSONB_HEADER", "discord-internal_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
+    [ "JSMN_STRICT", "discord-internal_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
+    [ "JSMN_HEADER", "discord-internal_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "NOT_EMPTY_STR", "discord-internal_8h.html#aa6b4b8efb1b2769e6868edcf22b2d818", null ],
     [ "CONTAINEROF", "discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f", null ],
     [ "CLIENT", "group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926", null ],
@@ -12,8 +15,9 @@ var discord_internal_8h =
     [ "DISCORD_SESSION_OFFLINE", "group__DiscordInternalGatewaySessionStatus.html#ga1b3d45be4b922910c16c347266268709", null ],
     [ "DISCORD_SESSION_RESUMABLE", "group__DiscordInternalGatewaySessionStatus.html#ga6c8b4794db8c4342c739cf8d26f0a443", null ],
     [ "DISCORD_SESSION_SHUTDOWN", "group__DiscordInternalGatewaySessionStatus.html#gac420091888fcf49cc95dd5f3bbcd18ed", null ],
-    [ "discord_ev", "group__DiscordInternalGateway.html#ga3e14383e89f8790ccd05c8e926b394e4", null ],
-    [ "discord_timers_init", "group__DiscordInternalTimer.html#gae0fbfdd1cf1370ccff07b8c6bad9baa9", null ],
+    [ "discord_ev_event", "group__DiscordInternalGateway.html#gae38e6a4c2e9bbb2ac711ecdcea8995a6", null ],
+    [ "discord_ev_message", "group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2", null ],
+    [ "discord_timers_init", "group__DiscordInternalTimer.html#ga4bada3f1f856829605c2021e7d3ca27c", null ],
     [ "discord_timers_cleanup", "group__DiscordInternalTimer.html#ga6bf3ef6a2ccc045f060ca2e9d342403a", null ],
     [ "discord_timers_get_next_trigger", "group__DiscordInternalTimer.html#ga238902133893ba4c7e7f52680c242ec7", null ],
     [ "discord_timers_run", "group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc", null ],

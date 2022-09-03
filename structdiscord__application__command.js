@@ -7,6 +7,8 @@ var structdiscord__application__command =
     [ "name", "structdiscord__application__command.html#a9e3bd59f3d5125d4d515363b7a07e489", null ],
     [ "description", "structdiscord__application__command.html#a67570a00e66b50ce7fffeba12ab2ba02", null ],
     [ "options", "structdiscord__application__command.html#a0d818bba7ffcc1c2c63a89559d4b4bf4", null ],
+    [ "default_member_permissions", "structdiscord__application__command.html#a04c75a0f1bb5d9671989a3db6377a86c", null ],
+    [ "dm_permission", "structdiscord__application__command.html#a7d1f0983feda34352e99d73396ef99f0", null ],
     [ "default_permission", "structdiscord__application__command.html#a66e1330b69bfe72b45b8922054ebaba8", null ],
     [ "version", "structdiscord__application__command.html#a4664b7e7e02cb63eece44b23e9198fed", null ]
 ];

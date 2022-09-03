@@ -21,7 +21,7 @@
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="structdiscord__overwrites.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="0,-67.5 0,-86.5 109,-86.5 109,-67.5 0,-67.5"/>
+<polygon fill="none" stroke="red" points="0,-67.5 0,-86.5 109,-86.5 109,-67.5 0,-67.5"/>
 <text text-anchor="middle" x="54.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_overwrites</text>
 </a>
 </g>
@@ -53,7 +53,7 @@
 <g id="node4" class="node">
 <title>Node6</title>
 <g id="a_node4"><a xlink:href="structdiscord__thread__metadata.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="240,-67.5 240,-86.5 381,-86.5 381,-67.5 240,-67.5"/>
+<polygon fill="none" stroke="black" points="240,-67.5 240,-86.5 381,-86.5 381,-67.5 240,-67.5"/>
 <text text-anchor="middle" x="310.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_thread_metadata</text>
 </a>
 </g>

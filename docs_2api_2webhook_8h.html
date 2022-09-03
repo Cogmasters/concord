@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('docs_2api_2webhook_8h.html',''); initR
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for webhook.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2webhook_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2webhook_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -137,6 +137,15 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__delete__webhook__message.html">discord_delete_webhook_message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:aacb8c6d69b0de8cbc4e518199cbeb84b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#aacb8c6d69b0de8cbc4e518199cbeb84b">discord_webhook_types</a> { <a class="el" href="docs_2api_2webhook_8h.html#aacb8c6d69b0de8cbc4e518199cbeb84ba4e3b5868b56575190f2d01798ff01ecf">DISCORD_WEBHOOK_INCOMING</a> = 1
@@ -147,134 +156,136 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aab0bce27442c883b8ad039d52754ba9c"><td class="memItemLeft" align="right" valign="top"><a id="aab0bce27442c883b8ad039d52754ba9c" name="aab0bce27442c883b8ad039d52754ba9c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhook_init</b> (struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
+<tr class="memitem:aab0bce27442c883b8ad039d52754ba9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#aab0bce27442c883b8ad039d52754ba9c">discord_webhook_init</a> (struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
 <tr class="separator:aab0bce27442c883b8ad039d52754ba9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d151448fcb9dac0815dcfc6faf820a0"><td class="memItemLeft" align="right" valign="top"><a id="a6d151448fcb9dac0815dcfc6faf820a0" name="a6d151448fcb9dac0815dcfc6faf820a0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhook_cleanup</b> (struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
+<tr class="memitem:a6d151448fcb9dac0815dcfc6faf820a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a6d151448fcb9dac0815dcfc6faf820a0">discord_webhook_cleanup</a> (struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
 <tr class="separator:a6d151448fcb9dac0815dcfc6faf820a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa8a56573ac0a12314bbde28f3103a7f"><td class="memItemLeft" align="right" valign="top"><a id="afa8a56573ac0a12314bbde28f3103a7f" name="afa8a56573ac0a12314bbde28f3103a7f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhooks_cleanup</b> (struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
+<tr class="memitem:afa8a56573ac0a12314bbde28f3103a7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#afa8a56573ac0a12314bbde28f3103a7f">discord_webhooks_cleanup</a> (struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
 <tr class="separator:afa8a56573ac0a12314bbde28f3103a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77e4fbd0c9cb6317dd32ab59d1c910f0"><td class="memItemLeft" align="right" valign="top"><a id="a77e4fbd0c9cb6317dd32ab59d1c910f0" name="a77e4fbd0c9cb6317dd32ab59d1c910f0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_webhook_init</b> (struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
+<tr class="memitem:a77e4fbd0c9cb6317dd32ab59d1c910f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a77e4fbd0c9cb6317dd32ab59d1c910f0">discord_create_webhook_init</a> (struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
 <tr class="separator:a77e4fbd0c9cb6317dd32ab59d1c910f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9f8c123c6a1a04cdcebf8d561ff87ab"><td class="memItemLeft" align="right" valign="top"><a id="ae9f8c123c6a1a04cdcebf8d561ff87ab" name="ae9f8c123c6a1a04cdcebf8d561ff87ab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_webhook_cleanup</b> (struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
+<tr class="memitem:ae9f8c123c6a1a04cdcebf8d561ff87ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ae9f8c123c6a1a04cdcebf8d561ff87ab">discord_create_webhook_cleanup</a> (struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
 <tr class="separator:ae9f8c123c6a1a04cdcebf8d561ff87ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84f55ab9db7799aabef2b24cb1e81e22"><td class="memItemLeft" align="right" valign="top"><a id="a84f55ab9db7799aabef2b24cb1e81e22" name="a84f55ab9db7799aabef2b24cb1e81e22"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_init</b> (struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
+<tr class="memitem:a84f55ab9db7799aabef2b24cb1e81e22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a84f55ab9db7799aabef2b24cb1e81e22">discord_modify_webhook_init</a> (struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
 <tr class="separator:a84f55ab9db7799aabef2b24cb1e81e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6beea4a1e05fa557b77f11fc38746c27"><td class="memItemLeft" align="right" valign="top"><a id="a6beea4a1e05fa557b77f11fc38746c27" name="a6beea4a1e05fa557b77f11fc38746c27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_cleanup</b> (struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
+<tr class="memitem:a6beea4a1e05fa557b77f11fc38746c27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a6beea4a1e05fa557b77f11fc38746c27">discord_modify_webhook_cleanup</a> (struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
 <tr class="separator:a6beea4a1e05fa557b77f11fc38746c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbd424ffaa2e1b8442898a0cba740250"><td class="memItemLeft" align="right" valign="top"><a id="abbd424ffaa2e1b8442898a0cba740250" name="abbd424ffaa2e1b8442898a0cba740250"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_with_token_init</b> (struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
+<tr class="memitem:abbd424ffaa2e1b8442898a0cba740250"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#abbd424ffaa2e1b8442898a0cba740250">discord_modify_webhook_with_token_init</a> (struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
 <tr class="separator:abbd424ffaa2e1b8442898a0cba740250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8cac20ad3f80f8b9665a0a2106785b2"><td class="memItemLeft" align="right" valign="top"><a id="ab8cac20ad3f80f8b9665a0a2106785b2" name="ab8cac20ad3f80f8b9665a0a2106785b2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_with_token_cleanup</b> (struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
+<tr class="memitem:ab8cac20ad3f80f8b9665a0a2106785b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ab8cac20ad3f80f8b9665a0a2106785b2">discord_modify_webhook_with_token_cleanup</a> (struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
 <tr class="separator:ab8cac20ad3f80f8b9665a0a2106785b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a035cf6b3624ea5e88f1d074df84eae7d"><td class="memItemLeft" align="right" valign="top"><a id="a035cf6b3624ea5e88f1d074df84eae7d" name="a035cf6b3624ea5e88f1d074df84eae7d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_execute_webhook_init</b> (struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
+<tr class="memitem:a035cf6b3624ea5e88f1d074df84eae7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a035cf6b3624ea5e88f1d074df84eae7d">discord_execute_webhook_init</a> (struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
 <tr class="separator:a035cf6b3624ea5e88f1d074df84eae7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab2b6050fa9a8ab1c56992887fc438ef"><td class="memItemLeft" align="right" valign="top"><a id="aab2b6050fa9a8ab1c56992887fc438ef" name="aab2b6050fa9a8ab1c56992887fc438ef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_execute_webhook_cleanup</b> (struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
+<tr class="memitem:aab2b6050fa9a8ab1c56992887fc438ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#aab2b6050fa9a8ab1c56992887fc438ef">discord_execute_webhook_cleanup</a> (struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
 <tr class="separator:aab2b6050fa9a8ab1c56992887fc438ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab694c7066326d43b6bffaa16dc551f"><td class="memItemLeft" align="right" valign="top"><a id="abab694c7066326d43b6bffaa16dc551f" name="abab694c7066326d43b6bffaa16dc551f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhook_message_init</b> (struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
+<tr class="memitem:abab694c7066326d43b6bffaa16dc551f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#abab694c7066326d43b6bffaa16dc551f">discord_edit_webhook_message_init</a> (struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
 <tr class="separator:abab694c7066326d43b6bffaa16dc551f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6828279a162ac1503e76bfe1554d5468"><td class="memItemLeft" align="right" valign="top"><a id="a6828279a162ac1503e76bfe1554d5468" name="a6828279a162ac1503e76bfe1554d5468"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhook_message_cleanup</b> (struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
+<tr class="memitem:a6828279a162ac1503e76bfe1554d5468"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a6828279a162ac1503e76bfe1554d5468">discord_edit_webhook_message_cleanup</a> (struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
 <tr class="separator:a6828279a162ac1503e76bfe1554d5468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4556ab472eeb0b3ebec4b4c9726684b"><td class="memItemLeft" align="right" valign="top"><a id="ad4556ab472eeb0b3ebec4b4c9726684b" name="ad4556ab472eeb0b3ebec4b4c9726684b"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhook_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
+<tr class="memitem:ad4556ab472eeb0b3ebec4b4c9726684b"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ad4556ab472eeb0b3ebec4b4c9726684b">discord_webhook_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
 <tr class="separator:ad4556ab472eeb0b3ebec4b4c9726684b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62d188d58b95dbc4680db975cb42c8be"><td class="memItemLeft" align="right" valign="top"><a id="a62d188d58b95dbc4680db975cb42c8be" name="a62d188d58b95dbc4680db975cb42c8be"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhook_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
+<tr class="memitem:a62d188d58b95dbc4680db975cb42c8be"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a62d188d58b95dbc4680db975cb42c8be">discord_webhook_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
 <tr class="separator:a62d188d58b95dbc4680db975cb42c8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a972c7c6dbdd87e2a462eba675285b14b"><td class="memItemLeft" align="right" valign="top"><a id="a972c7c6dbdd87e2a462eba675285b14b" name="a972c7c6dbdd87e2a462eba675285b14b"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhooks_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
+<tr class="memitem:a972c7c6dbdd87e2a462eba675285b14b"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a972c7c6dbdd87e2a462eba675285b14b">discord_webhooks_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
 <tr class="separator:a972c7c6dbdd87e2a462eba675285b14b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a319b947f9954d309cbcf0f888575bccc"><td class="memItemLeft" align="right" valign="top"><a id="a319b947f9954d309cbcf0f888575bccc" name="a319b947f9954d309cbcf0f888575bccc"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhooks_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
+<tr class="memitem:a319b947f9954d309cbcf0f888575bccc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a319b947f9954d309cbcf0f888575bccc">discord_webhooks_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
 <tr class="separator:a319b947f9954d309cbcf0f888575bccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22dc09da8ae3d2886f4012dbced0a080"><td class="memItemLeft" align="right" valign="top"><a id="a22dc09da8ae3d2886f4012dbced0a080" name="a22dc09da8ae3d2886f4012dbced0a080"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_webhook_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
+<tr class="memitem:a22dc09da8ae3d2886f4012dbced0a080"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a22dc09da8ae3d2886f4012dbced0a080">discord_create_webhook_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
 <tr class="separator:a22dc09da8ae3d2886f4012dbced0a080"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61f9fce98bfd64aa2fe19d783293b285"><td class="memItemLeft" align="right" valign="top"><a id="a61f9fce98bfd64aa2fe19d783293b285" name="a61f9fce98bfd64aa2fe19d783293b285"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_webhook_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
+<tr class="memitem:a61f9fce98bfd64aa2fe19d783293b285"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a61f9fce98bfd64aa2fe19d783293b285">discord_create_webhook_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
 <tr class="separator:a61f9fce98bfd64aa2fe19d783293b285"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c09d05e02c2f08c886ce2df897de199"><td class="memItemLeft" align="right" valign="top"><a id="a8c09d05e02c2f08c886ce2df897de199" name="a8c09d05e02c2f08c886ce2df897de199"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
+<tr class="memitem:a8c09d05e02c2f08c886ce2df897de199"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a8c09d05e02c2f08c886ce2df897de199">discord_modify_webhook_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
 <tr class="separator:a8c09d05e02c2f08c886ce2df897de199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add21b4fbd2a72b7f9e23f72ebb05c0d9"><td class="memItemLeft" align="right" valign="top"><a id="add21b4fbd2a72b7f9e23f72ebb05c0d9" name="add21b4fbd2a72b7f9e23f72ebb05c0d9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
+<tr class="memitem:add21b4fbd2a72b7f9e23f72ebb05c0d9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#add21b4fbd2a72b7f9e23f72ebb05c0d9">discord_modify_webhook_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
 <tr class="separator:add21b4fbd2a72b7f9e23f72ebb05c0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e19bbaed850bb60fca9e1cb55d56aba"><td class="memItemLeft" align="right" valign="top"><a id="a7e19bbaed850bb60fca9e1cb55d56aba" name="a7e19bbaed850bb60fca9e1cb55d56aba"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_with_token_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
+<tr class="memitem:a7e19bbaed850bb60fca9e1cb55d56aba"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a7e19bbaed850bb60fca9e1cb55d56aba">discord_modify_webhook_with_token_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
 <tr class="separator:a7e19bbaed850bb60fca9e1cb55d56aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab96c84cb3efb062759e7e2d0b1c7baf7"><td class="memItemLeft" align="right" valign="top"><a id="ab96c84cb3efb062759e7e2d0b1c7baf7" name="ab96c84cb3efb062759e7e2d0b1c7baf7"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_with_token_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
+<tr class="memitem:ab96c84cb3efb062759e7e2d0b1c7baf7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ab96c84cb3efb062759e7e2d0b1c7baf7">discord_modify_webhook_with_token_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
 <tr class="separator:ab96c84cb3efb062759e7e2d0b1c7baf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73e92fc29571fe535b464517b689261e"><td class="memItemLeft" align="right" valign="top"><a id="a73e92fc29571fe535b464517b689261e" name="a73e92fc29571fe535b464517b689261e"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_execute_webhook_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
+<tr class="memitem:a73e92fc29571fe535b464517b689261e"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a73e92fc29571fe535b464517b689261e">discord_execute_webhook_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
 <tr class="separator:a73e92fc29571fe535b464517b689261e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ace2bf24375d9dc18d3b5e1411e5c97"><td class="memItemLeft" align="right" valign="top"><a id="a8ace2bf24375d9dc18d3b5e1411e5c97" name="a8ace2bf24375d9dc18d3b5e1411e5c97"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_execute_webhook_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
+<tr class="memitem:a8ace2bf24375d9dc18d3b5e1411e5c97"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a8ace2bf24375d9dc18d3b5e1411e5c97">discord_execute_webhook_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
 <tr class="separator:a8ace2bf24375d9dc18d3b5e1411e5c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafd0a8be0e57954776477e7bb2b684cf"><td class="memItemLeft" align="right" valign="top"><a id="aafd0a8be0e57954776477e7bb2b684cf" name="aafd0a8be0e57954776477e7bb2b684cf"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhook_message_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
+<tr class="memitem:aafd0a8be0e57954776477e7bb2b684cf"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#aafd0a8be0e57954776477e7bb2b684cf">discord_edit_webhook_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
 <tr class="separator:aafd0a8be0e57954776477e7bb2b684cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a170471ccaa4e11ba98ddef92854262"><td class="memItemLeft" align="right" valign="top"><a id="a8a170471ccaa4e11ba98ddef92854262" name="a8a170471ccaa4e11ba98ddef92854262"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhook_message_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
+<tr class="memitem:a8a170471ccaa4e11ba98ddef92854262"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a8a170471ccaa4e11ba98ddef92854262">discord_edit_webhook_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
 <tr class="separator:a8a170471ccaa4e11ba98ddef92854262"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8a7dc876eef492dc979b3510cc3a905"><td class="memItemLeft" align="right" valign="top"><a id="ae8a7dc876eef492dc979b3510cc3a905" name="ae8a7dc876eef492dc979b3510cc3a905"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhook_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
+<tr class="memitem:ae8a7dc876eef492dc979b3510cc3a905"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ae8a7dc876eef492dc979b3510cc3a905">discord_webhook_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
 <tr class="separator:ae8a7dc876eef492dc979b3510cc3a905"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a773973243825fcb027817a851f88605c"><td class="memItemLeft" align="right" valign="top"><a id="a773973243825fcb027817a851f88605c" name="a773973243825fcb027817a851f88605c"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhook_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
+<tr class="memitem:a773973243825fcb027817a851f88605c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a773973243825fcb027817a851f88605c">discord_webhook_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *self)</td></tr>
 <tr class="separator:a773973243825fcb027817a851f88605c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dbd850825f4239214e14a5882c85e6b"><td class="memItemLeft" align="right" valign="top"><a id="a1dbd850825f4239214e14a5882c85e6b" name="a1dbd850825f4239214e14a5882c85e6b"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhooks_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
+<tr class="memitem:a1dbd850825f4239214e14a5882c85e6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a1dbd850825f4239214e14a5882c85e6b">discord_webhooks_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
 <tr class="separator:a1dbd850825f4239214e14a5882c85e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fb1494fd20d7e0cbbb5e9a13f77cdc7"><td class="memItemLeft" align="right" valign="top"><a id="a6fb1494fd20d7e0cbbb5e9a13f77cdc7" name="a6fb1494fd20d7e0cbbb5e9a13f77cdc7"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_webhooks_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
+<tr class="memitem:a6fb1494fd20d7e0cbbb5e9a13f77cdc7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a6fb1494fd20d7e0cbbb5e9a13f77cdc7">discord_webhooks_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *self)</td></tr>
 <tr class="separator:a6fb1494fd20d7e0cbbb5e9a13f77cdc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ef7a3238b42508ab43bd2f83b200c80"><td class="memItemLeft" align="right" valign="top"><a id="a6ef7a3238b42508ab43bd2f83b200c80" name="a6ef7a3238b42508ab43bd2f83b200c80"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_webhook_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
+<tr class="memitem:a6ef7a3238b42508ab43bd2f83b200c80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a6ef7a3238b42508ab43bd2f83b200c80">discord_create_webhook_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
 <tr class="separator:a6ef7a3238b42508ab43bd2f83b200c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac82fc6d0d48144ee250b75b221f1e9ea"><td class="memItemLeft" align="right" valign="top"><a id="ac82fc6d0d48144ee250b75b221f1e9ea" name="ac82fc6d0d48144ee250b75b221f1e9ea"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_webhook_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
+<tr class="memitem:ac82fc6d0d48144ee250b75b221f1e9ea"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ac82fc6d0d48144ee250b75b221f1e9ea">discord_create_webhook_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *self)</td></tr>
 <tr class="separator:ac82fc6d0d48144ee250b75b221f1e9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5f7be705288a4280b3f7c4b8ccf480d"><td class="memItemLeft" align="right" valign="top"><a id="ae5f7be705288a4280b3f7c4b8ccf480d" name="ae5f7be705288a4280b3f7c4b8ccf480d"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
+<tr class="memitem:ae5f7be705288a4280b3f7c4b8ccf480d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ae5f7be705288a4280b3f7c4b8ccf480d">discord_modify_webhook_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
 <tr class="separator:ae5f7be705288a4280b3f7c4b8ccf480d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6069d3123c80396390fb3e44bf5bf95"><td class="memItemLeft" align="right" valign="top"><a id="af6069d3123c80396390fb3e44bf5bf95" name="af6069d3123c80396390fb3e44bf5bf95"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
+<tr class="memitem:af6069d3123c80396390fb3e44bf5bf95"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#af6069d3123c80396390fb3e44bf5bf95">discord_modify_webhook_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *self)</td></tr>
 <tr class="separator:af6069d3123c80396390fb3e44bf5bf95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5325887bc7f7d3077e669677e245eaef"><td class="memItemLeft" align="right" valign="top"><a id="a5325887bc7f7d3077e669677e245eaef" name="a5325887bc7f7d3077e669677e245eaef"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_with_token_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
+<tr class="memitem:a5325887bc7f7d3077e669677e245eaef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a5325887bc7f7d3077e669677e245eaef">discord_modify_webhook_with_token_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
 <tr class="separator:a5325887bc7f7d3077e669677e245eaef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad19b06221c9c183680d14fd1d73c8260"><td class="memItemLeft" align="right" valign="top"><a id="ad19b06221c9c183680d14fd1d73c8260" name="ad19b06221c9c183680d14fd1d73c8260"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_webhook_with_token_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
+<tr class="memitem:ad19b06221c9c183680d14fd1d73c8260"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#ad19b06221c9c183680d14fd1d73c8260">discord_modify_webhook_with_token_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *self)</td></tr>
 <tr class="separator:ad19b06221c9c183680d14fd1d73c8260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af12c092f96803f76ace6fabd2b883764"><td class="memItemLeft" align="right" valign="top"><a id="af12c092f96803f76ace6fabd2b883764" name="af12c092f96803f76ace6fabd2b883764"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_execute_webhook_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
+<tr class="memitem:af12c092f96803f76ace6fabd2b883764"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#af12c092f96803f76ace6fabd2b883764">discord_execute_webhook_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
 <tr class="separator:af12c092f96803f76ace6fabd2b883764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00fa956e08fbf537022e7e4896916c46"><td class="memItemLeft" align="right" valign="top"><a id="a00fa956e08fbf537022e7e4896916c46" name="a00fa956e08fbf537022e7e4896916c46"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_execute_webhook_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
+<tr class="memitem:a00fa956e08fbf537022e7e4896916c46"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#a00fa956e08fbf537022e7e4896916c46">discord_execute_webhook_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *self)</td></tr>
 <tr class="separator:a00fa956e08fbf537022e7e4896916c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeda03f02823964d9e668e6d249618bf9"><td class="memItemLeft" align="right" valign="top"><a id="aeda03f02823964d9e668e6d249618bf9" name="aeda03f02823964d9e668e6d249618bf9"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhook_message_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
+<tr class="memitem:aeda03f02823964d9e668e6d249618bf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#aeda03f02823964d9e668e6d249618bf9">discord_edit_webhook_message_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
 <tr class="separator:aeda03f02823964d9e668e6d249618bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf82046a7ff31b7388b8c9fc7cac5d6c"><td class="memItemLeft" align="right" valign="top"><a id="acf82046a7ff31b7388b8c9fc7cac5d6c" name="acf82046a7ff31b7388b8c9fc7cac5d6c"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhook_message_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
+<tr class="memitem:acf82046a7ff31b7388b8c9fc7cac5d6c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2webhook_8h.html#acf82046a7ff31b7388b8c9fc7cac5d6c">discord_edit_webhook_message_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *self)</td></tr>
 <tr class="separator:acf82046a7ff31b7388b8c9fc7cac5d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="aacb8c6d69b0de8cbc4e518199cbeb84b" name="aacb8c6d69b0de8cbc4e518199cbeb84b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aacb8c6d69b0de8cbc4e518199cbeb84b">&#9670;&nbsp;</a></span>discord_webhook_types</h2>
 
@@ -294,6 +305,1235 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_edit_webhoo
 <tr><td class="fieldname"><a id="aacb8c6d69b0de8cbc4e518199cbeb84ba536b62bedafc7ede31741d0afc725bf3" name="aacb8c6d69b0de8cbc4e518199cbeb84ba536b62bedafc7ede31741d0afc725bf3"></a>DISCORD_WEBHOOK_APPLICATION&#160;</td><td class="fielddoc"><p >Application webhooks are webhooks used with Interactions </p>
 </td></tr>
 </table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aab0bce27442c883b8ad039d52754ba9c" name="aab0bce27442c883b8ad039d52754ba9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab0bce27442c883b8ad039d52754ba9c">&#9670;&nbsp;</a></span>discord_webhook_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_webhook_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d151448fcb9dac0815dcfc6faf820a0" name="a6d151448fcb9dac0815dcfc6faf820a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d151448fcb9dac0815dcfc6faf820a0">&#9670;&nbsp;</a></span>discord_webhook_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_webhook_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afa8a56573ac0a12314bbde28f3103a7f" name="afa8a56573ac0a12314bbde28f3103a7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa8a56573ac0a12314bbde28f3103a7f">&#9670;&nbsp;</a></span>discord_webhooks_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_webhooks_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a77e4fbd0c9cb6317dd32ab59d1c910f0" name="a77e4fbd0c9cb6317dd32ab59d1c910f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77e4fbd0c9cb6317dd32ab59d1c910f0">&#9670;&nbsp;</a></span>discord_create_webhook_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_webhook_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9f8c123c6a1a04cdcebf8d561ff87ab" name="ae9f8c123c6a1a04cdcebf8d561ff87ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9f8c123c6a1a04cdcebf8d561ff87ab">&#9670;&nbsp;</a></span>discord_create_webhook_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_webhook_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a84f55ab9db7799aabef2b24cb1e81e22" name="a84f55ab9db7799aabef2b24cb1e81e22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84f55ab9db7799aabef2b24cb1e81e22">&#9670;&nbsp;</a></span>discord_modify_webhook_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_modify_webhook_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6beea4a1e05fa557b77f11fc38746c27" name="a6beea4a1e05fa557b77f11fc38746c27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6beea4a1e05fa557b77f11fc38746c27">&#9670;&nbsp;</a></span>discord_modify_webhook_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_modify_webhook_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abbd424ffaa2e1b8442898a0cba740250" name="abbd424ffaa2e1b8442898a0cba740250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd424ffaa2e1b8442898a0cba740250">&#9670;&nbsp;</a></span>discord_modify_webhook_with_token_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_modify_webhook_with_token_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8cac20ad3f80f8b9665a0a2106785b2" name="ab8cac20ad3f80f8b9665a0a2106785b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8cac20ad3f80f8b9665a0a2106785b2">&#9670;&nbsp;</a></span>discord_modify_webhook_with_token_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_modify_webhook_with_token_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a035cf6b3624ea5e88f1d074df84eae7d" name="a035cf6b3624ea5e88f1d074df84eae7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a035cf6b3624ea5e88f1d074df84eae7d">&#9670;&nbsp;</a></span>discord_execute_webhook_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_execute_webhook_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aab2b6050fa9a8ab1c56992887fc438ef" name="aab2b6050fa9a8ab1c56992887fc438ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab2b6050fa9a8ab1c56992887fc438ef">&#9670;&nbsp;</a></span>discord_execute_webhook_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_execute_webhook_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abab694c7066326d43b6bffaa16dc551f" name="abab694c7066326d43b6bffaa16dc551f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abab694c7066326d43b6bffaa16dc551f">&#9670;&nbsp;</a></span>discord_edit_webhook_message_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_webhook_message_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6828279a162ac1503e76bfe1554d5468" name="a6828279a162ac1503e76bfe1554d5468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6828279a162ac1503e76bfe1554d5468">&#9670;&nbsp;</a></span>discord_edit_webhook_message_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_edit_webhook_message_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4556ab472eeb0b3ebec4b4c9726684b" name="ad4556ab472eeb0b3ebec4b4c9726684b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4556ab472eeb0b3ebec4b4c9726684b">&#9670;&nbsp;</a></span>discord_webhook_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_webhook_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62d188d58b95dbc4680db975cb42c8be" name="a62d188d58b95dbc4680db975cb42c8be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62d188d58b95dbc4680db975cb42c8be">&#9670;&nbsp;</a></span>discord_webhook_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_webhook_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a972c7c6dbdd87e2a462eba675285b14b" name="a972c7c6dbdd87e2a462eba675285b14b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a972c7c6dbdd87e2a462eba675285b14b">&#9670;&nbsp;</a></span>discord_webhooks_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_webhooks_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a319b947f9954d309cbcf0f888575bccc" name="a319b947f9954d309cbcf0f888575bccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a319b947f9954d309cbcf0f888575bccc">&#9670;&nbsp;</a></span>discord_webhooks_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_webhooks_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a22dc09da8ae3d2886f4012dbced0a080" name="a22dc09da8ae3d2886f4012dbced0a080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22dc09da8ae3d2886f4012dbced0a080">&#9670;&nbsp;</a></span>discord_create_webhook_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_create_webhook_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a61f9fce98bfd64aa2fe19d783293b285" name="a61f9fce98bfd64aa2fe19d783293b285"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61f9fce98bfd64aa2fe19d783293b285">&#9670;&nbsp;</a></span>discord_create_webhook_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_webhook_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8c09d05e02c2f08c886ce2df897de199" name="a8c09d05e02c2f08c886ce2df897de199"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c09d05e02c2f08c886ce2df897de199">&#9670;&nbsp;</a></span>discord_modify_webhook_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_modify_webhook_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="add21b4fbd2a72b7f9e23f72ebb05c0d9" name="add21b4fbd2a72b7f9e23f72ebb05c0d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add21b4fbd2a72b7f9e23f72ebb05c0d9">&#9670;&nbsp;</a></span>discord_modify_webhook_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_modify_webhook_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e19bbaed850bb60fca9e1cb55d56aba" name="a7e19bbaed850bb60fca9e1cb55d56aba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e19bbaed850bb60fca9e1cb55d56aba">&#9670;&nbsp;</a></span>discord_modify_webhook_with_token_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_modify_webhook_with_token_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab96c84cb3efb062759e7e2d0b1c7baf7" name="ab96c84cb3efb062759e7e2d0b1c7baf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab96c84cb3efb062759e7e2d0b1c7baf7">&#9670;&nbsp;</a></span>discord_modify_webhook_with_token_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_modify_webhook_with_token_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a73e92fc29571fe535b464517b689261e" name="a73e92fc29571fe535b464517b689261e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73e92fc29571fe535b464517b689261e">&#9670;&nbsp;</a></span>discord_execute_webhook_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_execute_webhook_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8ace2bf24375d9dc18d3b5e1411e5c97" name="a8ace2bf24375d9dc18d3b5e1411e5c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ace2bf24375d9dc18d3b5e1411e5c97">&#9670;&nbsp;</a></span>discord_execute_webhook_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_execute_webhook_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aafd0a8be0e57954776477e7bb2b684cf" name="aafd0a8be0e57954776477e7bb2b684cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd0a8be0e57954776477e7bb2b684cf">&#9670;&nbsp;</a></span>discord_edit_webhook_message_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_edit_webhook_message_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a170471ccaa4e11ba98ddef92854262" name="a8a170471ccaa4e11ba98ddef92854262"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a170471ccaa4e11ba98ddef92854262">&#9670;&nbsp;</a></span>discord_edit_webhook_message_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_webhook_message_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae8a7dc876eef492dc979b3510cc3a905" name="ae8a7dc876eef492dc979b3510cc3a905"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8a7dc876eef492dc979b3510cc3a905">&#9670;&nbsp;</a></span>discord_webhook_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_webhook_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a773973243825fcb027817a851f88605c" name="a773973243825fcb027817a851f88605c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a773973243825fcb027817a851f88605c">&#9670;&nbsp;</a></span>discord_webhook_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_webhook_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1dbd850825f4239214e14a5882c85e6b" name="a1dbd850825f4239214e14a5882c85e6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dbd850825f4239214e14a5882c85e6b">&#9670;&nbsp;</a></span>discord_webhooks_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_webhooks_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6fb1494fd20d7e0cbbb5e9a13f77cdc7" name="a6fb1494fd20d7e0cbbb5e9a13f77cdc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fb1494fd20d7e0cbbb5e9a13f77cdc7">&#9670;&nbsp;</a></span>discord_webhooks_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_webhooks_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__webhooks.html">discord_webhooks</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6ef7a3238b42508ab43bd2f83b200c80" name="a6ef7a3238b42508ab43bd2f83b200c80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ef7a3238b42508ab43bd2f83b200c80">&#9670;&nbsp;</a></span>discord_create_webhook_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_create_webhook_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac82fc6d0d48144ee250b75b221f1e9ea" name="ac82fc6d0d48144ee250b75b221f1e9ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac82fc6d0d48144ee250b75b221f1e9ea">&#9670;&nbsp;</a></span>discord_create_webhook_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_webhook_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__webhook.html">discord_create_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae5f7be705288a4280b3f7c4b8ccf480d" name="ae5f7be705288a4280b3f7c4b8ccf480d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5f7be705288a4280b3f7c4b8ccf480d">&#9670;&nbsp;</a></span>discord_modify_webhook_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_modify_webhook_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af6069d3123c80396390fb3e44bf5bf95" name="af6069d3123c80396390fb3e44bf5bf95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6069d3123c80396390fb3e44bf5bf95">&#9670;&nbsp;</a></span>discord_modify_webhook_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_modify_webhook_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__modify__webhook.html">discord_modify_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5325887bc7f7d3077e669677e245eaef" name="a5325887bc7f7d3077e669677e245eaef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5325887bc7f7d3077e669677e245eaef">&#9670;&nbsp;</a></span>discord_modify_webhook_with_token_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_modify_webhook_with_token_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad19b06221c9c183680d14fd1d73c8260" name="ad19b06221c9c183680d14fd1d73c8260"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad19b06221c9c183680d14fd1d73c8260">&#9670;&nbsp;</a></span>discord_modify_webhook_with_token_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_modify_webhook_with_token_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__modify__webhook__with__token.html">discord_modify_webhook_with_token</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af12c092f96803f76ace6fabd2b883764" name="af12c092f96803f76ace6fabd2b883764"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af12c092f96803f76ace6fabd2b883764">&#9670;&nbsp;</a></span>discord_execute_webhook_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_execute_webhook_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a00fa956e08fbf537022e7e4896916c46" name="a00fa956e08fbf537022e7e4896916c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00fa956e08fbf537022e7e4896916c46">&#9670;&nbsp;</a></span>discord_execute_webhook_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_execute_webhook_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__execute__webhook.html">discord_execute_webhook</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeda03f02823964d9e668e6d249618bf9" name="aeda03f02823964d9e668e6d249618bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeda03f02823964d9e668e6d249618bf9">&#9670;&nbsp;</a></span>discord_edit_webhook_message_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_edit_webhook_message_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf82046a7ff31b7388b8c9fc7cac5d6c" name="acf82046a7ff31b7388b8c9fc7cac5d6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf82046a7ff31b7388b8c9fc7cac5d6c">&#9670;&nbsp;</a></span>discord_edit_webhook_message_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_edit_webhook_message_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__edit__webhook__message.html">discord_edit_webhook_message</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

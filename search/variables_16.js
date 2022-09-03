@@ -15,7 +15,7 @@ var searchData=
   ['with_5fcounts_12',['with_counts',['../structdiscord__get__invite.html#aff1c26c35741da936efeb22fa5357825',1,'discord_get_invite']]],
   ['with_5fexpiration_13',['with_expiration',['../structdiscord__get__invite.html#a984d0cf9532e9e69bbf3108267cc1d34',1,'discord_get_invite']]],
   ['with_5fmember_14',['with_member',['../structdiscord__get__guild__scheduled__event__users.html#aaa1a7b8ce3a54f89503e4880b7626c0c',1,'discord_get_guild_scheduled_event_users']]],
-  ['with_5fuser_5fcount_15',['with_user_count',['../structdiscord__list__scheduled__events__for__guild.html#a11a55bd189101b1897dedd11c3f78650',1,'discord_list_scheduled_events_for_guild::with_user_count()'],['../structdiscord__get__guild__scheduled__event.html#a46098361007381b29ddf52ce5cbd8100',1,'discord_get_guild_scheduled_event::with_user_count()']]],
+  ['with_5fuser_5fcount_15',['with_user_count',['../structdiscord__list__guild__scheduled__events.html#a89494d9726fc6677a5b46b5522a3c8fd',1,'discord_list_guild_scheduled_events::with_user_count()'],['../structdiscord__get__guild__scheduled__event.html#a46098361007381b29ddf52ce5cbd8100',1,'discord_get_guild_scheduled_event::with_user_count()']]],
   ['workers_16',['workers',['../structdiscord.html#a7df318980dab3301c117d4a4650af00e',1,'discord']]],
   ['ws_17',['ws',['../structdiscord__gateway.html#a14f4f4117925f91a02e3b9a47cb50475',1,'discord_gateway']]]
 ];

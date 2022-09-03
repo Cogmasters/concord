@@ -186,7 +186,7 @@ Functions</h2></td></tr>
 <p>Create a response to an Interaction from the gateway. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">interaction_id</td><td>the unique id of the interaction </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">params</td><td>the request parameters </td></tr>
@@ -196,7 +196,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__interaction__response.html">discord_ret_interaction_response</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a31">components.c</a>, <a class="el" href="slash-commands_8c-example.html#a35">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a21">slash-commands2.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a38">components.c</a>, <a class="el" href="slash-commands_8c-example.html#a39">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a21">slash-commands2.c</a>.</dd>
 </dl>
 
 </div>
@@ -242,7 +242,7 @@ Functions</h2></td></tr>
 <p>Get the initial Interaction response. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__interaction__response.html">discord_interaction_response</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -301,7 +301,7 @@ Functions</h2></td></tr>
 <p>Edit the initial Interaction response. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
@@ -355,7 +355,7 @@ Functions</h2></td></tr>
 <p>Delete the initial Interaction response. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
@@ -414,7 +414,7 @@ Functions</h2></td></tr>
 <p>Create a followup message for an Interaction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
@@ -474,7 +474,7 @@ Functions</h2></td></tr>
 <p>Get a followup message for an interaction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">message_id</td><td>the unique id of the message </td></tr>
@@ -540,7 +540,7 @@ Functions</h2></td></tr>
 <p>Edits a followup message for an interaction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">message_id</td><td>the unique id of the message </td></tr>
@@ -601,7 +601,7 @@ Functions</h2></td></tr>
 <p>Edits a followup message for an interaction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">application_id</td><td>the unique id of the application </td></tr>
     <tr><td class="paramname">interaction_token</td><td>the unique token of the interaction </td></tr>
     <tr><td class="paramname">message_id</td><td>the unique id of the message </td></tr>

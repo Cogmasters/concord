@@ -103,31 +103,58 @@ Collaboration diagram for discord_attachments:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a1de9303726c3083c03fc6aabd903d28f"><td class="memItemLeft" align="right" valign="top"><a id="a1de9303726c3083c03fc6aabd903d28f" name="a1de9303726c3083c03fc6aabd903d28f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a1de9303726c3083c03fc6aabd903d28f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attachments.html#a1de9303726c3083c03fc6aabd903d28f">size</a></td></tr>
 <tr class="separator:a1de9303726c3083c03fc6aabd903d28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2943b52e5fb6b62af4a2d04a9567680"><td class="memItemLeft" align="right" valign="top"><a id="aa2943b52e5fb6b62af4a2d04a9567680" name="aa2943b52e5fb6b62af4a2d04a9567680"></a>
-struct <a class="el" href="structdiscord__attachment.html">discord_attachment</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:aa2943b52e5fb6b62af4a2d04a9567680"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__attachment.html">discord_attachment</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attachments.html#aa2943b52e5fb6b62af4a2d04a9567680">array</a></td></tr>
 <tr class="separator:aa2943b52e5fb6b62af4a2d04a9567680"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_attachments_cleanup(struct discord_attachments *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a0e78b351c469333b2e842f4dc4325225">discord_attachments_cleanup(struct discord_attachments *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_attachments_from_json(const char json[], size_t len, struct discord_attachments *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a71501cd48c725560f976a019d989a896">discord_attachments_from_json(const char json[], size_t len, struct discord_attachments *this)</a></code></li>
 <li><code>discord_attachments_from_jsmnf(jsmnf *root, const char json[], struct discord_attachments *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_attachments_to_json(char buf[], size_t size, const struct discord_attachments *this)</code></li>
-<li><code>discord_attachments_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_attachments *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a3964d93c03185b13f79c098c472258a6">discord_attachments_to_json(char buf[], size_t size, const struct discord_attachments *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a4198331e86c0021a9692e1123a1b9ace">discord_attachments_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_attachments *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a1de9303726c3083c03fc6aabd903d28f" name="a1de9303726c3083c03fc6aabd903d28f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1de9303726c3083c03fc6aabd903d28f">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_attachments::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa2943b52e5fb6b62af4a2d04a9567680" name="aa2943b52e5fb6b62af4a2d04a9567680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2943b52e5fb6b62af4a2d04a9567680">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__attachment.html">discord_attachment</a>* discord_attachments::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2channel_8h_source.html">channel.h</a></li>
 </ul>
 </div><!-- contents -->

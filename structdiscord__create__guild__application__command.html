@@ -92,6 +92,8 @@ $(document).ready(function(){initNavTree('structdiscord__create__guild__applicat
   <div class="headertitle"><div class="title">discord_create_guild_application_command Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="application__commands_8h_source.html">application_commands.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_create_guild_application_command:</div>
 <div class="dyncontent">
@@ -107,13 +109,17 @@ Data Fields</h2></td></tr>
 <tr class="separator:a05c3161070a1e132363b7d19482db5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadc8c0f0c840004e6aa1c89c5bd5e72a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__application__command__options.html">discord_application_command_options</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__guild__application__command.html#aadc8c0f0c840004e6aa1c89c5bd5e72a">options</a></td></tr>
 <tr class="separator:aadc8c0f0c840004e6aa1c89c5bd5e72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0730daef2222edf06c0ba483a887e34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__guild__application__command.html#ab0730daef2222edf06c0ba483a887e34">default_member_permissions</a></td></tr>
+<tr class="separator:ab0730daef2222edf06c0ba483a887e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa91b39ed9f02aadb6574ed8397759928"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__guild__application__command.html#aa91b39ed9f02aadb6574ed8397759928">dm_permission</a></td></tr>
+<tr class="separator:aa91b39ed9f02aadb6574ed8397759928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9aac0e5b31922afe55c9fa7cedbb9a4b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__guild__application__command.html#a9aac0e5b31922afe55c9fa7cedbb9a4b">default_permission</a></td></tr>
 <tr class="separator:a9aac0e5b31922afe55c9fa7cedbb9a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a744357dcf7d881136c40ef88943eaac2"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="application__commands_8h.html#a57ac2421de18ce66eac17050cefbd5ac">discord_application_command_types</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__guild__application__command.html#a744357dcf7d881136c40ef88943eaac2">type</a></td></tr>
 <tr class="separator:a744357dcf7d881136c40ef88943eaac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#_a19">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#_a34">slash-commands2.c</a>.</dd>
+<div class="textblock"><dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#_a20">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#_a38">slash-commands2.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a27fb5e8a69d4d72f7c6853e06f881a9f" name="a27fb5e8a69d4d72f7c6853e06f881a9f"></a>
@@ -128,7 +134,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >1-32 lowercase character name </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#a20">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a35">slash-commands2.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#a21">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a39">slash-commands2.c</a>.</dd>
 </dl>
 
 </div>
@@ -163,6 +169,36 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="ab0730daef2222edf06c0ba483a887e34" name="ab0730daef2222edf06c0ba483a887e34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0730daef2222edf06c0ba483a887e34">&#9670;&nbsp;</a></span>default_member_permissions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> discord_create_guild_application_command::default_member_permissions</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Set of <a class="el" href="group__DiscordPermissions.html">Discord permissions</a> represented as a bit set </p>
+
+</div>
+</div>
+<a id="aa91b39ed9f02aadb6574ed8397759928" name="aa91b39ed9f02aadb6574ed8397759928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa91b39ed9f02aadb6574ed8397759928">&#9670;&nbsp;</a></span>dm_permission</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_create_guild_application_command::dm_permission</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Indicates whether the command is available in DMs with the app, only for globally-scoped commands. By default, commands are invisible. </p>
+
+</div>
+</div>
 <a id="a9aac0e5b31922afe55c9fa7cedbb9a4b" name="a9aac0e5b31922afe55c9fa7cedbb9a4b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9aac0e5b31922afe55c9fa7cedbb9a4b">&#9670;&nbsp;</a></span>default_permission</h2>
 
@@ -174,7 +210,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >whether the command is enabled by default when the app is added to a guild </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000010">Deprecated:</a></b></dt><dd>use <code>default_member_permissions</code> instead </dd></dl>
 
 </div>
 </div>

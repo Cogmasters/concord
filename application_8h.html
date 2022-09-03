@@ -100,16 +100,16 @@ $(document).ready(function(){initNavTree('application_8h.html',''); initResizabl
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for application.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="application_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="application_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -119,68 +119,465 @@ Include dependency graph for application.h:</div>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__application.html">discord_application</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__install__params.html">discord_install_params</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gad177a282619d421402abed848c39e107"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_GATEWAY_PRESENCE</b>&#160;&#160;&#160;1 &lt;&lt; 12</td></tr>
+<tr class="memitem:gad177a282619d421402abed848c39e107"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#gad177a282619d421402abed848c39e107">DISCORD_APPLICATION_GATEWAY_PRESENCE</a>&#160;&#160;&#160;1 &lt;&lt; 12</td></tr>
 <tr class="separator:gad177a282619d421402abed848c39e107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5bcc28bece3c23a901bc31727d818bc6"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED</b>&#160;&#160;&#160;1 &lt;&lt; 13</td></tr>
+<tr class="memitem:ga5bcc28bece3c23a901bc31727d818bc6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#ga5bcc28bece3c23a901bc31727d818bc6">DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED</a>&#160;&#160;&#160;1 &lt;&lt; 13</td></tr>
 <tr class="separator:ga5bcc28bece3c23a901bc31727d818bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad780ffd041fcd8d81a94b42d470fd270"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS</b>&#160;&#160;&#160;1 &lt;&lt; 14</td></tr>
+<tr class="memitem:gad780ffd041fcd8d81a94b42d470fd270"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#gad780ffd041fcd8d81a94b42d470fd270">DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS</a>&#160;&#160;&#160;1 &lt;&lt; 14</td></tr>
 <tr class="separator:gad780ffd041fcd8d81a94b42d470fd270"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabfa9faa02dae23c2c2b320f603d90d10"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED</b>&#160;&#160;&#160;1 &lt;&lt; 15</td></tr>
+<tr class="memitem:gabfa9faa02dae23c2c2b320f603d90d10"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#gabfa9faa02dae23c2c2b320f603d90d10">DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED</a>&#160;&#160;&#160;1 &lt;&lt; 15</td></tr>
 <tr class="separator:gabfa9faa02dae23c2c2b320f603d90d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3c74daffe5e03b84ece53ea8af5ba8fb"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT</b>&#160;&#160;&#160;1 &lt;&lt; 16</td></tr>
+<tr class="memitem:ga3c74daffe5e03b84ece53ea8af5ba8fb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#ga3c74daffe5e03b84ece53ea8af5ba8fb">DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT</a>&#160;&#160;&#160;1 &lt;&lt; 16</td></tr>
 <tr class="separator:ga3c74daffe5e03b84ece53ea8af5ba8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad819662ca3cc8afabe59a21ba2bdf2b3"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_EMBEDDED</b>&#160;&#160;&#160;1 &lt;&lt; 17</td></tr>
+<tr class="memitem:gad819662ca3cc8afabe59a21ba2bdf2b3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#gad819662ca3cc8afabe59a21ba2bdf2b3">DISCORD_APPLICATION_EMBEDDED</a>&#160;&#160;&#160;1 &lt;&lt; 17</td></tr>
 <tr class="separator:gad819662ca3cc8afabe59a21ba2bdf2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga61ff60574972d009c7eb3057442b867b"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT</b>&#160;&#160;&#160;1 &lt;&lt; 18</td></tr>
+<tr class="memitem:ga61ff60574972d009c7eb3057442b867b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#ga61ff60574972d009c7eb3057442b867b">DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT</a>&#160;&#160;&#160;1 &lt;&lt; 18</td></tr>
 <tr class="separator:ga61ff60574972d009c7eb3057442b867b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7edf088630a2eb19998656f34ccdeb0f"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED</b>&#160;&#160;&#160;1 &lt;&lt; 19</td></tr>
+<tr class="memitem:ga7edf088630a2eb19998656f34ccdeb0f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordApplicationFlags.html#ga7edf088630a2eb19998656f34ccdeb0f">DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED</a>&#160;&#160;&#160;1 &lt;&lt; 19</td></tr>
 <tr class="separator:ga7edf088630a2eb19998656f34ccdeb0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top"><a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSMN_STRICT</b></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
 <tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top"><a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSMN_HEADER</b></td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
 <tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top"><a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSONB_HEADER</b></td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
 <tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a751883e7d208e73c648e2dec772fdaf2"><td class="memItemLeft" align="right" valign="top"><a id="a751883e7d208e73c648e2dec772fdaf2" name="a751883e7d208e73c648e2dec772fdaf2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_init</b> (struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
+<tr class="memitem:a751883e7d208e73c648e2dec772fdaf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a751883e7d208e73c648e2dec772fdaf2">discord_application_init</a> (struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
 <tr class="separator:a751883e7d208e73c648e2dec772fdaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1db6426103fed68394f0184ad864718a"><td class="memItemLeft" align="right" valign="top"><a id="a1db6426103fed68394f0184ad864718a" name="a1db6426103fed68394f0184ad864718a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_cleanup</b> (struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
+<tr class="memitem:a1db6426103fed68394f0184ad864718a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a1db6426103fed68394f0184ad864718a">discord_application_cleanup</a> (struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
 <tr class="separator:a1db6426103fed68394f0184ad864718a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a087720496dfd10bca0e877a15c3ee2cb"><td class="memItemLeft" align="right" valign="top"><a id="a087720496dfd10bca0e877a15c3ee2cb" name="a087720496dfd10bca0e877a15c3ee2cb"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
+<tr class="memitem:ab3da692819905514bda10fe09014e751"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#ab3da692819905514bda10fe09014e751">discord_install_params_init</a> (struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *self)</td></tr>
+<tr class="separator:ab3da692819905514bda10fe09014e751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34f8f80e4b7794b89ccdcab6cf1af104"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a34f8f80e4b7794b89ccdcab6cf1af104">discord_install_params_cleanup</a> (struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *self)</td></tr>
+<tr class="separator:a34f8f80e4b7794b89ccdcab6cf1af104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a087720496dfd10bca0e877a15c3ee2cb"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a087720496dfd10bca0e877a15c3ee2cb">discord_application_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
 <tr class="separator:a087720496dfd10bca0e877a15c3ee2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac26f7bb8f698811fb51ced5890fb49ea"><td class="memItemLeft" align="right" valign="top"><a id="ac26f7bb8f698811fb51ced5890fb49ea" name="ac26f7bb8f698811fb51ced5890fb49ea"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
+<tr class="memitem:ac26f7bb8f698811fb51ced5890fb49ea"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#ac26f7bb8f698811fb51ced5890fb49ea">discord_application_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
 <tr class="separator:ac26f7bb8f698811fb51ced5890fb49ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ad681d5c296b0c06bb37224f081fd33"><td class="memItemLeft" align="right" valign="top"><a id="a9ad681d5c296b0c06bb37224f081fd33" name="a9ad681d5c296b0c06bb37224f081fd33"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
+<tr class="memitem:a437917d9292fe4f7017481fd6961c80f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a437917d9292fe4f7017481fd6961c80f">discord_install_params_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *self)</td></tr>
+<tr class="separator:a437917d9292fe4f7017481fd6961c80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c35a2184fc6064d6df689765178b74e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a5c35a2184fc6064d6df689765178b74e">discord_install_params_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *self)</td></tr>
+<tr class="separator:a5c35a2184fc6064d6df689765178b74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ad681d5c296b0c06bb37224f081fd33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a9ad681d5c296b0c06bb37224f081fd33">discord_application_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
 <tr class="separator:a9ad681d5c296b0c06bb37224f081fd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab654e4b9eb294e6b1598c7888c349291"><td class="memItemLeft" align="right" valign="top"><a id="ab654e4b9eb294e6b1598c7888c349291" name="ab654e4b9eb294e6b1598c7888c349291"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_application_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
+<tr class="memitem:ab654e4b9eb294e6b1598c7888c349291"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#ab654e4b9eb294e6b1598c7888c349291">discord_application_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__application.html">discord_application</a> *self)</td></tr>
 <tr class="separator:ab654e4b9eb294e6b1598c7888c349291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e0f1e734dca97971ec5986678a41a29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#a6e0f1e734dca97971ec5986678a41a29">discord_install_params_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *self)</td></tr>
+<tr class="separator:a6e0f1e734dca97971ec5986678a41a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafdd2955c91fbe7904e2610ac82aa297"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="application_8h.html#aafdd2955c91fbe7904e2610ac82aa297">discord_install_params_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *self)</td></tr>
+<tr class="separator:aafdd2955c91fbe7904e2610ac82aa297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a751883e7d208e73c648e2dec772fdaf2" name="a751883e7d208e73c648e2dec772fdaf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a751883e7d208e73c648e2dec772fdaf2">&#9670;&nbsp;</a></span>discord_application_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application.html">discord_application</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1db6426103fed68394f0184ad864718a" name="a1db6426103fed68394f0184ad864718a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1db6426103fed68394f0184ad864718a">&#9670;&nbsp;</a></span>discord_application_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_application_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application.html">discord_application</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab3da692819905514bda10fe09014e751" name="ab3da692819905514bda10fe09014e751"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3da692819905514bda10fe09014e751">&#9670;&nbsp;</a></span>discord_install_params_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_install_params_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34f8f80e4b7794b89ccdcab6cf1af104" name="a34f8f80e4b7794b89ccdcab6cf1af104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34f8f80e4b7794b89ccdcab6cf1af104">&#9670;&nbsp;</a></span>discord_install_params_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_install_params_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a087720496dfd10bca0e877a15c3ee2cb" name="a087720496dfd10bca0e877a15c3ee2cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a087720496dfd10bca0e877a15c3ee2cb">&#9670;&nbsp;</a></span>discord_application_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_application_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application.html">discord_application</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac26f7bb8f698811fb51ced5890fb49ea" name="ac26f7bb8f698811fb51ced5890fb49ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac26f7bb8f698811fb51ced5890fb49ea">&#9670;&nbsp;</a></span>discord_application_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__application.html">discord_application</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a437917d9292fe4f7017481fd6961c80f" name="a437917d9292fe4f7017481fd6961c80f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a437917d9292fe4f7017481fd6961c80f">&#9670;&nbsp;</a></span>discord_install_params_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_install_params_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c35a2184fc6064d6df689765178b74e" name="a5c35a2184fc6064d6df689765178b74e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c35a2184fc6064d6df689765178b74e">&#9670;&nbsp;</a></span>discord_install_params_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_install_params_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ad681d5c296b0c06bb37224f081fd33" name="a9ad681d5c296b0c06bb37224f081fd33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ad681d5c296b0c06bb37224f081fd33">&#9670;&nbsp;</a></span>discord_application_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_application_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application.html">discord_application</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab654e4b9eb294e6b1598c7888c349291" name="ab654e4b9eb294e6b1598c7888c349291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab654e4b9eb294e6b1598c7888c349291">&#9670;&nbsp;</a></span>discord_application_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_application_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__application.html">discord_application</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e0f1e734dca97971ec5986678a41a29" name="a6e0f1e734dca97971ec5986678a41a29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0f1e734dca97971ec5986678a41a29">&#9670;&nbsp;</a></span>discord_install_params_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_install_params_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aafdd2955c91fbe7904e2610ac82aa297" name="aafdd2955c91fbe7904e2610ac82aa297"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafdd2955c91fbe7904e2610ac82aa297">&#9670;&nbsp;</a></span>discord_install_params_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_install_params_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__install__params.html">discord_install_params</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

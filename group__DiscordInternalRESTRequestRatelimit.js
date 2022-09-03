@@ -7,6 +7,7 @@ var group__DiscordInternalRESTRequestRatelimit =
       [ "routes", "structdiscord__ratelimiter.html#ada41649708f3b4969e744c576e41a0dd", null ],
       [ "null", "structdiscord__ratelimiter.html#a0f2c5f14dc620e6fe2650f7b7b41ad53", null ],
       [ "miss", "structdiscord__ratelimiter.html#a851e023093acc161d03b26f1c1d56727", null ],
+      [ "global_wait_ms", "structdiscord__ratelimiter.html#a9399a67fbe2100d153ac0d79e8972df7", null ],
       [ "queues", "structdiscord__ratelimiter.html#a621319557605c11bc7c79f99db464497", null ]
     ] ],
     [ "discord_bucket", "structdiscord__bucket.html", [

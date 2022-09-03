@@ -140,14 +140,13 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga6b7716aa8750442be45120d1467c8926"><td class="memItemLeft" align="right" valign="top"><a id="ga6b7716aa8750442be45120d1467c8926" name="ga6b7716aa8750442be45120d1467c8926"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLIENT</b>(ptr,  path)&#160;&#160;&#160;<a class="el" href="discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f">CONTAINEROF</a>(ptr, struct <a class="el" href="structdiscord.html">discord</a>, path)</td></tr>
-<tr class="memdesc:ga6b7716aa8750442be45120d1467c8926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get client from its nested field. <br /></td></tr>
+<tr class="memitem:ga6b7716aa8750442be45120d1467c8926"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926">CLIENT</a>(ptr,  path)&#160;&#160;&#160;<a class="el" href="discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f">CONTAINEROF</a>(ptr, struct <a class="el" href="structdiscord.html">discord</a>, path)</td></tr>
+<tr class="memdesc:ga6b7716aa8750442be45120d1467c8926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get client from its nested field.  <a href="group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926">More...</a><br /></td></tr>
 <tr class="separator:ga6b7716aa8750442be45120d1467c8926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad26258eaeb38eaff2fc8367705ff357b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">CCORD_EXPECT</a>(client,  expect,  code,  reason)</td></tr>
 <tr class="memdesc:gad26258eaeb38eaff2fc8367705ff357b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log and return <code>code</code> if <code>expect</code> condition is false  <a href="group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">More...</a><br /></td></tr>
 <tr class="separator:gad26258eaeb38eaff2fc8367705ff357b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69f4288287a2a9df3630d10e3e208f09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">ASSERT_NOT_OOB</a>(nbytes,  destsz)&#160;&#160;&#160;    ASSERT_S((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td></tr>
+<tr class="memitem:ga69f4288287a2a9df3630d10e3e208f09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">ASSERT_NOT_OOB</a>(nbytes,  destsz)&#160;&#160;&#160;    <a class="el" href="logconf_8h.html#ac19efa0f65c104796b5d41170cee731c">ASSERT_S</a>((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td></tr>
 <tr class="memdesc:ga69f4288287a2a9df3630d10e3e208f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut for checking OOB-write attempts.  <a href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">More...</a><br /></td></tr>
 <tr class="separator:ga69f4288287a2a9df3630d10e3e208f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga6f54459e4a3ef7fae49a92fd6dee7103">DISCORD_ENDPT_LEN</a>&#160;&#160;&#160;512</td></tr>
@@ -158,6 +157,36 @@ Macros</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Documentation useful when developing or debugging Concord itself. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga6b7716aa8750442be45120d1467c8926" name="ga6b7716aa8750442be45120d1467c8926"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6b7716aa8750442be45120d1467c8926">&#9670;&nbsp;</a></span>CLIENT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLIENT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">ptr, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">path&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f">CONTAINEROF</a>(ptr, struct <a class="el" href="structdiscord.html">discord</a>, path)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get client from its nested field. </p>
+
+</div>
+</div>
 <a id="gad26258eaeb38eaff2fc8367705ff357b" name="gad26258eaeb38eaff2fc8367705ff357b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gad26258eaeb38eaff2fc8367705ff357b">&#9670;&nbsp;</a></span>CCORD_EXPECT</h2>
 
@@ -237,7 +266,7 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    ASSERT_S((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td>
+          <td></td><td>&#160;&#160;&#160;    <a class="el" href="logconf_8h.html#ac19efa0f65c104796b5d41170cee731c">ASSERT_S</a>((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td>
         </tr>
       </table>
 </div><div class="memdoc">

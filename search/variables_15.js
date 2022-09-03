@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['v_0',['v',['../structdiscord__ready.html#aff12e512d4d8e233ce3e38e24f6608db',1,'discord_ready']]],
+  ['v_0',['v',['../structdiscord__ready.html#aff12e512d4d8e233ce3e38e24f6608db',1,'discord_ready::v()'],['../structjsmnf__pair.html#ae02da74e550f6064c2e11e1ad9d8db5a',1,'jsmnf_pair::v()']]],
   ['value_1',['value',['../structdiscord__application__command__option__choice.html#ab8a7a28446cf71d69ff3d7887016b46b',1,'discord_application_command_option_choice::value()'],['../structdiscord__application__command__interaction__data__option.html#a3e97d4e2b08de6ec5f810681b6b00d80',1,'discord_application_command_interaction_data_option::value()'],['../structdiscord__embed__field.html#a3d86d857fc2eef075929de9ab67d8a30',1,'discord_embed_field::value()'],['../structdiscord__component.html#a0a41a275645eada59c0da37a2dd49900',1,'discord_component::value()'],['../structdiscord__select__option.html#ae870ce85bd283e415e791756f4cee915',1,'discord_select_option::value()']]],
   ['values_2',['values',['../structdiscord__interaction__data.html#a4a95600da0f04dbfce1649b978a4d892',1,'discord_interaction_data']]],
   ['vanity_5furl_5fcode_3',['vanity_url_code',['../structdiscord__guild.html#a5e5b650011255b7eed0430ce443363ec',1,'discord_guild']]],

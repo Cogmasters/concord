@@ -100,16 +100,16 @@ $(document).ready(function(){initNavTree('docs_2api_2emoji_8h.html',''); initRes
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for emoji.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2emoji_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2emoji_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -126,82 +126,806 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7f50bdf50ef12db4fa9893d2a7540ce1"><td class="memItemLeft" align="right" valign="top"><a id="a7f50bdf50ef12db4fa9893d2a7540ce1" name="a7f50bdf50ef12db4fa9893d2a7540ce1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emoji_init</b> (struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
+<tr class="memitem:a7f50bdf50ef12db4fa9893d2a7540ce1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a7f50bdf50ef12db4fa9893d2a7540ce1">discord_emoji_init</a> (struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
 <tr class="separator:a7f50bdf50ef12db4fa9893d2a7540ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bb643d37739100354e3c16f731d410f"><td class="memItemLeft" align="right" valign="top"><a id="a5bb643d37739100354e3c16f731d410f" name="a5bb643d37739100354e3c16f731d410f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emoji_cleanup</b> (struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
+<tr class="memitem:a5bb643d37739100354e3c16f731d410f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a5bb643d37739100354e3c16f731d410f">discord_emoji_cleanup</a> (struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
 <tr class="separator:a5bb643d37739100354e3c16f731d410f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a39c7498e4d460666d35d52abea69e9"><td class="memItemLeft" align="right" valign="top"><a id="a7a39c7498e4d460666d35d52abea69e9" name="a7a39c7498e4d460666d35d52abea69e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emojis_cleanup</b> (struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
+<tr class="memitem:a7a39c7498e4d460666d35d52abea69e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a7a39c7498e4d460666d35d52abea69e9">discord_emojis_cleanup</a> (struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
 <tr class="separator:a7a39c7498e4d460666d35d52abea69e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abce7d18491e47052d0715aa4bdbf7e2d"><td class="memItemLeft" align="right" valign="top"><a id="abce7d18491e47052d0715aa4bdbf7e2d" name="abce7d18491e47052d0715aa4bdbf7e2d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_emoji_init</b> (struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:abce7d18491e47052d0715aa4bdbf7e2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#abce7d18491e47052d0715aa4bdbf7e2d">discord_create_guild_emoji_init</a> (struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
 <tr class="separator:abce7d18491e47052d0715aa4bdbf7e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cd0a27dc589a4ac6fadeb36569ab1c5"><td class="memItemLeft" align="right" valign="top"><a id="a2cd0a27dc589a4ac6fadeb36569ab1c5" name="a2cd0a27dc589a4ac6fadeb36569ab1c5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_emoji_cleanup</b> (struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a2cd0a27dc589a4ac6fadeb36569ab1c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a2cd0a27dc589a4ac6fadeb36569ab1c5">discord_create_guild_emoji_cleanup</a> (struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a2cd0a27dc589a4ac6fadeb36569ab1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a204db3a753c0806cc79157ebc3bddd4f"><td class="memItemLeft" align="right" valign="top"><a id="a204db3a753c0806cc79157ebc3bddd4f" name="a204db3a753c0806cc79157ebc3bddd4f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_guild_emoji_init</b> (struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a204db3a753c0806cc79157ebc3bddd4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a204db3a753c0806cc79157ebc3bddd4f">discord_modify_guild_emoji_init</a> (struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a204db3a753c0806cc79157ebc3bddd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88ab650f1f33cd573c9a191a40435b14"><td class="memItemLeft" align="right" valign="top"><a id="a88ab650f1f33cd573c9a191a40435b14" name="a88ab650f1f33cd573c9a191a40435b14"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_guild_emoji_cleanup</b> (struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a88ab650f1f33cd573c9a191a40435b14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a88ab650f1f33cd573c9a191a40435b14">discord_modify_guild_emoji_cleanup</a> (struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a88ab650f1f33cd573c9a191a40435b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0cacf5fc591feb817babc2641ecaedf"><td class="memItemLeft" align="right" valign="top"><a id="ae0cacf5fc591feb817babc2641ecaedf" name="ae0cacf5fc591feb817babc2641ecaedf"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emoji_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
+<tr class="memitem:ae0cacf5fc591feb817babc2641ecaedf"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#ae0cacf5fc591feb817babc2641ecaedf">discord_emoji_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
 <tr class="separator:ae0cacf5fc591feb817babc2641ecaedf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15c3beed6e46336ead73eb552f4f3fc5"><td class="memItemLeft" align="right" valign="top"><a id="a15c3beed6e46336ead73eb552f4f3fc5" name="a15c3beed6e46336ead73eb552f4f3fc5"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emoji_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
+<tr class="memitem:a15c3beed6e46336ead73eb552f4f3fc5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a15c3beed6e46336ead73eb552f4f3fc5">discord_emoji_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
 <tr class="separator:a15c3beed6e46336ead73eb552f4f3fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a464af7887f927a310c9af779cb37e406"><td class="memItemLeft" align="right" valign="top"><a id="a464af7887f927a310c9af779cb37e406" name="a464af7887f927a310c9af779cb37e406"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emojis_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
+<tr class="memitem:a464af7887f927a310c9af779cb37e406"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a464af7887f927a310c9af779cb37e406">discord_emojis_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
 <tr class="separator:a464af7887f927a310c9af779cb37e406"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36d0e55271eb338eb52f72dcb0bde112"><td class="memItemLeft" align="right" valign="top"><a id="a36d0e55271eb338eb52f72dcb0bde112" name="a36d0e55271eb338eb52f72dcb0bde112"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emojis_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
+<tr class="memitem:a36d0e55271eb338eb52f72dcb0bde112"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a36d0e55271eb338eb52f72dcb0bde112">discord_emojis_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
 <tr class="separator:a36d0e55271eb338eb52f72dcb0bde112"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2b649d55f315b6ba8f7c8052d92d862"><td class="memItemLeft" align="right" valign="top"><a id="af2b649d55f315b6ba8f7c8052d92d862" name="af2b649d55f315b6ba8f7c8052d92d862"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_emoji_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:af2b649d55f315b6ba8f7c8052d92d862"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#af2b649d55f315b6ba8f7c8052d92d862">discord_create_guild_emoji_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
 <tr class="separator:af2b649d55f315b6ba8f7c8052d92d862"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d274b4664913fa29c7e944d0767da93"><td class="memItemLeft" align="right" valign="top"><a id="a4d274b4664913fa29c7e944d0767da93" name="a4d274b4664913fa29c7e944d0767da93"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_emoji_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a4d274b4664913fa29c7e944d0767da93"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a4d274b4664913fa29c7e944d0767da93">discord_create_guild_emoji_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a4d274b4664913fa29c7e944d0767da93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4f074ce219d6b45a8d0c3e5d755db77"><td class="memItemLeft" align="right" valign="top"><a id="ae4f074ce219d6b45a8d0c3e5d755db77" name="ae4f074ce219d6b45a8d0c3e5d755db77"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_guild_emoji_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:ae4f074ce219d6b45a8d0c3e5d755db77"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#ae4f074ce219d6b45a8d0c3e5d755db77">discord_modify_guild_emoji_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
 <tr class="separator:ae4f074ce219d6b45a8d0c3e5d755db77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9f9942476083d0fc8826f342c075633"><td class="memItemLeft" align="right" valign="top"><a id="ae9f9942476083d0fc8826f342c075633" name="ae9f9942476083d0fc8826f342c075633"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_guild_emoji_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:ae9f9942476083d0fc8826f342c075633"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#ae9f9942476083d0fc8826f342c075633">discord_modify_guild_emoji_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
 <tr class="separator:ae9f9942476083d0fc8826f342c075633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a897b52c32749c261b163cd154b816569"><td class="memItemLeft" align="right" valign="top"><a id="a897b52c32749c261b163cd154b816569" name="a897b52c32749c261b163cd154b816569"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emoji_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
+<tr class="memitem:a897b52c32749c261b163cd154b816569"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a897b52c32749c261b163cd154b816569">discord_emoji_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
 <tr class="separator:a897b52c32749c261b163cd154b816569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cb3ec5c79ee2f8d3caf849ac62cc09a"><td class="memItemLeft" align="right" valign="top"><a id="a3cb3ec5c79ee2f8d3caf849ac62cc09a" name="a3cb3ec5c79ee2f8d3caf849ac62cc09a"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emoji_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
+<tr class="memitem:a3cb3ec5c79ee2f8d3caf849ac62cc09a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a3cb3ec5c79ee2f8d3caf849ac62cc09a">discord_emoji_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *self)</td></tr>
 <tr class="separator:a3cb3ec5c79ee2f8d3caf849ac62cc09a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac56389be26d1e1c829dcb92d18742935"><td class="memItemLeft" align="right" valign="top"><a id="ac56389be26d1e1c829dcb92d18742935" name="ac56389be26d1e1c829dcb92d18742935"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emojis_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
+<tr class="memitem:ac56389be26d1e1c829dcb92d18742935"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#ac56389be26d1e1c829dcb92d18742935">discord_emojis_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
 <tr class="separator:ac56389be26d1e1c829dcb92d18742935"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9898796dcb1042ff2d4b0c8a001c85e2"><td class="memItemLeft" align="right" valign="top"><a id="a9898796dcb1042ff2d4b0c8a001c85e2" name="a9898796dcb1042ff2d4b0c8a001c85e2"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_emojis_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
+<tr class="memitem:a9898796dcb1042ff2d4b0c8a001c85e2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a9898796dcb1042ff2d4b0c8a001c85e2">discord_emojis_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *self)</td></tr>
 <tr class="separator:a9898796dcb1042ff2d4b0c8a001c85e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a375b257165c2cd90b3ea1a0ad176fe54"><td class="memItemLeft" align="right" valign="top"><a id="a375b257165c2cd90b3ea1a0ad176fe54" name="a375b257165c2cd90b3ea1a0ad176fe54"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_emoji_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a375b257165c2cd90b3ea1a0ad176fe54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a375b257165c2cd90b3ea1a0ad176fe54">discord_create_guild_emoji_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a375b257165c2cd90b3ea1a0ad176fe54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad155b871cb514a39176ad9ef33a035bd"><td class="memItemLeft" align="right" valign="top"><a id="ad155b871cb514a39176ad9ef33a035bd" name="ad155b871cb514a39176ad9ef33a035bd"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_create_guild_emoji_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:ad155b871cb514a39176ad9ef33a035bd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#ad155b871cb514a39176ad9ef33a035bd">discord_create_guild_emoji_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *self)</td></tr>
 <tr class="separator:ad155b871cb514a39176ad9ef33a035bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7845e5bff578142144b987ddf06d9edd"><td class="memItemLeft" align="right" valign="top"><a id="a7845e5bff578142144b987ddf06d9edd" name="a7845e5bff578142144b987ddf06d9edd"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_guild_emoji_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a7845e5bff578142144b987ddf06d9edd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a7845e5bff578142144b987ddf06d9edd">discord_modify_guild_emoji_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a7845e5bff578142144b987ddf06d9edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31237ed30302b37e63816d02d3dc3afd"><td class="memItemLeft" align="right" valign="top"><a id="a31237ed30302b37e63816d02d3dc3afd" name="a31237ed30302b37e63816d02d3dc3afd"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_modify_guild_emoji_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
+<tr class="memitem:a31237ed30302b37e63816d02d3dc3afd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2emoji_8h.html#a31237ed30302b37e63816d02d3dc3afd">discord_modify_guild_emoji_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *self)</td></tr>
 <tr class="separator:a31237ed30302b37e63816d02d3dc3afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a7f50bdf50ef12db4fa9893d2a7540ce1" name="a7f50bdf50ef12db4fa9893d2a7540ce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f50bdf50ef12db4fa9893d2a7540ce1">&#9670;&nbsp;</a></span>discord_emoji_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_emoji_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5bb643d37739100354e3c16f731d410f" name="a5bb643d37739100354e3c16f731d410f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bb643d37739100354e3c16f731d410f">&#9670;&nbsp;</a></span>discord_emoji_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_emoji_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7a39c7498e4d460666d35d52abea69e9" name="a7a39c7498e4d460666d35d52abea69e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a39c7498e4d460666d35d52abea69e9">&#9670;&nbsp;</a></span>discord_emojis_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_emojis_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abce7d18491e47052d0715aa4bdbf7e2d" name="abce7d18491e47052d0715aa4bdbf7e2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abce7d18491e47052d0715aa4bdbf7e2d">&#9670;&nbsp;</a></span>discord_create_guild_emoji_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_guild_emoji_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2cd0a27dc589a4ac6fadeb36569ab1c5" name="a2cd0a27dc589a4ac6fadeb36569ab1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd0a27dc589a4ac6fadeb36569ab1c5">&#9670;&nbsp;</a></span>discord_create_guild_emoji_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_create_guild_emoji_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a204db3a753c0806cc79157ebc3bddd4f" name="a204db3a753c0806cc79157ebc3bddd4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a204db3a753c0806cc79157ebc3bddd4f">&#9670;&nbsp;</a></span>discord_modify_guild_emoji_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_modify_guild_emoji_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a88ab650f1f33cd573c9a191a40435b14" name="a88ab650f1f33cd573c9a191a40435b14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88ab650f1f33cd573c9a191a40435b14">&#9670;&nbsp;</a></span>discord_modify_guild_emoji_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_modify_guild_emoji_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae0cacf5fc591feb817babc2641ecaedf" name="ae0cacf5fc591feb817babc2641ecaedf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0cacf5fc591feb817babc2641ecaedf">&#9670;&nbsp;</a></span>discord_emoji_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_emoji_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a15c3beed6e46336ead73eb552f4f3fc5" name="a15c3beed6e46336ead73eb552f4f3fc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15c3beed6e46336ead73eb552f4f3fc5">&#9670;&nbsp;</a></span>discord_emoji_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_emoji_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a464af7887f927a310c9af779cb37e406" name="a464af7887f927a310c9af779cb37e406"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a464af7887f927a310c9af779cb37e406">&#9670;&nbsp;</a></span>discord_emojis_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_emojis_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a36d0e55271eb338eb52f72dcb0bde112" name="a36d0e55271eb338eb52f72dcb0bde112"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36d0e55271eb338eb52f72dcb0bde112">&#9670;&nbsp;</a></span>discord_emojis_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_emojis_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af2b649d55f315b6ba8f7c8052d92d862" name="af2b649d55f315b6ba8f7c8052d92d862"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b649d55f315b6ba8f7c8052d92d862">&#9670;&nbsp;</a></span>discord_create_guild_emoji_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_create_guild_emoji_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d274b4664913fa29c7e944d0767da93" name="a4d274b4664913fa29c7e944d0767da93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d274b4664913fa29c7e944d0767da93">&#9670;&nbsp;</a></span>discord_create_guild_emoji_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_guild_emoji_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae4f074ce219d6b45a8d0c3e5d755db77" name="ae4f074ce219d6b45a8d0c3e5d755db77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4f074ce219d6b45a8d0c3e5d755db77">&#9670;&nbsp;</a></span>discord_modify_guild_emoji_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_modify_guild_emoji_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9f9942476083d0fc8826f342c075633" name="ae9f9942476083d0fc8826f342c075633"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9f9942476083d0fc8826f342c075633">&#9670;&nbsp;</a></span>discord_modify_guild_emoji_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_modify_guild_emoji_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a897b52c32749c261b163cd154b816569" name="a897b52c32749c261b163cd154b816569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a897b52c32749c261b163cd154b816569">&#9670;&nbsp;</a></span>discord_emoji_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_emoji_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cb3ec5c79ee2f8d3caf849ac62cc09a" name="a3cb3ec5c79ee2f8d3caf849ac62cc09a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cb3ec5c79ee2f8d3caf849ac62cc09a">&#9670;&nbsp;</a></span>discord_emoji_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_emoji_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac56389be26d1e1c829dcb92d18742935" name="ac56389be26d1e1c829dcb92d18742935"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac56389be26d1e1c829dcb92d18742935">&#9670;&nbsp;</a></span>discord_emojis_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_emojis_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9898796dcb1042ff2d4b0c8a001c85e2" name="a9898796dcb1042ff2d4b0c8a001c85e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9898796dcb1042ff2d4b0c8a001c85e2">&#9670;&nbsp;</a></span>discord_emojis_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_emojis_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__emojis.html">discord_emojis</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a375b257165c2cd90b3ea1a0ad176fe54" name="a375b257165c2cd90b3ea1a0ad176fe54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a375b257165c2cd90b3ea1a0ad176fe54">&#9670;&nbsp;</a></span>discord_create_guild_emoji_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_create_guild_emoji_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad155b871cb514a39176ad9ef33a035bd" name="ad155b871cb514a39176ad9ef33a035bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad155b871cb514a39176ad9ef33a035bd">&#9670;&nbsp;</a></span>discord_create_guild_emoji_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_create_guild_emoji_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__create__guild__emoji.html">discord_create_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7845e5bff578142144b987ddf06d9edd" name="a7845e5bff578142144b987ddf06d9edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7845e5bff578142144b987ddf06d9edd">&#9670;&nbsp;</a></span>discord_modify_guild_emoji_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_modify_guild_emoji_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a31237ed30302b37e63816d02d3dc3afd" name="a31237ed30302b37e63816d02d3dc3afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31237ed30302b37e63816d02d3dc3afd">&#9670;&nbsp;</a></span>discord_modify_guild_emoji_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_modify_guild_emoji_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__modify__guild__emoji.html">discord_modify_guild_emoji</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

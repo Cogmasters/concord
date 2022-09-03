@@ -103,33 +103,62 @@ Collaboration diagram for discord_invites:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a44df47f3ec67d3093d38db02080e2dbc"><td class="memItemLeft" align="right" valign="top"><a id="a44df47f3ec67d3093d38db02080e2dbc" name="a44df47f3ec67d3093d38db02080e2dbc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a44df47f3ec67d3093d38db02080e2dbc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__invites.html#a44df47f3ec67d3093d38db02080e2dbc">size</a></td></tr>
 <tr class="separator:a44df47f3ec67d3093d38db02080e2dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a448cfca96400c83d13712366519d2ca0"><td class="memItemLeft" align="right" valign="top"><a id="a448cfca96400c83d13712366519d2ca0" name="a448cfca96400c83d13712366519d2ca0"></a>
-struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a448cfca96400c83d13712366519d2ca0"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__invite.html">discord_invite</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__invites.html#a448cfca96400c83d13712366519d2ca0">array</a></td></tr>
 <tr class="separator:a448cfca96400c83d13712366519d2ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_invites_cleanup(struct discord_invites *this)</code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#a3ca0d0ebfe60627a3589d95ea957745a">discord_invites_cleanup(struct discord_invites *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_invites_from_json(const char json[], size_t len, struct discord_invites *this)</code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#a4b628d55ab2b4e8637f748e9b08e4798">discord_invites_from_json(const char json[], size_t len, struct discord_invites *this)</a></code></li>
 <li><code>discord_invites_from_jsmnf(jsmnf *root, const char json[], struct discord_invites *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_invites_to_json(char buf[], size_t size, const struct discord_invites *this)</code></li>
-<li><code>discord_invites_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_invites *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#aac05b83dbdf581db80bb60cef4aa19f8">discord_invites_to_json(char buf[], size_t size, const struct discord_invites *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2invite_8h.html#ade3edab35dcb9d8fbbf882b5d0df3f0f">discord_invites_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_invites *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#_a21">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#_a22">channel.c</a>.</dd>
 </dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a44df47f3ec67d3093d38db02080e2dbc" name="a44df47f3ec67d3093d38db02080e2dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44df47f3ec67d3093d38db02080e2dbc">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_invites::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a23">channel.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a448cfca96400c83d13712366519d2ca0" name="a448cfca96400c83d13712366519d2ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a448cfca96400c83d13712366519d2ca0">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__invite.html">discord_invite</a>* discord_invites::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2invite_8h_source.html">invite.h</a></li>
 </ul>
 </div><!-- contents -->

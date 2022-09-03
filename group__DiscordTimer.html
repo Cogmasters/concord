@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('group__DiscordTimer.html',''); initRes
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">Timer<div class="ingroups"><a class="el" href="group__Discord.html">Client</a></div></div></div>
+  <div class="headertitle"><div class="title">Timer<div class="ingroups"><a class="el" href="group__DiscordClient.html">Client</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -113,9 +113,8 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="memItemLeft" align="right" valign="top"><a id="ga8b23c7c024f54ddfd5e333bfd9387dd5" name="ga8b23c7c024f54ddfd5e333bfd9387dd5"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>discord_ev_timer</b>) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *ev)</td></tr>
-<tr class="memdesc:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback to be used with struct <a class="el" href="structdiscord__timer.html" title="struct used for modifying, and getting info about a timer">discord_timer</a> <br /></td></tr>
+<tr class="memitem:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *ev)</td></tr>
+<tr class="memdesc:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback to be used with struct <a class="el" href="structdiscord__timer.html" title="struct used for modifying, and getting info about a timer">discord_timer</a>  <a href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">More...</a><br /></td></tr>
 <tr class="separator:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -166,6 +165,23 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Schedule callbacks to be called in the future. </p>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga8b23c7c024f54ddfd5e333bfd9387dd5" name="ga8b23c7c024f54ddfd5e333bfd9387dd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8b23c7c024f54ddfd5e333bfd9387dd5">&#9670;&nbsp;</a></span>discord_ev_timer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* discord_ev_timer) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *ev)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>callback to be used with struct <a class="el" href="structdiscord__timer.html" title="struct used for modifying, and getting info about a timer">discord_timer</a> </p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="ga6e91b61d2abe8974ade81aa42b225a6f" name="ga6e91b61d2abe8974ade81aa42b225a6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga6e91b61d2abe8974ade81aa42b225a6f">&#9670;&nbsp;</a></span>discord_timer_flags</h2>
@@ -229,7 +245,7 @@ Functions</h2></td></tr>
 <p>modifies or creates a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">timer</td><td>the timer that should be modified </td></tr>
   </table>
   </dd>
@@ -279,7 +295,7 @@ Functions</h2></td></tr>
 <p>creates a one shot timer that automatically deletes itself upon completion </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">cb</td><td>the callback that should be called when timer triggers </td></tr>
     <tr><td class="paramname">data</td><td>user data </td></tr>
     <tr><td class="paramname">delay</td><td>delay before timer should start in milliseconds </td></tr>
@@ -345,7 +361,7 @@ Functions</h2></td></tr>
 <p>creates a repeating timer that automatically deletes itself upon completion </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">cb</td><td>the callback that should be called when timer triggers </td></tr>
     <tr><td class="paramname">data</td><td>user data </td></tr>
     <tr><td class="paramname">delay</td><td>delay before timer should start in milliseconds </td></tr>
@@ -395,7 +411,7 @@ Functions</h2></td></tr>
 <p>get the data associated with the timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
     <tr><td class="paramname">timer</td><td>where to copy the timer data to </td></tr>
   </table>
@@ -434,7 +450,7 @@ Functions</h2></td></tr>
 <p>starts a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -472,7 +488,7 @@ Functions</h2></td></tr>
 <p>stops a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -510,7 +526,7 @@ Functions</h2></td></tr>
 <p>cancels a timer, this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -548,7 +564,7 @@ Functions</h2></td></tr>
 <p>deletes a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -586,7 +602,7 @@ Functions</h2></td></tr>
 <p>cancels, and deletes a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>

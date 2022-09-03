@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['webhook_0',['Webhook',['../group__DiscordAPIWebhook.html',1,'']]],
-  ['webhook_20lengths_1',['Webhook lengths',['../group__DiscordConstantsWebhook.html',1,'']]],
-  ['websockets_20api_2',['WebSockets API',['../group__DiscordInternalGateway.html',1,'']]]
+  ['user_0',['User',['../group__DiscordAPIUser.html',1,'']]],
+  ['user_20flags_1',['User flags',['../group__DiscordAPIUserFlags.html',1,'']]]
 ];

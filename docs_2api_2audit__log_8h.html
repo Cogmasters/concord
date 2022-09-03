@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('docs_2api_2audit__log_8h.html',''); in
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for audit_log.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2audit__log_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="docs_2api_2audit__log_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -135,96 +135,396 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__get__guild__audit__log.html">discord_get_guild_audit_log</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a078ff0aa987d45d3c87d0e6d4007f85e"><td class="memItemLeft" align="right" valign="top"><a id="a078ff0aa987d45d3c87d0e6d4007f85e" name="a078ff0aa987d45d3c87d0e6d4007f85e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_events</b> { <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_GUILD_UPDATE</b> = 1
-, <b>DISCORD_AUDIT_LOG_CHANNEL_CREATE</b> = 10
-, <b>DISCORD_AUDIT_LOG_CHANNEL_UPDATE</b> = 11
-, <b>DISCORD_AUDIT_LOG_CHANNEL_DELETE</b> = 12
+<tr class="memitem:a078ff0aa987d45d3c87d0e6d4007f85e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85e">discord_audit_log_events</a> { <br />
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea35ae8c2924a5301b695d72350902db31">DISCORD_AUDIT_LOG_GUILD_UPDATE</a> = 1
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea24187d79f9e0e6c2185e68a47a681a9f">DISCORD_AUDIT_LOG_CHANNEL_CREATE</a> = 10
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eab2b89295c9fcfd3c646bc3f21b76b81c">DISCORD_AUDIT_LOG_CHANNEL_UPDATE</a> = 11
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea4366f9493fc8176f3a2cd56784cd15bd">DISCORD_AUDIT_LOG_CHANNEL_DELETE</a> = 12
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE</b> = 13
-, <b>DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE</b> = 14
-, <b>DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE</b> = 15
-, <b>DISCORD_AUDIT_LOG_MEMBER_KICK</b> = 20
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ead470cbfe1bfa579fe1418b50be764208">DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE</a> = 13
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea910b3310a2f5cf36f4914f251d38dba8">DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE</a> = 14
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea5eab1eaa1ef680be62b4291a39241989">DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE</a> = 15
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea787f03128478962d044471e4a63ffb8e">DISCORD_AUDIT_LOG_MEMBER_KICK</a> = 20
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_MEMBER_PRUNE</b> = 21
-, <b>DISCORD_AUDIT_LOG_MEMBER_BAN_ADD</b> = 22
-, <b>DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE</b> = 23
-, <b>DISCORD_AUDIT_LOG_MEMBER_UPDATE</b> = 24
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eaed8c8dccd4cd93d005c87c9ac085fafc">DISCORD_AUDIT_LOG_MEMBER_PRUNE</a> = 21
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea44e70ab48eb6baa5f52812a07a038149">DISCORD_AUDIT_LOG_MEMBER_BAN_ADD</a> = 22
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea8867ecb073ad5ba994469346e0b9ee19">DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE</a> = 23
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea1b1f580d091d167594d47ec6a1bf63c3">DISCORD_AUDIT_LOG_MEMBER_UPDATE</a> = 24
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE</b> = 25
-, <b>DISCORD_AUDIT_LOG_MEMBER_MOVE</b> = 26
-, <b>DISCORD_AUDIT_LOG_MEMBER_DISCONNECT</b> = 27
-, <b>DISCORD_AUDIT_LOG_BOT_ADD</b> = 28
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea736c8a9076e2984cf5e52a3a257c50f5">DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE</a> = 25
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea2822a288a4dc8728076055007b2a2311">DISCORD_AUDIT_LOG_MEMBER_MOVE</a> = 26
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eaf1424a3dcb41aa2e684ce645204bec51">DISCORD_AUDIT_LOG_MEMBER_DISCONNECT</a> = 27
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea3cec658991746aeda4e947c3455201b5">DISCORD_AUDIT_LOG_BOT_ADD</a> = 28
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_ROLE_CREATE</b> = 30
-, <b>DISCORD_AUDIT_LOG_ROLE_UPDATE</b> = 31
-, <b>DISCORD_AUDIT_LOG_ROLE_DELETE</b> = 32
-, <b>DISCORD_AUDIT_LOG_INVITE_CREATE</b> = 40
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea9c383e3c85aee958dc40ef1f06053c81">DISCORD_AUDIT_LOG_ROLE_CREATE</a> = 30
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea3c58607a6c7d8c116271b7891b9ea075">DISCORD_AUDIT_LOG_ROLE_UPDATE</a> = 31
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea5c34bb07b21ce50936a92d6bdc4ecf2b">DISCORD_AUDIT_LOG_ROLE_DELETE</a> = 32
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eaadfb15efef3591c77738b8f6a1c08f29">DISCORD_AUDIT_LOG_INVITE_CREATE</a> = 40
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_INVITE_UPDATE</b> = 41
-, <b>DISCORD_AUDIT_LOG_INVITE_DELETE</b> = 42
-, <b>DISCORD_AUDIT_LOG_WEBHOOK_CREATE</b> = 50
-, <b>DISCORD_AUDIT_LOG_WEBHOOK_UPDATE</b> = 51
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea4e4101997a9dd01819ed9c78de002e62">DISCORD_AUDIT_LOG_INVITE_UPDATE</a> = 41
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea65f7206318fdc7e81444419f593078b4">DISCORD_AUDIT_LOG_INVITE_DELETE</a> = 42
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea0c0637eb1d426ff080e2bb58ef605080">DISCORD_AUDIT_LOG_WEBHOOK_CREATE</a> = 50
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eab8f5b2ee7245a50ee6c240e83329946e">DISCORD_AUDIT_LOG_WEBHOOK_UPDATE</a> = 51
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_WEBHOOK_DELETE</b> = 52
-, <b>DISCORD_AUDIT_LOG_EMOJI_CREATE</b> = 60
-, <b>DISCORD_AUDIT_LOG_EMOJI_UPDATE</b> = 61
-, <b>DISCORD_AUDIT_LOG_EMOJI_DELETE</b> = 62
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eafc6763e4f911a37160d222a849a22143">DISCORD_AUDIT_LOG_WEBHOOK_DELETE</a> = 52
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea89fd99d215367ddcc0e91b2960a734db">DISCORD_AUDIT_LOG_EMOJI_CREATE</a> = 60
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea77218990a94a49f956781fd4efbaf30a">DISCORD_AUDIT_LOG_EMOJI_UPDATE</a> = 61
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea148332c00e1fceccf0530d70da2a458e">DISCORD_AUDIT_LOG_EMOJI_DELETE</a> = 62
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_MESSAGE_DELETE</b> = 72
-, <b>DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE</b> = 73
-, <b>DISCORD_AUDIT_LOG_MESSAGE_PIN</b> = 74
-, <b>DISCORD_AUDIT_LOG_MESSAGE_UNPIN</b> = 75
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea91ed5fdaa462982a5cd3588161ee4097">DISCORD_AUDIT_LOG_MESSAGE_DELETE</a> = 72
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eabdf5aed871985bfa526e9a0edde6f568">DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE</a> = 73
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea8755912520472d34bf7b09260ccfdcc4">DISCORD_AUDIT_LOG_MESSAGE_PIN</a> = 74
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eaaff88eb3d87437871339161a38ca6ce4">DISCORD_AUDIT_LOG_MESSAGE_UNPIN</a> = 75
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_INTEGRATION_CREATE</b> = 80
-, <b>DISCORD_AUDIT_LOG_INTEGRATION_UPDATE</b> = 81
-, <b>DISCORD_AUDIT_LOG_INTEGRATION_DELETE</b> = 82
-, <b>DISCORD_AUDIT_LOG_STAGE_INSTANCE_CREATE</b> = 83
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea0bf57200a5f63bbf63e53b1c5788d4ae">DISCORD_AUDIT_LOG_INTEGRATION_CREATE</a> = 80
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eaf4c23be64b2d32e7b6c4aa63249a0096">DISCORD_AUDIT_LOG_INTEGRATION_UPDATE</a> = 81
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea6b04c305684f1da98029a86253cc7df3">DISCORD_AUDIT_LOG_INTEGRATION_DELETE</a> = 82
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea41152db88cb0f95fc158448bb9687473">DISCORD_AUDIT_LOG_STAGE_INSTANCE_CREATE</a> = 83
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_STAGE_INSTANCE_UPDATE</b> = 84
-, <b>DISCORD_AUDIT_LOG_STAGE_INSTANCE_DELETE</b> = 85
-, <b>DISCORD_AUDIT_LOG_STICKER_CREATE</b> = 90
-, <b>DISCORD_AUDIT_LOG_STICKER_UPDATE</b> = 91
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eae9fc1203780162fcadd3c10d587e685e">DISCORD_AUDIT_LOG_STAGE_INSTANCE_UPDATE</a> = 84
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eaf77fc2cb093bcfad47ff3f12f71dfe04">DISCORD_AUDIT_LOG_STAGE_INSTANCE_DELETE</a> = 85
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea8477d14af61959522c247548cc12511f">DISCORD_AUDIT_LOG_STICKER_CREATE</a> = 90
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea1c1e2e0c939cddaaa4d0d625256cabe1">DISCORD_AUDIT_LOG_STICKER_UPDATE</a> = 91
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_STICKER_DELETE</b> = 92
-, <b>DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_CREATE</b> = 100
-, <b>DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_UPDATE</b> = 101
-, <b>DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_DELETE</b> = 102
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ead6be3684b11e116e22e57d06dbc793f4">DISCORD_AUDIT_LOG_STICKER_DELETE</a> = 92
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea2243a7cfeca2473bc058f9c178f73be9">DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_CREATE</a> = 100
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ead6d8bbb04b76e86b1796ca5928b9d991">DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_UPDATE</a> = 101
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea5d01677cd4bc9e76e3a56436556aceac">DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_DELETE</a> = 102
 , <br />
-&#160;&#160;<b>DISCORD_AUDIT_LOG_THREAD_CREATE</b> = 110
-, <b>DISCORD_AUDIT_LOG_THREAD_UPDATE</b> = 111
-, <b>DISCORD_AUDIT_LOG_THREAD_DELETE</b> = 112
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea805caddaa3945130d434c072c05ef4bb">DISCORD_AUDIT_LOG_THREAD_CREATE</a> = 110
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea9e6d03480c14ea6ea2f390959ef1d17e">DISCORD_AUDIT_LOG_THREAD_UPDATE</a> = 111
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea7b5bbd47ef44997ba5143000ac87bc68">DISCORD_AUDIT_LOG_THREAD_DELETE</a> = 112
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea30ec9e11cf1f7bf2071c688d123b5cff">DISCORD_AUDIT_LOG_APPLICATION_COMMAND_PERMISSION_UPDATE</a> = 121
+, <br />
+&#160;&#160;<a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85eafda2a08150f06b513a1733c8d7b09f7c">DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_CREATE</a> = 140
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea0c8f87174a029047a17d3a322f5a3e3b">DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_UPDATE</a> = 141
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea68f9413555165fcbdd777ce86a192584">DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_DELETE</a> = 142
+, <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85ea7c1accf787d0399e75b7e4dd76108c52">DISCORD_AUDIT_LOG_AUTO_MODERATION_BLOCK_MESSAGE</a> = 143
 <br />
  }</td></tr>
 <tr class="separator:a078ff0aa987d45d3c87d0e6d4007f85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a615b95ed93fe0bbbeffe43e68d5439c8"><td class="memItemLeft" align="right" valign="top"><a id="a615b95ed93fe0bbbeffe43e68d5439c8" name="a615b95ed93fe0bbbeffe43e68d5439c8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_init</b> (struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
+<tr class="memitem:a615b95ed93fe0bbbeffe43e68d5439c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#a615b95ed93fe0bbbeffe43e68d5439c8">discord_audit_log_init</a> (struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
 <tr class="separator:a615b95ed93fe0bbbeffe43e68d5439c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1258b2b799bd28cc07318a34ba4a3b25"><td class="memItemLeft" align="right" valign="top"><a id="a1258b2b799bd28cc07318a34ba4a3b25" name="a1258b2b799bd28cc07318a34ba4a3b25"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_cleanup</b> (struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
+<tr class="memitem:a1258b2b799bd28cc07318a34ba4a3b25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#a1258b2b799bd28cc07318a34ba4a3b25">discord_audit_log_cleanup</a> (struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
 <tr class="separator:a1258b2b799bd28cc07318a34ba4a3b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fd3e6baa7c40cbcdde37fd09205ec72"><td class="memItemLeft" align="right" valign="top"><a id="a2fd3e6baa7c40cbcdde37fd09205ec72" name="a2fd3e6baa7c40cbcdde37fd09205ec72"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
+<tr class="memitem:a2fd3e6baa7c40cbcdde37fd09205ec72"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#a2fd3e6baa7c40cbcdde37fd09205ec72">discord_audit_log_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
 <tr class="separator:a2fd3e6baa7c40cbcdde37fd09205ec72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedc976cff4e9431ccbddb6fe220adf9a"><td class="memItemLeft" align="right" valign="top"><a id="aedc976cff4e9431ccbddb6fe220adf9a" name="aedc976cff4e9431ccbddb6fe220adf9a"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
+<tr class="memitem:aedc976cff4e9431ccbddb6fe220adf9a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#aedc976cff4e9431ccbddb6fe220adf9a">discord_audit_log_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
 <tr class="separator:aedc976cff4e9431ccbddb6fe220adf9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c0ba270918c935dd86e590aa3575448"><td class="memItemLeft" align="right" valign="top"><a id="a1c0ba270918c935dd86e590aa3575448" name="a1c0ba270918c935dd86e590aa3575448"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
+<tr class="memitem:a1c0ba270918c935dd86e590aa3575448"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#a1c0ba270918c935dd86e590aa3575448">discord_audit_log_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
 <tr class="separator:a1c0ba270918c935dd86e590aa3575448"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac04b473e46d198d56c130a9f091a197d"><td class="memItemLeft" align="right" valign="top"><a id="ac04b473e46d198d56c130a9f091a197d" name="ac04b473e46d198d56c130a9f091a197d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>discord_audit_log_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
+<tr class="memitem:ac04b473e46d198d56c130a9f091a197d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2audit__log_8h.html#ac04b473e46d198d56c130a9f091a197d">discord_audit_log_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *self)</td></tr>
 <tr class="separator:ac04b473e46d198d56c130a9f091a197d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a078ff0aa987d45d3c87d0e6d4007f85e" name="a078ff0aa987d45d3c87d0e6d4007f85e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078ff0aa987d45d3c87d0e6d4007f85e">&#9670;&nbsp;</a></span>discord_audit_log_events</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="docs_2api_2audit__log_8h.html#a078ff0aa987d45d3c87d0e6d4007f85e">discord_audit_log_events</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea35ae8c2924a5301b695d72350902db31" name="a078ff0aa987d45d3c87d0e6d4007f85ea35ae8c2924a5301b695d72350902db31"></a>DISCORD_AUDIT_LOG_GUILD_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea24187d79f9e0e6c2185e68a47a681a9f" name="a078ff0aa987d45d3c87d0e6d4007f85ea24187d79f9e0e6c2185e68a47a681a9f"></a>DISCORD_AUDIT_LOG_CHANNEL_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eab2b89295c9fcfd3c646bc3f21b76b81c" name="a078ff0aa987d45d3c87d0e6d4007f85eab2b89295c9fcfd3c646bc3f21b76b81c"></a>DISCORD_AUDIT_LOG_CHANNEL_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea4366f9493fc8176f3a2cd56784cd15bd" name="a078ff0aa987d45d3c87d0e6d4007f85ea4366f9493fc8176f3a2cd56784cd15bd"></a>DISCORD_AUDIT_LOG_CHANNEL_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ead470cbfe1bfa579fe1418b50be764208" name="a078ff0aa987d45d3c87d0e6d4007f85ead470cbfe1bfa579fe1418b50be764208"></a>DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea910b3310a2f5cf36f4914f251d38dba8" name="a078ff0aa987d45d3c87d0e6d4007f85ea910b3310a2f5cf36f4914f251d38dba8"></a>DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea5eab1eaa1ef680be62b4291a39241989" name="a078ff0aa987d45d3c87d0e6d4007f85ea5eab1eaa1ef680be62b4291a39241989"></a>DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea787f03128478962d044471e4a63ffb8e" name="a078ff0aa987d45d3c87d0e6d4007f85ea787f03128478962d044471e4a63ffb8e"></a>DISCORD_AUDIT_LOG_MEMBER_KICK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eaed8c8dccd4cd93d005c87c9ac085fafc" name="a078ff0aa987d45d3c87d0e6d4007f85eaed8c8dccd4cd93d005c87c9ac085fafc"></a>DISCORD_AUDIT_LOG_MEMBER_PRUNE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea44e70ab48eb6baa5f52812a07a038149" name="a078ff0aa987d45d3c87d0e6d4007f85ea44e70ab48eb6baa5f52812a07a038149"></a>DISCORD_AUDIT_LOG_MEMBER_BAN_ADD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea8867ecb073ad5ba994469346e0b9ee19" name="a078ff0aa987d45d3c87d0e6d4007f85ea8867ecb073ad5ba994469346e0b9ee19"></a>DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea1b1f580d091d167594d47ec6a1bf63c3" name="a078ff0aa987d45d3c87d0e6d4007f85ea1b1f580d091d167594d47ec6a1bf63c3"></a>DISCORD_AUDIT_LOG_MEMBER_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea736c8a9076e2984cf5e52a3a257c50f5" name="a078ff0aa987d45d3c87d0e6d4007f85ea736c8a9076e2984cf5e52a3a257c50f5"></a>DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea2822a288a4dc8728076055007b2a2311" name="a078ff0aa987d45d3c87d0e6d4007f85ea2822a288a4dc8728076055007b2a2311"></a>DISCORD_AUDIT_LOG_MEMBER_MOVE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eaf1424a3dcb41aa2e684ce645204bec51" name="a078ff0aa987d45d3c87d0e6d4007f85eaf1424a3dcb41aa2e684ce645204bec51"></a>DISCORD_AUDIT_LOG_MEMBER_DISCONNECT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea3cec658991746aeda4e947c3455201b5" name="a078ff0aa987d45d3c87d0e6d4007f85ea3cec658991746aeda4e947c3455201b5"></a>DISCORD_AUDIT_LOG_BOT_ADD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea9c383e3c85aee958dc40ef1f06053c81" name="a078ff0aa987d45d3c87d0e6d4007f85ea9c383e3c85aee958dc40ef1f06053c81"></a>DISCORD_AUDIT_LOG_ROLE_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea3c58607a6c7d8c116271b7891b9ea075" name="a078ff0aa987d45d3c87d0e6d4007f85ea3c58607a6c7d8c116271b7891b9ea075"></a>DISCORD_AUDIT_LOG_ROLE_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea5c34bb07b21ce50936a92d6bdc4ecf2b" name="a078ff0aa987d45d3c87d0e6d4007f85ea5c34bb07b21ce50936a92d6bdc4ecf2b"></a>DISCORD_AUDIT_LOG_ROLE_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eaadfb15efef3591c77738b8f6a1c08f29" name="a078ff0aa987d45d3c87d0e6d4007f85eaadfb15efef3591c77738b8f6a1c08f29"></a>DISCORD_AUDIT_LOG_INVITE_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea4e4101997a9dd01819ed9c78de002e62" name="a078ff0aa987d45d3c87d0e6d4007f85ea4e4101997a9dd01819ed9c78de002e62"></a>DISCORD_AUDIT_LOG_INVITE_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea65f7206318fdc7e81444419f593078b4" name="a078ff0aa987d45d3c87d0e6d4007f85ea65f7206318fdc7e81444419f593078b4"></a>DISCORD_AUDIT_LOG_INVITE_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea0c0637eb1d426ff080e2bb58ef605080" name="a078ff0aa987d45d3c87d0e6d4007f85ea0c0637eb1d426ff080e2bb58ef605080"></a>DISCORD_AUDIT_LOG_WEBHOOK_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eab8f5b2ee7245a50ee6c240e83329946e" name="a078ff0aa987d45d3c87d0e6d4007f85eab8f5b2ee7245a50ee6c240e83329946e"></a>DISCORD_AUDIT_LOG_WEBHOOK_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eafc6763e4f911a37160d222a849a22143" name="a078ff0aa987d45d3c87d0e6d4007f85eafc6763e4f911a37160d222a849a22143"></a>DISCORD_AUDIT_LOG_WEBHOOK_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea89fd99d215367ddcc0e91b2960a734db" name="a078ff0aa987d45d3c87d0e6d4007f85ea89fd99d215367ddcc0e91b2960a734db"></a>DISCORD_AUDIT_LOG_EMOJI_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea77218990a94a49f956781fd4efbaf30a" name="a078ff0aa987d45d3c87d0e6d4007f85ea77218990a94a49f956781fd4efbaf30a"></a>DISCORD_AUDIT_LOG_EMOJI_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea148332c00e1fceccf0530d70da2a458e" name="a078ff0aa987d45d3c87d0e6d4007f85ea148332c00e1fceccf0530d70da2a458e"></a>DISCORD_AUDIT_LOG_EMOJI_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea91ed5fdaa462982a5cd3588161ee4097" name="a078ff0aa987d45d3c87d0e6d4007f85ea91ed5fdaa462982a5cd3588161ee4097"></a>DISCORD_AUDIT_LOG_MESSAGE_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eabdf5aed871985bfa526e9a0edde6f568" name="a078ff0aa987d45d3c87d0e6d4007f85eabdf5aed871985bfa526e9a0edde6f568"></a>DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea8755912520472d34bf7b09260ccfdcc4" name="a078ff0aa987d45d3c87d0e6d4007f85ea8755912520472d34bf7b09260ccfdcc4"></a>DISCORD_AUDIT_LOG_MESSAGE_PIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eaaff88eb3d87437871339161a38ca6ce4" name="a078ff0aa987d45d3c87d0e6d4007f85eaaff88eb3d87437871339161a38ca6ce4"></a>DISCORD_AUDIT_LOG_MESSAGE_UNPIN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea0bf57200a5f63bbf63e53b1c5788d4ae" name="a078ff0aa987d45d3c87d0e6d4007f85ea0bf57200a5f63bbf63e53b1c5788d4ae"></a>DISCORD_AUDIT_LOG_INTEGRATION_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eaf4c23be64b2d32e7b6c4aa63249a0096" name="a078ff0aa987d45d3c87d0e6d4007f85eaf4c23be64b2d32e7b6c4aa63249a0096"></a>DISCORD_AUDIT_LOG_INTEGRATION_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea6b04c305684f1da98029a86253cc7df3" name="a078ff0aa987d45d3c87d0e6d4007f85ea6b04c305684f1da98029a86253cc7df3"></a>DISCORD_AUDIT_LOG_INTEGRATION_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea41152db88cb0f95fc158448bb9687473" name="a078ff0aa987d45d3c87d0e6d4007f85ea41152db88cb0f95fc158448bb9687473"></a>DISCORD_AUDIT_LOG_STAGE_INSTANCE_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eae9fc1203780162fcadd3c10d587e685e" name="a078ff0aa987d45d3c87d0e6d4007f85eae9fc1203780162fcadd3c10d587e685e"></a>DISCORD_AUDIT_LOG_STAGE_INSTANCE_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eaf77fc2cb093bcfad47ff3f12f71dfe04" name="a078ff0aa987d45d3c87d0e6d4007f85eaf77fc2cb093bcfad47ff3f12f71dfe04"></a>DISCORD_AUDIT_LOG_STAGE_INSTANCE_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea8477d14af61959522c247548cc12511f" name="a078ff0aa987d45d3c87d0e6d4007f85ea8477d14af61959522c247548cc12511f"></a>DISCORD_AUDIT_LOG_STICKER_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea1c1e2e0c939cddaaa4d0d625256cabe1" name="a078ff0aa987d45d3c87d0e6d4007f85ea1c1e2e0c939cddaaa4d0d625256cabe1"></a>DISCORD_AUDIT_LOG_STICKER_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ead6be3684b11e116e22e57d06dbc793f4" name="a078ff0aa987d45d3c87d0e6d4007f85ead6be3684b11e116e22e57d06dbc793f4"></a>DISCORD_AUDIT_LOG_STICKER_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea2243a7cfeca2473bc058f9c178f73be9" name="a078ff0aa987d45d3c87d0e6d4007f85ea2243a7cfeca2473bc058f9c178f73be9"></a>DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ead6d8bbb04b76e86b1796ca5928b9d991" name="a078ff0aa987d45d3c87d0e6d4007f85ead6d8bbb04b76e86b1796ca5928b9d991"></a>DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea5d01677cd4bc9e76e3a56436556aceac" name="a078ff0aa987d45d3c87d0e6d4007f85ea5d01677cd4bc9e76e3a56436556aceac"></a>DISCORD_AUDIT_LOG_GUILD_SCHEDULED_EVENT_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea805caddaa3945130d434c072c05ef4bb" name="a078ff0aa987d45d3c87d0e6d4007f85ea805caddaa3945130d434c072c05ef4bb"></a>DISCORD_AUDIT_LOG_THREAD_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea9e6d03480c14ea6ea2f390959ef1d17e" name="a078ff0aa987d45d3c87d0e6d4007f85ea9e6d03480c14ea6ea2f390959ef1d17e"></a>DISCORD_AUDIT_LOG_THREAD_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea7b5bbd47ef44997ba5143000ac87bc68" name="a078ff0aa987d45d3c87d0e6d4007f85ea7b5bbd47ef44997ba5143000ac87bc68"></a>DISCORD_AUDIT_LOG_THREAD_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea30ec9e11cf1f7bf2071c688d123b5cff" name="a078ff0aa987d45d3c87d0e6d4007f85ea30ec9e11cf1f7bf2071c688d123b5cff"></a>DISCORD_AUDIT_LOG_APPLICATION_COMMAND_PERMISSION_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85eafda2a08150f06b513a1733c8d7b09f7c" name="a078ff0aa987d45d3c87d0e6d4007f85eafda2a08150f06b513a1733c8d7b09f7c"></a>DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_CREATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea0c8f87174a029047a17d3a322f5a3e3b" name="a078ff0aa987d45d3c87d0e6d4007f85ea0c8f87174a029047a17d3a322f5a3e3b"></a>DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_UPDATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea68f9413555165fcbdd777ce86a192584" name="a078ff0aa987d45d3c87d0e6d4007f85ea68f9413555165fcbdd777ce86a192584"></a>DISCORD_AUDIT_LOG_AUTO_MODERATION_RULE_DELETE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a078ff0aa987d45d3c87d0e6d4007f85ea7c1accf787d0399e75b7e4dd76108c52" name="a078ff0aa987d45d3c87d0e6d4007f85ea7c1accf787d0399e75b7e4dd76108c52"></a>DISCORD_AUDIT_LOG_AUTO_MODERATION_BLOCK_MESSAGE&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a615b95ed93fe0bbbeffe43e68d5439c8" name="a615b95ed93fe0bbbeffe43e68d5439c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a615b95ed93fe0bbbeffe43e68d5439c8">&#9670;&nbsp;</a></span>discord_audit_log_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_audit_log_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1258b2b799bd28cc07318a34ba4a3b25" name="a1258b2b799bd28cc07318a34ba4a3b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1258b2b799bd28cc07318a34ba4a3b25">&#9670;&nbsp;</a></span>discord_audit_log_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_audit_log_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2fd3e6baa7c40cbcdde37fd09205ec72" name="a2fd3e6baa7c40cbcdde37fd09205ec72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fd3e6baa7c40cbcdde37fd09205ec72">&#9670;&nbsp;</a></span>discord_audit_log_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_audit_log_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aedc976cff4e9431ccbddb6fe220adf9a" name="aedc976cff4e9431ccbddb6fe220adf9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedc976cff4e9431ccbddb6fe220adf9a">&#9670;&nbsp;</a></span>discord_audit_log_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_audit_log_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c0ba270918c935dd86e590aa3575448" name="a1c0ba270918c935dd86e590aa3575448"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c0ba270918c935dd86e590aa3575448">&#9670;&nbsp;</a></span>discord_audit_log_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_audit_log_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac04b473e46d198d56c130a9f091a197d" name="ac04b473e46d198d56c130a9f091a197d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac04b473e46d198d56c130a9f091a197d">&#9670;&nbsp;</a></span>discord_audit_log_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_audit_log_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__audit__log.html">discord_audit_log</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

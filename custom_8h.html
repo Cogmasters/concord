@@ -100,16 +100,16 @@ $(document).ready(function(){initNavTree('custom_8h.html',''); initResizable(); 
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;inttypes.h&gt;</code><br />
-<code>#include &quot;carray.h&quot;</code><br />
-<code>#include &quot;cog-utils.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="carray_8h_source.html">carray.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &quot;jsmn.h&quot;</code><br />
-<code>#include &quot;jsmn-find.h&quot;</code><br />
-<code>#include &quot;json-build.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for custom.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="custom_8h__incl.svg" width="946" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="custom_8h__incl.svg" width="864" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -126,73 +126,748 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structintegers.html">integers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#ae9493ed0020a5a9595eb8d0b6870f947">JSMN_STRICT</a></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a3cbcbd7c48827141af941f316122fad4">JSONB_HEADER</a></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a54caf3bb094b8548ebd0401bf4a6cd8c"><td class="memItemLeft" align="right" valign="top"><a id="a54caf3bb094b8548ebd0401bf4a6cd8c" name="a54caf3bb094b8548ebd0401bf4a6cd8c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>strings_cleanup</b> (struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
+<tr class="memitem:a54caf3bb094b8548ebd0401bf4a6cd8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a54caf3bb094b8548ebd0401bf4a6cd8c">strings_cleanup</a> (struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
 <tr class="separator:a54caf3bb094b8548ebd0401bf4a6cd8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1e9467dae3110d9d12c2375aceb285d"><td class="memItemLeft" align="right" valign="top"><a id="aa1e9467dae3110d9d12c2375aceb285d" name="aa1e9467dae3110d9d12c2375aceb285d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>json_values_cleanup</b> (struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
+<tr class="memitem:aa1e9467dae3110d9d12c2375aceb285d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#aa1e9467dae3110d9d12c2375aceb285d">json_values_cleanup</a> (struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
 <tr class="separator:aa1e9467dae3110d9d12c2375aceb285d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23d0857d00b5394828da381b6a81b2d8"><td class="memItemLeft" align="right" valign="top"><a id="a23d0857d00b5394828da381b6a81b2d8" name="a23d0857d00b5394828da381b6a81b2d8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>snowflakes_cleanup</b> (struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
+<tr class="memitem:a23d0857d00b5394828da381b6a81b2d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a23d0857d00b5394828da381b6a81b2d8">snowflakes_cleanup</a> (struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
 <tr class="separator:a23d0857d00b5394828da381b6a81b2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef4dff02efeadff57231f448a031a7b"><td class="memItemLeft" align="right" valign="top"><a id="a4ef4dff02efeadff57231f448a031a7b" name="a4ef4dff02efeadff57231f448a031a7b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>integers_cleanup</b> (struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
+<tr class="memitem:a4ef4dff02efeadff57231f448a031a7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a4ef4dff02efeadff57231f448a031a7b">integers_cleanup</a> (struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
 <tr class="separator:a4ef4dff02efeadff57231f448a031a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fa96d46eaabfd53ad315e021ed335e4"><td class="memItemLeft" align="right" valign="top"><a id="a5fa96d46eaabfd53ad315e021ed335e4" name="a5fa96d46eaabfd53ad315e021ed335e4"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>strings_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
+<tr class="memitem:a5fa96d46eaabfd53ad315e021ed335e4"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a5fa96d46eaabfd53ad315e021ed335e4">strings_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
 <tr class="separator:a5fa96d46eaabfd53ad315e021ed335e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9b03eb65709e882bc65b03a68a0040d"><td class="memItemLeft" align="right" valign="top"><a id="ae9b03eb65709e882bc65b03a68a0040d" name="ae9b03eb65709e882bc65b03a68a0040d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>strings_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
+<tr class="memitem:ae9b03eb65709e882bc65b03a68a0040d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#ae9b03eb65709e882bc65b03a68a0040d">strings_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
 <tr class="separator:ae9b03eb65709e882bc65b03a68a0040d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e5f224710d85355b650e76e293259dc"><td class="memItemLeft" align="right" valign="top"><a id="a6e5f224710d85355b650e76e293259dc" name="a6e5f224710d85355b650e76e293259dc"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>json_values_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
+<tr class="memitem:a6e5f224710d85355b650e76e293259dc"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a6e5f224710d85355b650e76e293259dc">json_values_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
 <tr class="separator:a6e5f224710d85355b650e76e293259dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106ce346eb9b0c3e79bd440c576e473c"><td class="memItemLeft" align="right" valign="top"><a id="a106ce346eb9b0c3e79bd440c576e473c" name="a106ce346eb9b0c3e79bd440c576e473c"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>json_values_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
+<tr class="memitem:a106ce346eb9b0c3e79bd440c576e473c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a106ce346eb9b0c3e79bd440c576e473c">json_values_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
 <tr class="separator:a106ce346eb9b0c3e79bd440c576e473c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaee74f4f0e4708ea0ed819b6c3fc76ec"><td class="memItemLeft" align="right" valign="top"><a id="aaee74f4f0e4708ea0ed819b6c3fc76ec" name="aaee74f4f0e4708ea0ed819b6c3fc76ec"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>snowflakes_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
+<tr class="memitem:aaee74f4f0e4708ea0ed819b6c3fc76ec"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#aaee74f4f0e4708ea0ed819b6c3fc76ec">snowflakes_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
 <tr class="separator:aaee74f4f0e4708ea0ed819b6c3fc76ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf6969d8f1f11e1e187881cb75926b0e"><td class="memItemLeft" align="right" valign="top"><a id="adf6969d8f1f11e1e187881cb75926b0e" name="adf6969d8f1f11e1e187881cb75926b0e"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>snowflakes_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
+<tr class="memitem:adf6969d8f1f11e1e187881cb75926b0e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#adf6969d8f1f11e1e187881cb75926b0e">snowflakes_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
 <tr class="separator:adf6969d8f1f11e1e187881cb75926b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59cee300eacec7047a4292a5684282da"><td class="memItemLeft" align="right" valign="top"><a id="a59cee300eacec7047a4292a5684282da" name="a59cee300eacec7047a4292a5684282da"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>integers_from_jsmnf</b> (jsmnf_pair *root, const char *js, struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
+<tr class="memitem:a59cee300eacec7047a4292a5684282da"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a59cee300eacec7047a4292a5684282da">integers_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
 <tr class="separator:a59cee300eacec7047a4292a5684282da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40b1dd1d3f84970fd71d587f2fa4baf2"><td class="memItemLeft" align="right" valign="top"><a id="a40b1dd1d3f84970fd71d587f2fa4baf2" name="a40b1dd1d3f84970fd71d587f2fa4baf2"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>integers_from_json</b> (const char buf[], size_t size, struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
+<tr class="memitem:a40b1dd1d3f84970fd71d587f2fa4baf2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a40b1dd1d3f84970fd71d587f2fa4baf2">integers_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
 <tr class="separator:a40b1dd1d3f84970fd71d587f2fa4baf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a23cca863ac780f1ee1a6fb47680b3d"><td class="memItemLeft" align="right" valign="top"><a id="a8a23cca863ac780f1ee1a6fb47680b3d" name="a8a23cca863ac780f1ee1a6fb47680b3d"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>strings_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
+<tr class="memitem:a8a23cca863ac780f1ee1a6fb47680b3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a8a23cca863ac780f1ee1a6fb47680b3d">strings_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
 <tr class="separator:a8a23cca863ac780f1ee1a6fb47680b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8bb06ed68283017fecdc954ea66841e"><td class="memItemLeft" align="right" valign="top"><a id="ac8bb06ed68283017fecdc954ea66841e" name="ac8bb06ed68283017fecdc954ea66841e"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>strings_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
+<tr class="memitem:ac8bb06ed68283017fecdc954ea66841e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#ac8bb06ed68283017fecdc954ea66841e">strings_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structstrings.html">strings</a> *self)</td></tr>
 <tr class="separator:ac8bb06ed68283017fecdc954ea66841e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c9405046cca985c489f69c8631e6ba4"><td class="memItemLeft" align="right" valign="top"><a id="a9c9405046cca985c489f69c8631e6ba4" name="a9c9405046cca985c489f69c8631e6ba4"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>json_values_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
+<tr class="memitem:a9c9405046cca985c489f69c8631e6ba4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a9c9405046cca985c489f69c8631e6ba4">json_values_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
 <tr class="separator:a9c9405046cca985c489f69c8631e6ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac41399b61719690295526ed577349d2c"><td class="memItemLeft" align="right" valign="top"><a id="ac41399b61719690295526ed577349d2c" name="ac41399b61719690295526ed577349d2c"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>json_values_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
+<tr class="memitem:ac41399b61719690295526ed577349d2c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#ac41399b61719690295526ed577349d2c">json_values_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structjson__values.html">json_values</a> *self)</td></tr>
 <tr class="separator:ac41399b61719690295526ed577349d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac36f3088d99badce6f1c67da03afbf52"><td class="memItemLeft" align="right" valign="top"><a id="ac36f3088d99badce6f1c67da03afbf52" name="ac36f3088d99badce6f1c67da03afbf52"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>snowflakes_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
+<tr class="memitem:ac36f3088d99badce6f1c67da03afbf52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#ac36f3088d99badce6f1c67da03afbf52">snowflakes_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
 <tr class="separator:ac36f3088d99badce6f1c67da03afbf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5a67c9e8af425864614e1695443df3"><td class="memItemLeft" align="right" valign="top"><a id="a2c5a67c9e8af425864614e1695443df3" name="a2c5a67c9e8af425864614e1695443df3"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>snowflakes_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
+<tr class="memitem:a2c5a67c9e8af425864614e1695443df3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a2c5a67c9e8af425864614e1695443df3">snowflakes_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structsnowflakes.html">snowflakes</a> *self)</td></tr>
 <tr class="separator:a2c5a67c9e8af425864614e1695443df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6007ba78fda71b635f4ee56dc39b7db8"><td class="memItemLeft" align="right" valign="top"><a id="a6007ba78fda71b635f4ee56dc39b7db8" name="a6007ba78fda71b635f4ee56dc39b7db8"></a>
-jsonbcode&#160;</td><td class="memItemRight" valign="bottom"><b>integers_to_jsonb</b> (jsonb *b, char buf[], size_t size, const struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
+<tr class="memitem:a6007ba78fda71b635f4ee56dc39b7db8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a6007ba78fda71b635f4ee56dc39b7db8">integers_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
 <tr class="separator:a6007ba78fda71b635f4ee56dc39b7db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a982e0d659399e49542aed7b2c7ca0da3"><td class="memItemLeft" align="right" valign="top"><a id="a982e0d659399e49542aed7b2c7ca0da3" name="a982e0d659399e49542aed7b2c7ca0da3"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>integers_to_json</b> (char buf[], size_t size, const struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
+<tr class="memitem:a982e0d659399e49542aed7b2c7ca0da3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_8h.html#a982e0d659399e49542aed7b2c7ca0da3">integers_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structintegers.html">integers</a> *self)</td></tr>
 <tr class="separator:a982e0d659399e49542aed7b2c7ca0da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
 <dl class="section author"><dt>Author</dt><dd>Cogmasters </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9493ed0020a5a9595eb8d0b6870f947">&#9670;&nbsp;</a></span>JSMN_STRICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_STRICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef9c3539ffb9ed912a2976b67b43d68">&#9670;&nbsp;</a></span>JSMN_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSMN_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cbcbd7c48827141af941f316122fad4">&#9670;&nbsp;</a></span>JSONB_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JSONB_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a54caf3bb094b8548ebd0401bf4a6cd8c" name="a54caf3bb094b8548ebd0401bf4a6cd8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54caf3bb094b8548ebd0401bf4a6cd8c">&#9670;&nbsp;</a></span>strings_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void strings_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstrings.html">strings</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa1e9467dae3110d9d12c2375aceb285d" name="aa1e9467dae3110d9d12c2375aceb285d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1e9467dae3110d9d12c2375aceb285d">&#9670;&nbsp;</a></span>json_values_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void json_values_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjson__values.html">json_values</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a23d0857d00b5394828da381b6a81b2d8" name="a23d0857d00b5394828da381b6a81b2d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23d0857d00b5394828da381b6a81b2d8">&#9670;&nbsp;</a></span>snowflakes_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void snowflakes_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ef4dff02efeadff57231f448a031a7b" name="a4ef4dff02efeadff57231f448a031a7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ef4dff02efeadff57231f448a031a7b">&#9670;&nbsp;</a></span>integers_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void integers_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structintegers.html">integers</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5fa96d46eaabfd53ad315e021ed335e4" name="a5fa96d46eaabfd53ad315e021ed335e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fa96d46eaabfd53ad315e021ed335e4">&#9670;&nbsp;</a></span>strings_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long strings_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structstrings.html">strings</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9b03eb65709e882bc65b03a68a0040d" name="ae9b03eb65709e882bc65b03a68a0040d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9b03eb65709e882bc65b03a68a0040d">&#9670;&nbsp;</a></span>strings_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t strings_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structstrings.html">strings</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e5f224710d85355b650e76e293259dc" name="a6e5f224710d85355b650e76e293259dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e5f224710d85355b650e76e293259dc">&#9670;&nbsp;</a></span>json_values_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long json_values_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structjson__values.html">json_values</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a106ce346eb9b0c3e79bd440c576e473c" name="a106ce346eb9b0c3e79bd440c576e473c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a106ce346eb9b0c3e79bd440c576e473c">&#9670;&nbsp;</a></span>json_values_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t json_values_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structjson__values.html">json_values</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaee74f4f0e4708ea0ed819b6c3fc76ec" name="aaee74f4f0e4708ea0ed819b6c3fc76ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaee74f4f0e4708ea0ed819b6c3fc76ec">&#9670;&nbsp;</a></span>snowflakes_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long snowflakes_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adf6969d8f1f11e1e187881cb75926b0e" name="adf6969d8f1f11e1e187881cb75926b0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf6969d8f1f11e1e187881cb75926b0e">&#9670;&nbsp;</a></span>snowflakes_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t snowflakes_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59cee300eacec7047a4292a5684282da" name="a59cee300eacec7047a4292a5684282da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59cee300eacec7047a4292a5684282da">&#9670;&nbsp;</a></span>integers_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long integers_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structintegers.html">integers</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a40b1dd1d3f84970fd71d587f2fa4baf2" name="a40b1dd1d3f84970fd71d587f2fa4baf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40b1dd1d3f84970fd71d587f2fa4baf2">&#9670;&nbsp;</a></span>integers_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t integers_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structintegers.html">integers</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8a23cca863ac780f1ee1a6fb47680b3d" name="a8a23cca863ac780f1ee1a6fb47680b3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a23cca863ac780f1ee1a6fb47680b3d">&#9670;&nbsp;</a></span>strings_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> strings_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structstrings.html">strings</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac8bb06ed68283017fecdc954ea66841e" name="ac8bb06ed68283017fecdc954ea66841e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8bb06ed68283017fecdc954ea66841e">&#9670;&nbsp;</a></span>strings_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t strings_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structstrings.html">strings</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a31">components.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a9c9405046cca985c489f69c8631e6ba4" name="a9c9405046cca985c489f69c8631e6ba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c9405046cca985c489f69c8631e6ba4">&#9670;&nbsp;</a></span>json_values_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> json_values_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structjson__values.html">json_values</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac41399b61719690295526ed577349d2c" name="ac41399b61719690295526ed577349d2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac41399b61719690295526ed577349d2c">&#9670;&nbsp;</a></span>json_values_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t json_values_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structjson__values.html">json_values</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac36f3088d99badce6f1c67da03afbf52" name="ac36f3088d99badce6f1c67da03afbf52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac36f3088d99badce6f1c67da03afbf52">&#9670;&nbsp;</a></span>snowflakes_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> snowflakes_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c5a67c9e8af425864614e1695443df3" name="a2c5a67c9e8af425864614e1695443df3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c5a67c9e8af425864614e1695443df3">&#9670;&nbsp;</a></span>snowflakes_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t snowflakes_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6007ba78fda71b635f4ee56dc39b7db8" name="a6007ba78fda71b635f4ee56dc39b7db8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6007ba78fda71b635f4ee56dc39b7db8">&#9670;&nbsp;</a></span>integers_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> integers_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structintegers.html">integers</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a982e0d659399e49542aed7b2c7ca0da3" name="a982e0d659399e49542aed7b2c7ca0da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a982e0d659399e49542aed7b2c7ca0da3">&#9670;&nbsp;</a></span>integers_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t integers_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structintegers.html">integers</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

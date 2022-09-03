@@ -21,7 +21,7 @@
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="structdiscord__audit__log__entries.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="0,-202.5 0,-221.5 141,-221.5 141,-202.5 0,-202.5"/>
+<polygon fill="none" stroke="red" points="0,-202.5 0,-221.5 141,-221.5 141,-202.5 0,-202.5"/>
 <text text-anchor="middle" x="70.5" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_audit_log_entries</text>
 </a>
 </g>
@@ -54,7 +54,7 @@
 <g id="node4" class="node">
 <title>Node12</title>
 <g id="a_node4"><a xlink:href="structdiscord__integrations.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="12.5,-114.5 12.5,-133.5 128.5,-133.5 128.5,-114.5 12.5,-114.5"/>
+<polygon fill="none" stroke="red" points="12.5,-114.5 12.5,-133.5 128.5,-133.5 128.5,-114.5 12.5,-114.5"/>
 <text text-anchor="middle" x="70.5" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_integrations</text>
 </a>
 </g>

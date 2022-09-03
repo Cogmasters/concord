@@ -4,6 +4,7 @@ var structdiscord__gateway__session =
     [ "id", "structdiscord__gateway__session.html#a6cf65d6d57f075a6aaf7528404bd994a", null ],
     [ "shards", "structdiscord__gateway__session.html#a6a18a65f0eb234d3b24c92f11f2fdb4c", null ],
     [ "base_url", "structdiscord__gateway__session.html#a14da04574bb2bc124bfa980bff58e168", null ],
+    [ "resume_url", "structdiscord__gateway__session.html#a461a93b785c51878170b68842fab2e30", null ],
     [ "start_limit", "structdiscord__gateway__session.html#a19a0053826875a0c3ccd96d1bb6b632b", null ],
     [ "concurrent", "structdiscord__gateway__session.html#acc7912cd0ff11fa487cfa92ebd4dca5c", null ],
     [ "event_count", "structdiscord__gateway__session.html#a6dc6a434884d0771c96fcb4324e24586", null ],

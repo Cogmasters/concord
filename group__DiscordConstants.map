@@ -1,9 +1,10 @@
 <map id="Constants" name="Constants">
 <area shape="rect" id="node1" href="$group__DiscordActivityFlags.html" title="Describe user activities." alt="" coords="140,5,308,31"/>
-<area shape="rect" id="node2" title="Macros for constants defined by Discord." alt="" coords="5,129,92,155"/>
-<area shape="rect" id="node3" href="$group__DiscordConstantsEmbed.html" title="Max length for embed fields." alt="" coords="165,55,283,80"/>
-<area shape="rect" id="node4" href="$group__DiscordConstantsGeneral.html" title="Max length for general fields." alt="" coords="161,104,287,129"/>
-<area shape="rect" id="node5" href="$group__DiscordConstantsWebhook.html" title="Max length for embed fields." alt="" coords="157,153,291,179"/>
-<area shape="rect" id="node6" href="$group__DiscordPermissions.html" title=" " alt="" coords="147,203,301,228"/>
-<area shape="rect" id="node7" href="$group__DiscordVoiceSpeakingFlags.html" title=" " alt="" coords="147,252,301,277"/>
+<area shape="rect" id="node2" href="$group__DiscordApplicationFlags.html" title=" " alt="" coords="159,55,289,80"/>
+<area shape="rect" id="node3" title="Macros for constants defined by Discord." alt="" coords="5,153,92,179"/>
+<area shape="rect" id="node4" href="$group__DiscordConstantsEmbed.html" title="Max length for embed fields." alt="" coords="165,104,283,129"/>
+<area shape="rect" id="node5" href="$group__DiscordConstantsGeneral.html" title="Max length for general fields." alt="" coords="161,153,287,179"/>
+<area shape="rect" id="node6" href="$group__DiscordConstantsWebhook.html" title="Max length for embed fields." alt="" coords="157,203,291,228"/>
+<area shape="rect" id="node7" href="$group__DiscordPermissions.html" title=" " alt="" coords="147,252,301,277"/>
+<area shape="rect" id="node8" href="$group__DiscordVoiceSpeakingFlags.html" title=" " alt="" coords="147,301,301,327"/>
 </map>

@@ -1,4 +1,28 @@
 var application_8h =
 [
-    [ "discord_application", "structdiscord__application.html", "structdiscord__application" ]
+    [ "discord_application", "structdiscord__application.html", "structdiscord__application" ],
+    [ "discord_install_params", "structdiscord__install__params.html", "structdiscord__install__params" ],
+    [ "DISCORD_APPLICATION_GATEWAY_PRESENCE", "group__DiscordApplicationFlags.html#gad177a282619d421402abed848c39e107", null ],
+    [ "DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED", "group__DiscordApplicationFlags.html#ga5bcc28bece3c23a901bc31727d818bc6", null ],
+    [ "DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS", "group__DiscordApplicationFlags.html#gad780ffd041fcd8d81a94b42d470fd270", null ],
+    [ "DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED", "group__DiscordApplicationFlags.html#gabfa9faa02dae23c2c2b320f603d90d10", null ],
+    [ "DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT", "group__DiscordApplicationFlags.html#ga3c74daffe5e03b84ece53ea8af5ba8fb", null ],
+    [ "DISCORD_APPLICATION_EMBEDDED", "group__DiscordApplicationFlags.html#gad819662ca3cc8afabe59a21ba2bdf2b3", null ],
+    [ "DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT", "group__DiscordApplicationFlags.html#ga61ff60574972d009c7eb3057442b867b", null ],
+    [ "DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED", "group__DiscordApplicationFlags.html#ga7edf088630a2eb19998656f34ccdeb0f", null ],
+    [ "JSMN_STRICT", "application_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
+    [ "JSMN_HEADER", "application_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
+    [ "JSONB_HEADER", "application_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
+    [ "discord_application_init", "application_8h.html#a751883e7d208e73c648e2dec772fdaf2", null ],
+    [ "discord_application_cleanup", "application_8h.html#a1db6426103fed68394f0184ad864718a", null ],
+    [ "discord_install_params_init", "application_8h.html#ab3da692819905514bda10fe09014e751", null ],
+    [ "discord_install_params_cleanup", "application_8h.html#a34f8f80e4b7794b89ccdcab6cf1af104", null ],
+    [ "discord_application_from_jsmnf", "application_8h.html#a087720496dfd10bca0e877a15c3ee2cb", null ],
+    [ "discord_application_from_json", "application_8h.html#ac26f7bb8f698811fb51ced5890fb49ea", null ],
+    [ "discord_install_params_from_jsmnf", "application_8h.html#a437917d9292fe4f7017481fd6961c80f", null ],
+    [ "discord_install_params_from_json", "application_8h.html#a5c35a2184fc6064d6df689765178b74e", null ],
+    [ "discord_application_to_jsonb", "application_8h.html#a9ad681d5c296b0c06bb37224f081fd33", null ],
+    [ "discord_application_to_json", "application_8h.html#ab654e4b9eb294e6b1598c7888c349291", null ],
+    [ "discord_install_params_to_jsonb", "application_8h.html#a6e0f1e734dca97971ec5986678a41a29", null ],
+    [ "discord_install_params_to_json", "application_8h.html#aafdd2955c91fbe7904e2610ac82aa297", null ]
 ];

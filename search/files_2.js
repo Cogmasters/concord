@@ -5,5 +5,6 @@ var searchData=
   ['discord_2drequest_2eh_2',['discord-request.h',['../discord-request_8h.html',1,'']]],
   ['discord_2dresponse_2eh_3',['discord-response.h',['../discord-response_8h.html',1,'']]],
   ['discord_2dworker_2eh_4',['discord-worker.h',['../discord-worker_8h.html',1,'']]],
-  ['discord_2eh_5',['discord.h',['../discord_8h.html',1,'']]]
+  ['discord_2eh_5',['discord.h',['../discord_8h.html',1,'']]],
+  ['discord_5froadmap_2emd_6',['DISCORD_ROADMAP.md',['../DISCORD__ROADMAP_8md.html',1,'']]]
 ];

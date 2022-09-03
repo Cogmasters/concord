@@ -111,7 +111,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga6ecf64820ff5d749d1b5f91e8ae8abff">discord_refcounter_init</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, struct logconf *conf)</td></tr>
+<tr class="memitem:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga6ecf64820ff5d749d1b5f91e8ae8abff">discord_refcounter_init</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
 <tr class="memdesc:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize reference counter handle.  <a href="group__DiscordInternalRefcount.html#ga6ecf64820ff5d749d1b5f91e8ae8abff">More...</a><br /></td></tr>
 <tr class="separator:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4955c9f4f029ab989e0a8c3d8008ed84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga4955c9f4f029ab989e0a8c3d8008ed84">discord_refcounter_add_internal</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data, void(*cleanup)(void *data), bool should_free)</td></tr>
@@ -154,7 +154,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct logconf *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structlogconf.html">logconf</a> *&#160;</td>
           <td class="paramname"><em>conf</em>&#160;</td>
         </tr>
         <tr>
@@ -421,7 +421,7 @@ Functions</h2></td></tr>
   <table class="retval">
     <tr><td class="paramname">CCORD_OK</td><td>counter for <code>data</code> has been incremented </td></tr>
     <tr><td class="paramname">CCORD_UNAVAILABLE</td><td>couldn't find a match to <code>data</code> </td></tr>
-    <tr><td class="paramname">CCORD_OWNERSHIP</td><td><code>data</code> has been claimed by client with <a class="el" href="group__Discord.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a> </td></tr>
+    <tr><td class="paramname">CCORD_OWNERSHIP</td><td><code>data</code> has been claimed by client with <a class="el" href="group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -467,7 +467,7 @@ Functions</h2></td></tr>
   <table class="retval">
     <tr><td class="paramname">CCORD_OK</td><td>counter for <code>data</code> has been decremented </td></tr>
     <tr><td class="paramname">CCORD_UNAVAILABLE</td><td>couldn't find a match to <code>data</code> </td></tr>
-    <tr><td class="paramname">CCORD_OWNERSHIP</td><td><code>data</code> has been claimed by client with <a class="el" href="group__Discord.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a> </td></tr>
+    <tr><td class="paramname">CCORD_OWNERSHIP</td><td><code>data</code> has been claimed by client with <a class="el" href="group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a> </td></tr>
   </table>
   </dd>
 </dl>

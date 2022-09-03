@@ -92,6 +92,8 @@ $(document).ready(function(){initNavTree('structdiscord__stickers.html',''); ini
   <div class="headertitle"><div class="title">discord_stickers Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="docs_2api_2sticker_8h_source.html">sticker.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_stickers:</div>
 <div class="dyncontent">
@@ -101,15 +103,59 @@ Collaboration diagram for discord_stickers:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:adf7c010e02a278a9fbd364378497c4b2"><td class="memItemLeft" align="right" valign="top"><a id="adf7c010e02a278a9fbd364378497c4b2" name="adf7c010e02a278a9fbd364378497c4b2"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:adf7c010e02a278a9fbd364378497c4b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__stickers.html#adf7c010e02a278a9fbd364378497c4b2">size</a></td></tr>
 <tr class="separator:adf7c010e02a278a9fbd364378497c4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a582a5f0991bbf648a5d64b44beb70c1e"><td class="memItemLeft" align="right" valign="top"><a id="a582a5f0991bbf648a5d64b44beb70c1e" name="a582a5f0991bbf648a5d64b44beb70c1e"></a>
-struct <a class="el" href="structdiscord__sticker.html">discord_sticker</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a582a5f0991bbf648a5d64b44beb70c1e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__sticker.html">discord_sticker</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__stickers.html#a582a5f0991bbf648a5d64b44beb70c1e">array</a></td></tr>
 <tr class="separator:a582a5f0991bbf648a5d64b44beb70c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p ><b>Public methods</b></p><ul>
+<li>Cleanup:<ul>
+<li><code><a class="el" href="docs_2api_2sticker_8h.html#a04f1b08a935b617171352ad84ad5b32f">discord_stickers_cleanup(struct discord_stickers *this)</a></code></li>
+</ul>
+</li>
+<li>JSON Decoder:<ul>
+<li><code><a class="el" href="docs_2api_2sticker_8h.html#aab9d3527cabaacd076194f628a27423a">discord_stickers_from_json(const char json[], size_t len, struct discord_stickers *this)</a></code></li>
+<li><code>discord_stickers_from_jsmnf(jsmnf *root, const char json[], struct discord_stickers *this)</code></li>
+</ul>
+</li>
+<li>JSON Encoder:<ul>
+<li><code><a class="el" href="docs_2api_2sticker_8h.html#ab23c9ac7ea598d22f760146ee0a6fbff">discord_stickers_to_json(char buf[], size_t size, const struct discord_stickers *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2sticker_8h.html#a86f95402fd653ad7e1d7d90fb0843b3e">discord_stickers_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_stickers *this)</a></code> </li>
+</ul>
+</li>
+</ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="adf7c010e02a278a9fbd364378497c4b2" name="adf7c010e02a278a9fbd364378497c4b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf7c010e02a278a9fbd364378497c4b2">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_stickers::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a582a5f0991bbf648a5d64b44beb70c1e" name="a582a5f0991bbf648a5d64b44beb70c1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a582a5f0991bbf648a5d64b44beb70c1e">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__sticker.html">discord_sticker</a>* discord_stickers::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>docs/api/<a class="el" href="sticker_8h_source.html">sticker.h</a></li>
+<li>docs/api/<a class="el" href="docs_2api_2sticker_8h_source.html">sticker.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

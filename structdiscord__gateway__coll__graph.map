@@ -1,8 +1,9 @@
 <map id="discord_gateway" name="discord_gateway">
-<area shape="rect" id="node1" title="The handle used for interfacing with Discord&#39;s Gateway API." alt="" coords="215,95,347,121"/>
-<area shape="rect" id="node6" href="$structdiscord.html" title="The Discord client handler." alt="" coords="247,207,316,234"/>
-<area shape="rect" id="node2" href="$structwebsockets.html" title="Opaque handler for WebSockets." alt="" coords="5,5,104,32"/>
-<area shape="rect" id="node3" href="$structdiscord__identify.html" title=" " alt="" coords="128,5,253,32"/>
-<area shape="rect" id="node4" href="$structdiscord__gateway__session.html" title="The handle for storing the Discord Gateway session." alt="" coords="278,5,466,32"/>
-<area shape="rect" id="node5" href="$structdiscord__gateway__payload.html" title="The handle for storing the Discord response payload." alt="" coords="490,5,681,32"/>
+<area shape="rect" id="node1" title="The handle used for interfacing with Discord&#39;s Gateway API." alt="" coords="301,104,433,131"/>
+<area shape="rect" id="node7" href="$structdiscord.html" title="The Discord client handler." alt="" coords="545,44,615,71"/>
+<area shape="rect" id="node2" href="$structlogconf.html" title="A stackful and modularized wrapper over the popular &#39;log.c&#39; facilities." alt="" coords="65,5,136,32"/>
+<area shape="rect" id="node3" href="$structwebsockets.html" title="Opaque handler for WebSockets." alt="" coords="51,68,150,95"/>
+<area shape="rect" id="node4" href="$structdiscord__identify.html" title=" " alt="" coords="38,119,163,145"/>
+<area shape="rect" id="node5" href="$structdiscord__gateway__session.html" title="The handle for storing the Discord Gateway session." alt="" coords="7,169,195,196"/>
+<area shape="rect" id="node6" href="$structdiscord__gateway__payload.html" title="The handle for storing the Discord response payload." alt="" coords="5,220,196,247"/>
 </map>

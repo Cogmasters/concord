@@ -117,23 +117,19 @@ Macros</h2></td></tr>
 <tr class="memitem:abe4d5f28e2fe461435003976cde42f79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#abe4d5f28e2fe461435003976cde42f79">DISCORD_ATTR_LIST_INIT</a>(attr,  type,  ret)</td></tr>
 <tr class="memdesc:abe4d5f28e2fe461435003976cde42f79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for a specs-generated list.  <a href="discord-request_8h.html#abe4d5f28e2fe461435003976cde42f79">More...</a><br /></td></tr>
 <tr class="separator:abe4d5f28e2fe461435003976cde42f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eb1ad2723069663d9c07b6d177a1369"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a9eb1ad2723069663d9c07b6d177a1369">DISCORD_ATTR_BLANK_INIT</a>(attr,  ret)&#160;&#160;&#160;    if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret)</td></tr>
+<tr class="memitem:a9eb1ad2723069663d9c07b6d177a1369"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a9eb1ad2723069663d9c07b6d177a1369">DISCORD_ATTR_BLANK_INIT</a>(attr,  ret)&#160;&#160;&#160;    if (ret) <a class="el" href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a>(attr.dispatch, *ret)</td></tr>
 <tr class="memdesc:a9eb1ad2723069663d9c07b6d177a1369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for attruests that doensn't expect a response object.  <a href="discord-request_8h.html#a9eb1ad2723069663d9c07b6d177a1369">More...</a><br /></td></tr>
 <tr class="separator:a9eb1ad2723069663d9c07b6d177a1369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aa8c80343ae4d706e145ea5fca8cd5b5a"><td class="memItemLeft" align="right" valign="top"><a id="aa8c80343ae4d706e145ea5fca8cd5b5a" name="aa8c80343ae4d706e145ea5fca8cd5b5a"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_done_typed</b>) (struct <a class="el" href="structdiscord.html">discord</a> *, struct <a class="el" href="structdiscord__response.html">discord_response</a> *, const void *)</td></tr>
+<tr class="memitem:aa8c80343ae4d706e145ea5fca8cd5b5a"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#aa8c80343ae4d706e145ea5fca8cd5b5a">cast_done_typed</a>) (struct <a class="el" href="structdiscord.html">discord</a> *, struct <a class="el" href="structdiscord__response.html">discord_response</a> *, const void *)</td></tr>
 <tr class="separator:aa8c80343ae4d706e145ea5fca8cd5b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98302af62c528a87515ba01bbd587134"><td class="memItemLeft" align="right" valign="top"><a id="a98302af62c528a87515ba01bbd587134" name="a98302af62c528a87515ba01bbd587134"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_init</b>) (void *)</td></tr>
+<tr class="memitem:a98302af62c528a87515ba01bbd587134"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a98302af62c528a87515ba01bbd587134">cast_init</a>) (void *)</td></tr>
 <tr class="separator:a98302af62c528a87515ba01bbd587134"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d6e6b891be9f0e6ca67ceac78e493b"><td class="memItemLeft" align="right" valign="top"><a id="ad0d6e6b891be9f0e6ca67ceac78e493b" name="ad0d6e6b891be9f0e6ca67ceac78e493b"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_cleanup</b>) (void *)</td></tr>
+<tr class="memitem:ad0d6e6b891be9f0e6ca67ceac78e493b"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b">cast_cleanup</a>) (void *)</td></tr>
 <tr class="separator:ad0d6e6b891be9f0e6ca67ceac78e493b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32d0b0a2a5579d93f67f0f883fec5184"><td class="memItemLeft" align="right" valign="top"><a id="a32d0b0a2a5579d93f67f0f883fec5184" name="a32d0b0a2a5579d93f67f0f883fec5184"></a>
-typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_from_json</b>) (const char *, size_t, void *)</td></tr>
+<tr class="memitem:a32d0b0a2a5579d93f67f0f883fec5184"><td class="memItemLeft" align="right" valign="top">typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a>) (const char *, size_t, void *)</td></tr>
 <tr class="separator:a32d0b0a2a5579d93f67f0f883fec5184"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -168,9 +164,10 @@ typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_from
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
 <div class="line">        memcpy(&amp;(dest), &amp;(src), <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structdiscord__ret__default__fields.html">discord_ret_default_fields</a>));          \</div>
 <div class="line">        (dest).has_type = <span class="keyword">true</span>;                                               \</div>
-<div class="line">        (dest).done.typed = (cast_done_typed)(src).done;                      \</div>
+<div class="line">        (dest).done.typed = (<a class="code hl_typedef" href="discord-request_8h.html#aa8c80343ae4d706e145ea5fca8cd5b5a">cast_done_typed</a>)(src).done;                      \</div>
 <div class="line">        (dest).sync = (src).sync;                                             \</div>
 <div class="line">    } <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="adiscord-request_8h_html_aa8c80343ae4d706e145ea5fca8cd5b5a"><div class="ttname"><a href="discord-request_8h.html#aa8c80343ae4d706e145ea5fca8cd5b5a">cast_done_typed</a></div><div class="ttdeci">void(* cast_done_typed)(struct discord *, struct discord_response *, const void *)</div><div class="ttdef"><b>Definition:</b> discord-request.h:12</div></div>
 <div class="ttc" id="astructdiscord__ret__default__fields_html"><div class="ttname"><a href="structdiscord__ret__default__fields.html">discord_ret_default_fields</a></div><div class="ttdef"><b>Definition:</b> discord-request.h:20</div></div>
 </div><!-- fragment -->
 </div>
@@ -242,11 +239,15 @@ typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_from
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
 <div class="line">        (attr).response.size = <span class="keyword">sizeof</span>(<span class="keyword">struct</span> type);                           \</div>
-<div class="line">        (attr).response.init = (cast_init)type##_init;                        \</div>
-<div class="line">        (attr).response.from_json = (cast_from_json)type##_from_json;         \</div>
-<div class="line">        (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \</div>
-<div class="line">        if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \</div>
+<div class="line">        (attr).response.init = (<a class="code hl_typedef" href="discord-request_8h.html#a98302af62c528a87515ba01bbd587134">cast_init</a>)type##_init;                        \</div>
+<div class="line">        (attr).response.from_json = (<a class="code hl_typedef" href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a>)type##_from_json;         \</div>
+<div class="line">        (attr).response.cleanup = (<a class="code hl_typedef" href="discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b">cast_cleanup</a>)type##_cleanup;               \</div>
+<div class="line">        if (ret) <a class="code hl_define" href="discord-request_8h.html#aa98c09aa294015bf5ac2e108cd13f12b">_RET_COPY_TYPED</a>(attr.dispatch, *ret);                        \</div>
 <div class="line">    } <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="adiscord-request_8h_html_a32d0b0a2a5579d93f67f0f883fec5184"><div class="ttname"><a href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a></div><div class="ttdeci">size_t(* cast_from_json)(const char *, size_t, void *)</div><div class="ttdef"><b>Definition:</b> discord-request.h:17</div></div>
+<div class="ttc" id="adiscord-request_8h_html_a98302af62c528a87515ba01bbd587134"><div class="ttname"><a href="discord-request_8h.html#a98302af62c528a87515ba01bbd587134">cast_init</a></div><div class="ttdeci">void(* cast_init)(void *)</div><div class="ttdef"><b>Definition:</b> discord-request.h:15</div></div>
+<div class="ttc" id="adiscord-request_8h_html_aa98c09aa294015bf5ac2e108cd13f12b"><div class="ttname"><a href="discord-request_8h.html#aa98c09aa294015bf5ac2e108cd13f12b">_RET_COPY_TYPED</a></div><div class="ttdeci">#define _RET_COPY_TYPED(dest, src)</div><div class="ttdef"><b>Definition:</b> discord-request.h:24</div></div>
+<div class="ttc" id="adiscord-request_8h_html_ad0d6e6b891be9f0e6ca67ceac78e493b"><div class="ttname"><a href="discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b">cast_cleanup</a></div><div class="ttdeci">void(* cast_cleanup)(void *)</div><div class="ttdef"><b>Definition:</b> discord-request.h:16</div></div>
 </div><!-- fragment -->
 <p>Helper for setting attributes for a specs-generated return struct. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -293,9 +294,9 @@ typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_from
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
 <div class="line">        (attr).response.size = <span class="keyword">sizeof</span>(<span class="keyword">struct</span> type);                           \</div>
-<div class="line">        (attr).response.from_json = (cast_from_json)type##_from_json;         \</div>
-<div class="line">        (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \</div>
-<div class="line">        if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \</div>
+<div class="line">        (attr).response.from_json = (<a class="code hl_typedef" href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a>)type##_from_json;         \</div>
+<div class="line">        (attr).response.cleanup = (<a class="code hl_typedef" href="discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b">cast_cleanup</a>)type##_cleanup;               \</div>
+<div class="line">        if (ret) <a class="code hl_define" href="discord-request_8h.html#aa98c09aa294015bf5ac2e108cd13f12b">_RET_COPY_TYPED</a>(attr.dispatch, *ret);                        \</div>
 <div class="line">    } <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
 <p>Helper for setting attributes for a specs-generated list. </p>
@@ -331,7 +332,7 @@ typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_from
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret)</td>
+          <td></td><td>&#160;&#160;&#160;    if (ret) <a class="el" href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a>(attr.dispatch, *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -344,6 +345,63 @@ typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>cast_from
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="aa8c80343ae4d706e145ea5fca8cd5b5a" name="aa8c80343ae4d706e145ea5fca8cd5b5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8c80343ae4d706e145ea5fca8cd5b5a">&#9670;&nbsp;</a></span>cast_done_typed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* cast_done_typed) (struct <a class="el" href="structdiscord.html">discord</a> *, struct <a class="el" href="structdiscord__response.html">discord_response</a> *, const void *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a98302af62c528a87515ba01bbd587134" name="a98302af62c528a87515ba01bbd587134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98302af62c528a87515ba01bbd587134">&#9670;&nbsp;</a></span>cast_init</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* cast_init) (void *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0d6e6b891be9f0e6ca67ceac78e493b" name="ad0d6e6b891be9f0e6ca67ceac78e493b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0d6e6b891be9f0e6ca67ceac78e493b">&#9670;&nbsp;</a></span>cast_cleanup</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* cast_cleanup) (void *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32d0b0a2a5579d93f67f0f883fec5184" name="a32d0b0a2a5579d93f67f0f883fec5184"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32d0b0a2a5579d93f67f0f883fec5184">&#9670;&nbsp;</a></span>cast_from_json</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef size_t(* cast_from_json) (const char *, size_t, void *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

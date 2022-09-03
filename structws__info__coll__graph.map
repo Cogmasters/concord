@@ -1,0 +1,4 @@
+<map id="ws_info" name="ws_info">
+<area shape="rect" id="node1" title="Stores info on the latest transfer performed via websockets." alt="" coords="5,95,77,121"/>
+<area shape="rect" id="node2" href="$structloginfo.html" title="Store logging information from log_http()" alt="" coords="8,5,75,32"/>
+</map>

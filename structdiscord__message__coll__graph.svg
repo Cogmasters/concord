@@ -92,7 +92,7 @@
 <g id="node14" class="node">
 <title>Node37</title>
 <g id="a_node14"><a xlink:href="structdiscord__message__interaction.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="423,-519.54 423,-538.54 582,-538.54 582,-519.54 423,-519.54"/>
+<polygon fill="none" stroke="black" points="423,-519.54 423,-538.54 582,-538.54 582,-519.54 423,-519.54"/>
 <text text-anchor="middle" x="502.5" y="-526.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_message_interaction</text>
 </a>
 </g>
@@ -223,7 +223,7 @@
 <g id="node10" class="node">
 <title>Node27</title>
 <g id="a_node10"><a xlink:href="structdiscord__reactions.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="701.5,-236.54 701.5,-255.54 803.5,-255.54 803.5,-236.54 701.5,-236.54"/>
+<polygon fill="none" stroke="red" points="701.5,-236.54 701.5,-255.54 803.5,-255.54 803.5,-236.54 701.5,-236.54"/>
 <text text-anchor="middle" x="752.5" y="-243.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_reactions</text>
 </a>
 </g>
@@ -239,7 +239,7 @@
 <g id="node11" class="node">
 <title>Node30</title>
 <g id="a_node11"><a xlink:href="structdiscord__message__activity.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="681,-198.54 681,-217.54 824,-217.54 824,-198.54 681,-198.54"/>
+<polygon fill="none" stroke="black" points="681,-198.54 681,-217.54 824,-217.54 824,-198.54 681,-198.54"/>
 <text text-anchor="middle" x="752.5" y="-205.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_message_activity</text>
 </a>
 </g>
@@ -262,7 +262,7 @@
 <g id="node13" class="node">
 <title>Node36</title>
 <g id="a_node13"><a xlink:href="structdiscord__message__reference.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="#bfbfbf" points="676,-122.54 676,-141.54 829,-141.54 829,-122.54 676,-122.54"/>
+<polygon fill="none" stroke="black" points="676,-122.54 676,-141.54 829,-141.54 829,-122.54 676,-122.54"/>
 <text text-anchor="middle" x="752.5" y="-129.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_message_reference</text>
 </a>
 </g>
@@ -301,7 +301,7 @@
 <g id="node16" class="node">
 <title>Node42</title>
 <g id="a_node16"><a xlink:href="structdiscord__sticker__items.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="691.5,-8.54 691.5,-27.54 813.5,-27.54 813.5,-8.54 691.5,-8.54"/>
+<polygon fill="none" stroke="red" points="691.5,-8.54 691.5,-27.54 813.5,-27.54 813.5,-8.54 691.5,-8.54"/>
 <text text-anchor="middle" x="752.5" y="-15.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_sticker_items</text>
 </a>
 </g>

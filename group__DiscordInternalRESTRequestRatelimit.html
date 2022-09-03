@@ -115,14 +115,13 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga6cde5ab5d14c9fedd812a8ed78107427"><td class="memItemLeft" align="right" valign="top"><a id="ga6cde5ab5d14c9fedd812a8ed78107427" name="ga6cde5ab5d14c9fedd812a8ed78107427"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DISCORD_BUCKET_TIMEOUT</b>&#160;&#160;&#160;(void *)(0xf)</td></tr>
-<tr class="memdesc:ga6cde5ab5d14c9fedd812a8ed78107427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value assigned to <a class="el" href="structdiscord__bucket.html">discord_bucket</a> <code>busy_req</code> field in case it's being timed-out. <br /></td></tr>
+<tr class="memitem:ga6cde5ab5d14c9fedd812a8ed78107427"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga6cde5ab5d14c9fedd812a8ed78107427">DISCORD_BUCKET_TIMEOUT</a>&#160;&#160;&#160;(void *)(0xf)</td></tr>
+<tr class="memdesc:ga6cde5ab5d14c9fedd812a8ed78107427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value assigned to <a class="el" href="structdiscord__bucket.html">discord_bucket</a> <code>busy_req</code> field in case it's being timed-out.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga6cde5ab5d14c9fedd812a8ed78107427">More...</a><br /></td></tr>
 <tr class="separator:ga6cde5ab5d14c9fedd812a8ed78107427"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga242842023d4d62e819a8edab0bc886ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">discord_ratelimiter_init</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct logconf *conf)</td></tr>
+<tr class="memitem:ga242842023d4d62e819a8edab0bc886ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">discord_ratelimiter_init</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
 <tr class="memdesc:ga242842023d4d62e819a8edab0bc886ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ratelimiter handle.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">More...</a><br /></td></tr>
 <tr class="separator:ga242842023d4d62e819a8edab0bc886ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">discord_ratelimiter_cleanup</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
@@ -152,6 +151,23 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Enforce ratelimiting per the official Discord Documentation. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga6cde5ab5d14c9fedd812a8ed78107427" name="ga6cde5ab5d14c9fedd812a8ed78107427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6cde5ab5d14c9fedd812a8ed78107427">&#9670;&nbsp;</a></span>DISCORD_BUCKET_TIMEOUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DISCORD_BUCKET_TIMEOUT&#160;&#160;&#160;(void *)(0xf)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Value assigned to <a class="el" href="structdiscord__bucket.html">discord_bucket</a> <code>busy_req</code> field in case it's being timed-out. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga242842023d4d62e819a8edab0bc886ad" name="ga242842023d4d62e819a8edab0bc886ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga242842023d4d62e819a8edab0bc886ad">&#9670;&nbsp;</a></span>discord_ratelimiter_init()</h2>
@@ -168,7 +184,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct logconf *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structlogconf.html">logconf</a> *&#160;</td>
           <td class="paramname"><em>conf</em>&#160;</td>
         </tr>
         <tr>

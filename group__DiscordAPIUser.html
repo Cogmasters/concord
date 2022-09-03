@@ -181,7 +181,7 @@ Functions</h2></td></tr>
 <p>Get client's user. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__user.html">discord_user</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
   </dd>
@@ -226,7 +226,7 @@ Functions</h2></td></tr>
 <p>Get user for a given id. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">user_id</td><td>user to be fetched </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__user.html">discord_user</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -272,7 +272,7 @@ Functions</h2></td></tr>
 <p>Modify client's user account settings. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__user.html">discord_user</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -313,7 +313,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Requires the <code>guilds</code> oauth2 scope</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guilds.html">discord_guilds</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
   </dd>
@@ -360,7 +360,7 @@ Functions</h2></td></tr>
 <p>Leave a guild. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild to exit from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
   </table>
@@ -407,7 +407,7 @@ Functions</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>DMs should generally be initiated by a user action. If you open a significant amount of DMs too quickly, your bot may be rate limited or blocked from opening new ones</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">params</td><td>the request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__channel.html">discord_channel</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -415,7 +415,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__channel.html">discord_ret_channel</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="manual-dm_8c-example.html#a15">manual-dm.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="manual-dm_8c-example.html#a17">manual-dm.c</a>.</dd>
 </dl>
 
 </div>
@@ -458,7 +458,7 @@ Functions</h2></td></tr>
 Limited to 10 active group DMs</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">params</td><td>the request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__channel.html">discord_channel</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -499,7 +499,7 @@ Limited to 10 active group DMs</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Requires the <code>connections</code> oauth2 scope</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__connections.html">discord_connections</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
   </dd>

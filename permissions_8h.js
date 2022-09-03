@@ -1,7 +1,7 @@
 var permissions_8h =
 [
     [ "discord_role", "structdiscord__role.html", "structdiscord__role" ],
-    [ "discord_roles", "structdiscord__roles.html", null ],
+    [ "discord_roles", "structdiscord__roles.html", "structdiscord__roles" ],
     [ "discord_role_tag", "structdiscord__role__tag.html", "structdiscord__role__tag" ],
     [ "DISCORD_PERM_CREATE_INSTANT_INVITE", "group__DiscordPermissions.html#gaae58b48cc072921629bdb8c37460ead6", null ],
     [ "DISCORD_PERM_KICK_MEMBERS", "group__DiscordPermissions.html#ga9714bb5aa77bc547ac0b760c9b0e0728", null ],
@@ -43,5 +43,19 @@ var permissions_8h =
     [ "DISCORD_PERM_USE_EXTERNAL_STICKERS", "group__DiscordPermissions.html#ga09d138046aaecc0d2a03d9c86679c136", null ],
     [ "DISCORD_PERM_SEND_MESSAGES_IN_THREADS", "group__DiscordPermissions.html#gaadf006e5559f639efb6a8398532c3c74", null ],
     [ "DISCORD_PERM_START_EMBEDDED_ACTIVITIES", "group__DiscordPermissions.html#ga2702ffe0919ed7201eddff409bf762b8", null ],
-    [ "DISCORD_PERM_MODERATE_MEMBERS", "group__DiscordPermissions.html#ga74032240ecb0d3f9edfdb3c47bca5935", null ]
+    [ "DISCORD_PERM_MODERATE_MEMBERS", "group__DiscordPermissions.html#ga74032240ecb0d3f9edfdb3c47bca5935", null ],
+    [ "JSMN_STRICT", "permissions_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
+    [ "JSMN_HEADER", "permissions_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
+    [ "JSONB_HEADER", "permissions_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
+    [ "discord_role_init", "permissions_8h.html#aa71d65c19ba1d4cc6445c5debf6c8245", null ],
+    [ "discord_role_cleanup", "permissions_8h.html#a6bdff4f08177971844422b75c70cda11", null ],
+    [ "discord_roles_cleanup", "permissions_8h.html#a20e7ce712fa9e447d70eb9f0c3aef585", null ],
+    [ "discord_role_from_jsmnf", "permissions_8h.html#a38c706d56bc9441096b60875262a79b8", null ],
+    [ "discord_role_from_json", "permissions_8h.html#a2ce76869ef23448af78af4677e8d47c4", null ],
+    [ "discord_roles_from_jsmnf", "permissions_8h.html#afd4c18da2b334e713150db95cc2fce07", null ],
+    [ "discord_roles_from_json", "permissions_8h.html#ac1e6f9682d6d2c9422091bfb60dac99a", null ],
+    [ "discord_role_to_jsonb", "permissions_8h.html#afd07f5e041a35e348d082b77a9c63088", null ],
+    [ "discord_role_to_json", "permissions_8h.html#aa8478980a7b057da07a979354cf0ebb3", null ],
+    [ "discord_roles_to_jsonb", "permissions_8h.html#adc56f24d3e62d46765f3e4b289ffe794", null ],
+    [ "discord_roles_to_json", "permissions_8h.html#aede6621036d49c41b29429acb6b38746", null ]
 ];

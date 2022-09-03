@@ -103,33 +103,62 @@ Collaboration diagram for discord_embed_fields:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a296182727d853e09d0ffce55acd4f141"><td class="memItemLeft" align="right" valign="top"><a id="a296182727d853e09d0ffce55acd4f141" name="a296182727d853e09d0ffce55acd4f141"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a296182727d853e09d0ffce55acd4f141"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__embed__fields.html#a296182727d853e09d0ffce55acd4f141">size</a></td></tr>
 <tr class="separator:a296182727d853e09d0ffce55acd4f141"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48fef5563953ecd32bc35eaf98a27b58"><td class="memItemLeft" align="right" valign="top"><a id="a48fef5563953ecd32bc35eaf98a27b58" name="a48fef5563953ecd32bc35eaf98a27b58"></a>
-struct <a class="el" href="structdiscord__embed__field.html">discord_embed_field</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a48fef5563953ecd32bc35eaf98a27b58"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__embed__field.html">discord_embed_field</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__embed__fields.html#a48fef5563953ecd32bc35eaf98a27b58">array</a></td></tr>
 <tr class="separator:a48fef5563953ecd32bc35eaf98a27b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_embed_fields_cleanup(struct discord_embed_fields *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#af65b7b3c28a45f60b9c3941769a37c59">discord_embed_fields_cleanup(struct discord_embed_fields *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_embed_fields_from_json(const char json[], size_t len, struct discord_embed_fields *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#ab44b83083a78d48b403ab70d9eb44058">discord_embed_fields_from_json(const char json[], size_t len, struct discord_embed_fields *this)</a></code></li>
 <li><code>discord_embed_fields_from_jsmnf(jsmnf *root, const char json[], struct discord_embed_fields *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_embed_fields_to_json(char buf[], size_t size, const struct discord_embed_fields *this)</code></li>
-<li><code>discord_embed_fields_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_embed_fields *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#af61c9d22ee5902d406e941c0a8cf527d">discord_embed_fields_to_json(char buf[], size_t size, const struct discord_embed_fields *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#aa43703140e4e08545966ceb7cddfde76">discord_embed_fields_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_embed_fields *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#_a22">embed.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#_a25">embed.c</a>.</dd>
 </dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a296182727d853e09d0ffce55acd4f141" name="a296182727d853e09d0ffce55acd4f141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a296182727d853e09d0ffce55acd4f141">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_embed_fields::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a48fef5563953ecd32bc35eaf98a27b58" name="a48fef5563953ecd32bc35eaf98a27b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48fef5563953ecd32bc35eaf98a27b58">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__embed__field.html">discord_embed_field</a>* discord_embed_fields::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#a26">embed.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2channel_8h_source.html">channel.h</a></li>
 </ul>
 </div><!-- contents -->

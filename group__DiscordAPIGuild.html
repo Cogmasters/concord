@@ -126,6 +126,12 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__members.html">discord_ret_guild_members</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__guild__members.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__widget.html">discord_ret_guild_widget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__guild__widget.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__guild__widget__settings.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__ban.html">discord_ret_ban</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__ban.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +146,12 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__welcome__screen.html">discord_ret_welcome_screen</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__welcome__screen.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__integrations.html">discord_ret_integrations</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__integrations.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__prune__count.html">discord_ret_prune_count</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request's return context.  <a href="structdiscord__ret__prune__count.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -216,21 +228,48 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6b57c1bbb36c586f743d0c5de056d72a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga6b57c1bbb36c586f743d0c5de056d72a">discord_create_guild_role</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__create__guild__role.html">discord_create_guild_role</a> *params, struct <a class="el" href="structdiscord__ret__role.html">discord_ret_role</a> *ret)</td></tr>
 <tr class="memdesc:ga6b57c1bbb36c586f743d0c5de056d72a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new guild role.  <a href="group__DiscordAPIGuild.html#ga6b57c1bbb36c586f743d0c5de056d72a">More...</a><br /></td></tr>
 <tr class="separator:ga6b57c1bbb36c586f743d0c5de056d72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84b96d1ca07543ea0ee464a588e66fa2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga84b96d1ca07543ea0ee464a588e66fa2">discord_get_guild_prune_count</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__get__guild__prune__count.html">discord_get_guild_prune_count</a> *params, struct <a class="el" href="structdiscord__ret__prune__count.html">discord_ret_prune_count</a> *ret)</td></tr>
+<tr class="memdesc:ga84b96d1ca07543ea0ee464a588e66fa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of members that would be removed in a prune operation.  <a href="group__DiscordAPIGuild.html#ga84b96d1ca07543ea0ee464a588e66fa2">More...</a><br /></td></tr>
+<tr class="separator:ga84b96d1ca07543ea0ee464a588e66fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga90639c0e09bd29d53983f359592ec959"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga90639c0e09bd29d53983f359592ec959">discord_begin_guild_prune</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__begin__guild__prune.html">discord_begin_guild_prune</a> *params, struct <a class="el" href="structdiscord__ret.html">discord_ret</a> *ret)</td></tr>
 <tr class="memdesc:ga90639c0e09bd29d53983f359592ec959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin guild prune operation.  <a href="group__DiscordAPIGuild.html#ga90639c0e09bd29d53983f359592ec959">More...</a><br /></td></tr>
 <tr class="separator:ga90639c0e09bd29d53983f359592ec959"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf6d9d6d8e830715db9af13940b5cae53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#gaf6d9d6d8e830715db9af13940b5cae53">discord_get_guild_voice_regions</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__voice__regions.html">discord_ret_voice_regions</a> *ret)</td></tr>
+<tr class="memdesc:gaf6d9d6d8e830715db9af13940b5cae53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get voice regions (includes VIP servers when the guild is VIP-enabled)  <a href="group__DiscordAPIGuild.html#gaf6d9d6d8e830715db9af13940b5cae53">More...</a><br /></td></tr>
+<tr class="separator:gaf6d9d6d8e830715db9af13940b5cae53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad9653b17d6d544e1d0e1ae3e90f56f72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#gad9653b17d6d544e1d0e1ae3e90f56f72">discord_get_guild_invites</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__invites.html">discord_ret_invites</a> *ret)</td></tr>
 <tr class="memdesc:gad9653b17d6d544e1d0e1ae3e90f56f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get guild invites.  <a href="group__DiscordAPIGuild.html#gad9653b17d6d544e1d0e1ae3e90f56f72">More...</a><br /></td></tr>
 <tr class="separator:gad9653b17d6d544e1d0e1ae3e90f56f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f29d2b462030cc2856aa8dbe41ffc89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga6f29d2b462030cc2856aa8dbe41ffc89">discord_get_guild_integrations</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__integrations.html">discord_ret_integrations</a> *ret)</td></tr>
+<tr class="memdesc:ga6f29d2b462030cc2856aa8dbe41ffc89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get guild integrations.  <a href="group__DiscordAPIGuild.html#ga6f29d2b462030cc2856aa8dbe41ffc89">More...</a><br /></td></tr>
+<tr class="separator:ga6f29d2b462030cc2856aa8dbe41ffc89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4406c9eb8f5461048b99a7f95b269e39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga4406c9eb8f5461048b99a7f95b269e39">discord_delete_guild_integrations</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> integration_id, struct <a class="el" href="structdiscord__ret.html">discord_ret</a> *ret)</td></tr>
 <tr class="memdesc:ga4406c9eb8f5461048b99a7f95b269e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the integration for the guild. It will also delete any associated webhooks and bots.  <a href="group__DiscordAPIGuild.html#ga4406c9eb8f5461048b99a7f95b269e39">More...</a><br /></td></tr>
 <tr class="separator:ga4406c9eb8f5461048b99a7f95b269e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabde6a80a7d59d062ea9768c291208812"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#gabde6a80a7d59d062ea9768c291208812">discord_get_guild_widget_settings</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a> *ret)</td></tr>
+<tr class="memdesc:gabde6a80a7d59d062ea9768c291208812"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a guild widget settings.  <a href="group__DiscordAPIGuild.html#gabde6a80a7d59d062ea9768c291208812">More...</a><br /></td></tr>
+<tr class="separator:gabde6a80a7d59d062ea9768c291208812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae08ba02082408a7071c598f0b34dec5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#gae08ba02082408a7071c598f0b34dec5e">discord_modify_guild_widget</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__guild__widget__settings.html">discord_guild_widget_settings</a> *params, struct <a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a> *ret)</td></tr>
+<tr class="memdesc:gae08ba02082408a7071c598f0b34dec5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify a guild widget settings.  <a href="group__DiscordAPIGuild.html#gae08ba02082408a7071c598f0b34dec5e">More...</a><br /></td></tr>
+<tr class="separator:gae08ba02082408a7071c598f0b34dec5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa99ea46b7d59fabb3f8e0d8bbfac891"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#gafa99ea46b7d59fabb3f8e0d8bbfac891">discord_get_guild_widget</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__guild__widget.html">discord_ret_guild_widget</a> *ret)</td></tr>
+<tr class="memdesc:gafa99ea46b7d59fabb3f8e0d8bbfac891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the widget for the guild.  <a href="group__DiscordAPIGuild.html#gafa99ea46b7d59fabb3f8e0d8bbfac891">More...</a><br /></td></tr>
+<tr class="separator:gafa99ea46b7d59fabb3f8e0d8bbfac891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5cb7895f4308c850ff4863ae39a99757"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga5cb7895f4308c850ff4863ae39a99757">discord_get_guild_vanity_url</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__invite.html">discord_ret_invite</a> *ret)</td></tr>
 <tr class="memdesc:ga5cb7895f4308c850ff4863ae39a99757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get invite from a given guild.  <a href="group__DiscordAPIGuild.html#ga5cb7895f4308c850ff4863ae39a99757">More...</a><br /></td></tr>
 <tr class="separator:ga5cb7895f4308c850ff4863ae39a99757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae09c674cb5a2b0fddaa33f1896cdffc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#gae09c674cb5a2b0fddaa33f1896cdffc9">discord_get_guild_welcome_screen</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__ret__welcome__screen.html">discord_ret_welcome_screen</a> *ret)</td></tr>
 <tr class="memdesc:gae09c674cb5a2b0fddaa33f1896cdffc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Welcome Screen for the guild.  <a href="group__DiscordAPIGuild.html#gae09c674cb5a2b0fddaa33f1896cdffc9">More...</a><br /></td></tr>
 <tr class="separator:gae09c674cb5a2b0fddaa33f1896cdffc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9de3f752fa0f9617f53b963b1e4db6c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga9de3f752fa0f9617f53b963b1e4db6c4">discord_modify_guild_welcome_screen</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__modify__guild__welcome__screen.html">discord_modify_guild_welcome_screen</a> *params, struct <a class="el" href="structdiscord__ret__welcome__screen.html">discord_ret_welcome_screen</a> *ret)</td></tr>
+<tr class="memdesc:ga9de3f752fa0f9617f53b963b1e4db6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the Welcome Screen for the guild.  <a href="group__DiscordAPIGuild.html#ga9de3f752fa0f9617f53b963b1e4db6c4">More...</a><br /></td></tr>
+<tr class="separator:ga9de3f752fa0f9617f53b963b1e4db6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85ff3cc4dbbb2c2241bc484febe85e20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga85ff3cc4dbbb2c2241bc484febe85e20">discord_modify_current_user_voice_state</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__modify__current__user__voice__state.html">discord_modify_current_user_voice_state</a> *params, struct <a class="el" href="structdiscord__ret.html">discord_ret</a> *ret)</td></tr>
+<tr class="memdesc:ga85ff3cc4dbbb2c2241bc484febe85e20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the current user's voice state.  <a href="group__DiscordAPIGuild.html#ga85ff3cc4dbbb2c2241bc484febe85e20">More...</a><br /></td></tr>
+<tr class="separator:ga85ff3cc4dbbb2c2241bc484febe85e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga49ed6e5cc09d110ef0dc7bfca1311cc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga49ed6e5cc09d110ef0dc7bfca1311cc2">discord_modify_user_voice_state</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> user_id, struct <a class="el" href="structdiscord__modify__user__voice__state.html">discord_modify_user_voice_state</a> *params, struct <a class="el" href="structdiscord__ret.html">discord_ret</a> *ret)</td></tr>
+<tr class="memdesc:ga49ed6e5cc09d110ef0dc7bfca1311cc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates user's voice state.  <a href="group__DiscordAPIGuild.html#ga49ed6e5cc09d110ef0dc7bfca1311cc2">More...</a><br /></td></tr>
+<tr class="separator:ga49ed6e5cc09d110ef0dc7bfca1311cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4c35986cb06448eb5a79ae45f0933351"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIGuild.html#ga4c35986cb06448eb5a79ae45f0933351">discord_modify_guild_role_positions</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, struct <a class="el" href="structdiscord__modify__guild__role__positions.html">discord_modify_guild_role_positions</a> *params, struct <a class="el" href="structdiscord__ret__roles.html">discord_ret_roles</a> *ret)</td></tr>
 <tr class="memdesc:ga4c35986cb06448eb5a79ae45f0933351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the positions of a given role list for the guild.  <a href="group__DiscordAPIGuild.html#ga4c35986cb06448eb5a79ae45f0933351">More...</a><br /></td></tr>
 <tr class="separator:ga4c35986cb06448eb5a79ae45f0933351"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,7 +319,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Fires a <code>Guild Create</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild.html">discord_guild</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -324,11 +363,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the guild with given id. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>missing query parameters </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>missing query parameters </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If with_counts is set to true, this endpoint will also return approximate_member_count and approximate_presence_count for the guild</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to retrieve </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild.html">discord_guild</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -375,7 +414,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>If the user is not in the guild, then the guild must be lurkable</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild to get preview from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__preview.html">discord_guild_preview</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -430,7 +469,7 @@ Functions</h2></td></tr>
 Fires a <code>Guild Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to modify </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild.html">discord_guild</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -478,7 +517,7 @@ Fires a <code>Guild Update</code> event</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Fires a <code>Guild Delete</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>id of guild to delete </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
   </table>
@@ -524,7 +563,7 @@ Fires a <code>Guild Update</code> event</dd></dl>
 <p>Fetch channels from given guild. Does not include threads. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>id of guild to fetch channels from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__channels.html">discord_channels</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -532,7 +571,7 @@ Fires a <code>Guild Update</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__channels.html">discord_ret_channels</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a24">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#a49">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a26">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#a53">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -583,7 +622,7 @@ If setting permission overwrites, only permissions your bot has in the guild can
 Fires a <code>Channel Create</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>id of the guild to create a channel at </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__channel.html">discord_channel</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -592,7 +631,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__channel.html">discord_ret_channel</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a13">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a14">channel.c</a>.</dd>
 </dl>
 
 </div>
@@ -639,7 +678,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Requires MANAGE_CHANNELS permission</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to change the positions of the channels in </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
@@ -692,7 +731,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 <p>Get guild member of a guild from given user id. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the member belongs to </td></tr>
     <tr><td class="paramname">user_id</td><td>unique user id of member </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__member.html">discord_guild_member</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -701,7 +740,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__guild__member.html">discord_ret_guild_member</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a37">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a41">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -747,7 +786,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 <p>Get guild members of a guild. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the members belongs to </td></tr>
     <tr><td class="paramname">request</td><td>parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__members.html">discord_guild_members</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -756,7 +795,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__guild__members.html">discord_ret_guild_members</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a14">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a15">fetch-messages.c</a>.</dd>
 </dl>
 
 </div>
@@ -802,7 +841,7 @@ Fires a <code>Channel Create</code> event</dd></dl>
 <p>Get guild members whose username or nickname starts with a provided string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the members belongs to </td></tr>
     <tr><td class="paramname">request</td><td>parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__members.html">discord_guild_members</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -866,7 +905,7 @@ Fires a <code>Guild Member Add</code> event </dd>
 The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild to add the member to </td></tr>
     <tr><td class="paramname">user_id</td><td>the user to be added </td></tr>
     <tr><td class="paramname">request</td><td>parameters </td></tr>
@@ -928,7 +967,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordAPIGatewayHelper.html#ga7cf273f478427bc2d2acd64cc6d48c66" title="Disconnect a member from voice channel.">discord_disconnect_guild_member()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the member belongs to </td></tr>
     <tr><td class="paramname">user_id</td><td>the user id of member </td></tr>
     <tr><td class="paramname">request</td><td>parameters </td></tr>
@@ -983,7 +1022,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 <dl class="section note"><dt>Note</dt><dd>Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild where the member exists </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__member.html">discord_guild_member</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -1034,11 +1073,11 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 </div><div class="memdoc">
 
 <p>Modify the nickname of the current user in a guild. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>use <a class="el" href="group__DiscordAPIGuild.html#ga0cbfb35c503c499ae1fa83377ef4ce4f" title="Modifies the current member in the guild.">discord_modify_current_member()</a> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>use <a class="el" href="group__DiscordAPIGuild.html#ga0cbfb35c503c499ae1fa83377ef4ce4f" title="Modifies the current member in the guild.">discord_modify_current_member()</a> instead </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the member belongs to </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__member.html">discord_guild_member</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -1098,7 +1137,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 <dl class="section note"><dt>Note</dt><dd>Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild where the member exists </td></tr>
     <tr><td class="paramname">user_id</td><td>the unique id of the user </td></tr>
     <tr><td class="paramname">role_id</td><td>the unique id of the role to be added </td></tr>
@@ -1108,7 +1147,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a21">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a24">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1163,7 +1202,7 @@ The bot must be a member of the guild with CREATE_INSTANT_INVITE permission</dd>
 Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild where the member exists </td></tr>
     <tr><td class="paramname">user_id</td><td>the unique id of the user </td></tr>
     <tr><td class="paramname">role_id</td><td>the unique id of the role to be removed </td></tr>
@@ -1173,7 +1212,7 @@ Fires a <code>Guild Member Update</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a22">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a25">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1222,7 +1261,7 @@ Fires a <code>Guild Member Update</code> event</dd></dl>
 Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the guild to remove the member from </td></tr>
     <tr><td class="paramname">user_id</td><td>the user to be removed </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
@@ -1270,7 +1309,7 @@ Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Requires the BAN_MEMBERS permission</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the guild to get the list from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__bans.html">discord_bans</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -1323,7 +1362,7 @@ Fires a <code>Guild Member Update</code> event</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Requires the BAN_MEMBERS permission</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the guild to return the ban from </td></tr>
     <tr><td class="paramname">user_id</td><td>the user that is banned </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__ban.html">discord_ban</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -1385,7 +1424,7 @@ Fires a <code>Guild Member Update</code> event</dd></dl>
 Fires a <code>Guild Ban Add</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the user belongs to </td></tr>
     <tr><td class="paramname">user_id</td><td>the user to be banned </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
@@ -1395,7 +1434,7 @@ Fires a <code>Guild Ban Add</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a13">ban.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a14">ban.c</a>.</dd>
 </dl>
 
 </div>
@@ -1444,7 +1483,7 @@ Fires a <code>Guild Ban Add</code> event</dd></dl>
 Fires a <code>Guild Ban Remove</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the user belonged to </td></tr>
     <tr><td class="paramname">user_id</td><td>the user to have its ban revoked </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
@@ -1453,7 +1492,7 @@ Fires a <code>Guild Ban Remove</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a15">ban.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a16">ban.c</a>.</dd>
 </dl>
 
 </div>
@@ -1493,7 +1532,7 @@ Fires a <code>Guild Ban Remove</code> event</dd></dl>
 <p>Get guild roles. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild to get roles from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__roles.html">discord_roles</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -1501,7 +1540,7 @@ Fires a <code>Guild Ban Remove</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__roles.html">discord_ret_roles</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a31">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a35">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -1550,7 +1589,7 @@ Fires a <code>Guild Ban Remove</code> event</dd></dl>
 Fires a <code>Guild Role Create</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild to add a role to </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__role.html">discord_role</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -1559,7 +1598,65 @@ Fires a <code>Guild Role Create</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__role.html">discord_ret_role</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a18">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a21">guild.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="ga84b96d1ca07543ea0ee464a588e66fa2" name="ga84b96d1ca07543ea0ee464a588e66fa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga84b96d1ca07543ea0ee464a588e66fa2">&#9670;&nbsp;</a></span>discord_get_guild_prune_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <a class="el" href="structdiscord__get__guild__prune__count.html">discord_get_guild_prune_count</a> </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__get__guild__prune__count.html">discord_get_guild_prune_count</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__prune__count.html">discord_ret_prune_count</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of members that would be removed in a prune operation. </p>
+<dl class="section note"><dt>Note</dt><dd>Requires the KICK_MEMBERS permission </dd>
+<dd>
+By default will not remove users with roles. You can include specific roles in your prune by providing the <code>params.include_roles</code> value</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to be checked </td></tr>
+    <tr><td class="paramname">params</td><td>request parameters </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__prune__count.html">discord_prune_count</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__prune__count.html">discord_ret_prune_count</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a27">ban.c</a>.</dd>
 </dl>
 
 </div>
@@ -1610,13 +1707,59 @@ Requires the KICK_MEMBERS permission </dd>
 Fires multiple <code>Guild Member Remove</code> events</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to start the prune </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="gaf6d9d6d8e830715db9af13940b5cae53" name="gaf6d9d6d8e830715db9af13940b5cae53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf6d9d6d8e830715db9af13940b5cae53">&#9670;&nbsp;</a></span>discord_get_guild_voice_regions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_get_guild_voice_regions </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__voice__regions.html">discord_ret_voice_regions</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get voice regions (includes VIP servers when the guild is VIP-enabled) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get voice regions from </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__voice__regions.html">discord_voice_regions</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__voice__regions.html">discord_ret_voice_regions</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
@@ -1654,16 +1797,63 @@ Fires multiple <code>Guild Member Remove</code> events</dd></dl>
 </div><div class="memdoc">
 
 <p>Get guild invites. </p>
-<dl class="section note"><dt>Note</dt><dd>requires the MANAGE_GUILD permission </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>requires the <code>MANAGE_GUILD</code> permission</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get invites from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__invites.html">discord_invites</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__invites.html">discord_ret_invites</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="ga6f29d2b462030cc2856aa8dbe41ffc89" name="ga6f29d2b462030cc2856aa8dbe41ffc89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f29d2b462030cc2856aa8dbe41ffc89">&#9670;&nbsp;</a></span>discord_get_guild_integrations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_get_guild_integrations </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__integrations.html">discord_ret_integrations</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get guild integrations. </p>
+<dl class="section note"><dt>Note</dt><dd>requires the <code>MANAGE_GUILD</code> permission</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get integrations from </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__integrations.html">discord_integrations</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__integrations.html">discord_ret_integrations</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
@@ -1712,7 +1902,7 @@ Fires multiple <code>Guild Member Remove</code> events</dd></dl>
 Fires a <code>Guild Integrations Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to delete the integrations from </td></tr>
     <tr><td class="paramname">integration_id</td><td>the id of the integration to delete </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
@@ -1720,6 +1910,153 @@ Fires a <code>Guild Integrations Update</code> event</dd></dl>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="gabde6a80a7d59d062ea9768c291208812" name="gabde6a80a7d59d062ea9768c291208812"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabde6a80a7d59d062ea9768c291208812">&#9670;&nbsp;</a></span>discord_get_guild_widget_settings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_get_guild_widget_settings </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get a guild widget settings. </p>
+<dl class="section note"><dt>Note</dt><dd>requires the <code>MANAGE_GUILD</code> permission</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get widget settings from </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__widget__settings.html">discord_guild_widget_settings</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="gae08ba02082408a7071c598f0b34dec5e" name="gae08ba02082408a7071c598f0b34dec5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae08ba02082408a7071c598f0b34dec5e">&#9670;&nbsp;</a></span>discord_modify_guild_widget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_modify_guild_widget </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__guild__widget__settings.html">discord_guild_widget_settings</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Modify a guild widget settings. </p>
+<dl class="section note"><dt>Note</dt><dd>requires the <code>MANAGE_GUILD</code> permission</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to modify the widget settings from </td></tr>
+    <tr><td class="paramname">param</td><td>request parameters </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__widget__settings.html">discord_guild_widget_settings</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__guild__widget__settings.html">discord_ret_guild_widget_settings</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="gafa99ea46b7d59fabb3f8e0d8bbfac891" name="gafa99ea46b7d59fabb3f8e0d8bbfac891"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafa99ea46b7d59fabb3f8e0d8bbfac891">&#9670;&nbsp;</a></span>discord_get_guild_widget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_get_guild_widget </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__guild__widget.html">discord_ret_guild_widget</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the widget for the guild. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get the widget from </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__guild__widget.html">discord_guild_widget</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__guild__widget.html">discord_ret_guild_widget</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
@@ -1757,10 +2094,9 @@ Fires a <code>Guild Integrations Update</code> event</dd></dl>
 </div><div class="memdoc">
 
 <p>Get invite from a given guild. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires the MANAGE_GUILD permission</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get vanity url from </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__invite.html">discord_invite</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
@@ -1806,13 +2142,182 @@ Fires a <code>Guild Integrations Update</code> event</dd></dl>
 <p>Get the Welcome Screen for the guild. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get welcome screen of </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__welcome__screen.html">discord_welcome_screen</a> will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__welcome__screen.html">discord_ret_welcome_screen</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="ga9de3f752fa0f9617f53b963b1e4db6c4" name="ga9de3f752fa0f9617f53b963b1e4db6c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9de3f752fa0f9617f53b963b1e4db6c4">&#9670;&nbsp;</a></span>discord_modify_guild_welcome_screen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <a class="el" href="structdiscord__modify__guild__welcome__screen.html">discord_modify_guild_welcome_screen</a> </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__guild__welcome__screen.html">discord_modify_guild_welcome_screen</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret__welcome__screen.html">discord_ret_welcome_screen</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Modify the Welcome Screen for the guild. </p>
+<dl class="section note"><dt>Note</dt><dd>requires the <code>MANAGE_GUILD</code> permission</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to modify welcome screen of </td></tr>
+    <tr><td class="paramname">params</td><td>request parameters </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__welcome__screen.html">discord_welcome_screen</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__welcome__screen.html">discord_ret_welcome_screen</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="ga85ff3cc4dbbb2c2241bc484febe85e20" name="ga85ff3cc4dbbb2c2241bc484febe85e20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85ff3cc4dbbb2c2241bc484febe85e20">&#9670;&nbsp;</a></span>discord_modify_current_user_voice_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <a class="el" href="structdiscord__modify__current__user__voice__state.html">discord_modify_current_user_voice_state</a> </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__current__user__voice__state.html">discord_modify_current_user_voice_state</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret.html">discord_ret</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Updates the current user's voice state. </p>
+<dl class="section see"><dt>See also</dt><dd>Caveats <a href="https://discord.com/developers/docs/resources/guild#modify-current-user-voice-state-caveats">https://discord.com/developers/docs/resources/guild#modify-current-user-voice-state-caveats</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to modify the current user's voice state </td></tr>
+    <tr><td class="paramname">params</td><td>request parameters </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+
+</div>
+</div>
+<a id="ga49ed6e5cc09d110ef0dc7bfca1311cc2" name="ga49ed6e5cc09d110ef0dc7bfca1311cc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga49ed6e5cc09d110ef0dc7bfca1311cc2">&#9670;&nbsp;</a></span>discord_modify_user_voice_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <a class="el" href="structdiscord__modify__user__voice__state.html">discord_modify_user_voice_state</a> </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>guild_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td>
+          <td class="paramname"><em>user_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__modify__user__voice__state.html">discord_modify_user_voice_state</a> *&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__ret.html">discord_ret</a> *&#160;</td>
+          <td class="paramname"><em>ret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Updates user's voice state. </p>
+<dl class="section see"><dt>See also</dt><dd>Caveats <a href="https://discord.com/developers/docs/resources/guild#modify-user-voice-state-caveats">https://discord.com/developers/docs/resources/guild#modify-user-voice-state-caveats</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">guild_id</td><td>the unique id of the guild to modify the user's voice state </td></tr>
+    <tr><td class="paramname">user_id</td><td>the unique id of user to have its voice state modified </td></tr>
+    <tr><td class="paramname">params</td><td>request parameters </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
@@ -1861,7 +2366,7 @@ Fires a <code>Guild Integrations Update</code> event</dd></dl>
 Fires multiple <code>Guild Role Update</code> events</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild to get welcome screen of </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__roles.html">discord_roles</a> will be sent over to its assigned <code>done</code> callback </td></tr>
@@ -1923,7 +2428,7 @@ Fires multiple <code>Guild Role Update</code> events</dd></dl>
 Fires a <code>Guild Role Update</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild that the role belongs to </td></tr>
     <tr><td class="paramname">role_id</td><td>the unique id of the role to modify </td></tr>
     <tr><td class="paramname">params</td><td>request parameters </td></tr>
@@ -1980,7 +2485,7 @@ Fires a <code>Guild Role Update</code> event</dd></dl>
 Fires a <code>Guild Role Delete</code> event</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the unique id of the guild that the role belongs to </td></tr>
     <tr><td class="paramname">role_id</td><td>the unique id of the role to delete </td></tr>
     <tr><td class="paramname">ret</td><td>return context of the request. if successful the assigned <code>done</code> will be triggered </td></tr>
@@ -1989,7 +2494,7 @@ Fires a <code>Guild Role Delete</code> event</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret.html">discord_ret</a> for more options </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a20">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a23">guild.c</a>.</dd>
 </dl>
 
 </div>

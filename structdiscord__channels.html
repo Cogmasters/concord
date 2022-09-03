@@ -103,33 +103,64 @@ Collaboration diagram for discord_channels:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ae534fde6cb8abdfda98260468ab062ab"><td class="memItemLeft" align="right" valign="top"><a id="ae534fde6cb8abdfda98260468ab062ab" name="ae534fde6cb8abdfda98260468ab062ab"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:ae534fde6cb8abdfda98260468ab062ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channels.html#ae534fde6cb8abdfda98260468ab062ab">size</a></td></tr>
 <tr class="separator:ae534fde6cb8abdfda98260468ab062ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4efd8630e3757a6a90a9a90e1e489e10"><td class="memItemLeft" align="right" valign="top"><a id="a4efd8630e3757a6a90a9a90e1e489e10" name="a4efd8630e3757a6a90a9a90e1e489e10"></a>
-struct <a class="el" href="structdiscord__channel.html">discord_channel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a4efd8630e3757a6a90a9a90e1e489e10"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__channel.html">discord_channel</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channels.html#a4efd8630e3757a6a90a9a90e1e489e10">array</a></td></tr>
 <tr class="separator:a4efd8630e3757a6a90a9a90e1e489e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_channels_cleanup(struct discord_channels *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#ac7d38f74f9275b90fddb6ace7bab7df6">discord_channels_cleanup(struct discord_channels *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_channels_from_json(const char json[], size_t len, struct discord_channels *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#af41b598bfaf5a1d83a4185539a7ff74c">discord_channels_from_json(const char json[], size_t len, struct discord_channels *this)</a></code></li>
 <li><code>discord_channels_from_jsmnf(jsmnf *root, const char json[], struct discord_channels *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_channels_to_json(char buf[], size_t size, const struct discord_channels *this)</code></li>
-<li><code>discord_channels_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_channels *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a9fe47a60feba3e223299d02a91c65d02">discord_channels_to_json(char buf[], size_t size, const struct discord_channels *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#af166965e9ad6c46ee1bfda634b9272c0">discord_channels_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_channels *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a21">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#_a38">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a23">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#_a42">guild.c</a>.</dd>
 </dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="ae534fde6cb8abdfda98260468ab062ab" name="ae534fde6cb8abdfda98260468ab062ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae534fde6cb8abdfda98260468ab062ab">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_channels::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a28">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#a44">guild.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a4efd8630e3757a6a90a9a90e1e489e10" name="a4efd8630e3757a6a90a9a90e1e489e10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4efd8630e3757a6a90a9a90e1e489e10">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__channel.html">discord_channel</a>* discord_channels::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a35">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#a45">guild.c</a>.</dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2channel_8h_source.html">channel.h</a></li>
 </ul>
 </div><!-- contents -->

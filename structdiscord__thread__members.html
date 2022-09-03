@@ -103,31 +103,58 @@ Collaboration diagram for discord_thread_members:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:acb46aed386513cc929751d688bf2a3ac"><td class="memItemLeft" align="right" valign="top"><a id="acb46aed386513cc929751d688bf2a3ac" name="acb46aed386513cc929751d688bf2a3ac"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:acb46aed386513cc929751d688bf2a3ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__thread__members.html#acb46aed386513cc929751d688bf2a3ac">size</a></td></tr>
 <tr class="separator:acb46aed386513cc929751d688bf2a3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad009310e94c784a0fd936dc1067ce739"><td class="memItemLeft" align="right" valign="top"><a id="ad009310e94c784a0fd936dc1067ce739" name="ad009310e94c784a0fd936dc1067ce739"></a>
-struct <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:ad009310e94c784a0fd936dc1067ce739"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__thread__members.html#ad009310e94c784a0fd936dc1067ce739">array</a></td></tr>
 <tr class="separator:ad009310e94c784a0fd936dc1067ce739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_thread_members_cleanup(struct discord_thread_members *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a68bc497221408390c04039bd47f51e7c">discord_thread_members_cleanup(struct discord_thread_members *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_thread_members_from_json(const char json[], size_t len, struct discord_thread_members *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#abe9a830a4d816cfb4fd42dcd79504d14">discord_thread_members_from_json(const char json[], size_t len, struct discord_thread_members *this)</a></code></li>
 <li><code>discord_thread_members_from_jsmnf(jsmnf *root, const char json[], struct discord_thread_members *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_thread_members_to_json(char buf[], size_t size, const struct discord_thread_members *this)</code></li>
-<li><code>discord_thread_members_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_thread_members *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a8b949674e9d28a7350c435f2e7de6914">discord_thread_members_to_json(char buf[], size_t size, const struct discord_thread_members *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a41069d2aede0e02909c00dfab9d88281">discord_thread_members_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_thread_members *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="acb46aed386513cc929751d688bf2a3ac" name="acb46aed386513cc929751d688bf2a3ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb46aed386513cc929751d688bf2a3ac">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_thread_members::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad009310e94c784a0fd936dc1067ce739" name="ad009310e94c784a0fd936dc1067ce739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad009310e94c784a0fd936dc1067ce739">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a>* discord_thread_members::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2channel_8h_source.html">channel.h</a></li>
 </ul>
 </div><!-- contents -->

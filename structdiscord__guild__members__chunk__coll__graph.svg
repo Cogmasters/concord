@@ -54,7 +54,7 @@
 <g id="node4" class="node">
 <title>Node6</title>
 <g id="a_node4"><a xlink:href="structdiscord__presence__updates.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="orangered" points="240.5,-78.5 240.5,-97.5 386.5,-97.5 386.5,-78.5 240.5,-78.5"/>
+<polygon fill="none" stroke="red" points="240.5,-78.5 240.5,-97.5 386.5,-97.5 386.5,-78.5 240.5,-78.5"/>
 <text text-anchor="middle" x="313.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_presence_updates</text>
 </a>
 </g>

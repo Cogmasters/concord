@@ -107,7 +107,7 @@ Data Fields</h2></td></tr>
 <tr class="separator:a3a97e61aa2066f54c57f68175c9434f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6d6e542366d2ce011d759ec84147664"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__interaction.html#ab6d6e542366d2ce011d759ec84147664">application_id</a></td></tr>
 <tr class="separator:ab6d6e542366d2ce011d759ec84147664"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad9b8b77631a49efb85e7d9b3776fa72"><td class="memItemLeft" align="right" valign="top">enum discord_interaction_types&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__interaction.html#aad9b8b77631a49efb85e7d9b3776fa72">type</a></td></tr>
+<tr class="memitem:aad9b8b77631a49efb85e7d9b3776fa72"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3e">discord_interaction_types</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__interaction.html#aad9b8b77631a49efb85e7d9b3776fa72">type</a></td></tr>
 <tr class="separator:aad9b8b77631a49efb85e7d9b3776fa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa51ca032313f3d65f2c6d641e569b0db"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__interaction__data.html">discord_interaction_data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__interaction.html#aa51ca032313f3d65f2c6d641e569b0db">data</a></td></tr>
 <tr class="separator:aa51ca032313f3d65f2c6d641e569b0db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,25 +133,25 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Initializer:<ul>
-<li><code>discord_interaction_init(struct discord_interaction *this)</code></li>
+<li><code><a class="el" href="interactions_8h.html#a3beb54018519012505768b779d1ff714">discord_interaction_init(struct discord_interaction *this)</a></code></li>
 </ul>
 </li>
 <li>Cleanup:<ul>
-<li><code>discord_interaction_cleanup(struct discord_interaction *this)</code></li>
+<li><code><a class="el" href="interactions_8h.html#a6348a419ec2fd9c3223dc3cdecb40cae">discord_interaction_cleanup(struct discord_interaction *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_interaction_from_json(const char json[], size_t len, struct discord_interaction *this)</code></li>
+<li><code><a class="el" href="interactions_8h.html#acc945ee41c967d6cdb7e7d253159e6ce">discord_interaction_from_json(const char json[], size_t len, struct discord_interaction *this)</a></code></li>
 <li><code>discord_interaction_from_jsmnf(jsmnf *root, const char json[], struct discord_interaction *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_interaction_to_json(char buf[], size_t size, const struct discord_interaction *this)</code></li>
-<li><code>discord_interaction_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_interaction *this)</code> </li>
+<li><code><a class="el" href="interactions_8h.html#a439a59c1b4db5ce1afe2ffb3e0acf7db">discord_interaction_to_json(char buf[], size_t size, const struct discord_interaction *this)</a></code></li>
+<li><code><a class="el" href="interactions_8h.html#a3f28cc3f2dff757f1aee519fe2079479">discord_interaction_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_interaction *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#_a22">components.c</a>, <a class="el" href="slash-commands_8c-example.html#_a24">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#_a10">slash-commands2.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#_a27">components.c</a>, <a class="el" href="slash-commands_8c-example.html#_a26">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#_a10">slash-commands2.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a3a97e61aa2066f54c57f68175c9434f3" name="a3a97e61aa2066f54c57f68175c9434f3"></a>
@@ -166,7 +166,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >ID of the interaction </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a23">components.c</a>, <a class="el" href="slash-commands_8c-example.html#a36">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a11">slash-commands2.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a28">components.c</a>, <a class="el" href="slash-commands_8c-example.html#a40">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a11">slash-commands2.c</a>.</dd>
 </dl>
 
 </div>
@@ -193,12 +193,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum discord_interaction_types discord_interaction::type</td>
+          <td class="memname">enum <a class="el" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3e">discord_interaction_types</a> discord_interaction::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >the type of the interaction </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#a25">slash-commands.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#a27">slash-commands.c</a>.</dd>
 </dl>
 
 </div>
@@ -215,7 +215,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the command data payload </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a24">components.c</a>, and <a class="el" href="slash-commands_8c-example.html#a26">slash-commands.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a29">components.c</a>, and <a class="el" href="slash-commands_8c-example.html#a29">slash-commands.c</a>.</dd>
 </dl>
 
 </div>
@@ -262,7 +262,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >guild member data for the invoking user, including permissions </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#a28">slash-commands.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="slash-commands_8c-example.html#a32">slash-commands.c</a>.</dd>
 </dl>
 
 </div>
@@ -294,7 +294,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >a continuation token for responding to the interaction </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a32">components.c</a>, <a class="el" href="slash-commands_8c-example.html#a37">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a22">slash-commands2.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="components_8c-example.html#a39">components.c</a>, <a class="el" href="slash-commands_8c-example.html#a41">slash-commands.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a22">slash-commands2.c</a>.</dd>
 </dl>
 
 </div>

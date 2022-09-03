@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('websockets_8h.html',''); initResizable
 <div class="contents">
 <div class="textblock"><code>#include &lt;curl/curl.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="error_8h_source.html">error.h</a>&quot;</code><br />
-<code>#include &quot;logconf.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="logconf_8h_source.html">logconf.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for websockets.h:</div>
 <div class="dyncontent">
@@ -144,24 +144,24 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:a2c98aa4435bf623cdba0e8bab4303b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">The WebSockets client status.  <a href="websockets_8h.html#a2c98aa4435bf623cdba0e8bab4303b26">More...</a><br /></td></tr>
 <tr class="separator:a2c98aa4435bf623cdba0e8bab4303b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92591a76da29adffd6f3a95bb12db08d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08d">ws_close_reason</a> { <br />
-&#160;&#160;<b>WS_CLOSE_REASON_NORMAL</b> = 1000
-, <b>WS_CLOSE_REASON_GOING_AWAY</b> = 1001
-, <b>WS_CLOSE_REASON_PROTOCOL_ERROR</b> = 1002
-, <b>WS_CLOSE_REASON_UNEXPECTED_DATA</b> = 1003
+&#160;&#160;<a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dad1772606ee741d54ded353a12160662b">WS_CLOSE_REASON_NORMAL</a> = 1000
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da94283316304aae0b5712a9a59186d75c">WS_CLOSE_REASON_GOING_AWAY</a> = 1001
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dae645cfc9260227ddfc36e66798a963d7">WS_CLOSE_REASON_PROTOCOL_ERROR</a> = 1002
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da49da0f1f57cca8bdfee319d4156f47e0">WS_CLOSE_REASON_UNEXPECTED_DATA</a> = 1003
 , <br />
-&#160;&#160;<b>WS_CLOSE_REASON_NO_REASON</b> = 1005
-, <b>WS_CLOSE_REASON_ABRUPTLY</b> = 1006
-, <b>WS_CLOSE_REASON_INCONSISTENT_DATA</b> = 1007
-, <b>WS_CLOSE_REASON_POLICY_VIOLATION</b> = 1008
+&#160;&#160;<a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da7838574f5ed9d26bd1a71abe37fc1e76">WS_CLOSE_REASON_NO_REASON</a> = 1005
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da07cdaa342b879e8d97926290684f6f89">WS_CLOSE_REASON_ABRUPTLY</a> = 1006
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da00714687bc9f1ff9ea0598af0d340aa6">WS_CLOSE_REASON_INCONSISTENT_DATA</a> = 1007
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dac5c2d38da697e860557b1a551be1eccd">WS_CLOSE_REASON_POLICY_VIOLATION</a> = 1008
 , <br />
-&#160;&#160;<b>WS_CLOSE_REASON_TOO_BIG</b> = 1009
-, <b>WS_CLOSE_REASON_MISSING_EXTENSION</b> = 1010
-, <b>WS_CLOSE_REASON_SERVER_ERROR</b> = 1011
-, <b>WS_CLOSE_REASON_IANA_REGISTRY_START</b> = 3000
+&#160;&#160;<a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da21c33734a73745af101c87312d3af95e">WS_CLOSE_REASON_TOO_BIG</a> = 1009
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da3590c6bcfa0874bcdd11886c9e595ff4">WS_CLOSE_REASON_MISSING_EXTENSION</a> = 1010
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08daef57e1b1bff1b1ee0e36920b399b7f09">WS_CLOSE_REASON_SERVER_ERROR</a> = 1011
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dac5f77696fbdaa99138d8258a3858fbfb">WS_CLOSE_REASON_IANA_REGISTRY_START</a> = 3000
 , <br />
-&#160;&#160;<b>WS_CLOSE_REASON_IANA_REGISTRY_END</b> = 3999
-, <b>WS_CLOSE_REASON_PRIVATE_START</b> = 4000
-, <b>WS_CLOSE_REASON_PRIVATE_END</b> = 4999
+&#160;&#160;<a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dad75cd713b4e838c5a5ab06eff6649074">WS_CLOSE_REASON_IANA_REGISTRY_END</a> = 3999
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da37d152d001a7b6513077dfc126349d95">WS_CLOSE_REASON_PRIVATE_START</a> = 4000
+, <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dab3a0ee03638d537a30fd9db837afdc86">WS_CLOSE_REASON_PRIVATE_END</a> = 4999
 <br />
  }</td></tr>
 <tr class="memdesc:a92591a76da29adffd6f3a95bb12db08d"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebSockets CLOSE opcodes.  <a href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08d">More...</a><br /></td></tr>
@@ -320,6 +320,23 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="websockets_8h.html#a72e6c8032815ffe78687d2adb475f4b9" title="Returns a enum ws_close_reason opcode in a string format.">ws_close_opcode_print()</a> </dd>
 <dd>
 <a href="https://tools.ietf.org/html/rfc6455#section-7.4.1">https://tools.ietf.org/html/rfc6455#section-7.4.1</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08dad1772606ee741d54ded353a12160662b" name="a92591a76da29adffd6f3a95bb12db08dad1772606ee741d54ded353a12160662b"></a>WS_CLOSE_REASON_NORMAL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da94283316304aae0b5712a9a59186d75c" name="a92591a76da29adffd6f3a95bb12db08da94283316304aae0b5712a9a59186d75c"></a>WS_CLOSE_REASON_GOING_AWAY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08dae645cfc9260227ddfc36e66798a963d7" name="a92591a76da29adffd6f3a95bb12db08dae645cfc9260227ddfc36e66798a963d7"></a>WS_CLOSE_REASON_PROTOCOL_ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da49da0f1f57cca8bdfee319d4156f47e0" name="a92591a76da29adffd6f3a95bb12db08da49da0f1f57cca8bdfee319d4156f47e0"></a>WS_CLOSE_REASON_UNEXPECTED_DATA&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da7838574f5ed9d26bd1a71abe37fc1e76" name="a92591a76da29adffd6f3a95bb12db08da7838574f5ed9d26bd1a71abe37fc1e76"></a>WS_CLOSE_REASON_NO_REASON&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da07cdaa342b879e8d97926290684f6f89" name="a92591a76da29adffd6f3a95bb12db08da07cdaa342b879e8d97926290684f6f89"></a>WS_CLOSE_REASON_ABRUPTLY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da00714687bc9f1ff9ea0598af0d340aa6" name="a92591a76da29adffd6f3a95bb12db08da00714687bc9f1ff9ea0598af0d340aa6"></a>WS_CLOSE_REASON_INCONSISTENT_DATA&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08dac5c2d38da697e860557b1a551be1eccd" name="a92591a76da29adffd6f3a95bb12db08dac5c2d38da697e860557b1a551be1eccd"></a>WS_CLOSE_REASON_POLICY_VIOLATION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da21c33734a73745af101c87312d3af95e" name="a92591a76da29adffd6f3a95bb12db08da21c33734a73745af101c87312d3af95e"></a>WS_CLOSE_REASON_TOO_BIG&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da3590c6bcfa0874bcdd11886c9e595ff4" name="a92591a76da29adffd6f3a95bb12db08da3590c6bcfa0874bcdd11886c9e595ff4"></a>WS_CLOSE_REASON_MISSING_EXTENSION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08daef57e1b1bff1b1ee0e36920b399b7f09" name="a92591a76da29adffd6f3a95bb12db08daef57e1b1bff1b1ee0e36920b399b7f09"></a>WS_CLOSE_REASON_SERVER_ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08dac5f77696fbdaa99138d8258a3858fbfb" name="a92591a76da29adffd6f3a95bb12db08dac5f77696fbdaa99138d8258a3858fbfb"></a>WS_CLOSE_REASON_IANA_REGISTRY_START&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08dad75cd713b4e838c5a5ab06eff6649074" name="a92591a76da29adffd6f3a95bb12db08dad75cd713b4e838c5a5ab06eff6649074"></a>WS_CLOSE_REASON_IANA_REGISTRY_END&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08da37d152d001a7b6513077dfc126349d95" name="a92591a76da29adffd6f3a95bb12db08da37d152d001a7b6513077dfc126349d95"></a>WS_CLOSE_REASON_PRIVATE_START&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a92591a76da29adffd6f3a95bb12db08dab3a0ee03638d537a30fd9db837afdc86" name="a92591a76da29adffd6f3a95bb12db08dab3a0ee03638d537a30fd9db837afdc86"></a>WS_CLOSE_REASON_PRIVATE_END&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>

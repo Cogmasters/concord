@@ -1,9 +1,10 @@
 <map id="discord" name="discord">
-<area shape="rect" id="node1" title="The Discord client handler." alt="" coords="481,89,551,116"/>
-<area shape="rect" id="node2" href="$structdiscord__message__commands.html" title="The handle for storing user&#39;s message commands." alt="" coords="676,36,891,63"/>
-<area shape="rect" id="node6" href="$structdiscord__gateway.html" title="The handle used for interfacing with Discord&#39;s Gateway API." alt="" coords="717,141,849,168"/>
-<area shape="rect" id="node3" href="$structdiscord__refcounter.html" title="Automatically cleanup user data." alt="" coords="219,5,361,32"/>
-<area shape="rect" id="node4" href="$structdiscord__rest.html" title="The handle used for interfacing with Discord&#39;s REST API." alt="" coords="239,133,341,160"/>
-<area shape="rect" id="node5" href="$structdiscord__timers.html" title=" " alt="" coords="5,96,124,123"/>
-<area shape="rect" id="node7" href="$structdiscord__user.html" title=" " alt="" coords="238,184,342,211"/>
+<area shape="rect" id="node1" title="The Discord client handler." alt="" coords="481,195,551,221"/>
+<area shape="rect" id="node3" href="$structdiscord__message__commands.html" title="The handle for storing user&#39;s message commands." alt="" coords="676,133,891,160"/>
+<area shape="rect" id="node7" href="$structdiscord__gateway.html" title="The handle used for interfacing with Discord&#39;s Gateway API." alt="" coords="717,284,849,311"/>
+<area shape="rect" id="node2" href="$structlogconf.html" title="A stackful and modularized wrapper over the popular &#39;log.c&#39; facilities." alt="" coords="29,205,100,232"/>
+<area shape="rect" id="node4" href="$structdiscord__refcounter.html" title="Automatically cleanup user data." alt="" coords="219,256,361,283"/>
+<area shape="rect" id="node5" href="$structdiscord__rest.html" title="The handle used for interfacing with Discord&#39;s REST API." alt="" coords="239,143,341,169"/>
+<area shape="rect" id="node6" href="$structdiscord__timers.html" title=" " alt="" coords="5,68,124,95"/>
+<area shape="rect" id="node8" href="$structdiscord__user.html" title=" " alt="" coords="238,307,342,333"/>
 </map>

@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('structdiscord__guild__scheduled__event
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="guild__scheduled__event_8h_source.html">guild_scheduled_event.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="docs_2api_2guild__scheduled__event_8h_source.html">guild_scheduled_event.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for discord_guild_scheduled_events:</div>
 <div class="dyncontent">
@@ -103,32 +103,59 @@ Collaboration diagram for discord_guild_scheduled_events:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:aaa750fdfe8ae7499d9b7dabf60ca3aa8"><td class="memItemLeft" align="right" valign="top"><a id="aaa750fdfe8ae7499d9b7dabf60ca3aa8" name="aaa750fdfe8ae7499d9b7dabf60ca3aa8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:aaa750fdfe8ae7499d9b7dabf60ca3aa8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild__scheduled__events.html#aaa750fdfe8ae7499d9b7dabf60ca3aa8">size</a></td></tr>
 <tr class="separator:aaa750fdfe8ae7499d9b7dabf60ca3aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94e1eac3c013f1da26ee42980773ceaa"><td class="memItemLeft" align="right" valign="top"><a id="a94e1eac3c013f1da26ee42980773ceaa" name="a94e1eac3c013f1da26ee42980773ceaa"></a>
-struct <a class="el" href="structdiscord__guild__scheduled__event.html">discord_guild_scheduled_event</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:a94e1eac3c013f1da26ee42980773ceaa"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__guild__scheduled__event.html">discord_guild_scheduled_event</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild__scheduled__events.html#a94e1eac3c013f1da26ee42980773ceaa">array</a></td></tr>
 <tr class="separator:a94e1eac3c013f1da26ee42980773ceaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_guild_scheduled_events_cleanup(struct discord_guild_scheduled_events *this)</code></li>
+<li><code><a class="el" href="docs_2api_2guild__scheduled__event_8h.html#a5904e52e21689c910fac01a11cba0f9d">discord_guild_scheduled_events_cleanup(struct discord_guild_scheduled_events *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_guild_scheduled_events_from_json(const char json[], size_t len, struct discord_guild_scheduled_events *this)</code></li>
+<li><code><a class="el" href="docs_2api_2guild__scheduled__event_8h.html#ae7a06ea45bf8d2d5af138add52476294">discord_guild_scheduled_events_from_json(const char json[], size_t len, struct discord_guild_scheduled_events *this)</a></code></li>
 <li><code>discord_guild_scheduled_events_from_jsmnf(jsmnf *root, const char json[], struct discord_guild_scheduled_events *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_guild_scheduled_events_to_json(char buf[], size_t size, const struct discord_guild_scheduled_events *this)</code></li>
-<li><code>discord_guild_scheduled_events_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_guild_scheduled_events *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2guild__scheduled__event_8h.html#ad26873a1266675687251d22406e051c2">discord_guild_scheduled_events_to_json(char buf[], size_t size, const struct discord_guild_scheduled_events *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2guild__scheduled__event_8h.html#a73f7e5f2e0e11759059637f6d6b763d3">discord_guild_scheduled_events_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_guild_scheduled_events *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>docs/api/<a class="el" href="guild__scheduled__event_8h_source.html">guild_scheduled_event.h</a></li>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="aaa750fdfe8ae7499d9b7dabf60ca3aa8" name="aaa750fdfe8ae7499d9b7dabf60ca3aa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa750fdfe8ae7499d9b7dabf60ca3aa8">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_guild_scheduled_events::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a94e1eac3c013f1da26ee42980773ceaa" name="a94e1eac3c013f1da26ee42980773ceaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94e1eac3c013f1da26ee42980773ceaa">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__guild__scheduled__event.html">discord_guild_scheduled_event</a>* discord_guild_scheduled_events::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>docs/api/<a class="el" href="docs_2api_2guild__scheduled__event_8h_source.html">guild_scheduled_event.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

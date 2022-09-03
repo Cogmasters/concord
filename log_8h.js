@@ -1,0 +1,37 @@
+var log_8h =
+[
+    [ "LOG_VERSION", "log_8h.html#aa48b2017856a8a9c33a9935afe604c8d", null ],
+    [ "LOG_MAX_CALLBACKS", "group__Log__C__Datatypes.html#gaf220e0f0458659bfccf3d336d1cacdda", null ],
+    [ "log_trace", "log_8h.html#af89cb876e6e1d43cfeacdd58a7c9b78c", null ],
+    [ "log_debug", "log_8h.html#aa77e596ef13d2f0f75d0ac9540ed358d", null ],
+    [ "log_info", "log_8h.html#aa1cfe5444875c8eca0ea6f6993977d6d", null ],
+    [ "log_warn", "log_8h.html#a04af09851c431d178f16b24fa1aac1e9", null ],
+    [ "log_error", "log_8h.html#a6ae72553ea9805dd87a463d6f710364d", null ],
+    [ "log_fatal", "log_8h.html#a704a43b1e2ff3bb554aff101efdbeecf", null ],
+    [ "log_set_lock", "log_8h.html#a1c19644511df51e999826f33b51f424d", null ],
+    [ "log_set_level", "log_8h.html#adeb8fd953b7d174aead055822ee5bf7b", null ],
+    [ "log_set_quiet", "log_8h.html#a0723fd2f36e34896f41f1f498147aa37", null ],
+    [ "log_add_callback", "log_8h.html#a534eb7dd7842fdf7f4be7f94a39a3cef", null ],
+    [ "log_add_fp", "log_8h.html#a288456babb40352e749caa6d41fef4fa", null ],
+    [ "log_log", "log_8h.html#aa659c7eba90b5e911e02e5d796360c6d", null ],
+    [ "log_LogFn", "group__Log__C__Datatypes.html#ga22962ef66fd59db9fc6fe746cd43802f", null ],
+    [ "log_LockFn", "group__Log__C__Datatypes.html#gae6ec444e134355c817f769d2484fce61", null ],
+    [ "log_Level", "group__Log__C__Datatypes.html#gaea98dd9af6733b8d171b2039d23161a6", [
+      [ "LOG_TRACE", "log_8h.html#gaea98dd9af6733b8d171b2039d23161a6a5b76dd51db62558b1952158ba38b723f", null ],
+      [ "LOG_DEBUG", "log_8h.html#gaea98dd9af6733b8d171b2039d23161a6ab9f002c6ffbfd511da8090213227454e", null ],
+      [ "LOG_INFO", "log_8h.html#gaea98dd9af6733b8d171b2039d23161a6a6e98ff471e3ce6c4ef2d75c37ee51837", null ],
+      [ "LOG_WARN", "log_8h.html#gaea98dd9af6733b8d171b2039d23161a6ac8041ffa22bc823d4726701cdb13fc13", null ],
+      [ "LOG_ERROR", "log_8h.html#gaea98dd9af6733b8d171b2039d23161a6a230506cce5c68c3bac5a821c42ed3473", null ],
+      [ "LOG_FATAL", "log_8h.html#gaea98dd9af6733b8d171b2039d23161a6ac630750884d91cb9767ef2200bbb048b", null ]
+    ] ],
+    [ "log_level_string", "log_8h.html#a10736458177293d86f211aadeff89501", null ],
+    [ "_log_set_lock", "log_8h.html#ad7aed24e35798595d0bee442320dbee8", null ],
+    [ "_log_set_level", "log_8h.html#a82bd60a258576e5d4c2fef42eec5117f", null ],
+    [ "_log_set_quiet", "log_8h.html#a4aaf0283046446735001dda906d9d5a6", null ],
+    [ "_log_add_callback", "log_8h.html#a68555b2dc881fa064864b4b5b8c946f4", null ],
+    [ "_log_add_fp", "log_8h.html#a724be281171364e95da80264ac35511b", null ],
+    [ "_log_log", "log_8h.html#aca4609b4b71aff593a92b775e9030358", null ],
+    [ "level_strings", "log_8h.html#a3c28d4a33f3ac2df9e3755241cbd244f", null ],
+    [ "level_colors", "log_8h.html#a8a2ced25981b49f1555d16f390df6006", null ],
+    [ "L", "log_8h.html#a01bf72d8fc6278e481d714ca82ed09a5", null ]
+];

@@ -141,7 +141,7 @@ Data Fields</h2></td></tr>
 <tr class="separator:aed931e5f75fbfa5f0216b301f9aab662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9830f4465293c4af71e569f897319a19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a9830f4465293c4af71e569f897319a19">webhook_id</a></td></tr>
 <tr class="separator:a9830f4465293c4af71e569f897319a19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a078cfa611e1f7aaa852f85c654504e72"><td class="memItemLeft" align="right" valign="top">enum discord_message_types&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a078cfa611e1f7aaa852f85c654504e72">type</a></td></tr>
+<tr class="memitem:a078cfa611e1f7aaa852f85c654504e72"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="docs_2api_2channel_8h.html#a9d5ce4d366c039a34da94bd514a4bced">discord_message_types</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a078cfa611e1f7aaa852f85c654504e72">type</a></td></tr>
 <tr class="separator:a078cfa611e1f7aaa852f85c654504e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7135fe08ea0f33dcf478be9647cbe47f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__message__activity.html">discord_message_activity</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a7135fe08ea0f33dcf478be9647cbe47f">activity</a></td></tr>
 <tr class="separator:a7135fe08ea0f33dcf478be9647cbe47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,25 +167,25 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Initializer:<ul>
-<li><code>discord_message_init(struct discord_message *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a95c3b90014e60b9cc45a22a77caa44af">discord_message_init(struct discord_message *this)</a></code></li>
 </ul>
 </li>
 <li>Cleanup:<ul>
-<li><code>discord_message_cleanup(struct discord_message *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a4ca880949dcb1ad3948ac0ad353b0c87">discord_message_cleanup(struct discord_message *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_message_from_json(const char json[], size_t len, struct discord_message *this)</code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a7c78aae95f6c26bf3b8a754ee82608bc">discord_message_from_json(const char json[], size_t len, struct discord_message *this)</a></code></li>
 <li><code>discord_message_from_jsmnf(jsmnf *root, const char json[], struct discord_message *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_message_to_json(char buf[], size_t size, const struct discord_message *this)</code></li>
-<li><code>discord_message_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_message *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#a01027a3ba5af1cb96db3111fb7e70262">discord_message_to_json(char buf[], size_t size, const struct discord_message *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2channel_8h.html#ac1dc48744e7678d67f39242826033435">discord_message_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_message *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#_a17">audit-log.c</a>, <a class="el" href="ban_8c-example.html#_a9">ban.c</a>, <a class="el" href="channel_8c-example.html#_a8">channel.c</a>, <a class="el" href="components_8c-example.html#_a5">components.c</a>, <a class="el" href="embed_8c-example.html#_a5">embed.c</a>, <a class="el" href="emoji_8c-example.html#_a7">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#_a7">guild-template.c</a>, <a class="el" href="guild_8c-example.html#_a12">guild.c</a>, <a class="el" href="invite_8c-example.html#_a7">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#_a5">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#_a5">pin.c</a>, <a class="el" href="reaction_8c-example.html#_a7">reaction.c</a>, and <a class="el" href="slash-commands_8c-example.html#_a7">slash-commands.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#_a18">audit-log.c</a>, <a class="el" href="ban_8c-example.html#_a10">ban.c</a>, <a class="el" href="channel_8c-example.html#_a9">channel.c</a>, <a class="el" href="components_8c-example.html#_a6">components.c</a>, <a class="el" href="embed_8c-example.html#_a6">embed.c</a>, <a class="el" href="emoji_8c-example.html#_a8">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#_a8">guild-template.c</a>, <a class="el" href="guild_8c-example.html#_a14">guild.c</a>, <a class="el" href="invite_8c-example.html#_a8">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#_a6">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#_a6">pin.c</a>, <a class="el" href="reaction_8c-example.html#_a8">reaction.c</a>, and <a class="el" href="slash-commands_8c-example.html#_a6">slash-commands.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a267238dfae230fffea4832e1101aae51" name="a267238dfae230fffea4832e1101aae51"></a>
@@ -200,7 +200,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >ID of the message </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a39">fetch-messages.c</a>, <a class="el" href="pin_8c-example.html#a19">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a26">reaction.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a41">fetch-messages.c</a>, <a class="el" href="pin_8c-example.html#a20">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a27">reaction.c</a>.</dd>
 </dl>
 
 </div>
@@ -217,7 +217,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >ID of the channel the message was sent in </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a18">channel.c</a>, <a class="el" href="components_8c-example.html#a13">components.c</a>, <a class="el" href="embed_8c-example.html#a15">embed.c</a>, <a class="el" href="emoji_8c-example.html#a26">emoji.c</a>, <a class="el" href="guild_8c-example.html#a46">guild.c</a>, <a class="el" href="pin_8c-example.html#a11">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a25">reaction.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a29">ban.c</a>, <a class="el" href="channel_8c-example.html#a19">channel.c</a>, <a class="el" href="components_8c-example.html#a15">components.c</a>, <a class="el" href="embed_8c-example.html#a17">embed.c</a>, <a class="el" href="emoji_8c-example.html#a28">emoji.c</a>, <a class="el" href="guild_8c-example.html#a50">guild.c</a>, <a class="el" href="pin_8c-example.html#a12">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a26">reaction.c</a>.</dd>
 </dl>
 
 </div>
@@ -234,7 +234,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >ID of the guild the message was sent in </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a38">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a14">ban.c</a>, <a class="el" href="channel_8c-example.html#a14">channel.c</a>, <a class="el" href="emoji_8c-example.html#a24">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a22">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a19">guild.c</a>, <a class="el" href="pin_8c-example.html#a17">pin.c</a>, and <a class="el" href="slash-commands_8c-example.html#a23">slash-commands.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a42">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a15">ban.c</a>, <a class="el" href="channel_8c-example.html#a15">channel.c</a>, <a class="el" href="emoji_8c-example.html#a25">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a24">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a22">guild.c</a>, <a class="el" href="pin_8c-example.html#a18">pin.c</a>, and <a class="el" href="slash-commands_8c-example.html#a25">slash-commands.c</a>.</dd>
 </dl>
 
 </div>
@@ -251,7 +251,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the author of this message (not guaranteed to be a valid user) </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a30">audit-log.c</a>, <a class="el" href="channel_8c-example.html#a9">channel.c</a>, <a class="el" href="components_8c-example.html#a6">components.c</a>, <a class="el" href="embed_8c-example.html#a6">embed.c</a>, <a class="el" href="emoji_8c-example.html#a19">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a37">fetch-messages.c</a>, <a class="el" href="guild_8c-example.html#a13">guild.c</a>, <a class="el" href="invite_8c-example.html#a13">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a6">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a6">pin.c</a>, <a class="el" href="reaction_8c-example.html#a17">reaction.c</a>, and <a class="el" href="slash-commands_8c-example.html#a8">slash-commands.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a33">audit-log.c</a>, <a class="el" href="channel_8c-example.html#a10">channel.c</a>, <a class="el" href="components_8c-example.html#a7">components.c</a>, <a class="el" href="embed_8c-example.html#a7">embed.c</a>, <a class="el" href="emoji_8c-example.html#a20">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a39">fetch-messages.c</a>, <a class="el" href="guild_8c-example.html#a15">guild.c</a>, <a class="el" href="invite_8c-example.html#a14">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a7">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a7">pin.c</a>, <a class="el" href="reaction_8c-example.html#a18">reaction.c</a>, and <a class="el" href="slash-commands_8c-example.html#a7">slash-commands.c</a>.</dd>
 </dl>
 
 </div>
@@ -283,7 +283,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >contents of the message </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a10">ban.c</a>, <a class="el" href="emoji_8c-example.html#a27">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a38">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a18">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a15">guild.c</a>, <a class="el" href="invite_8c-example.html#a21">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a8">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a8">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a27">reaction.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ban_8c-example.html#a11">ban.c</a>, <a class="el" href="emoji_8c-example.html#a29">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a40">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a20">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a17">guild.c</a>, <a class="el" href="invite_8c-example.html#a22">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a9">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a9">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a28">reaction.c</a>.</dd>
 </dl>
 
 </div>
@@ -490,7 +490,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum discord_message_types discord_message::type</td>
+          <td class="memname">enum <a class="el" href="docs_2api_2channel_8h.html#a9d5ce4d366c039a34da94bd514a4bced">discord_message_types</a> discord_message::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -555,7 +555,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >data showing the source of a crosspost, channel follow add, pin, or reply message </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a40">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a42">channel.c</a>.</dd>
 </dl>
 
 </div>
@@ -587,7 +587,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the message associated with the message_reference </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="pin_8c-example.html#a9">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a19">reaction.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="pin_8c-example.html#a10">pin.c</a>, and <a class="el" href="reaction_8c-example.html#a20">reaction.c</a>.</dd>
 </dl>
 
 </div>
@@ -619,7 +619,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >the thread that was started from this message, includes <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a> </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a37">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a39">channel.c</a>.</dd>
 </dl>
 
 </div>

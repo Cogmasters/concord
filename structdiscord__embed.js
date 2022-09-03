@@ -9,5 +9,8 @@ var structdiscord__embed =
     [ "footer", "structdiscord__embed.html#a0abc90561f47fbb15b195ef45a5c6573", null ],
     [ "image", "structdiscord__embed.html#a716918f55c55b5099295b0bde59cddc5", null ],
     [ "thumbnail", "structdiscord__embed.html#ac20a4abd32d152df01aad276e6bf5456", null ],
-    [ "video", "structdiscord__embed.html#a99b82cffe681262a78885639a95da997", null ]
+    [ "video", "structdiscord__embed.html#a99b82cffe681262a78885639a95da997", null ],
+    [ "provider", "structdiscord__embed.html#a835dd79806720eb1f371d3c3f84a64cd", null ],
+    [ "author", "structdiscord__embed.html#ac1c07144b0ff602ac136886c4e43b639", null ],
+    [ "fields", "structdiscord__embed.html#a96c5fba1d04a04a393d72e8e09865ad7", null ]
 ];

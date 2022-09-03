@@ -103,31 +103,58 @@ Collaboration diagram for discord_webhooks:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a73ff7a2543dfe0f5aa6189ea1ad57a35"><td class="memItemLeft" align="right" valign="top"><a id="a73ff7a2543dfe0f5aa6189ea1ad57a35" name="a73ff7a2543dfe0f5aa6189ea1ad57a35"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memitem:a73ff7a2543dfe0f5aa6189ea1ad57a35"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__webhooks.html#a73ff7a2543dfe0f5aa6189ea1ad57a35">size</a></td></tr>
 <tr class="separator:a73ff7a2543dfe0f5aa6189ea1ad57a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf7fca0bef8d04c9309dfc1b6879af01"><td class="memItemLeft" align="right" valign="top"><a id="acf7fca0bef8d04c9309dfc1b6879af01" name="acf7fca0bef8d04c9309dfc1b6879af01"></a>
-struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>array</b></td></tr>
+<tr class="memitem:acf7fca0bef8d04c9309dfc1b6879af01"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__webhooks.html#acf7fca0bef8d04c9309dfc1b6879af01">array</a></td></tr>
 <tr class="separator:acf7fca0bef8d04c9309dfc1b6879af01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
 <li>Cleanup:<ul>
-<li><code>discord_webhooks_cleanup(struct discord_webhooks *this)</code></li>
+<li><code><a class="el" href="docs_2api_2webhook_8h.html#afa8a56573ac0a12314bbde28f3103a7f">discord_webhooks_cleanup(struct discord_webhooks *this)</a></code></li>
 </ul>
 </li>
 <li>JSON Decoder:<ul>
-<li><code>discord_webhooks_from_json(const char json[], size_t len, struct discord_webhooks *this)</code></li>
+<li><code><a class="el" href="docs_2api_2webhook_8h.html#a319b947f9954d309cbcf0f888575bccc">discord_webhooks_from_json(const char json[], size_t len, struct discord_webhooks *this)</a></code></li>
 <li><code>discord_webhooks_from_jsmnf(jsmnf *root, const char json[], struct discord_webhooks *this)</code></li>
 </ul>
 </li>
 <li>JSON Encoder:<ul>
-<li><code>discord_webhooks_to_json(char buf[], size_t size, const struct discord_webhooks *this)</code></li>
-<li><code>discord_webhooks_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_webhooks *this)</code> </li>
+<li><code><a class="el" href="docs_2api_2webhook_8h.html#a6fb1494fd20d7e0cbbb5e9a13f77cdc7">discord_webhooks_to_json(char buf[], size_t size, const struct discord_webhooks *this)</a></code></li>
+<li><code><a class="el" href="docs_2api_2webhook_8h.html#a1dbd850825f4239214e14a5882c85e6b">discord_webhooks_to_jsonb(jsonb *b, char buf[], size_t size, const struct discord_webhooks *this)</a></code> </li>
 </ul>
 </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a73ff7a2543dfe0f5aa6189ea1ad57a35" name="a73ff7a2543dfe0f5aa6189ea1ad57a35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73ff7a2543dfe0f5aa6189ea1ad57a35">&#9670;&nbsp;</a></span>size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_webhooks::size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf7fca0bef8d04c9309dfc1b6879af01" name="acf7fca0bef8d04c9309dfc1b6879af01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf7fca0bef8d04c9309dfc1b6879af01">&#9670;&nbsp;</a></span>array</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a>* discord_webhooks::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>docs/api/<a class="el" href="docs_2api_2webhook_8h_source.html">webhook.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -3,6 +3,9 @@ var voice__connections_8h =
     [ "DISCORD_VOICE_MICROPHONE", "group__DiscordVoiceSpeakingFlags.html#ga4ecc1a7bd7edeb9fd463a33db483dbb3", null ],
     [ "DISCORD_VOICE_SOUNDSHARE", "group__DiscordVoiceSpeakingFlags.html#gad4b69ab68988c7c90ae44ae8a22d7765", null ],
     [ "DISCORD_VOICE_PRIORITY", "group__DiscordVoiceSpeakingFlags.html#ga18a3b5be0979b1ac54dd0c4dc2a2d2b6", null ],
+    [ "JSMN_STRICT", "voice__connections_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
+    [ "JSMN_HEADER", "voice__connections_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
+    [ "JSONB_HEADER", "voice__connections_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
     [ "discord_voice_close_opcodes", "voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8", [
       [ "DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE", "voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8a5aa77d629b32fbdfcecc9e932beb9500", null ],
       [ "DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR", "voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8a81e6f7ac04d50531fb37ac458a24ddad", null ],
