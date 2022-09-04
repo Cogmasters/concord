@@ -196,6 +196,7 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
         struct ua_szbuf_readonly body = ua_info_get_body(info);
         struct jsmnftok message = { 0 };
         double retry_after = 1.0;
+        u64unix_ms wait_ms = 0;
         bool is_global = false;
         jsmn_parser parser;
         jsmntok_t tokens[16];
@@ -222,13 +223,18 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
             }
         }
 
-        req->wait_ms = (int64_t)(1000 * retry_after);
-        if (req->wait_ms < 0) req->wait_ms = 0;
+        if (retry_after > 0) wait_ms = (u64unix_ms)(1000 * retry_after);
 
         logconf_warn(&rqtor->conf,
-                     "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
+                     "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
                      is_global ? "GLOBAL " : "", req->wait_ms, message.len,
                      body.start + message.pos);
+
+        if (is_global)
+            discord_ratelimiter_set_global_timeout(&rqtor->ratelimiter, req->b,
+                                                   wait_ms);
+        else
+            discord_bucket_set_timeout(req->b, wait_ms);
 
         req->code = info->code;
         return true;
@@ -337,10 +343,7 @@ _discord_request_retry(struct discord_requestor *rqtor,
     if (req->retry_attempt++ >= rqtor->retry_limit) return false;
 
     ua_conn_reset(req->conn);
-
-    /* FIXME: wait_ms > 0 should be dealt with aswell */
-    if (req->wait_ms <= 0)
-        discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
+    discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
 
     return true;
 }
