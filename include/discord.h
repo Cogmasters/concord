@@ -158,24 +158,24 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 #include "discord-events.h"
 
 /**
- * @brief Claim ownership of a function parameter provided by Concord
+ * @brief Claim ownership of a resource provided by Concord
  * @see discord_unclaim()
  *
  * @param client the client initialized with discord_init()
- * @param param a function parameter provided by Concord
- * @return pointer to `param` (for one-liners)
+ * @param data a resource provided by Concord
+ * @return pointer to `data` (for one-liners)
  */
-#define discord_claim(client, param) (__discord_claim(client, param), param)
+#define discord_claim(client, data) (__discord_claim(client, data), data)
 void __discord_claim(struct discord *client, const void *data);
 
 /**
- * @brief Unclaim ownership of a function parameter provided by Concord
- * @note this will trigger the cleanup method of the parameter, so this should
+ * @brief Unclaim ownership of a resource provided by Concord
+ * @note this will make the resource eligible for cleanup, so this should
  *      only be called when you no longer plan to use it
  * @see discord_claim()
  *
  * @param client the client initialized with discord_init()
- * @param param a function parameter provided by Concord, that has been
+ * @param data a resource provided by Concord, that has been
  *      previously claimed with discord_claim()
  */
 void discord_unclaim(struct discord *client, const void *data);
