@@ -352,15 +352,18 @@ discord_config_get_field(struct discord *client,
 }
 
 void
-__discord_claim(struct discord *client, const void *param)
+__discord_claim(struct discord *client, const void *data)
 {
-    ASSERT_S(discord_refcounter_claim(&client->refcounter, (void *)param),
-             "Failed attempt to claim non-Concord function parameter");
+    CCORDcode code = discord_refcounter_claim(&client->refcounter, data);
+    VASSERT_S(code == CCORD_OK, "Failed attempt to claim resource (code %d)",
+              code);
 }
 
 void
-discord_unclaim(struct discord *client, const void *param)
+discord_unclaim(struct discord *client, const void *data)
 {
-    ASSERT_S(discord_refcounter_unclaim(&client->refcounter, (void *)param),
-             "Failed attempt to unclaim non-Concord function parameter");
+    CCORDcode code =
+        discord_refcounter_unclaim(&client->refcounter, (void *)data);
+    VASSERT_S(code == CCORD_OK, "Failed attempt to unclaim resource (code %d)",
+              code);
 }
