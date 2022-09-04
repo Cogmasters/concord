@@ -982,24 +982,30 @@ void discord_refcounter_cleanup(struct discord_refcounter *rc);
  * @see discord_refcounter_unclaim()
  *
  * After ownership is claimed `data` will no longer be cleaned automatically,
- *      instead shall be cleaned only when discord_refcounter_unclaim() is
- *      called
+ *      instead shall be cleaned only when the same amount of
+ *      discord_refcounter_unclaim() have been called
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership claimed
- * @return `true` if `data` was found and claimed
+ * @retval CCORD_OK counter for `data` has been incremented
+ * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
  */
-bool discord_refcounter_claim(struct discord_refcounter *rc, const void *data);
+CCORDcode discord_refcounter_claim(struct discord_refcounter *rc,
+                                   const void *data);
 
 /**
  * @brief Unclaim ownership of `data`
  * @see discord_refcounter_claim()
  *
- * This function will have `data` cleanup method be called immediately
+ * This will make the resource eligible for cleanup, so this should only be
+ *      called when you no longer plan to use it
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership unclaimed
- * @return `true` if `data` was found, unclaimed, and free'd
+ * @retval CCORD_OK counter for `data` has been decremented
+ * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_OWNERSHIP `data` has never been discord_claim() 'd
  */
-bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
+CCORDcode discord_refcounter_unclaim(struct discord_refcounter *rc,
+                                     void *data);
 
 /**
  * @brief Increment the reference counter for `ret->data`
@@ -1009,8 +1015,6 @@ bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
  * @param data the data to have its reference counter incremented
  * @retval CCORD_OK counter for `data` has been incremented
  * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has been claimed by client with
- * discord_claim()
  */
 CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
 
@@ -1024,8 +1028,7 @@ CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
  * @param data the data to have its reference counter decremented
  * @retval CCORD_OK counter for `data` has been decremented
  * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has been claimed by client with
- * discord_claim()
+ * @retval CCORD_OWNERSHIP caught attempt to cleanup a claimed resource
  */
 CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 

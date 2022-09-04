@@ -345,8 +345,6 @@ _discord_request_retry(struct discord_requestor *rqtor,
     return true;
 }
 
-/* parse request response and prepare callback that should be triggered
- * at _discord_rest_run_request_callback() */
 CCORDcode
 discord_requestor_info_read(struct discord_requestor *rqtor)
 {
@@ -591,8 +589,7 @@ discord_request_begin(struct discord_requestor *rqtor,
         code = discord_refcounter_incr(&client->refcounter,
                                        (void *)attr->dispatch.keep);
 
-        ASSERT_S(code == CCORD_OK,
-                 "'.keep' data must be a Concord callback parameter");
+        ASSERT_S(code == CCORD_OK, "'.keep' data must be a Concord resource");
     }
     if (attr->dispatch.data
         && CCORD_UNAVAILABLE
