@@ -20,12 +20,12 @@
 #define RATELIMITER_TABLE_FREE_VALUE(_value) free(_value)
 #define RATELIMITER_TABLE_COMPARE(_cmp_a, _cmp_b)                             \
     chash_string_compare(_cmp_a, _cmp_b)
-#define RATELIMITER_TABLE_INIT(route, _key, _value)                     \
-    {                                                                   \
-        size_t _l = strlen(_key) + 1;                                   \
-        ASSERT_NOT_OOB(_l, sizeof(route.key));                          \
-        memcpy(route.key, _key, _l);                                    \
-    }                                                                   \
+#define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
+    {                                                                         \
+        size_t _l = strlen(_key) + 1;                                         \
+        ASSERT_NOT_OOB(_l, sizeof(route.key));                                \
+        memcpy(route.key, _key, _l);                                          \
+    }                                                                         \
     route.bucket = _value
 
 struct _discord_route {
@@ -103,6 +103,15 @@ discord_ratelimiter_build_key(enum http_method method,
     } while (curr[currlen] != '\0');
 }
 
+void
+discord_ratelimiter_set_global_timeout(struct discord_ratelimiter *rl,
+                                       struct discord_bucket *b,
+                                       u64unix_ms wait_ms)
+{
+    *rl->global_wait_tstamp = cog_timestamp_ms() + wait_ms;
+    discord_bucket_set_timeout(b, wait_ms);
+}
+
 #undef KEY_PUSH
 
 /* initialize bucket and assign it to ratelimiter hashtable */
@@ -138,7 +147,7 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
     logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
 
     /* global ratelimiting */
-    rl->global_wait_ms = calloc(1, sizeof *rl->global_wait_ms);
+    rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp);
 
     /* initialize 'singleton' buckets */
     rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
@@ -175,7 +184,7 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
         if (CHASH_FILLED == r->state)
             _discord_bucket_cancel_all(rl, r->bucket);
     }
-    free(rl->global_wait_ms);
+    free(rl->global_wait_tstamp);
     __chash_free(rl, RATELIMITER_TABLE);
 }
 
@@ -189,15 +198,6 @@ _discord_bucket_find(struct discord_ratelimiter *rl, const char key[])
         b = chash_lookup(rl, key, b, RATELIMITER_TABLE);
     }
     return b;
-}
-
-/* return ratelimit timeout timestamp for this bucket */
-u64unix_ms
-discord_bucket_get_timeout(struct discord_ratelimiter *rl,
-                           struct discord_bucket *b)
-{
-    u64unix_ms reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
-    return (*rl->global_wait_ms > reset) ? *rl->global_wait_ms : reset;
 }
 
 static void
@@ -215,21 +215,24 @@ _discord_bucket_try_timeout(struct discord_ratelimiter *rl,
                             struct discord_bucket *b)
 {
     struct discord *client = CLIENT(rl, rest.requestor.ratelimiter);
-    int64_t delay_ms = (int64_t)(b->reset_tstamp - cog_timestamp_ms());
+    const u64unix_ms reset_tstamp = (*rl->global_wait_tstamp > b->reset_tstamp)
+                                        ? *rl->global_wait_tstamp
+                                        : b->reset_tstamp;
+    int64_t wait_ms = (int64_t)(reset_tstamp - cog_timestamp_ms());
 
-    if (delay_ms < 0) delay_ms = 0;
+    if (wait_ms < 0) wait_ms = 0;
     b->busy_req = DISCORD_BUCKET_TIMEOUT;
 
     _discord_timer_ctl(client, &client->rest.timers,
                        &(struct discord_timer){
                            .on_tick = &_discord_bucket_wake_cb,
                            .data = b,
-                           .delay = delay_ms,
+                           .delay = wait_ms,
                            .flags = DISCORD_TIMER_DELETE_AUTO,
                        });
 
     logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
-                 b->hash, delay_ms);
+                 b->hash, wait_ms);
 }
 
 /* attempt to find a bucket associated key */
@@ -312,7 +315,7 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
                                  ua_info_get_header(info, "x-ratelimit-reset"),
                              reset_after = ua_info_get_header(
                                  info, "x-ratelimit-reset-after");
-    u64unix_ms now = cog_timestamp_ms();
+    const u64unix_ms now = cog_timestamp_ms();
 
     b->remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1L;
 
@@ -324,7 +327,7 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
             now + (u64unix_ms)(1000 * strtod(reset_after.start, NULL));
 
         if (global.size) /* lock all buckets */
-            *rl->global_wait_ms = reset_tstamp;
+            *rl->global_wait_tstamp = reset_tstamp;
         else /* lock single bucket, timeout at discord_rest_run() */
             b->reset_tstamp = reset_tstamp;
     }
@@ -448,4 +451,12 @@ discord_bucket_request_unselect(struct discord_ratelimiter *rl,
     }
     b->busy_req = NULL;
     req->b = NULL;
+}
+
+void
+discord_bucket_set_timeout(struct discord_bucket *b, u64unix_ms wait_ms)
+{
+    b->remaining = 0;
+    b->reset_tstamp = cog_timestamp_ms() + wait_ms;
+    b->busy_req = NULL;
 }
