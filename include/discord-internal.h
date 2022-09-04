@@ -220,7 +220,7 @@ struct discord_ratelimiter {
     struct discord_bucket *miss;
 
     /* client-wide global ratelimiting */
-    u64unix_ms *global_wait_ms;
+    u64unix_ms *global_wait_tstamp;
 
     /** bucket queues */
     struct {
@@ -275,6 +275,18 @@ void discord_ratelimiter_build(struct discord_ratelimiter *rl,
                                const char key[],
                                struct ua_info *info);
 
+/**
+ * @brief Update global ratelimiting value
+ * @todo check if all pending buckets must be unset
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket bucket that received the global ratelimiting notice
+ * @param wait_ms the amount of time that all buckets should wait for
+ */
+void discord_ratelimiter_set_global_timeout(struct discord_ratelimiter *rl,
+                                            struct discord_bucket *bucket,
+                                            u64unix_ms wait_ms);
+
 /** @brief The Discord bucket for handling per-group ratelimits */
 struct discord_bucket {
     /** the hash associated with the bucket's ratelimiting group */
@@ -302,14 +314,13 @@ struct discord_bucket {
 };
 
 /**
- * @brief Return bucket timeout timestamp
+ * @brief Set bucket timeout
  *
- * @param rl the handle initialized with discord_ratelimiter_init()
  * @param bucket the bucket to be checked for time out
- * @return the timeout timestamp
+ * @param wait_ms how long the bucket should wait for
  */
-u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
-                                      struct discord_bucket *bucket);
+void discord_bucket_set_timeout(struct discord_bucket *bucket,
+                                u64unix_ms wait_ms);
 
 /**
  * @brief Get a `struct discord_bucket` assigned to `key`
@@ -1142,7 +1153,6 @@ bool discord_message_commands_try_perform(
 
 /**
  * @brief The Discord Cache control handler
- * 
  */
 struct discord_cache {
     struct _discord_cache_data *data;
