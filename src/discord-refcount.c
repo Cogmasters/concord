@@ -42,6 +42,8 @@ struct _discord_refvalue {
     bool should_free;
     /** whether cleanup expects a client parameter */
     bool expects_client;
+    /** how many times this resource has been discord_claim() 'd */
+    int claims;
 };
 
 struct _discord_ref {
@@ -117,40 +119,90 @@ _discord_refcounter_contains(struct discord_refcounter *rc, const void *data)
     return ret;
 }
 
-bool
-discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
+static CCORDcode
+_discord_refcounter_incr_no_lock(struct discord_refcounter *rc, void *data)
 {
-    bool ret = false;
-
-    pthread_mutex_lock(rc->g_lock);
+    CCORDcode code = CCORD_UNAVAILABLE;
     if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
-        value->visits = -1;
-        ret = true;
+        if (value->visits == INT_MAX) {
+            logconf_error(&rc->conf, "Can't increment any further: Overflow");
+        }
+        else {
+            ++value->visits;
+            code = CCORD_OK;
+        }
     }
-    pthread_mutex_unlock(rc->g_lock);
-
-    return ret;
+    return code;
 }
 
-bool
-discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
+static CCORDcode
+_discord_refcounter_decr_no_lock(struct discord_refcounter *rc, void *data)
 {
-    bool ret = false;
+    CCORDcode code = CCORD_UNAVAILABLE;
+    if (_discord_refcounter_contains(rc, data)) {
+        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
+
+        if (value->visits < value->claims) {
+            logconf_fatal(&rc->conf,
+                          "(Internal Error) There shouldn't be more visits "
+                          "than claims!");
+        }
+        else if (--value->visits > 0)
+            code = CCORD_OK;
+        else {
+            if (value->claims != 0) {
+                logconf_fatal(&rc->conf, "(Internal Error) Caught attempt to "
+                                         "cleanup claimed resource!");
+                ++value->visits;
+                code = CCORD_OWNERSHIP;
+            }
+            else {
+                _discord_refvalue_delete(rc, data);
+                code = CCORD_OK;
+            }
+        }
+    }
+    return code;
+}
+
+CCORDcode
+discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
+{
+    CCORDcode code = CCORD_UNAVAILABLE;
 
     pthread_mutex_lock(rc->g_lock);
     if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
-        if (value->visits == -1) {
-            _discord_refvalue_delete(rc, data);
-            ret = true;
+        ++value->claims;
+        code = _discord_refcounter_incr_no_lock(rc, (void *)data);
+    }
+    pthread_mutex_unlock(rc->g_lock);
+    return code;
+}
+
+CCORDcode
+discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
+{
+    CCORDcode code = CCORD_UNAVAILABLE;
+
+    pthread_mutex_lock(rc->g_lock);
+    if (_discord_refcounter_contains(rc, data)) {
+        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
+
+        if (0 == value->claims) {
+            logconf_error(&rc->conf, "Resource not unclaimable");
+        }
+        else {
+            --value->claims;
+            code = _discord_refcounter_decr_no_lock(rc, data);
         }
     }
     pthread_mutex_unlock(rc->g_lock);
 
-    return ret;
+    return code;
 }
 
 void
@@ -189,20 +241,9 @@ discord_refcounter_add_client(struct discord_refcounter *rc,
 CCORDcode
 discord_refcounter_incr(struct discord_refcounter *rc, void *data)
 {
-    CCORDcode code = CCORD_OWNERSHIP;
-
+    CCORDcode code;
     pthread_mutex_lock(rc->g_lock);
-    if (!_discord_refcounter_contains(rc, data)) {
-        code = CCORD_UNAVAILABLE;
-    }
-    else {
-        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
-
-        if (value->visits != -1) {
-            ++value->visits;
-            code = CCORD_OK;
-        }
-    }
+    code = _discord_refcounter_incr_no_lock(rc, data);
     pthread_mutex_unlock(rc->g_lock);
     return code;
 }
@@ -210,21 +251,9 @@ discord_refcounter_incr(struct discord_refcounter *rc, void *data)
 CCORDcode
 discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
-    CCORDcode code = CCORD_OWNERSHIP;
-
+    CCORDcode code;
     pthread_mutex_lock(rc->g_lock);
-    if (!_discord_refcounter_contains(rc, data)) {
-        code = CCORD_UNAVAILABLE;
-    }
-    else {
-        struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
-        if (value->visits != -1) {
-            if (0 == --value->visits) {
-                _discord_refvalue_delete(rc, data);
-            }
-            code = CCORD_OK;
-        }
-    }
+    code = _discord_refcounter_decr_no_lock(rc, data);
     pthread_mutex_unlock(rc->g_lock);
     return code;
 }
