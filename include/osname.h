@@ -237,7 +237,7 @@ enum OSClass {
 #endif
 
 #if defined __EDC_LE
-#if not defined __VM__ || not defined __MVS__
+#if !defined __VM__ || !defined __MVS__
 #define OSNAME "VSE"
 #define OSCLASS S370
 #endif
@@ -253,9 +253,9 @@ enum OSClass {
 #define OSCLASS OTHER
 #endif
 
-#if defined __MACH__  
-#if not defined __APPLE__
-#if not defined __osf__ || not defined __osf
+#if defined __MACH__
+#if !defined __APPLE__
+#if !defined __osf__ || !defined __osf
 #define OSNAME "NeXTSTEP"
 #define OSCLASS UNIX
 #endif
