@@ -17,62 +17,62 @@ enum OSClass {
 	OTHER
 };
 
-#if defined _AIX 
+#ifdef _AIX 
 #define OSNAME "AIX"
 #define OSCLASS UNIX
 #endif
 
-#if defined __ANDROID__
+#ifdef __ANDROID__
 #define OSNAME "Android"
 #define OSCLASS UNIX
 #endif
 
-#if defined UTS
+#ifdef UTS
 #define OSNAME "UTS"
 #define OSCLASS UNIX
 #endif
 
-#if defined aegis
+#ifdef aegis
 #define OSNAME "Aegis"
 #define OSCLASS UNIX
 #endif
 
-#if defined __BEOS__
+#ifdef __BEOS__
 #define OSNAME "BeOS"
 #define OSCLASS OTHER
 #endif
 
-#if defined __FreeBSD__
+#ifdef __FreeBSD__
 #define OSNAME "FreeBSD"
 #define OSCLASS UNIX
 #endif
 
-#if defined __NetBSD__
+#ifdef __NetBSD__
 #define OSNAME "NetBSD"
 #define OSCLASS UNIX
 #endif
 
-#if defined __OpenBSD__
+#ifdef __OpenBSD__
 #define OSNAME "OpenBSD"
 #define OSCLASS UNIX
 #endif
 
-#if defined __bsdi__
+#ifdef __bsdi__
 #define OSNAME "BSD/OS"
 #define OSCLASS UNIX
 #endif
 
-#if defined __DragonFly__
+#ifdef __DragonFly__
 #define OSNAME "DragonFly BSD"
 #define OSCLASS UNIX
 #endif
 
-#if defined __convex__
+#ifdef __convex__
 #define OSNAME "ConvexOS"
 #define OSCLASS UNIX
 #endif
 
-#if defined __CYGWIN__
+#ifdef __CYGWIN__
 #define OSNAME "Windows NT (Cygwin)"
 #define OSCLASS UNIX
 #endif
@@ -87,17 +87,17 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined __ECOS
+#ifdef __ECOS
 #define OSNAME "eCos"
 #define OSCLASS OTHER
 #endif
 
-#if defined __EMX__
+#ifdef __EMX__
 #define OSNAME "OS/2 (EMX)"
 #define OSCLASS UNIX
 #endif
 
-#if defined __gnu_hurd__
+#ifdef __gnu_hurd__
 #define OSNAME "GNU/Hurd"
 #define OSCLASS UNIX
 #endif
@@ -112,7 +112,7 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined __OS400__
+#ifdef __OS400__
 #define OSNAME "OS/400"
 #define OSCLASS OTHER
 #endif
@@ -122,12 +122,12 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined __INTEGRITY
+#ifdef __INTEGRITY
 #define OSNAME "INTEGRITY"
 #define OSCLASS OTHER
 #endif
 
-#if defined __Lynx__
+#ifdef __Lynx__
 #define OSNAME "LynxOS"
 #define OSCLASS OTHER
 #endif
@@ -137,9 +137,11 @@ enum OSClass {
 #define OSTYPE MACINTOSH
 #endif
 
-#if defined __APPLE__ && defined __MACH__
+#ifdef __APPLE__
+#ifdef __MACH
 #define OSNAME "Mac OS X"
 #define OSCLASS UNIX
+#endif
 #endif
 
 #if defined __OS9000 || defined _OSK
@@ -147,7 +149,7 @@ enum OSClass {
 #define OSCLASS OTHER
 #endif
 
-#if defined __MORPHOS__
+#ifdef __MORPHOS__
 #define OSNAME "MorphOS"
 #define OSCLASS AMIGA
 #endif
@@ -167,7 +169,7 @@ enum OSClass {
 #define OSCLASS DOS
 #endif
 
-#if defined __TANDEM
+#ifdef __TANDEM
 #define OSNAME "NonStop OS"
 #define OSCLASS OTHER
 #endif
@@ -177,7 +179,7 @@ enum OSClass {
 #define OSCLASS OS2
 #endif
 
-#if defined EPLAN9
+#ifdef EPLAN9
 #define OSNAME "Plan 9"
 #define OSCLASS OTHER
 #endif
@@ -187,7 +189,7 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined M_I386
+#ifdef M_I386
 #define OSNAME "SCO UNIX"
 #define OSCLASS UNIX
 #endif
@@ -201,7 +203,7 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined __VOS__
+#ifdef __VOS__
 #define OSNAME "VOS"
 #define OSCLASS OTHER
 #endif
@@ -226,18 +228,22 @@ enum OSClass {
 #define OSCLASS VMS
 #endif
 
-#if defined __VM__
+#ifdef __VM__
 #define OSNAME "VM/CMS"
 #define OSCLASS S370
 #endif
 
-#if defined __MVS__
+#ifdef __MVS__
 #define OSNAME "MVS"
 #define OSCLASS S370
 #endif
 
-#if defined __EDC_LE
-#if not defined __VM__ || not defined __MVS__
+#ifdef __EDC_LE
+#ifndef __VM__
+#define OSNAME "VSE"
+#define OSCLASS S370
+#endif
+#ifndef __MVS__ 
 #define OSNAME "VSE"
 #define OSCLASS S370
 #endif
@@ -253,16 +259,14 @@ enum OSClass {
 #define OSCLASS OTHER
 #endif
 
-#if defined __MACH__  
-#if not defined __APPLE__
-#if not defined __osf__ || not defined __osf
+#ifdef __MACH__  
+#ifndef __APPLE__
 #define OSNAME "NeXTSTEP"
 #define OSCLASS UNIX
 #endif
 #endif
-#endif
 
-#if defined pyr
+#ifdef pyr
 #define OSNAME "DC/OSx"
 #define OSCLASS UNIX
 #endif
@@ -272,7 +276,7 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined _UNICOS
+#ifdef _UNICOS
 #define OSNAME "UNICOS"
 #define OSCLASS UNIX
 #endif
@@ -282,7 +286,7 @@ enum OSClass {
 #define OSCLASS UNIX
 #endif
 
-#if defined _UWIN
+#ifdef _UWIN
 #define OSNAME "Windows NT (U/Win)"
 #define OSCLASS WINDOWS
 #endif
@@ -292,7 +296,7 @@ enum OSClass {
 #define OSCLASS OTHER
 #endif
 
-#if defined _WIN32_WCE
+#ifdef _WIN32_WCE
 #define OSNAME "Windows CE"
 #define OSCLASS WINDOWS
 #endif
@@ -302,7 +306,7 @@ enum OSClass {
 #define OSCLASS WINDOWS
 #endif
 
-#if defined _WIN16
+#ifdef _WIN16
 #define OSNAME "Windows 3.x"
 #define OSCLASS WINDOWS
 #endif
