@@ -114,8 +114,8 @@ PUB_STRUCT(discord_guild)
   /** id of owner */
     FIELD_SNOWFLAKE(owner_id)
   /** total permissions for the user in the guild (excludes overwrites) */
-  COND_WRITE(self->permissions != NULL)
-    FIELD_PTR(permissions, char, *)
+  COND_WRITE(self->permissions != 0)
+    FIELD_BITMASK(permissions)
   COND_END
   /** id of afk channel */
     FIELD_SNOWFLAKE(afk_channel_id)
@@ -338,8 +338,8 @@ PUB_STRUCT(discord_guild_member)
     FIELD(pending, bool, false)
   /** total permission of the member in the channel, including overwrites,
        returned when in the interaction object */
-  COND_WRITE(self->permissions != NULL)
-    FIELD_PTR(permissions, char, *)
+  COND_WRITE(self->permissions != 0)
+    FIELD_BITMASK(permissions)
   COND_END
   /** when the user's timeout will expire and the user will be able to
        communicate in the guild again, null or a time in the past if the
@@ -757,7 +757,7 @@ PUB_STRUCT(discord_create_guild_role)
   /** name of the role */
     FIELD_PTR(name, char, *)
   /** `@everyone` permissions in guild */
-    FIELD_SNOWFLAKE(permissions)
+    FIELD_BITMASK(permissions)
   /** RGB color value */
     FIELD(color, int, 0)
   /** whether the role should be displayed separately in the sidebar */
@@ -796,7 +796,7 @@ PUB_STRUCT(discord_modify_guild_role)
   /** name of the role */
     FIELD_PTR(name, char, *)
   /** bitwise value of the enabled/disabled permissions */
-    FIELD_SNOWFLAKE(permissions)
+    FIELD_BITMASK(permissions)
   /** RGB color value */
     FIELD(color, int, 0)
   /** whether the role should be displayed separately in the sidebar */
