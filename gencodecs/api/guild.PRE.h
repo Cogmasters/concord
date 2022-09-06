@@ -694,23 +694,36 @@ STRUCT_END
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_member)
   /** value to set user's nickname to */
+  COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
+  COND_END
   /** array of role IDs the member is assigned */
+  COND_WRITE(self->roles != NULL)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
+  COND_END
   /** whether the user is muted in voice channels. will return a
        @ref CCORD_HTTP_ERROR (400) if the user is not in a voice channel */
+  COND_WRITE(self->channel_id != 0)
     FIELD(mute, bool, false)
+  COND_END
   /** whether the user is deafened in voice channels. will return a
        @ref CCORD_HTTP_ERROR (400) if the user is not in a voice channel */
+  COND_WRITE(self->channel_id != 0)
     FIELD(deaf, bool, false)
+  COND_END
   /** ID of channel to move user to (if they are connect to voice) */
+  COND_WRITE(self->channel_id != 0)
     FIELD_SNOWFLAKE(channel_id)
-  /* TODO: should be able to write `null` */
-  /** when the user's timeout will expire and the user will be able to
-       communicate in the guild again (up to 28 days in the future), set
-       to NULL to remove timeout. WIll throw a @ref CCORD_HTTP_ERROR (403)
-       error if the user has the `ADMINISTRATOR` permission or is the owner
-       of the guild */
+  COND_END
+  /** 
+    @todo should be able to write `null`
+
+    when the user's timeout will expire and the user will be able to
+      communicate in the guild again (up to 28 days in the future), set
+      to NULL to remove timeout. Will throw a @ref CCORD_HTTP_ERROR (403)
+      error if the user has the `ADMINISTRATOR` permission or is the owner
+      of the guild
+  */
   COND_WRITE(self->communication_disabled_until != 0)
     FIELD_TIMESTAMP(communication_disabled_until)
   COND_END
