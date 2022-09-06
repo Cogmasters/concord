@@ -19,6 +19,13 @@ PUB_LIST(snowflakes)
 LIST_END
 #endif
 
+/** @CCORD_pub_list{bitmasks} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_LIST(bitmasks)
+    LISTTYPE(u64bitmask)
+LIST_END
+#endif
+
 /** @CCORD_pub_list{integers} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(integers)
