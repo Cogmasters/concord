@@ -180,7 +180,7 @@ PUB_STRUCT(discord_channel)
   /** computed permissions for the invoking user in the channel, including
        overwrites, only included when part of the `resolved` data received
        on a application command interaction */
-    FIELD_PTR(permissions, char, *)
+    FIELD_BITMASK(permissions)
 STRUCT_END
 #endif
 
@@ -328,9 +328,9 @@ STRUCT(discord_overwrite)
   /** either 0 (role) or 1 (member) */
     FIELD(type, int, 0)
   /** @ref DiscordPermissions bit set */
-    FIELD_SNOWFLAKE(allow)
+    FIELD_BITMASK(allow)
   /** @ref DiscordPermissions bit set */
-    FIELD_SNOWFLAKE(deny)
+    FIELD_BITMASK(deny)
 STRUCT_END
 #endif
 
@@ -698,7 +698,7 @@ PUB_STRUCT(discord_modify_channel)
     FIELD(user_limit, int, 0)
   COND_END
   /** channel or category-specific permissions */
-  COND_WRITE(self->permission_overwrites != NULL)
+  COND_WRITE(self->permission_overwrites != 0)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   COND_END
   /** ID of the new parent category for a channel */
