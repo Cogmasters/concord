@@ -33,7 +33,7 @@ STRUCT(discord_team_member)
     FIELD_ENUM(membership_state, discord_membership_state)
   /** will always be \"[\"*\"]\" */
   COND_WRITE(self->permissions != NULL)
-    FIELD_STRUCT_PTR(permissions, strings, *)
+    FIELD_STRUCT_PTR(permissions, bitmasks, *)
   COND_END
   /** the ID of the parent team of which they are a member */
     FIELD_SNOWFLAKE(team_id)
