@@ -230,21 +230,18 @@ _discord_on_heartbeat_timeout(struct discord *client,
     (void)client;
     struct discord_gateway *gw = timer->data;
 
-    if (~timer->flags & DISCORD_TIMER_CANCELED) {
-        if (CCORD_OK == discord_gateway_perform(gw)
-            && ~gw->session->status & DISCORD_SESSION_SHUTDOWN
-            && gw->session->is_ready)
-        {
-            discord_gateway_send_heartbeat(gw, gw->payload.seq);
-        }
-        const u64unix_ms next_hb =
-            gw->timer->hbeat_last + (u64unix_ms)gw->timer->hbeat_interval;
-
-        timer->interval =
-            (int64_t)(next_hb) - (int64_t)discord_timestamp(client);
-        if (timer->interval < 1) timer->interval = 1;
-        timer->repeat = 1;
+    if (CCORD_OK == discord_gateway_perform(gw)
+        && ~gw->session->status & DISCORD_SESSION_SHUTDOWN
+        && gw->session->is_ready)
+    {
+        discord_gateway_send_heartbeat(gw, gw->payload.seq);
     }
+    const u64unix_ms next_hb =
+        gw->timer->hbeat_last + (u64unix_ms)gw->timer->hbeat_interval;
+
+    timer->interval = (int64_t)(next_hb) - (int64_t)discord_timestamp(client);
+    if (timer->interval < 1) timer->interval = 1;
+    timer->repeat = 1;
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -279,7 +276,7 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
         gw->timer->hbeat_last = gw->timer->now;
         if (!gw->timer->hbeat_timer)
             gw->timer->hbeat_timer = discord_internal_timer(
-                CLIENT(gw, gw), _discord_on_heartbeat_timeout, gw,
+                CLIENT(gw, gw), _discord_on_heartbeat_timeout, NULL, gw,
                 gw->timer->hbeat_interval);
     }
     else {

@@ -162,13 +162,16 @@ unsigned discord_internal_timer_ctl(struct discord *client,
  *      completion
  *
  * @param client the client created with discord_init()
- * @param cb the callback that should be called when timer triggers
+ * @param on_tick_cb the callback that should be called when timer triggers
+ * @param on_status_changed_cb the callback for status updates, such as
+ * DISCORD_TIMER_CANCELED
  * @param data user data
  * @param delay delay before timer should start in milliseconds
  * @return the id of the timer
  */
 unsigned discord_internal_timer(struct discord *client,
-                                discord_ev_timer cb,
+                                discord_ev_timer on_tick_cb,
+                                discord_ev_timer on_status_changed_cb,
                                 void *data,
                                 int64_t delay);
 
