@@ -88,15 +88,6 @@ struct discord;
 /** @addtogroup ConcordError
  *  @{ */
 
-/** Received a JSON error message */
-#define CCORD_DISCORD_JSON_CODE 1
-/** Bad authentication token */
-#define CCORD_DISCORD_BAD_AUTH 2
-/** Being ratelimited */
-#define CCORD_DISCORD_RATELIMIT 3
-/** Couldn't establish connection to Discord */
-#define CCORD_DISCORD_CONNECTION 4
-
 /**
  * @brief Return a Concord's error
  * @note used to log and return an error
