@@ -560,7 +560,7 @@ discord_request_begin(struct discord_requestor *rqtor,
     struct discord *client = CLIENT(rest, rest);
 
     struct discord_request *req = _discord_request_get(rqtor);
-    CCORDcode code = CCORD_OK;
+    CCORDcode code;
 
     req->method = method;
     memcpy(req, attr, sizeof *attr);
@@ -605,6 +605,7 @@ discord_request_begin(struct discord_requestor *rqtor,
     io_poller_wakeup(rest->io_poller);
     if (!req->dispatch.sync) {
         pthread_mutex_unlock(&rqtor->qlocks->pending);
+        code = CCORD_PENDING;
     }
     else { /* wait for request's completion if sync mode is active */
         pthread_cond_t temp_cond = PTHREAD_COND_INITIALIZER;
@@ -612,9 +613,7 @@ discord_request_begin(struct discord_requestor *rqtor,
         pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
         req->cond = NULL;
         pthread_mutex_unlock(&rqtor->qlocks->pending);
-
         code = _discord_request_dispatch_response(rqtor, req);
     }
-
     return code;
 }
