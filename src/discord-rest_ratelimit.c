@@ -218,7 +218,7 @@ _discord_bucket_try_timeout(struct discord_ratelimiter *rl,
 
     _discord_timer_ctl(client, &client->rest.timers,
                        &(struct discord_timer){
-                           .cb = &_discord_bucket_wake_cb,
+                           .on_tick = &_discord_bucket_wake_cb,
                            .data = b,
                            .delay = delay_ms,
                            .flags = DISCORD_TIMER_DELETE_AUTO,
