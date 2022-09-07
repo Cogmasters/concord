@@ -7,33 +7,45 @@
  *  @brief Concord error codes and meaning
  *  @{ */
 
-/** the error code datatype */
-typedef int CCORDcode;
-
-/** action was a success */
-#define CCORD_OK 0
-/** request wasn't succesful */
-#define CCORD_HTTP_CODE -1
-/** no response came through from curl */
-#define CCORD_CURL_NO_RESPONSE -2
-/** received a non-standard http code */
-#define CCORD_UNUSUAL_HTTP_CODE -3
-/** bad value for parameter */
-#define CCORD_BAD_PARAMETER -4
-/** internal failure when encoding or decoding JSON */
-#define CCORD_BAD_JSON -5
-/** curl's easy handle internal error */
-#define CCORD_CURLE_INTERNAL -6
-/** curl's multi handle internal error */
-#define CCORD_CURLM_INTERNAL -7
-/** attempt to initialize globals more than once */
-#define CCORD_GLOBAL_INIT -8
-/** couldn't perform action because of resource's ownership issues */
-#define CCORD_OWNERSHIP -9
-/** couldn't perform action because resource is unavailable */
-#define CCORD_UNAVAILABLE -10
-/** couldn't enqueue worker thread (queue is full) */
-#define CCORD_FULL_WORKER -11
+typedef enum CCORDcode {
+    /** couldn't enqueue worker thread (queue is full) */
+    CCORD_FULL_WORKER = -11,
+    /** couldn't perform action because resource is unavailable */
+    CCORD_UNAVAILABLE = -10,
+    /** couldn't perform action because of resource's ownership issues */
+    CCORD_OWNERSHIP = -9,
+    /** attempt to initialize globals more than once */
+    CCORD_GLOBAL_INIT = -8,
+    /** curl's multi handle internal error */
+    CCORD_CURLM_INTERNAL = -7,
+    /** curl's easy handle internal error */
+    CCORD_CURLE_INTERNAL = -6,
+    /** internal failure when encoding or decoding JSON */
+    CCORD_BAD_JSON = -5,
+    /** bad value for parameter */
+    CCORD_BAD_PARAMETER = -4,
+    /** received a non-standard http code */
+    CCORD_UNUSUAL_HTTP_CODE = -3,
+    /** no response came through from curl */
+    CCORD_CURL_NO_RESPONSE = -2,
+    /** request wasn't succesful */
+    CCORD_HTTP_CODE = -1,
+    /** action was a success */
+    CCORD_OK = 0,
+    /**
+     * action is pending (ex: request has been enqueued and will be performed
+     *      later)
+     */
+    CCORD_PENDING,
+    /** received a JSON error message */
+    CCORD_DISCORD_JSON_CODE = 100,
+    /** bad authentication token */
+    CCORD_DISCORD_BAD_AUTH,
+    /** being ratelimited */
+    CCORD_DISCORD_RATELIMIT,
+    /** couldn't establish connection to Discord */
+    CCORD_DISCORD_CONNECTION,
+} CCORDcode;
 
 /** @} ConcordError */
 
