@@ -8,7 +8,8 @@
 static void
 discord_wake_timer_cb(struct discord *client, struct discord_timer *timer)
 {
-    if (~timer->flags & DISCORD_TIMER_CANCELED && client->wakeup_timer.cb)
+    (void)timer;
+    if (client->wakeup_timer.cb)
         client->wakeup_timer.cb(client);
 }
 
@@ -18,7 +19,7 @@ discord_set_next_wakeup(struct discord *client, int64_t delay)
     unsigned id =
         discord_internal_timer_ctl(client, &(struct discord_timer){
                                                .id = client->wakeup_timer.id,
-                                               .cb = discord_wake_timer_cb,
+                                               .on_tick = discord_wake_timer_cb,
                                                .delay = delay,
                                            });
     client->wakeup_timer.id = id;
@@ -32,7 +33,7 @@ discord_set_on_wakeup(struct discord *client,
     if (client->wakeup_timer.id) {
         discord_internal_timer_ctl(client, &(struct discord_timer){
                                                .id = client->wakeup_timer.id,
-                                               .cb = discord_wake_timer_cb,
+                                               .on_tick = discord_wake_timer_cb,
                                                .delay = -1,
                                            });
     }

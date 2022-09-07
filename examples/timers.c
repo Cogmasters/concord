@@ -7,47 +7,43 @@
 #include "log.h"
 
 static void
-print_timer_info(struct discord_timer *timer)
+print_timer_info(struct discord_timer *timer, const char *name)
 {
-    printf("Timer id:%u flags:%i "
+    printf("Timer '%s' id:%u flags:%i "
            "delay:%" PRIi64 " interval:%" PRIi64 " repeat:%" PRIi64 "\n",
-           timer->id, timer->flags, timer->delay, timer->interval,
+           name, timer->id, timer->flags, timer->delay, timer->interval,
            timer->repeat);
 }
 
 static void
-one_shot_timer_cb(struct discord *client, struct discord_timer *timer)
+on_timer_tick(struct discord *client, struct discord_timer *timer)
 {
-    print_timer_info(timer);
-    if (~timer->flags & DISCORD_TIMER_CANCELED) {
-        // if timer is not canceled
-        puts(timer->data);
+    print_timer_info(timer, "on_timer_tick");
 
-        // timers can be updated in the callback (see below)
-        if (0) {
-            timer->interval += 100;
-            timer->repeat = 1;
-            return; // skip free(timer->data);
-        }
+    if (timer->repeat == 1) {
+        puts("Canceling repeating timer.");
+        discord_timer_cancel(client, timer->id);
     }
-    else {
-        puts("ONE SHOT TIMER CANCELED");
-    }
-    free(timer->data);
 }
 
 static void
-repeating_timer_cb(struct discord *client, struct discord_timer *timer)
+on_timer_status_changed(struct discord *client, struct discord_timer *timer)
 {
-    print_timer_info(timer);
+    print_timer_info(timer, "on_timer_status_changed");
+}
+
+static void
+use_same_function(struct discord *client, struct discord_timer *timer)
+{
+    print_timer_info(timer, "use_same_function");
+    if (timer->flags & DISCORD_TIMER_TICK) {
+        puts("TICK");
+    }
+
     if (timer->flags & DISCORD_TIMER_CANCELED) {
-        printf("TIMER WITH ID %u CANCELED\n", timer->id);
-        return;
+        puts("CANCELED");
     }
-    printf("SHUTTING DOWN IN %" PRIi64 " SECONDS\n", timer->repeat);
-    if (!timer->repeat) {
-        discord_shutdown(client);
-    }
+    free(timer->data);
 }
 
 int
@@ -57,18 +53,19 @@ main(int argc, char *argv[])
     ccord_global_init();
     struct discord *client = discord_config_init(config_file);
 
-    discord_timer(client, one_shot_timer_cb, strdup("Hello World"), 1000);
-    discord_timer(client, one_shot_timer_cb, strdup("Hello World!!!!!!"),
-                  5000);
+    for (int i = 0; i < 10; i++)
+        // one shot auto deleting timer
+        discord_timer(client, on_timer_tick, NULL, NULL, i * 1000);
 
-    // start a one shot timer that will never get a chance to run
-    discord_timer(client, one_shot_timer_cb, strdup("Hello World"), 15000);
+    // repeating auto deleting timer
+    discord_timer_interval(client, on_timer_tick, on_timer_status_changed,
+                           NULL, 0, 1000, 10);
 
-    discord_timer_interval(client, repeating_timer_cb, NULL, 0, 1000, 10);
-
-    // start 3 timers that will never get a chance to run
-    for (int i = 0; i < 3; i++)
-        discord_timer(client, repeating_timer_cb, NULL, 20 * 1000);
+    discord_timer(client, use_same_function, use_same_function, malloc(1024),
+                  1000);
+    unsigned id_to_cancel = discord_timer(
+        client, use_same_function, use_same_function, malloc(1024), 1000);
+    discord_timer_cancel(client, id_to_cancel);
 
     discord_run(client);
 
