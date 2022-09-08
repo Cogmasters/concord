@@ -382,10 +382,10 @@ struct discord_timer {
     unsigned id;
     /** the flags used to manipulate the timer */
     enum discord_timer_flags flags;
-    /** the callback that should be called when timer triggers */
+    /** (nullable) the callback that should be called when timer triggers */
     discord_ev_timer on_tick;
-    /** the callback that should be called when an event happens, such as
-     * DISCORD_TIMER_CANCELED*/
+    /** (nullable) the callback for status updates timer->flags
+     * will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE */
     discord_ev_timer on_status_changed;
     /** user data */
     void *data;
@@ -412,9 +412,10 @@ unsigned discord_timer_ctl(struct discord *client,
  *        deletes itself upon completion
  *
  * @param client the client created with discord_init()
- * @param on_tick_cb the callback that should be called when timer triggers
- * @param on_status_changed_cb the callback for status updates, such as
- * DISCORD_TIMER_CANCELED
+ * @param on_tick_cb (nullable) the callback that should be called when timer
+ * triggers
+ * @param on_status_changed_cb (nullable) the callback for status updates
+ * timer->flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE
  * @param data user data
  * @param delay delay before timer should start in milliseconds
  * @return the id of the timer
@@ -430,9 +431,10 @@ unsigned discord_timer(struct discord *client,
  *        deletes itself upon completion
  *
  * @param client the client created with discord_init()
- * @param on_tick_cb the callback that should be called when timer triggers
- * @param on_status_changed_cb the callback for status updates, such as
- * DISCORD_TIMER_CANCELED
+ * @param on_tick_cb (nullable) the callback that should be called when timer
+ * triggers
+ * @param on_status_changed_cb (nullable) the callback for status updates
+ * timer->flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE
  * @param data user data
  * @param delay delay before timer should start in milliseconds
  * @param interval interval between runs. (-1 == disable repeat)
