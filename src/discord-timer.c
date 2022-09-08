@@ -8,6 +8,8 @@
      | DISCORD_TIMER_DELETE | DISCORD_TIMER_DELETE_AUTO                       \
      | DISCORD_TIMER_INTERVAL_FIXED)
 
+#define DISCORD_STATUS_FLAGS (DISCORD_TIMER_CANCELED)
+
 static int
 cmp_timers(const void *a, const void *b)
 {
@@ -180,29 +182,36 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
 
         // no timers to run
         if (trigger > now || trigger == -1) break;
-
-        if (~timer.flags & DISCORD_TIMER_CANCELED) {
+    restart:
+        if (!(timer.flags & DISCORD_TIMER_CANCELED)) {
             TIMER_TRY_DELETE;
 
             if (timer.repeat > 0) timer.repeat--;
         }
-        discord_ev_timer cb;
-        if (timer.flags & (DISCORD_TIMER_CANCELED)) {
-            cb = timer.on_status_changed;
-        }
-        else {
-            cb = timer.on_tick;
-            timer.flags |= DISCORD_TIMER_TICK;
-        }
+        discord_ev_timer cb =
+            timer.flags & DISCORD_STATUS_FLAGS
+                ? timer.on_status_changed
+                : (timer.flags |= DISCORD_TIMER_TICK, timer.on_tick);
+
+        enum discord_timer_flags prev_flags = timer.flags;
         if (cb) {
             pthread_mutex_unlock(&timers->lock);
             cb(client, &timer);
             pthread_mutex_lock(&timers->lock);
         }
+        timer.flags &= ~(enum discord_timer_flags)DISCORD_TIMER_TICK;
 
         if (timers->active.skip_update_phase) {
             timers->active.skip_update_phase = false;
             continue;
+        }
+
+        if ((timer.flags & DISCORD_STATUS_FLAGS)
+            != (prev_flags & DISCORD_STATUS_FLAGS))
+        {
+            if (!(prev_flags & DISCORD_TIMER_CANCELED)
+                && timer.flags & DISCORD_TIMER_CANCELED)
+                goto restart;
         }
 
         if ((timer.repeat == 0 || timer.flags & DISCORD_TIMER_CANCELED)
