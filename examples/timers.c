@@ -22,7 +22,7 @@ on_timer_tick(struct discord *client, struct discord_timer *timer)
 
     if (timer->repeat == 1) {
         puts("Canceling repeating timer.");
-        discord_timer_cancel(client, timer->id);
+        timer->flags |= DISCORD_TIMER_CANCELED;
     }
 }
 
