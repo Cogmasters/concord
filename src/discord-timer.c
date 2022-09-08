@@ -8,7 +8,12 @@
      | DISCORD_TIMER_DELETE | DISCORD_TIMER_DELETE_AUTO                       \
      | DISCORD_TIMER_INTERVAL_FIXED)
 
-#define DISCORD_STATUS_FLAGS (DISCORD_TIMER_CANCELED)
+#define DISCORD_STATUS_FLAGS (DISCORD_TIMER_CANCELED | DISCORD_TIMER_DELETE)
+
+#define DISCORD_TIMER_CANCELED_AND_DELETE_AUTO                                \
+    (DISCORD_TIMER_CANCELED | DISCORD_TIMER_DELETE_AUTO)
+
+#define HAS_FLAGS(var, flags) (((flags) == ((var) & (flags))))
 
 static int
 cmp_timers(const void *a, const void *b)
@@ -37,7 +42,7 @@ discord_timers_cancel_all(struct discord *client,
 {
     struct discord_timer timer;
     while ((timer.id = priority_queue_pop(timers->q, NULL, &timer))) {
-        timer.flags |= DISCORD_TIMER_CANCELED;
+        timer.flags |= DISCORD_TIMER_CANCELED | DISCORD_TIMER_DELETE;
         if (timer.on_status_changed) timer.on_status_changed(client, &timer);
     }
 }
@@ -151,6 +156,11 @@ _discord_timer_ctl(struct discord *client,
 #define TIMER_TRY_DELETE                                                      \
     if (timer.flags & DISCORD_TIMER_DELETE) {                                 \
         priority_queue_del(timers->q, timer.id);                              \
+        if (timer.on_status_changed) {                                        \
+            pthread_mutex_unlock(&timers->lock);                              \
+            timer.on_status_changed(client, &timer);                          \
+            pthread_mutex_lock(&timers->lock);                                \
+        }                                                                     \
         timers->active.skip_update_phase = false;                             \
         continue;                                                             \
     }
@@ -173,6 +183,7 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
          && max_iterations > 0;
          max_iterations--)
     {
+        discord_ev_timer cb;
         // update now timestamp every so often
         if ((max_iterations & 0x1F) == 0) {
             now = (int64_t)discord_timestamp_us(client);
@@ -183,15 +194,15 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         // no timers to run
         if (trigger > now || trigger == -1) break;
     restart:
-        if (!(timer.flags & DISCORD_TIMER_CANCELED)) {
+        if (timer.flags & DISCORD_STATUS_FLAGS) {
+            cb = timer.on_status_changed;
             TIMER_TRY_DELETE;
-
-            if (timer.repeat > 0) timer.repeat--;
         }
-        discord_ev_timer cb =
-            timer.flags & DISCORD_STATUS_FLAGS
-                ? timer.on_status_changed
-                : (timer.flags |= DISCORD_TIMER_TICK, timer.on_tick);
+        else {
+            if (timer.repeat > 0) timer.repeat--;
+            cb = timer.on_tick;
+            timer.flags |= DISCORD_TIMER_TICK;
+        }
 
         enum discord_timer_flags prev_flags = timer.flags;
         if (cb) {
@@ -214,12 +225,15 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
                 goto restart;
         }
 
-        if ((timer.repeat == 0 || timer.flags & DISCORD_TIMER_CANCELED)
-            && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
-        {
+        // time has expired, delete if DISCORD_TIMER_DELETE_AUTO is set
+        if ((timer.flags & DISCORD_TIMER_CANCELED || timer.repeat == 0)
+            && timer.flags & DISCORD_TIMER_DELETE_AUTO)
             timer.flags |= DISCORD_TIMER_DELETE;
-        }
 
+        // we just called cancel, only call delete
+        if ((timer.flags & DISCORD_TIMER_DELETE)
+            && (prev_flags & DISCORD_TIMER_CANCELED))
+            timer.flags &= ~(enum discord_timer_flags)DISCORD_TIMER_CANCELED;
         TIMER_TRY_DELETE;
 
         int64_t next = -1;
