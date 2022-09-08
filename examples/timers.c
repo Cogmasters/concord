@@ -30,6 +30,12 @@ static void
 on_timer_status_changed(struct discord *client, struct discord_timer *timer)
 {
     print_timer_info(timer, "on_timer_status_changed");
+    if (timer->flags & DISCORD_TIMER_CANCELED) {
+        puts("TIMER CANCELED");
+    }
+    if (timer->flags & DISCORD_TIMER_DELETE) {
+        puts("TIMER DELETED - FREEING DATA");
+    }
 }
 
 static void
@@ -37,13 +43,17 @@ use_same_function(struct discord *client, struct discord_timer *timer)
 {
     print_timer_info(timer, "use_same_function");
     if (timer->flags & DISCORD_TIMER_TICK) {
-        puts("TICK");
+        puts("TIMER TICK");
     }
 
     if (timer->flags & DISCORD_TIMER_CANCELED) {
-        puts("CANCELED");
+        puts("TIMER CANCELED");
     }
-    free(timer->data);
+
+    if (timer->flags & DISCORD_TIMER_DELETE) {
+        puts("TIMER DELETED - FREEING DATA");
+        free(timer->data);
+    }
 }
 
 int
@@ -55,7 +65,8 @@ main(int argc, char *argv[])
 
     for (int i = 0; i < 10; i++)
         // one shot auto deleting timer
-        discord_timer(client, on_timer_tick, NULL, NULL, i * 1000);
+        discord_timer(client, on_timer_tick, on_timer_status_changed, NULL,
+                      i * 1000);
 
     // repeating auto deleting timer
     discord_timer_interval(client, on_timer_tick, on_timer_status_changed,
