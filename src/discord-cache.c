@@ -215,7 +215,7 @@ _on_garbage_collection(struct discord *client, struct discord_timer *timer)
             while (index > 0) {
                 struct discord_message *vals[0x1000];
                 const size_t delete_count = index > 0x1000 ? 0x1000 : index;
-                anomap_delete_range(cache->msg_map, 0, delete_count, NULL,
+                anomap_delete_range(cache->msg_map, 0, delete_count - 1, NULL,
                                     vals);
                 index -= delete_count;
                 for (size_t j = 0; j < delete_count; j++)
