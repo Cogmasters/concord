@@ -34,9 +34,11 @@ enum anomap_operation anomap_do(struct anomap *map,
                                 enum anomap_operation operation,
                                 void *key, void *val);
 
-bool anomap_copy_range(struct anomap *map, size_t index, size_t count,
-                       void *keys, void *vals);
-bool anomap_delete_range(struct anomap *map, size_t index, size_t count,
+size_t anomap_copy_range(struct anomap *map,
+                         size_t from_index, size_t to_index,
                          void *keys, void *vals);
+size_t anomap_delete_range(struct anomap *map,
+                           size_t from_index, size_t to_index,
+                           void *keys, void *vals);
 
 #endif // !ANOMAP_H
