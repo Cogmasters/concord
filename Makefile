@@ -18,22 +18,22 @@ DEBUG_FLAGS = -O0 -g
 GIT_BRANCHES = master dev
 GIT_TARGETS  = latest latest-dev
 
-OPT = -O2
+CFLAGS ?= -O2
 
 all: static
 
 static:
-	@ CFLAGS="$(OPT)" $(MAKE) -C $(CORE_DIR)
+	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(CORE_DIR)
 	@ $(MAKE) -C $(GENCODECS_DIR)
-	@ CFLAGS="$(OPT)" $(MAKE) -C $(SRC_DIR) $@
+	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 shared:
-	@ CFLAGS="$(SOFLAGS) $(OPT)" $(MAKE) -C $(CORE_DIR)
+	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
 	@ CFLAGS="$(SOFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
-	@ CFLAGS="$(OPT)" $(MAKE) -C $(SRC_DIR) $@
+	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 shared_osx:
-	@ CFLAGS="$(DYFLAGS) $(OPT)" $(MAKE) -C $(CORE_DIR)
+	@ CFLAGS="$(DYFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
 	@ CFLAGS="$(DYFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
-	@ CFLAGS="$(OPT)" $(MAKE) -C $(SRC_DIR) $@
+	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 
 install:
 	@ mkdir -p $(DESTLIBDIR)
@@ -59,7 +59,7 @@ echo:
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 
 voice:
-	@ CFLAGS="$(OPT)" $(MAKE) -C $(SRC_DIR) $@
+	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 debug:
 	@ CFLAGS="$(DEBUG_FLAGS)" $(MAKE)
 
