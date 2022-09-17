@@ -20,8 +20,12 @@
 #define RATELIMITER_TABLE_FREE_VALUE(_value) free(_value)
 #define RATELIMITER_TABLE_COMPARE(_cmp_a, _cmp_b)                             \
     chash_string_compare(_cmp_a, _cmp_b)
-#define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
-    memcpy(route.key, _key, sizeof(route.key));                               \
+#define RATELIMITER_TABLE_INIT(route, _key, _value)                     \
+    {                                                                   \
+        size_t _l = strlen(_key) + 1;                                   \
+        ASSERT_NOT_OOB(_l, sizeof(route.key));                          \
+        memcpy(route.key, _key, _l);                                    \
+    }                                                                   \
     route.bucket = _value
 
 struct _discord_route {
