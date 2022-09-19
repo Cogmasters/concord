@@ -538,31 +538,30 @@ discord_delete_message(struct discord *client,
 CCORDcode
 discord_bulk_delete_messages(struct discord *client,
                              u64snowflake channel_id,
-                             struct snowflakes *messages,
+                             struct discord_bulk_delete_messages *params,
                              struct discord_ret *ret)
 {
+    const u64unix_ms now = discord_timestamp(client);
     struct discord_attributes attr = { 0 };
-    u64unix_ms now = discord_timestamp(client);
     struct ccord_szbuf body;
     char buf[4096] = "";
-    int i;
 
-    CCORD_EXPECT(client, messages != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, messages->size >= 2 && messages->size <= 100,
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params->messages != NULL, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client,
+                 params->messages->size >= 2 && params->messages->size <= 100,
                  CCORD_BAD_PARAMETER, "");
 
-    for (i = 0; i < messages->size; ++i) {
-        u64unix_ms tstamp = (messages->array[i] >> 22) + 1420070400000;
+    for (int i = 0; i < params->messages->size; ++i) {
+        u64unix_ms tstamp = (params->messages->array[i] >> 22) + 1420070400000;
 
         CCORD_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
                      CCORD_BAD_PARAMETER,
                      "Messages should not be older than 2 weeks.");
     }
 
-    body.size = snowflakes_to_json(buf, sizeof(buf), messages);
+    body.size = discord_bulk_delete_messages_to_json(buf, sizeof(buf), params);
     body.start = buf;
-
-    CCORD_EXPECT(client, buf != NULL, CCORD_BAD_JSON, "");
 
     DISCORD_ATTR_BLANK_INIT(attr, ret);
 
