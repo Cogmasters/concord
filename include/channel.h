@@ -278,14 +278,15 @@ CCORDcode discord_delete_message(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
- * @param messages the list of messages to be deleted
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_bulk_delete_messages(struct discord *client,
-                                       u64snowflake channel_id,
-                                       struct snowflakes *messages,
-                                       struct discord_ret *ret);
+CCORDcode discord_bulk_delete_messages(
+    struct discord *client,
+    u64snowflake channel_id,
+    struct discord_bulk_delete_messages *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Edit the channel permission overwrites for a user or role in a
