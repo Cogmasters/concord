@@ -122,7 +122,8 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
 
     /* attachment part */
     for (int i = 0; i < req->attachments.size; ++i) {
-        int len = snprintf(name, sizeof(name), "files[%d]", i);
+        int len = snprintf(name, sizeof(name), "files[%" PRIu64 "]",
+                           req->attachments.array[i].id);
         ASSERT_NOT_OOB(len, sizeof(name));
 
         if (req->attachments.array[i].content) {
@@ -152,6 +153,7 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
                          curl_easy_strerror(ecode),
                          req->attachments.array[i].filename);
                 perror(errbuf);
+                continue;
             }
             curl_mime_type(part, !req->attachments.array[i].content_type
                                      ? "application/octet-stream"
@@ -512,15 +514,17 @@ _discord_attachments_dup(struct discord_attachments *dest,
             dest->array[i].size = src->array[i].size
                                       ? src->array[i].size
                                       : strlen(src->array[i].content) + 1;
-
             dest->array[i].content = malloc(dest->array[i].size);
             memcpy(dest->array[i].content, src->array[i].content,
                    dest->array[i].size);
         }
         if (src->array[i].filename)
-            dest->array[i].filename = strdup(src->array[i].filename);
+            cog_strndup(src->array[i].filename, strlen(src->array[i].filename),
+                        &dest->array[i].filename);
         if (src->array[i].content_type)
-            dest->array[i].content_type = strdup(src->array[i].content_type);
+            cog_strndup(src->array[i].content_type,
+                        strlen(src->array[i].content_type),
+                        &dest->array[i].content_type);
     }
 }
 

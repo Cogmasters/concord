@@ -205,16 +205,17 @@ discord_execute_webhook(struct discord *client,
         ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
-    body.size = discord_execute_webhook_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
     }
+
+    body.size = discord_execute_webhook_to_json(buf, sizeof(buf), params);
+    body.start = buf;
 
     DISCORD_ATTR_BLANK_INIT(attr, ret);
 
@@ -263,16 +264,17 @@ discord_edit_webhook_message(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_edit_webhook_message_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
+
+    body.size = discord_edit_webhook_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
 
     DISCORD_ATTR_INIT(attr, discord_message, ret);
 

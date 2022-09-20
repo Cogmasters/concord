@@ -78,4 +78,16 @@ typedef struct {
 #define DISCORD_ATTR_BLANK_INIT(attr, ret)                                    \
     if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret)
 
+/**
+ * @brief Helper for initializing attachments ids
+ *
+ * @param attchs a @ref discord_attachments to have its IDs initialized
+ */
+#define DISCORD_ATTACHMENTS_IDS_INIT(attchs)                                  \
+    do {                                                                      \
+        for (int i = 0; i < attchs->size; ++i) {                              \
+            attchs->array[i].id = (u64snowflake)i;                            \
+        }                                                                     \
+    } while (0)
+
 #endif /* DISCORD_REQUEST_H */

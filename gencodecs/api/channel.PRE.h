@@ -406,11 +406,17 @@ STRUCT(discord_attachment)
     FIELD_PTR(content_type, char, *)
   COND_END
   /** size of file in bytes */
+  COND_WRITE(self->size != 0)
     FIELD(size, size_t, 0)
+  COND_END
   /** source url of file */
+  COND_WRITE(self->url != NULL)
     FIELD_PTR(url, char, *)
+  COND_END
   /** proxied url of file */
+  COND_WRITE(self->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
+  COND_END
   /** height of file (if image) */
   COND_WRITE(self->height != 0)
     FIELD(height, int, 0)
