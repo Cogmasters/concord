@@ -195,8 +195,7 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
     case HTTP_TOO_MANY_REQUESTS: {
         struct ua_szbuf_readonly body = ua_info_get_body(info);
         struct jsmnftok message = { 0 };
-        double retry_after = 1.0;
-        u64unix_ms wait_ms = 0;
+        u64unix_ms retry_after_ms = 1000;
         bool is_global = false;
         jsmn_parser parser;
         jsmntok_t tokens[16];
@@ -218,23 +217,24 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
                     is_global = ('t' == body.start[f->v.pos]);
                 if ((f = jsmnf_find(pairs, body.start, "message", 7)))
                     message = f->v;
-                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
-                    retry_after = strtod(body.start + f->v.pos, NULL);
+                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11))) {
+                    double retry_after = strtod(body.start + f->v.pos, NULL);
+                    if (retry_after > 0)
+                        retry_after_ms = (u64unix_ms)(1000 * retry_after);
+                }
             }
         }
 
-        if (retry_after > 0) wait_ms = (u64unix_ms)(1000 * retry_after);
-
         logconf_warn(&rqtor->conf,
                      "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
-                     is_global ? "GLOBAL " : "", req->wait_ms, message.len,
+                     is_global ? "GLOBAL " : "", retry_after_ms, message.len,
                      body.start + message.pos);
 
         if (is_global)
             discord_ratelimiter_set_global_timeout(&rqtor->ratelimiter, req->b,
-                                                   wait_ms);
+                                                   retry_after_ms);
         else
-            discord_bucket_set_timeout(req->b, wait_ms);
+            discord_bucket_set_timeout(req->b, retry_after_ms);
 
         req->code = info->code;
         return true;

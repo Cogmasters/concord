@@ -58,6 +58,8 @@ discord_ratelimiter_build_key(enum http_method method,
     const char *curr = endpoint_fmt, *prev = "";
     size_t currlen = 0;
 
+    if (method == HTTP_MIMEPOST) method = HTTP_POST;
+
     KEY_PUSH(key, &keylen, "%d", method);
     do {
         u64snowflake id_arg = 0ULL;
