@@ -37,22 +37,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/* Modified by Lucas Müller (muller.lucas@hotmail.com), 15 Feb 2022 
+/* Modified by Lucas Müller <lucas@muller.codes>, 19 Sept 2022 
+ * - __carray_init() should initialize its `size` value
+ *
+ * Modified by Lucas Müller <lucas@muller.codes>, 15 Feb 2022 
  * - CARRAY_RESIZE() has a fallback value (+1)
  *
- * Modified by Lucas Müller (muller.lucas@hotmail.com), 06 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 06 Feb 2022 
  * - __carray_init() accept initial length
  *
- * Modified by Lucas Müller (muller.lucas@hotmail.com), 02 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 02 Feb 2022 
  * - remove free(carray) at __carrray_free()
  *
- * Modified by Lucas Müller (muller.lucas@hotmail.com), 01 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 01 Feb 2022 
  * - change CARRAY_INITIAL_SIZE from 5 to 4
  * - change CARRAY_RESIZE to doubling arrays to reduce realloc calls
  * - remove calloc() from __carray_init(), expect user to allocate it
  * - remove pseudo-return from __carray_init()
  *
- * Modified by Lucas Müller (muller.lucas@hotmail.com), 27 Jan 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 27 Jan 2022 
  * - rename contents -> array 
  * - rename logical_size -> size
  * - rename physical_size -> realsize
@@ -75,6 +78,7 @@
 #define __carray_init(carray, length, _type, _compare, _free) \
 do {                                                          \
     (carray)->realsize = length;                              \
+    (carray)->size = 0;                                       \
     (carray)->array = calloc(length, sizeof(_type));          \
 } while (0)
 
