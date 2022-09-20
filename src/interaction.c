@@ -24,16 +24,17 @@ discord_create_interaction_response(
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->data && params->data->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->data->attachments);
         attr.attachments = *params->data->attachments;
     }
     else {
         method = HTTP_POST;
     }
+
+    body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
+    body.start = buf;
 
     DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
 
@@ -80,17 +81,18 @@ discord_edit_original_interaction_response(
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_edit_original_interaction_response_to_json(
-        buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
+
+    body.size = discord_edit_original_interaction_response_to_json(
+        buf, sizeof(buf), params);
+    body.start = buf;
 
     DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
 
@@ -142,17 +144,18 @@ discord_create_followup_message(struct discord *client,
         ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
-    body.size =
-        discord_create_followup_message_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
     }
+
+    body.size =
+        discord_create_followup_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
 
     DISCORD_ATTR_INIT(attr, discord_webhook, ret);
 
@@ -201,17 +204,18 @@ discord_edit_followup_message(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size =
-        discord_edit_followup_message_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
+
+    body.size =
+        discord_edit_followup_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
 
     DISCORD_ATTR_INIT(attr, discord_message, ret);
 
