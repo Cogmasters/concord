@@ -450,12 +450,8 @@ struct discord_request {
     char key[DISCORD_ROUTE_LEN];
     /** the connection handler assigned */
     struct ua_conn *conn;
-
     /** request's status code */
     CCORDcode code;
-    /** how long to wait for in case of request being ratelimited */
-    int64_t wait_ms;
-
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
     /** synchronize synchronous requests */
