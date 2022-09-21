@@ -1,3 +1,6 @@
+# If you run into issues, change this to "cpp" instead of "cc -E"
+CPP = cc -E
+
 TOP = ..
 
 API_DIR     = api
