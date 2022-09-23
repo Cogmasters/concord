@@ -185,6 +185,10 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 $ CFLAGS="-pthread -lpthread" make
 ```
 
+### Special note about linking Concord against another library
+In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared
+object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make`. 
+
 ## Configuring Concord
 
 [discord\_config\_init()][discord-config-init] is the initialization method that allows configuring your bot without recompiling.
