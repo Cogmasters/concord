@@ -16,6 +16,7 @@ _discord_request_cleanup(struct discord_request *req)
 {
     discord_attachments_cleanup(&req->attachments);
     if (req->body.start) free(req->body.start);
+    if (req->reason) free(req->reason);
     free(req);
 }
 
@@ -253,6 +254,10 @@ discord_request_cancel(struct discord_requestor *rqtor,
 {
     struct discord_refcounter *rc = &CLIENT(rqtor, rest.requestor)->refcounter;
 
+    if (NOT_EMPTY_STR(req->reason)) {
+        ua_conn_remove_header(req->conn, "X-Audit-Log-Reason");
+        *req->reason = '\0';
+    }
     if (req->conn) {
         ua_conn_stop(req->conn);
     }
@@ -452,6 +457,9 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
     req->conn = ua_conn_start(rqtor->ua);
     ehandle = ua_conn_get_easy_handle(req->conn);
 
+    if (NOT_EMPTY_STR(req->reason))
+        ua_conn_add_header(req->conn, "X-Audit-Log-Reason", req->reason);
+
     if (HTTP_MIMEPOST == req->method) {
         ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
         ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
@@ -508,10 +516,12 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
 /* Only fields required at _discord_request_to_multipart() are duplicated */
 static void
 _discord_attachments_dup(struct discord_attachments *dest,
-                         struct discord_attachments *src)
+                         const struct discord_attachments *src)
 {
+    int i;
+
     __carray_init(dest, (size_t)src->size, struct discord_attachment, , );
-    for (int i = 0; i < src->size; ++i) {
+    for (i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
         if (src->array[i].content) {
             dest->array[i].size = src->array[i].size
@@ -529,6 +539,22 @@ _discord_attachments_dup(struct discord_attachments *dest,
                         strlen(src->array[i].content_type),
                         &dest->array[i].content_type);
     }
+    dest->size = i;
+}
+
+static void
+_discord_request_attributes_copy(struct discord_request *dest,
+                                 const struct discord_attributes *src)
+{
+    dest->dispatch = src->dispatch;
+    dest->response = src->response;
+    dest->attachments = src->attachments;
+    if (src->reason) { /* request reason if included */
+        if (!dest->reason) dest->reason = calloc(DISCORD_MAX_REASON_LEN, 1);
+        snprintf(dest->reason, DISCORD_MAX_REASON_LEN, "%s", src->reason);
+    }
+    if (src->attachments.size)
+        _discord_attachments_dup(&dest->attachments, &src->attachments);
 }
 
 static struct discord_request *
@@ -570,12 +596,7 @@ discord_request_begin(struct discord_requestor *rqtor,
     CCORDcode code;
 
     req->method = method;
-    memcpy(req, attr, sizeof *attr);
-
-    if (attr->attachments.size)
-        _discord_attachments_dup(&req->attachments, &attr->attachments);
-
-    if (body) { /* copy request body */
+    if (body) {
         if (body->size > req->body.realsize) { /* buffer needs a resize */
             void *tmp = realloc(req->body.start, body->size);
             ASSERT_S(tmp != NULL, "Out of memory");
@@ -586,25 +607,24 @@ discord_request_begin(struct discord_requestor *rqtor,
         memcpy(req->body.start, body->start, body->size);
         req->body.size = body->size;
     }
-
-    /* copy endpoint over to req */
     memcpy(req->endpoint, endpoint, sizeof(req->endpoint));
-    /* copy bucket's key */
     memcpy(req->key, key, sizeof(req->key));
 
-    if (attr->dispatch.keep) {
+    _discord_request_attributes_copy(req, attr);
+
+    if (req->dispatch.keep) {
         code = discord_refcounter_incr(&client->refcounter,
-                                       (void *)attr->dispatch.keep);
+                                       (void *)req->dispatch.keep);
 
         ASSERT_S(code == CCORD_OK, "'.keep' data must be a Concord resource");
     }
-    if (attr->dispatch.data
+    if (req->dispatch.data
         && CCORD_UNAVAILABLE
                == discord_refcounter_incr(&client->refcounter,
-                                          attr->dispatch.data))
+                                          req->dispatch.data))
     {
-        discord_refcounter_add_client(&client->refcounter, attr->dispatch.data,
-                                      attr->dispatch.cleanup, false);
+        discord_refcounter_add_client(&client->refcounter, req->dispatch.data,
+                                      req->dispatch.cleanup, false);
     }
 
     pthread_mutex_lock(&rqtor->qlocks->pending);
