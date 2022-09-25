@@ -422,8 +422,11 @@ struct discord_ret_response {
     struct discord_ret_dispatch dispatch;                                     \
     /** information for parsing response into a datatype (if possible) */     \
     struct discord_ret_response response;                                     \
-    /** in case of `HTTP_MIMEPOST` provide attachments for file transfer */   \
-    struct discord_attachments attachments
+    /** if @ref HTTP_MIMEPOST provide attachments for file transfer */        \
+    struct discord_attachments attachments;                                   \
+    /** indicated reason to why the action was taken @note when used at       \
+     *      @ref discord_request buffer is kept and reused */                 \
+    char *reason
 
 /** @brief Request to be performed */
 struct discord_attributes {
@@ -434,6 +437,7 @@ struct discord_attributes {
  * @brief Individual requests that are scheduled to run asynchronously
  * @note this struct **SHOULD NOT** be handled from the `REST` manager thread
  * @note its fields are aligned with @ref discord_attributes
+ *      (see @ref DISCORD_ATTRIBUTES_FIELDS)
  */
 struct discord_request {
     DISCORD_ATTRIBUTES_FIELDS;
