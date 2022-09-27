@@ -23,8 +23,7 @@
  * @param ret a sized buffer containing the response JSON
  * @CCORD_return
  */
-CCORDcode discord_get_gateway(struct discord *client,
-                              struct ccord_szbuf *ret);
+CCORDcode discord_get_gateway(struct discord *client, struct ccord_szbuf *ret);
 
 /**
  * @brief Get a single valid WSS URL, and additional metadata that can help
@@ -52,6 +51,7 @@ CCORDcode discord_get_gateway_bot(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild the member belongs to
  * @param user_id the user to be disconnected
+ * @param params request parameters
  * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
@@ -59,6 +59,7 @@ CCORDcode discord_disconnect_guild_member(
     struct discord *client,
     u64snowflake guild_id,
     u64snowflake user_id,
+    struct discord_modify_guild_member *params,
     struct discord_ret_guild_member *ret);
 
 /**

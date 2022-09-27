@@ -83,7 +83,8 @@ on_role_delete(struct discord *client, const struct discord_message *event)
         return;
     }
 
-    discord_delete_guild_role(client, event->guild_id, role_id, NULL);
+    struct discord_delete_guild_role params = { .reason = "Stinky role" };
+    discord_delete_guild_role(client, event->guild_id, role_id, &params, NULL);
 }
 
 void
@@ -100,8 +101,11 @@ on_role_member_add(struct discord *client, const struct discord_message *event)
         return;
     }
 
+    struct discord_add_guild_member_role params = {
+        .reason = "Special role for a special member",
+    };
     discord_add_guild_member_role(client, event->guild_id, user_id, role_id,
-                                  NULL);
+                                  &params, NULL);
 }
 
 void
@@ -119,8 +123,11 @@ on_role_member_remove(struct discord *client,
         return;
     }
 
+    struct discord_remove_guild_member_role params = {
+        .reason = "Didn't deserve it",
+    };
     discord_remove_guild_member_role(client, event->guild_id, user_id, role_id,
-                                     NULL);
+                                     &params, NULL);
 }
 
 void

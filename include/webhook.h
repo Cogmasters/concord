@@ -115,11 +115,13 @@ CCORDcode discord_modify_webhook_with_token(
  * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_delete_webhook(struct discord *client,
                                  u64snowflake webhook_id,
+                                 struct discord_delete_webhook *params,
                                  struct discord_ret *ret);
 
 /**

@@ -257,14 +257,17 @@ CCORDcode discord_modify_current_user_nick(
  * @param guild_id the unique id of the guild where the member exists
  * @param user_id the unique id of the user
  * @param role_id the unique id of the role to be added
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_add_guild_member_role(struct discord *client,
-                                        u64snowflake guild_id,
-                                        u64snowflake user_id,
-                                        u64snowflake role_id,
-                                        struct discord_ret *ret);
+CCORDcode discord_add_guild_member_role(
+    struct discord *client,
+    u64snowflake guild_id,
+    u64snowflake user_id,
+    u64snowflake role_id,
+    struct discord_add_guild_member_role *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Removes a role from a guild member
@@ -275,14 +278,17 @@ CCORDcode discord_add_guild_member_role(struct discord *client,
  * @param guild_id the unique id of the guild where the member exists
  * @param user_id the unique id of the user
  * @param role_id the unique id of the role to be removed
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_remove_guild_member_role(struct discord *client,
-                                           u64snowflake guild_id,
-                                           u64snowflake user_id,
-                                           u64snowflake role_id,
-                                           struct discord_ret *ret);
+CCORDcode discord_remove_guild_member_role(
+    struct discord *client,
+    u64snowflake guild_id,
+    u64snowflake user_id,
+    u64snowflake role_id,
+    struct discord_remove_guild_member_role *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Remove a member from a guild
@@ -292,13 +298,16 @@ CCORDcode discord_remove_guild_member_role(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to remove the member from
  * @param user_id the user to be removed
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_remove_guild_member(struct discord *client,
-                                      u64snowflake guild_id,
-                                      u64snowflake user_id,
-                                      struct discord_ret *ret);
+CCORDcode discord_remove_guild_member(
+    struct discord *client,
+    u64snowflake guild_id,
+    u64snowflake user_id,
+    struct discord_remove_guild_member *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Fetch banned users for given guild
@@ -354,12 +363,14 @@ CCORDcode discord_create_guild_ban(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild the user belonged to
  * @param user_id the user to have its ban revoked
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_remove_guild_ban(struct discord *client,
                                    u64snowflake guild_id,
                                    u64snowflake user_id,
+                                   struct discord_remove_guild_ban *params,
                                    struct discord_ret *ret);
 
 /**
@@ -418,6 +429,7 @@ CCORDcode discord_get_guild_prune_count(
  *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to start the prune
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
@@ -475,13 +487,16 @@ CCORDcode discord_get_guild_integrations(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to delete the integrations from
  * @param integration_id the id of the integration to delete
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_delete_guild_integrations(struct discord *client,
-                                            u64snowflake guild_id,
-                                            u64snowflake integration_id,
-                                            struct discord_ret *ret);
+CCORDcode discord_delete_guild_integrations(
+    struct discord *client,
+    u64snowflake guild_id,
+    u64snowflake integration_id,
+    struct discord_delete_guild_integrations *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Get a guild widget settings
@@ -665,12 +680,14 @@ CCORDcode discord_modify_guild_role(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to delete
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_delete_guild_role(struct discord *client,
                                     u64snowflake guild_id,
                                     u64snowflake role_id,
+                                    struct discord_delete_guild_role *params,
                                     struct discord_ret *ret);
 
 /** @example guild.c

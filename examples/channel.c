@@ -78,7 +78,10 @@ on_channel_create(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_create_guild_channel params = { .name = event->content };
+    struct discord_create_guild_channel params = {
+        .name = event->content,
+        .reason = "Shiny new channel",
+    };
     discord_create_guild_channel(client, event->guild_id, &params, NULL);
 }
 
@@ -88,7 +91,10 @@ on_channel_rename_this(struct discord *client,
 {
     if (event->author->bot) return;
 
-    struct discord_modify_channel params = { .name = event->content };
+    struct discord_modify_channel params = {
+        .name = event->content,
+        .reason = "Clicks better",
+    };
     discord_modify_channel(client, event->channel_id, &params, NULL);
 }
 
@@ -98,7 +104,8 @@ on_channel_delete_this(struct discord *client,
 {
     if (event->author->bot) return;
 
-    discord_delete_channel(client, event->channel_id, NULL);
+    struct discord_delete_channel params = { .reason = "Stinky channel" };
+    discord_delete_channel(client, event->channel_id, &params, NULL);
 }
 
 void
