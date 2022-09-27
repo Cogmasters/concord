@@ -45,7 +45,7 @@ discord_get_guild_audit_log(struct discord *client,
         }
     }
 
-    DISCORD_ATTR_INIT(attr, discord_audit_log, ret);
+    DISCORD_ATTR_INIT(attr, discord_audit_log, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/audit-logs%s", guild_id,
