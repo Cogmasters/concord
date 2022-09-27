@@ -43,6 +43,10 @@ LIST_END
 /** @CCORD_pub_struct{discord_create_guild_emoji} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_emoji)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** name of the emoji */
     FIELD_PTR(name, char, *)
   /* TODO: implement base64 encoding */
@@ -58,6 +62,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_guild_emoji} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_emoji)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** name of the emoji */
     FIELD_PTR(name, char, *)
   /* TODO: implement base64 encoding */
@@ -67,5 +75,12 @@ PUB_STRUCT(discord_modify_guild_emoji)
   COND_WRITE(self->roles != NULL)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
   COND_END
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_guild_emoji)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
 STRUCT_END
 #endif

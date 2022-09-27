@@ -115,3 +115,10 @@ PUB_STRUCT(discord_get_invite)
   COND_END
 STRUCT_END
 #endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_invite)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
