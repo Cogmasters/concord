@@ -48,6 +48,7 @@ CCORDcode discord_get_auto_moderation_rule(
  *
  * @param client the client created with discord_init()
  * @param guild_id the guild to create the rule in
+ * @param params request parameters
  * @CCORD_ret_obj{ret,auto_moderation_rule}
  * @CCORD_return
  */
@@ -64,6 +65,7 @@ CCORDcode discord_create_auto_moderation_rule(
  * @param client the client created with discord_init()
  * @param guild_id the guild where the rule to be modified is at
  * @param auto_moderation_rule_id the rule to be modified
+ * @param params request parameters
  * @CCORD_ret_obj{ret,auto_moderation_rule}
  * @CCORD_return
  */
@@ -81,6 +83,7 @@ CCORDcode discord_modify_auto_moderation_rule(
  * @param client the client created with discord_init()
  * @param guild_id the guild where the rule to be deleted is at
  * @param auto_moderation_rule_id the rule to be deleted
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
@@ -88,6 +91,7 @@ CCORDcode discord_delete_auto_moderation_rule(
     struct discord *client,
     u64snowflake guild_id,
     u64snowflake auto_moderation_rule_id,
+    struct discord_delete_auto_moderation_rule *params,
     struct discord_ret *ret);
 
 /** @} DiscordAPIAutoModeration */

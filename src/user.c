@@ -11,7 +11,7 @@ discord_get_current_user(struct discord *client, struct discord_ret_user *ret)
 {
     struct discord_attributes attr = { 0 };
 
-    DISCORD_ATTR_INIT(attr, discord_user, ret);
+    DISCORD_ATTR_INIT(attr, discord_user, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/users/@me");
@@ -26,7 +26,7 @@ discord_get_user(struct discord *client,
 
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_user, ret);
+    DISCORD_ATTR_INIT(attr, discord_user, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/users/%" PRIu64, user_id);
@@ -46,7 +46,7 @@ discord_modify_current_user(struct discord *client,
     body.size = discord_modify_current_user_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_user, ret);
+    DISCORD_ATTR_INIT(attr, discord_user, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/users/@me");
@@ -58,7 +58,7 @@ discord_get_current_user_guilds(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_guilds, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_guilds, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/users/@me/guilds");
@@ -74,7 +74,7 @@ discord_leave_guild(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_DELETE,
                             "/users/@me/guilds/%" PRIu64, guild_id);
@@ -94,7 +94,7 @@ discord_create_dm(struct discord *client,
     body.size = discord_create_dm_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/users/@me/channels");
@@ -117,7 +117,7 @@ discord_create_group_dm(struct discord *client,
     body.size = discord_create_group_dm_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/users/@me/channels");
@@ -129,7 +129,7 @@ discord_get_user_connections(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_connections, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_connections, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/users/@me/connections");

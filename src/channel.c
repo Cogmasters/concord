@@ -105,7 +105,7 @@ discord_get_channel(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64, channel_id);
@@ -127,7 +127,7 @@ discord_modify_channel(struct discord *client,
     body.size = discord_modify_channel_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/channels/%" PRIu64, channel_id);
@@ -136,13 +136,15 @@ discord_modify_channel(struct discord *client,
 CCORDcode
 discord_delete_channel(struct discord *client,
                        u64snowflake channel_id,
+                       struct discord_delete_channel *params,
                        struct discord_ret_channel *ret)
 {
     struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret,
+                      params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64, channel_id);
@@ -187,7 +189,7 @@ discord_get_channel_messages(struct discord *client,
         }
     }
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/messages%s%s", channel_id,
@@ -205,7 +207,7 @@ discord_get_channel_message(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/messages/%" PRIu64,
@@ -238,7 +240,7 @@ discord_create_message(struct discord *client,
     body.size = discord_create_message_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/channels/%" PRIu64 "/messages", channel_id);
@@ -255,7 +257,7 @@ discord_crosspost_message(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_POST,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -288,7 +290,7 @@ discord_create_reaction(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     code = discord_rest_run(&client->rest, &attr, NULL, HTTP_PUT,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -325,7 +327,7 @@ discord_delete_own_reaction(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     code = discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -364,7 +366,7 @@ discord_delete_user_reaction(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     code = discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -424,7 +426,7 @@ discord_get_reactions(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_users, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_users, ret, NULL);
 
     code = discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -447,7 +449,7 @@ discord_delete_all_reactions(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -480,7 +482,7 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     code = discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -510,7 +512,7 @@ discord_edit_message(struct discord *client,
     body.size = discord_edit_message_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/channels/%" PRIu64 "/messages/%" PRIu64,
@@ -521,6 +523,7 @@ CCORDcode
 discord_delete_message(struct discord *client,
                        u64snowflake channel_id,
                        u64snowflake message_id,
+                       struct discord_delete_message *params,
                        struct discord_ret *ret)
 {
     struct discord_attributes attr = { 0 };
@@ -528,7 +531,7 @@ discord_delete_message(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/messages/%" PRIu64,
@@ -564,7 +567,7 @@ discord_bulk_delete_messages(struct discord *client,
     body.size = discord_bulk_delete_messages_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/messages/bulk-delete",
@@ -591,7 +594,7 @@ discord_edit_channel_permissions(
         discord_edit_channel_permissions_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/channels/%" PRIu64 "/permissions/%" PRIu64,
@@ -607,7 +610,7 @@ discord_get_channel_invites(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_invites, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_invites, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/invites", channel_id);
@@ -621,35 +624,35 @@ discord_create_channel_invite(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body;
-    char buf[1024] = "{}";
-    size_t len = 2;
+    char buf[1024];
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    if (params)
-        len = discord_create_channel_invite_to_json(buf, sizeof(buf), params);
-
+    body.size =
+        discord_create_channel_invite_to_json(buf, sizeof(buf), params);
     body.start = buf;
-    body.size = len;
 
-    DISCORD_ATTR_INIT(attr, discord_invite, ret);
+    DISCORD_ATTR_INIT(attr, discord_invite, ret,
+                      params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/invites", channel_id);
 }
 
 CCORDcode
-discord_delete_channel_permission(struct discord *client,
-                                  u64snowflake channel_id,
-                                  u64snowflake overwrite_id,
-                                  struct discord_ret *ret)
+discord_delete_channel_permission(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64snowflake overwrite_id,
+    struct discord_delete_channel_permission *params,
+    struct discord_ret *ret)
 {
     struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, overwrite_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/permissions/%" PRIu64,
@@ -674,7 +677,7 @@ discord_follow_news_channel(struct discord *client,
     body.size = discord_follow_news_channel_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/followers", channel_id);
@@ -689,7 +692,7 @@ discord_trigger_typing_indicator(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_POST,
                             "/channels/%" PRIu64 "/typing", channel_id);
@@ -704,7 +707,7 @@ discord_get_pinned_messages(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/pins", channel_id);
@@ -714,6 +717,7 @@ CCORDcode
 discord_pin_message(struct discord *client,
                     u64snowflake channel_id,
                     u64snowflake message_id,
+                    struct discord_pin_message *params,
                     struct discord_ret *ret)
 {
     struct discord_attributes attr = { 0 };
@@ -721,7 +725,7 @@ discord_pin_message(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_PUT,
                             "/channels/%" PRIu64 "/pins/%" PRIu64, channel_id,
@@ -732,6 +736,7 @@ CCORDcode
 discord_unpin_message(struct discord *client,
                       u64snowflake channel_id,
                       u64snowflake message_id,
+                      struct discord_unpin_message *params,
                       struct discord_ret *ret)
 {
     struct discord_attributes attr = { 0 };
@@ -739,7 +744,7 @@ discord_unpin_message(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/pins/%" PRIu64, channel_id,
@@ -765,7 +770,7 @@ discord_group_dm_add_recipient(struct discord *client,
         discord_group_dm_add_recipient_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/channels/%" PRIu64 "/recipients/%" PRIu64,
@@ -783,7 +788,7 @@ discord_group_dm_remove_recipient(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/recipients/%" PRIu64,
@@ -810,7 +815,7 @@ discord_start_thread_with_message(
         discord_start_thread_with_message_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -836,7 +841,7 @@ discord_start_thread_without_message(
         discord_start_thread_without_message_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_channel, ret);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/threads", channel_id);
@@ -851,7 +856,7 @@ discord_join_thread(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_PUT,
                             "/channels/%" PRIu64 "/thread-members/@me",
@@ -869,7 +874,7 @@ discord_add_thread_member(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_PUT,
                             "/channels/%" PRIu64 "/thread-members/" PRIu64,
@@ -885,7 +890,7 @@ discord_leave_thread(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/thread-members/@me",
@@ -903,7 +908,7 @@ discord_remove_thread_member(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/channels/%" PRIu64 "/thread-members/" PRIu64,
@@ -919,7 +924,7 @@ discord_list_thread_members(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_thread_members, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_thread_members, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/thread-members",
@@ -935,7 +940,7 @@ discord_list_active_threads(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret);
+    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/threads/active",
@@ -967,7 +972,7 @@ discord_list_public_archived_threads(
         ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
-    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret);
+    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
@@ -1000,7 +1005,7 @@ discord_list_private_archived_threads(
         ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
-    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret);
+    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
@@ -1033,7 +1038,7 @@ discord_list_joined_private_archived_threads(
         ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
-    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret);
+    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64

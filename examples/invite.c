@@ -79,7 +79,8 @@ on_invite_delete(struct discord *client, const struct discord_message *event)
         .fail = &fail,
         .keep = event,
     };
-    discord_delete_invite(client, event->content, &ret);
+    struct discord_delete_invite params = { .reason = "Stale invite" };
+    discord_delete_invite(client, event->content, &params, &ret);
 }
 
 int

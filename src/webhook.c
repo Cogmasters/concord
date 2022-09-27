@@ -23,7 +23,7 @@ discord_create_webhook(struct discord *client,
     body.size = discord_create_webhook_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, params->reason);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/webhooks", channel_id);
@@ -38,7 +38,7 @@ discord_get_channel_webhooks(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_webhooks, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_webhooks, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/webhooks", channel_id);
@@ -53,7 +53,7 @@ discord_get_guild_webhooks(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_webhooks, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_webhooks, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/webhooks", guild_id);
@@ -68,7 +68,7 @@ discord_get_webhook(struct discord *client,
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/webhooks/%" PRIu64, webhook_id);
@@ -86,7 +86,7 @@ discord_get_webhook_with_token(struct discord *client,
     CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/webhooks/%" PRIu64 "/%s", webhook_id,
@@ -108,7 +108,8 @@ discord_modify_webhook(struct discord *client,
     body.size = discord_modify_webhook_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret,
+                      params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/webhooks/%" PRIu64, webhook_id);
@@ -134,7 +135,7 @@ discord_modify_webhook_with_token(
         discord_modify_webhook_with_token_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/webhooks/%" PRIu64 "/%s", webhook_id,
@@ -144,13 +145,14 @@ discord_modify_webhook_with_token(
 CCORDcode
 discord_delete_webhook(struct discord *client,
                        u64snowflake webhook_id,
+                       struct discord_delete_webhook *params,
                        struct discord_ret *ret)
 {
     struct discord_attributes attr = { 0 };
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/webhooks/%" PRIu64, webhook_id);
@@ -168,7 +170,7 @@ discord_delete_webhook_with_token(struct discord *client,
     CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/webhooks/%" PRIu64 "/%s", webhook_id,
@@ -217,7 +219,7 @@ discord_execute_webhook(struct discord *client,
     body.size = discord_execute_webhook_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s%s%s", webhook_id,
@@ -238,7 +240,7 @@ discord_get_webhook_message(struct discord *client,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/webhooks/%" PRIu64 "/%s/%" PRIu64, webhook_id,
@@ -276,7 +278,7 @@ discord_edit_webhook_message(struct discord *client,
     body.size = discord_edit_webhook_message_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
@@ -297,7 +299,7 @@ discord_delete_webhook_message(struct discord *client,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,

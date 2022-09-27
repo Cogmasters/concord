@@ -160,7 +160,7 @@ on_force_error(struct discord *client, const struct discord_message *event)
 {
     const u64snowflake FAUX_CHANNEL_ID = 123;
 
-    discord_delete_channel(client, FAUX_CHANNEL_ID,
+    discord_delete_channel(client, FAUX_CHANNEL_ID, NULL,
                            &(struct discord_ret_channel){
                                .fail = &fail_delete_channel,
                                .keep = event,

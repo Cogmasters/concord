@@ -77,12 +77,14 @@ CCORDcode discord_modify_guild_emoji(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild the emoji belongs to
  * @param emoji_id the emoji to be deleted
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_delete_guild_emoji(struct discord *client,
                                      u64snowflake guild_id,
                                      u64snowflake emoji_id,
+                                     struct discord_delete_guild_emoji *params,
                                      struct discord_ret *ret);
 
 /** @example emoji.c

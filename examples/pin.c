@@ -42,7 +42,8 @@ on_pin(struct discord *client, const struct discord_message *event)
         msg_id = event->referenced_message->id;
     }
 
-    discord_pin_message(client, event->channel_id, msg_id, NULL);
+    struct discord_pin_message params = { .reason = "Important message" };
+    discord_pin_message(client, event->channel_id, msg_id, &params, NULL);
 }
 
 void
@@ -60,7 +61,8 @@ on_unpin(struct discord *client, const struct discord_message *event)
         msg_id = event->referenced_message->id;
     }
 
-    discord_unpin_message(client, event->channel_id, msg_id, NULL);
+    struct discord_unpin_message params = { .reason = "No longer relevant" };
+    discord_unpin_message(client, event->channel_id, msg_id, &params, NULL);
 }
 
 void
