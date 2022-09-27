@@ -281,6 +281,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_guild_widget_settings} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_guild_widget_settings)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** whether the widget is enabled */
     FIELD(enabled, bool, false)
   /** the widget channel ID */
@@ -494,6 +498,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_guild} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** name of the guild (2-100 charaters) */
     FIELD_PTR(name, char, *)
   /** voice region ID @deprecated deprecated field */
@@ -536,6 +544,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_guild} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** guild name */
     FIELD_PTR(name, char, *)
   /** verification level */
@@ -588,6 +600,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_guild_channel} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_channel)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** channel name (1-100 characters) */
     FIELD_PTR(name, char, *)
   /** the type of channel */
@@ -693,6 +709,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_guild_member} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_member)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** value to set user's nickname to */
   COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
@@ -733,6 +753,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_current_member} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_current_member)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** value to set user's nickname to */
   COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
@@ -743,6 +767,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_current_user_nick} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_current_user_nick)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** value to set user's nickname to */
   COND_WRITE(self->nick != NULL)
     FIELD_PTR(nick, char, *)
@@ -750,23 +778,55 @@ PUB_STRUCT(discord_modify_current_user_nick)
 STRUCT_END
 #endif
 
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_add_guild_member_role)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_remove_guild_member_role)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_remove_guild_member)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
 /** @CCORD_pub_struct{discord_create_guild_ban} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_ban)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** number of days to delete messages for (0-7) */
   COND_WRITE(self->delete_message_days >= 0 && self->delete_message_days <= 7)
     FIELD(delete_message_days, int, 0)
   COND_END
-  /** reason for the ban @deprecated deprecated field */
-  COND_WRITE(self->reason != NULL)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_remove_guild_ban)
+  /** @CCORD_reason{reason} */
     FIELD_PTR(reason, char, *)
-  COND_END
 STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_create_guild_role} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_role)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** name of the role */
     FIELD_PTR(name, char, *)
   /** `@everyone` permissions in guild */
@@ -796,6 +856,7 @@ STRUCT(discord_modify_guild_role_position)
 STRUCT_END
 #endif
 
+/** TODO: support X-Audit-Log-Reason */
 /** @CCORD_pub_list{discord_modify_guild_role_positions} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(discord_modify_guild_role_positions)
@@ -806,6 +867,10 @@ LIST_END
 /** @CCORD_pub_struct{discord_modify_guild_role} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_role)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** name of the role */
     FIELD_PTR(name, char, *)
   /** bitwise value of the enabled/disabled permissions */
@@ -825,6 +890,13 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_guild_role)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
 STRUCT(discord_get_guild_prune_count)
   /** number of days to count prune for (1-30) */
   COND_WRITE(self->days >= 1 && self->days <= 30)
@@ -838,6 +910,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_begin_guild_prune} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_begin_guild_prune)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** number of days to prune */
   COND_WRITE(self->days != 0)
     FIELD(days, int, 7)
@@ -846,10 +922,19 @@ PUB_STRUCT(discord_begin_guild_prune)
     FIELD(compute_prune_count, bool, true)
   /** role(s) to include */
     FIELD_STRUCT_PTR(include_roles, snowflakes, *)
-  /** reason for the prune @deprecated deprecated field */
-  COND_WRITE(self->reason != NULL)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_guild_integrations)
+  /** @CCORD_reason{reason} */
     FIELD_PTR(reason, char, *)
+  /** number of days to count prune for (1-30) */
+  COND_WRITE(self->days >= 1 && self->days <= 30)
+    FIELD(days, int, 7)
   COND_END
+  /** role(s) to include */
+    FIELD_STRUCT_PTR(include_roles, snowflakes, *)
 STRUCT_END
 #endif
 
@@ -866,6 +951,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_guild_welcome_screen} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_welcome_screen)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** whether the welcome screen is enabled */
     FIELD(enabled, bool, false)
   /** channels linked in the welcome screen and their display options */
