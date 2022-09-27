@@ -14,6 +14,7 @@ CCORDcode
 discord_disconnect_guild_member(struct discord *client,
                                 u64snowflake guild_id,
                                 u64snowflake user_id,
+                                struct discord_modify_guild_member *params,
                                 struct discord_ret_guild_member *ret)
 {
     struct discord_attributes attr = { 0 };
@@ -36,7 +37,8 @@ discord_disconnect_guild_member(struct discord *client,
     body.start = buf;
     body.size = b.pos;
 
-    DISCORD_ATTR_INIT(attr, discord_guild_member, ret);
+    DISCORD_ATTR_INIT(attr, discord_guild_member, ret,
+                      params ? params->reason : NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,

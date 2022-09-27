@@ -61,7 +61,11 @@ on_unban(struct discord *client, const struct discord_message *event)
     u64snowflake target_id = 0ULL;
     sscanf(event->content, "%" SCNu64, &target_id);
 
-    discord_remove_guild_ban(client, event->guild_id, target_id, NULL);
+    struct discord_remove_guild_ban params = {
+        .reason = "Someone really likes you!"
+    };
+    discord_remove_guild_ban(client, event->guild_id, target_id, &params,
+                             NULL);
 }
 
 void

@@ -19,7 +19,7 @@ discord_list_guild_scheduled_events(
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_events, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_events, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/scheduled-events%s", guild_id,
@@ -45,7 +45,8 @@ discord_create_guild_scheduled_event(
                  CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->entity_type != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret,
+                      params->reason);
 
     body.size =
         discord_create_guild_scheduled_event_to_json(buf, sizeof(buf), params);
@@ -71,7 +72,7 @@ discord_get_guild_scheduled_event(
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/scheduled-events/%" PRIu64
@@ -95,7 +96,8 @@ discord_modify_guild_scheduled_event(
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret,
+                      params ? params->reason : NULL);
 
     body.size =
         discord_modify_guild_scheduled_event_to_json(buf, sizeof(buf), params);
@@ -118,7 +120,7 @@ discord_delete_guild_scheduled_event(struct discord *client,
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/guilds/%" PRIu64 "/scheduled-events/%" PRIu64,
@@ -168,7 +170,8 @@ discord_get_guild_scheduled_event_users(
         }
     }
 
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_event_users, ret);
+    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_event_users, ret,
+                           NULL);
 
     return discord_rest_run(
         &client->rest, &attr, NULL, HTTP_GET,
