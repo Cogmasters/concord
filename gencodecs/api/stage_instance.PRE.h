@@ -44,6 +44,10 @@ LIST_END
 /** @CCORD_pub_struct{discord_create_stage_instance} */
 #if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_create_stage_instance)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the ID of the stage channel */
     FIELD_SNOWFLAKE(channel_id)
   /** the topic of the Stage instance (1-120 characters) */
@@ -58,11 +62,22 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_stage_instance} */
 #if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_modify_stage_instance)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the topic of the Stage instance (1-120 characters) */
     FIELD_PTR(topic, char, *)
   /** the privacy level of the stage instance */
   COND_WRITE(self->privacy_level != 0)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_stage_instance)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
 STRUCT_END
 #endif
