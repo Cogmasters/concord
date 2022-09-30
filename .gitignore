@@ -5,6 +5,7 @@
 !.vscode
 !core
 !docs
+!docs/*
 !doxygen-awesome-css
 !examples
 !gencodecs
