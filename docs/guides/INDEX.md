@@ -57,7 +57,7 @@ int main(void) {
 - Caching
 
 ## Getting started
-<!-- List guides to help set up the first bot, concord's workflow, some of its quirks -->
+<!-- List guides to help set up the first bot, concord's workflow, and some of its quirks -->
 
 ## Guides
 <!-- General purpose guides, how to use embeds, interactions, etc -->
