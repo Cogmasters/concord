@@ -17,7 +17,7 @@
 
 ## About
 
-Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
+Concord is an asynchronous C (C99) Discord API library with minimal external dependencies and a low-abstraction translation of the Discord official API to C code.
 
 ### Examples
 
@@ -105,7 +105,7 @@ int main(void) {
 
 ## Build Instructions
 
-The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
+The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from the source, you will need to build it with SSL support.
 
 ### On Windows
 
@@ -241,8 +241,7 @@ The following outlines `config.json` fields:
 ## Test Copycat-Bot
 
 1. Get your bot token and add it to `config.json`, 
-   by assigning it to discord's "token" field. There are 
-   well written instructions from 
+   by assigning it to discord's "token" field. There are well-written instructions from 
    [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
    explaining how to get your bot token and adding it to a server.
 2. Build example executables:
@@ -269,7 +268,7 @@ The following outlines special flags and targets to override the default Makefil
 ### Special compilation flags
 
 * `-DCCORD_SIGINTCATCH`
-    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
+    * By default, Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
 * `-DCCORD_DEBUG_WEBSOCKETS`
     * Enable verbose debugging for WebSockets communication.
 * `-DCCORD_DEBUG_HTTP`
@@ -306,7 +305,7 @@ This will install the headers and library files into $PREFIX. You can override t
 
 ### Included dependencies
 
-The following are `stable` and well documented dependencies that are packaged with Concord and can be included to your projects:
+The following are `stable` and well-documented dependencies that are packaged with Concord and can be included in your projects:
 
 | File                                                  | Description                                        |
 |-------------------------------------------------------|----------------------------------------------------|
@@ -394,7 +393,7 @@ Problems? Check out our [Discord Server][discord-invite]
 
 ## Contributing
 
-All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
+All kinds of contributions are welcome, all we ask is to abide by our [guidelines](docs/CONTRIBUTING.md)](docs/CONTRIBUTING.md)! If you want to help but are unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
 
 ## Getting Started
 
