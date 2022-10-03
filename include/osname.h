@@ -255,7 +255,9 @@ enum OSClass {
 
 #if defined __MACH__  
 #if defined __APPLE__
+#else
 #if defined __osf__ || defined __osf
+#else
 #define OSNAME "NeXTSTEP"
 #define OSCLASS UNIX
 #endif
