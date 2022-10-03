@@ -97,6 +97,40 @@ struct discord;
 /** Couldn't establish connection to Discord */
 #define CCORD_DISCORD_CONNECTION 4
 
+/* TODO:
+ *
+ * - Make enumerations for log level
+ * - Document settings structure
+ * - Document discord_settings_init function
+ * - Modify discord_config_init to use discord_settings_init
+*/
+
+struct discord_settings {
+    struct {
+        const char *level;
+        const char *filename;
+        bool quiet;
+        bool overwrite;
+        bool use_color;
+        const char **disable_modules;
+
+        struct {
+            bool enable;
+            const char *filename;
+        } http;
+    } logging;
+
+    struct {
+        const char *token;
+        struct {
+            bool enable;
+            const char *prefix; 
+        } default_prefix;
+    } discord;
+};
+
+struct discord *discord_settings_init(struct discord_settings *settings);
+
 /**
  * @brief Return a Concord's error
  * @note used to log and return an error
