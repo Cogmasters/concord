@@ -58,7 +58,7 @@ _log_color_cb(log_Event *ev)
     fflush(ev->udata);
 }
 
-static void
+void
 _logconf_check_disabled(struct logconf *conf)
 {
     int i;

@@ -114,6 +114,9 @@ struct discord *discord_settings_init(struct discord_settings *settings) {
     new_client = calloc(1, sizeof *new_client);
     _discord_init(new_client);
 
+    /* skip everything else if this module is disabled */
+    _logconf_check_disabled(&new_client->conf);
+
     /* Set basic output file configuration if we have a
      * filename configured. This tells the logger the actual name
      * of the logging file, as well as a file pointer to it. */
@@ -129,6 +132,14 @@ struct discord *discord_settings_init(struct discord_settings *settings) {
         logconf_add_callback(&(new_client->conf),
                              settings->logging.use_color ? _log_color_cb : _log_nocolor_cb,
                              new_client->conf.logger->f, _logconf_eval_level(settings->logging.level));
+    }
+
+    /* Setup HTTP logging. Fun story, I originally thought this meant
+     * logging over HTTP, like email. Apparently not, though. */
+    if(settings->logging.http.enable && settings->logging.http.filename) {
+        new_client->conf.http->fname = strdup(settings->logging.http.filename);
+        new_client->conf.http->f = fopen(new_client->conf.http->fname, settings->logging.overwrite ? "w+" : "a+");
+
     }
 
     return new_client;

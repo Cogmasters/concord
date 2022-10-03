@@ -405,6 +405,14 @@ void _log_color_cb(log_Event *ev);
  */
 int _logconf_eval_level(const char *level);
 
+/**
+ * @brief Disable the logger irregardless of the settings
+ *  brief provided by the user if the module is disabled.
+ *
+ * @param conf the logconf structure to check
+ */
+void _logconf_check_disabled(struct logconf *conf);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
