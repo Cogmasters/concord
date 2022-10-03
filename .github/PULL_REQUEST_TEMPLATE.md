@@ -1,3 +1,7 @@
+## Notice
+- [ ] I *understand* the code that I have edited, and have the means
+to test it before making changes to Concord.
+
 ## What?
 Explain the changes you've made - the overall effect of the PR.
 
