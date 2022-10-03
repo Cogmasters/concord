@@ -25,6 +25,9 @@ Concord is an asynchronous C99 Discord API library with minimal external depende
 
 #### Slash Commands (new method)
 
+*Note: you need to replace `GUILD_ID` with an actual guild ID, or this example won't compile!*
+You can use a macro to do this: `#define GUILD_ID 1234567898765431`
+
 ```c
 #include <string.h>
 #include <concord/discord.h>
