@@ -102,6 +102,38 @@ discord_init(const char token[])
     return new_client;
 }
 
+struct discord *discord_settings_init(struct discord_settings *settings) {
+    struct discord *new_client;
+
+    /* TODO: validate all settings provided to make sure they're 
+     * not troublesome */
+
+    /* Transfer the settings from the settings structure into the
+     * configuration structure. */
+
+    new_client = calloc(1, sizeof *new_client);
+    _discord_init(new_client);
+
+    /* Set basic output file configuration if we have a
+     * filename configured. This tells the logger the actual name
+     * of the logging file, as well as a file pointer to it. */
+    if(settings->logging.filename) {
+        new_client->conf.logger->fname = strdup(settings->logging.filename);
+
+        /* We open in w+ if we want to overwrite it, since w+ flushes the
+         * file */
+        new_client->conf.logger->f = fopen(new_client->conf.logger->fname, settings->logging.overwrite ? "w+" : "a+");
+
+        /* We now add a callback for the client's logger configuration,
+         * which needs to know whether or not it can show color. */
+        logconf_add_callback(&(new_client->conf),
+                             settings->logging.use_color ? _log_color_cb : _log_nocolor_cb,
+                             new_client->conf.logger->f, _logconf_eval_level(settings->logging.level));
+    }
+
+    return new_client;
+}
+
 struct discord *
 discord_config_init(const char config_file[])
 {

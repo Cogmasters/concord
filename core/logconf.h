@@ -383,6 +383,28 @@ void logconf_add_callback(struct logconf *conf,
  */
 int logconf_add_fp(struct logconf *conf, FILE *fp, int level);
 
+/**
+ * @brief Log to an event without using colored data
+ *
+ * @param log_Event the log event to log to
+ */
+void _log_nocolor_cb(log_Event *ev);
+
+
+/**
+ * @brief Log to an event using colored data
+ *
+ * @param log_Event the log event to log to
+ */
+void _log_color_cb(log_Event *ev);
+
+/**
+ * @brief Convert a string log level to its integer form
+ *
+ * @param level the level string to convert
+ */
+int _logconf_eval_level(const char *level);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

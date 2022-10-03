@@ -14,8 +14,8 @@
 #include "jsmn.h"
 #include "jsmn-find.h"
 
-static int
-_logconf_eval_level(char level[])
+int
+_logconf_eval_level(const char *level)
 {
     if (0 == strcasecmp(level, "TRACE")) return LOG_TRACE;
     if (0 == strcasecmp(level, "DEBUG")) return LOG_DEBUG;
@@ -27,7 +27,7 @@ _logconf_eval_level(char level[])
     return 0; /* make compiler happy */
 }
 
-static void
+void
 _log_nocolor_cb(log_Event *ev)
 {
     char buf[16];
@@ -42,7 +42,7 @@ _log_nocolor_cb(log_Event *ev)
     fflush(ev->udata);
 }
 
-static void
+void
 _log_color_cb(log_Event *ev)
 {
     char buf[16];
