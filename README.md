@@ -295,6 +295,7 @@ The following are `stable` and well documented dependencies that are packaged wi
 | [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
 | [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
 | [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
+| [anomap](https://github.com/Anotra/anomap)\*          | Sorted key/value storage for C99                   |
 | [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
 | [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
 | [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |
