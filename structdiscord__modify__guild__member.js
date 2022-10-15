@@ -1,5 +1,6 @@
 var structdiscord__modify__guild__member =
 [
+    [ "reason", "structdiscord__modify__guild__member.html#a137485fe2e1fc7a04dd70cb7ee9d55ba", null ],
     [ "nick", "structdiscord__modify__guild__member.html#a674e119cd430ae2fadd2834f72186ee7", null ],
     [ "roles", "structdiscord__modify__guild__member.html#ac52e78f15b6fd0c01da7c564b02415e2", null ],
     [ "mute", "structdiscord__modify__guild__member.html#ad99af8d4e3f940b2ff0a8b1a10407d34", null ],

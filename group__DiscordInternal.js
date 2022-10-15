@@ -5,6 +5,7 @@ var group__DiscordInternal =
     [ "WebSockets API", "group__DiscordInternalGateway.html", "group__DiscordInternalGateway" ],
     [ "Reference counter", "group__DiscordInternalRefcount.html", "group__DiscordInternalRefcount" ],
     [ "Message Commands API", "group__DiscordInternalMessageCommands.html", "group__DiscordInternalMessageCommands" ],
+    [ "Cache API", "group__DiscordInternalCache.html", "group__DiscordInternalCache" ],
     [ "Global threadpool", "group__DiscordInternalWorker.html", "group__DiscordInternalWorker" ],
     [ "discord-internal.h", "discord-internal_8h.html", null ],
     [ "discord", "structdiscord.html", [
@@ -17,6 +18,7 @@ var group__DiscordInternal =
       [ "rest", "structdiscord.html#a56552add29eecbcff98279d9256a5586", null ],
       [ "gw", "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5", null ],
       [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
+      [ "cache", "structdiscord.html#a1cbdbc3c7dfbf6ecdf82f6784f5e3c38", null ],
       [ "internal", "structdiscord.html#ab587bcec8b91c77ba72a919ba01b15a2", null ],
       [ "user", "structdiscord.html#aece276e567f9230f448c8efea165b5f5", null ],
       [ "timers", "structdiscord.html#ac6bc034780945e0672abd81756a3308a", null ],

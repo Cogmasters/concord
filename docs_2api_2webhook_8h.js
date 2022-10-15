@@ -4,6 +4,7 @@ var docs_2api_2webhook_8h =
     [ "discord_webhooks", "structdiscord__webhooks.html", "structdiscord__webhooks" ],
     [ "discord_create_webhook", "structdiscord__create__webhook.html", "structdiscord__create__webhook" ],
     [ "discord_modify_webhook", "structdiscord__modify__webhook.html", "structdiscord__modify__webhook" ],
+    [ "discord_delete_webhook", "structdiscord__delete__webhook.html", "structdiscord__delete__webhook" ],
     [ "discord_modify_webhook_with_token", "structdiscord__modify__webhook__with__token.html", "structdiscord__modify__webhook__with__token" ],
     [ "discord_execute_webhook", "structdiscord__execute__webhook.html", "structdiscord__execute__webhook" ],
     [ "discord_get_webhook_message", "structdiscord__get__webhook__message.html", "structdiscord__get__webhook__message" ],

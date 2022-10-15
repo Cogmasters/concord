@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structdiscord__timer.html',''); initRe
 <div class="dynheader">
 Collaboration diagram for discord_timer:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__timer__coll__graph.svg" width="122" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__timer__coll__graph.svg" width="196" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -110,8 +110,10 @@ Data Fields</h2></td></tr>
 <tr class="separator:aaa6e30034b5c30a738e7e40e5064ef0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c62f8a3bf8128fac04f72e047c7867a"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="group__DiscordTimer.html#ga6e91b61d2abe8974ade81aa42b225a6f">discord_timer_flags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a></td></tr>
 <tr class="separator:a9c62f8a3bf8128fac04f72e047c7867a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a205071c9a510b044b7e80a0dc33667ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html#a205071c9a510b044b7e80a0dc33667ec">cb</a></td></tr>
-<tr class="separator:a205071c9a510b044b7e80a0dc33667ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab92c8123cfc809a0e418492b5943db37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html#ab92c8123cfc809a0e418492b5943db37">on_tick</a></td></tr>
+<tr class="separator:ab92c8123cfc809a0e418492b5943db37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fab7588cff940dadb255bac969a77d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html#a4fab7588cff940dadb255bac969a77d0">on_status_changed</a></td></tr>
+<tr class="separator:a4fab7588cff940dadb255bac969a77d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d0eb19580d3eb0d41a8bca8ed5650d7"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html#a8d0eb19580d3eb0d41a8bca8ed5650d7">data</a></td></tr>
 <tr class="separator:a8d0eb19580d3eb0d41a8bca8ed5650d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac78dae256d3f5d3a07d93d0432ad749d"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html#ac78dae256d3f5d3a07d93d0432ad749d">delay</a></td></tr>
@@ -160,18 +162,33 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a205071c9a510b044b7e80a0dc33667ec" name="a205071c9a510b044b7e80a0dc33667ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a205071c9a510b044b7e80a0dc33667ec">&#9670;&nbsp;</a></span>cb</h2>
+<a id="ab92c8123cfc809a0e418492b5943db37" name="ab92c8123cfc809a0e418492b5943db37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab92c8123cfc809a0e418492b5943db37">&#9670;&nbsp;</a></span>on_tick</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> discord_timer::cb</td>
+          <td class="memname"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> discord_timer::on_tick</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >the callback that should be called when timer triggers </p>
+<p >(nullable) the callback that should be called when timer triggers </p>
+
+</div>
+</div>
+<a id="a4fab7588cff940dadb255bac969a77d0" name="a4fab7588cff940dadb255bac969a77d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fab7588cff940dadb255bac969a77d0">&#9670;&nbsp;</a></span>on_status_changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> discord_timer::on_status_changed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >(nullable) the callback for status updates timer-&gt;flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE </p>
 
 </div>
 </div>
@@ -187,7 +204,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >user data </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a8">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a10">timers.c</a>.</dd>
 </dl>
 
 </div>

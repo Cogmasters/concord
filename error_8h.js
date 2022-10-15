@@ -1,16 +1,23 @@
 var error_8h =
 [
-    [ "CCORD_OK", "group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f", null ],
-    [ "CCORD_HTTP_CODE", "group__ConcordError.html#ga44466d265a280155ce063d2c69b5710b", null ],
-    [ "CCORD_CURL_NO_RESPONSE", "group__ConcordError.html#ga5e097b1aeeb3bff6adf8ed069430801f", null ],
-    [ "CCORD_UNUSUAL_HTTP_CODE", "group__ConcordError.html#gaa7b553c5e26c59b50b1c941fb60ec1b3", null ],
-    [ "CCORD_BAD_PARAMETER", "group__ConcordError.html#ga267a3333a5850c98e3a0b29c47607761", null ],
-    [ "CCORD_BAD_JSON", "group__ConcordError.html#ga80f3eaee3c522218fa1f2915ef61d6ca", null ],
-    [ "CCORD_CURLE_INTERNAL", "group__ConcordError.html#ga593a9fcdc49e58c0dcd1b29bb8458008", null ],
-    [ "CCORD_CURLM_INTERNAL", "group__ConcordError.html#ga00c6ee3ff0da117a32837d8e2e5eb90c", null ],
-    [ "CCORD_GLOBAL_INIT", "group__ConcordError.html#ga705fdccbf1e575d3311f2d971af77b62", null ],
-    [ "CCORD_OWNERSHIP", "group__ConcordError.html#gadb0f283a9d2715ad5816dff63fceb64b", null ],
-    [ "CCORD_UNAVAILABLE", "group__ConcordError.html#gae3eb4fc7d157920ec30601c078b38755", null ],
-    [ "CCORD_FULL_WORKER", "group__ConcordError.html#ga1035fd7db58d16cf1464ed32d30f141a", null ],
-    [ "CCORDcode", "group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587", null ]
+    [ "CCORDcode", "group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259", null ],
+    [ "CCORDcode", "group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31", [
+      [ "CCORD_FULL_WORKER", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a60bc736ec55f07ce325805e3d4b0c338", null ],
+      [ "CCORD_UNAVAILABLE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a6f539629079e6626d67ff48783db18a1", null ],
+      [ "CCORD_OWNERSHIP", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a92366cdfe51909cabf8139d7c6919096", null ],
+      [ "CCORD_GLOBAL_INIT", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ab9bd5476c9185cc1fd7a32536c964156", null ],
+      [ "CCORD_CURLM_INTERNAL", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aa991e50351e2361d20c52ab882a0d120", null ],
+      [ "CCORD_CURLE_INTERNAL", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ad2868f9f6f6d2d618b27e5c5a75ac7da", null ],
+      [ "CCORD_BAD_JSON", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a789c2d49726b2c006681abde4a29754d", null ],
+      [ "CCORD_BAD_PARAMETER", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aa23a9475b87b4812d8daf24c5826e0bf", null ],
+      [ "CCORD_UNUSUAL_HTTP_CODE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a698480af12b7a7047edef76fbdbe0b52", null ],
+      [ "CCORD_CURL_NO_RESPONSE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a7e45fc2aba3e1c82aaaed93adb1376b3", null ],
+      [ "CCORD_HTTP_CODE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a39465d00c68c85856e7beb71fdcf7599", null ],
+      [ "CCORD_OK", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9", null ],
+      [ "CCORD_PENDING", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a44d35541b370621611b1bd910755bfca", null ],
+      [ "CCORD_DISCORD_JSON_CODE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ad28fda9344f985c25a8ab619535488f0", null ],
+      [ "CCORD_DISCORD_BAD_AUTH", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a848d05868186c580f46bd0131783ef84", null ],
+      [ "CCORD_DISCORD_RATELIMIT", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a930fee2363a23f2a08c471c1d0903361", null ],
+      [ "CCORD_DISCORD_CONNECTION", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a2cbca63f50ea98438bfce32cf596c207", null ]
+    ] ]
 ];

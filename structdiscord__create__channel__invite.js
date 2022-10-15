@@ -1,5 +1,6 @@
 var structdiscord__create__channel__invite =
 [
+    [ "reason", "structdiscord__create__channel__invite.html#a00a241643d3512ab89c9c13a4a44b6af", null ],
     [ "max_age", "structdiscord__create__channel__invite.html#a1a79df0f92bd2e5d9b4f8da91b6d046c", null ],
     [ "max_uses", "structdiscord__create__channel__invite.html#a7de3ed7bd6ffc5632649cb1e7ee52081", null ],
     [ "temporary", "structdiscord__create__channel__invite.html#a458065dfc3f54cc1abfe553a8d0cb4a1", null ],

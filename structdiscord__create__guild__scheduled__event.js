@@ -1,5 +1,6 @@
 var structdiscord__create__guild__scheduled__event =
 [
+    [ "reason", "structdiscord__create__guild__scheduled__event.html#ab1b42afa85f5101e2a41724fd3782e97", null ],
     [ "channel_id", "structdiscord__create__guild__scheduled__event.html#a28f6922623abc1018aa1114c7f5a3e8d", null ],
     [ "entity_metadata", "structdiscord__create__guild__scheduled__event.html#a083f94ca3c5d42b8e9bb15f7418c297f", null ],
     [ "name", "structdiscord__create__guild__scheduled__event.html#abbde0fabda845c8718544545b0a7bdab", null ],

@@ -15,6 +15,6 @@ var structdiscord__gateway =
     [ "id", "structdiscord__gateway.html#add6cd3f50c50094ad169844597e123ab", null ],
     [ "session", "structdiscord__gateway.html#a5c5b90fc646ef6c047bf09ed99dedab5", null ],
     [ "payload", "structdiscord__gateway.html#a27bc7f5da52b61b8285c19cc54333a32", null ],
-    [ "cbs", "structdiscord__gateway.html#a31cbc22da156579192fe3ea102ff300c", null ],
+    [ "cbs", "structdiscord__gateway.html#ae9a84d4a63dbeccf21358a9a6f71f986", null ],
     [ "scheduler", "structdiscord__gateway.html#a38fe47e02a4b9b8bd50390e708bfcabd", null ]
 ];

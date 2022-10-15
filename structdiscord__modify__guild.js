@@ -1,5 +1,6 @@
 var structdiscord__modify__guild =
 [
+    [ "reason", "structdiscord__modify__guild.html#a2b1f98fb0f966d722fff1c132a9b8a45", null ],
     [ "name", "structdiscord__modify__guild.html#a4bfa95cbe2148de4a90840d02fdfb3d5", null ],
     [ "verification_level", "structdiscord__modify__guild.html#aa5156d83187d9080164721468d8762d5", null ],
     [ "default_message_notifications", "structdiscord__modify__guild.html#af5c4dc5cb81353b4e6fad97387890707", null ],

@@ -17,5 +17,5 @@ var group__DiscordInternalTimer =
     [ "discord_timers_run", "group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc", null ],
     [ "_discord_timer_ctl", "group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472", null ],
     [ "discord_internal_timer_ctl", "group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393", null ],
-    [ "discord_internal_timer", "group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842", null ]
+    [ "discord_internal_timer", "group__DiscordInternalTimer.html#gae559bbb353472dc1bb3263e8316072d2", null ]
 ];

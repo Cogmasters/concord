@@ -119,8 +119,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a8d1f0d33eefeb590e322e7125dfbfbe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa60da032cb63da519eae74eff5526496"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild.html#aa60da032cb63da519eae74eff5526496">owner_id</a></td></tr>
 <tr class="separator:aa60da032cb63da519eae74eff5526496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6891a92f31196563f2d234ff831d6b3"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild.html#af6891a92f31196563f2d234ff831d6b3">permissions</a></td></tr>
-<tr class="separator:af6891a92f31196563f2d234ff831d6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08449310c7d8340237d0908200688103"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild.html#a08449310c7d8340237d0908200688103">permissions</a></td></tr>
+<tr class="separator:a08449310c7d8340237d0908200688103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a75b90a8066254424ada136573666c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild.html#a2a75b90a8066254424ada136573666c0">afk_channel_id</a></td></tr>
 <tr class="separator:a2a75b90a8066254424ada136573666c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae334bae8ee1d7c786af5d599935084bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__guild.html#ae334bae8ee1d7c786af5d599935084bd">afk_timeout</a></td></tr>
@@ -227,6 +227,8 @@ Data Fields</h2></td></tr>
 </ul>
 </li>
 </ul>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#_a4">cache.c</a>.</dd>
+</dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="aaddf082e5e123ac3a908778245c2f3ea" name="aaddf082e5e123ac3a908778245c2f3ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaddf082e5e123ac3a908778245c2f3ea">&#9670;&nbsp;</a></span>id</h2>
@@ -257,7 +259,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >guild name (2-100 characters, excluding trailing and leading whitespace </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a8">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a7">cache.c</a>, and <a class="el" href="fetch-messages_8c-example.html#a8">fetch-messages.c</a>.</dd>
 </dl>
 
 </div>
@@ -352,14 +354,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="af6891a92f31196563f2d234ff831d6b3" name="af6891a92f31196563f2d234ff831d6b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6891a92f31196563f2d234ff831d6b3">&#9670;&nbsp;</a></span>permissions</h2>
+<a id="a08449310c7d8340237d0908200688103" name="a08449310c7d8340237d0908200688103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08449310c7d8340237d0908200688103">&#9670;&nbsp;</a></span>permissions</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* discord_guild::permissions</td>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> discord_guild::permissions</td>
         </tr>
       </table>
 </div><div class="memdoc">

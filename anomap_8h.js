@@ -11,7 +11,10 @@ var anomap_8h =
     [ "anomap_create", "anomap_8h.html#af8e5738e05b0eabe89dff563a94a2e12", null ],
     [ "anomap_destroy", "anomap_8h.html#aff94296fc9558f1095ad24799478ab46", null ],
     [ "anomap_length", "anomap_8h.html#a9596fdc5ef2ab5a246a669833820dca4", null ],
-    [ "anomap_index_of", "anomap_8h.html#ac3d2d46fe7d94ee1c09ff5667d24f39a", null ],
+    [ "anomap_clear", "anomap_8h.html#ab2f1cd1a3e632ab44aeeb59ca498d628", null ],
+    [ "anomap_index_of", "anomap_8h.html#aa015189638637137c5470efcbc2c1feb", null ],
     [ "anomap_at_index", "anomap_8h.html#a50e60c2ab33b3604f77d1a3f239adc85", null ],
-    [ "anomap_do", "anomap_8h.html#a94e93e6938771c67bb428a61cb0ecfa8", null ]
+    [ "anomap_do", "anomap_8h.html#a94e93e6938771c67bb428a61cb0ecfa8", null ],
+    [ "anomap_copy_range", "anomap_8h.html#a1dba56e8ca0696ce72cc37a10c8b758f", null ],
+    [ "anomap_delete_range", "anomap_8h.html#ae1d58e811031296335d6f14372c34535", null ]
 ];

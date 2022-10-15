@@ -1,5 +1,6 @@
 var group__DiscordClient =
 [
+    [ "Caching", "group__DiscordClientCache.html", "group__DiscordClientCache" ],
     [ "Commands", "group__DiscordCommands.html", "group__DiscordCommands" ],
     [ "Events", "group__DiscordEvents.html", "group__DiscordEvents" ],
     [ "Timer", "group__DiscordTimer.html", "group__DiscordTimer" ],
@@ -13,6 +14,7 @@ var group__DiscordClient =
       [ "rest", "structdiscord.html#a56552add29eecbcff98279d9256a5586", null ],
       [ "gw", "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5", null ],
       [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
+      [ "cache", "structdiscord.html#a1cbdbc3c7dfbf6ecdf82f6784f5e3c38", null ],
       [ "internal", "structdiscord.html#ab587bcec8b91c77ba72a919ba01b15a2", null ],
       [ "user", "structdiscord.html#aece276e567f9230f448c8efea165b5f5", null ],
       [ "timers", "structdiscord.html#ac6bc034780945e0672abd81756a3308a", null ],
@@ -27,7 +29,7 @@ var group__DiscordClient =
       [ "cond", "structdiscord.html#ab3466a18d217a70bf790e2316be77f22", null ],
       [ "workers", "structdiscord.html#a7df318980dab3301c117d4a4650af00e", null ]
     ] ],
-    [ "discord_claim", "group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0", null ],
+    [ "discord_claim", "group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7", null ],
     [ "__discord_claim", "group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086", null ],
     [ "discord_unclaim", "group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4", null ],
     [ "discord_init", "group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d", null ],

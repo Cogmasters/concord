@@ -4,6 +4,7 @@ var docs_2api_2stage__instance_8h =
     [ "discord_stage_instances", "structdiscord__stage__instances.html", "structdiscord__stage__instances" ],
     [ "discord_create_stage_instance", "structdiscord__create__stage__instance.html", "structdiscord__create__stage__instance" ],
     [ "discord_modify_stage_instance", "structdiscord__modify__stage__instance.html", "structdiscord__modify__stage__instance" ],
+    [ "discord_delete_stage_instance", "structdiscord__delete__stage__instance.html", "structdiscord__delete__stage__instance" ],
     [ "JSMN_STRICT", "docs_2api_2stage__instance_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
     [ "JSMN_HEADER", "docs_2api_2stage__instance_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "JSONB_HEADER", "docs_2api_2stage__instance_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],

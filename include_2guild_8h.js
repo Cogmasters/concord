@@ -15,13 +15,13 @@ var include_2guild_8h =
     [ "discord_modify_guild_member", "group__DiscordAPIGuild.html#gad3df23cdac55d8390ab271232eb98498", null ],
     [ "discord_modify_current_member", "group__DiscordAPIGuild.html#ga0cbfb35c503c499ae1fa83377ef4ce4f", null ],
     [ "discord_modify_current_user_nick", "group__DiscordAPIGuild.html#gad59df50bcb939673708b4935f2b17a76", null ],
-    [ "discord_add_guild_member_role", "group__DiscordAPIGuild.html#ga36feb787c0ac8ca822b6e4ecad6fe4a7", null ],
-    [ "discord_remove_guild_member_role", "group__DiscordAPIGuild.html#ga36965932e32a014290f53b7c9b0027fb", null ],
-    [ "discord_remove_guild_member", "group__DiscordAPIGuild.html#ga99dc9c4f93513faa176d08d74ee546d0", null ],
+    [ "discord_add_guild_member_role", "group__DiscordAPIGuild.html#gae491474df254f98fbcf7a942aef3ff5e", null ],
+    [ "discord_remove_guild_member_role", "group__DiscordAPIGuild.html#gaf3ff7fae43cdf6c036f583e9971ff93c", null ],
+    [ "discord_remove_guild_member", "group__DiscordAPIGuild.html#gab10318e87406cfd70a98aee68205eddd", null ],
     [ "discord_get_guild_bans", "group__DiscordAPIGuild.html#ga0711e0d37505c68707ac5bd4b9754055", null ],
     [ "discord_get_guild_ban", "group__DiscordAPIGuild.html#ga8555a94ea268571867b06db896d6cdfe", null ],
     [ "discord_create_guild_ban", "group__DiscordAPIGuild.html#gac031335d0247f9aa6f7f6db77bc44208", null ],
-    [ "discord_remove_guild_ban", "group__DiscordAPIGuild.html#gaf2f7f7d1046fb1940a5480b39ab898c1", null ],
+    [ "discord_remove_guild_ban", "group__DiscordAPIGuild.html#ga446c8ea32e07728296ce352b81a5a527", null ],
     [ "discord_get_guild_roles", "group__DiscordAPIGuild.html#gacc24f6814acedc9487321995a45f295a", null ],
     [ "discord_create_guild_role", "group__DiscordAPIGuild.html#ga6b57c1bbb36c586f743d0c5de056d72a", null ],
     [ "discord_get_guild_prune_count", "group__DiscordAPIGuild.html#ga84b96d1ca07543ea0ee464a588e66fa2", null ],
@@ -29,7 +29,7 @@ var include_2guild_8h =
     [ "discord_get_guild_voice_regions", "group__DiscordAPIGuild.html#gaf6d9d6d8e830715db9af13940b5cae53", null ],
     [ "discord_get_guild_invites", "group__DiscordAPIGuild.html#gad9653b17d6d544e1d0e1ae3e90f56f72", null ],
     [ "discord_get_guild_integrations", "group__DiscordAPIGuild.html#ga6f29d2b462030cc2856aa8dbe41ffc89", null ],
-    [ "discord_delete_guild_integrations", "group__DiscordAPIGuild.html#ga4406c9eb8f5461048b99a7f95b269e39", null ],
+    [ "discord_delete_guild_integrations", "group__DiscordAPIGuild.html#ga35810c00ed698903f3ed9afb11aae3f4", null ],
     [ "discord_get_guild_widget_settings", "group__DiscordAPIGuild.html#gabde6a80a7d59d062ea9768c291208812", null ],
     [ "discord_modify_guild_widget", "group__DiscordAPIGuild.html#gae08ba02082408a7071c598f0b34dec5e", null ],
     [ "discord_get_guild_widget", "group__DiscordAPIGuild.html#gafa99ea46b7d59fabb3f8e0d8bbfac891", null ],
@@ -40,5 +40,5 @@ var include_2guild_8h =
     [ "discord_modify_user_voice_state", "group__DiscordAPIGuild.html#ga49ed6e5cc09d110ef0dc7bfca1311cc2", null ],
     [ "discord_modify_guild_role_positions", "group__DiscordAPIGuild.html#ga4c35986cb06448eb5a79ae45f0933351", null ],
     [ "discord_modify_guild_role", "group__DiscordAPIGuild.html#ga557baf857c8c292b958d67df2b414b10", null ],
-    [ "discord_delete_guild_role", "group__DiscordAPIGuild.html#ga5f4bb073ca67a0ae3ac5ede2c9fa1ccd", null ]
+    [ "discord_delete_guild_role", "group__DiscordAPIGuild.html#ga178a421b8b0134e3dc9fe7c9bbcfa5ec", null ]
 ];

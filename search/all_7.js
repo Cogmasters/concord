@@ -7,7 +7,7 @@ var searchData=
   ['gateway_2eh_4',['gateway.h',['../include_2gateway_8h.html',1,'(Global Namespace)'],['../docs_2api_2gateway_8h.html',1,'(Global Namespace)']]],
   ['general_20lengths_5',['General lengths',['../group__DiscordConstantsGeneral.html',1,'']]],
   ['global_20threadpool_6',['Global threadpool',['../group__DiscordInternalWorker.html',1,'']]],
-  ['global_5fwait_5fms_7',['global_wait_ms',['../structdiscord__ratelimiter.html#a9399a67fbe2100d153ac0d79e8972df7',1,'discord_ratelimiter']]],
+  ['global_5fwait_5ftstamp_7',['global_wait_tstamp',['../structdiscord__ratelimiter.html#a446a24c48f3d443d2a6431ef1ee05b20',1,'discord_ratelimiter']]],
   ['guild_8',['Guild',['../group__DiscordAPIGuild.html',1,'']]],
   ['guild_9',['guild',['../structdiscord__invite.html#a9537f5abdd59ec1e7130e7531a548a91',1,'discord_invite']]],
   ['guild_20scheduled_20event_10',['Guild Scheduled Event',['../group__DiscordAPIGuildScheduledEvent.html',1,'']]],

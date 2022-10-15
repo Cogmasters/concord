@@ -5,6 +5,7 @@ var dir_d44c64559bbebec7f509842c48db8b23 =
     [ "auto_moderation.h", "include_2auto__moderation_8h.html", "include_2auto__moderation_8h" ],
     [ "channel.h", "include_2channel_8h.html", "include_2channel_8h" ],
     [ "concord-once.h", "concord-once_8h.html", "concord-once_8h" ],
+    [ "discord-cache.h", "discord-cache_8h.html", "discord-cache_8h" ],
     [ "discord-events.h", "discord-events_8h.html", "discord-events_8h" ],
     [ "discord-internal.h", "discord-internal_8h.html", "discord-internal_8h" ],
     [ "discord-request.h", "discord-request_8h.html", "discord-request_8h" ],

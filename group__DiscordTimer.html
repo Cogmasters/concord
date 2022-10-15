@@ -126,6 +126,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa7ca0d000fbd3e69349aff6cd95b29e28">DISCORD_TIMER_DELETE_AUTO</a> = 1 &lt;&lt; 2
 , <br />
 &#160;&#160;<a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a> = 1 &lt;&lt; 3
+, <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa02e056ce68145fcb1ec12f03a968462b">DISCORD_TIMER_TICK</a> = 1 &lt;&lt; 4
 , <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fafee62f1c8a0dc5ebd3bc775890d350d4">DISCORD_TIMER_GET</a> = 1 &lt;&lt; 5
 , <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa3d9222cf6537cf7984b6c0df22eaa340">DISCORD_TIMER_INTERVAL_FIXED</a> = 1 &lt;&lt; 6
 <br />
@@ -138,12 +139,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga230faf2b14190f3c6ddecbcf9ed1ae6d"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga230faf2b14190f3c6ddecbcf9ed1ae6d">discord_timer_ctl</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
 <tr class="memdesc:ga230faf2b14190f3c6ddecbcf9ed1ae6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">modifies or creates a timer  <a href="group__DiscordTimer.html#ga230faf2b14190f3c6ddecbcf9ed1ae6d">More...</a><br /></td></tr>
 <tr class="separator:ga230faf2b14190f3c6ddecbcf9ed1ae6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85b715c14360d0436da5c8bd95ae5e4f"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> cb, void *data, int64_t delay)</td></tr>
-<tr class="memdesc:ga85b715c14360d0436da5c8bd95ae5e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a one shot timer that automatically deletes itself upon completion  <a href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">More...</a><br /></td></tr>
-<tr class="separator:ga85b715c14360d0436da5c8bd95ae5e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadbe05490558b071d3491994f491d6155"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155">discord_timer_interval</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> cb, void *data, int64_t delay, int64_t interval, int64_t repeat)</td></tr>
-<tr class="memdesc:gadbe05490558b071d3491994f491d6155"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a repeating timer that automatically deletes itself upon completion  <a href="group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155">More...</a><br /></td></tr>
-<tr class="separator:gadbe05490558b071d3491994f491d6155"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6ba0cfcce0ebf6f0a977a31148d172b"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#gaa6ba0cfcce0ebf6f0a977a31148d172b">discord_timer</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> on_tick_cb, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> on_status_changed_cb, void *data, int64_t delay)</td></tr>
+<tr class="memdesc:gaa6ba0cfcce0ebf6f0a977a31148d172b"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a one shot timer that automatically deletes itself upon completion  <a href="group__DiscordTimer.html#gaa6ba0cfcce0ebf6f0a977a31148d172b">More...</a><br /></td></tr>
+<tr class="separator:gaa6ba0cfcce0ebf6f0a977a31148d172b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e5df521a70c3c7cdb8627b529a710e3"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga4e5df521a70c3c7cdb8627b529a710e3">discord_timer_interval</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> on_tick_cb, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> on_status_changed_cb, void *data, int64_t delay, int64_t interval, int64_t repeat)</td></tr>
+<tr class="memdesc:ga4e5df521a70c3c7cdb8627b529a710e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a repeating timer that automatically deletes itself upon completion  <a href="group__DiscordTimer.html#ga4e5df521a70c3c7cdb8627b529a710e3">More...</a><br /></td></tr>
+<tr class="separator:ga4e5df521a70c3c7cdb8627b529a710e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9670267c1520768658351d73110d12e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga9670267c1520768658351d73110d12e2">discord_timer_get</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
 <tr class="memdesc:ga9670267c1520768658351d73110d12e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the data associated with the timer  <a href="group__DiscordTimer.html#ga9670267c1520768658351d73110d12e2">More...</a><br /></td></tr>
 <tr class="separator:ga9670267c1520768658351d73110d12e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,6 +208,8 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e" name="gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e"></a>DISCORD_TIMER_CANCELED&#160;</td><td class="fielddoc"><p >timer has been canceled. user should cleanup only </p>
 </td></tr>
+<tr><td class="fieldname"><a id="gga6e91b61d2abe8974ade81aa42b225a6fa02e056ce68145fcb1ec12f03a968462b" name="gga6e91b61d2abe8974ade81aa42b225a6fa02e056ce68145fcb1ec12f03a968462b"></a>DISCORD_TIMER_TICK&#160;</td><td class="fielddoc"><p >flag is set when on_tick callback has been called </p>
+</td></tr>
 <tr><td class="fieldname"><a id="gga6e91b61d2abe8974ade81aa42b225a6fafee62f1c8a0dc5ebd3bc775890d350d4" name="gga6e91b61d2abe8974ade81aa42b225a6fafee62f1c8a0dc5ebd3bc775890d350d4"></a>DISCORD_TIMER_GET&#160;</td><td class="fielddoc"><p >used in discord_timer_ctl to get the timer's data </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga6e91b61d2abe8974ade81aa42b225a6fa3d9222cf6537cf7984b6c0df22eaa340" name="gga6e91b61d2abe8974ade81aa42b225a6fa3d9222cf6537cf7984b6c0df22eaa340"></a>DISCORD_TIMER_INTERVAL_FIXED&#160;</td><td class="fielddoc"><p >timer should run using a fixed interval based on start time </p>
@@ -254,8 +257,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga85b715c14360d0436da5c8bd95ae5e4f" name="ga85b715c14360d0436da5c8bd95ae5e4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga85b715c14360d0436da5c8bd95ae5e4f">&#9670;&nbsp;</a></span>discord_timer()</h2>
+<a id="gaa6ba0cfcce0ebf6f0a977a31148d172b" name="gaa6ba0cfcce0ebf6f0a977a31148d172b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa6ba0cfcce0ebf6f0a977a31148d172b">&#9670;&nbsp;</a></span>discord_timer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,7 +273,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td>
-          <td class="paramname"><em>cb</em>, </td>
+          <td class="paramname"><em>on_tick_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td>
+          <td class="paramname"><em>on_status_changed_cb</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -296,20 +305,21 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
-    <tr><td class="paramname">cb</td><td>the callback that should be called when timer triggers </td></tr>
+    <tr><td class="paramname">on_tick_cb</td><td>(nullable) the callback that should be called when timer triggers </td></tr>
+    <tr><td class="paramname">on_status_changed_cb</td><td>(nullable) the callback for status updates timer-&gt;flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE </td></tr>
     <tr><td class="paramname">data</td><td>user data </td></tr>
     <tr><td class="paramname">delay</td><td>delay before timer should start in milliseconds </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the id of the timer </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a12">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a13">timers.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="gadbe05490558b071d3491994f491d6155" name="gadbe05490558b071d3491994f491d6155"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadbe05490558b071d3491994f491d6155">&#9670;&nbsp;</a></span>discord_timer_interval()</h2>
+<a id="ga4e5df521a70c3c7cdb8627b529a710e3" name="ga4e5df521a70c3c7cdb8627b529a710e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e5df521a70c3c7cdb8627b529a710e3">&#9670;&nbsp;</a></span>discord_timer_interval()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -324,7 +334,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td>
-          <td class="paramname"><em>cb</em>, </td>
+          <td class="paramname"><em>on_tick_cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a>&#160;</td>
+          <td class="paramname"><em>on_status_changed_cb</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -362,7 +378,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
-    <tr><td class="paramname">cb</td><td>the callback that should be called when timer triggers </td></tr>
+    <tr><td class="paramname">on_tick_cb</td><td>(nullable) the callback that should be called when timer triggers </td></tr>
+    <tr><td class="paramname">on_status_changed_cb</td><td>(nullable) the callback for status updates timer-&gt;flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE </td></tr>
     <tr><td class="paramname">data</td><td>user data </td></tr>
     <tr><td class="paramname">delay</td><td>delay before timer should start in milliseconds </td></tr>
     <tr><td class="paramname">interval</td><td>interval between runs. (-1 == disable repeat) </td></tr>
@@ -371,7 +388,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the id of the timer </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a13">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a14">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -532,6 +549,8 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a15">timers.c</a>.</dd>
+</dl>
 
 </div>
 </div>

@@ -25,7 +25,7 @@ var group__DiscordAPIWebhook =
     [ "discord_get_webhook_with_token", "group__DiscordAPIWebhook.html#ga30e9845d20ebcfd01bf81e0610fb1322", null ],
     [ "discord_modify_webhook", "group__DiscordAPIWebhook.html#gaaee6a957a85598dd1ce41323b2347db3", null ],
     [ "discord_modify_webhook_with_token", "group__DiscordAPIWebhook.html#gabefa02a637cb7dd04ce239b72531f70b", null ],
-    [ "discord_delete_webhook", "group__DiscordAPIWebhook.html#gab5930eaece340bac8e32f1110d6e7717", null ],
+    [ "discord_delete_webhook", "group__DiscordAPIWebhook.html#gaf07c388d69e82d798519a3c724a091fd", null ],
     [ "discord_delete_webhook_with_token", "group__DiscordAPIWebhook.html#gadc3a59a88be8e5edffa09b57c1584d83", null ],
     [ "discord_execute_webhook", "group__DiscordAPIWebhook.html#ga6423cbf3797741bcaf5ced860dcc3339", null ],
     [ "discord_get_webhook_message", "group__DiscordAPIWebhook.html#ga0b072fa4ace62c319bc9ed2a82984698", null ],

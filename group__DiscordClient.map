@@ -1,7 +1,8 @@
 <map id="Client" name="Client">
-<area shape="rect" id="node1" title="Client functions and datatypes." alt="" coords="5,84,65,109"/>
-<area shape="rect" id="node2" href="$group__DiscordCommands.html" title="Requests made by the client to the Gateway socket." alt="" coords="203,5,299,31"/>
-<area shape="rect" id="node3" href="$group__DiscordEvents.html" title="Events sent over the Gateway socket to the client." alt="" coords="218,55,285,80"/>
-<area shape="rect" id="node4" href="$group__DiscordInternal.html" title="Documentation useful when developing or debugging Concord itself." alt="" coords="161,105,341,145"/>
-<area shape="rect" id="node5" href="$group__DiscordTimer.html" title="Schedule callbacks to be called in the future." alt="" coords="221,169,281,195"/>
+<area shape="rect" id="node1" title="Client functions and datatypes." alt="" coords="5,104,65,129"/>
+<area shape="rect" id="node2" href="$group__DiscordClientCache.html" title="Caching API supported by Concord." alt="" coords="214,5,289,31"/>
+<area shape="rect" id="node3" href="$group__DiscordCommands.html" title="Requests made by the client to the Gateway socket." alt="" coords="203,55,299,80"/>
+<area shape="rect" id="node4" href="$group__DiscordEvents.html" title="Events sent over the Gateway socket to the client." alt="" coords="218,104,285,129"/>
+<area shape="rect" id="node5" href="$group__DiscordInternal.html" title="Documentation useful when developing or debugging Concord itself." alt="" coords="161,154,341,194"/>
+<area shape="rect" id="node6" href="$group__DiscordTimer.html" title="Schedule callbacks to be called in the future." alt="" coords="221,219,281,244"/>
 </map>

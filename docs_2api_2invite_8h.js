@@ -5,6 +5,7 @@ var docs_2api_2invite_8h =
     [ "discord_invite_metadata", "structdiscord__invite__metadata.html", "structdiscord__invite__metadata" ],
     [ "discord_invite_stage_instance", "structdiscord__invite__stage__instance.html", "structdiscord__invite__stage__instance" ],
     [ "discord_get_invite", "structdiscord__get__invite.html", "structdiscord__get__invite" ],
+    [ "discord_delete_invite", "structdiscord__delete__invite.html", "structdiscord__delete__invite" ],
     [ "JSMN_STRICT", "docs_2api_2invite_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
     [ "JSMN_HEADER", "docs_2api_2invite_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "JSONB_HEADER", "docs_2api_2invite_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],

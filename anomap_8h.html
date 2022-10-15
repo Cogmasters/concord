@@ -131,12 +131,18 @@ Functions</h2></td></tr>
 <tr class="separator:aff94296fc9558f1095ad24799478ab46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9596fdc5ef2ab5a246a669833820dca4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a9596fdc5ef2ab5a246a669833820dca4">anomap_length</a> (struct anomap *map)</td></tr>
 <tr class="separator:a9596fdc5ef2ab5a246a669833820dca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3d2d46fe7d94ee1c09ff5667d24f39a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#ac3d2d46fe7d94ee1c09ff5667d24f39a">anomap_index_of</a> (struct anomap *map, size_t *index, void *key)</td></tr>
-<tr class="separator:ac3d2d46fe7d94ee1c09ff5667d24f39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2f1cd1a3e632ab44aeeb59ca498d628"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#ab2f1cd1a3e632ab44aeeb59ca498d628">anomap_clear</a> (struct anomap *map)</td></tr>
+<tr class="separator:ab2f1cd1a3e632ab44aeeb59ca498d628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa015189638637137c5470efcbc2c1feb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#aa015189638637137c5470efcbc2c1feb">anomap_index_of</a> (struct anomap *map, void *key, size_t *index)</td></tr>
+<tr class="separator:aa015189638637137c5470efcbc2c1feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50e60c2ab33b3604f77d1a3f239adc85"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a50e60c2ab33b3604f77d1a3f239adc85">anomap_at_index</a> (struct anomap *map, size_t index, void *key, void *val)</td></tr>
 <tr class="separator:a50e60c2ab33b3604f77d1a3f239adc85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94e93e6938771c67bb428a61cb0ecfa8"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="anomap_8h.html#a21313e5e249d4fc6bd6fefa914a4b38b">anomap_operation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a94e93e6938771c67bb428a61cb0ecfa8">anomap_do</a> (struct anomap *map, enum <a class="el" href="anomap_8h.html#a21313e5e249d4fc6bd6fefa914a4b38b">anomap_operation</a> operation, void *key, void *val)</td></tr>
 <tr class="separator:a94e93e6938771c67bb428a61cb0ecfa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dba56e8ca0696ce72cc37a10c8b758f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a1dba56e8ca0696ce72cc37a10c8b758f">anomap_copy_range</a> (struct anomap *map, size_t from_index, size_t to_index, void *keys, void *vals)</td></tr>
+<tr class="separator:a1dba56e8ca0696ce72cc37a10c8b758f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d58e811031296335d6f14372c34535"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#ae1d58e811031296335d6f14372c34535">anomap_delete_range</a> (struct anomap *map, size_t from_index, size_t to_index, void *keys, void *vals)</td></tr>
+<tr class="separator:ae1d58e811031296335d6f14372c34535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ab832408cbeb1197668222e6d74ba4ffb" name="ab832408cbeb1197668222e6d74ba4ffb"></a>
@@ -246,8 +252,26 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac3d2d46fe7d94ee1c09ff5667d24f39a" name="ac3d2d46fe7d94ee1c09ff5667d24f39a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3d2d46fe7d94ee1c09ff5667d24f39a">&#9670;&nbsp;</a></span>anomap_index_of()</h2>
+<a id="ab2f1cd1a3e632ab44aeeb59ca498d628" name="ab2f1cd1a3e632ab44aeeb59ca498d628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2f1cd1a3e632ab44aeeb59ca498d628">&#9670;&nbsp;</a></span>anomap_clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void anomap_clear </td>
+          <td>(</td>
+          <td class="paramtype">struct anomap *&#160;</td>
+          <td class="paramname"><em>map</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa015189638637137c5470efcbc2c1feb" name="aa015189638637137c5470efcbc2c1feb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa015189638637137c5470efcbc2c1feb">&#9670;&nbsp;</a></span>anomap_index_of()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,14 +285,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>key</em>&#160;</td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -349,6 +373,98 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1dba56e8ca0696ce72cc37a10c8b758f" name="a1dba56e8ca0696ce72cc37a10c8b758f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dba56e8ca0696ce72cc37a10c8b758f">&#9670;&nbsp;</a></span>anomap_copy_range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t anomap_copy_range </td>
+          <td>(</td>
+          <td class="paramtype">struct anomap *&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>from_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>to_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>vals</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1d58e811031296335d6f14372c34535" name="ae1d58e811031296335d6f14372c34535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d58e811031296335d6f14372c34535">&#9670;&nbsp;</a></span>anomap_delete_range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t anomap_delete_range </td>
+          <td>(</td>
+          <td class="paramtype">struct anomap *&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>from_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>to_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>keys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>vals</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

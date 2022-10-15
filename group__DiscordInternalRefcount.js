@@ -11,8 +11,8 @@ var group__DiscordInternalRefcount =
     [ "discord_refcounter_add_internal", "group__DiscordInternalRefcount.html#ga4955c9f4f029ab989e0a8c3d8008ed84", null ],
     [ "discord_refcounter_add_client", "group__DiscordInternalRefcount.html#ga831e7aa566eb81a3c5ab8377e3dfdcde", null ],
     [ "discord_refcounter_cleanup", "group__DiscordInternalRefcount.html#ga3ee67c07bd64f1ec7aebf7a2a9afd06e", null ],
-    [ "discord_refcounter_claim", "group__DiscordInternalRefcount.html#ga421615e3a8f525e8457a665e3fb265cc", null ],
-    [ "discord_refcounter_unclaim", "group__DiscordInternalRefcount.html#ga3d01d3db2d751a938a85272506958a64", null ],
+    [ "discord_refcounter_claim", "group__DiscordInternalRefcount.html#ga3e4ce2823166287b4d486355fc06b431", null ],
+    [ "discord_refcounter_unclaim", "group__DiscordInternalRefcount.html#ga12915beddf469dd7e04608eaf7c4a679", null ],
     [ "discord_refcounter_incr", "group__DiscordInternalRefcount.html#ga48ee4a144665197b3cba3eef93716c38", null ],
     [ "discord_refcounter_decr", "group__DiscordInternalRefcount.html#ga645a8f63c5d9c01e4268257ee52c7128", null ]
 ];

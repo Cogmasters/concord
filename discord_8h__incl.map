@@ -1,5 +1,5 @@
 <map id="include/discord.h" name="include/discord.h">
-<area shape="rect" id="node1" title="Public functions and datatypes." alt="" coords="1447,5,1579,32"/>
+<area shape="rect" id="node1" title="Public functions and datatypes." alt="" coords="1493,5,1625,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,80,92,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="294,155,377,181"/>
 <area shape="rect" id="node4" href="$error_8h.html" title=" " alt="" coords="167,80,231,107"/>
@@ -25,5 +25,6 @@
 <area shape="rect" id="node24" href="$include_2oauth2_8h.html" title="OAuth2 public functions and datatypes." alt="" coords="2645,80,2724,107"/>
 <area shape="rect" id="node25" href="$application__command_8h.html" title="Application Command public functions and datatypes." alt="" coords="2749,80,2927,107"/>
 <area shape="rect" id="node26" href="$interaction_8h.html" title="Interaciton public functions and datatypes." alt="" coords="2951,80,3055,107"/>
-<area shape="rect" id="node27" href="$discord-events_8h.html" title="Listen, react and trigger Discord Gateway events." alt="" coords="3079,80,3210,107"/>
+<area shape="rect" id="node27" href="$discord-cache_8h.html" title="Caching of Discord resources." alt="" coords="3080,80,3204,107"/>
+<area shape="rect" id="node28" href="$discord-events_8h.html" title="Listen, react and trigger Discord Gateway events." alt="" coords="3229,80,3359,107"/>
 </map>

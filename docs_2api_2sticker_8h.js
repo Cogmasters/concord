@@ -9,6 +9,7 @@ var docs_2api_2sticker_8h =
     [ "discord_list_nitro_sticker_packs", "structdiscord__list__nitro__sticker__packs.html", "structdiscord__list__nitro__sticker__packs" ],
     [ "discord_create_guild_sticker", "structdiscord__create__guild__sticker.html", "structdiscord__create__guild__sticker" ],
     [ "discord_modify_guild_sticker", "structdiscord__modify__guild__sticker.html", "structdiscord__modify__guild__sticker" ],
+    [ "discord_delete_guild_sticker", "structdiscord__delete__guild__sticker.html", "structdiscord__delete__guild__sticker" ],
     [ "JSMN_STRICT", "docs_2api_2sticker_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
     [ "JSMN_HEADER", "docs_2api_2sticker_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "JSONB_HEADER", "docs_2api_2sticker_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],

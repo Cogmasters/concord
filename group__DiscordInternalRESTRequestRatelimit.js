@@ -7,7 +7,7 @@ var group__DiscordInternalRESTRequestRatelimit =
       [ "routes", "structdiscord__ratelimiter.html#ada41649708f3b4969e744c576e41a0dd", null ],
       [ "null", "structdiscord__ratelimiter.html#a0f2c5f14dc620e6fe2650f7b7b41ad53", null ],
       [ "miss", "structdiscord__ratelimiter.html#a851e023093acc161d03b26f1c1d56727", null ],
-      [ "global_wait_ms", "structdiscord__ratelimiter.html#a9399a67fbe2100d153ac0d79e8972df7", null ],
+      [ "global_wait_tstamp", "structdiscord__ratelimiter.html#a446a24c48f3d443d2a6431ef1ee05b20", null ],
       [ "queues", "structdiscord__ratelimiter.html#a621319557605c11bc7c79f99db464497", null ]
     ] ],
     [ "discord_bucket", "structdiscord__bucket.html", [
@@ -24,7 +24,8 @@ var group__DiscordInternalRESTRequestRatelimit =
     [ "discord_ratelimiter_cleanup", "group__DiscordInternalRESTRequestRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f", null ],
     [ "discord_ratelimiter_build_key", "group__DiscordInternalRESTRequestRatelimit.html#ga49ec800dbd53a216de0a860a2d9238d7", null ],
     [ "discord_ratelimiter_build", "group__DiscordInternalRESTRequestRatelimit.html#ga49206c6242957f9a269e606bab8e9550", null ],
-    [ "discord_bucket_get_timeout", "group__DiscordInternalRESTRequestRatelimit.html#ga7022e3f4a4db02d65e557b02a22db7e3", null ],
+    [ "discord_ratelimiter_set_global_timeout", "group__DiscordInternalRESTRequestRatelimit.html#ga0d2e8b02373e260dab9f7f9152403b3b", null ],
+    [ "discord_bucket_set_timeout", "group__DiscordInternalRESTRequestRatelimit.html#ga941bd68b7c9611c576f22ffc0a80e2be", null ],
     [ "discord_bucket_get", "group__DiscordInternalRESTRequestRatelimit.html#ga9fcc1bd39a13ad90a2942f93dbc87a09", null ],
     [ "discord_bucket_insert", "group__DiscordInternalRESTRequestRatelimit.html#ga814fc88f988d5cc9dfbe499d197dced9", null ],
     [ "discord_bucket_request_selector", "group__DiscordInternalRESTRequestRatelimit.html#gaa49ee6592960a1966ccf310befa25eb0", null ],

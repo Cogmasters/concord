@@ -178,6 +178,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__modify__channel.html">discord_modify_channel</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__delete__channel.html">discord_delete_channel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__get__channel__messages.html">discord_get_channel_messages</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__message.html">discord_create_message</a></td></tr>
@@ -186,13 +188,21 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__edit__message.html">discord_edit_message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__delete__message.html">discord_delete_message</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bulk__delete__messages.html">discord_bulk_delete_messages</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__edit__channel__permissions.html">discord_edit_channel_permissions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__channel__invite.html">discord_create_channel_invite</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__delete__channel__permission.html">discord_delete_channel_permission</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__follow__news__channel.html">discord_follow_news_channel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__pin__message.html">discord_pin_message</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__unpin__message.html">discord_unpin_message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__group__dm__add__recipient.html">discord_group_dm_add_recipient</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -365,18 +375,10 @@ Functions</h2></td></tr>
 <tr class="separator:a04ef6d709055a12ad35cbcc50c13202b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a035d1d6cea0f71a11d632f30906c4b5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a035d1d6cea0f71a11d632f30906c4b5a">discord_modify_channel_cleanup</a> (struct <a class="el" href="structdiscord__modify__channel.html">discord_modify_channel</a> *self)</td></tr>
 <tr class="separator:a035d1d6cea0f71a11d632f30906c4b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eacc11250742297730a804272c3858d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a8eacc11250742297730a804272c3858d">discord_get_channel_messages_init</a> (struct <a class="el" href="structdiscord__get__channel__messages.html">discord_get_channel_messages</a> *self)</td></tr>
-<tr class="separator:a8eacc11250742297730a804272c3858d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d295f9aaa8f79e6e7230929e0483dea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a7d295f9aaa8f79e6e7230929e0483dea">discord_get_channel_messages_cleanup</a> (struct <a class="el" href="structdiscord__get__channel__messages.html">discord_get_channel_messages</a> *self)</td></tr>
-<tr class="separator:a7d295f9aaa8f79e6e7230929e0483dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5aba434410f33e73c3d2612e60da13f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aa5aba434410f33e73c3d2612e60da13f">discord_create_message_init</a> (struct <a class="el" href="structdiscord__create__message.html">discord_create_message</a> *self)</td></tr>
 <tr class="separator:aa5aba434410f33e73c3d2612e60da13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71f67e5f355b63c3941be6200f8ddba5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a71f67e5f355b63c3941be6200f8ddba5">discord_create_message_cleanup</a> (struct <a class="el" href="structdiscord__create__message.html">discord_create_message</a> *self)</td></tr>
 <tr class="separator:a71f67e5f355b63c3941be6200f8ddba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2427553246c114496b4db974c102c6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af2427553246c114496b4db974c102c6c">discord_get_reactions_init</a> (struct <a class="el" href="structdiscord__get__reactions.html">discord_get_reactions</a> *self)</td></tr>
-<tr class="separator:af2427553246c114496b4db974c102c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68c81dbd692e113e1c907165f76fcc73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a68c81dbd692e113e1c907165f76fcc73">discord_get_reactions_cleanup</a> (struct <a class="el" href="structdiscord__get__reactions.html">discord_get_reactions</a> *self)</td></tr>
-<tr class="separator:a68c81dbd692e113e1c907165f76fcc73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8edbbb13c3b0b6d730fd7232e9f5cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a4f8edbbb13c3b0b6d730fd7232e9f5cc">discord_edit_message_init</a> (struct <a class="el" href="structdiscord__edit__message.html">discord_edit_message</a> *self)</td></tr>
 <tr class="separator:a4f8edbbb13c3b0b6d730fd7232e9f5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a301e428d90debc31dffb21fa30a10132"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a301e428d90debc31dffb21fa30a10132">discord_edit_message_cleanup</a> (struct <a class="el" href="structdiscord__edit__message.html">discord_edit_message</a> *self)</td></tr>
@@ -1443,42 +1445,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8eacc11250742297730a804272c3858d" name="a8eacc11250742297730a804272c3858d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8eacc11250742297730a804272c3858d">&#9670;&nbsp;</a></span>discord_get_channel_messages_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_get_channel_messages_init </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__get__channel__messages.html">discord_get_channel_messages</a> *&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7d295f9aaa8f79e6e7230929e0483dea" name="a7d295f9aaa8f79e6e7230929e0483dea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d295f9aaa8f79e6e7230929e0483dea">&#9670;&nbsp;</a></span>discord_get_channel_messages_cleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_get_channel_messages_cleanup </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__get__channel__messages.html">discord_get_channel_messages</a> *&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aa5aba434410f33e73c3d2612e60da13f" name="aa5aba434410f33e73c3d2612e60da13f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa5aba434410f33e73c3d2612e60da13f">&#9670;&nbsp;</a></span>discord_create_message_init()</h2>
 
@@ -1507,42 +1473,6 @@ Functions</h2></td></tr>
           <td class="memname">void discord_create_message_cleanup </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__create__message.html">discord_create_message</a> *&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af2427553246c114496b4db974c102c6c" name="af2427553246c114496b4db974c102c6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2427553246c114496b4db974c102c6c">&#9670;&nbsp;</a></span>discord_get_reactions_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_get_reactions_init </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__get__reactions.html">discord_get_reactions</a> *&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a68c81dbd692e113e1c907165f76fcc73" name="a68c81dbd692e113e1c907165f76fcc73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68c81dbd692e113e1c907165f76fcc73">&#9670;&nbsp;</a></span>discord_get_reactions_cleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void discord_get_reactions_cleanup </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__get__reactions.html">discord_get_reactions</a> *&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
           <td></td>
         </tr>

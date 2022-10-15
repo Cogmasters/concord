@@ -1,5 +1,6 @@
 var structdiscord__modify__channel =
 [
+    [ "reason", "structdiscord__modify__channel.html#a64bc70f17adf4f9b0faeba8c7cbaab39", null ],
     [ "name", "structdiscord__modify__channel.html#a5f9bf37f3b82a1daee05c9d21e0d956e", null ],
     [ "type", "structdiscord__modify__channel.html#aeaa9c8ec1832aca163a41fb30de804fe", null ],
     [ "position", "structdiscord__modify__channel.html#a3ba89949eed9e12fa1f1545a745ee156", null ],

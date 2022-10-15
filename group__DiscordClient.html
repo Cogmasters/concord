@@ -101,12 +101,15 @@ $(document).ready(function(){initNavTree('group__DiscordClient.html',''); initRe
 <div class="dynheader">
 Collaboration diagram for Client:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordClient.svg" width="347" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordClient.svg" width="347" height="250"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
 Modules</h2></td></tr>
+<tr class="memitem:group__DiscordClientCache"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClientCache.html">Caching</a></td></tr>
+<tr class="memdesc:group__DiscordClientCache"><td class="mdescLeft">&#160;</td><td class="mdescRight">Caching API supported by Concord. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__DiscordCommands"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html">Commands</a></td></tr>
 <tr class="memdesc:group__DiscordCommands"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requests made by the client to the Gateway socket. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,16 +128,16 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gad1073edb612b01eb8a277d2acf4183a0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0">discord_claim</a>(client,  param)&#160;&#160;&#160;(<a class="el" href="group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086">__discord_claim</a>(client, param), param)</td></tr>
-<tr class="memdesc:gad1073edb612b01eb8a277d2acf4183a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim ownership of a function parameter provided by Concord.  <a href="group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0">More...</a><br /></td></tr>
-<tr class="separator:gad1073edb612b01eb8a277d2acf4183a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa1716c3144212db97c8330987edd94b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7">discord_claim</a>(client,  data)&#160;&#160;&#160;(<a class="el" href="group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086">__discord_claim</a>(client, data), data)</td></tr>
+<tr class="memdesc:gaa1716c3144212db97c8330987edd94b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim ownership of a resource provided by Concord.  <a href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7">More...</a><br /></td></tr>
+<tr class="separator:gaa1716c3144212db97c8330987edd94b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gaff572a95f2f1b2c03c0796111d579086"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086">__discord_claim</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *data)</td></tr>
 <tr class="separator:gaff572a95f2f1b2c03c0796111d579086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4">discord_unclaim</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *data)</td></tr>
-<tr class="memdesc:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unclaim ownership of a function parameter provided by Concord.  <a href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4">More...</a><br /></td></tr>
+<tr class="memdesc:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unclaim ownership of a resource provided by Concord.  <a href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4">More...</a><br /></td></tr>
 <tr class="separator:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a> (const char token[])</td></tr>
 <tr class="memdesc:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by its token.  <a href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">More...</a><br /></td></tr>
@@ -154,7 +157,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga164add107d145df966be36cef1b9b4a9"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structdiscord__user.html">discord_user</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga164add107d145df966be36cef1b9b4a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the client's cached user.  <a href="group__DiscordClient.html#ga164add107d145df966be36cef1b9b4a9">More...</a><br /></td></tr>
 <tr class="separator:ga164add107d145df966be36cef1b9b4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga10b7d422776acf4fb67877f8f1d28af4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memitem:ga10b7d422776acf4fb67877f8f1d28af4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga10b7d422776acf4fb67877f8f1d28af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a connection to the Discord Gateway.  <a href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">More...</a><br /></td></tr>
 <tr class="separator:ga10b7d422776acf4fb67877f8f1d28af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3e522caa529dd26e03d75a6482e7aaa1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga3e522caa529dd26e03d75a6482e7aaa1">discord_shutdown</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
@@ -188,8 +191,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Client functions and datatypes. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gad1073edb612b01eb8a277d2acf4183a0" name="gad1073edb612b01eb8a277d2acf4183a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad1073edb612b01eb8a277d2acf4183a0">&#9670;&nbsp;</a></span>discord_claim</h2>
+<a id="gaa1716c3144212db97c8330987edd94b7" name="gaa1716c3144212db97c8330987edd94b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa1716c3144212db97c8330987edd94b7">&#9670;&nbsp;</a></span>discord_claim</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,26 +207,26 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">param&#160;</td>
+          <td class="paramname">data&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(<a class="el" href="group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086">__discord_claim</a>(client, param), param)</td>
+          <td></td><td>&#160;&#160;&#160;(<a class="el" href="group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086">__discord_claim</a>(client, data), data)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Claim ownership of a function parameter provided by Concord. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4" title="Unclaim ownership of a function parameter provided by Concord.">discord_unclaim()</a></dd></dl>
+<p>Claim ownership of a resource provided by Concord. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4" title="Unclaim ownership of a resource provided by Concord.">discord_unclaim()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
-    <tr><td class="paramname">param</td><td>a function parameter provided by Concord </td></tr>
+    <tr><td class="paramname">data</td><td>a resource provided by Concord </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>pointer to <code>param</code> (for one-liners) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer to <code>data</code> (for one-liners) </dd></dl>
 
 </div>
 </div>
@@ -282,15 +285,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Unclaim ownership of a function parameter provided by Concord. </p>
-<dl class="section note"><dt>Note</dt><dd>this will trigger the cleanup method of the parameter, so this should only be called when you no longer plan to use it </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a></dd></dl>
+<p>Unclaim ownership of a resource provided by Concord. </p>
+<dl class="section note"><dt>Note</dt><dd>this will make the resource eligible for cleanup, so this should only be called when you no longer plan to use it </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7" title="Claim ownership of a resource provided by Concord.">discord_claim()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
-    <tr><td class="paramname">param</td><td>a function parameter provided by Concord, that has been previously claimed with <a class="el" href="group__DiscordClient.html#gad1073edb612b01eb8a277d2acf4183a0" title="Claim ownership of a function parameter provided by Concord.">discord_claim()</a> </td></tr>
+    <tr><td class="paramname">data</td><td>a resource provided by Concord, that has been previously claimed with <a class="el" href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7" title="Claim ownership of a resource provided by Concord.">discord_claim()</a> </td></tr>
   </table>
   </dd>
+</dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a8">cache.c</a>.</dd>
 </dl>
 
 </div>
@@ -349,7 +354,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the newly created Discord Client handle </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a44">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a31">ban.c</a>, <a class="el" href="channel_8c-example.html#a52">channel.c</a>, <a class="el" href="components_8c-example.html#a41">components.c</a>, <a class="el" href="embed_8c-example.html#a39">embed.c</a>, <a class="el" href="emoji_8c-example.html#a34">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a45">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a27">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a55">guild.c</a>, <a class="el" href="invite_8c-example.html#a25">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a25">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a28">pin.c</a>, <a class="el" href="reaction_8c-example.html#a35">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a43">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a56">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a11">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a44">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a33">ban.c</a>, <a class="el" href="cache_8c-example.html#a15">cache.c</a>, <a class="el" href="channel_8c-example.html#a54">channel.c</a>, <a class="el" href="components_8c-example.html#a41">components.c</a>, <a class="el" href="embed_8c-example.html#a39">embed.c</a>, <a class="el" href="emoji_8c-example.html#a34">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a45">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a27">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a61">guild.c</a>, <a class="el" href="invite_8c-example.html#a27">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a25">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a32">pin.c</a>, <a class="el" href="reaction_8c-example.html#a35">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a43">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a56">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a12">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -470,7 +475,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a52">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a37">ban.c</a>, <a class="el" href="channel_8c-example.html#a63">channel.c</a>, <a class="el" href="components_8c-example.html#a47">components.c</a>, <a class="el" href="embed_8c-example.html#a44">embed.c</a>, <a class="el" href="emoji_8c-example.html#a39">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a46">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a32">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a63">guild.c</a>, <a class="el" href="invite_8c-example.html#a30">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a33">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a33">pin.c</a>, <a class="el" href="reaction_8c-example.html#a40">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a48">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a60">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a15">timers.c</a>, and <a class="el" href="webhook_8c-example.html#a12">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a52">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a39">ban.c</a>, <a class="el" href="cache_8c-example.html#a23">cache.c</a>, <a class="el" href="channel_8c-example.html#a65">channel.c</a>, <a class="el" href="components_8c-example.html#a47">components.c</a>, <a class="el" href="embed_8c-example.html#a44">embed.c</a>, <a class="el" href="emoji_8c-example.html#a39">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a46">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a32">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a69">guild.c</a>, <a class="el" href="invite_8c-example.html#a32">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a33">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a37">pin.c</a>, <a class="el" href="reaction_8c-example.html#a40">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a48">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a60">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a17">timers.c</a>, and <a class="el" href="webhook_8c-example.html#a12">webhook.c</a>.</dd>
 </dl>
 
 </div>
@@ -509,7 +514,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_run </td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_run </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em></td><td>)</td>
@@ -525,8 +530,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> for how the operation went, <a class="el" href="group__ConcordError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a51">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a36">ban.c</a>, <a class="el" href="channel_8c-example.html#a62">channel.c</a>, <a class="el" href="components_8c-example.html#a46">components.c</a>, <a class="el" href="embed_8c-example.html#a43">embed.c</a>, <a class="el" href="emoji_8c-example.html#a38">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a31">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a62">guild.c</a>, <a class="el" href="invite_8c-example.html#a29">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a32">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a32">pin.c</a>, <a class="el" href="reaction_8c-example.html#a39">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a47">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a59">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a14">timers.c</a>.</dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259">CCORDcode</a> value for how the operation went, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a51">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a38">ban.c</a>, <a class="el" href="cache_8c-example.html#a22">cache.c</a>, <a class="el" href="channel_8c-example.html#a64">channel.c</a>, <a class="el" href="components_8c-example.html#a46">components.c</a>, <a class="el" href="embed_8c-example.html#a43">embed.c</a>, <a class="el" href="emoji_8c-example.html#a38">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a31">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a68">guild.c</a>, <a class="el" href="invite_8c-example.html#a31">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a32">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a36">pin.c</a>, <a class="el" href="reaction_8c-example.html#a39">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a47">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a59">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a16">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -553,8 +558,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a9">timers.c</a>.</dd>
 </dl>
 
 </div>

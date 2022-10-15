@@ -214,6 +214,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span> {                                                          \</div>
 <div class="line">    (carray)-&gt;realsize = length;                              \</div>
+<div class="line">    (carray)-&gt;size = 0;                                       \</div>
 <div class="line">    (carray)-&gt;array = calloc(length, <span class="keyword">sizeof</span>(_type));          \</div>
 <div class="line">} <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
@@ -280,7 +281,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    (carray)-&gt;realsize = <a class="code hl_define" href="carray_8h.html#a32da6d5d17f34a0a5633397b51b965f7">CARRAY_RESIZE</a>((carray)-&gt;realsize);                                                \</div>
 <div class="line">    (carray)-&gt;array = realloc((carray)-&gt;array, <span class="keyword">sizeof</span>(*(carray)-&gt;array) * (size_t) (carray)-&gt;realsize)</div>
-<div class="ttc" id="acarray_8h_html_a32da6d5d17f34a0a5633397b51b965f7"><div class="ttname"><a href="carray_8h.html#a32da6d5d17f34a0a5633397b51b965f7">CARRAY_RESIZE</a></div><div class="ttdeci">#define CARRAY_RESIZE(current_size)</div><div class="ttdef"><b>Definition:</b> carray.h:69</div></div>
+<div class="ttc" id="acarray_8h_html_a32da6d5d17f34a0a5633397b51b965f7"><div class="ttname"><a href="carray_8h.html#a32da6d5d17f34a0a5633397b51b965f7">CARRAY_RESIZE</a></div><div class="ttdeci">#define CARRAY_RESIZE(current_size)</div><div class="ttdef"><b>Definition:</b> carray.h:72</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -656,7 +657,7 @@ Macros</h2></td></tr>
 <div class="line"><a class="code hl_define" href="carray_8h.html#a3641d3b1d1b7b23fd34dcfdbe5f328b0">                                                                                                \</a></div>
 <div class="line"><a class="code hl_define" href="carray_8h.html#a3641d3b1d1b7b23fd34dcfdbe5f328b0">    __carray_free_array</a>(carray);                                                                \</div>
 <div class="line">} <span class="keywordflow">while</span>(0)</div>
-<div class="ttc" id="acarray_8h_html_a3641d3b1d1b7b23fd34dcfdbe5f328b0"><div class="ttname"><a href="carray_8h.html#a3641d3b1d1b7b23fd34dcfdbe5f328b0">__carray_free_array</a></div><div class="ttdeci">#define __carray_free_array(carray)</div><div class="ttdef"><b>Definition:</b> carray.h:186</div></div>
+<div class="ttc" id="acarray_8h_html_a3641d3b1d1b7b23fd34dcfdbe5f328b0"><div class="ttname"><a href="carray_8h.html#a3641d3b1d1b7b23fd34dcfdbe5f328b0">__carray_free_array</a></div><div class="ttdeci">#define __carray_free_array(carray)</div><div class="ttdef"><b>Definition:</b> carray.h:190</div></div>
 </div><!-- fragment -->
 </div>
 </div>

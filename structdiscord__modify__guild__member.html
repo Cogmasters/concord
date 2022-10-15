@@ -103,6 +103,8 @@ Collaboration diagram for discord_modify_guild_member:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
+<tr class="memitem:a137485fe2e1fc7a04dd70cb7ee9d55ba"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__modify__guild__member.html#a137485fe2e1fc7a04dd70cb7ee9d55ba">reason</a></td></tr>
+<tr class="separator:a137485fe2e1fc7a04dd70cb7ee9d55ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674e119cd430ae2fadd2834f72186ee7"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__modify__guild__member.html#a674e119cd430ae2fadd2834f72186ee7">nick</a></td></tr>
 <tr class="separator:a674e119cd430ae2fadd2834f72186ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac52e78f15b6fd0c01da7c564b02415e2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__modify__guild__member.html#ac52e78f15b6fd0c01da7c564b02415e2">roles</a></td></tr>
@@ -138,6 +140,26 @@ Data Fields</h2></td></tr>
 </li>
 </ul>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="a137485fe2e1fc7a04dd70cb7ee9d55ba" name="a137485fe2e1fc7a04dd70cb7ee9d55ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a137485fe2e1fc7a04dd70cb7ee9d55ba">&#9670;&nbsp;</a></span>reason</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* discord_modify_guild_member::reason</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reason</td><td>a <code>reason</code> to indicate why the action was taken </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a674e119cd430ae2fadd2834f72186ee7" name="a674e119cd430ae2fadd2834f72186ee7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a674e119cd430ae2fadd2834f72186ee7">&#9670;&nbsp;</a></span>nick</h2>
 
@@ -224,7 +246,8 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >when the user's timeout will expire and the user will be able to communicate in the guild again (up to 28 days in the future), set to NULL to remove timeout. WIll throw a CCORD_HTTP_ERROR (403) error if the user has the <code>ADMINISTRATOR</code> permission or is the owner of the guild </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>should be able to write <code>null</code></dd></dl>
+<p >when the user's timeout will expire and the user will be able to communicate in the guild again (up to 28 days in the future), set to NULL to remove timeout. Will throw a CCORD_HTTP_ERROR (403) error if the user has the <code>ADMINISTRATOR</code> permission or is the owner of the guild </p>
 
 </div>
 </div>

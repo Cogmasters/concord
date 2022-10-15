@@ -1,5 +1,6 @@
 var structdiscord__modify__auto__moderation__rule =
 [
+    [ "reason", "structdiscord__modify__auto__moderation__rule.html#a557f7f92a9faf735f4e6c047655a62fa", null ],
     [ "name", "structdiscord__modify__auto__moderation__rule.html#aac7b6d8184a13a081f16884d310303fd", null ],
     [ "event_type", "structdiscord__modify__auto__moderation__rule.html#aa8d6309fe216af994724512988e410c5", null ],
     [ "trigger_metadata", "structdiscord__modify__auto__moderation__rule.html#ae15901a7484f5b4a95fa524d42a55292", null ],

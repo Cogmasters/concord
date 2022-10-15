@@ -112,6 +112,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a3e02a47fbd80f09c48b2ecc974035a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada67d5728c3a1aaf005dde63e9aa0e21"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attributes.html#ada67d5728c3a1aaf005dde63e9aa0e21">attachments</a></td></tr>
 <tr class="separator:ada67d5728c3a1aaf005dde63e9aa0e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb127114eb185bc3935351f779d98b76"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attributes.html#aeb127114eb185bc3935351f779d98b76">reason</a></td></tr>
+<tr class="separator:aeb127114eb185bc3935351f779d98b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request to be performed. </p>
@@ -157,7 +159,22 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >in case of <code>HTTP_MIMEPOST</code> provide attachments for file transfer </p>
+<p >if HTTP_MIMEPOST provide attachments for file transfer </p>
+
+</div>
+</div>
+<a id="aeb127114eb185bc3935351f779d98b76" name="aeb127114eb185bc3935351f779d98b76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb127114eb185bc3935351f779d98b76">&#9670;&nbsp;</a></span>reason</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* discord_attributes::reason</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >indicated reason to why the action was taken </p><dl class="section note"><dt>Note</dt><dd>when used at * <a class="el" href="structdiscord__request.html">discord_request</a> buffer is kept and reused </dd></dl>
 
 </div>
 </div>

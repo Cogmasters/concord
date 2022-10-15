@@ -111,15 +111,18 @@ Macros</h2></td></tr>
 <tr class="separator:aa98c09aa294015bf5ac2e108cd13f12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a289fbce9d5b1b9a8c7f980e59c5749d9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a>(dest,  src)</td></tr>
 <tr class="separator:a289fbce9d5b1b9a8c7f980e59c5749d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaebf290db02074487d40973bfc2dff7c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#aaebf290db02074487d40973bfc2dff7c">DISCORD_ATTR_INIT</a>(attr,  type,  ret)</td></tr>
-<tr class="memdesc:aaebf290db02074487d40973bfc2dff7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for a specs-generated return struct.  <a href="discord-request_8h.html#aaebf290db02074487d40973bfc2dff7c">More...</a><br /></td></tr>
-<tr class="separator:aaebf290db02074487d40973bfc2dff7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe4d5f28e2fe461435003976cde42f79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#abe4d5f28e2fe461435003976cde42f79">DISCORD_ATTR_LIST_INIT</a>(attr,  type,  ret)</td></tr>
-<tr class="memdesc:abe4d5f28e2fe461435003976cde42f79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for a specs-generated list.  <a href="discord-request_8h.html#abe4d5f28e2fe461435003976cde42f79">More...</a><br /></td></tr>
-<tr class="separator:abe4d5f28e2fe461435003976cde42f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eb1ad2723069663d9c07b6d177a1369"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a9eb1ad2723069663d9c07b6d177a1369">DISCORD_ATTR_BLANK_INIT</a>(attr,  ret)&#160;&#160;&#160;    if (ret) <a class="el" href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a>(attr.dispatch, *ret)</td></tr>
-<tr class="memdesc:a9eb1ad2723069663d9c07b6d177a1369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for attruests that doensn't expect a response object.  <a href="discord-request_8h.html#a9eb1ad2723069663d9c07b6d177a1369">More...</a><br /></td></tr>
-<tr class="separator:a9eb1ad2723069663d9c07b6d177a1369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6018cc292ec1efa69e2c673fa45a53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#add6018cc292ec1efa69e2c673fa45a53">DISCORD_ATTR_INIT</a>(attr,  type,  ret,  _reason)</td></tr>
+<tr class="memdesc:add6018cc292ec1efa69e2c673fa45a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for a specs-generated return struct.  <a href="discord-request_8h.html#add6018cc292ec1efa69e2c673fa45a53">More...</a><br /></td></tr>
+<tr class="separator:add6018cc292ec1efa69e2c673fa45a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafb08b8cf3fa9874e9a24b29ffef7bb9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#aafb08b8cf3fa9874e9a24b29ffef7bb9">DISCORD_ATTR_LIST_INIT</a>(attr,  type,  ret,  _reason)</td></tr>
+<tr class="memdesc:aafb08b8cf3fa9874e9a24b29ffef7bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for a specs-generated list.  <a href="discord-request_8h.html#aafb08b8cf3fa9874e9a24b29ffef7bb9">More...</a><br /></td></tr>
+<tr class="separator:aafb08b8cf3fa9874e9a24b29ffef7bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf97fba906a2e313ed07f5cc7298a07"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a7cf97fba906a2e313ed07f5cc7298a07">DISCORD_ATTR_BLANK_INIT</a>(attr,  ret,  _reason)</td></tr>
+<tr class="memdesc:a7cf97fba906a2e313ed07f5cc7298a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for setting attributes for attruests that doensn't expect a response object.  <a href="discord-request_8h.html#a7cf97fba906a2e313ed07f5cc7298a07">More...</a><br /></td></tr>
+<tr class="separator:a7cf97fba906a2e313ed07f5cc7298a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c99411b7fbcc157317973d234117540"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-request_8h.html#a3c99411b7fbcc157317973d234117540">DISCORD_ATTACHMENTS_IDS_INIT</a>(attchs)</td></tr>
+<tr class="memdesc:a3c99411b7fbcc157317973d234117540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper for initializing attachments ids.  <a href="discord-request_8h.html#a3c99411b7fbcc157317973d234117540">More...</a><br /></td></tr>
+<tr class="separator:a3c99411b7fbcc157317973d234117540"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -206,8 +209,8 @@ Typedefs</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aaebf290db02074487d40973bfc2dff7c" name="aaebf290db02074487d40973bfc2dff7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaebf290db02074487d40973bfc2dff7c">&#9670;&nbsp;</a></span>DISCORD_ATTR_INIT</h2>
+<a id="add6018cc292ec1efa69e2c673fa45a53" name="add6018cc292ec1efa69e2c673fa45a53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add6018cc292ec1efa69e2c673fa45a53">&#9670;&nbsp;</a></span>DISCORD_ATTR_INIT</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +231,13 @@ Typedefs</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">ret&#160;</td>
+          <td class="paramname">ret, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">_reason&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -242,6 +251,7 @@ Typedefs</h2></td></tr>
 <div class="line">        (attr).response.init = (<a class="code hl_typedef" href="discord-request_8h.html#a98302af62c528a87515ba01bbd587134">cast_init</a>)type##_init;                        \</div>
 <div class="line">        (attr).response.from_json = (<a class="code hl_typedef" href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a>)type##_from_json;         \</div>
 <div class="line">        (attr).response.cleanup = (<a class="code hl_typedef" href="discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b">cast_cleanup</a>)type##_cleanup;               \</div>
+<div class="line">        (attr).reason = _reason;                                              \</div>
 <div class="line">        if (ret) <a class="code hl_define" href="discord-request_8h.html#aa98c09aa294015bf5ac2e108cd13f12b">_RET_COPY_TYPED</a>(attr.dispatch, *ret);                        \</div>
 <div class="line">    } <span class="keywordflow">while</span> (0)</div>
 <div class="ttc" id="adiscord-request_8h_html_a32d0b0a2a5579d93f67f0f883fec5184"><div class="ttname"><a href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a></div><div class="ttdeci">size_t(* cast_from_json)(const char *, size_t, void *)</div><div class="ttdef"><b>Definition:</b> discord-request.h:17</div></div>
@@ -252,17 +262,18 @@ Typedefs</h2></td></tr>
 <p>Helper for setting attributes for a specs-generated return struct. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attr</td><td>attributes handler to be initialized </td></tr>
-    <tr><td class="paramname">type</td><td>datatype of the struct </td></tr>
-    <tr><td class="paramname">ret</td><td>dispatch attributes </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">attr</td><td><a class="el" href="structdiscord__attributes.html">discord_attributes</a> handler to be initialized </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>datatype of the struct </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ret</td><td>dispatch attributes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_reason</td><td>reason for request (if available) </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="abe4d5f28e2fe461435003976cde42f79" name="abe4d5f28e2fe461435003976cde42f79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe4d5f28e2fe461435003976cde42f79">&#9670;&nbsp;</a></span>DISCORD_ATTR_LIST_INIT</h2>
+<a id="aafb08b8cf3fa9874e9a24b29ffef7bb9" name="aafb08b8cf3fa9874e9a24b29ffef7bb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafb08b8cf3fa9874e9a24b29ffef7bb9">&#9670;&nbsp;</a></span>DISCORD_ATTR_LIST_INIT</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +294,13 @@ Typedefs</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">ret&#160;</td>
+          <td class="paramname">ret, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">_reason&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -296,23 +313,25 @@ Typedefs</h2></td></tr>
 <div class="line">        (attr).response.size = <span class="keyword">sizeof</span>(<span class="keyword">struct</span> type);                           \</div>
 <div class="line">        (attr).response.from_json = (<a class="code hl_typedef" href="discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184">cast_from_json</a>)type##_from_json;         \</div>
 <div class="line">        (attr).response.cleanup = (<a class="code hl_typedef" href="discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b">cast_cleanup</a>)type##_cleanup;               \</div>
+<div class="line">        (attr).reason = _reason;                                              \</div>
 <div class="line">        if (ret) <a class="code hl_define" href="discord-request_8h.html#aa98c09aa294015bf5ac2e108cd13f12b">_RET_COPY_TYPED</a>(attr.dispatch, *ret);                        \</div>
 <div class="line">    } <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
 <p>Helper for setting attributes for a specs-generated list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attr</td><td>attributes handler to be initialized </td></tr>
-    <tr><td class="paramname">type</td><td>datatype of the list </td></tr>
-    <tr><td class="paramname">ret</td><td>dispatch attributes </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">attr</td><td><a class="el" href="structdiscord__attributes.html">discord_attributes</a> handler to be initialized </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>datatype of the list </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ret</td><td>dispatch attributes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_reason</td><td>reason for request (if available) </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a9eb1ad2723069663d9c07b6d177a1369" name="a9eb1ad2723069663d9c07b6d177a1369"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9eb1ad2723069663d9c07b6d177a1369">&#9670;&nbsp;</a></span>DISCORD_ATTR_BLANK_INIT</h2>
+<a id="a7cf97fba906a2e313ed07f5cc7298a07" name="a7cf97fba906a2e313ed07f5cc7298a07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cf97fba906a2e313ed07f5cc7298a07">&#9670;&nbsp;</a></span>DISCORD_ATTR_BLANK_INIT</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,21 +346,65 @@ Typedefs</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">ret&#160;</td>
+          <td class="paramname">ret, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">_reason&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    if (ret) <a class="el" href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a>(attr.dispatch, *ret)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
+<div class="line">        (attr).reason = _reason;                                              \</div>
+<div class="line">        if (ret) <a class="code hl_define" href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a>(attr.dispatch, *ret);                     \</div>
+<div class="line">    } <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="adiscord-request_8h_html_a289fbce9d5b1b9a8c7f980e59c5749d9"><div class="ttname"><a href="discord-request_8h.html#a289fbce9d5b1b9a8c7f980e59c5749d9">_RET_COPY_TYPELESS</a></div><div class="ttdeci">#define _RET_COPY_TYPELESS(dest, src)</div><div class="ttdef"><b>Definition:</b> discord-request.h:32</div></div>
+</div><!-- fragment -->
 <p>Helper for setting attributes for attruests that doensn't expect a response object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attr</td><td>attributes handler to be initialized </td></tr>
-    <tr><td class="paramname">ret</td><td>dispatch attributes </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">attr</td><td><a class="el" href="structdiscord__attributes.html">discord_attributes</a> handler to be initialized </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ret</td><td>dispatch attributes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_reason</td><td>reason for request (if available) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3c99411b7fbcc157317973d234117540" name="a3c99411b7fbcc157317973d234117540"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c99411b7fbcc157317973d234117540">&#9670;&nbsp;</a></span>DISCORD_ATTACHMENTS_IDS_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DISCORD_ATTACHMENTS_IDS_INIT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">attchs</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
+<div class="line">        for (<span class="keywordtype">int</span> i = 0; i &lt; attchs-&gt;size; ++i) {                              \</div>
+<div class="line">            attchs-&gt;array[i].id = (<a class="code hl_typedef" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>)i;                            \</div>
+<div class="line">        }                                                                     \</div>
+<div class="line">    } <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="agroup__ConcordTypes_html_ga1f90b9a153d0298db01a3bf1eb334471"><div class="ttname"><a href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a></div><div class="ttdeci">uint64_t u64snowflake</div><div class="ttdoc">Snowflake datatype.</div><div class="ttdef"><b>Definition:</b> types.h:28</div></div>
+</div><!-- fragment -->
+<p>Helper for initializing attachments ids. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">attchs</td><td>a <a class="el" href="structdiscord__attachments.html">discord_attachments</a> to have its IDs initialized </td></tr>
   </table>
   </dd>
 </dl>

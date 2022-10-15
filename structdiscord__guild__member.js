@@ -9,7 +9,7 @@ var structdiscord__guild__member =
     [ "deaf", "structdiscord__guild__member.html#a3c27b86a4ab380ebe3c493a36bd81721", null ],
     [ "muted", "structdiscord__guild__member.html#a426cda9910ce1811b54fdda6b5117127", null ],
     [ "pending", "structdiscord__guild__member.html#aee3903d3f20d53a40554c69b27323b44", null ],
-    [ "permissions", "structdiscord__guild__member.html#a05e1d193f2e7aae1f0c66fc01487438e", null ],
+    [ "permissions", "structdiscord__guild__member.html#ae68c81dbdc22180bfe4a684ac34c8fcd", null ],
     [ "communication_disabled_until", "structdiscord__guild__member.html#ac4eaf2ad700c9aae6432051bec8cee96", null ],
     [ "guild_id", "structdiscord__guild__member.html#ac0e398708e5b687ad01ec2bbf0f662ad", null ]
 ];

@@ -106,9 +106,9 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="285.78,-110.23 275.5,-112.82 285.15,-117.2 285.78,-110.23"/>
 <text text-anchor="middle" x="363.5" y="-132.5" font-family="Helvetica,sans-Serif" font-size="10.00"> target_application</text>
 </g>
-<!-- Node49 -->
+<!-- Node50 -->
 <g id="node6" class="node">
-<title>Node49</title>
+<title>Node50</title>
 <g id="a_node6"><a xlink:href="structdiscord__invite__stage__instance.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="161.5,-0.5 161.5,-30.5 278.5,-30.5 278.5,-0.5 161.5,-0.5"/>
 <text text-anchor="start" x="169.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_invite_stage</text>
@@ -116,9 +116,9 @@
 </a>
 </g>
 </g>
-<!-- Node49&#45;&gt;Node1 -->
+<!-- Node50&#45;&gt;Node1 -->
 <g id="edge6" class="edge">
-<title>Node49&#45;&gt;Node1</title>
+<title>Node50&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M288.95,-16.98C330.08,-20.74 381.94,-30.85 421,-56.5 449.91,-75.49 468.92,-113.81 476.62,-131.78"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="288.99,-13.47 278.74,-16.15 288.42,-20.44 288.99,-13.47"/>
 <text text-anchor="middle" x="363.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00"> stage_instance</text>

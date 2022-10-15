@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('md_docs_WINDOWS.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p >Concord supports Windows natively using Cygwin and Mingw64. It is preferred that you use Cygwin if possible, even if it requires runtime dependencies (a variety of DLLs from /bin, namely <code>cygwin1.dll</code>). Mingw64 will produce a build that runs without any dependencies.</p>
-<h1><a class="anchor" id="autotoc_md69"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 Cygwin and Dependencies</h1>
 <p >Concord does not have very many dependencies. When you run the Cygwin installer, you will be provided with a long list of packages you can choose to install. The following packages are required at a minimum:</p><ul>
 <li>gcc-core</li>
@@ -100,10 +100,10 @@ Cygwin and Dependencies</h1>
 </ul>
 <p >You might also want to install git and vim. Please note that because Cygwin stores its files on your Windows machine's filesystem, you can run <code>explorer.exe .</code> anytime to open a Windows Explorer window in your current directory. You can use any IDE you would like to use, but you will still have to enter <code>make</code> to recompile your changes from the Cygwin terminal.</p>
 <p >It is also possible to use a clang-based compiler, but there is little reason to do so. Simply pass <code>CC=clang make</code> to your Cygwin shell and Clang will be used in lieu of GNU C.</p>
-<h1><a class="anchor" id="autotoc_md70"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 Microsoft Visual C/C++</h1>
 <p >As it stands right now, MSVC is not supported at all. At the current instant, Concord's Makefiles are for UNIX systems, and does not produce anything when ran with <code>nmake</code>. This will change in the near future. However, Concord itself cannot be compiled with MSVC, due to a lack of POSIX compliance on behalf of Windows.</p>
-<h1><a class="anchor" id="autotoc_md71"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 Other compilers</h1>
 <p >The following compilers are <b>not</b> supported:</p><ul>
 <li>OpenWatcom</li>

@@ -8,7 +8,7 @@ var structdiscord__guild =
     [ "discovery_splash", "structdiscord__guild.html#a475ba81c3f6600402e68d456db8553eb", null ],
     [ "owner", "structdiscord__guild.html#a8d1f0d33eefeb590e322e7125dfbfbe3", null ],
     [ "owner_id", "structdiscord__guild.html#aa60da032cb63da519eae74eff5526496", null ],
-    [ "permissions", "structdiscord__guild.html#af6891a92f31196563f2d234ff831d6b3", null ],
+    [ "permissions", "structdiscord__guild.html#a08449310c7d8340237d0908200688103", null ],
     [ "afk_channel_id", "structdiscord__guild.html#a2a75b90a8066254424ada136573666c0", null ],
     [ "afk_timeout", "structdiscord__guild.html#ae334bae8ee1d7c786af5d599935084bd", null ],
     [ "widget_enabled", "structdiscord__guild.html#a4ac238d11643161ca0e2141ae3428f28", null ],

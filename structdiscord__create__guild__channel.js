@@ -1,5 +1,6 @@
 var structdiscord__create__guild__channel =
 [
+    [ "reason", "structdiscord__create__guild__channel.html#a70a15e7bd55025291f6b4e9d0c2f5bec", null ],
     [ "name", "structdiscord__create__guild__channel.html#ad951bbca6e83e18736f059c48655763b", null ],
     [ "type", "structdiscord__create__guild__channel.html#a131b19fff9ebc6836c438720f079904a", null ],
     [ "topic", "structdiscord__create__guild__channel.html#a1730dd73abc29ec1f4c4bece793f9cf7", null ],

@@ -1,5 +1,6 @@
 var structdiscord__create__guild =
 [
+    [ "reason", "structdiscord__create__guild.html#ae3d0bd1c9c821961290cb05b564fda6b", null ],
     [ "name", "structdiscord__create__guild.html#ad7cd7ea1908ca91e1658a0f02eca2e1f", null ],
     [ "region", "structdiscord__create__guild.html#aa5714ce3fc68328c5a75fca5b6e59471", null ],
     [ "icon", "structdiscord__create__guild.html#a3fde026636c393fb398edbd22adeaad5", null ],

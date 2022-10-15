@@ -171,7 +171,10 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (event-&gt;<a id="a10" name="a10"></a><a class="code hl_variable" href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">author</a>-&gt;<a id="a11" name="a11"></a><a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">struct </span><a id="_a12" name="_a12"></a><a class="code hl_struct" href="structdiscord__create__guild__channel.html">discord_create_guild_channel</a> params = { .<a id="a13" name="a13"></a><a class="code hl_variable" href="structdiscord__create__guild__channel.html#ad951bbca6e83e18736f059c48655763b">name</a> = <span class="keyword">event</span>-&gt;content };</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a12" name="_a12"></a><a class="code hl_struct" href="structdiscord__create__guild__channel.html">discord_create_guild_channel</a> params = {</div>
+<div class="line">        .<a id="a13" name="a13"></a><a class="code hl_variable" href="structdiscord__create__guild__channel.html#ad951bbca6e83e18736f059c48655763b">name</a> = <span class="keyword">event</span>-&gt;content,</div>
+<div class="line">        .reason = <span class="stringliteral">&quot;Shiny new channel&quot;</span>,</div>
+<div class="line">    };</div>
 <div class="line">    <a id="a14" name="a14"></a><a class="code hl_function" href="group__DiscordAPIGuild.html#gaf355ca91c82612f96d78c3804b1fa043">discord_create_guild_channel</a>(client, event-&gt;<a id="a15" name="a15"></a><a class="code hl_variable" href="structdiscord__message.html#a1ccbd1ffb859a81a4841b07ffbf6e009">guild_id</a>, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -181,7 +184,10 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">author</a>-&gt;<a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">struct </span><a id="_a16" name="_a16"></a><a class="code hl_struct" href="structdiscord__modify__channel.html">discord_modify_channel</a> params = { .<a id="a17" name="a17"></a><a class="code hl_variable" href="structdiscord__modify__channel.html#a5f9bf37f3b82a1daee05c9d21e0d956e">name</a> = <span class="keyword">event</span>-&gt;content };</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a16" name="_a16"></a><a class="code hl_struct" href="structdiscord__modify__channel.html">discord_modify_channel</a> params = {</div>
+<div class="line">        .<a id="a17" name="a17"></a><a class="code hl_variable" href="structdiscord__modify__channel.html#a5f9bf37f3b82a1daee05c9d21e0d956e">name</a> = <span class="keyword">event</span>-&gt;content,</div>
+<div class="line">        .reason = <span class="stringliteral">&quot;Clicks better&quot;</span>,</div>
+<div class="line">    };</div>
 <div class="line">    <a id="a18" name="a18"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga74e716c370411cb625671fb52ce79b9b">discord_modify_channel</a>(client, event-&gt;<a id="a19" name="a19"></a><a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -191,32 +197,33 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">author</a>-&gt;<a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
-<div class="line">    <a id="a20" name="a20"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#gaddeca8c38dfaf511d9da52ed9268a4e7">discord_delete_channel</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, NULL);</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a20" name="_a20"></a><a class="code hl_struct" href="structdiscord__delete__channel.html">discord_delete_channel</a> params = { .<a id="a21" name="a21"></a><a class="code hl_variable" href="structdiscord__delete__channel.html#ac5c5c9e51f01439e1d3f375a2ae18b06">reason</a> = <span class="stringliteral">&quot;Stinky channel&quot;</span> };</div>
+<div class="line">    <a id="a22" name="a22"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#gac0b7eab09e22fd3b7c1c5238075d3525">discord_delete_channel</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span></div>
 <div class="line">done_get_channel_invites(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client,</div>
-<div class="line">                         <span class="keyword">struct</span> <a id="_a21" name="_a21"></a><a class="code hl_struct" href="structdiscord__response.html">discord_response</a> *resp,</div>
-<div class="line">                         <span class="keyword">const</span> <span class="keyword">struct</span> <a id="_a22" name="_a22"></a><a class="code hl_struct" href="structdiscord__invites.html">discord_invites</a> *invites)</div>
+<div class="line">                         <span class="keyword">struct</span> <a id="_a23" name="_a23"></a><a class="code hl_struct" href="structdiscord__response.html">discord_response</a> *resp,</div>
+<div class="line">                         <span class="keyword">const</span> <span class="keyword">struct</span> <a id="_a24" name="_a24"></a><a class="code hl_struct" href="structdiscord__invites.html">discord_invites</a> *invites)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> (!invites-&gt;<a id="a23" name="a23"></a><a class="code hl_variable" href="structdiscord__invites.html#a44df47f3ec67d3093d38db02080e2dbc">size</a>) {</div>
+<div class="line">    <span class="keywordflow">if</span> (!invites-&gt;<a id="a25" name="a25"></a><a class="code hl_variable" href="structdiscord__invites.html#a44df47f3ec67d3093d38db02080e2dbc">size</a>) {</div>
 <div class="line">        <a class="code hl_define" href="log_8h.html#aa1cfe5444875c8eca0ea6f6993977d6d">log_info</a>(<span class="stringliteral">&quot;No invites found!&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__message.html">discord_message</a> *<span class="keyword">event</span> = resp-&gt;<a id="a24" name="a24"></a><a class="code hl_variable" href="structdiscord__response.html#a04f49ed42bd190099401eb76ef1b17f5">keep</a>;</div>
-<div class="line">    <span class="keywordtype">char</span> text[<a id="a25" name="a25"></a><a class="code hl_define" href="group__DiscordConstantsGeneral.html#gaefa17f92436520f8048deb53ba691cef">DISCORD_MAX_MESSAGE_LEN</a>];</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__message.html">discord_message</a> *<span class="keyword">event</span> = resp-&gt;<a id="a26" name="a26"></a><a class="code hl_variable" href="structdiscord__response.html#a04f49ed42bd190099401eb76ef1b17f5">keep</a>;</div>
+<div class="line">    <span class="keywordtype">char</span> text[<a id="a27" name="a27"></a><a class="code hl_define" href="group__DiscordConstantsGeneral.html#gaefa17f92436520f8048deb53ba691cef">DISCORD_MAX_MESSAGE_LEN</a>];</div>
 <div class="line">    snprintf(text, <span class="keyword">sizeof</span>(text), <span class="stringliteral">&quot;%d invite links created.&quot;</span>, invites-&gt;<a class="code hl_variable" href="structdiscord__invites.html#a44df47f3ec67d3093d38db02080e2dbc">size</a>);</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">struct </span><a id="_a26" name="_a26"></a><a class="code hl_struct" href="structdiscord__create__message.html">discord_create_message</a> params = { .<a id="a27" name="a27"></a><a class="code hl_variable" href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = text };</div>
-<div class="line">    <a id="a28" name="a28"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a28" name="_a28"></a><a class="code hl_struct" href="structdiscord__create__message.html">discord_create_message</a> params = { .<a id="a29" name="a29"></a><a class="code hl_variable" href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = text };</div>
+<div class="line">    <a id="a30" name="a30"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span></div>
 <div class="line">fail_get_channel_invites(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__response.html">discord_response</a> *resp)</div>
 <div class="line">{</div>
 <div class="line">    <a class="code hl_define" href="log_8h.html#aa1cfe5444875c8eca0ea6f6993977d6d">log_info</a>(<span class="stringliteral">&quot;Couldn&#39;t fetch invites: %s&quot;</span>,</div>
-<div class="line">             <a id="a29" name="a29"></a><a class="code hl_function" href="group__ConcordError.html#gada62832835a3d70782b791e0cb607cd2">discord_strerror</a>(resp-&gt;<a id="a30" name="a30"></a><a class="code hl_variable" href="structdiscord__response.html#aa96e88c988aa67d86af986495c431c92">code</a>, client));</div>
+<div class="line">             <a id="a31" name="a31"></a><a class="code hl_function" href="group__ConcordError.html#gada62832835a3d70782b791e0cb607cd2">discord_strerror</a>(resp-&gt;<a id="a32" name="a32"></a><a class="code hl_variable" href="structdiscord__response.html#aa96e88c988aa67d86af986495c431c92">code</a>, client));</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span></div>
@@ -225,23 +232,23 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">author</a>-&gt;<a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">struct </span><a id="_a31" name="_a31"></a><a class="code hl_struct" href="structdiscord__ret__invites.html">discord_ret_invites</a> ret = {</div>
-<div class="line">        .<a id="a32" name="a32"></a><a class="code hl_variable" href="structdiscord__ret__invites.html#a6d6e71c216d41ecf0c49fce7c889c915">done</a> = &amp;done_get_channel_invites,</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a33" name="_a33"></a><a class="code hl_struct" href="structdiscord__ret__invites.html">discord_ret_invites</a> ret = {</div>
+<div class="line">        .<a id="a34" name="a34"></a><a class="code hl_variable" href="structdiscord__ret__invites.html#a6d6e71c216d41ecf0c49fce7c889c915">done</a> = &amp;done_get_channel_invites,</div>
 <div class="line">        .fail = &amp;fail_get_channel_invites,</div>
 <div class="line">        .keep = event,</div>
 <div class="line">    };</div>
-<div class="line">    <a id="a33" name="a33"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#gab0c42151d97e148d8222ed3bf89f5935">discord_get_channel_invites</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;ret);</div>
+<div class="line">    <a id="a35" name="a35"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#gab0c42151d97e148d8222ed3bf89f5935">discord_get_channel_invites</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;ret);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span></div>
 <div class="line">done_create_channel_invite(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client,</div>
 <div class="line">                           <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__response.html">discord_response</a> *resp,</div>
-<div class="line">                           <span class="keyword">const</span> <span class="keyword">struct</span> <a id="_a34" name="_a34"></a><a class="code hl_struct" href="structdiscord__invite.html">discord_invite</a> *invite)</div>
+<div class="line">                           <span class="keyword">const</span> <span class="keyword">struct</span> <a id="_a36" name="_a36"></a><a class="code hl_struct" href="structdiscord__invite.html">discord_invite</a> *invite)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__message.html">discord_message</a> *<span class="keyword">event</span> = resp-&gt;<a class="code hl_variable" href="structdiscord__response.html#a04f49ed42bd190099401eb76ef1b17f5">keep</a>;</div>
 <div class="line">    <span class="keywordtype">char</span> text[256];</div>
 <div class="line"> </div>
-<div class="line">    snprintf(text, <span class="keyword">sizeof</span>(text), <span class="stringliteral">&quot;https://discord.gg/%s&quot;</span>, invite-&gt;<a id="a35" name="a35"></a><a class="code hl_variable" href="structdiscord__invite.html#a935de1f04625fa8c0afccee06ea1a468">code</a>);</div>
+<div class="line">    snprintf(text, <span class="keyword">sizeof</span>(text), <span class="stringliteral">&quot;https://discord.gg/%s&quot;</span>, invite-&gt;<a id="a37" name="a37"></a><a class="code hl_variable" href="structdiscord__invite.html#a935de1f04625fa8c0afccee06ea1a468">code</a>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__create__message.html">discord_create_message</a> params = { .<a class="code hl_variable" href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = text };</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
@@ -265,12 +272,12 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">author</a>-&gt;<a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">struct </span><a id="_a36" name="_a36"></a><a class="code hl_struct" href="structdiscord__ret__invite.html">discord_ret_invite</a> ret = {</div>
-<div class="line">        .<a id="a37" name="a37"></a><a class="code hl_variable" href="structdiscord__ret__invite.html#a2580f1eb8ddeca7902f3ba3715005548">done</a> = &amp;done_create_channel_invite,</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a38" name="_a38"></a><a class="code hl_struct" href="structdiscord__ret__invite.html">discord_ret_invite</a> ret = {</div>
+<div class="line">        .<a id="a39" name="a39"></a><a class="code hl_variable" href="structdiscord__ret__invite.html#a2580f1eb8ddeca7902f3ba3715005548">done</a> = &amp;done_create_channel_invite,</div>
 <div class="line">        .fail = &amp;fail_create_channel_invite,</div>
 <div class="line">        .keep = event,</div>
 <div class="line">    };</div>
-<div class="line">    <a id="a38" name="a38"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#gaea2527f8833466e97bb51f03d3a5b9c2">discord_create_channel_invite</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, NULL, &amp;ret);</div>
+<div class="line">    <a id="a40" name="a40"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#gaea2527f8833466e97bb51f03d3a5b9c2">discord_create_channel_invite</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, NULL, &amp;ret);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span></div>
@@ -281,7 +288,7 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">    <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__message.html">discord_message</a> *<span class="keyword">event</span> = resp-&gt;<a class="code hl_variable" href="structdiscord__response.html#a04f49ed42bd190099401eb76ef1b17f5">keep</a>;</div>
 <div class="line">    <span class="keywordtype">char</span> text[1024];</div>
 <div class="line"> </div>
-<div class="line">    snprintf(text, <span class="keyword">sizeof</span>(text), <span class="stringliteral">&quot;Created thread &lt;#%&quot;</span> PRIu64 <span class="stringliteral">&quot;&gt;&quot;</span>, <a id="a39" name="a39"></a><a class="code hl_variable" href="structdiscord__message.html#a0cf481b0e351625aaf1105b8110525a6">thread</a>-&gt;<a class="code hl_variable" href="structdiscord__channel.html#adfc6199c6bcad839bb99da4265c77f0b">id</a>);</div>
+<div class="line">    snprintf(text, <span class="keyword">sizeof</span>(text), <span class="stringliteral">&quot;Created thread &lt;#%&quot;</span> PRIu64 <span class="stringliteral">&quot;&gt;&quot;</span>, <a id="a41" name="a41"></a><a class="code hl_variable" href="structdiscord__message.html#a0cf481b0e351625aaf1105b8110525a6">thread</a>-&gt;<a class="code hl_variable" href="structdiscord__channel.html#adfc6199c6bcad839bb99da4265c77f0b">id</a>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__create__message.html">discord_create_message</a> params = { .<a class="code hl_variable" href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = text };</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
@@ -306,26 +313,26 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">author</a>-&gt;<a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">struct </span><a id="_a40" name="_a40"></a><a class="code hl_struct" href="structdiscord__ret__channel.html">discord_ret_channel</a> ret = {</div>
-<div class="line">        .<a id="a41" name="a41"></a><a class="code hl_variable" href="structdiscord__ret__channel.html#a5e9f3353a0a247b461339ce88fe9074e">done</a> = &amp;done_start_thread,</div>
+<div class="line">    <span class="keyword">struct </span><a id="_a42" name="_a42"></a><a class="code hl_struct" href="structdiscord__ret__channel.html">discord_ret_channel</a> ret = {</div>
+<div class="line">        .<a id="a43" name="a43"></a><a class="code hl_variable" href="structdiscord__ret__channel.html#a5e9f3353a0a247b461339ce88fe9074e">done</a> = &amp;done_start_thread,</div>
 <div class="line">        .fail = &amp;fail_start_thread,</div>
 <div class="line">        .keep = event,</div>
 <div class="line">    };</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (event-&gt;<a id="a42" name="a42"></a><a class="code hl_variable" href="structdiscord__message.html#aeb12afe052d88e2488d8aee6d6e9eea8">message_reference</a>) {</div>
-<div class="line">        <span class="keyword">struct </span><a id="_a43" name="_a43"></a><a class="code hl_struct" href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a> params = {</div>
-<div class="line">            .<a id="a44" name="a44"></a><a class="code hl_variable" href="structdiscord__start__thread__with__message.html#a2bd0a63c2818aea8c2110eb244739bff">name</a> = <span class="stringliteral">&quot;new_thread&quot;</span>,</div>
+<div class="line">    <span class="keywordflow">if</span> (event-&gt;<a id="a44" name="a44"></a><a class="code hl_variable" href="structdiscord__message.html#aeb12afe052d88e2488d8aee6d6e9eea8">message_reference</a>) {</div>
+<div class="line">        <span class="keyword">struct </span><a id="_a45" name="_a45"></a><a class="code hl_struct" href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a> params = {</div>
+<div class="line">            .<a id="a46" name="a46"></a><a class="code hl_variable" href="structdiscord__start__thread__with__message.html#a2bd0a63c2818aea8c2110eb244739bff">name</a> = <span class="stringliteral">&quot;new_thread&quot;</span>,</div>
 <div class="line">        };</div>
-<div class="line">        <a id="a45" name="a45"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga13a6a8ff64c8a8cbf6ae4819b9f28774">discord_start_thread_with_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>,</div>
-<div class="line">                                          event-&gt;<a class="code hl_variable" href="structdiscord__message.html#aeb12afe052d88e2488d8aee6d6e9eea8">message_reference</a>-&gt;<a id="a46" name="a46"></a><a class="code hl_variable" href="structdiscord__message__reference.html#a7fa4143e754e03979024d3b2ea0fac2d">message_id</a>,</div>
+<div class="line">        <a id="a47" name="a47"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga13a6a8ff64c8a8cbf6ae4819b9f28774">discord_start_thread_with_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>,</div>
+<div class="line">                                          event-&gt;<a class="code hl_variable" href="structdiscord__message.html#aeb12afe052d88e2488d8aee6d6e9eea8">message_reference</a>-&gt;<a id="a48" name="a48"></a><a class="code hl_variable" href="structdiscord__message__reference.html#a7fa4143e754e03979024d3b2ea0fac2d">message_id</a>,</div>
 <div class="line">                                          &amp;params, &amp;ret);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">else</span> {</div>
-<div class="line">        <span class="keyword">struct </span><a id="_a47" name="_a47"></a><a class="code hl_struct" href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a> params = {</div>
-<div class="line">            .<a id="a48" name="a48"></a><a class="code hl_variable" href="structdiscord__start__thread__without__message.html#a0aa6e5227ba17fb550a271d92914fc64">name</a> = <span class="stringliteral">&quot;new_thread&quot;</span>,</div>
-<div class="line">            .type = <a id="a49" name="a49"></a><a class="code hl_enumvalue" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb">DISCORD_CHANNEL_GUILD_PUBLIC_THREAD</a>,</div>
+<div class="line">        <span class="keyword">struct </span><a id="_a49" name="_a49"></a><a class="code hl_struct" href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a> params = {</div>
+<div class="line">            .<a id="a50" name="a50"></a><a class="code hl_variable" href="structdiscord__start__thread__without__message.html#a0aa6e5227ba17fb550a271d92914fc64">name</a> = <span class="stringliteral">&quot;new_thread&quot;</span>,</div>
+<div class="line">            .type = <a id="a51" name="a51"></a><a class="code hl_enumvalue" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb">DISCORD_CHANNEL_GUILD_PUBLIC_THREAD</a>,</div>
 <div class="line">        };</div>
-<div class="line">        <a id="a50" name="a50"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga35aacccb9aa1f4ee6a8ad5655cb8f642">discord_start_thread_without_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>,</div>
+<div class="line">        <a id="a52" name="a52"></a><a class="code hl_function" href="group__DiscordAPIChannel.html#ga35aacccb9aa1f4ee6a8ad5655cb8f642">discord_start_thread_without_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>,</div>
 <div class="line">                                             &amp;params, &amp;ret);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
@@ -339,20 +346,20 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">        config_file = <span class="stringliteral">&quot;../config.json&quot;</span>;</div>
 <div class="line"> </div>
-<div class="line">    <a id="a51" name="a51"></a><a class="code hl_function" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a>();</div>
-<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a id="a52" name="a52"></a><a class="code hl_function" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a>(config_file);</div>
+<div class="line">    <a id="a53" name="a53"></a><a class="code hl_function" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a>();</div>
+<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a id="a54" name="a54"></a><a class="code hl_function" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a>(config_file);</div>
 <div class="line">    assert(NULL != client &amp;&amp; <span class="stringliteral">&quot;Could not initialize client&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line">    <a id="a53" name="a53"></a><a class="code hl_function" href="group__DiscordEvents.html#gaddabbe9b0e4ffd41e25a3870bb6c1676">discord_set_on_ready</a>(client, &amp;on_ready);</div>
-<div class="line">    <a id="a54" name="a54"></a><a class="code hl_function" href="group__DiscordEvents.html#ga4d71cd8a0ab6d05974ba1a1e8afd4dfe">discord_set_on_channel_create</a>(client, &amp;log_on_channel_create);</div>
-<div class="line">    <a id="a55" name="a55"></a><a class="code hl_function" href="group__DiscordEvents.html#ga427290117c2ade9374427e5f2203b51e">discord_set_on_channel_update</a>(client, &amp;log_on_channel_update);</div>
-<div class="line">    <a id="a56" name="a56"></a><a class="code hl_function" href="group__DiscordEvents.html#ga7b9864b67145813edad3841ac9d8c221">discord_set_on_channel_delete</a>(client, &amp;log_on_channel_delete);</div>
-<div class="line">    <a id="a57" name="a57"></a><a class="code hl_function" href="group__DiscordEvents.html#ga9f7c6331ffdc4a21c7fffd13fa2974d9">discord_set_on_thread_create</a>(client, &amp;log_on_thread_create);</div>
-<div class="line">    <a id="a58" name="a58"></a><a class="code hl_function" href="group__DiscordEvents.html#gad0f439c545e57baf0f80874c6b2f59b6">discord_set_on_thread_update</a>(client, &amp;log_on_thread_update);</div>
-<div class="line">    <a id="a59" name="a59"></a><a class="code hl_function" href="group__DiscordEvents.html#gab676b372ea549edeea143db3187a5416">discord_set_on_thread_delete</a>(client, &amp;log_on_thread_delete);</div>
+<div class="line">    <a id="a55" name="a55"></a><a class="code hl_function" href="group__DiscordEvents.html#gaddabbe9b0e4ffd41e25a3870bb6c1676">discord_set_on_ready</a>(client, &amp;on_ready);</div>
+<div class="line">    <a id="a56" name="a56"></a><a class="code hl_function" href="group__DiscordEvents.html#ga4d71cd8a0ab6d05974ba1a1e8afd4dfe">discord_set_on_channel_create</a>(client, &amp;log_on_channel_create);</div>
+<div class="line">    <a id="a57" name="a57"></a><a class="code hl_function" href="group__DiscordEvents.html#ga427290117c2ade9374427e5f2203b51e">discord_set_on_channel_update</a>(client, &amp;log_on_channel_update);</div>
+<div class="line">    <a id="a58" name="a58"></a><a class="code hl_function" href="group__DiscordEvents.html#ga7b9864b67145813edad3841ac9d8c221">discord_set_on_channel_delete</a>(client, &amp;log_on_channel_delete);</div>
+<div class="line">    <a id="a59" name="a59"></a><a class="code hl_function" href="group__DiscordEvents.html#ga9f7c6331ffdc4a21c7fffd13fa2974d9">discord_set_on_thread_create</a>(client, &amp;log_on_thread_create);</div>
+<div class="line">    <a id="a60" name="a60"></a><a class="code hl_function" href="group__DiscordEvents.html#gad0f439c545e57baf0f80874c6b2f59b6">discord_set_on_thread_update</a>(client, &amp;log_on_thread_update);</div>
+<div class="line">    <a id="a61" name="a61"></a><a class="code hl_function" href="group__DiscordEvents.html#gab676b372ea549edeea143db3187a5416">discord_set_on_thread_delete</a>(client, &amp;log_on_thread_delete);</div>
 <div class="line"> </div>
-<div class="line">    <a id="a60" name="a60"></a><a class="code hl_function" href="group__DiscordEvents.html#ga4ef9d561687b2f8d2fd5e2e93b397a38">discord_set_prefix</a>(client, <span class="stringliteral">&quot;channel.&quot;</span>);</div>
-<div class="line">    <a id="a61" name="a61"></a><a class="code hl_function" href="group__DiscordEvents.html#gac0392213dc717362e121c5ad63a30682">discord_set_on_command</a>(client, <span class="stringliteral">&quot;create&quot;</span>, &amp;on_channel_create);</div>
+<div class="line">    <a id="a62" name="a62"></a><a class="code hl_function" href="group__DiscordEvents.html#ga4ef9d561687b2f8d2fd5e2e93b397a38">discord_set_prefix</a>(client, <span class="stringliteral">&quot;channel.&quot;</span>);</div>
+<div class="line">    <a id="a63" name="a63"></a><a class="code hl_function" href="group__DiscordEvents.html#gac0392213dc717362e121c5ad63a30682">discord_set_on_command</a>(client, <span class="stringliteral">&quot;create&quot;</span>, &amp;on_channel_create);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#gac0392213dc717362e121c5ad63a30682">discord_set_on_command</a>(client, <span class="stringliteral">&quot;rename_this&quot;</span>, &amp;on_channel_rename_this);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#gac0392213dc717362e121c5ad63a30682">discord_set_on_command</a>(client, <span class="stringliteral">&quot;delete_this&quot;</span>, &amp;on_channel_delete_this);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#gac0392213dc717362e121c5ad63a30682">discord_set_on_command</a>(client, <span class="stringliteral">&quot;get_invites&quot;</span>, &amp;on_channel_get_invites);</div>
@@ -362,10 +369,10 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="line">    print_usage();</div>
 <div class="line">    fgetc(stdin); <span class="comment">// wait for input</span></div>
 <div class="line"> </div>
-<div class="line">    <a id="a62" name="a62"></a><a class="code hl_function" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
+<div class="line">    <a id="a64" name="a64"></a><a class="code hl_function" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
 <div class="line"> </div>
-<div class="line">    <a id="a63" name="a63"></a><a class="code hl_function" href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a>(client);</div>
-<div class="line">    <a id="a64" name="a64"></a><a class="code hl_function" href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a>();</div>
+<div class="line">    <a id="a65" name="a65"></a><a class="code hl_function" href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a>(client);</div>
+<div class="line">    <a id="a66" name="a66"></a><a class="code hl_function" href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a>();</div>
 <div class="line">}</div>
 <div class="ttc" id="aconcord-once_8h_html_a9a5555031ccfdb102424695dfaca0727"><div class="ttname"><a href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a></div><div class="ttdeci">CCORDcode ccord_global_init()</div><div class="ttdoc">Initialize global shared-resources not API-specific.</div></div>
 <div class="ttc" id="aconcord-once_8h_html_ab214960b95e1af11bbfc98f1b310598a"><div class="ttname"><a href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a></div><div class="ttdeci">void ccord_global_cleanup()</div><div class="ttdoc">Cleanup global shared-resources.</div></div>
@@ -377,7 +384,7 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="ttc" id="agroup__DiscordAPIChannel_html_ga35aacccb9aa1f4ee6a8ad5655cb8f642"><div class="ttname"><a href="group__DiscordAPIChannel.html#ga35aacccb9aa1f4ee6a8ad5655cb8f642">discord_start_thread_without_message</a></div><div class="ttdeci">CCORDcode discord_start_thread_without_message(struct discord *client, u64snowflake channel_id, struct discord_start_thread_without_message *params, struct discord_ret_channel *ret)</div><div class="ttdoc">Creates a new thread that is not connected to an existing message.</div></div>
 <div class="ttc" id="agroup__DiscordAPIChannel_html_ga74e716c370411cb625671fb52ce79b9b"><div class="ttname"><a href="group__DiscordAPIChannel.html#ga74e716c370411cb625671fb52ce79b9b">discord_modify_channel</a></div><div class="ttdeci">CCORDcode discord_modify_channel(struct discord *client, u64snowflake channel_id, struct discord_modify_channel *params, struct discord_ret_channel *ret)</div><div class="ttdoc">Update a channel's settings.</div></div>
 <div class="ttc" id="agroup__DiscordAPIChannel_html_gab0c42151d97e148d8222ed3bf89f5935"><div class="ttname"><a href="group__DiscordAPIChannel.html#gab0c42151d97e148d8222ed3bf89f5935">discord_get_channel_invites</a></div><div class="ttdeci">CCORDcode discord_get_channel_invites(struct discord *client, u64snowflake channel_id, struct discord_ret_invites *ret)</div><div class="ttdoc">Get invites (with invite metadata) for the channel.</div></div>
-<div class="ttc" id="agroup__DiscordAPIChannel_html_gaddeca8c38dfaf511d9da52ed9268a4e7"><div class="ttname"><a href="group__DiscordAPIChannel.html#gaddeca8c38dfaf511d9da52ed9268a4e7">discord_delete_channel</a></div><div class="ttdeci">CCORDcode discord_delete_channel(struct discord *client, u64snowflake channel_id, struct discord_ret_channel *ret)</div><div class="ttdoc">Delete a channel, or close a private message.</div></div>
+<div class="ttc" id="agroup__DiscordAPIChannel_html_gac0b7eab09e22fd3b7c1c5238075d3525"><div class="ttname"><a href="group__DiscordAPIChannel.html#gac0b7eab09e22fd3b7c1c5238075d3525">discord_delete_channel</a></div><div class="ttdeci">CCORDcode discord_delete_channel(struct discord *client, u64snowflake channel_id, struct discord_delete_channel *params, struct discord_ret_channel *ret)</div><div class="ttdoc">Delete a channel, or close a private message.</div></div>
 <div class="ttc" id="agroup__DiscordAPIChannel_html_gaea2527f8833466e97bb51f03d3a5b9c2"><div class="ttname"><a href="group__DiscordAPIChannel.html#gaea2527f8833466e97bb51f03d3a5b9c2">discord_create_channel_invite</a></div><div class="ttdeci">CCORDcode discord_create_channel_invite(struct discord *client, u64snowflake channel_id, struct discord_create_channel_invite *params, struct discord_ret_invite *ret)</div><div class="ttdoc">Create a new invite for the channel.</div></div>
 <div class="ttc" id="agroup__DiscordAPIGuild_html_gaf355ca91c82612f96d78c3804b1fa043"><div class="ttname"><a href="group__DiscordAPIGuild.html#gaf355ca91c82612f96d78c3804b1fa043">discord_create_guild_channel</a></div><div class="ttdeci">CCORDcode discord_create_guild_channel(struct discord *client, u64snowflake guild_id, struct discord_create_guild_channel *params, struct discord_ret_channel *ret)</div><div class="ttdoc">Create a new guild channel.</div></div>
 <div class="ttc" id="agroup__DiscordClient_html_ga009d0e352a30c00f8b4765712fcfa5a9"><div class="ttname"><a href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a></div><div class="ttdeci">void discord_cleanup(struct discord *client)</div><div class="ttdoc">Free a Discord Client handle.</div></div>
@@ -398,10 +405,12 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="ttc" id="astructdiscord__channel_html"><div class="ttname"><a href="structdiscord__channel.html">discord_channel</a></div><div class="ttdef"><b>Definition:</b> channel.h:118</div></div>
 <div class="ttc" id="astructdiscord__channel_html_ac635e942878b9424da89185bedc9d273"><div class="ttname"><a href="structdiscord__channel.html#ac635e942878b9424da89185bedc9d273">discord_channel::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:133</div></div>
 <div class="ttc" id="astructdiscord__channel_html_adfc6199c6bcad839bb99da4265c77f0b"><div class="ttname"><a href="structdiscord__channel.html#adfc6199c6bcad839bb99da4265c77f0b">discord_channel::id</a></div><div class="ttdeci">u64snowflake id</div><div class="ttdef"><b>Definition:</b> channel.h:120</div></div>
-<div class="ttc" id="astructdiscord__create__guild__channel_html"><div class="ttname"><a href="structdiscord__create__guild__channel.html">discord_create_guild_channel</a></div><div class="ttdef"><b>Definition:</b> guild.h:524</div></div>
-<div class="ttc" id="astructdiscord__create__guild__channel_html_ad951bbca6e83e18736f059c48655763b"><div class="ttname"><a href="structdiscord__create__guild__channel.html#ad951bbca6e83e18736f059c48655763b">discord_create_guild_channel::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> guild.h:526</div></div>
-<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:659</div></div>
-<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:661</div></div>
+<div class="ttc" id="astructdiscord__create__guild__channel_html"><div class="ttname"><a href="structdiscord__create__guild__channel.html">discord_create_guild_channel</a></div><div class="ttdef"><b>Definition:</b> guild.h:530</div></div>
+<div class="ttc" id="astructdiscord__create__guild__channel_html_ad951bbca6e83e18736f059c48655763b"><div class="ttname"><a href="structdiscord__create__guild__channel.html#ad951bbca6e83e18736f059c48655763b">discord_create_guild_channel::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> guild.h:534</div></div>
+<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:671</div></div>
+<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:673</div></div>
+<div class="ttc" id="astructdiscord__delete__channel_html"><div class="ttname"><a href="structdiscord__delete__channel.html">discord_delete_channel</a></div><div class="ttdef"><b>Definition:</b> channel.h:648</div></div>
+<div class="ttc" id="astructdiscord__delete__channel_html_ac5c5c9e51f01439e1d3f375a2ae18b06"><div class="ttname"><a href="structdiscord__delete__channel.html#ac5c5c9e51f01439e1d3f375a2ae18b06">discord_delete_channel::reason</a></div><div class="ttdeci">char * reason</div><div class="ttdef"><b>Definition:</b> channel.h:650</div></div>
 <div class="ttc" id="astructdiscord__invite_html"><div class="ttname"><a href="structdiscord__invite.html">discord_invite</a></div><div class="ttdef"><b>Definition:</b> invite.h:27</div></div>
 <div class="ttc" id="astructdiscord__invite_html_a935de1f04625fa8c0afccee06ea1a468"><div class="ttname"><a href="structdiscord__invite.html#a935de1f04625fa8c0afccee06ea1a468">discord_invite::code</a></div><div class="ttdeci">char * code</div><div class="ttdef"><b>Definition:</b> invite.h:29</div></div>
 <div class="ttc" id="astructdiscord__invites_html"><div class="ttname"><a href="structdiscord__invites.html">discord_invites</a></div><div class="ttdef"><b>Definition:</b> invite.h:74</div></div>
@@ -413,8 +422,8 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="ttc" id="astructdiscord__message_html_ac8e69ac0e67b0ae189b9705910cde7bb"><div class="ttname"><a href="structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb">discord_message::author</a></div><div class="ttdeci">struct discord_user * author</div><div class="ttdef"><b>Definition:</b> channel.h:199</div></div>
 <div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:195</div></div>
 <div class="ttc" id="astructdiscord__message_html_aeb12afe052d88e2488d8aee6d6e9eea8"><div class="ttname"><a href="structdiscord__message.html#aeb12afe052d88e2488d8aee6d6e9eea8">discord_message::message_reference</a></div><div class="ttdeci">struct discord_message_reference * message_reference</div><div class="ttdef"><b>Definition:</b> channel.h:244</div></div>
-<div class="ttc" id="astructdiscord__modify__channel_html"><div class="ttname"><a href="structdiscord__modify__channel.html">discord_modify_channel</a></div><div class="ttdef"><b>Definition:</b> channel.h:577</div></div>
-<div class="ttc" id="astructdiscord__modify__channel_html_a5f9bf37f3b82a1daee05c9d21e0d956e"><div class="ttname"><a href="structdiscord__modify__channel.html#a5f9bf37f3b82a1daee05c9d21e0d956e">discord_modify_channel::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:579</div></div>
+<div class="ttc" id="astructdiscord__modify__channel_html"><div class="ttname"><a href="structdiscord__modify__channel.html">discord_modify_channel</a></div><div class="ttdef"><b>Definition:</b> channel.h:583</div></div>
+<div class="ttc" id="astructdiscord__modify__channel_html_a5f9bf37f3b82a1daee05c9d21e0d956e"><div class="ttname"><a href="structdiscord__modify__channel.html#a5f9bf37f3b82a1daee05c9d21e0d956e">discord_modify_channel::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:587</div></div>
 <div class="ttc" id="astructdiscord__ready_html"><div class="ttname"><a href="structdiscord__ready.html">discord_ready</a></div><div class="ttdef"><b>Definition:</b> gateway.h:332</div></div>
 <div class="ttc" id="astructdiscord__ready_html_aeb3c2e1971d7ee5d2049cc0fb53366b6"><div class="ttname"><a href="structdiscord__ready.html#aeb3c2e1971d7ee5d2049cc0fb53366b6">discord_ready::user</a></div><div class="ttdeci">struct discord_user * user</div><div class="ttdef"><b>Definition:</b> gateway.h:336</div></div>
 <div class="ttc" id="astructdiscord__response_html"><div class="ttname"><a href="structdiscord__response.html">discord_response</a></div><div class="ttdoc">The response for the completed request.</div><div class="ttdef"><b>Definition:</b> discord-response.h:12</div></div>
@@ -426,14 +435,14 @@ $(document).ready(function(){initNavTree('channel_8c-example.html',''); initResi
 <div class="ttc" id="astructdiscord__ret__invite_html_a2580f1eb8ddeca7902f3ba3715005548"><div class="ttname"><a href="structdiscord__ret__invite.html#a2580f1eb8ddeca7902f3ba3715005548">discord_ret_invite::done</a></div><div class="ttdeci">void(* done)(struct discord *client, struct discord_response *resp, const struct discord_invite *ret)</div><div class="ttdef"><b>Definition:</b> discord-response.h:132</div></div>
 <div class="ttc" id="astructdiscord__ret__invites_html"><div class="ttname"><a href="structdiscord__ret__invites.html">discord_ret_invites</a></div><div class="ttdoc">Request's return context.</div><div class="ttdef"><b>Definition:</b> discord-response.h:133</div></div>
 <div class="ttc" id="astructdiscord__ret__invites_html_a6d6e71c216d41ecf0c49fce7c889c915"><div class="ttname"><a href="structdiscord__ret__invites.html#a6d6e71c216d41ecf0c49fce7c889c915">discord_ret_invites::done</a></div><div class="ttdeci">void(* done)(struct discord *client, struct discord_response *resp, const struct discord_invites *ret)</div><div class="ttdef"><b>Definition:</b> discord-response.h:133</div></div>
-<div class="ttc" id="astructdiscord__start__thread__with__message_html"><div class="ttname"><a href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:796</div></div>
-<div class="ttc" id="astructdiscord__start__thread__with__message_html_a2bd0a63c2818aea8c2110eb244739bff"><div class="ttname"><a href="structdiscord__start__thread__with__message.html#a2bd0a63c2818aea8c2110eb244739bff">discord_start_thread_with_message::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:798</div></div>
-<div class="ttc" id="astructdiscord__start__thread__without__message_html"><div class="ttname"><a href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:811</div></div>
-<div class="ttc" id="astructdiscord__start__thread__without__message_html_a0aa6e5227ba17fb550a271d92914fc64"><div class="ttname"><a href="structdiscord__start__thread__without__message.html#a0aa6e5227ba17fb550a271d92914fc64">discord_start_thread_without_message::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:813</div></div>
+<div class="ttc" id="astructdiscord__start__thread__with__message_html"><div class="ttname"><a href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:830</div></div>
+<div class="ttc" id="astructdiscord__start__thread__with__message_html_a2bd0a63c2818aea8c2110eb244739bff"><div class="ttname"><a href="structdiscord__start__thread__with__message.html#a2bd0a63c2818aea8c2110eb244739bff">discord_start_thread_with_message::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:834</div></div>
+<div class="ttc" id="astructdiscord__start__thread__without__message_html"><div class="ttname"><a href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:847</div></div>
+<div class="ttc" id="astructdiscord__start__thread__without__message_html_a0aa6e5227ba17fb550a271d92914fc64"><div class="ttname"><a href="structdiscord__start__thread__without__message.html#a0aa6e5227ba17fb550a271d92914fc64">discord_start_thread_without_message::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> channel.h:851</div></div>
 <div class="ttc" id="astructdiscord__user_html_a5490343b03395b90c31987fae992b0c7"><div class="ttname"><a href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">discord_user::bot</a></div><div class="ttdeci">bool bot</div><div class="ttdef"><b>Definition:</b> user.h:79</div></div>
 <div class="ttc" id="astructdiscord__user_html_aa778953d6508e4ed8019be82689ae861"><div class="ttname"><a href="structdiscord__user.html#aa778953d6508e4ed8019be82689ae861">discord_user::username</a></div><div class="ttdeci">char * username</div><div class="ttdef"><b>Definition:</b> user.h:73</div></div>
 <div class="ttc" id="astructdiscord__user_html_af2b570f7283599cc0b467713eba86a75"><div class="ttname"><a href="structdiscord__user.html#af2b570f7283599cc0b467713eba86a75">discord_user::discriminator</a></div><div class="ttdeci">char * discriminator</div><div class="ttdef"><b>Definition:</b> user.h:75</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1137</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1180</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

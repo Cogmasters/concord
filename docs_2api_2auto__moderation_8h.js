@@ -8,6 +8,7 @@ var docs_2api_2auto__moderation_8h =
     [ "discord_auto_moderation_rules", "structdiscord__auto__moderation__rules.html", "structdiscord__auto__moderation__rules" ],
     [ "discord_create_auto_moderation_rule", "structdiscord__create__auto__moderation__rule.html", "structdiscord__create__auto__moderation__rule" ],
     [ "discord_modify_auto_moderation_rule", "structdiscord__modify__auto__moderation__rule.html", "structdiscord__modify__auto__moderation__rule" ],
+    [ "discord_delete_auto_moderation_rule", "structdiscord__delete__auto__moderation__rule.html", "structdiscord__delete__auto__moderation__rule" ],
     [ "JSMN_STRICT", "docs_2api_2auto__moderation_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
     [ "JSMN_HEADER", "docs_2api_2auto__moderation_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "JSONB_HEADER", "docs_2api_2auto__moderation_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],

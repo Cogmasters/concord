@@ -19,5 +19,5 @@ var group__DiscordAPIInvite =
       [ "sync", "structdiscord__ret__invites.html#ae64934683249d74e4115ba12784a2fe7", null ]
     ] ],
     [ "discord_get_invite", "group__DiscordAPIInvite.html#gaa459146c2319d11a73f354807c50d2f6", null ],
-    [ "discord_delete_invite", "group__DiscordAPIInvite.html#gae1fd5a782fd17394a97abc4f721d787e", null ]
+    [ "discord_delete_invite", "group__DiscordAPIInvite.html#ga42fb17d53df5264e2f376f26026f71be", null ]
 ];

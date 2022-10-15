@@ -133,9 +133,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga49206c6242957f9a269e606bab8e9550"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga49206c6242957f9a269e606bab8e9550">discord_ratelimiter_build</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket, const char key[], struct ua_info *info)</td></tr>
 <tr class="memdesc:ga49206c6242957f9a269e606bab8e9550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the bucket with response header data.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga49206c6242957f9a269e606bab8e9550">More...</a><br /></td></tr>
 <tr class="separator:ga49206c6242957f9a269e606bab8e9550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7022e3f4a4db02d65e557b02a22db7e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga7022e3f4a4db02d65e557b02a22db7e3">discord_bucket_get_timeout</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket)</td></tr>
-<tr class="memdesc:ga7022e3f4a4db02d65e557b02a22db7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return bucket timeout timestamp.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga7022e3f4a4db02d65e557b02a22db7e3">More...</a><br /></td></tr>
-<tr class="separator:ga7022e3f4a4db02d65e557b02a22db7e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d2e8b02373e260dab9f7f9152403b3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga0d2e8b02373e260dab9f7f9152403b3b">discord_ratelimiter_set_global_timeout</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket, <a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> wait_ms)</td></tr>
+<tr class="memdesc:ga0d2e8b02373e260dab9f7f9152403b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update global ratelimiting value.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga0d2e8b02373e260dab9f7f9152403b3b">More...</a><br /></td></tr>
+<tr class="separator:ga0d2e8b02373e260dab9f7f9152403b3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga941bd68b7c9611c576f22ffc0a80e2be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga941bd68b7c9611c576f22ffc0a80e2be">discord_bucket_set_timeout</a> (struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *bucket, <a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> wait_ms)</td></tr>
+<tr class="memdesc:ga941bd68b7c9611c576f22ffc0a80e2be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set bucket timeout.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga941bd68b7c9611c576f22ffc0a80e2be">More...</a><br /></td></tr>
+<tr class="separator:ga941bd68b7c9611c576f22ffc0a80e2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9fcc1bd39a13ad90a2942f93dbc87a09"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga9fcc1bd39a13ad90a2942f93dbc87a09">discord_bucket_get</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, const char key[])</td></tr>
 <tr class="memdesc:ga9fcc1bd39a13ad90a2942f93dbc87a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a <code>struct <a class="el" href="structdiscord__bucket.html" title="The Discord bucket for handling per-group ratelimits.">discord_bucket</a></code> assigned to <code>key</code>  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga9fcc1bd39a13ad90a2942f93dbc87a09">More...</a><br /></td></tr>
 <tr class="separator:ga9fcc1bd39a13ad90a2942f93dbc87a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,14 +340,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga7022e3f4a4db02d65e557b02a22db7e3" name="ga7022e3f4a4db02d65e557b02a22db7e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7022e3f4a4db02d65e557b02a22db7e3">&#9670;&nbsp;</a></span>discord_bucket_get_timeout()</h2>
+<a id="ga0d2e8b02373e260dab9f7f9152403b3b" name="ga0d2e8b02373e260dab9f7f9152403b3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0d2e8b02373e260dab9f7f9152403b3b">&#9670;&nbsp;</a></span>discord_ratelimiter_set_global_timeout()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> discord_bucket_get_timeout </td>
+          <td class="memname">void discord_ratelimiter_set_global_timeout </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
           <td class="paramname"><em>rl</em>, </td>
@@ -353,7 +356,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td>
-          <td class="paramname"><em>bucket</em>&#160;</td>
+          <td class="paramname"><em>bucket</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td>
+          <td class="paramname"><em>wait_ms</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -363,15 +372,53 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return bucket timeout timestamp. </p>
+<p>Update global ratelimiting value. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>check if all pending buckets must be unset</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
-    <tr><td class="paramname">bucket</td><td>the bucket to be checked for time out </td></tr>
+    <tr><td class="paramname">bucket</td><td>bucket that received the global ratelimiting notice </td></tr>
+    <tr><td class="paramname">wait_ms</td><td>the amount of time that all buckets should wait for </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the timeout timestamp </dd></dl>
+
+</div>
+</div>
+<a id="ga941bd68b7c9611c576f22ffc0a80e2be" name="ga941bd68b7c9611c576f22ffc0a80e2be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga941bd68b7c9611c576f22ffc0a80e2be">&#9670;&nbsp;</a></span>discord_bucket_set_timeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_bucket_set_timeout </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td>
+          <td class="paramname"><em>bucket</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td>
+          <td class="paramname"><em>wait_ms</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set bucket timeout. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bucket</td><td>the bucket to be checked for time out </td></tr>
+    <tr><td class="paramname">wait_ms</td><td>how long the bucket should wait for </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

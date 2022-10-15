@@ -4,6 +4,7 @@ var docs_2api_2emoji_8h =
     [ "discord_emojis", "structdiscord__emojis.html", "structdiscord__emojis" ],
     [ "discord_create_guild_emoji", "structdiscord__create__guild__emoji.html", "structdiscord__create__guild__emoji" ],
     [ "discord_modify_guild_emoji", "structdiscord__modify__guild__emoji.html", "structdiscord__modify__guild__emoji" ],
+    [ "discord_delete_guild_emoji", "structdiscord__delete__guild__emoji.html", "structdiscord__delete__guild__emoji" ],
     [ "JSMN_STRICT", "docs_2api_2emoji_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
     [ "JSMN_HEADER", "docs_2api_2emoji_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "JSONB_HEADER", "docs_2api_2emoji_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],

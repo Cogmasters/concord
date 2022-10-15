@@ -100,46 +100,52 @@ $(document).ready(function(){initNavTree('timers_8c-example.html',''); initResiz
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="log_8h.html">log.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line">print_timer_info(<span class="keyword">struct</span> <a id="_a0" name="_a0"></a><a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer)</div>
+<div class="line">print_timer_info(<span class="keyword">struct</span> <a id="_a0" name="_a0"></a><a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer, <span class="keyword">const</span> <span class="keywordtype">char</span> *name)</div>
 <div class="line">{</div>
-<div class="line">    printf(<span class="stringliteral">&quot;Timer id:%u flags:%i &quot;</span></div>
+<div class="line">    printf(<span class="stringliteral">&quot;Timer &#39;%s&#39; id:%u flags:%i &quot;</span></div>
 <div class="line">           <span class="stringliteral">&quot;delay:%&quot;</span> PRIi64 <span class="stringliteral">&quot; interval:%&quot;</span> PRIi64 <span class="stringliteral">&quot; repeat:%&quot;</span> PRIi64 <span class="stringliteral">&quot;\n&quot;</span>,</div>
-<div class="line">           timer-&gt;<a id="a1" name="a1"></a><a class="code hl_variable" href="structdiscord__timer.html#aaa6e30034b5c30a738e7e40e5064ef0f">id</a>, timer-&gt;<a id="a2" name="a2"></a><a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a>, timer-&gt;<a id="a3" name="a3"></a><a class="code hl_variable" href="structdiscord__timer.html#ac78dae256d3f5d3a07d93d0432ad749d">delay</a>, timer-&gt;<a id="a4" name="a4"></a><a class="code hl_variable" href="structdiscord__timer.html#ab1b9c4a60467cf11e9e85de583ce57e6">interval</a>,</div>
+<div class="line">           name, timer-&gt;<a id="a1" name="a1"></a><a class="code hl_variable" href="structdiscord__timer.html#aaa6e30034b5c30a738e7e40e5064ef0f">id</a>, timer-&gt;<a id="a2" name="a2"></a><a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a>, timer-&gt;<a id="a3" name="a3"></a><a class="code hl_variable" href="structdiscord__timer.html#ac78dae256d3f5d3a07d93d0432ad749d">delay</a>, timer-&gt;<a id="a4" name="a4"></a><a class="code hl_variable" href="structdiscord__timer.html#ab1b9c4a60467cf11e9e85de583ce57e6">interval</a>,</div>
 <div class="line">           timer-&gt;<a id="a5" name="a5"></a><a class="code hl_variable" href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">repeat</a>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line">one_shot_timer_cb(<span class="keyword">struct</span> <a id="_a6" name="_a6"></a><a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer)</div>
+<div class="line">on_timer_tick(<span class="keyword">struct</span> <a id="_a6" name="_a6"></a><a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer)</div>
 <div class="line">{</div>
-<div class="line">    print_timer_info(timer);</div>
-<div class="line">    <span class="keywordflow">if</span> (~timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> &amp; <a id="a7" name="a7"></a><a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a>) {</div>
-<div class="line">        <span class="comment">// if timer is not canceled</span></div>
-<div class="line">        puts(timer-&gt;<a id="a8" name="a8"></a><a class="code hl_variable" href="structdiscord__timer.html#a8d0eb19580d3eb0d41a8bca8ed5650d7">data</a>);</div>
+<div class="line">    print_timer_info(timer, <span class="stringliteral">&quot;on_timer_tick&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line">        <span class="comment">// timers can be updated in the callback (see below)</span></div>
-<div class="line">        <span class="keywordflow">if</span> (0) {</div>
-<div class="line">            timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#ab1b9c4a60467cf11e9e85de583ce57e6">interval</a> += 100;</div>
-<div class="line">            timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">repeat</a> = 1;</div>
-<div class="line">            <span class="keywordflow">return</span>; <span class="comment">// skip free(timer-&gt;data);</span></div>
-<div class="line">        }</div>
+<div class="line">    <span class="keywordflow">if</span> (timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">repeat</a> == 1) {</div>
+<div class="line">        puts(<span class="stringliteral">&quot;Canceling repeating timer.&quot;</span>);</div>
+<div class="line">        timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> |= <a id="a7" name="a7"></a><a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a>;</div>
 <div class="line">    }</div>
-<div class="line">    <span class="keywordflow">else</span> {</div>
-<div class="line">        puts(<span class="stringliteral">&quot;ONE SHOT TIMER CANCELED&quot;</span>);</div>
-<div class="line">    }</div>
-<div class="line">    free(timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a8d0eb19580d3eb0d41a8bca8ed5650d7">data</a>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line">repeating_timer_cb(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer)</div>
+<div class="line">on_timer_status_changed(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer)</div>
 <div class="line">{</div>
-<div class="line">    print_timer_info(timer);</div>
+<div class="line">    print_timer_info(timer, <span class="stringliteral">&quot;on_timer_status_changed&quot;</span>);</div>
 <div class="line">    <span class="keywordflow">if</span> (timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> &amp; <a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a>) {</div>
-<div class="line">        printf(<span class="stringliteral">&quot;TIMER WITH ID %u CANCELED\n&quot;</span>, timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#aaa6e30034b5c30a738e7e40e5064ef0f">id</a>);</div>
-<div class="line">        <span class="keywordflow">return</span>;</div>
+<div class="line">        puts(<span class="stringliteral">&quot;TIMER CANCELED&quot;</span>);</div>
 <div class="line">    }</div>
-<div class="line">    printf(<span class="stringliteral">&quot;SHUTTING DOWN IN %&quot;</span> PRIi64 <span class="stringliteral">&quot; SECONDS\n&quot;</span>, timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">repeat</a>);</div>
-<div class="line">    <span class="keywordflow">if</span> (!timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">repeat</a>) {</div>
-<div class="line">        <a id="a9" name="a9"></a><a class="code hl_function" href="group__DiscordClient.html#ga3e522caa529dd26e03d75a6482e7aaa1">discord_shutdown</a>(client);</div>
+<div class="line">    <span class="keywordflow">if</span> (timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> &amp; <a id="a8" name="a8"></a><a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fadf15de56f1516ef493eada83b77ecb87">DISCORD_TIMER_DELETE</a>) {</div>
+<div class="line">        puts(<span class="stringliteral">&quot;TIMER DELETED - FREEING DATA&quot;</span>);</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span></div>
+<div class="line">use_same_function(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__timer.html">discord_timer</a> *timer)</div>
+<div class="line">{</div>
+<div class="line">    print_timer_info(timer, <span class="stringliteral">&quot;use_same_function&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">if</span> (timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> &amp; <a id="a9" name="a9"></a><a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa02e056ce68145fcb1ec12f03a968462b">DISCORD_TIMER_TICK</a>) {</div>
+<div class="line">        puts(<span class="stringliteral">&quot;TIMER TICK&quot;</span>);</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> &amp; <a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a>) {</div>
+<div class="line">        puts(<span class="stringliteral">&quot;TIMER CANCELED&quot;</span>);</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (timer-&gt;<a class="code hl_variable" href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">flags</a> &amp; <a class="code hl_enumvalue" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fadf15de56f1516ef493eada83b77ecb87">DISCORD_TIMER_DELETE</a>) {</div>
+<div class="line">        puts(<span class="stringliteral">&quot;TIMER DELETED - FREEING DATA&quot;</span>);</div>
+<div class="line">        free(timer-&gt;<a id="a10" name="a10"></a><a class="code hl_variable" href="structdiscord__timer.html#a8d0eb19580d3eb0d41a8bca8ed5650d7">data</a>);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -147,47 +153,51 @@ $(document).ready(function(){initNavTree('timers_8c-example.html',''); initResiz
 <div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">const</span> <span class="keywordtype">char</span> *config_file = argc &gt; 1 ? argv[1] : <span class="stringliteral">&quot;../config.json&quot;</span>;</div>
-<div class="line">    <a id="a10" name="a10"></a><a class="code hl_function" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a>();</div>
-<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a id="a11" name="a11"></a><a class="code hl_function" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a>(config_file);</div>
+<div class="line">    <a id="a11" name="a11"></a><a class="code hl_function" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a>();</div>
+<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a id="a12" name="a12"></a><a class="code hl_function" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a>(config_file);</div>
 <div class="line"> </div>
-<div class="line">    <a id="a12" name="a12"></a><a class="code hl_function" href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a>(client, one_shot_timer_cb, strdup(<span class="stringliteral">&quot;Hello World&quot;</span>), 1000);</div>
-<div class="line">    <a class="code hl_function" href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a>(client, one_shot_timer_cb, strdup(<span class="stringliteral">&quot;Hello World!!!!!!&quot;</span>),</div>
-<div class="line">                  5000);</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 10; i++)</div>
+<div class="line">        <span class="comment">// one shot auto deleting timer</span></div>
+<div class="line">        <a id="a13" name="a13"></a><a class="code hl_function" href="group__DiscordTimer.html#gaa6ba0cfcce0ebf6f0a977a31148d172b">discord_timer</a>(client, on_timer_tick, on_timer_status_changed, NULL,</div>
+<div class="line">                      i * 1000);</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// start a one shot timer that will never get a chance to run</span></div>
-<div class="line">    <a class="code hl_function" href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a>(client, one_shot_timer_cb, strdup(<span class="stringliteral">&quot;Hello World&quot;</span>), 15000);</div>
+<div class="line">    <span class="comment">// repeating auto deleting timer</span></div>
+<div class="line">    <a id="a14" name="a14"></a><a class="code hl_function" href="group__DiscordTimer.html#ga4e5df521a70c3c7cdb8627b529a710e3">discord_timer_interval</a>(client, on_timer_tick, on_timer_status_changed,</div>
+<div class="line">                           NULL, 0, 1000, 10);</div>
 <div class="line"> </div>
-<div class="line">    <a id="a13" name="a13"></a><a class="code hl_function" href="group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155">discord_timer_interval</a>(client, repeating_timer_cb, NULL, 0, 1000, 10);</div>
+<div class="line">    <a class="code hl_function" href="group__DiscordTimer.html#gaa6ba0cfcce0ebf6f0a977a31148d172b">discord_timer</a>(client, use_same_function, use_same_function, malloc(1024),</div>
+<div class="line">                  1000);</div>
+<div class="line">    <span class="keywordtype">unsigned</span> id_to_cancel = <a class="code hl_function" href="group__DiscordTimer.html#gaa6ba0cfcce0ebf6f0a977a31148d172b">discord_timer</a>(</div>
+<div class="line">        client, use_same_function, use_same_function, malloc(1024), 1000);</div>
+<div class="line">    <a id="a15" name="a15"></a><a class="code hl_function" href="group__DiscordTimer.html#ga29eb5a7785b557aabba9ed7506282307">discord_timer_cancel</a>(client, id_to_cancel);</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// start 3 timers that will never get a chance to run</span></div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 3; i++)</div>
-<div class="line">        <a class="code hl_function" href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a>(client, repeating_timer_cb, NULL, 20 * 1000);</div>
-<div class="line"> </div>
-<div class="line">    <a id="a14" name="a14"></a><a class="code hl_function" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
+<div class="line">    <a id="a16" name="a16"></a><a class="code hl_function" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// discord_cleanup will cancel all timers that are still active</span></div>
-<div class="line">    <a id="a15" name="a15"></a><a class="code hl_function" href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a>(client);</div>
-<div class="line">    <a id="a16" name="a16"></a><a class="code hl_function" href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a>();</div>
+<div class="line">    <a id="a17" name="a17"></a><a class="code hl_function" href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a>(client);</div>
+<div class="line">    <a id="a18" name="a18"></a><a class="code hl_function" href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a>();</div>
 <div class="line">}</div>
 <div class="ttc" id="aconcord-once_8h_html_a9a5555031ccfdb102424695dfaca0727"><div class="ttname"><a href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a></div><div class="ttdeci">CCORDcode ccord_global_init()</div><div class="ttdoc">Initialize global shared-resources not API-specific.</div></div>
 <div class="ttc" id="aconcord-once_8h_html_ab214960b95e1af11bbfc98f1b310598a"><div class="ttname"><a href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a></div><div class="ttdeci">void ccord_global_cleanup()</div><div class="ttdoc">Cleanup global shared-resources.</div></div>
 <div class="ttc" id="adiscord_8h_html"><div class="ttname"><a href="discord_8h.html">discord.h</a></div><div class="ttdoc">Public functions and datatypes.</div></div>
 <div class="ttc" id="agroup__DiscordClient_html_ga009d0e352a30c00f8b4765712fcfa5a9"><div class="ttname"><a href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a></div><div class="ttdeci">void discord_cleanup(struct discord *client)</div><div class="ttdoc">Free a Discord Client handle.</div></div>
 <div class="ttc" id="agroup__DiscordClient_html_ga10b7d422776acf4fb67877f8f1d28af4"><div class="ttname"><a href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a></div><div class="ttdeci">CCORDcode discord_run(struct discord *client)</div><div class="ttdoc">Start a connection to the Discord Gateway.</div></div>
-<div class="ttc" id="agroup__DiscordClient_html_ga3e522caa529dd26e03d75a6482e7aaa1"><div class="ttname"><a href="group__DiscordClient.html#ga3e522caa529dd26e03d75a6482e7aaa1">discord_shutdown</a></div><div class="ttdeci">void discord_shutdown(struct discord *client)</div><div class="ttdoc">Gracefully shutdown an ongoing Discord connection.</div></div>
 <div class="ttc" id="agroup__DiscordClient_html_ga75bbe1d3eb9e6d03953b6313e5543afb"><div class="ttname"><a href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a></div><div class="ttdeci">struct discord * discord_config_init(const char config_file[])</div><div class="ttdoc">Create a Discord Client handle by a config.json file.</div></div>
-<div class="ttc" id="agroup__DiscordTimer_html_ga85b715c14360d0436da5c8bd95ae5e4f"><div class="ttname"><a href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a></div><div class="ttdeci">unsigned discord_timer(struct discord *client, discord_ev_timer cb, void *data, int64_t delay)</div><div class="ttdoc">creates a one shot timer that automatically deletes itself upon completion</div></div>
-<div class="ttc" id="agroup__DiscordTimer_html_gadbe05490558b071d3491994f491d6155"><div class="ttname"><a href="group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155">discord_timer_interval</a></div><div class="ttdeci">unsigned discord_timer_interval(struct discord *client, discord_ev_timer cb, void *data, int64_t delay, int64_t interval, int64_t repeat)</div><div class="ttdoc">creates a repeating timer that automatically deletes itself upon completion</div></div>
-<div class="ttc" id="agroup__DiscordTimer_html_gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e"><div class="ttname"><a href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a></div><div class="ttdeci">@ DISCORD_TIMER_CANCELED</div><div class="ttdef"><b>Definition:</b> discord.h:370</div></div>
+<div class="ttc" id="agroup__DiscordTimer_html_ga29eb5a7785b557aabba9ed7506282307"><div class="ttname"><a href="group__DiscordTimer.html#ga29eb5a7785b557aabba9ed7506282307">discord_timer_cancel</a></div><div class="ttdeci">bool discord_timer_cancel(struct discord *client, unsigned id)</div><div class="ttdoc">cancels a timer, this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled</div></div>
+<div class="ttc" id="agroup__DiscordTimer_html_ga4e5df521a70c3c7cdb8627b529a710e3"><div class="ttname"><a href="group__DiscordTimer.html#ga4e5df521a70c3c7cdb8627b529a710e3">discord_timer_interval</a></div><div class="ttdeci">unsigned discord_timer_interval(struct discord *client, discord_ev_timer on_tick_cb, discord_ev_timer on_status_changed_cb, void *data, int64_t delay, int64_t interval, int64_t repeat)</div><div class="ttdoc">creates a repeating timer that automatically deletes itself upon completion</div></div>
+<div class="ttc" id="agroup__DiscordTimer_html_gaa6ba0cfcce0ebf6f0a977a31148d172b"><div class="ttname"><a href="group__DiscordTimer.html#gaa6ba0cfcce0ebf6f0a977a31148d172b">discord_timer</a></div><div class="ttdeci">unsigned discord_timer(struct discord *client, discord_ev_timer on_tick_cb, discord_ev_timer on_status_changed_cb, void *data, int64_t delay)</div><div class="ttdoc">creates a one shot timer that automatically deletes itself upon completion</div></div>
+<div class="ttc" id="agroup__DiscordTimer_html_gga6e91b61d2abe8974ade81aa42b225a6fa02e056ce68145fcb1ec12f03a968462b"><div class="ttname"><a href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa02e056ce68145fcb1ec12f03a968462b">DISCORD_TIMER_TICK</a></div><div class="ttdeci">@ DISCORD_TIMER_TICK</div><div class="ttdef"><b>Definition:</b> discord.h:365</div></div>
+<div class="ttc" id="agroup__DiscordTimer_html_gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e"><div class="ttname"><a href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a></div><div class="ttdeci">@ DISCORD_TIMER_CANCELED</div><div class="ttdef"><b>Definition:</b> discord.h:363</div></div>
+<div class="ttc" id="agroup__DiscordTimer_html_gga6e91b61d2abe8974ade81aa42b225a6fadf15de56f1516ef493eada83b77ecb87"><div class="ttname"><a href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fadf15de56f1516ef493eada83b77ecb87">DISCORD_TIMER_DELETE</a></div><div class="ttdeci">@ DISCORD_TIMER_DELETE</div><div class="ttdef"><b>Definition:</b> discord.h:359</div></div>
 <div class="ttc" id="alog_8h_html"><div class="ttname"><a href="log_8h.html">log.h</a></div></div>
-<div class="ttc" id="astructdiscord__timer_html"><div class="ttname"><a href="structdiscord__timer.html">discord_timer</a></div><div class="ttdoc">struct used for modifying, and getting info about a timer</div><div class="ttdef"><b>Definition:</b> discord.h:379</div></div>
-<div class="ttc" id="astructdiscord__timer_html_a8d0eb19580d3eb0d41a8bca8ed5650d7"><div class="ttname"><a href="structdiscord__timer.html#a8d0eb19580d3eb0d41a8bca8ed5650d7">discord_timer::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition:</b> discord.h:387</div></div>
-<div class="ttc" id="astructdiscord__timer_html_a9c62f8a3bf8128fac04f72e047c7867a"><div class="ttname"><a href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">discord_timer::flags</a></div><div class="ttdeci">enum discord_timer_flags flags</div><div class="ttdef"><b>Definition:</b> discord.h:383</div></div>
-<div class="ttc" id="astructdiscord__timer_html_aaa6e30034b5c30a738e7e40e5064ef0f"><div class="ttname"><a href="structdiscord__timer.html#aaa6e30034b5c30a738e7e40e5064ef0f">discord_timer::id</a></div><div class="ttdeci">unsigned id</div><div class="ttdef"><b>Definition:</b> discord.h:381</div></div>
-<div class="ttc" id="astructdiscord__timer_html_ab1b9c4a60467cf11e9e85de583ce57e6"><div class="ttname"><a href="structdiscord__timer.html#ab1b9c4a60467cf11e9e85de583ce57e6">discord_timer::interval</a></div><div class="ttdeci">int64_t interval</div><div class="ttdef"><b>Definition:</b> discord.h:391</div></div>
-<div class="ttc" id="astructdiscord__timer_html_ac66d9b51db6b3be2cc9fdaf9d8011c09"><div class="ttname"><a href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">discord_timer::repeat</a></div><div class="ttdeci">int64_t repeat</div><div class="ttdef"><b>Definition:</b> discord.h:393</div></div>
-<div class="ttc" id="astructdiscord__timer_html_ac78dae256d3f5d3a07d93d0432ad749d"><div class="ttname"><a href="structdiscord__timer.html#ac78dae256d3f5d3a07d93d0432ad749d">discord_timer::delay</a></div><div class="ttdeci">int64_t delay</div><div class="ttdef"><b>Definition:</b> discord.h:389</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1137</div></div>
+<div class="ttc" id="astructdiscord__timer_html"><div class="ttname"><a href="structdiscord__timer.html">discord_timer</a></div><div class="ttdoc">struct used for modifying, and getting info about a timer</div><div class="ttdef"><b>Definition:</b> discord.h:373</div></div>
+<div class="ttc" id="astructdiscord__timer_html_a8d0eb19580d3eb0d41a8bca8ed5650d7"><div class="ttname"><a href="structdiscord__timer.html#a8d0eb19580d3eb0d41a8bca8ed5650d7">discord_timer::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition:</b> discord.h:384</div></div>
+<div class="ttc" id="astructdiscord__timer_html_a9c62f8a3bf8128fac04f72e047c7867a"><div class="ttname"><a href="structdiscord__timer.html#a9c62f8a3bf8128fac04f72e047c7867a">discord_timer::flags</a></div><div class="ttdeci">enum discord_timer_flags flags</div><div class="ttdef"><b>Definition:</b> discord.h:377</div></div>
+<div class="ttc" id="astructdiscord__timer_html_aaa6e30034b5c30a738e7e40e5064ef0f"><div class="ttname"><a href="structdiscord__timer.html#aaa6e30034b5c30a738e7e40e5064ef0f">discord_timer::id</a></div><div class="ttdeci">unsigned id</div><div class="ttdef"><b>Definition:</b> discord.h:375</div></div>
+<div class="ttc" id="astructdiscord__timer_html_ab1b9c4a60467cf11e9e85de583ce57e6"><div class="ttname"><a href="structdiscord__timer.html#ab1b9c4a60467cf11e9e85de583ce57e6">discord_timer::interval</a></div><div class="ttdeci">int64_t interval</div><div class="ttdef"><b>Definition:</b> discord.h:388</div></div>
+<div class="ttc" id="astructdiscord__timer_html_ac66d9b51db6b3be2cc9fdaf9d8011c09"><div class="ttname"><a href="structdiscord__timer.html#ac66d9b51db6b3be2cc9fdaf9d8011c09">discord_timer::repeat</a></div><div class="ttdeci">int64_t repeat</div><div class="ttdef"><b>Definition:</b> discord.h:390</div></div>
+<div class="ttc" id="astructdiscord__timer_html_ac78dae256d3f5d3a07d93d0432ad749d"><div class="ttname"><a href="structdiscord__timer.html#ac78dae256d3f5d3a07d93d0432ad749d">discord_timer::delay</a></div><div class="ttdeci">int64_t delay</div><div class="ttdef"><b>Definition:</b> discord.h:386</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1180</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

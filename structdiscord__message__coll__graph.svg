@@ -88,18 +88,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="53.76,-469.7 49.31,-479.31 58.79,-474.58 53.76,-469.7"/>
 <text text-anchor="middle" x="113" y="-436.04" font-family="Helvetica,sans-Serif" font-size="10.00"> owner</text>
 </g>
-<!-- Node37 -->
+<!-- Node38 -->
 <g id="node14" class="node">
-<title>Node37</title>
+<title>Node38</title>
 <g id="a_node14"><a xlink:href="structdiscord__message__interaction.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="423,-519.54 423,-538.54 582,-538.54 582,-519.54 423,-519.54"/>
 <text text-anchor="middle" x="502.5" y="-526.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_message_interaction</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node37 -->
+<!-- Node2&#45;&gt;Node38 -->
 <g id="edge19" class="edge">
-<title>Node2&#45;&gt;Node37</title>
+<title>Node2&#45;&gt;Node38</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M82.33,-501.05C86.92,-502.15 91.54,-503.17 96,-504.04 183.03,-520.88 205.53,-522.48 294,-528.04 336.43,-530.7 383.83,-531.12 422.6,-530.8"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="82.95,-497.6 72.39,-498.54 81.23,-504.38 82.95,-497.6"/>
 <text text-anchor="middle" x="212" y="-529.04" font-family="Helvetica,sans-Serif" font-size="10.00"> user</text>
@@ -111,9 +111,9 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="286.36,-487.81 276.27,-491.03 286.17,-494.81 286.36,-487.81"/>
 <text text-anchor="middle" x="629" y="-498.04" font-family="Helvetica,sans-Serif" font-size="10.00"> member</text>
 </g>
-<!-- Node3&#45;&gt;Node37 -->
+<!-- Node3&#45;&gt;Node38 -->
 <g id="edge20" class="edge">
-<title>Node3&#45;&gt;Node37</title>
+<title>Node3&#45;&gt;Node38</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M286.31,-499.2C331.33,-505.44 388.64,-513.39 432.79,-519.51"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="286.7,-495.72 276.31,-497.82 285.74,-502.66 286.7,-495.72"/>
 <text text-anchor="middle" x="349.5" y="-517.04" font-family="Helvetica,sans-Serif" font-size="10.00"> member</text>
@@ -258,57 +258,57 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="380.72,-198.36 372.82,-205.43 383.4,-204.82 380.72,-198.36"/>
 <text text-anchor="middle" x="629" y="-131.04" font-family="Helvetica,sans-Serif" font-size="10.00"> application</text>
 </g>
-<!-- Node36 -->
+<!-- Node37 -->
 <g id="node13" class="node">
-<title>Node36</title>
+<title>Node37</title>
 <g id="a_node13"><a xlink:href="structdiscord__message__reference.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="676,-122.54 676,-141.54 829,-141.54 829,-122.54 676,-122.54"/>
 <text text-anchor="middle" x="752.5" y="-129.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_message_reference</text>
 </a>
 </g>
 </g>
-<!-- Node36&#45;&gt;Node1 -->
+<!-- Node37&#45;&gt;Node1 -->
 <g id="edge16" class="edge">
-<title>Node36&#45;&gt;Node1</title>
+<title>Node37&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M839.15,-125.84C875.22,-127.27 915.94,-134.58 947,-156.04 989.38,-185.31 1007.17,-249.78 1012.58,-274.31"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="839.2,-122.34 829.12,-125.59 839.03,-129.34 839.2,-122.34"/>
 <text text-anchor="middle" x="897" y="-159.04" font-family="Helvetica,sans-Serif" font-size="10.00"> message_reference</text>
 </g>
-<!-- Node37&#45;&gt;Node1 -->
+<!-- Node38&#45;&gt;Node1 -->
 <g id="edge18" class="edge">
-<title>Node37&#45;&gt;Node1</title>
+<title>Node38&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M592.26,-534C705.74,-538.47 893.91,-538.93 947,-497.04 1013.09,-444.9 1015.64,-328.11 1014.88,-293.73"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="592.34,-530.5 582.2,-533.59 592.05,-537.5 592.34,-530.5"/>
 <text text-anchor="middle" x="752.5" y="-538.04" font-family="Helvetica,sans-Serif" font-size="10.00"> interaction</text>
 </g>
-<!-- Node38 -->
+<!-- Node39 -->
 <g id="node15" class="node">
-<title>Node38</title>
+<title>Node39</title>
 <g id="a_node15"><a xlink:href="structdiscord__components.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="694,-46.54 694,-65.54 811,-65.54 811,-46.54 694,-46.54"/>
 <text text-anchor="middle" x="752.5" y="-53.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_components</text>
 </a>
 </g>
 </g>
-<!-- Node38&#45;&gt;Node1 -->
+<!-- Node39&#45;&gt;Node1 -->
 <g id="edge22" class="edge">
-<title>Node38&#45;&gt;Node1</title>
+<title>Node39&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M804.37,-44.92C846.98,-38.72 907.08,-37.61 947,-69.04 1013.71,-121.55 1015.83,-239.52 1014.92,-274.24"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="803.81,-41.47 794.48,-46.5 804.91,-48.38 803.81,-41.47"/>
 <text text-anchor="middle" x="897" y="-72.04" font-family="Helvetica,sans-Serif" font-size="10.00"> components</text>
 </g>
-<!-- Node42 -->
+<!-- Node43 -->
 <g id="node16" class="node">
-<title>Node42</title>
+<title>Node43</title>
 <g id="a_node16"><a xlink:href="structdiscord__sticker__items.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="691.5,-8.54 691.5,-27.54 813.5,-27.54 813.5,-8.54 691.5,-8.54"/>
 <text text-anchor="middle" x="752.5" y="-15.54" font-family="Helvetica,sans-Serif" font-size="10.00">discord_sticker_items</text>
 </a>
 </g>
 </g>
-<!-- Node42&#45;&gt;Node1 -->
+<!-- Node43&#45;&gt;Node1 -->
 <g id="edge23" class="edge">
-<title>Node42&#45;&gt;Node1</title>
+<title>Node43&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M798.07,-6.41C841.04,1.93 905.49,6.55 947,-27.04 987.17,-59.53 1008.72,-231.93 1013.48,-274.52"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="797.25,-3.01 788.17,-8.47 798.68,-9.86 797.25,-3.01"/>
 <text text-anchor="middle" x="897" y="-30.04" font-family="Helvetica,sans-Serif" font-size="10.00"> sticker_items</text>

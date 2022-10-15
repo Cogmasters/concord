@@ -25,5 +25,5 @@ var structdiscord__channel =
     [ "thread_metadata", "structdiscord__channel.html#a646b4e712f05c59a18c7ba044c02bb71", null ],
     [ "member", "structdiscord__channel.html#a005a619e397ed6f05c366aa2378d1a5d", null ],
     [ "default_auto_archive_duration", "structdiscord__channel.html#a0b4ffc3b1f46b00fd14458f858572b01", null ],
-    [ "permissions", "structdiscord__channel.html#a77554518104e78150e3bada6ac2c8716", null ]
+    [ "permissions", "structdiscord__channel.html#ad7a6f64334ff3a943f80b47208df0deb", null ]
 ];
