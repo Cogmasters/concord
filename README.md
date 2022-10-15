@@ -157,8 +157,9 @@ Manual:
 
 ```console
 git clone https://aur.archlinux.org/concord-git.git
-cd concord-git.git
-makepkg -Si
+cd concord-git
+makepkg -Acs
+concord-git-version-any.pkg.tar.zst
 ```
 
 You can use an AUR Helper If you want
