@@ -151,6 +151,11 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
+#### Arch Linux / Manjarao (Arch based)
+```console
+yay -S concord-git
+```
+
 ## Setting up your environment
 
 ### Clone Concord into your workspace
