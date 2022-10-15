@@ -157,7 +157,7 @@ $ port install curl (MacPorts)
 git clone https://aur.archlinux.org/concord-git.git
 cd concord-git
 makepkg -Acs
-concord-git-version-any.pkg.tar.zst
+pacman -U concord-git-version-any.pkg.tar.zst
 ```
 
 Alternatively, you can use an AUR Helper:
