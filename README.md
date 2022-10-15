@@ -151,6 +151,21 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
+#### Arch Linux / Manjaro (Arch based)
+
+```console
+git clone https://aur.archlinux.org/concord-git.git
+cd concord-git
+makepkg -Acs
+pacman -U concord-git-version-any.pkg.tar.zst
+```
+
+Alternatively, you can use an AUR helper:
+
+```console
+yay -S concord-git
+```
+
 ## Setting up your environment
 
 ### Clone Concord into your workspace
