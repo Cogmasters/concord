@@ -160,7 +160,7 @@ makepkg -Acs
 pacman -U concord-git-version-any.pkg.tar.zst
 ```
 
-Alternatively, you can use an AUR Helper:
+Alternatively, you can use an AUR helper:
 
 ```console
 yay -S concord-git
