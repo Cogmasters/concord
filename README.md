@@ -153,8 +153,6 @@ $ port install curl (MacPorts)
 
 #### Arch Linux / Manjaro (Arch based)
 
-Manual:
-
 ```console
 git clone https://aur.archlinux.org/concord-git.git
 cd concord-git
@@ -164,7 +162,6 @@ concord-git-version-any.pkg.tar.zst
 
 Alternatively, you can use an AUR Helper:
 
-Example:
 ```console
 yay -S concord-git
 ```
