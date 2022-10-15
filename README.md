@@ -151,7 +151,7 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
-#### Arch Linux / Manjarao (Arch based)
+#### Arch Linux / Manjaro (Arch based)
 
 Manual:
 
