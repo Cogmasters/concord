@@ -152,6 +152,18 @@ $ port install curl (MacPorts)
 ```
 
 #### Arch Linux / Manjarao (Arch based)
+
+Manual:
+
+```console
+git clone https://aur.archlinux.org/concord-git.git
+cd concord-git.git
+makepkg -Si
+```
+
+You can use an AUR Helper If you want
+
+Example:
 ```console
 yay -S concord-git
 ```
