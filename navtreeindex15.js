@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"structdiscord__message.html#a267238dfae230fffea4832e1101aae51":[6,0,181,0],
 "structdiscord__message.html#a4b0d5394a88b3896ef4c0d6d71def3ba":[6,0,181,24],
 "structdiscord__message.html#a5bc7c6eba391cef200180b606506c26f":[6,0,181,15],
 "structdiscord__message.html#a60e90f0b5061d3de071e58cd6195e053":[6,0,181,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "structdiscord__prune__count.html#a4b40b45e20dc0d36f4adf7c62319717b":[6,0,222,0],
 "structdiscord__ratelimiter.html":[5,5,1,0,0,0],
 "structdiscord__ratelimiter.html#a0f2c5f14dc620e6fe2650f7b7b41ad53":[5,5,1,0,0,0,4],
-"structdiscord__ratelimiter.html#a446a24c48f3d443d2a6431ef1ee05b20":[5,5,1,0,0,0,6],
-"structdiscord__ratelimiter.html#a543175e6442081a833ebdb2045d2db49":[5,5,1,0,0,0,1]
+"structdiscord__ratelimiter.html#a446a24c48f3d443d2a6431ef1ee05b20":[5,5,1,0,0,0,6]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"structdiscord__webhooks__update.html#a8ae2be6dfda1c68a0cf692d9e4fc5fbf":[6,0,333,1],
 "structdiscord__welcome__screen.html":[6,0,334],
 "structdiscord__welcome__screen.html#a01a098c7a8e159379706baa8bff639fa":[6,0,334,0],
 "structdiscord__welcome__screen.html#a03758fcb61911afb9fe53106b8513bcc":[6,0,334,1],

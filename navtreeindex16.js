@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"structdiscord__ratelimiter.html#a543175e6442081a833ebdb2045d2db49":[5,5,1,0,0,0,1],
 "structdiscord__ratelimiter.html#a621319557605c11bc7c79f99db464497":[5,5,1,0,0,0,7],
 "structdiscord__ratelimiter.html#a851e023093acc161d03b26f1c1d56727":[5,5,1,0,0,0,5],
 "structdiscord__ratelimiter.html#a9627e4df091f75a792d2bbef5b791d91":[5,5,1,0,0,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "structdiscord__ret__guild.html#ad75b20a398d6b7817b18b2a7457234c9":[5,4,6,1,0],
 "structdiscord__ret__guild__application__command__permissions.html":[5,4,0,0,4],
 "structdiscord__ret__guild__application__command__permissions.html#a0e6555d93c599a285c0641c84a19b219":[5,4,0,0,4,5],
-"structdiscord__ret__guild__application__command__permissions.html#a56d3e4492e44a8a23eb0a981098fe8a8":[5,4,0,0,4,1],
-"structdiscord__ret__guild__application__command__permissions.html#a5e55e4e941b38cab6ee06cd2a8396c98":[5,4,0,0,4,2]
+"structdiscord__ret__guild__application__command__permissions.html#a56d3e4492e44a8a23eb0a981098fe8a8":[5,4,0,0,4,1]
 };
