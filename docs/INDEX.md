@@ -1,5 +1,6 @@
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
-[portability]: ../PORTABILITY.md
+[portability]: PORTABILITY.md
+[config_json]: guides/config.json_directives.md
 
 # Concord - A Discord API wrapper library made in C
 
@@ -49,7 +50,6 @@ int main(void) {
 ```
 
 ## Features
-
 - Discord v10 support
 - Fully asynchronous
 - [Portability][portability]
@@ -58,6 +58,7 @@ int main(void) {
 
 ## Getting started
 <!-- List guides to help set up the first bot, concord's workflow, and some of its quirks -->
+- [Configuring your bot][config_json]
 
 ## Guides
 <!-- General purpose guides, how to use embeds, interactions, etc -->
