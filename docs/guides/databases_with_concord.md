@@ -2,14 +2,134 @@
 
 Sometimes, when you are developing a bot command, you may wish to save some data that will not be erased once the bot restart (aka persistent data). This is where a database comes in - it can save data, and don't worry, it won't be erased if you restart your bot.
 
-In this guide, you'll be learning how to use sqlite3, a local database. It's incredibly fast, easy to use, and simple to debug.
+In this guide, you will either decide on choosing SQLite3 to start, or postgreSQL, which is the most recommended one for production.
 
-## Opening the DB file
+## PostgreSQL
 
-The first step in this guide will be opening the DB file, as it's required for the other sqlite3 functions like reading and writing data.
+PostgreSQL is a really advanced database, and incredibly fast, but it's hard to use it, at least, compared to easier databases, like SQLite3.
+
+### Opening the DB file
+
+Before executing any type of function on the database, you will first need to connect to it, which luckily is incredibly easy to do.
+
+See an example below, where we are opening the DB file, and checking if it failed to open.
 
 ```c
-#include <sqlite3.h> // Including the sqlite3 header so we can use its functions.
+#include <libpq-fe.h> // PostgreSQL library
+
+...
+
+/* Here we connect to the database, and store the connection in the conn struct. */
+PGconn *conn = PQconnectdb("host=POSTGRESQL-HOSTNAME port=5432 dbname=POSTGRESQL-DBNAME user=POSTGRESQL-USER-NAME password=POSTGRESQL-PASSWORD");
+
+/* Checking if the connection failed, if it did, it will log the error message, and deallocate the conn struct with PQfinish. */
+switch (PQstatus(conn)) {
+    case CONNECTION_OK:
+    case CONNECTION_MADE:
+        /* Successfully connected, you can proceed using database functions. */
+        log_trace("[libpq] Successfully connected to the postgres database server.");
+        break;
+    case CONNECTION_STARTED:
+        /* Still connecting, but really soon you will be connected. */
+        log_trace("[libpq] Waiting for connection to be made.");
+        break;
+    case CONNECTION_AWAITING_RESPONSE:
+        /* Waiting for a response from the database, probably will respond soon, if properly configured. */
+        log_trace("[libpq] Waiting for a response from the server.");
+        break;
+    case CONNECTION_AUTH_OK:
+        /* Authentication was successful, but the backend is still starting up. */
+        log_trace("[libpq] Received authentication; waiting for backend start-up to finish.");
+        break;
+    case CONNECTION_SSL_STARTUP:
+        /* Negotiating SSL encryption, since the connected database was using SSL encryption. */
+        log_trace("[libpq] Almost connecting; negotiating SSL encryption.");
+        break;
+    case CONNECTION_SETENV:
+        /* Negotiating environment-driven parameter settings, soonly will be connected */
+        log_trace("[libpq] Almost connecting; negotiating environment-driven parameter settings.");
+        break;
+    default:
+        /* Ugh, something went wrong while connecting to the database, probably a wrong password, firewall, or something blocking the connection. */
+        log_fatal("[libpq] Error when trying to connect to the postgres database server. [%s]\n", PQerrorMessage(conn));
+        PQfinish(conn);
+}
+```
+
+### Creating a table
+
+We got the database connected, so now we can now proceed creating a table, since it's required before saving any data into it.
+
+```c
+
+/* Here we are using PQexec to execute commands. In this example, we are using "CREATE TABLE" command, which creates a table in the database; the IF NOT EXISTS clause will only create the table if it doesn't exist, and the table will have two columns with the value type INT. */
+PGresult *res = PQexec(conn, "CREATE TABLE IF NOT EXISTS concord_guides(user_id INT, guild_id INT);");
+
+if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+    /* Something went wrong while creating the table, so we are going to log the error message of what went wrong. */
+    log_fatal("[libpq] Error when trying to create the table. [%s]", PQerrorMessage(conn));
+    PQclear(res);
+    /* Even not properly being executed, this isn't, at least most of the time, the fault of the connection, so we are not closing it. */
+    // PQfinish(conn);
+    return;
+} else {
+    log_debug("[libpq] Successfully created the table.");
+}
+```
+
+### Saving data into the table
+
+Now that we have a table, we can now proceed saving data into it, which is really easy to do, since it's almost equal to create a table, the only difference is the command we send to the database to be executed.
+
+```c
+/* Creating a row in the created table with the user_id and guild_id of the message author as columns. */
+PGresult *res = PQexec(conn, "INSERT INTO concord_guides(user_id, guild_id) values(%"PRIu64", %"PRIu64");", msg->author->id, msg->guild_id);
+
+if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+    /* Failed to insert the row, maybe the connection was blocked, or something like it. */
+    log_fatal("[libpq] Error when inserting a row. [%s]", PQerrorMessage(conn));
+    /* Deallocating the res struct made while trying to create the row. */
+    PQclear(res);
+    return;
+} else {
+    /* Successfully inserted the row (with the user_id and guild_id structures) into the table. */
+    log_debug("[libpq] Successfully inserted a row.");
+}
+```
+
+And, we're done! We have a row in the table, but now we have to read it.
+
+### Reading data from the table
+
+Reading the data is dead easy, but it's a little bigger than the other functions.
+
+```c
+char query[512];
+snprintf(query, sizeof(query), "SELECT user_id FROM concord_guides WHERE user_id = %"PRIu64";", message->author->id);
+
+PGresult *res = PQexec(conn, query);
+
+if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+    /* Failed to read row, maybe because the database is not connected, or the firewall blocked the PQexec. */
+    log_fatal("[libpq] Error when reading row. [%s]", PQerrorMessage(conn));
+    /* Deallocating the res struct made while trying to read the row. */
+    PQclear(res);
+    return;
+}
+
+char *userId = PQgetvalue(res, 0, 0);
+
+log_debug("[libpq] Found the user id: %s", userId);
+```
+
+## SQLite3
+
+### Opening the DB file
+
+The first step in this guide will be opening the DB file, as it's required for the other SQLite3 functions like reading and writing data.
+
+```c
+#include <sqlite3.h> // Including the SQLite3 header so we can use its functions.
 
 ...
 
@@ -19,12 +139,13 @@ And also checking the status code of this function, to see if it failed or not t
 sqlite3 *db;
 int rc = sqlite3_open("db.sqlite", &db);
 
-if (rc != SQLITE_OK) {  // Checking if something failed while opening the DB file.
-    /* As it saw something went wrong, it is going to log a fatal debug message with the error message of what went wrong. */
+/* Checking if something failed while opening the DB file. */
+if (rc != SQLITE_OK) {
+    /* As it saw something went wrong, it is going to log the error message of what went wrong. */
     log_fatal("[SQLITE] Error when opening the DB file. [%s]", sqlite3_errmsg(db));
 
     /* Since it failed, the resources must be deallocated. We are using the sqlite3_close for that. 
-    If something went wrong while trying to close it, the code inside this if will be executed. (NOTE: Yes, even failing to open, you MUST use `sqlite3_close` as said in the sqlite3 docs!) */
+    If something went wrong while trying to close it, the code inside this if will be executed. (NOTE: Yes, even failing to open, you MUST use `sqlite3_close` as said in the SQLite3 docs!) */
       
     if (sqlite3_close(db) != SQLITE_OK) {
         /* Logging a fatal saying that it failed to close the DB. (NOTE: The sqlite3_errmsg function shows the error message of what happened) */
@@ -40,120 +161,131 @@ if (rc != SQLITE_OK) {  // Checking if something failed while opening the DB fil
 
 > Whether or not an error occurs when it is opened, resources associated with the database connection handle should be released by passing it to sqlite3_close() when it is no longer required.
 
-## Creating a sqlite3 table
+### Creating a SQLite3 table
 
 Firstly, before trying to save data into the DB file, we need to create a SQL table (the schema for that DB). A DB schema can be summed up as "a description of all of the other tables, indexes, triggers, and views that are contained within the database".
 
 ```c
 char *msgErr = NULL;
+
+/* Here we are using the function below to set commands, in this case the command is the same as the PostgreSQL, see "Creating a table" of PostgreSQL section for more information. */
 char *query = sqlite3_mprintf("CREATE TABLE IF NOT EXISTS concord_guides(user_id INT, guild_id INT);");
+/* Executing the command that was set with sqlite3_mprintf, and saving the status code. */
 rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
 
+/* Deallocating the query variable, as it's not needed anymore. */
 sqlite3_free(query);
 
+/* Checking if something went wrong while executing the command. */
 if (rc != SQLITE_OK) {
+    /* Something went wrong, so logging it to the console with the error message. */
     log_fatal("[SQLITE] Something went wrong while creating concord_guides table. [%s]", msgErr);
+    /* Closing the database since an error happened. */
     if (sqlite3_close(db) != SQLITE_OK) {
         log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
         abort();
     }
     return;
 }
-
-sqlite3_close(db);
 ```
-
-Here, we are defining the command that **will be executed** with sqlite3_mprintf, the command going to be executed is "`CREATE TABLE IF NOT EXISTS concord_guides(user_id INT, guild_id INT)`", where **if the concord_guides table doesn't exist**, it is going to be created.
-
-Also, we are saving **INT values**, but if you wanted to **save a text value (like a string)**, you can simply replace `INT` with `TEXT` (WARNING: **This requires modifications to how you retrieve data**).
-
-Then `sqlite3_exec` is going to perform the command defined with `sqlite3_mprintf`, and, **if some error happens**, it is going to write on the `char *msgErr`. After `sqlite3_exec`, we are going to free the query (generated by `sqlite3_mprintf`) to ensure resources are cleaned up and **no memory is leaked**.
-
-After freeing the query, we **check if the status code of the `sqlite3_exec` is not equal to `SQLITE_OK`**, in case it's not, it's going to log a fatal saying that it failed that something failed while creating the table, and also includes the error message and closing the DB.
 
 Done! If all goes well, then you've created a table called concord_guides.
 
-## Saving records into the created table
+### Saving records into the created table
 
-Now that we created a table, we need to save records into it, it's the purpose of sqlite3.
+Now that we created a table, we need to save records into it, it's the purpose of SQLite3.
 
 For this, it will be pretty similar to the way that we created the table. Follow the example:
 
 ```c
+/* Set the "INSERT INTO" command, which inserts a row into a table. The inserted row have user_id and guild_id as parameters. */
 query = sqlite3_mprintf("INSERT INTO concord_guides(user_id, guild_id) values(%"PRIu64", %"PRIu64");", msg->author->id, msg->guild_id);
+/* Executing the setted command. */
 rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
 
+/* Deallocating the query variable. */
 sqlite3_free(query);
 
+/* Checking if something went wrong while executing the command. */
 if (rc != SQLITE_OK) {
-  log_fatal("[SQLITE] Something went wrong while inserting values into concord_guides table. [%s]", msgErr);
-  if (sqlite3_close(db) != SQLITE_OK) {
+    log_fatal("[SQLITE] Something went wrong while inserting values into concord_guides table. [%s]", msgErr);
+    /* Closing the database since an error happened. */
+    if (sqlite3_close(db) != SQLITE_OK) {
         log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
         abort();
     }
+    return;
 }
-
-sqlite3_close(db);
 ```
 
 Pretty similar, isn't it? The difference is, the command now is "`INSERT INTO concord_guides(user_id, guild_id) values(%"PRIu64", %"PRIu64");`".
 
 The `concord_guides()` parameters **MUST match the schema for the table** that we wish to insert corresponding `values()` into.
 
-## Reading the saved records
+### Reading the saved records
 
 Finally, after saving the records, we will be reading them! This is a little more complicated than creating the table and saving records. See the following example:
 
 ```c
 sqlite3_stmt *stmt = NULL;
 
+/* Here we are setting the command, using the "SELECT ... FROM ... WHERE" command, which explains itself. */
 query = sqlite3_mprintf("SELECT user_id FROM concord_guides WHERE guild_id = %"PRIu64";", msg->guild_id);
+/* Prepare the statement and returns the status code. */
 rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
 
+/* Checks if anything went wrong while evaluating or executing the statement. */
 if ((rc = sqlite3_step(stmt)) != SQLITE_ERROR) {
+    /* Successfully read the record, reading it as a int64. You could use "sqlite3_column_text" to get a UTF-8 value. */
     log_trace("Sucessfully read the record: %lld.", sqlite3_column_int64(stmt, 0));
-}
-
-if (sqlite3_finalize(stmt) != SQLITE_OK) {
-    log_fatal("[SQLITE] Error while executing function sqlite3_finalize.");
-    abort();
-}
-
-sqlite3_close(db);
-```
-
-Here we replace `sqlite3_exec` with `sqlite3_prepare_v2`, as it gives us better control over how the SQL query is executed.
-
-Now, the command is "`SELECT user_id FROM user_voice WHERE guild_id = %"PRIu64";`", where it wants to get the value of user_id, using as a search parameter the guild_id also saved before.
-
-After using `sqlite3_mprintf` to generate the query, and preparing the statement with `sqlite3_prepare_v2`, we use `sqlite3_step` for **evaluating the statement**. If it returns SQLITE_ROW, then it is going to successfully print the records with `sqlite3_column_int64` (NOTE: **You may wish to use other `sqlite3_column_*` to get other types of records, like TEXT**).
-
-## Deleting records
-
-After creating a table, saving records, and reading them, you may finally wish to delete the records.
-
-Deleting records (AKA data) is as easy (and pretty similar) to creating a table, see the following example:
-
-```c
-query = sqlite3_mprintf("DELETE FROM concord_guides WHERE guild_id = %"PRIu64";", msg->guild_id);
-rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
-
-if (rc != SQLITE_OK) {
-    log_fatal("[SYSTEM] Something went wrong while deleting concord_guides table from guild_id. [%s]", msgErr);
+} else {
+    /* Closing the database since an error happened. */
     if (sqlite3_close(db) != SQLITE_OK) {
         log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
         abort();
     }
 }
 
+/* Deallocating the statement struct. */
+if (sqlite3_finalize(stmt) != SQLITE_OK) {
+    log_fatal("[SQLITE] Error while executing function sqlite3_finalize.");
+    abort();
+}
+
+/* Closing the database. */
 sqlite3_close(db);
 ```
 
-In this command, we are **deleting the record that matches the search parameter of `guild_id = %"PRIu64"`**, which means that it will **delete the concord_guides record of the user_id** that has the guild_id the same as the guild_id of the guild that the command is being executed.
+### Deleting records
 
-After it, apply the same process as saving records. If you wish for a better explanation, go back to this [section](#saving-records-into-the-created-table).
+After creating a table, saving records, and reading them, you may finally wish to delete the records.
 
-## Example bot with the code of all processes
+Deleting records (AKA data) is as easy (and pretty similar) to creating a table, see the following example:
+
+```c
+/* Setting the command, using the "DELETE FROM ... WHERE" command, which deletes a row where some collumn is equal "msg->guild_id". */
+query = sqlite3_mprintf("DELETE FROM concord_guides WHERE guild_id = %"PRIu64";", msg->guild_id);
+/* Executing the command setted above. */
+rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
+
+/* Deallocating the query variable. */
+sqlite3_free(query);
+
+/* Checking if something went wrong while executing the command. */
+if (rc != SQLITE_OK) {
+    log_fatal("[SYSTEM] Something went wrong while deleting concord_guides table from guild_id. [%s]", msgErr);
+    /* Closing the database since an error happened. */
+    if (sqlite3_close(db) != SQLITE_OK) {
+        log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+        abort();
+    }
+    return;
+}
+```
+
+Okay, now the row where the collumn `guild_id` is equal to `msg->guild_id` is deleted.
+
+### Example bot with the code of all processes
 
 The following bot has the single purpose of **summing this entire guide** in a simple program.
 
