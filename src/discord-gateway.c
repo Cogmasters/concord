@@ -207,7 +207,7 @@ _discord_on_dispatch(struct discord_gateway *gw)
     case DISCORD_EV_READY: {
         jsmnf_pair *f;
 
-        logconf_info(&gw->conf, "Succesfully started a Discord session!");
+        logconf_info(&gw->conf, "Successfully started a Discord session!");
 
         if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
                             "session_id", 10)))
