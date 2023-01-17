@@ -17,7 +17,7 @@ discord_create_interaction_response(
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body;
     enum http_method method;
-    char buf[4096];
+    char buf[16384];
 
     CCORD_EXPECT(client, interaction_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
