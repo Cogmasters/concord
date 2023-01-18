@@ -63,6 +63,10 @@ LIST_END
 /** @CCORD_pub_struct{discord_create_webhook} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_webhook)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** name of the webhook (1-80 characters) */
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
@@ -76,6 +80,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_webhook} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_webhook)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the default name of the webhook */
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
@@ -85,6 +93,13 @@ PUB_STRUCT(discord_modify_webhook)
   COND_END
   /** the new channel ID for this webhook should be moved to */
     FIELD_SNOWFLAKE(channel_id)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_webhook)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
 STRUCT_END
 #endif
 

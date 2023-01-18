@@ -56,11 +56,13 @@ CCORDcode discord_modify_channel(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be deleted
+ * @param params request parameters
  * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_delete_channel(struct discord *client,
                                  u64snowflake channel_id,
+                                 struct discord_delete_channel *params,
                                  struct discord_ret_channel *ret);
 
 /**
@@ -266,11 +268,13 @@ CCORDcode discord_edit_message(struct discord *client,
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
  *       particular emoji
+ * @param params request parameters
  * @CCORD_return
  */
 CCORDcode discord_delete_message(struct discord *client,
                                  u64snowflake channel_id,
                                  u64snowflake message_id,
+                                 struct discord_delete_message *params,
                                  struct discord_ret *ret);
 
 /**
@@ -278,14 +282,15 @@ CCORDcode discord_delete_message(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
- * @param messages the list of messages to be deleted
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_bulk_delete_messages(struct discord *client,
-                                       u64snowflake channel_id,
-                                       struct snowflakes *messages,
-                                       struct discord_ret *ret);
+CCORDcode discord_bulk_delete_messages(
+    struct discord *client,
+    u64snowflake channel_id,
+    struct discord_bulk_delete_messages *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Edit the channel permission overwrites for a user or role in a
@@ -339,13 +344,16 @@ CCORDcode discord_create_channel_invite(
  * @param client the client created with discord_init()
  * @param channel_id the channel to the permission deleted
  * @param overwrite_id the id of the overwritten permission
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
-CCORDcode discord_delete_channel_permission(struct discord *client,
-                                            u64snowflake channel_id,
-                                            u64snowflake overwrite_id,
-                                            struct discord_ret *ret);
+CCORDcode discord_delete_channel_permission(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64snowflake overwrite_id,
+    struct discord_delete_channel_permission *params,
+    struct discord_ret *ret);
 
 /**
  * @brief Post a typing indicator for the specified channel
@@ -393,12 +401,14 @@ CCORDcode discord_get_pinned_messages(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id channel to pin the message on
  * @param message_id message to be pinned
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_pin_message(struct discord *client,
                               u64snowflake channel_id,
                               u64snowflake message_id,
+                              struct discord_pin_message *params,
                               struct discord_ret *ret);
 
 /**
@@ -407,12 +417,14 @@ CCORDcode discord_pin_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id channel for the message to be unpinned
  * @param message_id message to be unpinned
+ * @param params request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_unpin_message(struct discord *client,
                                 u64snowflake channel_id,
                                 u64snowflake message_id,
+                                struct discord_unpin_message *params,
                                 struct discord_ret *ret);
 
 /**

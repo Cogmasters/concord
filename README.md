@@ -3,8 +3,8 @@
 [migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
-[discord-config-init]: https://cogmasters.github.io/concord/group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb
-[discord-config-get-field]: https://cogmasters.github.io/concord/group__Discord.html#gac4486003ffab83de397c0bebb74b3307
+[discord-config-init]: https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb
+[discord-config-get-field]: https://cogmasters.github.io/concord/group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
@@ -151,6 +151,21 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
+#### Arch Linux / Manjaro (Arch based)
+
+```console
+git clone https://aur.archlinux.org/concord-git.git
+cd concord-git
+makepkg -Acs
+pacman -U concord-git-version-any.pkg.tar.zst
+```
+
+Alternatively, you can use an AUR helper:
+
+```console
+yay -S concord-git
+```
+
 ## Setting up your environment
 
 ### Clone Concord into your workspace
@@ -187,6 +202,10 @@ On Windows with Cygwin, you might need to pass both arguments to use POSIX threa
 ```console
 $ CFLAGS="-pthread -lpthread" make
 ```
+
+### Special note about linking Concord against another library
+In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared
+object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make`. 
 
 ## Configuring Concord
 
@@ -294,6 +313,7 @@ The following are `stable` and well documented dependencies that are packaged wi
 | [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
 | [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
 | [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
+| [anomap](https://github.com/Anotra/anomap)\*          | Sorted key/value storage for C99                   |
 | [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
 | [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
 | [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |

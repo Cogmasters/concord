@@ -160,6 +160,10 @@ LIST_END
 /** @CCORD_pub_struct{discord_create_auto_moderation_rule} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_auto_moderation_rule)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the rule name */
     FIELD_PTR(name, char, *)
   /** the rule event type */
@@ -194,8 +198,14 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_auto_moderation_rule} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_auto_moderation_rule)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the rule name */
+  COND_WRITE(self->name != NULL)
     FIELD_PTR(name, char, *)
+  COND_END
   /** the rule event type */
   COND_WRITE(self->event_type != 0)
     FIELD_ENUM(event_type, discord_auto_moderation_event_types)
@@ -218,5 +228,12 @@ PUB_STRUCT(discord_modify_auto_moderation_rule)
   COND_WRITE(self->exempt_channels != NULL)
     FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
   COND_END
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_auto_moderation_rule)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
 STRUCT_END
 #endif

@@ -24,18 +24,19 @@ discord_create_interaction_response(
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->data && params->data->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->data->attachments);
         attr.attachments = *params->data->attachments;
     }
     else {
         method = HTTP_POST;
     }
 
-    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
+    body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/interactions/%" PRIu64 "/%s/callback",
@@ -55,7 +56,7 @@ discord_get_original_interaction_response(
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
+    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/webhooks/%" PRIu64 "/%s/messages/@original",
@@ -80,19 +81,20 @@ discord_edit_original_interaction_response(
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_edit_original_interaction_response_to_json(
-        buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
 
-    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret);
+    body.size = discord_edit_original_interaction_response_to_json(
+        buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s/messages/@original",
@@ -111,7 +113,7 @@ discord_delete_original_interaction_response(struct discord *client,
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/webhooks/%" PRIu64 "/%s/messages/@original",
@@ -142,19 +144,20 @@ discord_create_followup_message(struct discord *client,
         ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
-    body.size =
-        discord_create_followup_message_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
     }
 
-    DISCORD_ATTR_INIT(attr, discord_webhook, ret);
+    body.size =
+        discord_create_followup_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s%s%s", application_id,
@@ -175,7 +178,7 @@ discord_get_followup_message(struct discord *client,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/webhooks/%" PRIu64 "/%s/%" PRIu64,
@@ -201,19 +204,20 @@ discord_edit_followup_message(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size =
-        discord_edit_followup_message_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
     if (params->attachments) {
         method = HTTP_MIMEPOST;
+        DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
         attr.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
     }
 
-    DISCORD_ATTR_INIT(attr, discord_message, ret);
+    body.size =
+        discord_edit_followup_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
@@ -234,7 +238,7 @@ discord_delete_followup_message(struct discord *client,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    DISCORD_ATTR_BLANK_INIT(attr, ret);
+    DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,

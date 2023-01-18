@@ -65,7 +65,7 @@ check_sync_trigger_error_on_bogus_parameter(void)
     struct discord_ret_channel ret = { 0 };
 
     ret.sync = DISCORD_SYNC_FLAG;
-    ASSERT_NEQ(CCORD_OK, discord_delete_channel(CLIENT, BOGUS_ID, &ret));
+    ASSERT_NEQ(CCORD_OK, discord_delete_channel(CLIENT, BOGUS_ID, NULL, &ret));
 
     PASS();
 }
@@ -167,7 +167,7 @@ check_async_trigger_error_on_bogus_parameter(void)
     ret.done = (DONE1_CAST(struct discord_channel))on_done1;
     ret.fail = on_done;
     ret.data = &result;
-    discord_delete_channel(CLIENT, BOGUS_ID, &ret);
+    discord_delete_channel(CLIENT, BOGUS_ID, NULL, &ret);
 
     discord_run(CLIENT);
     ASSERT_NEQ(CCORD_OK, result);

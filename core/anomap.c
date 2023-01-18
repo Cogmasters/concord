@@ -16,11 +16,11 @@ struct anomap {
   } map;
   struct {
     char *arr;
-    size_t len, cap, size;
+    size_t cap, size;
   } keys;
   struct {
     char *arr;
-    size_t len, cap, size;
+    size_t cap, size;
   } vals;
 };
 
@@ -51,8 +51,13 @@ anomap_length(struct anomap *map) {
   return map->map.len;
 }
 
-static bool
-_anomap_find(struct anomap *map, void *key, size_t *position) {
+void anomap_clear(struct anomap *map) {
+  map->map.len = 0;
+  map->map.highest = 0;
+}
+
+bool
+anomap_index_of(struct anomap *map, void *key, size_t *position) {
   size_t lo = 0, mid, hi = map->map.len;
   while (lo < hi) {
     mid = (lo + hi) / 2;
@@ -62,14 +67,6 @@ _anomap_find(struct anomap *map, void *key, size_t *position) {
     else hi = mid;
   }
   return *position = lo, false;
-}
-
-bool
-anomap_index_of(struct anomap *map, size_t *index, void *key) {
-  size_t mpos = 0;
-  if (!_anomap_find(map, key, &mpos))
-    return false;
-  return *index = mpos, true;
 }
 
 bool
@@ -115,7 +112,7 @@ anomap_do(struct anomap *map, enum anomap_operation operation,
 {
   enum anomap_operation result = 0;
   size_t mpos = 0;
-  if (!_anomap_find(map, key, &mpos)) {
+  if (!anomap_index_of(map, key, &mpos)) {
     if (~operation & anomap_insert)
       return 0;
     if (!_anomap_ensure_capacity(map, map->map.len + 1))
@@ -177,4 +174,51 @@ anomap_do(struct anomap *map, enum anomap_operation operation,
     map->map.arr[map->map.len] = pos;
   }
   return result;
+}
+
+size_t
+anomap_copy_range(struct anomap *map, size_t from_index, size_t to_index,
+                  void *keys, void *vals)
+{
+  size_t count = 1 + (from_index < to_index ? to_index - from_index :
+                                              from_index - to_index);
+  if (from_index >= map->map.len || to_index >= map->map.len) return 0;
+  if (keys || vals) {
+    const size_t key_size = map->keys.size;
+    const size_t val_size = map->vals.size;
+    bool going_up = from_index <= to_index;
+    for (size_t i = 0;; i++, going_up ? from_index++ : from_index--) {
+      unsigned pos = map->map.arr[from_index];
+      if (keys) memcpy(((char *)keys) + key_size * i,
+                        map->keys.arr + key_size * pos,
+                        key_size);
+      if (vals) memcpy(((char *)vals) + val_size * i,
+                        map->vals.arr + val_size * pos,
+                        val_size);
+      if (to_index == from_index) break;
+    }
+  }
+  return count;
+}
+
+size_t
+anomap_delete_range(struct anomap *map, size_t from_index, size_t to_index,
+                    void *keys, void *vals)
+{
+  size_t count = anomap_copy_range(map, from_index, to_index, keys, vals);
+  if (!count) return 0;
+  size_t index = to_index < from_index ? to_index : from_index;
+  size_t remaining = count;
+  while (remaining) {
+    unsigned tmp[4096];
+    size_t block = remaining > 4096 ? 4096 : remaining;
+    size_t copy_size = block * sizeof *map->map.arr;
+    memcpy(tmp, map->map.arr + index, copy_size);
+    memmove(map->map.arr + index, map->map.arr + index + block,
+            (map->map.len - index - block) * sizeof *map->map.arr);
+    map->map.len -= block;
+    memcpy(map->map.arr + map->map.len, tmp, copy_size);
+    remaining -= block;
+  }
+  return count;
 }

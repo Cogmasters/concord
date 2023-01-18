@@ -34,11 +34,13 @@ CCORDcode discord_get_invite(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param invite_code the invite code
+ * @param params request parameters
  * @CCORD_ret_obj{ret,invite}
  * @CCORD_return
  */
 CCORDcode discord_delete_invite(struct discord *client,
                                 char *invite_code,
+                                struct discord_delete_invite *params,
                                 struct discord_ret_invite *ret);
 
 /** @example invite.c

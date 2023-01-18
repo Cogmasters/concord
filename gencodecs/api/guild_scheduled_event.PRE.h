@@ -129,6 +129,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_guild_scheduled_event} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_scheduled_event)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the channel ID of the scheduled event */
   COND_WRITE(self->channel_id != 0)
     FIELD_SNOWFLAKE(channel_id)
@@ -176,6 +180,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_guild_scheduled_event} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_guild_scheduled_event)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the channel ID of the scheduled event */
   COND_WRITE(self->channel_id != 0)
     FIELD_SNOWFLAKE(channel_id)

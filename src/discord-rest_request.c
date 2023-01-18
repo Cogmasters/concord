@@ -16,6 +16,7 @@ _discord_request_cleanup(struct discord_request *req)
 {
     discord_attachments_cleanup(&req->attachments);
     if (req->body.start) free(req->body.start);
+    if (req->reason) free(req->reason);
     free(req);
 }
 
@@ -122,7 +123,8 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
 
     /* attachment part */
     for (int i = 0; i < req->attachments.size; ++i) {
-        int len = snprintf(name, sizeof(name), "files[%d]", i);
+        int len = snprintf(name, sizeof(name), "files[%" PRIu64 "]",
+                           req->attachments.array[i].id);
         ASSERT_NOT_OOB(len, sizeof(name));
 
         if (req->attachments.array[i].content) {
@@ -152,6 +154,7 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
                          curl_easy_strerror(ecode),
                          req->attachments.array[i].filename);
                 perror(errbuf);
+                continue;
             }
             curl_mime_type(part, !req->attachments.array[i].content_type
                                      ? "application/octet-stream"
@@ -195,7 +198,7 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
     case HTTP_TOO_MANY_REQUESTS: {
         struct ua_szbuf_readonly body = ua_info_get_body(info);
         struct jsmnftok message = { 0 };
-        double retry_after = 1.0;
+        u64unix_ms retry_after_ms = 1000;
         bool is_global = false;
         jsmn_parser parser;
         jsmntok_t tokens[16];
@@ -217,18 +220,24 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
                     is_global = ('t' == body.start[f->v.pos]);
                 if ((f = jsmnf_find(pairs, body.start, "message", 7)))
                     message = f->v;
-                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
-                    retry_after = strtod(body.start + f->v.pos, NULL);
+                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11))) {
+                    double retry_after = strtod(body.start + f->v.pos, NULL);
+                    if (retry_after > 0)
+                        retry_after_ms = (u64unix_ms)(1000 * retry_after);
+                }
             }
         }
 
-        req->wait_ms = (int64_t)(1000 * retry_after);
-        if (req->wait_ms < 0) req->wait_ms = 0;
-
         logconf_warn(&rqtor->conf,
-                     "429 %sRATELIMITING (wait: %" PRId64 " ms) : %.*s",
-                     is_global ? "GLOBAL " : "", req->wait_ms, message.len,
+                     "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
+                     is_global ? "GLOBAL " : "", retry_after_ms, message.len,
                      body.start + message.pos);
+
+        if (is_global)
+            discord_ratelimiter_set_global_timeout(&rqtor->ratelimiter, req->b,
+                                                   retry_after_ms);
+        else
+            discord_bucket_set_timeout(req->b, retry_after_ms);
 
         req->code = info->code;
         return true;
@@ -245,6 +254,10 @@ discord_request_cancel(struct discord_requestor *rqtor,
 {
     struct discord_refcounter *rc = &CLIENT(rqtor, rest.requestor)->refcounter;
 
+    if (NOT_EMPTY_STR(req->reason)) {
+        ua_conn_remove_header(req->conn, "X-Audit-Log-Reason");
+        *req->reason = '\0';
+    }
     if (req->conn) {
         ua_conn_stop(req->conn);
     }
@@ -337,16 +350,11 @@ _discord_request_retry(struct discord_requestor *rqtor,
     if (req->retry_attempt++ >= rqtor->retry_limit) return false;
 
     ua_conn_reset(req->conn);
-
-    /* FIXME: wait_ms > 0 should be dealt with aswell */
-    if (req->wait_ms <= 0)
-        discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
+    discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
 
     return true;
 }
 
-/* parse request response and prepare callback that should be triggered
- * at _discord_rest_run_request_callback() */
 CCORDcode
 discord_requestor_info_read(struct discord_requestor *rqtor)
 {
@@ -449,6 +457,9 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
     req->conn = ua_conn_start(rqtor->ua);
     ehandle = ua_conn_get_easy_handle(req->conn);
 
+    if (NOT_EMPTY_STR(req->reason))
+        ua_conn_add_header(req->conn, "X-Audit-Log-Reason", req->reason);
+
     if (HTTP_MIMEPOST == req->method) {
         ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
         ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
@@ -505,25 +516,45 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
 /* Only fields required at _discord_request_to_multipart() are duplicated */
 static void
 _discord_attachments_dup(struct discord_attachments *dest,
-                         struct discord_attachments *src)
+                         const struct discord_attachments *src)
 {
+    int i;
+
     __carray_init(dest, (size_t)src->size, struct discord_attachment, , );
-    for (int i = 0; i < src->size; ++i) {
+    for (i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
         if (src->array[i].content) {
             dest->array[i].size = src->array[i].size
                                       ? src->array[i].size
                                       : strlen(src->array[i].content) + 1;
-
             dest->array[i].content = malloc(dest->array[i].size);
             memcpy(dest->array[i].content, src->array[i].content,
                    dest->array[i].size);
         }
         if (src->array[i].filename)
-            dest->array[i].filename = strdup(src->array[i].filename);
+            cog_strndup(src->array[i].filename, strlen(src->array[i].filename),
+                        &dest->array[i].filename);
         if (src->array[i].content_type)
-            dest->array[i].content_type = strdup(src->array[i].content_type);
+            cog_strndup(src->array[i].content_type,
+                        strlen(src->array[i].content_type),
+                        &dest->array[i].content_type);
     }
+    dest->size = i;
+}
+
+static void
+_discord_request_attributes_copy(struct discord_request *dest,
+                                 const struct discord_attributes *src)
+{
+    dest->dispatch = src->dispatch;
+    dest->response = src->response;
+    dest->attachments = src->attachments;
+    if (src->reason) { /* request reason if included */
+        if (!dest->reason) dest->reason = calloc(DISCORD_MAX_REASON_LEN, 1);
+        snprintf(dest->reason, DISCORD_MAX_REASON_LEN, "%s", src->reason);
+    }
+    if (src->attachments.size)
+        _discord_attachments_dup(&dest->attachments, &src->attachments);
 }
 
 static struct discord_request *
@@ -562,15 +593,10 @@ discord_request_begin(struct discord_requestor *rqtor,
     struct discord *client = CLIENT(rest, rest);
 
     struct discord_request *req = _discord_request_get(rqtor);
-    CCORDcode code = CCORD_OK;
+    CCORDcode code;
 
     req->method = method;
-    memcpy(req, attr, sizeof *attr);
-
-    if (attr->attachments.size)
-        _discord_attachments_dup(&req->attachments, &attr->attachments);
-
-    if (body) { /* copy request body */
+    if (body) {
         if (body->size > req->body.realsize) { /* buffer needs a resize */
             void *tmp = realloc(req->body.start, body->size);
             ASSERT_S(tmp != NULL, "Out of memory");
@@ -581,26 +607,24 @@ discord_request_begin(struct discord_requestor *rqtor,
         memcpy(req->body.start, body->start, body->size);
         req->body.size = body->size;
     }
-
-    /* copy endpoint over to req */
     memcpy(req->endpoint, endpoint, sizeof(req->endpoint));
-    /* copy bucket's key */
     memcpy(req->key, key, sizeof(req->key));
 
-    if (attr->dispatch.keep) {
-        code = discord_refcounter_incr(&client->refcounter,
-                                       (void *)attr->dispatch.keep);
+    _discord_request_attributes_copy(req, attr);
 
-        ASSERT_S(code == CCORD_OK,
-                 "'.keep' data must be a Concord callback parameter");
+    if (req->dispatch.keep) {
+        code = discord_refcounter_incr(&client->refcounter,
+                                       (void *)req->dispatch.keep);
+
+        ASSERT_S(code == CCORD_OK, "'.keep' data must be a Concord resource");
     }
-    if (attr->dispatch.data
+    if (req->dispatch.data
         && CCORD_UNAVAILABLE
                == discord_refcounter_incr(&client->refcounter,
-                                          attr->dispatch.data))
+                                          req->dispatch.data))
     {
-        discord_refcounter_add_client(&client->refcounter, attr->dispatch.data,
-                                      attr->dispatch.cleanup, false);
+        discord_refcounter_add_client(&client->refcounter, req->dispatch.data,
+                                      req->dispatch.cleanup, false);
     }
 
     pthread_mutex_lock(&rqtor->qlocks->pending);
@@ -608,6 +632,7 @@ discord_request_begin(struct discord_requestor *rqtor,
     io_poller_wakeup(rest->io_poller);
     if (!req->dispatch.sync) {
         pthread_mutex_unlock(&rqtor->qlocks->pending);
+        code = CCORD_PENDING;
     }
     else { /* wait for request's completion if sync mode is active */
         pthread_cond_t temp_cond = PTHREAD_COND_INITIALIZER;
@@ -615,9 +640,7 @@ discord_request_begin(struct discord_requestor *rqtor,
         pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
         req->cond = NULL;
         pthread_mutex_unlock(&rqtor->qlocks->pending);
-
         code = _discord_request_dispatch_response(rqtor, req);
     }
-
     return code;
 }

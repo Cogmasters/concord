@@ -88,15 +88,6 @@ struct discord;
 /** @addtogroup ConcordError
  *  @{ */
 
-/** Received a JSON error message */
-#define CCORD_DISCORD_JSON_CODE 1
-/** Bad authentication token */
-#define CCORD_DISCORD_BAD_AUTH 2
-/** Being ratelimited */
-#define CCORD_DISCORD_RATELIMIT 3
-/** Couldn't establish connection to Discord */
-#define CCORD_DISCORD_CONNECTION 4
-
 /**
  * @brief Return a Concord's error
  * @note used to log and return an error
@@ -155,27 +146,28 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
 
 /** @struct discord */
 
+#include "discord-cache.h"
 #include "discord-events.h"
 
 /**
- * @brief Claim ownership of a function parameter provided by Concord
+ * @brief Claim ownership of a resource provided by Concord
  * @see discord_unclaim()
  *
  * @param client the client initialized with discord_init()
- * @param param a function parameter provided by Concord
- * @return pointer to `param` (for one-liners)
+ * @param data a resource provided by Concord
+ * @return pointer to `data` (for one-liners)
  */
-#define discord_claim(client, param) (__discord_claim(client, param), param)
+#define discord_claim(client, data) (__discord_claim(client, data), data)
 void __discord_claim(struct discord *client, const void *data);
 
 /**
- * @brief Unclaim ownership of a function parameter provided by Concord
- * @note this will trigger the cleanup method of the parameter, so this should
+ * @brief Unclaim ownership of a resource provided by Concord
+ * @note this will make the resource eligible for cleanup, so this should
  *      only be called when you no longer plan to use it
  * @see discord_claim()
  *
  * @param client the client initialized with discord_init()
- * @param param a function parameter provided by Concord, that has been
+ * @param data a resource provided by Concord, that has been
  *      previously claimed with discord_claim()
  */
 void discord_unclaim(struct discord *client, const void *data);
@@ -304,7 +296,8 @@ void *discord_get_data(struct discord *client);
 
 /**
  * @brief Get the client WebSockets ping
- * @note Only works after a connection has been established via discord_run()
+ * @note Only works after a connection has been established via
+ * discord_run()
  *
  * @param client the client created with discord_init()
  * @return the ping in milliseconds
@@ -368,7 +361,8 @@ enum discord_timer_flags {
     DISCORD_TIMER_DELETE_AUTO = 1 << 2,
     /** timer has been canceled. user should cleanup only */
     DISCORD_TIMER_CANCELED = 1 << 3,
-
+    /** flag is set when on_tick callback has been called */
+    DISCORD_TIMER_TICK = 1 << 4,
     /** used in discord_timer_ctl to get the timer's data */
     DISCORD_TIMER_GET = 1 << 5,
     /** timer should run using a fixed interval based on start time */
@@ -381,8 +375,11 @@ struct discord_timer {
     unsigned id;
     /** the flags used to manipulate the timer */
     enum discord_timer_flags flags;
-    /** the callback that should be called when timer triggers */
-    discord_ev_timer cb;
+    /** (nullable) the callback that should be called when timer triggers */
+    discord_ev_timer on_tick;
+    /** (nullable) the callback for status updates timer->flags
+     * will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE */
+    discord_ev_timer on_status_changed;
     /** user data */
     void *data;
     /** delay before timer should start */
@@ -408,13 +405,17 @@ unsigned discord_timer_ctl(struct discord *client,
  *        deletes itself upon completion
  *
  * @param client the client created with discord_init()
- * @param cb the callback that should be called when timer triggers
+ * @param on_tick_cb (nullable) the callback that should be called when timer
+ * triggers
+ * @param on_status_changed_cb (nullable) the callback for status updates
+ * timer->flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE
  * @param data user data
  * @param delay delay before timer should start in milliseconds
  * @return the id of the timer
  */
 unsigned discord_timer(struct discord *client,
-                       discord_ev_timer cb,
+                       discord_ev_timer on_tick_cb,
+                       discord_ev_timer on_status_changed_cb,
                        void *data,
                        int64_t delay);
 
@@ -423,7 +424,10 @@ unsigned discord_timer(struct discord *client,
  *        deletes itself upon completion
  *
  * @param client the client created with discord_init()
- * @param cb the callback that should be called when timer triggers
+ * @param on_tick_cb (nullable) the callback that should be called when timer
+ * triggers
+ * @param on_status_changed_cb (nullable) the callback for status updates
+ * timer->flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE
  * @param data user data
  * @param delay delay before timer should start in milliseconds
  * @param interval interval between runs. (-1 == disable repeat)
@@ -431,7 +435,8 @@ unsigned discord_timer(struct discord *client,
  * @return the id of the timer
  */
 unsigned discord_timer_interval(struct discord *client,
-                                discord_ev_timer cb,
+                                discord_ev_timer on_tick_cb,
+                                discord_ev_timer on_status_changed_cb,
                                 void *data,
                                 int64_t delay,
                                 int64_t interval,

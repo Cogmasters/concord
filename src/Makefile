@@ -30,6 +30,7 @@ OBJS += concord-once.o             \
         discord-rest_ratelimit.o   \
         discord-client.o           \
         discord-events.o           \
+        discord-cache.o            \
         discord-loop.o             \
         discord-gateway.o          \
         discord-gateway_dispatch.o \

@@ -40,31 +40,35 @@ typedef struct {
 /**
  * @brief Helper for setting attributes for a specs-generated return struct
  *
- * @param attr attributes handler to be initialized
- * @param type datatype of the struct
- * @param ret dispatch attributes
+ * @param[out] attr @ref discord_attributes handler to be initialized
+ * @param[in] type datatype of the struct
+ * @param[in] ret dispatch attributes
+ * @param[in] _reason reason for request (if available)
  */
-#define DISCORD_ATTR_INIT(attr, type, ret)                                    \
+#define DISCORD_ATTR_INIT(attr, type, ret, _reason)                           \
     do {                                                                      \
         (attr).response.size = sizeof(struct type);                           \
         (attr).response.init = (cast_init)type##_init;                        \
         (attr).response.from_json = (cast_from_json)type##_from_json;         \
         (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \
+        (attr).reason = _reason;                                              \
         if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \
     } while (0)
 
 /**
  * @brief Helper for setting attributes for a specs-generated list
  *
- * @param attr attributes handler to be initialized
- * @param type datatype of the list
- * @param ret dispatch attributes
+ * @param[out] attr @ref discord_attributes handler to be initialized
+ * @param[in] type datatype of the list
+ * @param[in] ret dispatch attributes
+ * @param[in] _reason reason for request (if available)
  */
-#define DISCORD_ATTR_LIST_INIT(attr, type, ret)                               \
+#define DISCORD_ATTR_LIST_INIT(attr, type, ret, _reason)                      \
     do {                                                                      \
         (attr).response.size = sizeof(struct type);                           \
         (attr).response.from_json = (cast_from_json)type##_from_json;         \
         (attr).response.cleanup = (cast_cleanup)type##_cleanup;               \
+        (attr).reason = _reason;                                              \
         if (ret) _RET_COPY_TYPED(attr.dispatch, *ret);                        \
     } while (0)
 
@@ -72,10 +76,26 @@ typedef struct {
  * @brief Helper for setting attributes for attruests that doensn't expect a
  *      response object
  *
- * @param attr attributes handler to be initialized
- * @param ret dispatch attributes
+ * @param[out] attr @ref discord_attributes handler to be initialized
+ * @param[in] ret dispatch attributes
+ * @param[in] _reason reason for request (if available)
  */
-#define DISCORD_ATTR_BLANK_INIT(attr, ret)                                    \
-    if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret)
+#define DISCORD_ATTR_BLANK_INIT(attr, ret, _reason)                           \
+    do {                                                                      \
+        (attr).reason = _reason;                                              \
+        if (ret) _RET_COPY_TYPELESS(attr.dispatch, *ret);                     \
+    } while (0)
+
+/**
+ * @brief Helper for initializing attachments ids
+ *
+ * @param[in,out] attchs a @ref discord_attachments to have its IDs initialized
+ */
+#define DISCORD_ATTACHMENTS_IDS_INIT(attchs)                                  \
+    do {                                                                      \
+        for (int i = 0; i < attchs->size; ++i) {                              \
+            attchs->array[i].id = (u64snowflake)i;                            \
+        }                                                                     \
+    } while (0)
 
 #endif /* DISCORD_REQUEST_H */

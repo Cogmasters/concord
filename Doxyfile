@@ -263,7 +263,8 @@ TAB_SIZE               = 4
 
 ALIASES += "CCORD_ret{1}=@param \1 return context of the request. if successful the assigned `done` will be triggered @see @ref discord_ret for more options^^" \
            "CCORD_ret_obj{2}=@param \1 return context of the request. if successful a @ref discord_\2 will be sent over to its assigned `done` callback @see @ref discord_ret_\2 for more options^^" \
-           "CCORD_return=@return @ref CCORDcode for how the operation went, @ref CCORD_OK means nothing out of the ordinary^^" \
+           "CCORD_reason{1}=@param \1 a `reason` to indicate why the action was taken^^" \
+           "CCORD_return=@return @ref CCORDcode value for how the operation went, @ref CCORD_OK means nothing out of the ordinary^^" \
            "CCORD_pub_struct{1}=**Public methods**^^^^  - Initializer:^^^^    - `\1_init(struct \1 *this)`^^  - Cleanup:^^^^    - `\1_cleanup(struct \1 *this)`^^  - JSON Decoder:^^^^    - `\1_from_json(const char json[], size_t len, struct \1 *this)`^^    - `\1_from_jsmnf(jsmnf *root, const char json[], struct \1 *this)`^^  - JSON Encoder:^^^^    - `\1_to_json(char buf[], size_t size, const struct \1 *this)`^^    - `\1_to_jsonb(jsonb *b, char buf[], size_t size, const struct \1 *this)`" \
            "CCORD_pub_list{1}=**Public methods**^^^^  - Cleanup:^^^^    - `\1_cleanup(struct \1 *this)`^^  - JSON Decoder:^^^^    - `\1_from_json(const char json[], size_t len, struct \1 *this)`^^    - `\1_from_jsmnf(jsmnf *root, const char json[], struct \1 *this)`^^  - JSON Encoder:^^^^    - `\1_to_json(char buf[], size_t size, const struct \1 *this)`^^    - `\1_to_jsonb(jsonb *b, char buf[], size_t size, const struct \1 *this)`"
 

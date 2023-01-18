@@ -162,13 +162,17 @@ unsigned discord_internal_timer_ctl(struct discord *client,
  *      completion
  *
  * @param client the client created with discord_init()
- * @param cb the callback that should be called when timer triggers
+ * @param on_tick_cb (nullable) the callback that should be called when timer
+ * triggers
+ * @param on_status_changed_cb (nullable) the callback for status updates
+ * timer->flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE
  * @param data user data
  * @param delay delay before timer should start in milliseconds
  * @return the id of the timer
  */
 unsigned discord_internal_timer(struct discord *client,
-                                discord_ev_timer cb,
+                                discord_ev_timer on_tick_cb,
+                                discord_ev_timer on_status_changed_cb,
                                 void *data,
                                 int64_t delay);
 
@@ -216,7 +220,7 @@ struct discord_ratelimiter {
     struct discord_bucket *miss;
 
     /* client-wide global ratelimiting */
-    u64unix_ms *global_wait_ms;
+    u64unix_ms *global_wait_tstamp;
 
     /** bucket queues */
     struct {
@@ -271,6 +275,18 @@ void discord_ratelimiter_build(struct discord_ratelimiter *rl,
                                const char key[],
                                struct ua_info *info);
 
+/**
+ * @brief Update global ratelimiting value
+ * @todo check if all pending buckets must be unset
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket bucket that received the global ratelimiting notice
+ * @param wait_ms the amount of time that all buckets should wait for
+ */
+void discord_ratelimiter_set_global_timeout(struct discord_ratelimiter *rl,
+                                            struct discord_bucket *bucket,
+                                            u64unix_ms wait_ms);
+
 /** @brief The Discord bucket for handling per-group ratelimits */
 struct discord_bucket {
     /** the hash associated with the bucket's ratelimiting group */
@@ -298,14 +314,13 @@ struct discord_bucket {
 };
 
 /**
- * @brief Return bucket timeout timestamp
+ * @brief Set bucket timeout
  *
- * @param rl the handle initialized with discord_ratelimiter_init()
  * @param bucket the bucket to be checked for time out
- * @return the timeout timestamp
+ * @param wait_ms how long the bucket should wait for
  */
-u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
-                                      struct discord_bucket *bucket);
+void discord_bucket_set_timeout(struct discord_bucket *bucket,
+                                u64unix_ms wait_ms);
 
 /**
  * @brief Get a `struct discord_bucket` assigned to `key`
@@ -407,8 +422,11 @@ struct discord_ret_response {
     struct discord_ret_dispatch dispatch;                                     \
     /** information for parsing response into a datatype (if possible) */     \
     struct discord_ret_response response;                                     \
-    /** in case of `HTTP_MIMEPOST` provide attachments for file transfer */   \
-    struct discord_attachments attachments
+    /** if @ref HTTP_MIMEPOST provide attachments for file transfer */        \
+    struct discord_attachments attachments;                                   \
+    /** indicated reason to why the action was taken @note when used at       \
+     *      @ref discord_request buffer is kept and reused */                 \
+    char *reason
 
 /** @brief Request to be performed */
 struct discord_attributes {
@@ -419,6 +437,7 @@ struct discord_attributes {
  * @brief Individual requests that are scheduled to run asynchronously
  * @note this struct **SHOULD NOT** be handled from the `REST` manager thread
  * @note its fields are aligned with @ref discord_attributes
+ *      (see @ref DISCORD_ATTRIBUTES_FIELDS)
  */
 struct discord_request {
     DISCORD_ATTRIBUTES_FIELDS;
@@ -435,12 +454,8 @@ struct discord_request {
     char key[DISCORD_ROUTE_LEN];
     /** the connection handler assigned */
     struct ua_conn *conn;
-
     /** request's status code */
     CCORDcode code;
-    /** how long to wait for in case of request being ratelimited */
-    int64_t wait_ms;
-
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
     /** synchronize synchronous requests */
@@ -773,10 +788,11 @@ struct discord_gateway {
     struct discord_gateway_payload payload;
     /**
      * the user's callbacks for Discord events
+     * @note index 0 for cache callbacks, index 1 for user callbacks
      * @todo should be cast to the original callback signature before calling,
      *      otherwise its UB
      */
-    discord_ev_event cbs[DISCORD_EV_MAX];
+    discord_ev_event cbs[2][DISCORD_EV_MAX];
     /** the event scheduler callback */
     discord_ev_scheduler scheduler;
 };
@@ -982,24 +998,30 @@ void discord_refcounter_cleanup(struct discord_refcounter *rc);
  * @see discord_refcounter_unclaim()
  *
  * After ownership is claimed `data` will no longer be cleaned automatically,
- *      instead shall be cleaned only when discord_refcounter_unclaim() is
- *      called
+ *      instead shall be cleaned only when the same amount of
+ *      discord_refcounter_unclaim() have been called
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership claimed
- * @return `true` if `data` was found and claimed
+ * @retval CCORD_OK counter for `data` has been incremented
+ * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
  */
-bool discord_refcounter_claim(struct discord_refcounter *rc, const void *data);
+CCORDcode discord_refcounter_claim(struct discord_refcounter *rc,
+                                   const void *data);
 
 /**
  * @brief Unclaim ownership of `data`
  * @see discord_refcounter_claim()
  *
- * This function will have `data` cleanup method be called immediately
+ * This will make the resource eligible for cleanup, so this should only be
+ *      called when you no longer plan to use it
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership unclaimed
- * @return `true` if `data` was found, unclaimed, and free'd
+ * @retval CCORD_OK counter for `data` has been decremented
+ * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_OWNERSHIP `data` has never been discord_claim() 'd
  */
-bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
+CCORDcode discord_refcounter_unclaim(struct discord_refcounter *rc,
+                                     void *data);
 
 /**
  * @brief Increment the reference counter for `ret->data`
@@ -1009,8 +1031,6 @@ bool discord_refcounter_unclaim(struct discord_refcounter *rc, void *data);
  * @param data the data to have its reference counter incremented
  * @retval CCORD_OK counter for `data` has been incremented
  * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has been claimed by client with
- * discord_claim()
  */
 CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
 
@@ -1024,8 +1044,7 @@ CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
  * @param data the data to have its reference counter decremented
  * @retval CCORD_OK counter for `data` has been decremented
  * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has been claimed by client with
- * discord_claim()
+ * @retval CCORD_OWNERSHIP caught attempt to cleanup a claimed resource
  */
 CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 
@@ -1128,6 +1147,31 @@ bool discord_message_commands_try_perform(
 
 /** @} DiscordInternalMessageCommands */
 
+/** @defgroup DiscordInternalCache Cache API
+ * @brief The Cache API for storage and retrieval of Discord data
+ *  @{ */
+
+/**
+ * @brief The Discord Cache control handler
+ */
+struct discord_cache {
+    struct _discord_cache_data *data;
+    void (*cleanup)(struct discord *client);
+
+    /** gateway should call this when a shard has lost connection */
+    void (*on_shard_disconnected)(struct discord *client,
+                                  const struct discord_identify *ident,
+                                  bool resumable);
+    /** gateway should call this when a shard has resumed */
+    void (*on_shard_resumed)(struct discord *client,
+                             const struct discord_identify *ident);
+    /** gateway should call this when a shard has reconnected */
+    void (*on_shard_reconnected)(struct discord *client,
+                                 const struct discord_identify *ident);
+};
+
+/** @} DiscordInternalCache */
+
 /**
  * @brief The Discord client handler
  *
@@ -1155,6 +1199,8 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+    /** the handle for registering and retrieving Discord data */
+    struct discord_cache cache;
 
     struct {
         struct discord_timers internal;

@@ -180,7 +180,7 @@ PUB_STRUCT(discord_channel)
   /** computed permissions for the invoking user in the channel, including
        overwrites, only included when part of the `resolved` data received
        on a application command interaction */
-    FIELD_PTR(permissions, char, *)
+    FIELD_BITMASK(permissions)
 STRUCT_END
 #endif
 
@@ -328,9 +328,9 @@ STRUCT(discord_overwrite)
   /** either 0 (role) or 1 (member) */
     FIELD(type, int, 0)
   /** @ref DiscordPermissions bit set */
-    FIELD_SNOWFLAKE(allow)
+    FIELD_BITMASK(allow)
   /** @ref DiscordPermissions bit set */
-    FIELD_SNOWFLAKE(deny)
+    FIELD_BITMASK(deny)
 STRUCT_END
 #endif
 
@@ -406,11 +406,17 @@ STRUCT(discord_attachment)
     FIELD_PTR(content_type, char, *)
   COND_END
   /** size of file in bytes */
+  COND_WRITE(self->size != 0)
     FIELD(size, size_t, 0)
+  COND_END
   /** source url of file */
+  COND_WRITE(self->url != NULL)
     FIELD_PTR(url, char, *)
+  COND_END
   /** proxied url of file */
+  COND_WRITE(self->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
+  COND_END
   /** height of file (if image) */
   COND_WRITE(self->height != 0)
     FIELD(height, int, 0)
@@ -666,6 +672,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_modify_channel} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_modify_channel)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** 1-100 character channel name */
     FIELD_PTR(name, char, *)
   /* GROUP DM */
@@ -698,7 +708,7 @@ PUB_STRUCT(discord_modify_channel)
     FIELD(user_limit, int, 0)
   COND_END
   /** channel or category-specific permissions */
-  COND_WRITE(self->permission_overwrites != NULL)
+  COND_WRITE(self->permission_overwrites != 0)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   COND_END
   /** ID of the new parent category for a channel */
@@ -735,7 +745,14 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
-PUB_STRUCT(discord_get_channel_messages)
+STRUCT(discord_delete_channel)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_get_channel_messages)
   /** get messages around this message ID */
   COND_WRITE(self->around != 0)
     FIELD_SNOWFLAKE(around)
@@ -793,7 +810,7 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
-PUB_STRUCT(discord_get_reactions)
+STRUCT(discord_get_reactions)
   /** get users after this user ID */
   COND_WRITE(self->after != 0)
     FIELD_SNOWFLAKE(after)
@@ -832,9 +849,20 @@ PUB_STRUCT(discord_edit_message)
 STRUCT_END
 #endif
 
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_message)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
 /** @CCORD_pub_struct{discord_bulk_delete_messages} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_bulk_delete_messages)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** an array of message ids to delete (2-100) */
     FIELD_STRUCT_PTR(messages, snowflakes, *)
 STRUCT_END
@@ -843,6 +871,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_edit_channel_permissions} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_channel_permissions)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** the bitwise value of all allowed permissions (default \"0\")
         @see @ref DiscordPermissions */
   COND_WRITE(self->allow != 0)
@@ -861,6 +893,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_channel_invite} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_channel_invite)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** duration of invite in seconds before expiry, or 0 for never. between
        0 and 604800 (7 days) */
   COND_WRITE(self->max_age != 0)
@@ -896,6 +932,13 @@ PUB_STRUCT(discord_create_channel_invite)
 STRUCT_END
 #endif
 
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_delete_channel_permission)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
 /** @CCORD_pub_struct{discord_follow_news_channel} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_follow_news_channel)
@@ -903,6 +946,20 @@ PUB_STRUCT(discord_follow_news_channel)
   COND_WRITE(self->webhook_channel_id != 0)
     FIELD_SNOWFLAKE(webhook_channel_id)
   COND_END
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_pin_message)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
+STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
+STRUCT(discord_unpin_message)
+  /** @CCORD_reason{reason} */
+    FIELD_PTR(reason, char, *)
 STRUCT_END
 #endif
 
@@ -919,6 +976,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_start_thread_with_message} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_start_thread_with_message)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** 1-100 character channel name */
     FIELD_PTR(name, char, *)
   /** duration in minutes to automatically archive the thread after recent
@@ -938,6 +999,10 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_start_thread_without_message} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_start_thread_without_message)
+  /** @CCORD_reason{reason} */
+#if GENCODECS_RECIPE == DATA
+    FIELD_PTR(reason, char, *)
+#endif
   /** 1-100 character channel name */
     FIELD_PTR(name, char, *)
   /** duration in minutes to automatically archive the thread after recent
