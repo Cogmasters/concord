@@ -1,5 +1,9 @@
 # If you run into issues, change this to "cpp" instead of "cc -E"
+# If you are cross-compiling, do NOT set this to the target preprocessor!
+# This needs to run on the host -- that's why $(CC) and $(CPP) are
+# available here to be set.
 CPP = cc -E
+CC = cc
 
 TOP = ..
 
