@@ -72,6 +72,8 @@ clean:
 	@ $(MAKE) -C $(SRC_DIR) $@
 	@ $(MAKE) -C $(TEST_DIR) $@
 	@ $(MAKE) -C $(EXAMPLES_DIR) $@
+	@ $(MAKE) -C $(GENCODECS_DIR) $@
+
 purge: clean
 	@ $(MAKE) -C $(SRC_DIR) $@
 
