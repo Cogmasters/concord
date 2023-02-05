@@ -12,7 +12,8 @@ OBJS = cog-utils.o      \
        priority_queue.o \
        anomap.o         \
        sha1.o           \
-       threadpool.o
+       threadpool.o     \
+       queriec.o
 
 WFLAGS  = -Wall -Wextra -Wpedantic
 CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \

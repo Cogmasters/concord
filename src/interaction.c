@@ -5,6 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-request.h"
+#include "queriec.h"
 
 CCORDcode
 discord_create_interaction_response(
@@ -132,16 +133,20 @@ discord_create_followup_message(struct discord *client,
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
     char query[4096] = "";
+    char qbuf[32];
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
+
     if (params->thread_id) {
-        int offset = snprintf(query, sizeof(query), "thread_id=%" PRIu64,
-                              params->thread_id);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        int res = queriec_snprintf_add(&queriec, query, "thread_id", sizeof("thread_id"),
+                                       qbuf, sizeof(qbuf), "%" PRIu64, params->thread_id);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
 
     if (params->attachments) {
@@ -161,7 +166,7 @@ discord_create_followup_message(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s%s%s", application_id,
-                            interaction_token, *query ? "?" : "", query);
+                            interaction_token, query);
 }
 
 CCORDcode
