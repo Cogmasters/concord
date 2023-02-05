@@ -5,6 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-request.h"
+#include "queriec.h"
 
 /******************************************************************************
  * Custom functions
@@ -161,39 +162,40 @@ discord_get_channel_messages(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    if (params) {
-        int offset = 0;
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
 
+    if (params) {
+        int res;
+
+        char buf[32];
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "limit=%d", params->limit);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                       buf, sizeof(buf), "%" PRIu64, params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->around) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%saround=%" PRIu64, *query ? "&" : "",
-                               params->around);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "around", sizeof("around"),
+                                       buf, sizeof(buf), "%" PRIu64, params->around);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->before) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%sbefore=%" PRIu64, *query ? "&" : "",
-                               params->before);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
+                                       buf, sizeof(buf), "%" PRIu64, params->before);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->after) {
-            offset +=
-                snprintf(query + offset, sizeof(query) - (size_t)offset,
-                         "%safter=%" PRIu64, *query ? "&" : "", params->after);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
+                                       buf, sizeof(buf), "%" PRIu64, params->after);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
     }
 
     DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/channels/%" PRIu64 "/messages%s%s", channel_id,
-                            *query ? "?" : "", query);
+                            "/channels/%" PRIu64 "/messages%s", channel_id,
+                            query);
 }
 
 CCORDcode
@@ -396,24 +398,27 @@ discord_get_reactions(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    if (params) {
-        int offset = 0;
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
 
+    if (params) {
+        int res;
+
+        char buf[32];
         if (params->after) {
             CCORD_EXPECT(client, params->after != 0, CCORD_BAD_PARAMETER, "");
 
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "?after=%" PRIu64, params->after);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
+                                       buf, sizeof(buf), "%" PRIu64, params->after);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->limit) {
             CCORD_EXPECT(client, params->limit > 0 && params->limit <= 100,
                          CCORD_BAD_PARAMETER, "");
 
-            offset +=
-                snprintf(query + offset, sizeof(query) - (size_t)offset,
-                         "%slimit=%d", *query ? "&" : "?", params->limit);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                       buf, sizeof(buf), "%d", params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
     }
 
@@ -957,19 +962,23 @@ discord_list_public_archived_threads(
 {
     struct discord_attributes attr = { 0 };
     char query[1024] = "";
-    int offset = 0;
+    char buf[32];
+    int res;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
+
     if (before) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "before=%" PRIu64, before);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
+                                   buf, sizeof(buf), "%" PRIu64, before);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt"); 
     }
     if (limit) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "%slimit=%d", *query ? "&" : "", limit);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                   buf, sizeof(buf), "%d", limit);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
 
     DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
@@ -977,7 +986,7 @@ discord_list_public_archived_threads(
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
                             "/threads/archived/public%s%s",
-                            channel_id, *query ? "?" : "", query);
+                            channel_id, query);
 }
 
 CCORDcode
@@ -990,19 +999,23 @@ discord_list_private_archived_threads(
 {
     struct discord_attributes attr = { 0 };
     char query[1024] = "";
-    int offset = 0;
+    char buf[32];
+    int res;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
+
     if (before) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "before=%" PRIu64, before);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
+                                   buf, sizeof(buf), "%" PRIu64, before);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
     if (limit) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "%slimit=%d", *query ? "&" : "", limit);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                   buf, sizeof(buf), "%d", limit);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
 
     DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
@@ -1010,7 +1023,7 @@ discord_list_private_archived_threads(
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
                             "/threads/archived/private%s%s",
-                            channel_id, *query ? "?" : "", query);
+                            channel_id, query);
 }
 
 CCORDcode
@@ -1023,19 +1036,23 @@ discord_list_joined_private_archived_threads(
 {
     struct discord_attributes attr = { 0 };
     char query[1024] = "";
-    int offset = 0;
+    char buf[32];
+    int res;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
+
     if (before) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "before=%" PRIu64, before);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
+                                   buf, sizeof(buf), "%" PRIu64, before);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
     if (limit) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "%slimit=%d", *query ? "&" : "", limit);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                   buf, sizeof(buf), "%d", limit);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
 
     DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
@@ -1043,5 +1060,5 @@ discord_list_joined_private_archived_threads(
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
                             "/users/@me/threads/archived/private%s%s",
-                            channel_id, *query ? "?" : "", query);
+                            channel_id, query);
 }

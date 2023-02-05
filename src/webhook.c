@@ -5,6 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-request.h"
+#include "queriec.h"
 
 CCORDcode
 discord_create_webhook(struct discord *client,
@@ -189,22 +190,25 @@ discord_execute_webhook(struct discord *client,
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
     char query[4096] = "";
-    int offset = 0;
+    char qbuf[32];
+    int res;
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
+
     if (params->wait) {
-        offset = snprintf(query, sizeof(query), "wait=1");
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_add(&queriec, query, "wait", sizeof("wait"), "1", 1);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
     if (params->thread_id) {
-        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                           "%sthread_id=%" PRIu64, offset ? "&" : "",
-                           params->thread_id);
-        ASSERT_NOT_OOB(offset, sizeof(query));
+        res = queriec_snprintf_add(&queriec, query, "thread_id", sizeof("thread_id"),
+                                       qbuf, sizeof(qbuf), "%" PRIu64, params->thread_id);
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
 
     if (params->attachments) {
@@ -223,7 +227,7 @@ discord_execute_webhook(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, &body, method,
                             "/webhooks/%" PRIu64 "/%s%s%s", webhook_id,
-                            webhook_token, *query ? "?" : "", query);
+                            webhook_token, query);
 }
 
 CCORDcode
