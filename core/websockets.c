@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
-#include <pthread.h>
 
 #include "curl-websocket.h"
 
 #include "websockets.h"
 #include "cog-utils.h"
+#include "cthreads.h"
 
 #define CURLM_LOG(ws, mcode)                                                  \
     logconf_fatal(&ws->conf, "(CURLM code: %d) %s", mcode,                    \
@@ -48,9 +48,9 @@ struct websockets {
      */
     char errbuf[CURL_ERROR_SIZE];
     /** lock for functions that may be called in other threads */
-    pthread_mutex_t lock;
+    struct cthreads_mutex lock;
     /** lock for reading/writing the event-loop timestamp */
-    pthread_rwlock_t rwlock;
+    struct cthreads_rwlock rwlock;
 
     /**
      * user-triggered actions
@@ -181,9 +181,9 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
 static void
 _ws_set_status(struct websockets *ws, enum ws_status status)
 {
-    pthread_mutex_lock(&ws->lock);
+    cthreads_mutex_lock(&ws->lock);
     _ws_set_status_nolock(ws, status);
-    pthread_mutex_unlock(&ws->lock);
+    cthreads_mutex_unlock(&ws->lock);
 }
 
 static void
@@ -345,7 +345,7 @@ _ws_check_action_cb(void *p_userdata,
     (void)ultotal;
     (void)ulnow;
 
-    pthread_mutex_lock(&ws->lock);
+    cthreads_mutex_lock(&ws->lock);
     switch (ws->action) {
     case WS_ACTION_BEGIN_CLOSE:
         logconf_warn(&ws->conf,
@@ -364,7 +364,7 @@ _ws_check_action_cb(void *p_userdata,
         break;
     }
     ws->action = WS_ACTION_NONE;
-    pthread_mutex_unlock(&ws->lock);
+    cthreads_mutex_unlock(&ws->lock);
 
     return ret;
 }
@@ -456,9 +456,9 @@ ws_get_status(struct websockets *ws)
 {
     enum ws_status status;
 
-    pthread_mutex_lock(&ws->lock);
+    cthreads_mutex_lock(&ws->lock);
     status = ws->status;
-    pthread_mutex_unlock(&ws->lock);
+    cthreads_mutex_unlock(&ws->lock);
 
     return status;
 }
@@ -494,10 +494,10 @@ ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
     /** respond ping with a pong by default */
     if (!new_ws->cbs.on_ping) new_ws->cbs.on_ping = &default_on_ping;
 
-    if (pthread_mutex_init(&new_ws->lock, NULL))
-        ERR("[%s] Couldn't initialize pthread mutex", new_ws->conf.id);
-    if (pthread_rwlock_init(&new_ws->rwlock, NULL))
-        ERR("[%s] Couldn't initialize pthread rwlock", new_ws->conf.id);
+    if (cthreads_mutex_init(&new_ws->lock, NULL))
+        ERR("[%s] Couldn't initialize cthreads mutex", new_ws->conf.id);
+    if (cthreads_rwlock_init(&new_ws->rwlock))
+        ERR("[%s] Couldn't initialize cthreads rwlock", new_ws->conf.id);
 
     return new_ws;
 }
@@ -509,7 +509,7 @@ ws_set_url(struct websockets *ws,
 {
     size_t len;
 
-    pthread_mutex_lock(&ws->lock);
+    cthreads_mutex_lock(&ws->lock);
 
     if (!*ws->base_url)
         logconf_debug(&ws->conf, "Websockets new URL: %s", base_url);
@@ -529,15 +529,15 @@ ws_set_url(struct websockets *ws,
                   "[%s] Out of bounds write attempt", ws->conf.id);
     }
 
-    pthread_mutex_unlock(&ws->lock);
+    cthreads_mutex_unlock(&ws->lock);
 }
 
 void
 ws_cleanup(struct websockets *ws)
 {
     if (ws->ehandle) cws_free(ws->ehandle);
-    pthread_mutex_destroy(&ws->lock);
-    pthread_rwlock_destroy(&ws->rwlock);
+    cthreads_mutex_destroy(&ws->lock);
+    cthreads_rwlock_destroy(&ws->rwlock);
     free(ws);
 }
 
@@ -815,9 +815,9 @@ ws_timestamp(struct websockets *ws)
 {
     uint64_t now_tstamp;
 
-    pthread_rwlock_rdlock(&ws->rwlock);
+    cthreads_rwlock_rdlock(&ws->rwlock);
     now_tstamp = ws->now_tstamp;
-    pthread_rwlock_unlock(&ws->rwlock);
+    cthreads_rwlock_unlock(&ws->rwlock);
 
     return now_tstamp;
 }
@@ -827,9 +827,9 @@ ws_timestamp_update(struct websockets *ws)
 {
     uint64_t now_tstamp;
 
-    pthread_rwlock_wrlock(&ws->rwlock);
+    cthreads_rwlock_wrlock(&ws->rwlock);
     now_tstamp = ws->now_tstamp = cog_timestamp_ms();
-    pthread_rwlock_unlock(&ws->rwlock);
+    cthreads_rwlock_unlock(&ws->rwlock);
 
     return now_tstamp;
 }
@@ -844,14 +844,14 @@ ws_close(struct websockets *ws,
                  "Attempting to close WebSockets connection with %s : %.*s",
                  ws_close_opcode_print(code), (int)len, reason);
 
-    pthread_mutex_lock(&ws->lock);
+    cthreads_mutex_lock(&ws->lock);
     ws->action = WS_ACTION_BEGIN_CLOSE;
     ws->pending_close.code = code;
 
     snprintf(ws->pending_close.reason, sizeof(ws->pending_close.reason),
              "%.*s", (int)len, reason);
 
-    pthread_mutex_unlock(&ws->lock);
+    cthreads_mutex_unlock(&ws->lock);
 }
 
 void

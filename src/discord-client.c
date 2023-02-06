@@ -59,9 +59,9 @@ _discord_init(struct discord *new_client)
     discord_timers_init(&new_client->timers.user, new_client->io_poller);
 
     new_client->workers = calloc(1, sizeof *new_client->workers);
-    ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),
+    ASSERT_S(!cthreads_mutex_init(&new_client->workers->lock, NULL),
              "Couldn't initialize Client's mutex");
-    ASSERT_S(!pthread_cond_init(&new_client->workers->cond, NULL),
+    ASSERT_S(!cthreads_cond_init(&new_client->workers->cond, NULL),
              "Couldn't initialize Client's cond");
 
     discord_refcounter_init(&new_client->refcounter, &new_client->conf);
@@ -229,8 +229,8 @@ discord_cleanup(struct discord *client)
         io_poller_destroy(client->io_poller);
         logconf_cleanup(&client->conf);
         if (client->token) free(client->token);
-        pthread_mutex_destroy(&client->workers->lock);
-        pthread_cond_destroy(&client->workers->cond);
+        cthreads_mutex_destroy(&client->workers->lock);
+        cthreads_cond_destroy(&client->workers->cond);
         free(client->workers);
     }
     free(client);
@@ -310,9 +310,9 @@ discord_get_ping(struct discord *client)
 {
     int ping_ms;
 
-    pthread_rwlock_rdlock(&client->gw.timer->rwlock);
+    cthreads_rwlock_rdlock(&client->gw.timer->rwlock);
     ping_ms = client->gw.timer->ping_ms;
-    pthread_rwlock_unlock(&client->gw.timer->rwlock);
+    cthreads_rwlock_unlock(&client->gw.timer->rwlock);
 
     return ping_ms;
 }

@@ -126,7 +126,7 @@ struct discord_voice {
         return #code
 
 /* TODO: use a per-client lock instead */
-static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
+struct cthreads_mutex client_lock;
 
 static const char *
 opcode_print(enum discord_voice_opcodes opcode)
@@ -643,6 +643,8 @@ discord_voice_join(struct discord *client,
                    bool self_mute,
                    bool self_deaf)
 {
+    cthreads_mutex_init(&client_lock, NULL);
+
     struct discord_update_voice_state state = { .guild_id = guild_id,
                                                 .channel_id = vchannel_id,
                                                 .self_mute = self_mute,
@@ -652,7 +654,7 @@ discord_voice_join(struct discord *client,
 
     if (!ws_is_functional(client->gw.ws)) return DISCORD_VOICE_ERROR;
 
-    pthread_mutex_lock(&client_lock);
+    cthreads_mutex_lock(&client_lock);
     for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         if (0 == client->vcs[i].guild_id) {
             vc = client->vcs + i;
@@ -667,7 +669,7 @@ discord_voice_join(struct discord *client,
             break;
         }
     }
-    pthread_mutex_unlock(&client_lock);
+    cthreads_mutex_unlock(&client_lock);
 
     if (!vc) {
         logconf_error(&client->conf,
@@ -697,7 +699,7 @@ _discord_on_voice_state_update(struct discord *client,
 {
     struct discord_voice *vc = NULL;
 
-    pthread_mutex_lock(&client_lock);
+    cthreads_mutex_lock(&client_lock);
     for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         if (event->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
@@ -714,7 +716,7 @@ _discord_on_voice_state_update(struct discord *client,
             break;
         }
     }
-    pthread_mutex_unlock(&client_lock);
+    cthreads_mutex_unlock(&client_lock);
 
     if (!vc) {
         if (event->channel_id) {
@@ -821,14 +823,14 @@ _discord_on_voice_server_update(struct discord *client,
     struct discord_voice *vc = NULL;
     int len;
 
-    pthread_mutex_lock(&client_lock);
+    cthreads_mutex_lock(&client_lock);
     for (int i = 0; i < DISCORD_MAX_VCS; ++i) {
         if (event->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
             break;
         }
     }
-    pthread_mutex_unlock(&client_lock);
+    cthreads_mutex_unlock(&client_lock);
 
     if (!vc) {
         logconf_fatal(&client->conf, "Couldn't match voice server to client");
@@ -851,15 +853,16 @@ _discord_on_voice_server_update(struct discord *client,
         ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
     }
     else {
-        pthread_t tid;
+        struct cthreads_thread tid;
+        struct cthreads_args targs;
 
         memcpy(vc->token, vc->new_token, sizeof(vc->new_token));
         ws_set_url(vc->ws, vc->new_url, NULL);
 
         /** TODO: replace with a threadpool */
-        if (pthread_create(&tid, NULL, &start_voice_ws_thread, vc))
+        if (cthreads_thread_create(&tid, NULL, &start_voice_ws_thread, vc, &targs))
             ERR("Couldn't create thread");
-        if (pthread_detach(tid)) ERR("Couldn't detach thread");
+        if (cthreads_thread_detach(&tid)) ERR("Couldn't detach thread");
     }
 }
 

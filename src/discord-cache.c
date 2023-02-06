@@ -1,4 +1,3 @@
-#include <pthread.h>
 #include <string.h>
 
 #include "discord.h"
@@ -21,7 +20,7 @@ _calculate_shard(u64snowflake guild_id, int total_shards)
 }
 
 struct _discord_shard_cache {
-    pthread_mutex_t lock;
+    struct cthreads_mutex lock;
     bool valid;
     struct anomap *guild_map;
     struct anomap *msg_map;
@@ -38,7 +37,7 @@ static void
 _discord_shard_cache_cleanup(struct discord *client,
                              struct _discord_shard_cache *cache)
 {
-    pthread_mutex_lock(&cache->lock);
+    cthreads_mutex_lock(&cache->lock);
     for (size_t i = 0; i < anomap_length(cache->guild_map); i++) {
         struct discord_guild *guild;
         anomap_at_index(cache->guild_map, i, NULL, &guild);
@@ -51,7 +50,7 @@ _discord_shard_cache_cleanup(struct discord *client,
     }
     anomap_clear(cache->guild_map);
     anomap_clear(cache->msg_map);
-    pthread_mutex_unlock(&cache->lock);
+    cthreads_mutex_unlock(&cache->lock);
 }
 
 #define EV_CB(name, data)                                                     \
@@ -61,18 +60,18 @@ _discord_shard_cache_cleanup(struct discord *client,
     struct _discord_cache_data *const DATA = client->cache.data;              \
     const int SHARD = _calculate_shard(GUILD_ID, DATA->total_shards);         \
     struct _discord_shard_cache *const cache = &data->caches[SHARD];          \
-    pthread_mutex_lock(&CACHE->lock)
+    cthreads_mutex_lock(&CACHE->lock)
 
-#define CACHE_END(CACHE) pthread_mutex_unlock(&CACHE->lock)
+#define CACHE_END(CACHE) cthreads_mutex_unlock(&CACHE->lock)
 
 EV_CB(ready, discord_ready)
 {
     int shard = ev->shard ? ev->shard->array[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
-    pthread_mutex_lock(&cache->lock);
+    cthreads_mutex_lock(&cache->lock);
     cache->valid = true;
-    pthread_mutex_unlock(&cache->lock);
+    cthreads_mutex_unlock(&cache->lock);
 }
 
 static void
@@ -81,9 +80,9 @@ _on_shard_resumed(struct discord *client, const struct discord_identify *ev)
     int shard = ev->shard ? ev->shard->array[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
-    pthread_mutex_lock(&cache->lock);
+    cthreads_mutex_lock(&cache->lock);
     cache->valid = true;
-    pthread_mutex_unlock(&cache->lock);
+    cthreads_mutex_unlock(&cache->lock);
 }
 
 static void
@@ -94,9 +93,9 @@ _on_shard_reconnected(struct discord *client,
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
     _discord_shard_cache_cleanup(client, cache);
-    pthread_mutex_lock(&cache->lock);
+    cthreads_mutex_lock(&cache->lock);
     cache->valid = true;
-    pthread_mutex_unlock(&cache->lock);
+    cthreads_mutex_unlock(&cache->lock);
 }
 
 static void
@@ -108,9 +107,9 @@ _on_shard_disconnected(struct discord *client,
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
     if (!resumable) _discord_shard_cache_cleanup(client, cache);
-    pthread_mutex_lock(&cache->lock);
+    cthreads_mutex_lock(&cache->lock);
     cache->valid = false;
-    pthread_mutex_unlock(&cache->lock);
+    cthreads_mutex_unlock(&cache->lock);
 }
 
 #define GUILD_BEGIN(guild)                                                    \
@@ -206,7 +205,7 @@ _on_garbage_collection(struct discord *client, struct discord_timer *timer)
     struct _discord_cache_data *data = timer->data;
     for (int i = 0; i < data->total_shards; i++) {
         struct _discord_shard_cache *const cache = &data->caches[i];
-        pthread_mutex_lock(&cache->lock);
+        cthreads_mutex_lock(&cache->lock);
         { // DELETE MESSAGES
             u64snowflake delete_before =
                 ((cog_timestamp_ms() - DISCORD_EPOCH) - 10 * 60 * 1000) << 22;
@@ -223,7 +222,7 @@ _on_garbage_collection(struct discord *client, struct discord_timer *timer)
                                             (void *)vals[j]);
             }
         } // !DELETE MESSAGES
-        pthread_mutex_unlock(&cache->lock);
+        cthreads_mutex_unlock(&cache->lock);
     }
     timer->repeat = 1;
     timer->interval = 1000 * 60;
@@ -238,7 +237,7 @@ _discord_cache_cleanup(struct discord *client)
         _discord_shard_cache_cleanup(client, cache);
         anomap_destroy(cache->guild_map);
         anomap_destroy(cache->msg_map);
-        pthread_mutex_destroy(&cache->lock);
+        cthreads_mutex_destroy(&cache->lock);
     }
     free(data->caches);
     discord_internal_timer_ctl(client,
@@ -267,7 +266,7 @@ discord_cache_enable(struct discord *client,
         data->caches = calloc(nshards, sizeof *data->caches);
         for (int i = 0; i < data->total_shards; i++) {
             struct _discord_shard_cache *cache = &data->caches[i];
-            pthread_mutex_init(&cache->lock, NULL);
+            cthreads_mutex_init(&cache->lock, NULL);
             cache->guild_map =
                 anomap_create(sizeof(u64snowflake), sizeof(void *), cmp_sf);
             cache->msg_map =
@@ -314,13 +313,13 @@ discord_cache_get_channel_message(struct discord *client,
     for (int i = 0; i < data->total_shards; i++) {
         struct _discord_shard_cache *cache = &data->caches[i];
         struct discord_message *message = NULL;
-        pthread_mutex_lock(&cache->lock);
+        cthreads_mutex_lock(&cache->lock);
         anomap_do(cache->msg_map, anomap_getval, &message_id, &message);
         const bool found = message;
         const bool valid = cache->valid;
         if (found && message->channel_id != channel_id) message = NULL;
         if (message && valid) (void)discord_claim(client, message);
-        pthread_mutex_unlock(&cache->lock);
+        cthreads_mutex_unlock(&cache->lock);
         if (found) return valid ? message : NULL;
     }
     return NULL;
@@ -334,11 +333,11 @@ discord_cache_get_guild(struct discord *client, u64snowflake guild_id)
     for (int i = 0; i < data->total_shards; i++) {
         struct _discord_shard_cache *cache = &data->caches[i];
         struct discord_guild *guild = NULL;
-        pthread_mutex_lock(&cache->lock);
+        cthreads_mutex_lock(&cache->lock);
         anomap_do(cache->guild_map, anomap_getval, &guild_id, &guild);
         const bool valid = cache->valid;
         if (guild && valid) (void)discord_claim(client, guild);
-        pthread_mutex_unlock(&cache->lock);
+        cthreads_mutex_unlock(&cache->lock);
         if (guild) return valid ? guild : NULL;
     }
     return NULL;

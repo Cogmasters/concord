@@ -100,7 +100,7 @@ discord_refcounter_init(struct discord_refcounter *rc, struct logconf *conf)
     __chash_init(rc, REFCOUNTER_TABLE);
 
     rc->g_lock = malloc(sizeof *rc->g_lock);
-    ASSERT_S(!pthread_mutex_init(rc->g_lock, NULL),
+    ASSERT_S(!cthreads_mutex_init(rc->g_lock, NULL),
              "Couldn't initialize refcounter mutex");
 }
 
@@ -108,7 +108,7 @@ void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
     __chash_free(rc, REFCOUNTER_TABLE);
-    pthread_mutex_destroy(rc->g_lock);
+    cthreads_mutex_destroy(rc->g_lock);
     free(rc->g_lock);
 }
 
@@ -172,14 +172,14 @@ discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
 {
     CCORDcode code = CCORD_UNAVAILABLE;
 
-    pthread_mutex_lock(rc->g_lock);
+    cthreads_mutex_lock(rc->g_lock);
     if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         ++value->claims;
         code = _discord_refcounter_incr_no_lock(rc, (void *)data);
     }
-    pthread_mutex_unlock(rc->g_lock);
+    cthreads_mutex_unlock(rc->g_lock);
     return code;
 }
 
@@ -188,7 +188,7 @@ discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
 {
     CCORDcode code = CCORD_UNAVAILABLE;
 
-    pthread_mutex_lock(rc->g_lock);
+    cthreads_mutex_lock(rc->g_lock);
     if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
@@ -200,7 +200,7 @@ discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
             code = _discord_refcounter_decr_no_lock(rc, data);
         }
     }
-    pthread_mutex_unlock(rc->g_lock);
+    cthreads_mutex_unlock(rc->g_lock);
 
     return code;
 }
@@ -211,14 +211,14 @@ discord_refcounter_add_internal(struct discord_refcounter *rc,
                                 void (*cleanup)(void *data),
                                 bool should_free)
 {
-    pthread_mutex_lock(rc->g_lock);
+    cthreads_mutex_lock(rc->g_lock);
     _discord_refvalue_init(rc, data,
                            &(struct _discord_refvalue){
                                .expects_client = false,
                                .cleanup.internal = cleanup,
                                .should_free = should_free,
                            });
-    pthread_mutex_unlock(rc->g_lock);
+    cthreads_mutex_unlock(rc->g_lock);
 }
 
 void
@@ -228,23 +228,23 @@ discord_refcounter_add_client(struct discord_refcounter *rc,
                                               void *data),
                               bool should_free)
 {
-    pthread_mutex_lock(rc->g_lock);
+    cthreads_mutex_lock(rc->g_lock);
     _discord_refvalue_init(rc, data,
                            &(struct _discord_refvalue){
                                .expects_client = true,
                                .cleanup.client = cleanup,
                                .should_free = should_free,
                            });
-    pthread_mutex_unlock(rc->g_lock);
+    cthreads_mutex_unlock(rc->g_lock);
 }
 
 CCORDcode
 discord_refcounter_incr(struct discord_refcounter *rc, void *data)
 {
     CCORDcode code;
-    pthread_mutex_lock(rc->g_lock);
+    cthreads_mutex_lock(rc->g_lock);
     code = _discord_refcounter_incr_no_lock(rc, data);
-    pthread_mutex_unlock(rc->g_lock);
+    cthreads_mutex_unlock(rc->g_lock);
     return code;
 }
 
@@ -252,8 +252,8 @@ CCORDcode
 discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
     CCORDcode code;
-    pthread_mutex_lock(rc->g_lock);
+    cthreads_mutex_lock(rc->g_lock);
     code = _discord_refcounter_decr_no_lock(rc, data);
-    pthread_mutex_unlock(rc->g_lock);
+    cthreads_mutex_unlock(rc->g_lock);
     return code;
 }

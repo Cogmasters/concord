@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <errno.h>
 
 #include "threadpool.h"
@@ -57,16 +56,16 @@ _discord_worker_cb(void *p_cxt)
 {
     struct discord_worker_context *cxt = p_cxt;
 
-    pthread_mutex_lock(&cxt->client->workers->lock);
+    cthreads_mutex_lock(&cxt->client->workers->lock);
     ++cxt->client->workers->count;
-    pthread_mutex_unlock(&cxt->client->workers->lock);
+    cthreads_mutex_unlock(&cxt->client->workers->lock);
 
     cxt->callback(cxt->data);
 
-    pthread_mutex_lock(&cxt->client->workers->lock);
+    cthreads_mutex_lock(&cxt->client->workers->lock);
     --cxt->client->workers->count;
-    pthread_cond_signal(&cxt->client->workers->cond);
-    pthread_mutex_unlock(&cxt->client->workers->lock);
+    cthreads_cond_signal(&cxt->client->workers->cond);
+    cthreads_mutex_unlock(&cxt->client->workers->lock);
 
     free(cxt);
 }
@@ -87,11 +86,11 @@ discord_worker_add(struct discord *client,
 CCORDcode
 discord_worker_join(struct discord *client)
 {
-    pthread_mutex_lock(&client->workers->lock);
+    cthreads_mutex_lock(&client->workers->lock);
     while (client->workers->count != 0) {
-        pthread_cond_wait(&client->workers->cond, &client->workers->lock);
+        cthreads_cond_wait(&client->workers->cond, &client->workers->lock);
     }
-    pthread_mutex_unlock(&client->workers->lock);
+    cthreads_mutex_unlock(&client->workers->lock);
     return CCORD_OK;
 }
 
