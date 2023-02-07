@@ -141,7 +141,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
                               struct discord_identify *identify)
 {
     struct ws_info info = { 0 };
-    char buf[1024];
+    char buf[2056];
     jsonb b;
 
     /* Ratelimit check */
@@ -294,7 +294,7 @@ discord_gateway_send_request_guild_members(
     struct discord_gateway *gw, struct discord_request_guild_members *event)
 {
     struct ws_info info = { 0 };
-    char buf[1024];
+    char buf[4096];
     jsonb b;
 
     jsonb_init(&b);
