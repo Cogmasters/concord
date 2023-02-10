@@ -1,13 +1,34 @@
 #include <signal.h>
 #include <curl/curl.h>
+#include <pthread.h>
 
 #include "error.h"
 #include "discord-worker.h"
 
+static pthread_mutex_t shutdown_lock = PTHREAD_MUTEX_INITIALIZER;
+
 /* if set to 1 then client(s) will be disconnected */
-int ccord_has_sigint = 0;
+int ccord_should_shutdown = 0;
 
 static int once;
+
+void
+ccord_shutdown_async(void)
+{
+    pthread_mutex_lock(&shutdown_lock);
+    ccord_should_shutdown = 1;
+    pthread_mutex_unlock(&shutdown_lock);
+}
+
+int
+ccord_shutting_down(void)
+{
+    int retval;
+    pthread_mutex_lock(&shutdown_lock);
+    retval = ccord_should_shutdown;
+    pthread_mutex_unlock(&shutdown_lock);
+    return retval;
+}
 
 #ifdef CCORD_SIGINTCATCH
 /* shutdown gracefully on SIGINT received */
@@ -16,7 +37,9 @@ _ccord_sigint_handler(int signum)
 {
     (void)signum;
     fputs("\nSIGINT: Disconnecting running concord client(s) ...\n", stderr);
-    ccord_has_sigint = 1;
+    pthread_mutex_lock(&shutdown_lock);
+    ccord_should_shutdown = 1;
+    pthread_mutex_unlock(&shutdown_lock);
 }
 #endif /* CCORD_SIGINTCATCH */
 
@@ -49,5 +72,7 @@ ccord_global_cleanup()
     curl_global_cleanup();
     discord_worker_global_cleanup();
     once = 0;
-    ccord_has_sigint = 0;
+    pthread_mutex_lock(&shutdown_lock);
+    ccord_should_shutdown = 0;
+    pthread_mutex_unlock(&shutdown_lock);
 }

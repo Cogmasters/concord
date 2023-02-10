@@ -6,17 +6,18 @@
 
 #ifndef CONCORD_ONCE_H
 
+/** @brief Asynchronously shutdown all client(s) from their on-going sessions */
+void ccord_shutdown_async();
+
 /**
- * @brief If `SIGINT` is detected client(s) will be disconnected from their
- *      on-going session
+ * @brief Whether or not concord is currently shutting down
  *
- * This global shall be set if a `SIGINT` is detected, running clients will
- *      then attempt to perform a clean disconnect, rather then just letting
- *      the program end abruptly.
+ * If true, clients will then attempt to perform a clean disconnect, rather than
+ *    just letting the program end abruptly (e.g. in the case of a SIGINT).
  * @note client shall only attempt to disconnect if there aren't any active
- *      events waiting to be listened or reacted to
+ *    events waiting to be listened or reacted to
  */
-extern int ccord_has_sigint;
+int ccord_shutting_down();
 
 /**
  * @brief Initialize global shared-resources not API-specific
