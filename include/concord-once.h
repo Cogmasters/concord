@@ -18,6 +18,9 @@
  */
 extern int ccord_has_sigint;
 
+/** @brief Asynchronously shutdown all client(s) from their on-going sessions */
+void ccord_shutdown_async();
+
 /**
  * @brief Initialize global shared-resources not API-specific
  *

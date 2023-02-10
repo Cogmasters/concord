@@ -9,6 +9,12 @@ int ccord_has_sigint = 0;
 
 static int once;
 
+void
+ccord_shutdown_async(void)
+{
+    ccord_has_sigint = 1;
+}
+
 #ifdef CCORD_SIGINTCATCH
 /* shutdown gracefully on SIGINT received */
 static void
