@@ -281,7 +281,7 @@ psnip_clock_wall_get_time (struct PsnipClockTimespec* res) {
 #elif defined(PSNIP_CLOCK_WALL_METHOD) && PSNIP_CLOCK_WALL_METHOD == PSNIP_CLOCK_METHOD_CLOCK_GETTIME
   return psnip_clock__clock_gettime(PSNIP_CLOCK_CLOCK_GETTIME_WALL, res);
 #elif defined(PSNIP_CLOCK_WALL_METHOD) && PSNIP_CLOCK_WALL_METHOD == PSNIP_CLOCK_METHOD_TIME
-  res->seconds = time(NULL);
+  res->seconds = (uint64_t) time(NULL);
   res->nanoseconds = 0;
 #elif defined(PSNIP_CLOCK_WALL_METHOD) && PSNIP_CLOCK_WALL_METHOD == PSNIP_CLOCK_METHOD_GETTIMEOFDAY
   struct timeval tv;
