@@ -91,7 +91,9 @@ _ws_curl_tls_check(
     {
         const char reason[] = "TLS ended connection with a close notify (256)";
 
-        ws_close(ws, WS_CLOSE_REASON_ABRUPTLY, reason, sizeof(reason));
+        logconf_error(&ws->conf, "%s [@@@_%zu_@@@]", reason, ws->info.loginfo.counter);
+
+        ws_end(ws);
     }
     return 0;
 }
