@@ -246,26 +246,6 @@ CCORDcode discord_get_application_command_permissions(
     u64snowflake command_id,
     struct discord_ret_application_command_permission *ret);
 
-/**
- * @brief Edits command permissions for a specific command in a given guild
- * @note You can only add up to 10 permission overwrites for a command
- *
- * @param client the client created with discord_init()
- * @param application_id the unique id of the parent application
- * @param guild_id the guild where the commands are located
- * @param command_id the registered command id
- * @param params the request parameters
- * @CCORD_ret_obj{ret,application_command_permissions}
- * @CCORD_return
- */
-CCORDcode discord_edit_application_command_permissions(
-    struct discord *client,
-    u64snowflake application_id,
-    u64snowflake guild_id,
-    u64snowflake command_id,
-    struct discord_edit_application_command_permissions *params,
-    struct discord_ret_application_command_permission *ret);
-
 /** @example slash-commands.c
  * Demonstrates registering and reacting to slash commands */
 /** @example slash-commands2.c

@@ -331,32 +331,3 @@ discord_get_application_command_permissions(
                             "/commands/%" PRIu64 "/permissions",
                             application_id, guild_id, command_id);
 }
-
-CCORDcode
-discord_edit_application_command_permissions(
-    struct discord *client,
-    u64snowflake application_id,
-    u64snowflake guild_id,
-    u64snowflake command_id,
-    struct discord_edit_application_command_permissions *params,
-    struct discord_ret_application_command_permission *ret)
-{
-    struct discord_attributes attr = { 0 };
-    struct ccord_szbuf body;
-    char buf[8192];
-
-    CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
-
-    body.size = discord_edit_application_command_permissions_to_json(
-        buf, sizeof(buf), params);
-    body.start = buf;
-
-    DISCORD_ATTR_INIT(attr, discord_application_command_permission, ret, NULL);
-
-    return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
-                            "/applications/%" PRIu64 "/guilds/%" PRIu64
-                            "/commands/%" PRIu64 "/permissions",
-                            application_id, guild_id, command_id);
-}

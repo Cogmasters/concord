@@ -366,12 +366,3 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
   COND_END
 STRUCT_END
 #endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_STRUCT(discord_edit_application_command_permissions)
-  /** the permissions for the command in the guild */
-  COND_WRITE(self->permissions != NULL)
-    FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
-  COND_END
-STRUCT_END
-#endif
