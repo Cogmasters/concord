@@ -127,10 +127,13 @@ _discord_refcounter_incr_no_lock(struct discord_refcounter *rc, void *data)
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (value->visits == INT_MAX) {
-            logconf_error(&rc->conf, "Can't increment any further: Overflow");
+            logconf_error(&rc->conf,
+                          "Can't increment %p any further: Overflow", data);
         }
         else {
             ++value->visits;
+            logconf_trace(&rc->conf, "Increment %p (%d visits)", data,
+                          value->visits);
             code = CCORD_OK;
         }
     }
@@ -145,21 +148,26 @@ _discord_refcounter_decr_no_lock(struct discord_refcounter *rc, void *data)
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (value->visits < value->claims) {
-            logconf_fatal(&rc->conf,
+            logconf_error(&rc->conf,
                           "(Internal Error) There shouldn't be more visits "
                           "than claims!");
         }
-        else if (--value->visits > 0)
+        else if (--value->visits > 0) {
             code = CCORD_OK;
+            logconf_trace(&rc->conf, "Decrement %p (%d visits)", data,
+                          value->visits);
+        }
         else {
             if (value->claims != 0) {
-                logconf_fatal(&rc->conf, "(Internal Error) Caught attempt to "
+                logconf_error(&rc->conf, "(Internal Error) Caught attempt to "
                                          "cleanup claimed resource!");
                 ++value->visits;
                 code = CCORD_OWNERSHIP;
             }
             else {
                 _discord_refvalue_delete(rc, data);
+                logconf_info(&rc->conf, "Fully decremented and free'd %p",
+                             data);
                 code = CCORD_OK;
             }
         }
@@ -178,6 +186,8 @@ discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
 
         ++value->claims;
         code = _discord_refcounter_incr_no_lock(rc, (void *)data);
+        logconf_trace(&rc->conf, "Claiming %p (claims: %d)", data,
+                      value->claims);
     }
     pthread_mutex_unlock(rc->g_lock);
     return code;
@@ -193,10 +203,13 @@ discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (0 == value->claims) {
-            logconf_error(&rc->conf, "Resource not unclaimable");
+            logconf_error(&rc->conf, "Resource hasn't been claimed before, or "
+                                     "it has already been unclaimed");
         }
         else {
             --value->claims;
+            logconf_trace(&rc->conf, "Unclaiming %p (claims: %d)", data,
+                          value->claims);
             code = _discord_refcounter_decr_no_lock(rc, data);
         }
     }
@@ -218,6 +231,7 @@ discord_refcounter_add_internal(struct discord_refcounter *rc,
                                .cleanup.internal = cleanup,
                                .should_free = should_free,
                            });
+    logconf_info(&rc->conf, "Adding concord's internal resource %p", data);
     pthread_mutex_unlock(rc->g_lock);
 }
 
@@ -235,6 +249,7 @@ discord_refcounter_add_client(struct discord_refcounter *rc,
                                .cleanup.client = cleanup,
                                .should_free = should_free,
                            });
+    logconf_info(&rc->conf, "Adding user's custom resource %p", data);
     pthread_mutex_unlock(rc->g_lock);
 }
 
