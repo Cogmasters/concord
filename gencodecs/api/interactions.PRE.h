@@ -93,17 +93,17 @@ STRUCT_END
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_resolved_data)
   /** the IDs and @ref discord_user datatypes */
-    FIELD_STRUCT_PTR(users, snowflakes, *)
+    FIELD_PTR(users, json_char, *)
   /** the IDs and partial @ref discord_guild_member datatypes */
-    FIELD_STRUCT_PTR(members, snowflakes, *)
+    FIELD_PTR(members, json_char, *)
   /** the IDs and @ref discord_role datatypes */
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, json_char, *)
   /** the IDs and partial @ref discord_channel datatypes */
-    FIELD_STRUCT_PTR(channels, snowflakes, *)
+    FIELD_PTR(channels, json_char, *)
   /** the IDs and partial @ref discord_message datatypes */
-    FIELD_STRUCT_PTR(messages, snowflakes, *)
+    FIELD_PTR(messages, json_char, *)
   /** the IDs and partial @ref discord_attachment datatypes */
-    FIELD_STRUCT_PTR(attachments, snowflakes, *)
+    FIELD_PTR(attachments, json_char, *)
 STRUCT_END
 #endif
 
