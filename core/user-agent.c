@@ -274,8 +274,8 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
             else
                 prev->next = node->next;
 
-            /* FIXME: For some reason, cygwin builds will abort on this
-             * free() */
+                /* FIXME: For some reason, cygwin builds will abort on this
+                 * free() */
 #ifndef __CYGWIN__
             free(node->data);
             free(node);
@@ -286,13 +286,34 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
 }
 
 char *
-ua_conn_print_header(struct ua_conn *conn, char *buf, size_t bufsize)
+ua_conn_print_header(struct ua_conn *conn,
+                     char *buf,
+                     size_t bufsize,
+                     struct ua_log_filter *log_filter)
 {
     struct curl_slist *node;
     size_t ret = 0;
 
     for (node = conn->header; node != NULL; node = node->next) {
-        ret += snprintf(buf + ret, bufsize - ret, "%s\r\n", node->data);
+        const int header_name_size = strcspn(node->data, ":");
+        int i = 0, hide_contents = 0;
+
+        for (; i < log_filter->length; ++i) {
+            if (header_name_size == log_filter->headers[i].size
+                && 0
+                       == strncasecmp(log_filter->headers[i].start, node->data,
+                                      log_filter->headers[i].size))
+            {
+                hide_contents = 1;
+                break;
+            }
+        }
+
+        if (hide_contents)
+            ret += snprintf(buf + ret, bufsize - ret, "%.*s: <<REDACTED>>\r\n",
+                            header_name_size, node->data);
+        else
+            ret += snprintf(buf + ret, bufsize - ret, "%s\r\n", node->data);
         VASSERT_S(ret < bufsize, "[%s] Out of bounds write attempt",
                   conn->ua->conf.id);
     }
@@ -601,7 +622,8 @@ static void
 _ua_conn_set_method(struct ua_conn *conn,
                     enum http_method method,
                     char *body,
-                    size_t body_size)
+                    size_t body_size,
+                    struct ua_log_filter *log_filter)
 {
     char logbuf[1024] = "";
     struct logconf_szbuf logheader = { logbuf, sizeof(logbuf) };
@@ -609,7 +631,7 @@ _ua_conn_set_method(struct ua_conn *conn,
     const char *method_str = http_method_print(method);
     struct logconf *conf = &conn->ua->conf;
 
-    ua_conn_print_header(conn, logbuf, sizeof(logbuf));
+    ua_conn_print_header(conn, logbuf, sizeof(logbuf), log_filter);
 
     /* make sure body points to something */
     if (!body) body = "";
@@ -707,7 +729,8 @@ void
 ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr)
 {
     _ua_conn_set_url(conn, attr->base_url, attr->endpoint);
-    _ua_conn_set_method(conn, attr->method, attr->body, attr->body_size);
+    _ua_conn_set_method(conn, attr->method, attr->body, attr->body_size,
+                        &attr->log_filter);
 }
 
 /* get request results */

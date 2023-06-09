@@ -104,6 +104,14 @@ struct ua_szbuf_readonly {
     size_t size;
 };
 
+/** @brief header fields to have its contents hidden when logging */
+struct ua_log_filter {
+    /** list of headers */
+    struct ua_szbuf_readonly *headers;
+    /** amount of headers to be filtered */
+    size_t length;
+};
+
 /** @brief Connection attributes */
 struct ua_conn_attr {
     /** the HTTP method of this transfer (GET, POST, ...) */
@@ -116,6 +124,8 @@ struct ua_conn_attr {
     char *endpoint;
     /** optional base_url to override ua_set_url(), can be NULL */
     char *base_url;
+    /** @brief header fields to have its contents filtered when logging */
+    struct ua_log_filter log_filter;
 };
 
 /** Maximum amount of header pairs */
@@ -287,9 +297,13 @@ void ua_conn_remove_header(struct ua_conn *conn, const char field[]);
  * @param conn the connection handle
  * @param buf the user buffer to be filled
  * @param bufsize the user buffer size in bytes
+ * @param log_filter headers to have its contents hidden when logging
  * @return the user buffer
  */
-char *ua_conn_print_header(struct ua_conn *conn, char *buf, size_t bufsize);
+char *ua_conn_print_header(struct ua_conn *conn,
+                           char *buf,
+                           size_t bufsize,
+                           struct ua_log_filter *log_filter);
 /**
  * @brief Multipart creation callback for `conn`
  *
