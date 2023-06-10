@@ -120,6 +120,11 @@ discord_rest_run(struct discord_rest *rest,
         static struct ccord_szbuf blank = { 0 };
         body = &blank;
     }
+    else if (body->start && !body->size) {
+        logconf_error(&rest->conf, "(Internal error) Request body couldn't "
+                                   "be formed, please report it.");
+        return CCORD_MALFORMED_PAYLOAD;
+    }
 
     /* build the endpoint string */
     va_start(args, endpoint_fmt);
