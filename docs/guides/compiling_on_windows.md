@@ -35,6 +35,20 @@ It is also possible to use a clang-based compiler, but there is little reason
 to do so. Simply pass `make CC=clang` to your Cygwin shell and Clang will be 
 used in lieu of GNU C.
 
+### Cygwin and Visual Studio Code
+
+Do note that using Cygwin alongside VS Code is extremely easy to do, and is 
+highly recommended for new users. Once you've installed VS Code, you need to
+ensure that it is in your shell path (it is by default, just make sure that
+the executable named `code` is in `%PATH%`). Once you've installed VS Code,
+you can invoke the editor from Cygwin by typing `code .` from a working
+directory. The `.` is VERY important -- you will get a useless default
+working directory if you don't specify the dot. Remember, the dot specifies
+the working directory, and, it gets set to the one that you invoked the
+command from.
+
+
+
 ## Microsoft Visual C/C++
 
 As it stands right now, MSVC is not supported at all. At the current instant, 
