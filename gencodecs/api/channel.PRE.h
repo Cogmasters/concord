@@ -44,12 +44,16 @@ ENUM(discord_channel_types)
   /** an organization category that contains up to 50 channels */
     ENUMERATOR(DISCORD_CHANNEL_GUILD_CATEGORY, = 4)
   /** a channel that users can follow and crosspost into their own server */
-    ENUMERATOR(DISCORD_CHANNEL_GUILD_NEWS, = 5)
+    ENUMERATOR(DISCORD_CHANNEL_GUILD_ANNOUNCEMENT, = 5)
+  /** alias to @ref DISCORD_CHANNEL_GUILD_ANNOUNCEMENT */
+    ENUMERATOR(DISCORD_CHANNEL_GUILD_NEWS, = DISCORD_CHANNEL_GUILD_ANNOUNCEMENT)
   /** a channel in which game developers can seel their game on Discord */
     ENUMERATOR(DISCORD_CHANNEL_GUILD_STORE, = 6)
   /** a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_NEWS
        channel */
-    ENUMERATOR(DISCORD_CHANNEL_GUILD_NEWS_THREAD, = 10)
+    ENUMERATOR(DISCORD_CHANNEL_ANNOUNCEMENT_THREAD, = 10)
+  /** alias to @ref DISCORD_CHANNEL_ANNOUNCEMENT_THREAD */
+    ENUMERATOR(DISCORD_CHANNEL_GUILD_NEWS_THREAD, = DISCORD_CHANNEL_ANNOUNCEMENT_THREAD)
   /** a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_TEXT
        channel */
     ENUMERATOR(DISCORD_CHANNEL_GUILD_PUBLIC_THREAD, = 11)
@@ -687,15 +691,21 @@ PUB_STRUCT(discord_modify_channel)
   /* GUILD CHANNEL */
   /** the type of channel; only conversion between text and news is
        supported and only in guilds with the `NEWS` feature */
+  COND_WRITE(self->type == DISCORD_CHANNEL_GUILD_TEXT || self->type == DISCORD_CHANNEL_GUILD_ANNOUNCEMENT)
     FIELD_ENUM(type, discord_channel_types)
+  COND_END
   /** the position of the channel in the left-hand listing */
   COND_WRITE(self->position != 0)
     FIELD(position, int, 0)
   COND_END
   /** 0-1024 character channel topic */
+  COND_WRITE(self->topic != NULL)
     FIELD_PTR(topic, char, *)
+  COND_END
   /** whether the channel is nsfw */
+  COND_WRITE(self->nsfw != false)
     FIELD(nsfw, bool, false)
+  COND_END
   /** amount of seconds a user has to wait before sending another message
        (0-21600); bots, as well as users with the permission
        `MANAGE_MESSAGES` or `MANAGE_CHANNEL`, are unaffected */
@@ -716,7 +726,9 @@ PUB_STRUCT(discord_modify_channel)
     FIELD_SNOWFLAKE(parent_id)
   COND_END
   /** channel voice region id, automatic when set to NULL */
+  COND_WRITE(self->rtc_region != NULL)
     FIELD_PTR(rtc_region, char, *)
+  COND_END
   /** the camera video quality mode of the voice channel */
   COND_WRITE(self->video_quality_mode != 0)
     FIELD(video_quality_mode, int, 0)
