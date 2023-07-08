@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['discord_5fev_5fevent_0',['discord_ev_event',['../group__DiscordInternalGateway.html#gae38e6a4c2e9bbb2ac711ecdcea8995a6',1,'discord-internal.h']]],
-  ['discord_5fev_5fmessage_1',['discord_ev_message',['../group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2',1,'discord-internal.h']]],
-  ['discord_5fev_5fscheduler_2',['discord_ev_scheduler',['../group__DiscordEvents.html#gae0a25d76096eb35fb3f093e345fef8b9',1,'discord-events.h']]],
-  ['discord_5fev_5ftimer_3',['discord_ev_timer',['../group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5',1,'discord.h']]],
-  ['discord_5fevent_5fscheduler_5ft_4',['discord_event_scheduler_t',['../group__DiscordEvents.html#ga863c695c73cb5efe372a0a1b6af56097',1,'discord-events.h']]]
+  ['cast_5fcleanup_0',['cast_cleanup',['../discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b',1,'discord-request.h']]],
+  ['cast_5fdone_5ftyped_1',['cast_done_typed',['../discord-request_8h.html#aa8c80343ae4d706e145ea5fca8cd5b5a',1,'discord-request.h']]],
+  ['cast_5ffrom_5fjson_2',['cast_from_json',['../discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184',1,'discord-request.h']]],
+  ['cast_5finit_3',['cast_init',['../discord-request_8h.html#a98302af62c528a87515ba01bbd587134',1,'discord-request.h']]],
+  ['ccordcode_4',['CCORDcode',['../group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259',1,'error.h']]]
 ];

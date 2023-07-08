@@ -216,7 +216,7 @@ On Windows</h3>
 <ul>
 <li>Install <b>Cygwin</b></li>
 <li><b>Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!</b></li>
-<li>You will want to check the Windows tutorial <a class="el" href="md_docs_WINDOWS.html">here</a>!</li>
+<li>You will want to check the Windows tutorial here!</li>
 <li>Mingw64 and Msys2 are currently NOT supported. Please see this for more information.</li>
 <li>Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.</li>
 <li>Note: you will likely need to include <code>-L/usr/local/lib -I/usr/local/include</code> on your <code>gcc</code> command, or in your <code>CFLAGS</code> variable in your Makefile for your bot.</li>
@@ -395,13 +395,14 @@ Clang</h4>
 UNIX C compilers</h4>
 <p ><a class="anchor" id="autotoc_md33"></a> </p><h5>This includes the following compilers:</h5>
 <ul>
-<li>IBM XL C/C++ (AIX, z/OS, possibly IBM i)</li>
+<li>IBM XL C/C++ (AIX, z/OS, IBM i)</li>
 <li>Sun/Oracle Studio (Solaris)</li>
 <li>IRIX MIPSpro C++ (IRIX) &ndash; NOTE: currently not supported</li>
-<li>Possibly others! <div class="fragment"><div class="line">$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread</div>
-</div><!-- fragment --></li>
+<li>HP aCC (HP-UX)</li>
+<li>Compaq C (Tru64 UNIX) &ndash; NOTE: also currently not supported <em>Note: if you want to actually compile this on one of the systems listed above, please see the "Compiling on old computers" guide.</em></li>
 </ul>
-<p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
+<div class="fragment"><div class="line">$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread</div>
+</div><!-- fragment --><p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
 </div><!-- fragment --><p> (this links against libpthread.a in <code>/usr/lib</code>)</p>
 <h2><a class="anchor" id="autotoc_md34"></a>
 Recommended debuggers</h2>

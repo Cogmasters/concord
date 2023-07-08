@@ -17,7 +17,6 @@ var application__commands_8h =
     [ "discord_create_guild_application_command", "structdiscord__create__guild__application__command.html", "structdiscord__create__guild__application__command" ],
     [ "discord_edit_guild_application_command", "structdiscord__edit__guild__application__command.html", "structdiscord__edit__guild__application__command" ],
     [ "discord_bulk_overwrite_guild_application_commands", "structdiscord__bulk__overwrite__guild__application__commands.html", "structdiscord__bulk__overwrite__guild__application__commands" ],
-    [ "discord_edit_application_command_permissions", "structdiscord__edit__application__command__permissions.html", "structdiscord__edit__application__command__permissions" ],
     [ "JSMN_STRICT", "application__commands_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
     [ "JSMN_HEADER", "application__commands_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
     [ "JSONB_HEADER", "application__commands_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
@@ -61,8 +60,6 @@ var application__commands_8h =
     [ "discord_edit_guild_application_command_cleanup", "application__commands_8h.html#a2141417dd39d8eba10451d90712aad9c", null ],
     [ "discord_bulk_overwrite_guild_application_commands_init", "application__commands_8h.html#ad4101267b821fb741bedd66fb7d33bcd", null ],
     [ "discord_bulk_overwrite_guild_application_commands_cleanup", "application__commands_8h.html#ab67e51d14b146e063f11764050520d1f", null ],
-    [ "discord_edit_application_command_permissions_init", "application__commands_8h.html#a6ae1d7f1dc1fae1f28e47c2e4fa33a2a", null ],
-    [ "discord_edit_application_command_permissions_cleanup", "application__commands_8h.html#a9131078b74a77c6dfc0232f8a78aaf19", null ],
     [ "discord_application_command_from_jsmnf", "application__commands_8h.html#a826be2b8759cdbfa9a3b224d5c5b1143", null ],
     [ "discord_application_command_from_json", "application__commands_8h.html#a034e28f4eef1964ab8a572ec58314682", null ],
     [ "discord_application_commands_from_jsmnf", "application__commands_8h.html#aecdbac0b3209e14cb5a276c026965492", null ],
@@ -83,8 +80,6 @@ var application__commands_8h =
     [ "discord_edit_guild_application_command_from_json", "application__commands_8h.html#aee34e015cd5b5018f3a887827dda0cf6", null ],
     [ "discord_bulk_overwrite_guild_application_commands_from_jsmnf", "application__commands_8h.html#aefe801f500c2e646dc5bd88154e6749d", null ],
     [ "discord_bulk_overwrite_guild_application_commands_from_json", "application__commands_8h.html#ab8a6c097b5e38f7c00d1a7231320dd7d", null ],
-    [ "discord_edit_application_command_permissions_from_jsmnf", "application__commands_8h.html#a57d41c7ee969f841eb9fc7f624da1747", null ],
-    [ "discord_edit_application_command_permissions_from_json", "application__commands_8h.html#a60d1e772acbef8c8b7476ebb6820ff5f", null ],
     [ "discord_application_command_to_jsonb", "application__commands_8h.html#a7a1e8a77119d88b49de464563bb122e9", null ],
     [ "discord_application_command_to_json", "application__commands_8h.html#a0b5abc686a9ea42dfe6a1b0cabddbeaf", null ],
     [ "discord_application_commands_to_jsonb", "application__commands_8h.html#a6b1edafd9ac3de7dc6f64b6eb87a8e6e", null ],
@@ -104,7 +99,5 @@ var application__commands_8h =
     [ "discord_edit_guild_application_command_to_jsonb", "application__commands_8h.html#ac294befdc470528e2adfe4198001d68d", null ],
     [ "discord_edit_guild_application_command_to_json", "application__commands_8h.html#a3054ec936d100cd66b5f659431e9ad38", null ],
     [ "discord_bulk_overwrite_guild_application_commands_to_jsonb", "application__commands_8h.html#a2f4d80aa88decb620e196f1a39cfd38f", null ],
-    [ "discord_bulk_overwrite_guild_application_commands_to_json", "application__commands_8h.html#a4f52850309e0729875955fb0f5810d0f", null ],
-    [ "discord_edit_application_command_permissions_to_jsonb", "application__commands_8h.html#a5d827b888491a87c5dece67b10aa0443", null ],
-    [ "discord_edit_application_command_permissions_to_json", "application__commands_8h.html#afa42358860288273a2a1cc9bdb3e7698", null ]
+    [ "discord_bulk_overwrite_guild_application_commands_to_json", "application__commands_8h.html#a4f52850309e0729875955fb0f5810d0f", null ]
 ];

@@ -9,9 +9,9 @@ var structlogconf =
     [ "L", "structlogconf.html#a31dec4ae80bf0ccafba145bed6d96e68", null ],
     [ "fname", "structlogconf.html#a0ca75592d043a106406697d340d3da7e", null ],
     [ "f", "structlogconf.html#a1009f99f2030567ad46d42fb4b108def", null ],
-    [ "logger", "structlogconf.html#a516b5bf4d2be62361a26ae4865679339", null ],
-    [ "http", "structlogconf.html#a611e112792ce172fe4830c2bcdf557da", null ],
+    [ "logger", "structlogconf.html#ab4f9ad2bc3d54d21ebc06e43e36c4df1", null ],
+    [ "http", "structlogconf.html#afe1189fda1b5b8f5d9bff91c5c2fb9a2", null ],
     [ "size", "structlogconf.html#a80f9b834f9c88df772954f7fa22e5758", null ],
     [ "ids", "structlogconf.html#a5603c2395d9a9cc10b400914e4bc8992", null ],
-    [ "disable_modules", "structlogconf.html#a27538e01299c256eb795326cc396c365", null ]
+    [ "disable_modules", "structlogconf.html#aca0403fa88c51e76e1cf3eb5a143181d", null ]
 ];

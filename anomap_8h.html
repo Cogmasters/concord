@@ -88,7 +88,9 @@ $(document).ready(function(){initNavTree('anomap_8h.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">anomap.h File Reference</div></div>
@@ -105,10 +107,22 @@ Include dependency graph for anomap.h:</div>
 </div>
 <p><a href="anomap_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structanomap__item__changed.html">anomap_item_changed</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ab832408cbeb1197668222e6d74ba4ffb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#ab832408cbeb1197668222e6d74ba4ffb">ANOMAP_H</a></td></tr>
 <tr class="separator:ab832408cbeb1197668222e6d74ba4ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7af973458f37b621f609455f54cf231b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a7af973458f37b621f609455f54cf231b">ANOMAP_DECLARE_COMPARE_FUNCTION</a>(function_name,  data_type)</td></tr>
+<tr class="separator:a7af973458f37b621f609455f54cf231b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a224c25270cc1187167f6637d82dd2378"><td class="memItemLeft" align="right" valign="top">typedef void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a224c25270cc1187167f6637d82dd2378">anomap_on_item_changed</a>(struct anomap *map, struct <a class="el" href="structanomap__item__changed.html">anomap_item_changed</a> *item_changed)</td></tr>
+<tr class="separator:a224c25270cc1187167f6637d82dd2378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -129,6 +143,8 @@ Functions</h2></td></tr>
 <tr class="separator:af8e5738e05b0eabe89dff563a94a2e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff94296fc9558f1095ad24799478ab46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#aff94296fc9558f1095ad24799478ab46">anomap_destroy</a> (struct anomap *map)</td></tr>
 <tr class="separator:aff94296fc9558f1095ad24799478ab46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa795a7555f38813988f445fe4162328c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#aa795a7555f38813988f445fe4162328c">anomap_set_on_item_changed</a> (struct anomap *map, <a class="el" href="anomap_8h.html#a224c25270cc1187167f6637d82dd2378">anomap_on_item_changed</a> *on_changed, void *data)</td></tr>
+<tr class="separator:aa795a7555f38813988f445fe4162328c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9596fdc5ef2ab5a246a669833820dca4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#a9596fdc5ef2ab5a246a669833820dca4">anomap_length</a> (struct anomap *map)</td></tr>
 <tr class="separator:a9596fdc5ef2ab5a246a669833820dca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2f1cd1a3e632ab44aeeb59ca498d628"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="anomap_8h.html#ab2f1cd1a3e632ab44aeeb59ca498d628">anomap_clear</a> (struct anomap *map)</td></tr>
@@ -153,6 +169,54 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define ANOMAP_H</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7af973458f37b621f609455f54cf231b" name="a7af973458f37b621f609455f54cf231b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7af973458f37b621f609455f54cf231b">&#9670;&nbsp;</a></span>ANOMAP_DECLARE_COMPARE_FUNCTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANOMAP_DECLARE_COMPARE_FUNCTION</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">function_name, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">data_type&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">static</span> int                                                                  \</div>
+<div class="line">  function_name(<span class="keyword">const</span> <span class="keywordtype">void</span> *a, <span class="keyword">const</span> <span class="keywordtype">void</span> *b) {                               \</div>
+<div class="line">    if (*(data_type *)a == *(data_type *)b) <span class="keywordflow">return</span> 0;                         \</div>
+<div class="line">    return *(data_type *)a &gt; *(data_type *)b ? 1 : -1;                        \</div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a224c25270cc1187167f6637d82dd2378" name="a224c25270cc1187167f6637d82dd2378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a224c25270cc1187167f6637d82dd2378">&#9670;&nbsp;</a></span>anomap_on_item_changed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void anomap_on_item_changed(struct anomap *map, struct <a class="el" href="structanomap__item__changed.html">anomap_item_changed</a> *item_changed)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -228,6 +292,40 @@ Functions</h2></td></tr>
           <td class="paramtype">struct anomap *&#160;</td>
           <td class="paramname"><em>map</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa795a7555f38813988f445fe4162328c" name="aa795a7555f38813988f445fe4162328c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa795a7555f38813988f445fe4162328c">&#9670;&nbsp;</a></span>anomap_set_on_item_changed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void anomap_set_on_item_changed </td>
+          <td>(</td>
+          <td class="paramtype">struct anomap *&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="anomap_8h.html#a224c25270cc1187167f6637d82dd2378">anomap_on_item_changed</a> *&#160;</td>
+          <td class="paramname"><em>on_changed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

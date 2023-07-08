@@ -2,6 +2,7 @@ var group__ConcordError =
 [
     [ "CCORDcode", "group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259", null ],
     [ "CCORDcode", "group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31", [
+      [ "CCORD_MALFORMED_PAYLOAD", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a231696362bb607687a6a0a041621452e", null ],
       [ "CCORD_FULL_WORKER", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a60bc736ec55f07ce325805e3d4b0c338", null ],
       [ "CCORD_UNAVAILABLE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a6f539629079e6626d67ff48783db18a1", null ],
       [ "CCORD_OWNERSHIP", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a92366cdfe51909cabf8139d7c6919096", null ],

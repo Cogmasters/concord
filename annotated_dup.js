@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "anomap_item_changed", "structanomap__item__changed.html", "structanomap__item__changed" ],
     [ "bitmasks", "structbitmasks.html", "structbitmasks" ],
     [ "ccord_szbuf", "structccord__szbuf.html", "structccord__szbuf" ],
     [ "ccord_szbuf_readonly", "structccord__szbuf__readonly.html", "structccord__szbuf__readonly" ],
@@ -92,7 +93,6 @@ var annotated_dup =
     [ "discord_delete_stage_instance", "structdiscord__delete__stage__instance.html", "structdiscord__delete__stage__instance" ],
     [ "discord_delete_webhook", "structdiscord__delete__webhook.html", "structdiscord__delete__webhook" ],
     [ "discord_delete_webhook_message", "structdiscord__delete__webhook__message.html", "structdiscord__delete__webhook__message" ],
-    [ "discord_edit_application_command_permissions", "structdiscord__edit__application__command__permissions.html", "structdiscord__edit__application__command__permissions" ],
     [ "discord_edit_channel_permissions", "structdiscord__edit__channel__permissions.html", "structdiscord__edit__channel__permissions" ],
     [ "discord_edit_followup_message", "structdiscord__edit__followup__message.html", "structdiscord__edit__followup__message" ],
     [ "discord_edit_global_application_command", "structdiscord__edit__global__application__command.html", "structdiscord__edit__global__application__command" ],
@@ -353,6 +353,7 @@ var annotated_dup =
     [ "logconf_szbuf", "structlogconf__szbuf.html", "structlogconf__szbuf" ],
     [ "loginfo", "structloginfo.html", "structloginfo" ],
     [ "PsnipClockTimespec", "structPsnipClockTimespec.html", "structPsnipClockTimespec" ],
+    [ "queriec", "structqueriec.html", "structqueriec" ],
     [ "SHA1_CTX", "structSHA1__CTX.html", "structSHA1__CTX" ],
     [ "snowflakes", "structsnowflakes.html", "structsnowflakes" ],
     [ "strings", "structstrings.html", "structstrings" ],

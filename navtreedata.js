@@ -110,11 +110,6 @@ var NAVTREE =
         [ "Voice Connections", "md_docs_DISCORD_ROADMAP.html#autotoc_md69", null ]
       ] ]
     ] ],
-    [ "Compiling on Windows (Detailed instructions)", "md_docs_WINDOWS.html", [
-      [ "Cygwin and Dependencies", "md_docs_WINDOWS.html#autotoc_md71", null ],
-      [ "Microsoft Visual C/C++", "md_docs_WINDOWS.html#autotoc_md72", null ],
-      [ "Other compilers", "md_docs_WINDOWS.html#autotoc_md73", null ]
-    ] ],
     [ "Todo List", "todo.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -145,25 +140,25 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"curl-websocket_8h.html#afe3e1281030a7c2325aed846cc845b62a52aa4827b6c4c4b63977388582d8cf11",
-"docs_2api_2channel_8h.html#a68bc497221408390c04039bd47f51e7c",
-"docs_2api_2gateway_8h.html#a57b2cc945f65ab56a972c4bbb3f5d328",
-"docs_2api_2guild_8h.html#a9bc2381ac1008a193b04daae63f4f7c3",
-"docs_2api_2sticker_8h.html#af9c87895c42aa06ff565e9b0c863993f",
+"curl-websocket_8h.html#afe3e1281030a7c2325aed846cc845b62a699e065e559bf48643ed0ea655adbf43",
+"docs_2api_2channel_8h.html#a6bc5c997d19afbf252182fed6ad4d552",
+"docs_2api_2gateway_8h.html#a59760242ea6eb76e7490faa1c5ba835e",
+"docs_2api_2guild_8h.html#a9f8bc0e35c129580df620e0e297f201d",
+"docs_2api_2sticker_8h_source.html",
 "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a2cbca63f50ea98438bfce32cf596c207",
-"group__DiscordAPIWebhook.html#gae2fa77b428f26e99c1656dee58fded2c",
-"group__DiscordInternalGatewayIntents.html#gaa194274209b7999a4c77d1f28e1e5967",
-"interactions_8h.html#aeef9c3539ffb9ed912a2976b67b43d68",
-"md_docs_DISCORD_ROADMAP.html#autotoc_md68",
-"structdiscord__allowed__mention.html#aef4447cacb1a1c080b126196e7f9a036",
-"structdiscord__component.html#a7977bfd67a3df9e947450668e10dec7b",
-"structdiscord__embed__author.html#a73730059d65b885a2c4d9f5d581d06d8",
-"structdiscord__guild__members__chunk.html#a2275d3b38eba28e492704b8d13e672dc",
-"structdiscord__message.html#a267238dfae230fffea4832e1101aae51",
-"structdiscord__ratelimiter.html#a543175e6442081a833ebdb2045d2db49",
-"structdiscord__ret__guild__application__command__permissions.html#a5e55e4e941b38cab6ee06cd2a8396c98",
-"structdiscord__ret__webhook.html#abe87240245cebc249f5d13b30374e83d",
-"structdiscord__webhooks__update.html#a8ae2be6dfda1c68a0cf692d9e4fc5fbf"
+"group__DiscordAPIWebhook.html#gaf07c388d69e82d798519a3c724a091fd",
+"group__DiscordInternalGatewayIntents.html#gaa4c737695a5a507b0a5d2aa0c3dcdc70",
+"interactions_8h.html#af0c59ef36433be74012eff3626fb7a20",
+"md_docs_DISCORD_ROADMAP.html#autotoc_md69",
+"structdiscord__add__guild__member.html",
+"structdiscord__client__status.html#a38a17faef4111b15c1397f4d01b3d6ee",
+"structdiscord__embed.html#a96c5fba1d04a04a393d72e8e09865ad7",
+"structdiscord__guild__member__update.html#a920b989822a2fabe1974494cf4d07b4f",
+"structdiscord__message.html",
+"structdiscord__presence__updates.html",
+"structdiscord__ret__guild.html#a6637f66eb608872948558608385005d2",
+"structdiscord__ret__voice__regions.html#adba2182b0dbaeaabdfe47b3f727bb539",
+"structdiscord__webhook.html#abe9b39b4617a2363018632e1f9a488a9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

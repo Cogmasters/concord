@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bitmasks_0',['bitmasks',['../structbitmasks.html',1,'']]]
+  ['anomap_5fitem_5fchanged_0',['anomap_item_changed',['../structanomap__item__changed.html',1,'']]]
 ];

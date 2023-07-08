@@ -112,6 +112,7 @@ var menudata={children:[
 {text:"j",url:"globals_func_j.html#index_j"},
 {text:"l",url:"globals_func_l.html#index_l"},
 {text:"p",url:"globals_func_p.html#index_p"},
+{text:"q",url:"globals_func_q.html#index_q"},
 {text:"s",url:"globals_func_s.html#index_s"},
 {text:"t",url:"globals_func_t.html#index_t"},
 {text:"w",url:"globals_func_w.html#index_w"}]},

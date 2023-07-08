@@ -20,6 +20,6 @@ var searchData=
   ['lock_17',['lock',['../structdiscord__timers.html#a2bae230b22aa978a5e109fadad1b1e06',1,'discord_timers::lock()'],['../structdiscord.html#aae4d701002d2083ccc38d77c7e7831c1',1,'discord::lock()'],['../structlog__Logger.html#ac8764351c5f4d76866f0b678a8d1a135',1,'log_Logger::lock()']]],
   ['lock_5fcategory_18',['lock_category',['../structdiscord__modify__guild__channel__position.html#a78853484e9d5f05bf7f1395a0643d6d5',1,'discord_modify_guild_channel_position']]],
   ['locked_19',['locked',['../structdiscord__thread__metadata.html#ab78b2e386bd6ed67043ddc8e4d6c6c5d',1,'discord_thread_metadata::locked()'],['../structdiscord__modify__channel.html#af8d805968a1dd0c30839b4b08b77d0d9',1,'discord_modify_channel::locked()']]],
-  ['logger_20',['logger',['../structlogconf.html#a516b5bf4d2be62361a26ae4865679339',1,'logconf']]],
+  ['logger_20',['logger',['../structlogconf.html#ab4f9ad2bc3d54d21ebc06e43e36c4df1',1,'logconf']]],
   ['loginfo_21',['loginfo',['../structws__info.html#a4b43e5c8eae30fcccf9abdecd3267d17',1,'ws_info']]]
 ];

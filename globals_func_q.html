@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Concord - C Discord API library: Compiling on Windows (Detailed instructions)</title>
+<title>Concord - C Discord API library: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,7 +68,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_docs_WINDOWS.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('globals_func_q.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -86,36 +86,15 @@ $(document).ready(function(){initNavTree('md_docs_WINDOWS.html',''); initResizab
 </iframe>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">Compiling on Windows (Detailed instructions) </div></div>
-</div><!--header-->
 <div class="contents">
-<div class="textblock"><p >Concord supports Windows natively using Cygwin and Mingw64. It is preferred that you use Cygwin if possible, even if it requires runtime dependencies (a variety of DLLs from /bin, namely <code>cygwin1.dll</code>). Mingw64 will produce a build that runs without any dependencies.</p>
-<h1><a class="anchor" id="autotoc_md71"></a>
-Cygwin and Dependencies</h1>
-<p >Concord does not have very many dependencies. When you run the Cygwin installer, you will be provided with a long list of packages you can choose to install. The following packages are required at a minimum:</p><ul>
-<li>gcc-core</li>
-<li>make</li>
-<li>libcurl-devel</li>
+&#160;
+
+<h3><a id="index_q" name="index_q"></a>- q -</h3><ul>
+<li>queriec_add()&#160;:&#160;<a class="el" href="queriec_8h.html#ab5cfb78b4e943c3e52544af324ca89b4">queriec.h</a></li>
+<li>queriec_init()&#160;:&#160;<a class="el" href="queriec_8h.html#a268a16b1a284ff876fb1cf92c4a8ca37">queriec.h</a></li>
+<li>queriec_snprintf_add()&#160;:&#160;<a class="el" href="queriec_8h.html#aa3f21dea382bc12709222d4748f04594">queriec.h</a></li>
 </ul>
-<p >You might also want to install git and vim. Please note that because Cygwin stores its files on your Windows machine's filesystem, you can run <code>explorer.exe .</code> anytime to open a Windows Explorer window in your current directory. You can use any IDE you would like to use, but you will still have to enter <code>make</code> to recompile your changes from the Cygwin terminal.</p>
-<p >It is also possible to use a clang-based compiler, but there is little reason to do so. Simply pass <code>CC=clang make</code> to your Cygwin shell and Clang will be used in lieu of GNU C.</p>
-<h1><a class="anchor" id="autotoc_md72"></a>
-Microsoft Visual C/C++</h1>
-<p >As it stands right now, MSVC is not supported at all. At the current instant, Concord's Makefiles are for UNIX systems, and does not produce anything when ran with <code>nmake</code>. This will change in the near future. However, Concord itself cannot be compiled with MSVC, due to a lack of POSIX compliance on behalf of Windows.</p>
-<h1><a class="anchor" id="autotoc_md73"></a>
-Other compilers</h1>
-<p >The following compilers are <b>not</b> supported:</p><ul>
-<li>OpenWatcom</li>
-<li>Turbo C/C++ (or Borland C/C++)</li>
-<li>Pelles C</li>
-<li>Digital Mars</li>
-<li>Intel C++</li>
-<li>AMD Optimizing C++ (Clang-based, untested)</li>
-</ul>
-<p >Generally speaking, your compiler must implement C99 features. The compilers listed above don't support C99 completely. </p>
-</div></div><!-- contents -->
-</div><!-- PageDoc -->
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -58,6 +58,5 @@ var group__DiscordAPIInteractionsApplicationCommand =
     [ "discord_delete_guild_application_command", "group__DiscordAPIInteractionsApplicationCommand.html#ga43f1c0b70a7e62182707e9dace54e50a", null ],
     [ "discord_bulk_overwrite_guild_application_commands", "group__DiscordAPIInteractionsApplicationCommand.html#ga7855fc43aaadcb00c6435b5a69f9d597", null ],
     [ "discord_get_guild_application_command_permissions", "group__DiscordAPIInteractionsApplicationCommand.html#ga1e1d9207da9ec8144366f208aa6f805a", null ],
-    [ "discord_get_application_command_permissions", "group__DiscordAPIInteractionsApplicationCommand.html#gac692570c4aa5ab4bb3f11b35b17d4208", null ],
-    [ "discord_edit_application_command_permissions", "group__DiscordAPIInteractionsApplicationCommand.html#ga0ec85b78ec4eb05d9bcdad686d717f7b", null ]
+    [ "discord_get_application_command_permissions", "group__DiscordAPIInteractionsApplicationCommand.html#gac692570c4aa5ab4bb3f11b35b17d4208", null ]
 ];

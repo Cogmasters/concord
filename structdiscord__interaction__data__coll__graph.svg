@@ -21,7 +21,7 @@
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="structdiscord__resolved__data.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="red" points="1,-136.5 1,-155.5 127,-155.5 127,-136.5 1,-136.5"/>
+<polygon fill="none" stroke="black" points="1,-136.5 1,-155.5 127,-155.5 127,-136.5 1,-136.5"/>
 <text text-anchor="middle" x="64" y="-143.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_resolved_data</text>
 </a>
 </g>
@@ -33,9 +33,9 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="107.82,-130.39 99.16,-136.49 109.74,-137.12 107.82,-130.39"/>
 <text text-anchor="middle" x="178" y="-125" font-family="Helvetica,sans-Serif" font-size="10.00"> resolved</text>
 </g>
-<!-- Node4 -->
+<!-- Node3 -->
 <g id="node3" class="node">
-<title>Node4</title>
+<title>Node3</title>
 <g id="a_node3"><a xlink:href="structdiscord__application__command__interaction__data__options.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="0,-76.5 0,-117.5 128,-117.5 128,-76.5 0,-76.5"/>
 <text text-anchor="start" x="8" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_application</text>
@@ -44,41 +44,41 @@
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node1 -->
+<!-- Node3&#45;&gt;Node1 -->
 <g id="edge2" class="edge">
-<title>Node4&#45;&gt;Node1</title>
+<title>Node3&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M138.27,-89.05C167,-85.94 199.76,-82.38 227.91,-79.33"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="137.85,-85.58 128.29,-90.14 138.61,-92.54 137.85,-85.58"/>
 <text text-anchor="middle" x="178" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00"> options</text>
 </g>
-<!-- Node6 -->
+<!-- Node5 -->
 <g id="node4" class="node">
-<title>Node6</title>
+<title>Node5</title>
 <g id="a_node4"><a xlink:href="structstrings.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="39,-38.5 39,-57.5 89,-57.5 89,-38.5 39,-38.5"/>
 <text text-anchor="middle" x="64" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">strings</text>
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node1 -->
+<!-- Node5&#45;&gt;Node1 -->
 <g id="edge3" class="edge">
-<title>Node6&#45;&gt;Node1</title>
+<title>Node5&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M99.51,-51.59C133.28,-55.11 185.65,-60.56 227.76,-64.95"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="99.54,-48.08 89.23,-50.52 98.82,-55.04 99.54,-48.08"/>
 <text text-anchor="middle" x="178" y="-65" font-family="Helvetica,sans-Serif" font-size="10.00"> values</text>
 </g>
-<!-- Node7 -->
+<!-- Node6 -->
 <g id="node5" class="node">
-<title>Node7</title>
+<title>Node6</title>
 <g id="a_node5"><a xlink:href="structdiscord__components.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="5.5,-0.5 5.5,-19.5 122.5,-19.5 122.5,-0.5 5.5,-0.5"/>
 <text text-anchor="middle" x="64" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_components</text>
 </a>
 </g>
 </g>
-<!-- Node7&#45;&gt;Node1 -->
+<!-- Node6&#45;&gt;Node1 -->
 <g id="edge4" class="edge">
-<title>Node7&#45;&gt;Node1</title>
+<title>Node6&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M128.09,-21.53C153.7,-26.71 183.46,-33.39 210,-41 231.25,-47.09 254.83,-55.79 271.83,-62.43"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="128.61,-18.06 118.12,-19.54 127.24,-24.93 128.61,-18.06"/>
 <text text-anchor="middle" x="178" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00"> components</text>

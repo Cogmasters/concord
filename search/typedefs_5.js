@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['priority_5fqueue_0',['priority_queue',['../priority__queue_8h.html#aa005155e3e678ba394ff8da125d98aa0',1,'priority_queue.h']]],
-  ['priority_5fqueue_5fid_1',['priority_queue_id',['../priority__queue_8h.html#adaeecf8cbf001f716e0d07d60dcc5da2',1,'priority_queue.h']]]
+  ['log_5flockfn_0',['log_LockFn',['../group__Log__C__Datatypes.html#gae6ec444e134355c817f769d2484fce61',1,'log.h']]],
+  ['log_5flogfn_1',['log_LogFn',['../group__Log__C__Datatypes.html#ga22962ef66fd59db9fc6fe746cd43802f',1,'log.h']]]
 ];

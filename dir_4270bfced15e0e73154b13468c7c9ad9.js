@@ -14,6 +14,7 @@ var dir_4270bfced15e0e73154b13468c7c9ad9 =
     [ "log.h", "log_8h.html", "log_8h" ],
     [ "logconf.h", "logconf_8h.html", "logconf_8h" ],
     [ "priority_queue.h", "priority__queue_8h.html", "priority__queue_8h" ],
+    [ "queriec.h", "queriec_8h.html", "queriec_8h" ],
     [ "queue.h", "queue_8h.html", "queue_8h" ],
     [ "sha1.h", "sha1_8h.html", "sha1_8h" ],
     [ "threadpool.h", "threadpool_8h.html", "threadpool_8h" ],
