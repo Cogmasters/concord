@@ -206,7 +206,7 @@ discord_list_guild_members(struct discord *client,
     DISCORD_ATTR_LIST_INIT(attr, discord_guild_members, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/guilds/%" PRIu64 "/members%s%s", guild_id,
+                            "/guilds/%" PRIu64 "/members%s", guild_id,
                             query);
 }
 
@@ -249,7 +249,7 @@ discord_search_guild_members(struct discord *client,
     DISCORD_ATTR_LIST_INIT(attr, discord_guild_members, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/guilds/%" PRIu64 "/members/search%s%s", guild_id,
+                            "/guilds/%" PRIu64 "/members/search%s", guild_id,
                             query);
 }
 
@@ -649,7 +649,7 @@ discord_get_guild_prune_count(struct discord *client,
     DISCORD_ATTR_INIT(attr, discord_prune_count, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/guilds/%" PRIu64 "/prune%s%s", guild_id,
+                            "/guilds/%" PRIu64 "/prune%s", guild_id,
                             query);
 }
 

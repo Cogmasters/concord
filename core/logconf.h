@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdint.h> /* uint64_t */
 
+#include "attributes.h"
 #include "log.h"
 
 #define __ERR(fmt, ...) log_fatal(fmt "%s", __VA_ARGS__)
@@ -318,7 +319,7 @@ void logconf_http(struct logconf *conf,
                   struct logconf_szbuf header,
                   struct logconf_szbuf body,
                   char label_fmt[],
-                  ...);
+                  ...) PRINTF_LIKE(6, 7);
 
 /**
  * @brief If the log will be written to from multiple threads a lock function

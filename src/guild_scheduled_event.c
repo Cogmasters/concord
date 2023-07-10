@@ -152,7 +152,7 @@ discord_get_guild_scheduled_event_users(
         char buf[32];
         if (params->limit) {
             res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
-                                       buf, sizeof(buf), "%" PRIu64, params->limit);
+                                       buf, sizeof(buf), "%d", params->limit);
             ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->with_member) {
@@ -177,6 +177,6 @@ discord_get_guild_scheduled_event_users(
 
     return discord_rest_run(
         &client->rest, &attr, NULL, HTTP_GET,
-        "/guilds/%" PRIu64 "/scheduled-events/%" PRIu64 "/users%s%s", guild_id,
+        "/guilds/%" PRIu64 "/scheduled-events/%" PRIu64 "/users%s", guild_id,
         guild_scheduled_event_id, query);
 }
