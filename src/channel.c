@@ -171,7 +171,7 @@ discord_get_channel_messages(struct discord *client,
         char buf[32];
         if (params->limit) {
             res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
-                                       buf, sizeof(buf), "%" PRIu64, params->limit);
+                                       buf, sizeof(buf), "%d", params->limit);
             ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->around) {
@@ -882,7 +882,7 @@ discord_add_thread_member(struct discord *client,
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_PUT,
-                            "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                            "/channels/%" PRIu64 "/thread-members/%" PRIu64,
                             channel_id, user_id);
 }
 
@@ -916,7 +916,7 @@ discord_remove_thread_member(struct discord *client,
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
-                            "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                            "/channels/%" PRIu64 "/thread-members/%" PRIu64,
                             channel_id, user_id);
 }
 
@@ -985,7 +985,7 @@ discord_list_public_archived_threads(
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
-                            "/threads/archived/public%s%s",
+                            "/threads/archived/public%s",
                             channel_id, query);
 }
 
@@ -1022,7 +1022,7 @@ discord_list_private_archived_threads(
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
-                            "/threads/archived/private%s%s",
+                            "/threads/archived/private%s",
                             channel_id, query);
 }
 
@@ -1059,6 +1059,6 @@ discord_list_joined_private_archived_threads(
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
-                            "/users/@me/threads/archived/private%s%s",
+                            "/users/@me/threads/archived/private%s",
                             channel_id, query);
 }

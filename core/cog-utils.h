@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "attributes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,7 +98,7 @@ size_t cog_strndup(const char src[], size_t len, char **p_dest);
  * @param ... variadic arguments to be matched to `fmt` specifiers
  * @return length of copied string on success, -1 on failure
  */
-size_t cog_asprintf(char **strp, const char fmt[], ...);
+size_t cog_asprintf(char **strp, const char fmt[], ...) PRINTF_LIKE(2, 3);
 
 /**
  * @brief Sleep for amount of milliseconds

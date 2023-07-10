@@ -28,6 +28,7 @@ extern "C" {
 #include "io_poller.h"
 #include "queue.h"
 #include "priority_queue.h"
+#include "attributes.h"
 
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
@@ -634,7 +635,7 @@ CCORDcode discord_rest_run(struct discord_rest *rest,
                            struct ccord_szbuf *body,
                            enum http_method method,
                            char endpoint_fmt[],
-                           ...);
+                           ...) PRINTF_LIKE(5, 6);
 
 /**
  * @brief Stop all bucket's on-going, pending and timed-out requests

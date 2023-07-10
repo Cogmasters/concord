@@ -522,7 +522,7 @@ _ua_info_populate(struct ua_info *info, struct ua_conn *conn)
     curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
     logconf_http(&conn->ua->conf, &conn->info.loginfo, resp_url, logheader,
-                 logbody, "HTTP_RCV_%s(%d)", http_code_print(info->httpcode),
+                 logbody, "HTTP_RCV_%s(%ld)", http_code_print(info->httpcode),
                  info->httpcode);
 }
 
