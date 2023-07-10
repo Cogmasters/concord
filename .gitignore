@@ -3,7 +3,9 @@
 # But these
 !AUTHORS
 !.vscode
-!core
+!core/
+!core/*.c
+!core/*.h
 !docs
 !docs/*
 !doxygen-awesome-css
