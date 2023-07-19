@@ -224,7 +224,7 @@ PUB_STRUCT(discord_message)
   /** users specifically mentioned in the message */
     FIELD_STRUCT_PTR(mentions, discord_users, *)
   /** roles specifically mentioned in this message */
-    FIELD_STRUCT_PTR(mention_roles, discord_roles, *)
+    FIELD_STRUCT_PTR(mention_roles, snowflakes, *)
   /** channels specifically mentioned in this message */
     FIELD_STRUCT_PTR(mention_channels, discord_channels, *)
   /** any attached files */
