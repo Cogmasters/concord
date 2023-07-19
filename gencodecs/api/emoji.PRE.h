@@ -11,7 +11,7 @@ PUB_STRUCT(discord_emoji)
     FIELD_PTR(name, char, *)
   /** roles allowed to use this emoji */
   COND_WRITE(self->roles != NULL)
-    FIELD_STRUCT_PTR(roles, discord_roles, *)
+    FIELD_STRUCT_PTR(roles, snowflakes, *)
   COND_END
   /** user that created this emoji */
   COND_WRITE(self->user != NULL)
