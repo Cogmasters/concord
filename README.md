@@ -304,6 +304,9 @@ This will install the headers and library files into $PREFIX. You can override t
 # PREFIX=/opt/concord make install
 ```
 
+### Cross-compiling Concord
+To cross-compile Concord, see the manual [here](docs/guides/cross_compiling.md).
+
 ### Included dependencies
 
 The following are `stable` and well documented dependencies that are packaged with Concord and can be included to your projects:
