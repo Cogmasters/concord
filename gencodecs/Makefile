@@ -4,6 +4,7 @@
 # available here to be set.
 CPP = cc -E
 CC = cc
+HOSTCC = cc
 
 TOP = ..
 
@@ -63,7 +64,7 @@ DOXYGEN_DESC = "/**\n @file $@\n @author Cogmasters\n @brief Generated code\n*/"
 all: $(OUT_O)
 
 $(PP): $(PP).c
-	$(CC) $(CFLAGS) $< -o $@
+	$(HOSTCC) $(CFLAGS) $< -o $@
 
 $(OUT_O): $(OUT_C) $(OUT_H)
 	$(CC) -c $(CFLAGS) $< -o $@
