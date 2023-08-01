@@ -17,8 +17,7 @@ for this have been made.
 - There are several bugs in the CWS codebase that causes dependance on
 little-endian CPUs. Despite making the obvious corrections (sus_imp0stor
 rectified the issues), an unsolved bug (1/20/23) was spotted in the CWS
-codebase that caused all opened websocket connections to close -- a fix
-is under development and will be out soon.
+codebase that caused all opened websocket connections to close
 
 
 
