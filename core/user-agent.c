@@ -232,12 +232,8 @@ ua_conn_add_header(struct ua_conn *conn,
             && 0 == strncasecmp(node->data, field, fieldlen))
         {
             if (strlen(node->data) < buflen) {
-                /* FIXME: For some reason, cygwin builds will abort on this
-                 * free() */
-#ifndef __CYGWIN__
-                free(node->data);
-#endif
-                node->data = strdup(buf);
+                curl_free(node->data);
+                curl_slist_append(conn->header, buf);
             }
             else {
                 memcpy(node->data, buf, buflen + 1);
@@ -274,12 +270,9 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
             else
                 prev->next = node->next;
 
-                /* FIXME: For some reason, cygwin builds will abort on this
-                 * free() */
-#ifndef __CYGWIN__
-            free(node->data);
-            free(node);
-#endif
+            curl_free(node->data);
+            curl_free(node);
+
             return;
         }
     }
