@@ -74,6 +74,8 @@ struct websockets {
     } pending_close;
 };
 
+static void _ws_set_status(struct websockets *ws, enum ws_status status);
+
 static int
 _ws_curl_tls_check(
     CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
@@ -91,9 +93,10 @@ _ws_curl_tls_check(
     {
         const char reason[] = "TLS ended connection with a close notify (256)";
 
-        logconf_error(&ws->conf, "%s [@@@_%zu_@@@]", reason, ws->info.loginfo.counter);
+        logconf_error(&ws->conf, "%s [@@@_%zu_@@@]", reason,
+                      ws->info.loginfo.counter);
 
-        ws_end(ws);
+        _ws_set_status(ws, WS_DISCONNECTED);
     }
     return 0;
 }
@@ -151,13 +154,20 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
 
     switch (status) {
     case WS_DISCONNECTED:
-        VASSERT_S(
-            WS_DISCONNECTING == ws->status,
-            "[%s] Status should be WS_DISCONNECTING before WS_DISCONNECTED "
-            "(current status: %s)",
-            ws->conf.id, _ws_status_print(ws->status));
+        if (WS_DISCONNECTED == ws->status) {
+            logconf_info(
+                &ws->conf,
+                "Client is already disconnected, skipping WS_DISCONNECT");
+            break;
+        }
+        else if (WS_DISCONNECTING == ws->status) {
+            logconf_warn(&ws->conf,
+                         "Abruptly changed status to WS_DISCONNECTED "
+                         "(previous status: %s)",
+                         _ws_status_print(ws->status));
+        }
 
-        logconf_debug(&ws->conf, "Change status to WS_DISCONNECTED");
+        logconf_info(&ws->conf, "Change status to WS_DISCONNECTED");
         break;
     case WS_CONNECTED:
         VASSERT_S(WS_CONNECTING == ws->status,
@@ -165,13 +175,20 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
                   "status: %s)",
                   ws->conf.id, _ws_status_print(ws->status));
 
-        logconf_debug(&ws->conf, "Change status to WS_CONNECTED");
+        logconf_info(&ws->conf, "Change status to WS_CONNECTED");
         break;
     case WS_DISCONNECTING:
-        logconf_debug(&ws->conf, "Change status to WS_DISCONNECTING");
+        if (WS_DISCONNECTED == ws->status) {
+            logconf_info(
+                &ws->conf,
+                "Client is already disconnected, skipping WS_DISCONNECTING");
+            break;
+        }
+
+        logconf_info(&ws->conf, "Change status to WS_DISCONNECTING");
         break;
     case WS_CONNECTING: /* triggered at ws_start() */
-        logconf_debug(&ws->conf, "Change status to WS_CONNECTING");
+        logconf_info(&ws->conf, "Change status to WS_CONNECTING");
         break;
     default:
         ERR("[%s] Unknown ws_status (code: %d)", ws->conf.id, status);
@@ -514,12 +531,12 @@ ws_set_url(struct websockets *ws,
     pthread_mutex_lock(&ws->lock);
 
     if (!*ws->base_url) {
-        logconf_debug(&ws->conf, "Websockets new URL: %s", base_url);
+        logconf_info(&ws->conf, "Websockets new URL: %s", base_url);
     }
     else {
-        logconf_debug(&ws->conf,
-                      "WebSockets redirecting:\n\tfrom: %s\n\tto: %s",
-                      ws->base_url, base_url);
+        logconf_info(&ws->conf,
+                     "WebSockets redirecting:\n\tfrom: %s\n\tto: %s",
+                     ws->base_url, base_url);
     }
 
     len = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
@@ -726,6 +743,7 @@ ws_start(struct websockets *ws)
     return ws->ehandle;
 }
 
+// TODO: split the cleanup logic from the shutdown logic
 void
 ws_end(struct websockets *ws)
 {
