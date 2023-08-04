@@ -811,10 +811,14 @@ discord_gateway_end(struct discord_gateway *gw)
 CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
-    /* check for pending transfer, exit if not running */
-    return !ws_multi_socket_run(gw->ws, &gw->timer->now)
-               ? CCORD_DISCORD_CONNECTION
-               : CCORD_OK;
+    switch (ws_get_status(gw->ws)) {
+    case WS_CONNECTING:
+    case WS_CONNECTED:
+        if (ws_multi_socket_run(gw->ws, &gw->timer->now)) return CCORD_OK;
+    /* fall-through */
+    default:
+        return CCORD_DISCORD_CONNECTION;
+    }
 }
 
 void
