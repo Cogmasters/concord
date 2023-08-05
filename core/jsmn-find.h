@@ -405,14 +405,13 @@ jsmnf_find_path(const struct jsmnf_pair *head,
 
 #define RECALLOC_OR_ERROR(ptr, prev_size)                                     \
     do {                                                                      \
-        const unsigned new_size = *prev_size * 2;                             \
+        const unsigned new_size = *(prev_size) * 2;                            \
         void *tmp = realloc((ptr), new_size * sizeof *(ptr));                 \
         if (!tmp) return JSMN_ERROR_NOMEM;                                    \
-                                                                              \
-        *prev_size = new_size;                                                \
-        memset((ptr) + *(prev_size), 0,                                       \
+        memset((tmp) + *(prev_size), 0,                                       \
                (new_size - *(prev_size)) * sizeof *(ptr));                    \
         (ptr) = tmp;                                                          \
+        *(prev_size) = new_size;                                              \
     } while (0)
 
 JSMN_API int
