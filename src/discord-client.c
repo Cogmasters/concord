@@ -253,6 +253,8 @@ _ccord_strerror(CCORDcode code)
         return "Success: The request was a success";
     case CCORD_HTTP_CODE:
         return "Failure: The request was a failure";
+    case CCORD_CURL_NO_RESPONSE:
+        return "Failure: No response came through from libcurl";
     case CCORD_UNUSUAL_HTTP_CODE:
         return "Failure: The request was a failure";
     case CCORD_BAD_PARAMETER:
@@ -260,8 +262,19 @@ _ccord_strerror(CCORDcode code)
     case CCORD_BAD_JSON:
         return "Failure: Internal failure when encoding or decoding JSON";
     case CCORD_CURLE_INTERNAL:
+        return "Failure: Libcurl's internal error (CURLE)";
     case CCORD_CURLM_INTERNAL:
-        return "Failure: Libcurl's internal error";
+        return "Failure: Libcurl's internal error (CURLM)";
+    case CCORD_GLOBAL_INIT:
+        return "Failure: Attempt to initialize globals more than once";
+    case CCORD_RESOURCE_OWNERSHIP:
+        return "Failure: Claimed resource can't be cleaned up automatically";
+    case CCORD_RESOURCE_UNAVAILABLE:
+        return "Failure: Can't perform action on unavailable resource";
+    case CCORD_FULL_WORKER:
+        return "Failure: Couldn't enqueue worker thread (queue is full)";
+    case CCORD_MALFORMED_PAYLOAD:
+        return "Failure: Couldn't create request payload";
     default:
         return "Unknown: Code received doesn't match any description";
     }
@@ -275,6 +288,9 @@ discord_strerror(CCORDcode code, struct discord *client)
     switch (code) {
     default:
         return _ccord_strerror(code);
+    case CCORD_PENDING:
+        return "Discord Pending: Request has been added enqueued and will be "
+               "performed asynchronously";
     case CCORD_DISCORD_JSON_CODE:
         return "Discord JSON Error Code: Failed request";
     case CCORD_DISCORD_BAD_AUTH:

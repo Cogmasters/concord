@@ -1004,7 +1004,7 @@ void discord_refcounter_cleanup(struct discord_refcounter *rc);
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership claimed
  * @retval CCORD_OK counter for `data` has been incremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
  */
 CCORDcode discord_refcounter_claim(struct discord_refcounter *rc,
                                    const void *data);
@@ -1018,8 +1018,8 @@ CCORDcode discord_refcounter_claim(struct discord_refcounter *rc,
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership unclaimed
  * @retval CCORD_OK counter for `data` has been decremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has never been discord_claim() 'd
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_OWNERSHIP `data` has never been discord_claim() 'd
  */
 CCORDcode discord_refcounter_unclaim(struct discord_refcounter *rc,
                                      void *data);
@@ -1031,7 +1031,7 @@ CCORDcode discord_refcounter_unclaim(struct discord_refcounter *rc,
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its reference counter incremented
  * @retval CCORD_OK counter for `data` has been incremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
  */
 CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
 
@@ -1044,8 +1044,9 @@ CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its reference counter decremented
  * @retval CCORD_OK counter for `data` has been decremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP caught attempt to cleanup a claimed resource
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_OWNERSHIP caught attempt to cleanup a claimed
+ * resource
  */
 CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 
