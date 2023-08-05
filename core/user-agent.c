@@ -215,7 +215,7 @@ ua_conn_add_header(struct ua_conn *conn,
                    const char value[])
 {
     size_t fieldlen = strlen(field);
-    struct curl_slist *node;
+    struct curl_slist *node, *prev;
     char buf[4096];
     size_t buflen;
     char *ptr;
@@ -224,7 +224,9 @@ ua_conn_add_header(struct ua_conn *conn,
     ASSERT_S(buflen < sizeof(buf), "Out of bounds write attempt");
 
     /* check for match in existing fields */
-    for (node = conn->header; node != NULL; node = node->next) {
+    for (prev = NULL, node = conn->header; node != NULL;
+         prev = node, node = node->next)
+    {
         if (!(ptr = strchr(node->data, ':')))
             ERR("Missing ':' in header:\n\t%s", node->data);
 
@@ -232,7 +234,15 @@ ua_conn_add_header(struct ua_conn *conn,
             && 0 == strncasecmp(node->data, field, fieldlen))
         {
             if (strlen(node->data) < buflen) {
+                if (prev) prev->next = node->next;
+                // XXX: since libcurl uses custom mallocs that offsets the data
+                //      with some metadata, we rely on `curl_free()` to ensure
+                //      proper behavior
                 curl_free(node->data);
+                curl_free(node);
+                // XXX: this process can be optimized by completely replacing
+                //      libcurl's `curl_slist_xxx()` functions with our own
+                //      (see above comment)
                 curl_slist_append(conn->header, buf);
             }
             else {
