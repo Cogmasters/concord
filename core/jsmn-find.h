@@ -7,8 +7,7 @@ extern "C" {
 
 #ifndef JSMN_H
 #error "jsmn-find.h should be included after jsmn.h"
-#endif
-
+#else
 /** @brief JSON token description */
 struct jsmnftok {
     /** start position in JSON data string */
@@ -163,13 +162,13 @@ JSMN_API long jsmnf_unescape(char buf[],
 #include <string.h>
 
 /* key */
-#define CHASH_KEY_FIELD k
+#define CHASH_KEY_FIELD     k
 /* value */
-#define CHASH_VALUE_FIELD v
+#define CHASH_VALUE_FIELD   v
 /* fields */
 #define CHASH_BUCKETS_FIELD fields
 /* members count */
-#define CHASH_LENGTH_FIELD size
+#define CHASH_LENGTH_FIELD  size
 
 #include "chash.h"
 
@@ -405,14 +404,13 @@ jsmnf_find_path(const struct jsmnf_pair *head,
 
 #define RECALLOC_OR_ERROR(ptr, prev_size)                                     \
     do {                                                                      \
-        const unsigned new_size = *prev_size * 2;                             \
+        const unsigned new_size = *(prev_size)*2;                             \
         void *tmp = realloc((ptr), new_size * sizeof *(ptr));                 \
         if (!tmp) return JSMN_ERROR_NOMEM;                                    \
-                                                                              \
-        *prev_size = new_size;                                                \
+        (ptr) = tmp;                                                          \
         memset((ptr) + *(prev_size), 0,                                       \
                (new_size - *(prev_size)) * sizeof *(ptr));                    \
-        (ptr) = tmp;                                                          \
+        *(prev_size) = new_size;                                              \
     } while (0)
 
 JSMN_API int
@@ -424,17 +422,14 @@ jsmn_parse_auto(struct jsmn_parser *parser,
 {
     int ret;
 
-    if (NULL == *p_tokens || !*num_tokens) {
+    if (NULL == *p_tokens || 0 == *num_tokens) {
         *p_tokens = calloc(1, sizeof **p_tokens);
         *num_tokens = 1;
     }
-
-    while (1) {
-        ret = jsmn_parse(parser, js, length, *p_tokens, *num_tokens);
-        if (ret != JSMN_ERROR_NOMEM)
-            break;
-        else
-            RECALLOC_OR_ERROR(*p_tokens, num_tokens);
+    while (JSMN_ERROR_NOMEM
+           == (ret = jsmn_parse(parser, js, length, *p_tokens, *num_tokens)))
+    {
+        RECALLOC_OR_ERROR(*p_tokens, num_tokens);
     }
     return ret;
 }
@@ -449,17 +444,15 @@ jsmnf_load_auto(struct jsmnf_loader *loader,
 {
     int ret;
 
-    if (NULL == *p_pairs || !*num_pairs) {
+    if (NULL == *p_pairs || 0 == *num_pairs) {
         *p_pairs = calloc(1, sizeof **p_pairs);
         *num_pairs = 1;
     }
-
-    while (1) {
-        ret = jsmnf_load(loader, js, tokens, num_tokens, *p_pairs, *num_pairs);
-        if (ret != JSMN_ERROR_NOMEM)
-            break;
-        else
-            RECALLOC_OR_ERROR(*p_pairs, num_pairs);
+    while (JSMN_ERROR_NOMEM
+           == (ret = jsmnf_load(loader, js, tokens, num_tokens, *p_pairs,
+                                *num_pairs)))
+    {
+        RECALLOC_OR_ERROR(*p_pairs, num_pairs);
     }
     return ret;
 }
@@ -723,6 +716,7 @@ jsmnf_unescape(char buf[], size_t bufsize, const char src[], size_t len)
 #undef BUF_PUSH
 
 #endif /* JSMN_HEADER */
+#endif /* JSMN_H */
 
 #ifdef __cplusplus
 }
