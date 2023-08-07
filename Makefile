@@ -12,7 +12,7 @@ EXAMPLES_DIR  = examples
 TEST_DIR      = test
 
 SOFLAGS     = -fPIC
-DYFLAGS     = -fPIC 
+DYFLAGS     = -fPIC
 DEBUG_FLAGS = -O0 -g
 
 GIT_BRANCHES = master dev
@@ -35,7 +35,7 @@ shared_osx:
 	@ CFLAGS="$(DYFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 
-install:
+install: all
 	@ mkdir -p $(DESTLIBDIR)
 	@ mkdir -p $(DESTINCLUDE_DIR)
 	install -d $(DESTLIBDIR)
@@ -54,9 +54,9 @@ docs:
 	@ $(MAKE) -C $(GENCODECS_DIR) headers
 
 echo:
-	@ echo -e 'CC: $(CC)\n'
-	@ echo -e 'PREFIX: $(PREFIX)\n'
-	@ echo -e 'CFLAGS: $(CFLAGS)\n'
+	@ echo 'CC: $(CC)'
+	@ echo 'PREFIX: $(PREFIX)'
+	@ echo 'CFLAGS: $(CFLAGS)'
 
 voice:
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
@@ -68,14 +68,13 @@ test: debug
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-clean: 
+clean:
 	@ $(MAKE) -C $(SRC_DIR) $@
 	@ $(MAKE) -C $(TEST_DIR) $@
 	@ $(MAKE) -C $(EXAMPLES_DIR) $@
-	@ $(MAKE) -C $(GENCODECS_DIR) $@
 
 purge: clean
-	@ $(MAKE) -C $(SRC_DIR) $@
+	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 latest: master
 latest-dev: dev

@@ -22,11 +22,11 @@ CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
 all: $(OBJS)
 
 echo:
-	@ echo -e 'CC: $(CC)\n'
-	@ echo -e 'CFLAGS: $(CFLAGS)\n'
-	@ echo -e 'OBJS: $(OBJS)\n'
+	@ echo 'CC: $(CC)'
+	@ echo 'CFLAGS: $(CFLAGS)'
+	@ echo 'OBJS: $(OBJS)'
 
-clean: 
+clean:
 	@ rm -f $(OBJS)
 
 .PHONY: echo clean
