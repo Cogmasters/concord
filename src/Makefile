@@ -92,22 +92,20 @@ deps:
 	@ $(MAKE) $(OBJS)
 
 echo:
-	@ echo -e 'CC: $(CC)\n'
-	@ echo -e 'PREFIX: $(PREFIX)\n'
-	@ echo -e 'CFLAGS: $(CFLAGS)\n'
-	@ echo -e 'GENCODECS_OBJ: $(GENCODECS_OBJ)\n'
-	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
-	@ echo -e 'VOICE_OBJS: $(VOICE_OBJS)\n'
-	@ echo -e 'OBJS: $(OBJS)\n'
+	@ echo 'CC: $(CC)'
+	@ echo 'PREFIX: $(PREFIX)'
+	@ echo 'CFLAGS: $(CFLAGS)'
+	@ echo 'GENCODECS_OBJ: $(GENCODECS_OBJ)'
+	@ echo 'CORE_OBJS: $(CORE_OBJS)'
+	@ echo 'VOICE_OBJS: $(VOICE_OBJS)'
+	@ echo 'OBJS: $(OBJS)'
 
 voice:
 	@ CFLAGS="-DCCORD_VOICE" OBJS="$(VOICE_OBJS)" $(MAKE)
 
-clean: 
+clean:
 	@ rm -rf $(LIBDIR)/*
 	@ rm -f $(OBJS) $(VOICE_OBJS)
 	@ $(MAKE) -C $(CORE_DIR) clean
-purge: clean
-	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: test examples install echo clean purge docs deps static shared shared_osx
