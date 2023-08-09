@@ -65,7 +65,7 @@ _discord_refvalue_cleanup(struct discord_refcounter *rc,
         else
             value->cleanup.internal(value->data);
     }
-    if (value->should_free) free(value->data);
+    if (value->should_free) ccord_free(value->data);
 }
 
 static struct _discord_refvalue *
@@ -99,7 +99,7 @@ discord_refcounter_init(struct discord_refcounter *rc, struct logconf *conf)
 
     __chash_init(rc, REFCOUNTER_TABLE);
 
-    rc->g_lock = malloc(sizeof *rc->g_lock);
+    rc->g_lock = ccord_malloc(sizeof *rc->g_lock);
     ASSERT_S(!pthread_mutex_init(rc->g_lock, NULL),
              "Couldn't initialize refcounter mutex");
 }
@@ -109,7 +109,7 @@ discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
     __chash_free(rc, REFCOUNTER_TABLE);
     pthread_mutex_destroy(rc->g_lock);
-    free(rc->g_lock);
+    ccord_free(rc->g_lock);
 }
 
 static bool

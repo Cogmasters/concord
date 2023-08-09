@@ -2,6 +2,7 @@
 
 #ifdef GENCODECS_HEADER
 PP_INCLUDE(<inttypes.h>)
+PP_INCLUDE("mem.h")
 PP_INCLUDE("carray.h")
 PP_INCLUDE("cog-utils.h")
 PP_INCLUDE("types.h")

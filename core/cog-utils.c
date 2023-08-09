@@ -14,6 +14,7 @@
 
 #include "cog-utils.h"
 #include "clock.h"
+#include "mem.h"
 
 char *
 cog_load_whole_file_fp(FILE *fp, size_t *len)
@@ -27,10 +28,10 @@ cog_load_whole_file_fp(FILE *fp, size_t *len)
         return NULL;
     }
 
-    char *str = malloc(fsize + 1);
+    char *str = ccord_malloc(fsize + 1);
     str[fsize] = '\0';
     if (!fread(str, 1, fsize, fp)) {
-        free(str);
+        ccord_free(str);
         str = NULL;
         fsize = 0;
     }
@@ -148,7 +149,7 @@ cog_u64tostr(char *str, size_t len, uint64_t *p_value)
 size_t
 cog_strndup(const char src[], size_t len, char **p_dest)
 {
-    *p_dest = malloc(len + 1);
+    *p_dest = ccord_malloc(len + 1);
 
     memcpy(*p_dest, src, len);
     (*p_dest)[len] = '\0';
@@ -173,7 +174,7 @@ cog_asprintf(char **strp, const char fmt[], ...)
 
     va_end(argp);
 
-    *strp = malloc(len + 1);
+    *strp = ccord_malloc(len + 1);
     if (!strp) return -1;
 
     va_start(argp, fmt);

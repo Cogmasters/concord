@@ -93,8 +93,8 @@ on_fallback(struct discord *client, const struct discord_message *event)
         return;
     }
 
-    char *path = calloc(1, MAX_FSIZE);
-    char *pathtmp = calloc(1, MAX_FSIZE);
+    char *path = ccord_calloc(1, MAX_FSIZE);
+    char *pathtmp = ccord_calloc(1, MAX_FSIZE);
     while (NULL != fgets(path, MAX_FSIZE, fp)) {
         strncat(pathtmp, path, MAX_FSIZE - 1);
     }
@@ -122,8 +122,8 @@ on_fallback(struct discord *client, const struct discord_message *event)
     }
 
     pclose(fp);
-    free(path);
-    free(pathtmp);
+    ccord_free(path);
+    ccord_free(pathtmp);
 }
 
 int

@@ -1,20 +1,20 @@
 /* Copyright 2022 Cogmasters */
 /*
  * C-Ware License
- * 
+ *
  * Copyright (c) 2022, C-Ware
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * 3. Redistributions of modified source code must append a copyright notice in
  *    the form of 'Copyright <YEAR> <NAME>' to each modified source file's
  *    copyright notice, and the standalone license file if one exists.
@@ -24,7 +24,7 @@
  * this code. A fork created for the purpose of contributing to any version of
  * the source does not constitute a truly 'derivative work' and does not require
  * listing.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,26 +37,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/* Modified by Lucas Müller <lucas@muller.codes>, 19 Sept 2022 
+/* Modified by Lucas Müller <lucas@muller.codes>, 19 Sept 2022
  * - __carray_init() should initialize its `size` value
  *
- * Modified by Lucas Müller <lucas@muller.codes>, 15 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 15 Feb 2022
  * - CARRAY_RESIZE() has a fallback value (+1)
  *
- * Modified by Lucas Müller <lucas@muller.codes>, 06 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 06 Feb 2022
  * - __carray_init() accept initial length
  *
- * Modified by Lucas Müller <lucas@muller.codes>, 02 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 02 Feb 2022
  * - remove free(carray) at __carrray_free()
  *
- * Modified by Lucas Müller <lucas@muller.codes>, 01 Feb 2022 
+ * Modified by Lucas Müller <lucas@muller.codes>, 01 Feb 2022
  * - change CARRAY_INITIAL_SIZE from 5 to 4
  * - change CARRAY_RESIZE to doubling arrays to reduce realloc calls
- * - remove calloc() from __carray_init(), expect user to allocate it
+ * - remove ccord_calloc() from __carray_init(), expect user to allocate it
  * - remove pseudo-return from __carray_init()
  *
- * Modified by Lucas Müller <lucas@muller.codes>, 27 Jan 2022 
- * - rename contents -> array 
+ * Modified by Lucas Müller <lucas@muller.codes>, 27 Jan 2022
+ * - rename contents -> array
  * - rename logical_size -> size
  * - rename physical_size -> realsize
  */
@@ -79,7 +79,7 @@
 do {                                                          \
     (carray)->realsize = length;                              \
     (carray)->size = 0;                                       \
-    (carray)->array = calloc(length, sizeof(_type));          \
+    (carray)->array = ccord_calloc(length, sizeof(_type));          \
 } while (0)
 
 #define carray_init(carray, settings) \
@@ -97,7 +97,7 @@ do {                                       \
 #ifndef CARRAY_STACKFUL
 #define __carray_insert_handle_full(carray, index, value)                                                  \
     (carray)->realsize = CARRAY_RESIZE((carray)->realsize);                                                \
-    (carray)->array = realloc((carray)->array, sizeof(*(carray)->array) * (size_t) (carray)->realsize)
+    (carray)->array = ccord_realloc((carray)->array, sizeof(*(carray)->array) * (size_t) (carray)->realsize)
 #else
 #define __carray_insert_handle_full(carray, index, value)                                                                                \
     fprintf(stderr, "carray_insert: attempt to insert value '%s' into full array '%s'. (%s:%i)\n", #value, #carray, __FILE__, __LINE__); \
@@ -187,7 +187,7 @@ do {                                                                            
     __carray_find(carray, value, location, settings)
 
 #ifndef CARRAY_STACKFUL
-#define __carray_free_array(carray) free((carray)->array);         
+#define __carray_free_array(carray) ccord_free((carray)->array);
 #else
 #define __carray_free_array(carray)
 #endif
@@ -214,7 +214,7 @@ do {                                                                            
 #ifndef CARRAY_STACKFUL
 #define __carray_append_handle_full(carray, value)                                                     \
     (carray)->realsize = CARRAY_RESIZE((carray)->realsize);                                            \
-    (carray)->array = realloc((carray)->array, sizeof(*(carray)->array) * (size_t) (carray)->realsize)
+    (carray)->array = ccord_realloc((carray)->array, sizeof(*(carray)->array) * (size_t) (carray)->realsize)
 #else
 #define __carray_append_handle_full(carray, value)                                                                                       \
     fprintf(stderr, "carray_append: attempt to append value '%s' into full array '%s'. (%s:%i)\n", #value, #carray, __FILE__, __LINE__); \

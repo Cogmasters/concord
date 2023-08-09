@@ -13,7 +13,8 @@ OBJS = cog-utils.o      \
        anomap.o         \
        sha1.o           \
        threadpool.o     \
-       queriec.o
+       queriec.o        \
+       mem.o
 
 WFLAGS  = -Wall -Wextra -Wpedantic
 CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
@@ -26,7 +27,7 @@ echo:
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 
-clean: 
+clean:
 	@ rm -f $(OBJS)
 
 .PHONY: echo clean

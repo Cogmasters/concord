@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "anomap.h"
+#include "mem.h"
 
 struct anomap {
   int (*cmp)(const void *, const void *);
@@ -31,7 +32,7 @@ struct anomap {
 struct anomap *
 anomap_create(size_t key_size, size_t val_size,
               int (*cmp)(const void *, const void *)) {
-  struct anomap *map = calloc(1, sizeof *map);
+  struct anomap *map = ccord_calloc(1, sizeof *map);
   if (map) {
     map->cmp = cmp;
     map->keys.size = key_size;
@@ -44,11 +45,11 @@ anomap_create(size_t key_size, size_t val_size,
 void
 anomap_destroy(struct anomap *map) {
   anomap_clear(map);
-  free(map->keys.arr);
-  free(map->vals.arr);
-  free(map->map.arr);
+  ccord_free(map->keys.arr);
+  ccord_free(map->vals.arr);
+  ccord_free(map->map.arr);
   memset(map, 0, sizeof *map);
-  free(map);
+  ccord_free(map);
 }
 
 void
@@ -117,19 +118,19 @@ _anomap_ensure_capacity(struct anomap *map, size_t capacity) {
   size_t cap = map->map.cap ? map->map.cap << 1 : 8;
   while (cap < capacity) cap <<= 1;
   if (map->keys.cap < cap) {
-    void *tmp = realloc(map->keys.arr, map->keys.size * cap);
+    void *tmp = ccord_realloc(map->keys.arr, map->keys.size * cap);
     if (!tmp) return false;
     map->keys.arr = tmp;
     map->keys.cap = cap;
   }
   if (map->vals.size && map->vals.cap < cap) {
-    void *tmp = realloc(map->vals.arr, map->vals.size * cap);
+    void *tmp = ccord_realloc(map->vals.arr, map->vals.size * cap);
     if (!tmp) return false;
     map->vals.arr = tmp;
     map->vals.cap = cap;
   }
   if (map->map.cap < cap) {
-    unsigned *tmp = realloc(map->map.arr, sizeof *map->map.arr * cap);
+    unsigned *tmp = ccord_realloc(map->map.arr, sizeof *map->map.arr * cap);
     if (!tmp) return false;
     map->map.arr = tmp;
     map->map.cap = cap;
@@ -276,7 +277,7 @@ anomap_delete_range(struct anomap *map, size_t from_index, size_t to_index,
       });
     if (i == to_index) break;
   }
-  
+
   size_t index = to_index < from_index ? to_index : from_index;
   size_t remaining = count;
   while (remaining) {

@@ -20,6 +20,7 @@ extern "C" {
 
 #include "error.h"
 #include "types.h"
+#include "mem.h"
 #include "concord-once.h"
 #include "io_poller.h"
 

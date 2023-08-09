@@ -100,7 +100,7 @@ _on_shard_disconnected(struct discord *client,
 }
 
 #define GUILD_BEGIN(guild)                                                    \
-    struct discord_guild *guild = calloc(1, sizeof *guild);                   \
+    struct discord_guild *guild = ccord_calloc(1, sizeof *guild);                   \
     memcpy(guild, ev, sizeof *guild);                                         \
     guild->channels = NULL;                                                   \
     guild->members = NULL;                                                    \
@@ -205,13 +205,13 @@ _discord_cache_cleanup(struct discord *client)
         anomap_destroy(cache->msg_map);
         pthread_mutex_destroy(&cache->lock);
     }
-    free(data->caches);
+  ccord:free(data->caches);
     discord_internal_timer_ctl(client,
                                &(struct discord_timer){
                                    .id = data->garbage_collection_timer,
                                    .flags = DISCORD_TIMER_DELETE,
                                });
-    free(data);
+    ccord_free(data);
 }
 
 static void
@@ -243,10 +243,10 @@ discord_cache_enable(struct discord *client,
     struct _discord_cache_data *data = client->cache.data;
     if (!data) {
         client->cache.cleanup = _discord_cache_cleanup;
-        data = client->cache.data = calloc(1, sizeof *data);
+        data = client->cache.data = ccord_calloc(1, sizeof *data);
 
         size_t nshards = (size_t)(data->total_shards = 1);
-        data->caches = calloc(nshards, sizeof *data->caches);
+        data->caches = ccord_calloc(nshards, sizeof *data->caches);
         for (int i = 0; i < data->total_shards; i++) {
             struct _discord_shard_cache *cache = &data->caches[i];
             pthread_mutex_init(&cache->lock, NULL);

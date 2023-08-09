@@ -65,7 +65,7 @@ discord_get_channel_at_pos(struct discord *client,
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, ret->done != NULL, CCORD_BAD_PARAMETER, "");
 
-    cxt = malloc(sizeof *cxt);
+    cxt = ccord_malloc(sizeof *cxt);
     *cxt = (struct _discord_get_channel_at_pos){ .type = type,
                                                  .position = position,
                                                  .ret = *ret };
@@ -973,7 +973,7 @@ discord_list_public_archived_threads(
     if (before) {
         res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
                                    buf, sizeof(buf), "%" PRIu64, before);
-        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt"); 
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
     if (limit) {
         res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),

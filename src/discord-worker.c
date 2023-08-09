@@ -68,7 +68,7 @@ _discord_worker_cb(void *p_cxt)
     pthread_cond_signal(&cxt->client->workers->cond);
     pthread_mutex_unlock(&cxt->client->workers->lock);
 
-    free(cxt);
+    ccord_free(cxt);
 }
 
 CCORDcode
@@ -76,7 +76,7 @@ discord_worker_add(struct discord *client,
                    void (*callback)(void *data),
                    void *data)
 {
-    struct discord_worker_context *cxt = malloc(sizeof *cxt);
+    struct discord_worker_context *cxt = ccord_malloc(sizeof *cxt);
     *cxt = (struct discord_worker_context){ client, data, callback };
 
     return 0 == threadpool_add(g_tpool, _discord_worker_cb, cxt, 0)

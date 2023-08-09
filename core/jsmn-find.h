@@ -406,7 +406,7 @@ jsmnf_find_path(const struct jsmnf_pair *head,
 #define RECALLOC_OR_ERROR(ptr, prev_size)                                     \
     do {                                                                      \
         const unsigned new_size = *prev_size * 2;                             \
-        void *tmp = realloc((ptr), new_size * sizeof *(ptr));                 \
+        void *tmp = ccord_realloc((ptr), new_size * sizeof *(ptr));                 \
         if (!tmp) return JSMN_ERROR_NOMEM;                                    \
                                                                               \
         *prev_size = new_size;                                                \
@@ -425,7 +425,7 @@ jsmn_parse_auto(struct jsmn_parser *parser,
     int ret;
 
     if (NULL == *p_tokens || !*num_tokens) {
-        *p_tokens = calloc(1, sizeof **p_tokens);
+        *p_tokens = ccord_calloc(1, sizeof **p_tokens);
         *num_tokens = 1;
     }
 
@@ -450,7 +450,7 @@ jsmnf_load_auto(struct jsmnf_loader *loader,
     int ret;
 
     if (NULL == *p_pairs || !*num_pairs) {
-        *p_pairs = calloc(1, sizeof **p_pairs);
+        *p_pairs = ccord_calloc(1, sizeof **p_pairs);
         *num_pairs = 1;
     }
 

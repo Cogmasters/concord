@@ -117,10 +117,10 @@ main(int argc, char *argv[])
     while (-1 != (opt = getopt(argc, argv, "hu:c:"))) {
         switch (opt) {
         case 'u':
-            url = strdup(optarg);
+            url = ccord_strdup(optarg);
             break;
         case 'c':
-            config_file = strdup(optarg);
+            config_file = ccord_strdup(optarg);
             break;
         case 'h':
         default:

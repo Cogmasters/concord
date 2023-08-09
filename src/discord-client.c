@@ -58,7 +58,7 @@ _discord_init(struct discord *new_client)
     discord_timers_init(&new_client->timers.internal, new_client->io_poller);
     discord_timers_init(&new_client->timers.user, new_client->io_poller);
 
-    new_client->workers = calloc(1, sizeof *new_client->workers);
+    new_client->workers = ccord_calloc(1, sizeof *new_client->workers);
     ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),
              "Couldn't initialize Client's mutex");
     ASSERT_S(!pthread_cond_init(&new_client->workers->cond, NULL),
@@ -90,7 +90,7 @@ discord_init(const char token[])
     char parsed_token[4096];
     if (!_parse_init_string(parsed_token, sizeof parsed_token, token))
         return NULL;
-    new_client = calloc(1, sizeof *new_client);
+    new_client = ccord_calloc(1, sizeof *new_client);
     logconf_setup(&new_client->conf, "DISCORD", NULL);
     /* silence terminal input by default */
     logconf_set_quiet(&new_client->conf, true);
@@ -116,7 +116,7 @@ discord_config_init(const char config_file[])
     VASSERT_S(fp != NULL, "Couldn't open '%s': %s", parsed_config_file,
               strerror(errno));
 
-    new_client = calloc(1, sizeof *new_client);
+    new_client = ccord_calloc(1, sizeof *new_client);
     logconf_setup(&new_client->conf, "DISCORD", fp);
 
     fclose(fp);
@@ -172,7 +172,7 @@ _discord_clone_gateway(struct discord_gateway *clone,
     const size_t n = orig->payload.json.npairs
                      - (size_t)(orig->payload.data - orig->payload.json.pairs);
 
-    clone->payload.data = malloc(n * sizeof *orig->payload.json.pairs);
+    clone->payload.data = ccord_malloc(n * sizeof *orig->payload.json.pairs);
     memcpy(clone->payload.data, orig->payload.data,
            n * sizeof *orig->payload.json.pairs);
 
@@ -184,7 +184,7 @@ _discord_clone_gateway(struct discord_gateway *clone,
 struct discord *
 discord_clone(const struct discord *orig)
 {
-    struct discord *clone = malloc(sizeof(struct discord));
+    struct discord *clone = ccord_malloc(sizeof(struct discord));
 
     memcpy(clone, orig, sizeof(struct discord));
     clone->is_original = false;
@@ -197,8 +197,8 @@ discord_clone(const struct discord *orig)
 static void
 _discord_clone_gateway_cleanup(struct discord_gateway *clone)
 {
-    free(clone->payload.data);
-    free(clone->payload.json.start);
+    ccord_free(clone->payload.data);
+    ccord_free(clone->payload.json.start);
 }
 
 static void
@@ -228,12 +228,12 @@ discord_cleanup(struct discord *client)
         discord_timers_cleanup(client, &client->timers.internal);
         io_poller_destroy(client->io_poller);
         logconf_cleanup(&client->conf);
-        if (client->token) free(client->token);
+        if (client->token) ccord_free(client->token);
         pthread_mutex_destroy(&client->workers->lock);
         pthread_cond_destroy(&client->workers->cond);
-        free(client->workers);
+        ccord_free(client->workers);
     }
-    free(client);
+    ccord_free(client);
 }
 
 CCORDcode

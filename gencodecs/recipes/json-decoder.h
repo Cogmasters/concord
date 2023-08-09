@@ -7,7 +7,7 @@
 #define GENCODECS_JSON_DECODER_PTR_char(_f, _js, _var, _type)                 \
     if (_f && _f->type == JSMN_STRING) {                                      \
         long _ret;                                                            \
-        _var = calloc(1, _f->v.len + 1);                                      \
+        _var = ccord_calloc(1, _f->v.len + 1);                                      \
         if (NULL == _var) return JSMN_ERROR_NOMEM;                            \
         _ret = jsmnf_unescape(_var, _f->v.len, _js + _f->v.pos, _f->v.len);   \
         if (_ret < 0) return _ret;                                            \
@@ -16,7 +16,7 @@
 #define GENCODECS_JSON_DECODER_STRUCT_PTR(_f, _js, _var, _type)               \
     if (_f && (_f->type == JSMN_OBJECT || _f->type == JSMN_ARRAY)) {          \
         long _ret;                                                            \
-        _var = calloc(1, sizeof *_var);                                       \
+        _var = ccord_calloc(1, sizeof *_var);                                       \
         if (NULL == _var) return JSMN_ERROR_NOMEM;                            \
         _ret = _type##_from_jsmnf(_f, _js, _var);                             \
         if (_ret < 0) return _ret;                                            \
@@ -126,9 +126,9 @@
                 long ret;                                                     \
                 if (0 < (ret = _type##_from_jsmnf(pairs, buf, self)))         \
                     nbytes = ret;                                             \
-                free(pairs);                                                  \
+                ccord_free(pairs);                                                  \
             }                                                                 \
-            free(tokens);                                                     \
+            ccord_free(tokens);                                                     \
         }                                                                     \
         return nbytes;                                                        \
     }

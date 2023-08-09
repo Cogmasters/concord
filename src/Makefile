@@ -20,7 +20,9 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/anomap.o         \
                 $(CORE_DIR)/sha1.o           \
                 $(CORE_DIR)/threadpool.o     \
-                $(CORE_DIR)/queriec.o
+                $(CORE_DIR)/queriec.o        \
+                $(CORE_DIR)/mem.o
+
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 VOICE_OBJS    = discord-voice.o
 
@@ -65,7 +67,7 @@ DYLIB = $(LIBDIR)/libdiscord.dylib
 
 ARFLAGS = -cqsv
 SOFLAGS = -fPIC
-DYFLAGS = -fPIC 
+DYFLAGS = -fPIC
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(WFLAGS) -o $@ $<
@@ -103,7 +105,7 @@ echo:
 voice:
 	@ CFLAGS="-DCCORD_VOICE" OBJS="$(VOICE_OBJS)" $(MAKE)
 
-clean: 
+clean:
 	@ rm -rf $(LIBDIR)/*
 	@ rm -f $(OBJS) $(VOICE_OBJS)
 	@ $(MAKE) -C $(CORE_DIR) clean
