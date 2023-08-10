@@ -6,6 +6,7 @@
 #include <curl/curl.h>
 
 #include "websockets.h"
+#include "mem.h"
 
 #include "log.h"
 
