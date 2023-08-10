@@ -21,7 +21,7 @@ discord_embed_set_footer(struct discord_embed *embed,
     if (embed->footer)
         discord_embed_footer_cleanup(embed->footer);
     else
-        embed->footer = malloc(sizeof *embed->footer);
+        embed->footer = ccord_malloc(sizeof *embed->footer);
     discord_embed_footer_init(embed->footer);
 
     if (text) cog_strndup(text, strlen(text), &embed->footer->text);
@@ -44,7 +44,7 @@ discord_embed_set_title(struct discord_embed *embed, char format[], ...)
     len = vsnprintf(buf, sizeof(buf), format, args);
     ASSERT_NOT_OOB(len, sizeof(buf));
 
-    if (embed->title) free(embed->title);
+    if (embed->title) ccord_free(embed->title);
     cog_strndup(buf, (size_t)len, &embed->title);
 
     va_end(args);
@@ -62,7 +62,7 @@ discord_embed_set_description(struct discord_embed *embed, char format[], ...)
     len = vsnprintf(buf, sizeof(buf), format, args);
     ASSERT_NOT_OOB(len, sizeof(buf));
 
-    if (embed->description) free(embed->description);
+    if (embed->description) ccord_free(embed->description);
     cog_strndup(buf, (size_t)len, &embed->description);
 
     va_end(args);
@@ -80,7 +80,7 @@ discord_embed_set_url(struct discord_embed *embed, char format[], ...)
     len = vsnprintf(buf, sizeof(buf), format, args);
     ASSERT_NOT_OOB(len, sizeof(buf));
 
-    if (embed->url) free(embed->url);
+    if (embed->url) ccord_free(embed->url);
     cog_strndup(buf, (size_t)len, &embed->url);
 
     va_end(args);
@@ -96,7 +96,7 @@ discord_embed_set_thumbnail(struct discord_embed *embed,
     if (embed->thumbnail)
         discord_embed_thumbnail_cleanup(embed->thumbnail);
     else
-        embed->thumbnail = malloc(sizeof *embed->thumbnail);
+        embed->thumbnail = ccord_malloc(sizeof *embed->thumbnail);
     discord_embed_thumbnail_init(embed->thumbnail);
 
     if (url) cog_strndup(url, strlen(url), &embed->thumbnail->url);
@@ -117,7 +117,7 @@ discord_embed_set_image(struct discord_embed *embed,
     if (embed->image)
         discord_embed_image_cleanup(embed->image);
     else
-        embed->image = malloc(sizeof *embed->image);
+        embed->image = ccord_malloc(sizeof *embed->image);
     discord_embed_image_init(embed->image);
 
     if (url) cog_strndup(url, strlen(url), &embed->image->url);
@@ -137,7 +137,7 @@ discord_embed_set_video(struct discord_embed *embed,
     if (embed->video)
         discord_embed_video_cleanup(embed->video);
     else
-        embed->video = malloc(sizeof *embed->video);
+        embed->video = ccord_malloc(sizeof *embed->video);
     discord_embed_video_init(embed->video);
 
     if (url) cog_strndup(url, strlen(url), &embed->video->url);
@@ -155,7 +155,7 @@ discord_embed_set_provider(struct discord_embed *embed,
     if (embed->provider)
         discord_embed_provider_cleanup(embed->provider);
     else
-        embed->provider = malloc(sizeof *embed->provider);
+        embed->provider = ccord_malloc(sizeof *embed->provider);
     discord_embed_provider_init(embed->provider);
 
     if (name) cog_strndup(name, strlen(name), &embed->provider->name);
@@ -172,7 +172,7 @@ discord_embed_set_author(struct discord_embed *embed,
     if (embed->author)
         discord_embed_author_cleanup(embed->author);
     else
-        embed->author = malloc(sizeof *embed->author);
+        embed->author = ccord_malloc(sizeof *embed->author);
     discord_embed_author_init(embed->author);
 
     if (name) cog_strndup(name, strlen(name), &embed->author->name);
@@ -198,7 +198,7 @@ discord_embed_add_field(struct discord_embed *embed,
     if (value) cog_strndup(value, strlen(value), &field.value);
 
     if (!embed->fields)
-        embed->fields = calloc(1, sizeof *embed->fields);
+        embed->fields = ccord_calloc(1, sizeof *embed->fields);
     carray_append(embed->fields, field);
 }
 
@@ -224,6 +224,6 @@ discord_presence_add_activity(struct discord_presence_update *presence,
                               struct discord_activity *activity)
 {
     if (!presence->activities)
-        presence->activities = calloc(1, sizeof *presence->activities);
+        presence->activities = ccord_calloc(1, sizeof *presence->activities);
     carray_append(presence->activities, *activity);
 }

@@ -195,9 +195,9 @@ scheduler(struct discord *client,
                 if ((f = jsmnf_find(pairs, data, "content", 7)))
                     snprintf(cmd, sizeof(cmd), "%.*s", (int)f->v.len,
                              data + f->v.pos);
-                free(pairs);
+                ccord_free(pairs);
             }
-            free(tokens);
+            ccord_free(tokens);
         }
 
         if (0 == strcmp(PREFIX "spam_sync", cmd))

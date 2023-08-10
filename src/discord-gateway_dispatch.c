@@ -111,7 +111,7 @@ discord_gateway_dispatch(struct discord_gateway *gw)
     /* fall-through */
     default:
         if (gw->cbs[0][event] || gw->cbs[1][event]) {
-            void *event_data = calloc(1, dispatch[event].size);
+            void *event_data = ccord_calloc(1, dispatch[event].size);
 
             dispatch[event].from_jsmnf(gw->payload.data,
                                        gw->payload.json.start, event_data);

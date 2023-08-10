@@ -7,6 +7,7 @@
 
 #include "websockets.h"
 #include "cog-utils.h"
+#include "mem.h"
 
 #define CURLM_LOG(ws, mcode)                                                  \
     logconf_fatal(&ws->conf, "(CURLM code: %d) %s", mcode,                    \
@@ -487,7 +488,7 @@ ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
         conf = attr->conf;
     }
 
-    new_ws = calloc(1, sizeof *new_ws);
+    new_ws = ccord_calloc(1, sizeof *new_ws);
     logconf_branch(&new_ws->conf, conf, "WEBSOCKETS");
 
     if (cbs) new_ws->cbs = *cbs;
@@ -542,7 +543,7 @@ ws_cleanup(struct websockets *ws)
     if (ws->ehandle) cws_free(ws->ehandle);
     pthread_mutex_destroy(&ws->lock);
     pthread_rwlock_destroy(&ws->rwlock);
-    free(ws);
+    ccord_free(ws);
 }
 
 bool

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "priority_queue.h"
+#include "mem.h"
 
 #define queue_CMP(result, queue, a, b)         \
   do {                                         \
@@ -54,7 +55,7 @@ priority_queue_create(
   int(*cmp)(const void *a, const void *b),
   priority_queue_flags flags)
 {
-  priority_queue *queue = calloc(1, sizeof *queue);
+  priority_queue *queue = ccord_calloc(1, sizeof *queue);
   if (queue) {
     if (flags & priority_queue_max)
       queue->max_queue = 1;
@@ -63,10 +64,10 @@ priority_queue_create(
     queue->elements.max = UINT32_MAX - 2;
     queue->cmp = cmp;
     queue->queue.len = 1;
-    queue->queue.arr = calloc((queue->queue.cap = 0x400), sizeof *queue->queue.arr);
+    queue->queue.arr = ccord_calloc((queue->queue.cap = 0x400), sizeof *queue->queue.arr);
     if (queue->queue.arr)
       return queue;
-    free(queue);
+    ccord_free(queue);
   }
   return NULL;
 }
@@ -74,11 +75,11 @@ priority_queue_create(
 
 void
 priority_queue_destroy(priority_queue *queue) {
-  free(queue->queue.arr);
-  free(queue->elements.info);
-  free(queue->elements.keys.arr);
-  free(queue->elements.vals.arr);
-  free(queue);
+  ccord_free(queue->queue.arr);
+  ccord_free(queue->elements.info);
+  ccord_free(queue->elements.keys.arr);
+  ccord_free(queue->elements.vals.arr);
+  ccord_free(queue);
 }
 
 size_t
@@ -124,7 +125,7 @@ priority_queue_bubble_down(priority_queue *queue, priority_queue_id pos) {
       if (cmp >= 0)
         successor = rchild;
     }
-    
+
     queue_CMP(cmp, queue,
       queue->elements.keys.arr + key_size * queue->queue.arr[pos],
       queue->elements.keys.arr + key_size * queue->queue.arr[successor]);
@@ -168,7 +169,7 @@ priority_queue_push(priority_queue *queue, void *key, void *val) {
       return 0;
     void *tmp;
 
-    tmp = realloc(queue->elements.info, cap * sizeof *queue->elements.info);
+    tmp = ccord_realloc(queue->elements.info, cap * sizeof *queue->elements.info);
     if (!tmp) return 0;
     if (queue->elements.info) {
       memset(tmp + queue->elements.cap * sizeof *queue->elements.info,
@@ -178,12 +179,12 @@ priority_queue_push(priority_queue *queue, void *key, void *val) {
     }
     queue->elements.info = tmp;
 
-    tmp = realloc(queue->elements.keys.arr, queue->elements.keys.size * cap);
+    tmp = ccord_realloc(queue->elements.keys.arr, queue->elements.keys.size * cap);
     if (!tmp) return 0;
     queue->elements.keys.arr = tmp;
-    
+
     if (queue->elements.vals.size) {
-      tmp = realloc(queue->elements.vals.arr, queue->elements.vals.size * cap);
+      tmp = ccord_realloc(queue->elements.vals.arr, queue->elements.vals.size * cap);
       if (!tmp) return 0;
       queue->elements.vals.arr = tmp;
     }
@@ -193,7 +194,7 @@ priority_queue_push(priority_queue *queue, void *key, void *val) {
 
   if (queue->queue.len == queue->queue.cap) {
     size_t cap = queue->queue.cap << 1;
-    void *tmp = realloc(queue->queue.arr, cap * sizeof *queue->queue.arr);
+    void *tmp = ccord_realloc(queue->queue.arr, cap * sizeof *queue->queue.arr);
     if (!tmp) return 0;
     queue->queue.arr = tmp;
     queue->queue.cap = cap;

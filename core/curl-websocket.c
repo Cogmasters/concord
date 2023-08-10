@@ -36,6 +36,7 @@
 #include <time.h>
 
 #include "curl-websocket-utils.c"
+#include "mem.h"
 
 #define STR_OR_EMPTY(p) (p != NULL ? p : "")
 
@@ -191,7 +192,7 @@ _cws_write(struct cws_data *priv, const void *buffer, size_t len)
      * extra space without realloc() (see _cws_send_data()).
      */
     //_cws_debug("WRITE", buffer, len);
-    uint8_t *tmp = realloc(priv->send.buffer, priv->send.len + len);
+    uint8_t *tmp = ccord_realloc(priv->send.buffer, priv->send.len + len);
     if (!tmp)
         return false;
     memcpy(tmp + priv->send.len, buffer, len);
@@ -351,12 +352,12 @@ _cws_cleanup(struct cws_data *priv)
 
     curl_slist_free_all(priv->headers);
 
-    free(priv->websocket_protocols.requested);
-    free(priv->websocket_protocols.received);
-    free(priv->send.buffer);
-    free(priv->recv.current.payload);
-    free(priv->recv.fragmented.payload);
-    free(priv);
+    ccord_free(priv->websocket_protocols.requested);
+    ccord_free(priv->websocket_protocols.received);
+    ccord_free(priv->send.buffer);
+    ccord_free(priv->recv.current.payload);
+    ccord_free(priv->recv.fragmented.payload);
+    ccord_free(priv);
 
     curl_easy_cleanup(easy);
 }
@@ -395,14 +396,14 @@ cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, siz
         reason_text_len = strlen(reason_text);
 
     len = sizeof(uint16_t) + reason_text_len;
-    p = malloc(len);
+    p = ccord_malloc(len);
     memcpy(p, &r, sizeof(uint16_t));
     _cws_hton(p, sizeof(uint16_t));
     if (reason_text_len)
         memcpy(p + sizeof(uint16_t), reason_text, reason_text_len);
 
     ret = _cws_send(priv, CWS_OPCODE_CLOSE, p, len);
-    free(p);
+    ccord_free(p);
     priv->closed = true;
     return ret;
 }
@@ -431,9 +432,9 @@ static void
 _cws_check_protocol(struct cws_data *priv, const char *buffer, size_t len)
 {
     if (priv->websocket_protocols.received)
-        free(priv->websocket_protocols.received);
+        ccord_free(priv->websocket_protocols.received);
 
-    priv->websocket_protocols.received = malloc(len + 1);
+    priv->websocket_protocols.received = ccord_malloc(len + 1);
     memcpy(priv->websocket_protocols.received, buffer, len);
     priv->websocket_protocols.received[len] = '\0';
 }
@@ -519,7 +520,7 @@ _cws_receive_header(const char *buffer, size_t count, size_t nitems, void *data)
         priv->upgraded = false;
         priv->connection_websocket = false;
         if (priv->websocket_protocols.received) {
-            free(priv->websocket_protocols.received);
+            ccord_free(priv->websocket_protocols.received);
             priv->websocket_protocols.received = NULL;
         }
         return len;
@@ -750,7 +751,7 @@ _cws_process_frame(struct cws_data *priv, const char *buffer, size_t len)
             if (priv->recv.fragmented.opcode == 0)
                 cws_close(priv->easy, CWS_CLOSE_REASON_PROTOCOL_ERROR, "nothing to continue", SIZE_MAX);
             if (priv->recv.current.payload)
-                free(priv->recv.current.payload);
+                ccord_free(priv->recv.current.payload);
 
             priv->recv.current.payload = priv->recv.fragmented.payload;
             priv->recv.current.used = priv->recv.fragmented.used;
@@ -765,7 +766,7 @@ _cws_process_frame(struct cws_data *priv, const char *buffer, size_t len)
         if (frame_len > 0) {
             void *tmp;
 
-            tmp = realloc(priv->recv.current.payload,
+            tmp = ccord_realloc(priv->recv.current.payload,
                           priv->recv.current.total + frame_len + 1);
             if (!tmp) {
                 cws_close(priv->easy, CWS_CLOSE_REASON_TOO_BIG, NULL, 0);
@@ -853,7 +854,7 @@ _cws_send_data(char *buffer, size_t count, size_t nitems, void *data)
                 priv->send.buffer + todo,
                 priv->send.len - todo);
     } else {
-        free(priv->send.buffer);
+        ccord_free(priv->send.buffer);
         priv->send.buffer = NULL;
     }
 
@@ -902,7 +903,7 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
     if (!easy)
         return NULL;
 
-    priv = calloc(1, sizeof(struct cws_data));
+    priv = ccord_calloc(1, sizeof(struct cws_data));
     priv->easy = easy;
     curl_easy_setopt(easy, CURLOPT_PRIVATE, priv);
     curl_easy_setopt(easy, CURLOPT_HEADERFUNCTION, _cws_receive_header);
@@ -920,14 +921,14 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
 
     /* curl doesn't support ws:// or wss:// scheme, rewrite to http/https */
     if (strncmp(url, "ws://", strlen("ws://")) == 0) {
-        tmp = malloc(strlen(url) - strlen("ws://") + strlen("http://") + 1);
+        tmp = ccord_malloc(strlen(url) - strlen("ws://") + strlen("http://") + 1);
         memcpy(tmp, "http://", strlen("http://"));
         memcpy(tmp + strlen("http://"),
                url + strlen("ws://"),
                strlen(url) - strlen("ws://") + 1);
         url = tmp;
     } else if (strncmp(url, "wss://", strlen("wss://")) == 0) {
-        tmp = malloc(strlen(url) - strlen("wss://") + strlen("https://") + 1);
+        tmp = ccord_malloc(strlen(url) - strlen("wss://") + strlen("https://") + 1);
         memcpy(tmp, "https://", strlen("https://"));
         memcpy(tmp + strlen("https://"),
                url + strlen("wss://"),
@@ -935,7 +936,7 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
         url = tmp;
     }
     curl_easy_setopt(easy, CURLOPT_URL, url);
-    free(tmp);
+    ccord_free(tmp);
 
     /*
      * BEGIN: work around CURL to get WebSocket:
@@ -985,7 +986,7 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
     priv->headers = curl_slist_append(priv->headers, _cws_fill_websocket_key(priv, key_header));
 
     if (websocket_protocols) {
-        char *tmp = malloc(strlen("Sec-WebSocket-Protocol: ") +
+        char *tmp = ccord_malloc(strlen("Sec-WebSocket-Protocol: ") +
                            strlen(websocket_protocols) + 1);
         memcpy(tmp,
                "Sec-WebSocket-Protocol: ",
@@ -995,8 +996,8 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
                strlen(websocket_protocols) + 1);
 
         priv->headers = curl_slist_append(priv->headers, tmp);
-        free(tmp);
-        priv->websocket_protocols.requested = strdup(websocket_protocols);
+        ccord_free(tmp);
+        priv->websocket_protocols.requested = ccord_strdup(websocket_protocols);
     }
 
     curl_easy_setopt(easy, CURLOPT_HTTPHEADER, priv->headers);
@@ -1048,11 +1049,11 @@ cws_add_header(CURL *easy, const char field[],  const char value[])
             abort();
         }
         if (field_len == p - node->data
-            && 0 == strncasecmp(node->data, field, field_len)) 
+            && 0 == strncasecmp(node->data, field, field_len))
         {
             if (strlen(node->data) < bufret) {
-                free(node->data);
-                node->data = strdup(buf);
+                ccord_free(node->data);
+                node->data = ccord_strdup(buf);
             }
             else {
                 memcpy(node->data, buf, bufret+1);

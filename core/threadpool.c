@@ -1,18 +1,18 @@
 /*
  * Copyright (c) 2016, Mathias Brossard <mathias@brossard.org>.
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *  1. Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *  2. Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
  *     documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,6 +36,7 @@
 #include <unistd.h>
 
 #include "threadpool.h"
+#include "mem.h"
 
 typedef enum {
     immediate_shutdown = 1,
@@ -103,7 +104,7 @@ threadpool_t *threadpool_create(int thread_count, int queue_size, int flags)
         return NULL;
     }
 
-    if((pool = (threadpool_t *)malloc(sizeof(threadpool_t))) == NULL) {
+    if((pool = (threadpool_t *)ccord_malloc(sizeof(threadpool_t))) == NULL) {
         goto err;
     }
 
@@ -114,8 +115,8 @@ threadpool_t *threadpool_create(int thread_count, int queue_size, int flags)
     pool->shutdown = pool->started = 0;
 
     /* Allocate thread and task queue */
-    pool->threads = (pthread_t *)malloc(sizeof(pthread_t) * thread_count);
-    pool->queue = (threadpool_task_t *)malloc
+    pool->threads = (pthread_t *)ccord_malloc(sizeof(pthread_t) * thread_count);
+    pool->queue = (threadpool_task_t *)ccord_malloc
         (sizeof(threadpool_task_t) * queue_size);
 
     /* Initialize mutex and conditional variable first */
@@ -248,9 +249,9 @@ int threadpool_free(threadpool_t *pool)
 
     /* Did we manage to allocate ? */
     if(pool->threads) {
-        free(pool->threads);
-        free(pool->queue);
- 
+        ccord_free(pool->threads);
+        ccord_free(pool->queue);
+
         /* Because we allocate pool->threads after initializing the
            mutex and condition variable, we're sure they're
            initialized. Let's lock the mutex just in case. */
@@ -258,7 +259,7 @@ int threadpool_free(threadpool_t *pool)
         pthread_mutex_destroy(&(pool->lock));
         pthread_cond_destroy(&(pool->notify));
     }
-    free(pool);    
+    ccord_free(pool);
     return 0;
 }
 

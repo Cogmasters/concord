@@ -866,7 +866,7 @@ _discord_on_voice_server_update(struct discord *client,
 void
 discord_voice_connections_init(struct discord *client)
 {
-    client->vcs = malloc(DISCORD_MAX_VCS * sizeof *client->vcs);
+    client->vcs = ccord_malloc(DISCORD_MAX_VCS * sizeof *client->vcs);
     for (int i = 0; i < DISCORD_MAX_VCS; ++i)
         client->vcs[i].p_voice_cbs = &client->voice_cbs;
 }
@@ -876,8 +876,8 @@ _discord_voice_cleanup(struct discord_voice *vc)
 {
     if (vc->mhandle) curl_multi_cleanup(vc->mhandle);
     if (vc->ws) ws_cleanup(vc->ws);
-    if (vc->parse.pairs) free(vc->parse.pairs);
-    if (vc->parse.tokens) free(vc->parse.tokens);
+    if (vc->parse.pairs) ccord_free(vc->parse.pairs);
+    if (vc->parse.tokens) ccord_free(vc->parse.tokens);
 }
 
 void
@@ -885,7 +885,7 @@ discord_voice_connections_cleanup(struct discord *client)
 {
     for (int i = 0; i < DISCORD_MAX_VCS; ++i)
         _discord_voice_cleanup(&client->vcs[i]);
-    free(client->vcs);
+    ccord_free(client->vcs);
 }
 
 void

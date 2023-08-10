@@ -8,6 +8,7 @@
 
 #include "logconf.h"
 #include "cog-utils.h"
+#include "mem.h"
 
 #define JSMN_STRICT
 #define JSMN_HEADER
@@ -159,13 +160,13 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     ASSERT_S((size_t)ret < sizeof(conf->id), "Out of bounds write attempt");
 
     conf->pid = getpid();
-    conf->counter = calloc(1, sizeof *conf->counter);
-    conf->L = calloc(1, sizeof *conf->L);
+    conf->counter = ccord_calloc(1, sizeof *conf->counter);
+    conf->L = ccord_calloc(1, sizeof *conf->L);
 
     if (!fp) return;
 
-    conf->logger = calloc(1, sizeof *conf->logger);
-    conf->http = calloc(1, sizeof *conf->http);
+    conf->logger = ccord_calloc(1, sizeof *conf->logger);
+    conf->http = ccord_calloc(1, sizeof *conf->http);
 
     file = cog_load_whole_file_fp(fp, &fsize);
 
@@ -212,7 +213,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                     int i = 0;
 
                     conf->disable_modules.ids =
-                        malloc(f1->size * sizeof(char *));
+                        ccord_malloc(f1->size * sizeof(char *));
                     for (i = 0; i < f1->size; ++i) {
                         jsmnf_pair *f2 = f1->fields + i;
 
@@ -220,7 +221,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                             const size_t length = f2->v.len + 1;
                             char *buf;
 
-                            buf = malloc(length);
+                            buf = ccord_malloc(length);
                             memcpy(buf, file + f2->v.pos, f2->v.len);
                             buf[f2->v.len] = '\0';
 
@@ -241,7 +242,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     /* SET LOGGER CONFIGS */
     if (*l.filename) {
-        conf->logger->fname = strdup(l.filename);
+        conf->logger->fname = ccord_strdup(l.filename);
         conf->logger->f =
             fopen(conf->logger->fname, l.overwrite ? "w+" : "a+");
         ASSERT_S(NULL != conf->logger->f, "Could not create logger file");
@@ -253,7 +254,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     /* SET HTTP DUMP CONFIGS */
     if (l.http.enable && *l.http.filename) {
-        conf->http->fname = strdup(l.http.filename);
+        conf->http->fname = ccord_strdup(l.http.filename);
         conf->http->f = fopen(conf->http->fname, l.overwrite ? "w+" : "a+");
         ASSERT_S(NULL != conf->http->f, "Could not create http logger file");
     }
@@ -295,27 +296,27 @@ logconf_cleanup(struct logconf *conf)
 {
     if (!conf->is_branch) {
         if (conf->file.start) {
-            free(conf->file.start);
+            ccord_free(conf->file.start);
         }
         if (conf->logger) {
-            if (conf->logger->fname) free(conf->logger->fname);
+            if (conf->logger->fname) ccord_free(conf->logger->fname);
             if (conf->logger->f) fclose(conf->logger->f);
-            free(conf->logger);
+            ccord_free(conf->logger);
         }
         if (conf->http) {
-            if (conf->http->fname) free(conf->http->fname);
+            if (conf->http->fname) ccord_free(conf->http->fname);
             if (conf->http->f) fclose(conf->http->f);
-            free(conf->http);
+            ccord_free(conf->http);
         }
         if (conf->disable_modules.ids) {
             int i;
 
             for (i = 0; i < conf->disable_modules.size; ++i)
-                free(conf->disable_modules.ids[i]);
-            free(conf->disable_modules.ids);
+                ccord_free(conf->disable_modules.ids[i]);
+            ccord_free(conf->disable_modules.ids);
         }
-        free(conf->counter);
-        free(conf->L);
+        ccord_free(conf->counter);
+        ccord_free(conf->L);
     }
     memset(conf, 0, sizeof *conf);
 }

@@ -29,7 +29,7 @@
 /* chash heap-mode (auto-increase hashtable) */
 #define COMMANDS_TABLE_HEAP              1
 #define COMMANDS_TABLE_BUCKET            struct _discord_message_commands_entry
-#define COMMANDS_TABLE_FREE_KEY(_key)    free((_key).start)
+#define COMMANDS_TABLE_FREE_KEY(_key)    ccord_free((_key).start)
 #define COMMANDS_TABLE_HASH(_key, _hash) _key_hash(_key, _hash)
 #define COMMANDS_TABLE_FREE_VALUE(_value)
 #define COMMANDS_TABLE_COMPARE(_cmp_a, _cmp_b) _key_compare(_cmp_a, _cmp_b)
@@ -60,7 +60,7 @@ discord_message_commands_init(struct discord_message_commands *cmds,
 void
 discord_message_commands_cleanup(struct discord_message_commands *cmds)
 {
-    if (cmds->prefix.start) free(cmds->prefix.start);
+    if (cmds->prefix.start) ccord_free(cmds->prefix.start);
     __chash_free(cmds, COMMANDS_TABLE);
 }
 
@@ -105,7 +105,7 @@ discord_message_commands_set_prefix(struct discord_message_commands *cmds,
                                     const char prefix[],
                                     size_t length)
 {
-    if (cmds->prefix.start) free(cmds->prefix.start);
+    if (cmds->prefix.start) ccord_free(cmds->prefix.start);
 
     cmds->prefix.size = cog_strndup(prefix, length, &cmds->prefix.start);
 }
@@ -114,7 +114,7 @@ static void
 _discord_message_cleanup_v(void *p_message)
 {
     discord_message_cleanup(p_message);
-    free(p_message);
+    ccord_free(p_message);
 }
 
 /** return true in case user command has been triggered */
@@ -132,7 +132,7 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
                     cmds->prefix.size))
     {
         struct discord *client = CLIENT(cmds, commands);
-        struct discord_message *event_data = calloc(1, sizeof *event_data);
+        struct discord_message *event_data = ccord_calloc(1, sizeof *event_data);
         discord_ev_message callback = NULL;
         struct ccord_szbuf command;
         char *tmp;

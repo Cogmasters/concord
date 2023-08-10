@@ -12,6 +12,7 @@
 
 #include "io_poller.h"
 #include "cog-utils.h"
+#include "mem.h"
 
 struct io_curlm {
     CURLM *multi;
@@ -56,11 +57,11 @@ on_io_poller_wakeup(struct io_poller *io,
 struct io_poller *
 io_poller_create(void)
 {
-    struct io_poller *io = calloc(1, sizeof *io);
+    struct io_poller *io = ccord_calloc(1, sizeof *io);
     if (io) {
         io->cap = 0x10;
-        io->elements = calloc(io->cap, sizeof *io->elements);
-        io->pollfds = calloc(io->cap, sizeof *io->pollfds);
+        io->elements = ccord_calloc(io->cap, sizeof *io->elements);
+        io->pollfds = ccord_calloc(io->cap, sizeof *io->pollfds);
         if (io->elements && io->pollfds) {
             if (0 == pipe(io->wakeup_fds)) {
                 int flags = fcntl(io->wakeup_fds[0], F_GETFL);
@@ -73,9 +74,9 @@ io_poller_create(void)
                 return io;
             }
         }
-        free(io->elements);
-        free(io->pollfds);
-        free(io);
+        ccord_free(io->elements);
+        ccord_free(io->pollfds);
+        ccord_free(io);
     }
     return NULL;
 }
@@ -86,13 +87,13 @@ io_poller_destroy(struct io_poller *io)
     close(io->wakeup_fds[0]);
     close(io->wakeup_fds[1]);
     for (int i = 0; i < io->curlm_cnt; i++) {
-        free(io->curlm[i]->fds);
-        free(io->curlm[i]);
+        ccord_free(io->curlm[i]->fds);
+        ccord_free(io->curlm[i]);
     }
-    free(io->curlm);
-    free(io->elements);
-    free(io->pollfds);
-    free(io);
+    ccord_free(io->curlm);
+    ccord_free(io->elements);
+    ccord_free(io->pollfds);
+    ccord_free(io);
 }
 
 void
@@ -166,11 +167,11 @@ io_poller_socket_add(struct io_poller *io,
         size_t cap = io->cap << 1;
         void *tmp;
 
-        tmp = realloc(io->pollfds, cap * sizeof *io->pollfds);
+        tmp = ccord_realloc(io->pollfds, cap * sizeof *io->pollfds);
         if (!tmp) return false;
         io->pollfds = tmp;
 
-        tmp = realloc(io->elements, cap * sizeof *io->elements);
+        tmp = ccord_realloc(io->elements, cap * sizeof *io->elements);
         if (!tmp) return false;
         io->elements = tmp;
 
@@ -259,7 +260,7 @@ curl_socket_cb(
         if (io_curlm->fds_cnt == io_curlm->fds_cap) {
             int cap = io_curlm->fds_cap << 1;
             if (!cap) cap = 8;
-            void *tmp = realloc(io_curlm->fds, cap * sizeof *io_curlm->fds);
+            void *tmp = ccord_realloc(io_curlm->fds, cap * sizeof *io_curlm->fds);
             if (tmp) {
                 io_curlm->fds = tmp;
                 io_curlm->fds_cap = cap;
@@ -305,13 +306,13 @@ io_poller_curlm_add(struct io_poller *io,
     if (io->curlm_cnt == io->curlm_cap) {
         size_t cap = io->curlm_cap << 1;
         if (!cap) cap = 8;
-        void *tmp = realloc(io->curlm, cap * sizeof *io->curlm);
+        void *tmp = ccord_realloc(io->curlm, cap * sizeof *io->curlm);
         if (!tmp) return false;
         io->curlm = tmp;
         io->curlm_cap = cap;
     }
 
-    if (!(io_curlm = calloc(1, sizeof *io_curlm))) return false;
+    if (!(io_curlm = ccord_calloc(1, sizeof *io_curlm))) return false;
     io->curlm[io->curlm_cnt++] = io_curlm;
     io_curlm->io_poller = io;
     io_curlm->multi = multi;
@@ -337,12 +338,12 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
             int fds_cnt = io->curlm[i]->fds_cnt;
             for (int i = 0; i < fds_cnt; i++)
                 io_poller_socket_del(io, fds[i]);
-            free(fds);
+            ccord_free(fds);
             curl_multi_setopt(multi, CURLMOPT_TIMERFUNCTION, NULL);
             curl_multi_setopt(multi, CURLMOPT_TIMERDATA, NULL);
             curl_multi_setopt(multi, CURLMOPT_SOCKETFUNCTION, NULL);
             curl_multi_setopt(multi, CURLMOPT_SOCKETDATA, NULL);
-            free(io->curlm[i]);
+            ccord_free(io->curlm[i]);
             memmove(&io->curlm[i], &io->curlm[i + 1],
                     (--io->curlm_cnt - i) * sizeof *io->curlm);
             return true;

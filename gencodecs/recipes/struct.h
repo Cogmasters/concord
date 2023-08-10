@@ -4,10 +4,10 @@
 #define CLEANUP_STRUCT_PTR(_var, _type)                                       \
     if (_var) {                                                               \
         _type##_cleanup(_var);                                                \
-        free(_var);                                                           \
+        ccord_free(_var);                                                           \
     }
 #define CLEANUP_PTR(_var, _type)                                              \
-    if (_var) free(_var)
+    if (_var) ccord_free(_var)
 
 #ifdef GENCODECS_DATA
 #ifdef GENCODECS_HEADER

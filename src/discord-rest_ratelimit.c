@@ -17,7 +17,7 @@
 #define RATELIMITER_TABLE_BUCKET struct _discord_route
 #define RATELIMITER_TABLE_FREE_KEY(_key)
 #define RATELIMITER_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
-#define RATELIMITER_TABLE_FREE_VALUE(_value) free(_value)
+#define RATELIMITER_TABLE_FREE_VALUE(_value) ccord_free(_value)
 #define RATELIMITER_TABLE_COMPARE(_cmp_a, _cmp_b)                             \
     chash_string_compare(_cmp_a, _cmp_b)
 #define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
@@ -123,7 +123,7 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
                      const struct ua_szbuf_readonly *hash,
                      const long limit)
 {
-    struct discord_bucket *b = calloc(1, sizeof *b);
+    struct discord_bucket *b = ccord_calloc(1, sizeof *b);
     int len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
                        hash->start);
     ASSERT_NOT_OOB(len, sizeof(b->hash));
@@ -149,7 +149,7 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
     logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
 
     /* global ratelimiting */
-    rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp);
+    rl->global_wait_tstamp = ccord_calloc(1, sizeof *rl->global_wait_tstamp);
 
     /* initialize 'singleton' buckets */
     rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
@@ -186,7 +186,7 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
         if (CHASH_FILLED == r->state)
             _discord_bucket_cancel_all(rl, r->bucket);
     }
-    free(rl->global_wait_tstamp);
+    ccord_free(rl->global_wait_tstamp);
     __chash_free(rl, RATELIMITER_TABLE);
 }
 

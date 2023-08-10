@@ -24,7 +24,7 @@ main(int argc, char *argv[])
     while (-1 != (opt = getopt(argc, argv, "i:t:"))) {
         switch (opt) {
         case 't':
-            webhook_token = strdup(optarg);
+            webhook_token = ccord_strdup(optarg);
             break;
         case 'i':
             webhook_id = strtoull(optarg, NULL, 10);
@@ -60,7 +60,7 @@ main(int argc, char *argv[])
                                 &ret);
     }
 
-    free(webhook_token);
+    ccord_free(webhook_token);
     discord_cleanup(client);
     ccord_global_cleanup();
 

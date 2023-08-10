@@ -10,6 +10,7 @@
 #include "user-agent.h"
 #include "cog-utils.h"
 #include "queue.h"
+#include "mem.h"
 
 #define CURLE_LOG(conn, ecode)                                                \
     logconf_fatal(&conn->ua->conf, "(CURLE code: %d) %s", ecode,              \
@@ -235,9 +236,9 @@ ua_conn_add_header(struct ua_conn *conn,
                 /* FIXME: For some reason, cygwin builds will abort on this
                  * free() */
 #ifndef __CYGWIN__
-                free(node->data);
+                ccord_free(node->data);
 #endif
-                node->data = strdup(buf);
+                node->data = ccord_strdup(buf);
             }
             else {
                 memcpy(node->data, buf, buflen + 1);
@@ -277,8 +278,8 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
                 /* FIXME: For some reason, cygwin builds will abort on this
                  * free() */
 #ifndef __CYGWIN__
-            free(node->data);
-            free(node);
+            ccord_free(node->data);
+            ccord_free(node);
 #endif
             return;
         }
@@ -346,7 +347,7 @@ _ua_conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
     /* increase reusable header buffer only if necessary */
     if (header->bufsize < (header->len + bufsize + 1)) {
         header->bufsize = header->len + bufsize + 1;
-        header->buf = realloc(header->buf, header->bufsize);
+        header->buf = ccord_realloc(header->buf, header->bufsize);
     }
     memcpy(&header->buf[header->len], start, bufsize);
 
@@ -386,7 +387,7 @@ _ua_conn_respbody_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
     /* increase response body memory block size only if necessary */
     if (body->bufsize < (body->len + bufchunksize + 1)) {
         body->bufsize = body->len + bufchunksize + 1;
-        body->buf = realloc(body->buf, body->bufsize);
+        body->buf = ccord_realloc(body->buf, body->bufsize);
     }
     memcpy(&body->buf[body->len], buf, bufchunksize);
 
@@ -419,7 +420,7 @@ _ua_conn_init(struct user_agent *ua)
 {
     static const char *user_agent =
         "Cogmasters (https://github.com/Cogmasters)";
-    struct ua_conn *new_conn = calloc(1, sizeof(struct ua_conn));
+    struct ua_conn *new_conn = ccord_calloc(1, sizeof(struct ua_conn));
     CURL *new_ehandle = curl_easy_init();
 
     /* default user agent */
@@ -460,9 +461,9 @@ _ua_conn_cleanup(struct ua_conn *conn)
 {
     ua_info_cleanup(&conn->info);
     curl_easy_cleanup(conn->ehandle);
-    if (conn->url.start) free(conn->url.start);
+    if (conn->url.start) ccord_free(conn->url.start);
     if (conn->header) curl_slist_free_all(conn->header);
-    free(conn);
+    ccord_free(conn);
 }
 
 struct ua_conn *
@@ -556,11 +557,11 @@ ua_conn_stop(struct ua_conn *conn)
 struct user_agent *
 ua_init(struct ua_attr *attr)
 {
-    struct user_agent *new_ua = calloc(1, sizeof *new_ua);
+    struct user_agent *new_ua = ccord_calloc(1, sizeof *new_ua);
 
     logconf_branch(&new_ua->conf, attr ? attr->conf : NULL, "USER_AGENT");
 
-    new_ua->connq = calloc(1, sizeof *new_ua->connq);
+    new_ua->connq = ccord_calloc(1, sizeof *new_ua->connq);
     QUEUE_INIT(&new_ua->connq->idle);
     QUEUE_INIT(&new_ua->connq->busy);
 
@@ -591,16 +592,16 @@ ua_cleanup(struct user_agent *ua)
         }
     }
     pthread_mutex_destroy(&ua->connq->lock);
-    free(ua->connq);
+    ccord_free(ua->connq);
 
     /* cleanup logging module */
     logconf_cleanup(&ua->conf);
 
     /* cleanup base URL */
-    if (ua->base_url.start) free(ua->base_url.start);
+    if (ua->base_url.start) ccord_free(ua->base_url.start);
 
     /* cleanup User-Agent handle */
-    free(ua);
+    ccord_free(ua);
 }
 
 const char *
@@ -612,7 +613,7 @@ ua_get_url(struct user_agent *ua)
 void
 ua_set_url(struct user_agent *ua, const char base_url[])
 {
-    if (ua->base_url.start) free(ua->base_url.start);
+    if (ua->base_url.start) ccord_free(ua->base_url.start);
     ua->base_url.size =
         cog_strndup(base_url, strlen(base_url), &ua->base_url.start);
 }
@@ -706,7 +707,7 @@ _ua_conn_set_url(struct ua_conn *conn, char base_url[], char endpoint[])
 
     /* increase buffer length if necessary */
     if (size > conn->url.size) {
-        void *tmp = realloc(conn->url.start, size);
+        void *tmp = ccord_realloc(conn->url.start, size);
         ASSERT_S(NULL != tmp, "Couldn't increase buffer's length");
 
         conn->url.start = tmp;
@@ -868,8 +869,8 @@ ua_easy_run(struct user_agent *ua,
 void
 ua_info_cleanup(struct ua_info *info)
 {
-    if (info->body.buf) free(info->body.buf);
-    if (info->header.buf) free(info->header.buf);
+    if (info->body.buf) ccord_free(info->body.buf);
+    if (info->header.buf) ccord_free(info->header.buf);
     memset(info, 0, sizeof(struct ua_info));
 }
 

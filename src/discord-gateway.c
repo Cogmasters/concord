@@ -547,12 +547,12 @@ discord_gateway_init(struct discord_gateway *gw,
     gw->ws = ws_init(&cbs, gw->mhandle, &attr);
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
-    gw->timer = calloc(1, sizeof *gw->timer);
+    gw->timer = ccord_calloc(1, sizeof *gw->timer);
     ASSERT_S(!pthread_rwlock_init(&gw->timer->rwlock, NULL),
              "Couldn't initialize Gateway's rwlock");
 
     /* client connection status */
-    gw->session = calloc(1, sizeof *gw->session);
+    gw->session = ccord_calloc(1, sizeof *gw->session);
     gw->session->retry.enable = true;
     /* default infinite retries TODO: configurable */
     gw->session->retry.limit = -1;
@@ -563,12 +563,12 @@ discord_gateway_init(struct discord_gateway *gw,
     /* connection identify token */
     gw->id.token = (char *)token;
     /* connection identify properties */
-    gw->id.properties = calloc(1, sizeof *gw->id.properties);
+    gw->id.properties = ccord_calloc(1, sizeof *gw->id.properties);
     gw->id.properties->os = OSNAME;
     gw->id.properties->browser = "concord";
     gw->id.properties->device = "concord";
     /* the bot initial presence */
-    gw->id.presence = calloc(1, sizeof *gw->id.presence);
+    gw->id.presence = ccord_calloc(1, sizeof *gw->id.presence);
     gw->id.presence->status = "online";
     gw->id.presence->since = cog_timestamp_ms();
 
@@ -590,14 +590,14 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     ws_cleanup(gw->ws);
     /* cleanup timers */
     pthread_rwlock_destroy(&gw->timer->rwlock);
-    free(gw->timer);
+    ccord_free(gw->timer);
     /* cleanup bot identification */
-    free(gw->id.properties);
-    free(gw->id.presence);
+    ccord_free(gw->id.properties);
+    ccord_free(gw->id.presence);
     /* cleanup client session */
-    free(gw->session);
-    if (gw->payload.json.pairs) free(gw->payload.json.pairs);
-    if (gw->payload.json.tokens) free(gw->payload.json.tokens);
+    ccord_free(gw->session);
+    if (gw->payload.json.pairs) ccord_free(gw->payload.json.pairs);
+    if (gw->payload.json.tokens) ccord_free(gw->payload.json.tokens);
 }
 
 #ifdef CCORD_DEBUG_WEBSOCKETS
@@ -742,11 +742,11 @@ discord_gateway_start(struct discord_gateway *gw)
                                                json.size))
     {
         logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
-        free(json.start);
+        ccord_free(json.start);
 
         return CCORD_DISCORD_BAD_AUTH;
     }
-    free(json.start);
+    ccord_free(json.start);
 
     if (!gw->session->start_limit.remaining) {
         logconf_fatal(&gw->conf,

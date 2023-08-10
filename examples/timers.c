@@ -52,7 +52,7 @@ use_same_function(struct discord *client, struct discord_timer *timer)
 
     if (timer->flags & DISCORD_TIMER_DELETE) {
         puts("TIMER DELETED - FREEING DATA");
-        free(timer->data);
+        ccord_free(timer->data);
     }
 }
 
@@ -72,10 +72,10 @@ main(int argc, char *argv[])
     discord_timer_interval(client, on_timer_tick, on_timer_status_changed,
                            NULL, 0, 1000, 10);
 
-    discord_timer(client, use_same_function, use_same_function, malloc(1024),
+    discord_timer(client, use_same_function, use_same_function, ccord_malloc(1024),
                   1000);
     unsigned id_to_cancel = discord_timer(
-        client, use_same_function, use_same_function, malloc(1024), 1000);
+        client, use_same_function, use_same_function, ccord_malloc(1024), 1000);
     discord_timer_cancel(client, id_to_cancel);
 
     discord_run(client);

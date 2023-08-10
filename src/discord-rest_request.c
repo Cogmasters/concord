@@ -8,16 +8,16 @@
 static struct discord_request *
 _discord_request_init(void)
 {
-    return calloc(1, sizeof(struct discord_request));
+    return ccord_calloc(1, sizeof(struct discord_request));
 }
 
 static void
 _discord_request_cleanup(struct discord_request *req)
 {
     discord_attachments_cleanup(&req->attachments);
-    if (req->body.start) free(req->body.start);
-    if (req->reason) free(req->reason);
-    free(req);
+    if (req->body.start) ccord_free(req->body.start);
+    if (req->reason) ccord_free(req->reason);
+    ccord_free(req);
 }
 
 static void
@@ -46,12 +46,12 @@ discord_requestor_init(struct discord_requestor *rqtor,
 
     /* queues are malloc'd to guarantee a client cloned by
      * discord_clone() will share the same queue with the original */
-    rqtor->queues = malloc(sizeof *rqtor->queues);
+    rqtor->queues = ccord_malloc(sizeof *rqtor->queues);
     QUEUE_INIT(&rqtor->queues->recycling);
     QUEUE_INIT(&rqtor->queues->pending);
     QUEUE_INIT(&rqtor->queues->finished);
 
-    rqtor->qlocks = malloc(sizeof *rqtor->qlocks);
+    rqtor->qlocks = ccord_malloc(sizeof *rqtor->qlocks);
     ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->recycling, NULL),
              "Couldn't initialize requestor's recycling queue mutex");
     ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->pending, NULL),
@@ -91,13 +91,13 @@ discord_requestor_cleanup(struct discord_requestor *rqtor)
             _discord_request_cleanup(req);
         }
     }
-    free(rqtor->queues);
+    ccord_free(rqtor->queues);
 
     /* cleanup queue locks */
     pthread_mutex_destroy(&rqtor->qlocks->recycling);
     pthread_mutex_destroy(&rqtor->qlocks->pending);
     pthread_mutex_destroy(&rqtor->qlocks->finished);
-    free(rqtor->qlocks);
+    ccord_free(rqtor->qlocks);
 
     /* cleanup curl's multi handle */
     io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
@@ -396,7 +396,7 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                         req->response.data = req->dispatch.sync;
                     }
                     else {
-                        req->response.data = calloc(1, req->response.size);
+                        req->response.data = ccord_calloc(1, req->response.size);
                         discord_refcounter_add_internal(
                             &CLIENT(rqtor, rest.requestor)->refcounter,
                             req->response.data, req->response.cleanup, true);
@@ -535,7 +535,7 @@ _discord_attachments_dup(struct discord_attachments *dest,
             dest->array[i].size = src->array[i].size
                                       ? src->array[i].size
                                       : strlen(src->array[i].content) + 1;
-            dest->array[i].content = malloc(dest->array[i].size);
+            dest->array[i].content = ccord_malloc(dest->array[i].size);
             memcpy(dest->array[i].content, src->array[i].content,
                    dest->array[i].size);
         }
@@ -558,7 +558,7 @@ _discord_request_attributes_copy(struct discord_request *dest,
     dest->response = src->response;
     dest->attachments = src->attachments;
     if (src->reason) { /* request reason if included */
-        if (!dest->reason) dest->reason = calloc(DISCORD_MAX_REASON_LEN, 1);
+        if (!dest->reason) dest->reason = ccord_calloc(DISCORD_MAX_REASON_LEN, 1);
         snprintf(dest->reason, DISCORD_MAX_REASON_LEN, "%s", src->reason);
     }
     if (src->attachments.size)
@@ -606,7 +606,7 @@ discord_request_begin(struct discord_requestor *rqtor,
     req->method = method;
     if (body) {
         if (body->size > req->body.realsize) { /* buffer needs a resize */
-            void *tmp = realloc(req->body.start, body->size);
+            void *tmp = ccord_realloc(req->body.start, body->size);
             ASSERT_S(tmp != NULL, "Out of memory");
 
             req->body.start = tmp;
