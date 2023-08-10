@@ -205,7 +205,7 @@ _discord_cache_cleanup(struct discord *client)
         anomap_destroy(cache->msg_map);
         pthread_mutex_destroy(&cache->lock);
     }
-  ccord:free(data->caches);
+    ccord_free(data->caches);
     discord_internal_timer_ctl(client,
                                &(struct discord_timer){
                                    .id = data->garbage_collection_timer,
