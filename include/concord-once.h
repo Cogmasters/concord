@@ -42,15 +42,6 @@ CCORDcode ccord_global_init_memory(malloc_fn_t malloc_fn,
                                    free_fn_t free_fn,
                                    strdup_fn_t strdup_fn);
 
-/**
- * @brief Initialize global shared-resources and set custom memory
- * functions.
- *
- * @note This is an API for advanced use cases. Most users
- * should use `ccord_global_init`.
- *
- * @sa ccord_global_init
- */
 
 /** @brief Cleanup global shared-resources */
 void ccord_global_cleanup();
