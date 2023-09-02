@@ -1,8 +1,12 @@
+[logging_level]: screenshots/config.json_directives/logging_level.png
+[logging_quiet_false]: screenshots/config.json_directives/logging_quiet_false.png
+[logging_quiet_true]: screenshots/config.json_directives/logging_quiet_true.png
+[logging_use_colors_true]: screenshots/config.json_directives/logging_use_color_true.png
+[logging_use_colors_false]: screenshots/config.json_directives/logging_use_color_false.png
+
 # Getting the bot started
-
 ## config.json directives
-
-The `config.json` file is a configuration file that can be used to start your bots from. Since it's read at runtime, it is especially useful if you want to avoid having to recompile your bot application for each small configuration that gets added. This guide outlines some of the configuration options you can modify, and also how to add your own.
+The `config.json` file is a configuration file that can be used to set up your bot. It is read at runtime, so it can be modified without requiring you to recompile your bot application. This guide outlines some of the configuration options you can modify, and also how to add your own.
 
 ```json
 {
@@ -31,115 +35,81 @@ The `config.json` file is a configuration file that can be used to start your bo
 ### logging
 
 #### level
-
-  logging.level defines the type of log that will be used to log if you set quiet to false.
-
-  Screenshot of logging.level set as "debug"
-
-  ![Logging level screenshots](screenshots/config.json_directives/logging_level.png "Logging.level")
+Defines the logging level that will be shown by Concord
+![logging.level set as debug][logging_level]
 
 #### filename
-
-  This sets the file name of the file that you wish your log is saved into it.
+Name of the file that you wish your log to be saved to.
 
 #### quiet
+Disables the default concord logging.
 
-  That configuration disables the default concord logging.
+True: *(Concord's logging messages will disappear)*
+![logging.quiet set to true][logging_quiet_true]
 
-  Screenshot as example:
+False:
+![logging.quiet set to false][logging_quiet_false]
 
-  True:
-
-  ![Logging quiet screenshot false](screenshots/config.json_directives/logging_quiet_false.png "Logging.quiet false")
-
-  False (You can see the Concord's default logging messages disappear):
-
-  ![Logging quiet screenshot true](screenshots/config.json_directives/logging_quiet_true.png "Logging.quiet trut")
 
 #### overwrite
-
-  In case to avoid your logging files getting too big, you can set this to true so that whenever the bot logs in, Concord will empty the logging files.
+To avoid your logging files becoming too large, you can set this to true so that whenever the bot logs in, Concord will overwrite any existing logging file.
   
 #### use_color
+Adds colors to Concord's logging messages, so it will look better and you can see WARNS/ERRORS with ease.
 
-  This adds colors to Concord's logging messages, so it will look better and you can see WARNS/ERRORS with ease.
+Screenshots of logging.use_color set as true and set as false.
 
-  Screenshots of logging.use_color set as true and set as false.
+True:
+![logging.color set to true][logging_use_colors_true]
 
-  True:
-
-  ![Logging use_colors screenshot true](screenshots/config.json_directives/logging_use_color_true.png "Logging.use_colors true")
-
-  False:
-
-  ![Logging use_colors screenshot false](screenshots/config.json_directives/logging_use_color_false.png "Logging.use_colors false")
+False:
+![logging.color set to false][logging_use_colors_false]
 
 #### http.enable
-
-  Enables the capability to log all the information of the HTTP(s) requests made by Concord.
+Whether it should log HTTP(s) requests performed by Concord.
 
 #### http.filename
+The file to log the HTTP(s) requests to.
 
-  The filename of the file that will be used to save the information of the HTTP(s) requests.
+See `logging.http.enable` for more information.
 
-  See `logging.http.enable` for more information.
-
-  This will be obsolete if `logging.http.enable` is set to false.
+This will be obsolete if `logging.http.enable` is set to false.
 
 #### disable_modules
-  
-  Disables one of Concord's default logging instead of disabling all of them like logging.quiet.
+Concord's logging modules that should be disabled
 
-  Screenshots of disabling "WEBSOCKETS" and also not disabling any logging:
+Disabling `WEBSOCKETS`:
+![Logging disable_modules screenshot websockets](screenshots/config.json_directives/logging_disable_modules_websockets.png "Logging.disable_modules websockets")
 
-  Disabling "WEBSOCKETS":
-
-  ![Logging disable_modules screenshot websockets](screenshots/config.json_directives/logging_disable_modules_websockets.png "Logging.disable_modules websockets")
-
-  Not disabling any:
-
-  ![Logging disable_modules screenshot none](screenshots/config.json_directives/logging_disable_modules_none.png "Logging.disable_modules none")
+Not disabling any:
+![Logging disable_modules screenshot none](screenshots/config.json_directives/logging_disable_modules_none.png "Logging.disable_modules none")
 
 ### Discord
-
 #### token
-
-  The token that Concord will use to log in to the bot, in case you use the `discord_config_init` to define the `struct discord *client`.
+The client token that Concord will use to log in
 
 #### default_prefix.enable
-
-  Will enable the opportunity to set a default prefix.
-
-  See `discord.default_prefix.prefix` for more information.
+Enable a default command prefix for your bot
 
 #### default_prefix.prefix
-
-  Set a default prefix, so `discord_set_on_command` function can be used.
-
-  This will not work in case `discord.default_prefix.enable` is set to false.
+Set a default command prefix for your bot (this can be overridden by `discord_set_prefix()`)
 
 ## Observations
+You may also add custom fields to your config.json and then fetch them with the `discord_config_get_field()`:
+```c
+struct ccord_szbuf_readonly discord_config_get_field(struct discord *client, char *const path[], unsigned depth)
+```
+*This function will only work if you initialize your bot with the `discord_config_init()`!*
 
-  You can also put custom fields on your config.json and get its value with the `discord_config_get_field` function. See the following example.
+Fetching your custom fields:
+```c
+const char *fields[] = { "field", "foo" }; // suppose you added `field.foo` to your config.json
+struct ccord_szbuf_readonly value = discord_config_get_field(client, fields, sizeof(fields) / sizeof *fields);
 
-  ```c
-  char foo[16];
+char foo[16];
+snprintf(foo, sizeof(foo), "%.*s", (int)value.size, value.start);
 
-  struct ccord_szbuf_readonly value = discord_config_get_field(client, (char *[2]){ "field", "foo" }, 2);
-
-  snprintf(foo, sizeof(foo), "%.*s", (int)value.size, value.start);
-  ```
-
-  ```c
-  struct ccord_szbuf_readonly discord_config_get_field(struct discord *client, char *const path[], unsigned depth)
-  ```
-
-  Attention: this function will only work if you initialize your bot with the `discord_config_init`.
-
-  The first argument of `discord_config_get_field` is the `struct discord *client` that `discord_init`/`discord_config_init` (or also, in case the code is inside some kind of event, it might be on the event parameters) returns to you.
-
-  The second argument is a `const x[]` (also known as `array`) the path to the field where you want to get its value.
-
-  The third argument is an `int` value of the depth of the path, for example, if the path was `field -> another_field -> foo` it would be 3
+printf("%s\n", foo); // should print field.foo contents
+```
   
 *Written by [ThePedro](https://github.com/ThePedroo)*
