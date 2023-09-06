@@ -5,6 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-request.h"
+#include "queriec.h"
 
 CCORDcode
 discord_create_guild(struct discord *client,
@@ -182,19 +183,23 @@ discord_list_guild_members(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    if (params) {
-        int offset = 0;
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
 
+    if (params) {
+        int res;
+
+        char buf[32];
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "limit=%d", params->limit);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                       buf, sizeof(buf), "%d", params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->after) {
-            offset +=
-                snprintf(query + offset, sizeof(query) - (size_t)offset,
-                         "%safter=%" PRIu64, *query ? "&" : "", params->after);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
+                                       buf, sizeof(buf), "%" PRIu64,
+                                       params->after);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
     }
 
@@ -202,7 +207,7 @@ discord_list_guild_members(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/members%s%s", guild_id,
-                            *query ? "?" : "", query);
+                            query);
 }
 
 CCORDcode
@@ -216,23 +221,28 @@ discord_search_guild_members(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    if (params) {
-        int offset = 0;
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
 
+    if (params) {
+        int res;
+
+        char buf[32];
         if (params->query) {
             char *pe_query =
                 curl_escape(params->query, (int)strlen(params->query));
 
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "query=%s", pe_query);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "query",
+                                       sizeof("query"), buf, sizeof(buf), "%s",
+                                       pe_query);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
 
             curl_free(pe_query);
         }
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%slimit=%d", *query ? "&" : "", params->limit);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                       buf, sizeof(buf), "%d", params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
     }
 
@@ -240,7 +250,7 @@ discord_search_guild_members(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/members/search%s%s", guild_id,
-                            *query ? "?" : "", query);
+                            query);
 }
 
 CCORDcode
@@ -604,30 +614,35 @@ discord_get_guild_prune_count(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    if (params) {
-        int offset = 0;
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
 
+    if (params) {
+        int res;
+
+        char buf[1024];
         if (params->days) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "days=%d", params->days);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "days", sizeof("days"),
+                                       buf, sizeof(buf), "%d", params->days);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->include_roles && params->include_roles->size) {
-            int i = 0;
-
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%sinclude_roles=", *query ? "&" : "");
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            char roles[1024];
+            int i = 0, offset = 0;
 
             for (; i < params->include_roles->size - 1; ++i) {
-                offset +=
-                    snprintf(query + offset, sizeof(query) - (size_t)offset,
-                             "%" PRIu64 ",", params->include_roles->array[i]);
-                ASSERT_NOT_OOB(offset, sizeof(query));
+                offset += snprintf(roles + offset, sizeof(roles) - (size_t)offset,
+                                   "%" PRIu64 ",", params->include_roles->array[i]);
+                ASSERT_NOT_OOB(offset, sizeof(roles));
             }
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%" PRIu64, params->include_roles->array[i]);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            offset += snprintf(roles + offset, sizeof(roles) - (size_t)offset,
+                               "%" PRIu64 ",", params->include_roles->array[i]);
+            ASSERT_NOT_OOB(offset, sizeof(roles));
+
+            res = queriec_snprintf_add(&queriec, query, "include_roles",
+                                       sizeof("include_roles"), roles,
+                                       sizeof(roles), "%s", roles);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
     }
 
@@ -635,7 +650,7 @@ discord_get_guild_prune_count(struct discord *client,
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/prune%s%s", guild_id,
-                            *query ? "?" : "", query);
+                            query);
 }
 
 CCORDcode

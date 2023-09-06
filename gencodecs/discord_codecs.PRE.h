@@ -9,7 +9,7 @@ PP_INCLUDE("types.h")
 
 /* Custom JSON encoding macros */
 #define GENCODECS_JSON_ENCODER_PTR_json_char(b, buf, size, _var, _type)       \
-    if (0 > (code = jsonb_token(b, buf, size, _var, strlen(_var))))           \
+    if (0 > (code = jsonb_token(b, buf, size, _var, _var ? strlen(_var) : 0)))\
         return code
 #define GENCODECS_JSON_ENCODER_size_t(b, buf, size, _var, _type)              \
         {                                                                     \

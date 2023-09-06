@@ -13,6 +13,7 @@ OBJS = cog-utils.o      \
        anomap.o         \
        sha1.o           \
        threadpool.o     \
+       queriec.o        \
        cthreads.o
 
 WFLAGS  = -Wall -Wextra -Wpedantic

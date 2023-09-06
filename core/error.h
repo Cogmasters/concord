@@ -8,6 +8,8 @@
  *  @{ */
 
 typedef enum CCORDcode {
+    /** failure when creating request's payload */
+    CCORD_MALFORMED_PAYLOAD = -12,
     /** couldn't enqueue worker thread (queue is full) */
     CCORD_FULL_WORKER = -11,
     /** couldn't perform action because resource is unavailable */

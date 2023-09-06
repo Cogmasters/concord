@@ -343,15 +343,15 @@ PUB_STRUCT(discord_request_guild_members)
   /** string that username starts with, or an empty string to return all
    *    members */
     FIELD_PTR(query, char, *)
-  /** maximum numberof members to send matching the `query`; a limit of `0`
+  /** maximum number of members to send matching the `query`; a limit of `0`
    *    can be used with an empty string `query` to return all members */
-  COND_WRITE(self->query != NULL)
     FIELD(limit, int, 0)
-  COND_END
   /** used to specify if we want the presences of the matched members */
     FIELD(presences, bool, false)
   /** used to specify which users you wish to fetch */
+  COND_WRITE(self->user_ids != NULL)
     FIELD_STRUCT_PTR(user_ids, snowflakes, *)
+  COND_END
   /** nonce to identify the `Guild Members Chunk` response */
   COND_WRITE(self->nonce != NULL)
     FIELD_PTR(nonce, char, *)

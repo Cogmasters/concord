@@ -5,6 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-request.h"
+#include "queriec.h"
 
 CCORDcode
 discord_list_guild_scheduled_events(
@@ -142,31 +143,32 @@ discord_get_guild_scheduled_event_users(
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
 
-    if (params) {
-        int offset = 0;
+    struct queriec queriec;
+    queriec_init(&queriec, sizeof(query));
 
+    if (params) {
+        int res;
+
+        char buf[32];
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "limit=%d", params->limit);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                       buf, sizeof(buf), "%" PRIu64, params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->with_member) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%swith_member=%d", *query ? "&" : "",
-                               params->with_member);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "with_member", sizeof("with_member"),
+                                       buf, sizeof(buf), "%d", params->with_member);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->before) {
-            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
-                               "%sbefore=%" PRIu64, *query ? "&" : "",
-                               params->before);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
+                                       buf, sizeof(buf), "%" PRIu64, params->before);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
         if (params->after) {
-            offset +=
-                snprintf(query + offset, sizeof(query) - (size_t)offset,
-                         "%safter=%" PRIu64, *query ? "&" : "", params->after);
-            ASSERT_NOT_OOB(offset, sizeof(query));
+            res = queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
+                                       buf, sizeof(buf), "%" PRIu64, params->after);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
         }
     }
 
@@ -176,5 +178,5 @@ discord_get_guild_scheduled_event_users(
     return discord_rest_run(
         &client->rest, &attr, NULL, HTTP_GET,
         "/guilds/%" PRIu64 "/scheduled-events/%" PRIu64 "/users%s%s", guild_id,
-        guild_scheduled_event_id, *query ? "?" : "", query);
+        guild_scheduled_event_id, query);
 }

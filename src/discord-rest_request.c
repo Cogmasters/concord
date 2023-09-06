@@ -451,6 +451,10 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 static void
 _discord_request_send(void *p_rqtor, struct discord_request *req)
 {
+    static struct ua_szbuf_readonly hide_headers[] = {
+        { "Authorization", sizeof("Authorization") - 1 }
+    };
+
     struct discord_requestor *rqtor = p_rqtor;
     CURL *ehandle;
 
@@ -475,6 +479,10 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
                                  .body_size = req->body.size,
                                  .endpoint = req->endpoint,
                                  .base_url = NULL,
+                                 .log_filter = {
+                                    .headers = hide_headers,
+                                    .length = sizeof(hide_headers) / sizeof *hide_headers,
+                                 },
                              });
 
     /* link 'req' to 'ehandle' for easy retrieval */
