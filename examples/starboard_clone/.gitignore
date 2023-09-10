@@ -1,0 +1,6 @@
+*.o
+*.log
+*.db
+sbclone
+!README.md
+!src/

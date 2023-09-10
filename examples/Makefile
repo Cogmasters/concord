@@ -31,6 +31,8 @@ STD_BOTS   = 8ball \
              webhook \
              timers
 VOICE_BOTS = voice-join
+starboard:
+	make -C starboard_clone
 
 BOTS += $(STD_BOTS)
 
