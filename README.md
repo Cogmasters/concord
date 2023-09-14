@@ -111,8 +111,8 @@ The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl fro
 
 * Install **Cygwin**
 * **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
-* You will want to check the Windows tutorial [here](docs/WINDOWS.md)!
-* Mingw64 and Msys2 are currently NOT supported. Please see [this](docs/MSYS2_MINGW64.md) for more information.
+* You will want to check the Windows tutorial [here](docs/guides/compiling_on_windows.md)!
+* Mingw64 and Msys2 are currently NOT supported. Please see [this](docs/guides/msys2_and_mingw64.md) for more information.
 * Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.
 * Note: you will likely need to include `-L/usr/local/lib -I/usr/local/include` on your `gcc` command, or in your `CFLAGS` variable in your Makefile for your bot.
 
