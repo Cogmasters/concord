@@ -141,7 +141,7 @@ The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl fro
 #### FreeBSD
 
 ```console
-$ pkg install curl
+# pkg install curl
 ```
 
 #### OS X
