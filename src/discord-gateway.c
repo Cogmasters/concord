@@ -729,6 +729,8 @@ discord_gateway_start(struct discord_gateway *gw)
 {
     struct ccord_szbuf json = { 0 };
 
+    discord_gateway_init(gw, &gw->conf, CLIENT(gw, gw)->token); // lazy init
+
     if (gw->session->retry.attempt == gw->session->retry.limit) {
         logconf_fatal(&gw->conf,
                       "Failed reconnecting to Discord after %d tries",
@@ -783,6 +785,7 @@ bool
 discord_gateway_end(struct discord_gateway *gw)
 {
     ws_end(gw->ws);
+    discord_gateway_cleanup(gw);
 
     /* keep only resumable information */
     gw->session->status &= DISCORD_SESSION_RESUMABLE;

@@ -67,8 +67,6 @@ _discord_init(struct discord *new_client)
     discord_refcounter_init(&new_client->refcounter, &new_client->conf);
     discord_message_commands_init(&new_client->commands, &new_client->conf);
     discord_rest_init(&new_client->rest, &new_client->conf, new_client->token);
-    discord_gateway_init(&new_client->gw, &new_client->conf,
-                         new_client->token);
 #ifdef CCORD_VOICE
     discord_voice_connections_init(new_client);
 #endif
@@ -216,7 +214,6 @@ discord_cleanup(struct discord *client)
     else {
         discord_worker_join(client);
         discord_rest_cleanup(&client->rest);
-        discord_gateway_cleanup(&client->gw);
         discord_message_commands_cleanup(&client->commands);
 #ifdef CCORD_VOICE
         discord_voice_connections_cleanup(client);
