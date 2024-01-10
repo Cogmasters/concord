@@ -81,7 +81,6 @@ _ws_curl_tls_check(
     CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
 {
     struct websockets *ws = userp;
-    (void)handle;
     (void)data;
     (void)size;
 
@@ -92,9 +91,12 @@ _ws_curl_tls_check(
         && strstr(data, "close notify (256)"))
     {
         const char reason[] = "TLS ended connection with a close notify (256)";
+        const char *url = NULL, *method = NULL;
 
-        logconf_error(&ws->conf, "%s [@@@_%zu_@@@]", reason,
-                      ws->info.loginfo.counter);
+        curl_easy_getinfo(handle, CURLINFO_EFFECTIVE_URL, &url);
+
+        logconf_error(&ws->conf, "%s\nLast known URL: %s [@@@_%zu_@@@]",
+                      reason, url, ws->info.loginfo.counter);
 
         _ws_set_status(ws, WS_DISCONNECTED);
     }
@@ -416,6 +418,8 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
     curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, ws);
 
+    logconf_info(&ws->conf, "Initialized WebSockets handler");
+
     return new_ehandle;
 }
 
@@ -426,13 +430,6 @@ _ws_close(struct websockets *ws,
 {
     struct logconf_szbuf logheader = { "", 0 };
     struct logconf_szbuf logbody = { (char *)reason, strlen(reason) };
-
-    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
-                 logbody, "WS_SEND_CLOSE(%d)", code);
-
-    logconf_trace(&ws->conf,
-                  ANSICOLOR("SEND", ANSI_FG_GREEN) " CLOSE (%s) [@@@_%zu_@@@]",
-                  reason, ws->info.loginfo.counter);
 
     if (WS_DISCONNECTED == ws->status) {
         logconf_warn(
@@ -466,6 +463,13 @@ _ws_close(struct websockets *ws,
 
         return false;
     }
+
+    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
+                 logbody, "WS_SEND_CLOSE(%d)", code);
+
+    logconf_trace(&ws->conf,
+                  ANSICOLOR("SEND", ANSI_FG_GREEN) " CLOSE (%s) [@@@_%zu_@@@]",
+                  reason, ws->info.loginfo.counter);
 
     return true;
 }
