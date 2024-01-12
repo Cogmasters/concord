@@ -935,6 +935,7 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
         url = tmp;
     }
     curl_easy_setopt(easy, CURLOPT_URL, url);
+    curl_easy_setopt(easy, CURLOPT_PROXY, "");
     free(tmp);
 
     /*
