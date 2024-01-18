@@ -373,7 +373,7 @@ _ws_on_close(void *p_gw,
     default: /* websocket/clouflare opcodes */
         if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
             gw->session->status |= DISCORD_SESSION_RESUMABLE;
-            gw->session->retry.enable = false;
+            gw->session->retry.enable = true;
             break;
         }
         /* fall-through */

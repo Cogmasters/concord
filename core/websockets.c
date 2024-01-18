@@ -866,6 +866,13 @@ ws_close(struct websockets *ws,
          const char reason[],
          const size_t len)
 {
+    if (WS_DISCONNECTED == ws->status) {
+        logconf_warn(&ws->conf,
+                     "Attemped to close WebSockets connection already closed");
+
+        return;
+    }
+
     logconf_warn(&ws->conf,
                  "Attempting to close WebSockets connection with %s : %.*s",
                  ws_close_opcode_print(code), (int)len, reason);
