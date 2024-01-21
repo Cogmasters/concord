@@ -162,7 +162,7 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
                 "Client is already disconnected, skipping WS_DISCONNECT");
             break;
         }
-        else if (WS_DISCONNECTING == ws->status) {
+        else if (WS_DISCONNECTING != ws->status) {
             logconf_warn(&ws->conf,
                          "Abruptly changed status to WS_DISCONNECTED "
                          "(previous status: %s)",
