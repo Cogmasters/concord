@@ -99,6 +99,11 @@ _ws_curl_tls_check(
                       reason, url, ws->info.loginfo.counter);
 
         _ws_set_status(ws, WS_DISCONNECTED);
+
+        if (ws->cbs.on_close)
+          ws->cbs.on_close(ws->cbs.data, ws, &ws->info,
+                           WS_CLOSE_REASON_ABRUPTLY, reason, sizeof(reason) - 1);
+
     }
     return 0;
 }
