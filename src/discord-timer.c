@@ -126,18 +126,18 @@ _discord_timer_ctl_no_lock(struct discord *client,
     }
 }
 
-#define LOCK_TIMERS(timers)                                                   \
-    do {                                                                      \
-        cthreads_mutex_lock(&timers.lock);                                     \
-        if (timers.active.is_active                                           \
-            && !cthreads_equal(cthreads_self(), timers.active.thread))          \
-            cthreads_cond_wait(&timers.cond, &timers.lock);                    \
+#define LOCK_TIMERS(timers)                                                          \
+    do {                                                                             \
+        cthreads_mutex_lock(&timers.lock);                                           \
+        if (timers.active.is_active                                                  \
+            && !cthreads_thread_equal(cthreads_thread_self(), timers.active.thread)) \
+            cthreads_cond_wait(&timers.cond, &timers.lock);                          \
     } while (0);
 
 #define UNLOCK_TIMERS(timers)                                                 \
     do {                                                                      \
         bool should_wakeup = !timers.active.is_active;                        \
-        cthreads_mutex_unlock(&timers.lock);                                   \
+        cthreads_mutex_unlock(&timers.lock);                                  \
         if (should_wakeup) io_poller_wakeup(timers.io);                       \
     } while (0)
 
@@ -157,9 +157,9 @@ _discord_timer_ctl(struct discord *client,
     if (timer.flags & DISCORD_TIMER_DELETE) {                                 \
         priority_queue_del(timers->q, timer.id);                              \
         if (timer.on_status_changed) {                                        \
-            cthreads_mutex_unlock(&timers->lock);                              \
+            cthreads_mutex_unlock(&timers->lock);                             \
             timer.on_status_changed(client, &timer);                          \
-            cthreads_mutex_lock(&timers->lock);                                \
+            cthreads_mutex_lock(&timers->lock);                               \
         }                                                                     \
         timers->active.skip_update_phase = false;                             \
         continue;                                                             \
@@ -173,7 +173,7 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
 
     cthreads_mutex_lock(&timers->lock);
     timers->active.is_active = true;
-    timers->active.thread = cthreads_self();
+    timers->active.thread = cthreads_thread_self();
     struct discord_timer timer;
     timers->active.timer = &timer;
 

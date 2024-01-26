@@ -862,7 +862,7 @@ _discord_on_voice_server_update(struct discord *client,
         /** TODO: replace with a threadpool */
         if (cthreads_thread_create(&tid, NULL, &start_voice_ws_thread, vc, &targs))
             ERR("Couldn't create thread");
-        if (cthreads_thread_detach(&tid)) ERR("Couldn't detach thread");
+        if (cthreads_thread_detach(tid)) ERR("Couldn't detach thread");
     }
 }
 

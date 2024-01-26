@@ -1,3 +1,10 @@
+/*
+  Licensed under PerformanC's Custom license.
+  Available at licenses/LICENSE.performanc
+
+  https://github.com/PerformanC/CThreads
+*/
+
 #ifndef CTHREADS_H
 #define CTHREADS_H
 
@@ -7,85 +14,143 @@ struct cthreads_args {
 };
 
 #if _WIN32
-    #include <windows.h>
+  #include <windows.h>
 #else
-    #include <pthread.h>
+  #include <pthread.h>
+#endif
+
+#ifdef _WIN32
+  #define CTHREADS_THREAD_DWCREATIONFLAGS 1
+
+  #define CTHREADS_MUTEX_BINITIALOWNER 1
+  #define CTHREADS_MUTEX_LPNAME 1
+
+  #define CTHREADS_COND_BMANUALRESET 1
+  #define CTHREADS_COND_BINITIALSTATE 1
+  #define CTHREADS_COND_LPNAME 1
+
+  #define CTHREADS_RWLOCK 1
+#else
+  #define CTHREADS_THREAD_STACKADDR 1
+  #define CTHREADS_THREAD_DETACHSTATE 1
+  #define CTHREADS_THREAD_GUARDSIZE 1
+  #ifndef __ANDROID__
+    #define CTHREADS_THREAD_INHERITSCHED 1
+  #endif
+  #define CTHREADS_THREAD_SCHEDPOLICY 1
+  #define CTHREADS_THREAD_SCOPE 1
+  #if _POSIX_C_SOURCE >= 200112L
+    #define CTHREADS_THREAD_STACK 1
+  #endif
+
+  #define CTHREADS_MUTEX_PSHARED 1
+  #if _POSIX_C_SOURCE >= 200809L
+    #define CTHREADS_MUTEX_TYPE 1
+  #endif
+  #if _POSIX_C_SOURCE >= 200112L
+    #if (defined __linux__ || defined __FreeBSD__) && !defined __ANDROID__
+      #define CTHREADS_MUTEX_ROBUST 1
+    #endif
+  #endif
+  #ifndef __ANDROID__
+    #define CTHREADS_MUTEX_PROTOCOL 1
+    #define CTHREADS_MUTEX_PRIOCEILING 1
+  #endif
+
+  #define CTHREADS_COND_PSHARED 1
+  #if _POSIX_C_SOURCE >= 200112L
+    #define CTHREADS_COND_CLOCK 1
+  #endif
+
+  #if _POSIX_C_SOURCE >= 200112L
+    #define CTHREADS_RWLOCK 1
+  #endif
 #endif
 
 struct cthreads_thread {
-    #ifdef _WIN32
-        HANDLE wThread;
-    #else
-        pthread_t pThread;
-    #endif
+  #ifdef _WIN32
+    HANDLE wThread;
+  #else
+    pthread_t pThread;
+  #endif
 };
 
 struct cthreads_thread_attr {
-    size_t stacksize;
-    #ifdef _WIN32
-        int dwCreationFlags;
-    #else
-        void *stackaddr;
-        int detachstate;
-        size_t guardsize;
-        int inheritsched;
-        int schedpolicy;
-        int scope;
-        size_t stack;
+  size_t stacksize;
+  #ifdef _WIN32
+    int dwCreationFlags;
+  #else
+    void *stackaddr;
+    int detachstate;
+    size_t guardsize;
+    int inheritsched;
+    int schedpolicy;
+    int scope;
+    #ifdef CTHREADS_THREAD_STACK
+      size_t stack;
     #endif
+  #endif
 };
 
 struct cthreads_mutex {
-    #ifdef _WIN32
-        HANDLE wMutex;
-    #else
-        pthread_mutex_t pMutex;
-    #endif
+  #ifdef _WIN32
+    HANDLE wMutex;
+  #else
+    pthread_mutex_t pMutex;
+  #endif
 };
 
 struct cthreads_mutex_attr {
-    #ifdef _WIN32
-        int bInitialOwner;
-        char *lpName;
-    #else
-        int pshared;
-        int type;
-        #if (defined __linux__ || defined __FreeBSD__) && !defined __ANDROID__
-            int robust;
-        #endif
-        #if !defined __ANDROID__
-            int protocol;
-            int prioceiling;
-        #endif
+  #ifdef _WIN32
+    int bInitialOwner;
+    char *lpName;
+  #else
+    int pshared;
+    #ifdef CTHREADS_MUTEX_TYPE
+      int type;
     #endif
+    #ifdef CTHREADS_MUTEX_ROBUST
+      int robust;
+    #endif
+    #ifdef CTHREADS_MUTEX_PROTOCOL
+      int protocol;
+    #endif
+    #ifdef CTHREADS_MUTEX_PRIOCEILING
+      int prioceiling;
+    #endif
+  #endif
 };
 
 struct cthreads_cond {
-    #ifdef _WIN32
-        HANDLE wCond;
-    #else
-        pthread_cond_t pCond;
-    #endif
+  #ifdef _WIN32
+    HANDLE wCond;
+  #else
+    pthread_cond_t pCond;
+  #endif
 };
 
 struct cthreads_cond_attr {
-    #ifdef _WIN32
-        int bManualReset;
-        int bInitialState;
-        char *lpName;
-    #else
-        int pshared;
-        int clock;
+  #ifdef _WIN32
+    int bManualReset;
+    int bInitialState;
+    char *lpName;
+  #else
+    int pshared;
+    #ifdef CTHREADS_COND_CLOCK
+      int clock;
     #endif
+  #endif
 };
 
+#ifdef CTHREADS_RWLOCK
 struct cthreads_rwlock {
-    #ifdef _WIN32
-        HANDLE wRWLock;
-    #else
-        pthread_rwlock_t pRWLock;
-    #endif
+  #ifdef _WIN32
+    HANDLE wRWLock;
+  #else
+    pthread_rwlock_t pRWLock;
+  #endif
 };
+#endif
 
 /**
  * Creates a new thread.
@@ -108,10 +173,55 @@ int cthreads_thread_create(struct cthreads_thread *thread, struct cthreads_threa
  * - pthread: pthread_detach
  * - windows threads: CloseHandle
  *
- * @param thread Pointer to the thread structure to be detached.
+ * @param thread Thread structure to be detached.
  * @return 0 on success, non-zero error code on failure.
  */
-int cthreads_thread_detach(struct cthreads_thread *thread);
+int cthreads_thread_detach(struct cthreads_thread thread);
+
+/**
+ * Joins a thread.
+ *
+ * - pthread: pthread_join
+ * - windows threads: WaitForSingleObject & GetExitCodeThread
+ *
+ * @param thread Pointer to the thread structure to be joined.
+ * @param code Pointer to store the exit code of the joined thread.
+ * @return 0 on success, non-zero error code on failure.
+ */
+int cthreads_thread_join(struct cthreads_thread thread, void *code);
+
+/**
+ * Compares two thread structures for equality.
+ *
+ * - pthread: pthread_equal
+ * - windows threads: GetCurrentThreadId
+ *
+ * @param thread1 First thread structure to compare.
+ * @param thread2 Second thread structure to compare.
+ * @return 1 if the threads are equal, zero otherwise.
+ */
+int cthreads_thread_equal(struct cthreads_thread thread1, struct cthreads_thread thread2);
+
+/**
+ * Retrieves the thread struct of the current thread.
+ *
+ * - pthread: pthread_self
+ * - windows threads: GetCurrentThreadId
+ *
+ * @return Thread struct of the current thread.
+ */
+struct cthreads_thread cthreads_thread_self(void);
+
+/**
+ * Retrieves the thread identifier of the specified thread.
+ * 
+ * - pthread: N/A
+ * - windows threads: GetThreadId
+ * 
+ * @param thread Thread structure to retrieve the identifier from.
+ * @return Thread identifier of the specified thread.
+*/
+unsigned long cthreads_thread_id(struct cthreads_thread thread);
 
 /**
  * Closes a thread.
@@ -236,18 +346,7 @@ int cthreads_cond_destroy(struct cthreads_cond *cond);
  */
 int cthreads_cond_wait(struct cthreads_cond *cond, struct cthreads_mutex *mutex);
 
-/**
- * Joins a thread.
- *
- * - pthread: pthread_join
- * - windows threads: WaitForSingleObject
- *
- * @param thread Pointer to the thread structure to be joined.
- * @param code Pointer to store the exit code of the joined thread.
- * @return 0 on success, non-zero error code on failure.
- */
-int cthreads_join(struct cthreads_thread *thread, void *code);
-
+#ifdef CTHREADS_RWLOCK
 /**
  * Initializes a read-write lock.
  *
@@ -302,27 +401,6 @@ int cthreads_rwlock_wrlock(struct cthreads_rwlock *rwlock);
  * @return 0 on success, non-zero error code on failure.
  */
 int cthreads_rwlock_destroy(struct cthreads_rwlock *rwlock);
-
-/**
- * Compares two thread structures for equality.
- *
- * - pthread: pthread_equal
- * - windows threads: GetCurrentThreadId
- *
- * @param thread1 First thread structure to compare.
- * @param thread2 Second thread structure to compare.
- * @return Non-zero if the threads are equal, zero otherwise.
- */
-int cthreads_equal(struct cthreads_thread thread1, struct cthreads_thread thread2);
-
-/**
- * Retrieves the thread identifier of the current thread.
- *
- * - pthread: pthread_self
- * - windows threads: GetCurrentThreadId
- *
- * @return Thread identifier of the current thread.
- */
-struct cthreads_thread cthreads_self();
+#endif
 
 #endif /* CTHREADS_H */
