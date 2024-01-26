@@ -102,9 +102,7 @@ PUB_STRUCT(discord_component)
     FIELD_SNOWFLAKE(id)
   COND_END
   /** component type */
-  COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_component_types)
-  COND_END
   /** a developer-defined identifier for the component, max 100 characters */
     FIELD_PTR(custom_id, char, *)
   /** identifier for a purchasable SKU, only available when using premium-style buttons  */
@@ -169,7 +167,9 @@ STRUCT(discord_select_option)
   /** the dev-define value of the option, max 100 characters */
     FIELD_PTR(value, char, *)
   /** an additional description of the option, max 100 characters */
+  COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)
+  COND_END
   /** `id`, `name`, and `animated` */
   COND_WRITE(self->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
