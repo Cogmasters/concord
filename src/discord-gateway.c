@@ -789,8 +789,6 @@ discord_gateway_end(struct discord_gateway *gw)
     gw->session->is_ready = false;
 
     if (!gw->session->retry.enable) {
-        discord_gateway_cleanup(gw);
-
         logconf_warn(&gw->conf, "Discord Gateway Shutdown");
 
         /* reset for next run */
