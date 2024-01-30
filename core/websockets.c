@@ -873,7 +873,7 @@ ws_close(struct websockets *ws,
 {
     if (WS_DISCONNECTED == ws->status) {
         logconf_warn(&ws->conf,
-                     "Attemped to close WebSockets connection already closed");
+                     "Attempt to close WebSockets connection that has already ended");
 
         return;
     }
