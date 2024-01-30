@@ -118,6 +118,8 @@ discord_run(struct discord *client)
                 (void)poll_errno;
             }
 
+            if (client->gw.session->status & DISCORD_SESSION_SHUTDOWN) break;
+
             BREAK_ON_FAIL(code, io_poller_perform(client->io_poller));
 
             discord_requestor_dispatch_responses(&client->rest.requestor);
