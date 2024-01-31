@@ -46,6 +46,9 @@ extern "C" {
  * @brief Documentation useful when developing or debugging Concord itself
  *  @{ */
 
+/** @brief dup shutdown fd to listen for ccord_shutdown_async() */
+int discord_dup_shutdown_fd(void);
+
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
@@ -1203,6 +1206,9 @@ struct discord {
     struct discord_user self;
     /** the handle for registering and retrieving Discord data */
     struct discord_cache cache;
+
+    /** fd that gets triggered when ccord_shutdown_async is called */
+    int shutdown_fd;
 
     struct {
         struct discord_timers internal;

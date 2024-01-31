@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include "discord.h"
 #include "discord-internal.h"
@@ -51,12 +52,26 @@ _parse_init_string(char *dest, size_t dest_size, const char *src)
 }
 
 static void
+_on_shutdown_triggered(struct io_poller *io,
+                       enum io_poller_events events,
+                       void *data)
+{
+    (void)io;
+    (void)events;
+    discord_shutdown(data);
+}
+
+static void
 _discord_init(struct discord *new_client)
 {
     ccord_global_init();
+
     new_client->io_poller = io_poller_create();
     discord_timers_init(&new_client->timers.internal, new_client->io_poller);
     discord_timers_init(&new_client->timers.user, new_client->io_poller);
+    io_poller_socket_add(new_client->io_poller,
+                         new_client->shutdown_fd = discord_dup_shutdown_fd(),
+                         IO_POLLER_IN, _on_shutdown_triggered, new_client);
 
     new_client->workers = calloc(1, sizeof *new_client->workers);
     ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),
@@ -153,7 +168,8 @@ discord_config_init(const char config_file[])
                     enable_prefix = ('t' == field.start[f->v.pos]);
 
                 if (enable_prefix
-                    && (f = jsmnf_find(pairs, field.start, "prefix", 6))) {
+                    && (f = jsmnf_find(pairs, field.start, "prefix", 6)))
+                {
                     discord_message_commands_set_prefix(&new_client->commands,
                                                         field.start + f->v.pos,
                                                         f->v.len);
@@ -212,28 +228,32 @@ discord_cleanup(struct discord *client)
 {
     if (!client->is_original) {
         _discord_clone_cleanup(client);
+        free(client);
+        return;
     }
-    else {
-        discord_worker_join(client);
-        discord_rest_cleanup(&client->rest);
-        discord_gateway_cleanup(&client->gw);
-        discord_message_commands_cleanup(&client->commands);
+
+    close(client->shutdown_fd);
+    discord_worker_join(client);
+    discord_rest_cleanup(&client->rest);
+    discord_gateway_cleanup(&client->gw);
+    discord_message_commands_cleanup(&client->commands);
 #ifdef CCORD_VOICE
-        discord_voice_connections_cleanup(client);
+    discord_voice_connections_cleanup(client);
 #endif
-        discord_user_cleanup(&client->self);
-        if (client->cache.cleanup) client->cache.cleanup(client);
-        discord_refcounter_cleanup(&client->refcounter);
-        discord_timers_cleanup(client, &client->timers.user);
-        discord_timers_cleanup(client, &client->timers.internal);
-        io_poller_destroy(client->io_poller);
-        logconf_cleanup(&client->conf);
-        if (client->token) free(client->token);
-        pthread_mutex_destroy(&client->workers->lock);
-        pthread_cond_destroy(&client->workers->cond);
-        free(client->workers);
-    }
+    discord_user_cleanup(&client->self);
+    if (client->cache.cleanup) client->cache.cleanup(client);
+    discord_refcounter_cleanup(&client->refcounter);
+    discord_timers_cleanup(client, &client->timers.user);
+    discord_timers_cleanup(client, &client->timers.internal);
+    io_poller_destroy(client->io_poller);
+    logconf_cleanup(&client->conf);
+    if (client->token) free(client->token);
+    pthread_mutex_destroy(&client->workers->lock);
+    pthread_cond_destroy(&client->workers->cond);
+    free(client->workers);
     free(client);
+
+    ccord_global_cleanup();
 }
 
 CCORDcode

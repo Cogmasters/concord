@@ -111,7 +111,6 @@ discord_run(struct discord *client)
                 CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
                                     0);
 
-            if (ccord_shutting_down()) discord_shutdown(client);
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
                 /* use poll_errno instead of errno */

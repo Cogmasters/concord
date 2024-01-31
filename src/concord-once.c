@@ -1,33 +1,40 @@
+#include <string.h>
 #include <signal.h>
 #include <curl/curl.h>
 #include <pthread.h>
+#include <unistd.h>
+#include <poll.h>
+#include <sys/ioctl.h>
 
 #include "error.h"
 #include "discord-worker.h"
 
-static pthread_mutex_t shutdown_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-/* if set to 1 then client(s) will be disconnected */
-int ccord_should_shutdown = 0;
+static int shutdown_fds[2] = {
+    -1,
+    -1,
+};
 
-static int once;
+static int init_counter = 0;
 
 void
 ccord_shutdown_async(void)
 {
-    pthread_mutex_lock(&shutdown_lock);
-    ccord_should_shutdown = 1;
-    pthread_mutex_unlock(&shutdown_lock);
+    char b = 0;
+    write(shutdown_fds[1], &b, sizeof b);
 }
 
 int
 ccord_shutting_down(void)
 {
-    int retval;
-    pthread_mutex_lock(&shutdown_lock);
-    retval = ccord_should_shutdown;
-    pthread_mutex_unlock(&shutdown_lock);
-    return retval;
+    struct pollfd pfd = {
+        .fd = shutdown_fds[0],
+        .events = POLLIN,
+    };
+    if (-1 == shutdown_fds[0]) return 0;
+    poll(&pfd, 1, 0);
+    return !!(pfd.revents & POLLIN);
 }
 
 #ifdef CCORD_SIGINTCATCH
@@ -36,43 +43,92 @@ static void
 _ccord_sigint_handler(int signum)
 {
     (void)signum;
-    fputs("\nSIGINT: Disconnecting running concord client(s) ...\n", stderr);
-    pthread_mutex_lock(&shutdown_lock);
-    ccord_should_shutdown = 1;
-    pthread_mutex_unlock(&shutdown_lock);
+    const char err_str[] =
+        "\nSIGINT: Disconnecting running concord client(s) ...\n";
+    write(STDERR_FILENO, err_str, strlen(err_str));
+    ccord_shutdown_async();
 }
 #endif /* CCORD_SIGINTCATCH */
 
 CCORDcode
 ccord_global_init()
 {
-    if (once) {
-        return CCORD_GLOBAL_INIT;
-    }
-    else {
+    pthread_mutex_lock(&lock);
+    if (0 == init_counter++) {
 #ifdef CCORD_SIGINTCATCH
         signal(SIGINT, &_ccord_sigint_handler);
 #endif
         if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
             fputs("Couldn't start libcurl's globals\n", stderr);
-            return CCORD_GLOBAL_INIT;
+            goto fail_curl_init;
         }
-        if (discord_worker_global_init()) {
+        if (0 != discord_worker_global_init()) {
             fputs("Attempt duplicate global initialization\n", stderr);
-            return CCORD_GLOBAL_INIT;
+            goto fail_discord_worker_init;
         }
-        once = 1;
+        if (0 != pipe(shutdown_fds)) {
+            fputs("Failed to create shutdown pipe\n", stderr);
+            goto fail_pipe_init;
+        }
+        for (int i = 0; i < 2; i++) {
+            const int on = 1;
+            if (0 != ioctl(shutdown_fds[i], FIOCLEX, NULL)) {
+                fputs("Failed to make shutdown pipe close on execute\n",
+                      stderr);
+                goto fail_pipe_init;
+            }
+            if (0 != ioctl(shutdown_fds[i], FIONBIO, &on)) {
+                fputs("Failed to make shutdown pipe nonblocking\n", stderr);
+                goto fail_pipe_init;
+            }
+        }
     }
+    pthread_mutex_unlock(&lock);
     return CCORD_OK;
+
+fail_pipe_init:
+    for (int i = 0; i < 2; i++) {
+        if (-1 != shutdown_fds[i]) {
+            close(shutdown_fds[i]);
+            shutdown_fds[i] = -1;
+        }
+    }
+fail_discord_worker_init:
+    discord_worker_global_cleanup();
+fail_curl_init:
+    curl_global_cleanup();
+
+    init_counter = 0;
+    pthread_mutex_unlock(&lock);
+    return CCORD_GLOBAL_INIT;
 }
 
 void
 ccord_global_cleanup()
 {
-    curl_global_cleanup();
-    discord_worker_global_cleanup();
-    once = 0;
-    pthread_mutex_lock(&shutdown_lock);
-    ccord_should_shutdown = 0;
-    pthread_mutex_unlock(&shutdown_lock);
+    pthread_mutex_lock(&lock);
+    if (init_counter && 0 == --init_counter) {
+        curl_global_cleanup();
+        discord_worker_global_cleanup();
+        for (int i = 0; i < 2; i++) {
+            close(shutdown_fds[i]);
+            shutdown_fds[i] = -1;
+        }
+    }
+    pthread_mutex_unlock(&lock);
+}
+
+int
+discord_dup_shutdown_fd(void)
+{
+    int fd = -1;
+    if (-1 == shutdown_fds[0]) return -1;
+    if (-1 != (fd = dup(shutdown_fds[0]))) {
+        const int on = 1;
+        if (0 != ioctl(fd, FIOCLEX, NULL) && 0 != ioctl(fd, FIONBIO, &on)) {
+            close(fd);
+            fd = -1;
+        }
+    }
+    return fd;
 }
