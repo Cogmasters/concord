@@ -360,7 +360,7 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
 {
     int alive = 0;
 
-    if (CURLM_OK != curl_multi_socket_all(rqtor->mhandle, &alive))
+    if (CURLM_OK != curl_multi_socket_action(rqtor->mhandle, CURL_SOCKET_TIMEOUT, 0, &alive))
         return CCORD_CURLM_INTERNAL;
 
     /* ask for any messages/informationals from the individual transfers */
@@ -444,6 +444,12 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
             }
         }
     }
+
+    int still_running = 0;
+
+    /* Check if there are still running transfers */
+    if (CURLM_OK != curl_multi_perform(rqtor->mhandle, &still_running))
+        return CCORD_CURLM_INTERNAL;
 
     return CCORD_OK;
 }
