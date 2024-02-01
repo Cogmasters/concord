@@ -834,9 +834,15 @@ ws_multi_socket_run(struct websockets *ws, uint64_t *tstamp)
     /** update WebSockets concept of "now" */
     *tstamp = ws_timestamp_update(ws);
 
-    mcode = curl_multi_socket_all(ws->mhandle, &is_running);
+    mcode = curl_multi_socket_action(ws->mhandle, CURL_SOCKET_TIMEOUT, 0, &is_running);
 
     if (mcode != CURLM_OK) CURLM_LOG(ws, mcode);
+
+    if (CURLM_OK != curl_multi_perform(ws->mhandle, &is_running)) {
+        logconf_error(&ws->conf, "curl_multi_perform() failed");
+
+        return false;
+    }
 
     return is_running != 0;
 }
