@@ -36,9 +36,4 @@ void SHA1Final(
     SHA1_CTX * context
     );
 
-void SHA1(
-    char *hash_out,
-    const char *str,
-    int len);
-
 #endif /* SHA1_H */

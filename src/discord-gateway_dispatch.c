@@ -116,7 +116,7 @@ discord_gateway_dispatch(struct discord_gateway *gw)
             dispatch[event].from_jsmnf(gw->payload.data,
                                        gw->payload.json.start, event_data);
 
-            if (CCORD_UNAVAILABLE
+            if (CCORD_RESOURCE_UNAVAILABLE
                 == discord_refcounter_incr(&client->refcounter, event_data))
             {
                 discord_refcounter_add_internal(&client->refcounter,

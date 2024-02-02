@@ -166,7 +166,7 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
                 ++event_data->content;
         }
 
-        if (CCORD_UNAVAILABLE
+        if (CCORD_RESOURCE_UNAVAILABLE
             == discord_refcounter_incr(&client->refcounter, event_data))
         {
             discord_refcounter_add_internal(&client->refcounter, event_data,

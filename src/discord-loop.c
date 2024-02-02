@@ -9,19 +9,18 @@ static void
 discord_wake_timer_cb(struct discord *client, struct discord_timer *timer)
 {
     (void)timer;
-    if (client->wakeup_timer.cb)
-        client->wakeup_timer.cb(client);
+    if (client->wakeup_timer.cb) client->wakeup_timer.cb(client);
 }
 
 void
 discord_set_next_wakeup(struct discord *client, int64_t delay)
 {
-    unsigned id =
-        discord_internal_timer_ctl(client, &(struct discord_timer){
-                                               .id = client->wakeup_timer.id,
-                                               .on_tick = discord_wake_timer_cb,
-                                               .delay = delay,
-                                           });
+    unsigned id = discord_internal_timer_ctl(
+        client, &(struct discord_timer){
+                    .id = client->wakeup_timer.id,
+                    .on_tick = discord_wake_timer_cb,
+                    .delay = delay,
+                });
     client->wakeup_timer.id = id;
 }
 
@@ -31,11 +30,12 @@ discord_set_on_wakeup(struct discord *client,
 {
     client->wakeup_timer.cb = callback;
     if (client->wakeup_timer.id) {
-        discord_internal_timer_ctl(client, &(struct discord_timer){
-                                               .id = client->wakeup_timer.id,
-                                               .on_tick = discord_wake_timer_cb,
-                                               .delay = -1,
-                                           });
+        discord_internal_timer_ctl(client,
+                                   &(struct discord_timer){
+                                       .id = client->wakeup_timer.id,
+                                       .on_tick = discord_wake_timer_cb,
+                                       .delay = -1,
+                                   });
     }
 }
 
@@ -111,17 +111,22 @@ discord_run(struct discord *client)
                 CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
                                     0);
 
-            if (ccord_shutting_down()) discord_shutdown(client);
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
                 /* use poll_errno instead of errno */
                 (void)poll_errno;
             }
 
+            if (client->gw.session->status & DISCORD_SESSION_SHUTDOWN) break;
+
             BREAK_ON_FAIL(code, io_poller_perform(client->io_poller));
 
             discord_requestor_dispatch_responses(&client->rest.requestor);
         }
+
+        logconf_info(&client->conf,
+                     "Exits main gateway loop (code: %d, reason: %s)", code,
+                     discord_strerror(code, client));
 
         /* stop all pending requests in case of connection shutdown */
         if (true == discord_gateway_end(&client->gw)) break;

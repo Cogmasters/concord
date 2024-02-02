@@ -627,7 +627,7 @@ discord_request_begin(struct discord_requestor *rqtor,
         ASSERT_S(code == CCORD_OK, "'.keep' data must be a Concord resource");
     }
     if (req->dispatch.data
-        && CCORD_UNAVAILABLE
+        && CCORD_RESOURCE_UNAVAILABLE
                == discord_refcounter_incr(&client->refcounter,
                                           req->dispatch.data))
     {

@@ -165,7 +165,7 @@ discord_create_followup_message(struct discord *client,
     DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
-                            "/webhooks/%" PRIu64 "/%s%s%s", application_id,
+                            "/webhooks/%" PRIu64 "/%s%s", application_id,
                             interaction_token, query);
 }
 

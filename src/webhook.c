@@ -226,7 +226,7 @@ discord_execute_webhook(struct discord *client,
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, &body, method,
-                            "/webhooks/%" PRIu64 "/%s%s%s", webhook_id,
+                            "/webhooks/%" PRIu64 "/%s%s", webhook_id,
                             webhook_token, query);
 }
 

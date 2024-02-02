@@ -7,15 +7,21 @@
  *  @brief Concord error codes and meaning
  *  @{ */
 
+/* XXX: As new values are added, discord_strerror() should be updated
+ *      accordingly! */
 typedef enum CCORDcode {
     /** failure when creating request's payload */
     CCORD_MALFORMED_PAYLOAD = -12,
     /** couldn't enqueue worker thread (queue is full) */
     CCORD_FULL_WORKER = -11,
     /** couldn't perform action because resource is unavailable */
-    CCORD_UNAVAILABLE = -10,
-    /** couldn't perform action because of resource's ownership issues */
-    CCORD_OWNERSHIP = -9,
+    CCORD_RESOURCE_UNAVAILABLE = -10,
+    /* deprecated */
+    CCORD_UNAVAILABLE = CCORD_RESOURCE_UNAVAILABLE,
+    /** couldn't cleanup resource automatically due to being claimed */
+    CCORD_RESOURCE_OWNERSHIP = -9,
+    /* deprecated */
+    CCORD_OWNERSHIP = CCORD_RESOURCE_OWNERSHIP,
     /** attempt to initialize globals more than once */
     CCORD_GLOBAL_INIT = -8,
     /** curl's multi handle internal error */

@@ -81,7 +81,7 @@ discord_get_channel_at_pos(struct discord *client,
                  "'.keep' data must be a Concord callback parameter");
     }
     if (ret->data
-        && CCORD_UNAVAILABLE
+        && CCORD_RESOURCE_UNAVAILABLE
                == discord_refcounter_incr(&client->refcounter, ret->data))
     {
         discord_refcounter_add_client(&client->refcounter, ret->data,
@@ -170,24 +170,32 @@ discord_get_channel_messages(struct discord *client,
 
         char buf[32];
         if (params->limit) {
-            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
-                                       buf, sizeof(buf), "%" PRIu64, params->limit);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+            res =
+                queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                     buf, sizeof(buf), "%d", params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
+                     "Out of bounds write attempt");
         }
         if (params->around) {
-            res = queriec_snprintf_add(&queriec, query, "around", sizeof("around"),
-                                       buf, sizeof(buf), "%" PRIu64, params->around);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+            res = queriec_snprintf_add(&queriec, query, "around",
+                                       sizeof("around"), buf, sizeof(buf),
+                                       "%" PRIu64, params->around);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
+                     "Out of bounds write attempt");
         }
         if (params->before) {
-            res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
-                                       buf, sizeof(buf), "%" PRIu64, params->before);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+            res = queriec_snprintf_add(&queriec, query, "before",
+                                       sizeof("before"), buf, sizeof(buf),
+                                       "%" PRIu64, params->before);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
+                     "Out of bounds write attempt");
         }
         if (params->after) {
-            res = queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
-                                       buf, sizeof(buf), "%" PRIu64, params->after);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+            res = queriec_snprintf_add(&queriec, query, "after",
+                                       sizeof("after"), buf, sizeof(buf),
+                                       "%" PRIu64, params->after);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
+                     "Out of bounds write attempt");
         }
     }
 
@@ -408,17 +416,21 @@ discord_get_reactions(struct discord *client,
         if (params->after) {
             CCORD_EXPECT(client, params->after != 0, CCORD_BAD_PARAMETER, "");
 
-            res = queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
-                                       buf, sizeof(buf), "%" PRIu64, params->after);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+            res = queriec_snprintf_add(&queriec, query, "after",
+                                       sizeof("after"), buf, sizeof(buf),
+                                       "%" PRIu64, params->after);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
+                     "Out of bounds write attempt");
         }
         if (params->limit) {
             CCORD_EXPECT(client, params->limit > 0 && params->limit <= 100,
                          CCORD_BAD_PARAMETER, "");
 
-            res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
-                                       buf, sizeof(buf), "%d", params->limit);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+            res =
+                queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
+                                     buf, sizeof(buf), "%d", params->limit);
+            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
+                     "Out of bounds write attempt");
         }
     }
 
@@ -882,7 +894,7 @@ discord_add_thread_member(struct discord *client,
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_PUT,
-                            "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                            "/channels/%" PRIu64 "/thread-members/%" PRIu64,
                             channel_id, user_id);
 }
 
@@ -916,7 +928,7 @@ discord_remove_thread_member(struct discord *client,
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
-                            "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                            "/channels/%" PRIu64 "/thread-members/%" PRIu64,
                             channel_id, user_id);
 }
 
@@ -973,7 +985,7 @@ discord_list_public_archived_threads(
     if (before) {
         res = queriec_snprintf_add(&queriec, query, "before", sizeof("before"),
                                    buf, sizeof(buf), "%" PRIu64, before);
-        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt"); 
+        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
     }
     if (limit) {
         res = queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
@@ -984,8 +996,7 @@ discord_list_public_archived_threads(
     DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/channels/%" PRIu64
-                            "/threads/archived/public%s%s",
+                            "/channels/%" PRIu64 "/threads/archived/public%s",
                             channel_id, query);
 }
 
@@ -1021,8 +1032,7 @@ discord_list_private_archived_threads(
     DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/channels/%" PRIu64
-                            "/threads/archived/private%s%s",
+                            "/channels/%" PRIu64 "/threads/archived/private%s",
                             channel_id, query);
 }
 
@@ -1059,6 +1069,6 @@ discord_list_joined_private_archived_threads(
 
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64
-                            "/users/@me/threads/archived/private%s%s",
+                            "/users/@me/threads/archived/private%s",
                             channel_id, query);
 }

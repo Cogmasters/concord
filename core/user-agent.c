@@ -215,7 +215,7 @@ ua_conn_add_header(struct ua_conn *conn,
                    const char value[])
 {
     size_t fieldlen = strlen(field);
-    struct curl_slist *node;
+    struct curl_slist *node, *prev;
     char buf[4096];
     size_t buflen;
     char *ptr;
@@ -224,7 +224,9 @@ ua_conn_add_header(struct ua_conn *conn,
     ASSERT_S(buflen < sizeof(buf), "Out of bounds write attempt");
 
     /* check for match in existing fields */
-    for (node = conn->header; node != NULL; node = node->next) {
+    for (prev = NULL, node = conn->header; node != NULL;
+         prev = node, node = node->next)
+    {
         if (!(ptr = strchr(node->data, ':')))
             ERR("Missing ':' in header:\n\t%s", node->data);
 
@@ -232,12 +234,16 @@ ua_conn_add_header(struct ua_conn *conn,
             && 0 == strncasecmp(node->data, field, fieldlen))
         {
             if (strlen(node->data) < buflen) {
-                /* FIXME: For some reason, cygwin builds will abort on this
-                 * free() */
-#ifndef __CYGWIN__
-                free(node->data);
-#endif
-                node->data = strdup(buf);
+                if (prev) prev->next = node->next;
+                // XXX: since libcurl uses custom mallocs that offsets the data
+                //      with some metadata, we rely on `curl_free()` to ensure
+                //      proper behavior
+                curl_free(node->data);
+                curl_free(node);
+                // XXX: this process can be optimized by completely replacing
+                //      libcurl's `curl_slist_xxx()` functions with our own
+                //      (see above comment)
+                curl_slist_append(conn->header, buf);
             }
             else {
                 memcpy(node->data, buf, buflen + 1);
@@ -274,12 +280,9 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
             else
                 prev->next = node->next;
 
-                /* FIXME: For some reason, cygwin builds will abort on this
-                 * free() */
-#ifndef __CYGWIN__
-            free(node->data);
-            free(node);
-#endif
+            curl_free(node->data);
+            curl_free(node);
+
             return;
         }
     }
@@ -522,7 +525,7 @@ _ua_info_populate(struct ua_info *info, struct ua_conn *conn)
     curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
     logconf_http(&conn->ua->conf, &conn->info.loginfo, resp_url, logheader,
-                 logbody, "HTTP_RCV_%s(%d)", http_code_print(info->httpcode),
+                 logbody, "HTTP_RCV_%s(%ld)", http_code_print(info->httpcode),
                  info->httpcode);
 }
 

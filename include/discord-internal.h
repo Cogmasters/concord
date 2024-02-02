@@ -29,6 +29,7 @@ extern "C" {
 #include "queue.h"
 #include "priority_queue.h"
 #include "cthreads.h"
+#include "attributes.h"
 
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
@@ -45,6 +46,9 @@ extern "C" {
 /** @defgroup DiscordInternal Internal implementation details
  * @brief Documentation useful when developing or debugging Concord itself
  *  @{ */
+
+/** @brief dup shutdown fd to listen for ccord_shutdown_async() */
+int discord_dup_shutdown_fd(void);
 
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
@@ -635,7 +639,7 @@ CCORDcode discord_rest_run(struct discord_rest *rest,
                            struct ccord_szbuf *body,
                            enum http_method method,
                            char endpoint_fmt[],
-                           ...);
+                           ...) PRINTF_LIKE(5, 6);
 
 /**
  * @brief Stop all bucket's on-going, pending and timed-out requests
@@ -1004,7 +1008,7 @@ void discord_refcounter_cleanup(struct discord_refcounter *rc);
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership claimed
  * @retval CCORD_OK counter for `data` has been incremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
  */
 CCORDcode discord_refcounter_claim(struct discord_refcounter *rc,
                                    const void *data);
@@ -1018,8 +1022,8 @@ CCORDcode discord_refcounter_claim(struct discord_refcounter *rc,
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its ownership unclaimed
  * @retval CCORD_OK counter for `data` has been decremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP `data` has never been discord_claim() 'd
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_OWNERSHIP `data` has never been discord_claim() 'd
  */
 CCORDcode discord_refcounter_unclaim(struct discord_refcounter *rc,
                                      void *data);
@@ -1031,7 +1035,7 @@ CCORDcode discord_refcounter_unclaim(struct discord_refcounter *rc,
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its reference counter incremented
  * @retval CCORD_OK counter for `data` has been incremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
  */
 CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
 
@@ -1044,8 +1048,9 @@ CCORDcode discord_refcounter_incr(struct discord_refcounter *rc, void *data);
  * @param rc the handle initialized with discord_refcounter_init()
  * @param data the data to have its reference counter decremented
  * @retval CCORD_OK counter for `data` has been decremented
- * @retval CCORD_UNAVAILABLE couldn't find a match to `data`
- * @retval CCORD_OWNERSHIP caught attempt to cleanup a claimed resource
+ * @retval CCORD_RESOURCE_UNAVAILABLE couldn't find a match to `data`
+ * @retval CCORD_RESOURCE_OWNERSHIP caught attempt to cleanup a claimed
+ * resource
  */
 CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
 
@@ -1202,6 +1207,9 @@ struct discord {
     struct discord_user self;
     /** the handle for registering and retrieving Discord data */
     struct discord_cache cache;
+
+    /** fd that gets triggered when ccord_shutdown_async is called */
+    int shutdown_fd;
 
     struct {
         struct discord_timers internal;

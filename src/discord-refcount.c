@@ -122,7 +122,7 @@ _discord_refcounter_contains(struct discord_refcounter *rc, const void *data)
 static CCORDcode
 _discord_refcounter_incr_no_lock(struct discord_refcounter *rc, void *data)
 {
-    CCORDcode code = CCORD_UNAVAILABLE;
+    CCORDcode code = CCORD_RESOURCE_UNAVAILABLE;
     if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
@@ -143,7 +143,7 @@ _discord_refcounter_incr_no_lock(struct discord_refcounter *rc, void *data)
 static CCORDcode
 _discord_refcounter_decr_no_lock(struct discord_refcounter *rc, void *data)
 {
-    CCORDcode code = CCORD_UNAVAILABLE;
+    CCORDcode code = CCORD_RESOURCE_UNAVAILABLE;
     if (_discord_refcounter_contains(rc, data)) {
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
@@ -162,7 +162,7 @@ _discord_refcounter_decr_no_lock(struct discord_refcounter *rc, void *data)
                 logconf_error(&rc->conf, "(Internal Error) Caught attempt to "
                                          "cleanup claimed resource!");
                 ++value->visits;
-                code = CCORD_OWNERSHIP;
+                code = CCORD_RESOURCE_OWNERSHIP;
             }
             else {
                 _discord_refvalue_delete(rc, data);
@@ -178,7 +178,7 @@ _discord_refcounter_decr_no_lock(struct discord_refcounter *rc, void *data)
 CCORDcode
 discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
 {
-    CCORDcode code = CCORD_UNAVAILABLE;
+    CCORDcode code = CCORD_RESOURCE_UNAVAILABLE;
 
     cthreads_mutex_lock(rc->g_lock);
     if (_discord_refcounter_contains(rc, data)) {
@@ -196,7 +196,7 @@ discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
 CCORDcode
 discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
 {
-    CCORDcode code = CCORD_UNAVAILABLE;
+    CCORDcode code = CCORD_RESOURCE_UNAVAILABLE;
 
     cthreads_mutex_lock(rc->g_lock);
     if (_discord_refcounter_contains(rc, data)) {
