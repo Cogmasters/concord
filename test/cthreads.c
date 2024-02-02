@@ -18,7 +18,7 @@ TEST create_thread() {
   ret = cthreads_thread_create(&thread, NULL, thread_func, NULL, &args);
   ASSERT_EQ(0, ret);
 
-  ret = cthreads_join(&thread, 0);
+  ret = cthreads_thread_join(thread, 0);
   ASSERT_EQ(0, ret);
 
   PASS();
@@ -70,10 +70,10 @@ TEST equal() {
   struct cthreads_thread thread2;
   int ret;
 
-  thread1 = cthreads_self();
-  thread2 = cthreads_self();
+  thread1 = cthreads_thread_self();
+  thread2 = cthreads_thread_self();
 
-  ret = cthreads_equal(thread1, thread2);
+  ret = cthreads_thread_equal(thread1, thread2);
   ASSERT_EQ(1, ret);
 
   PASS();

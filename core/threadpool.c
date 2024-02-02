@@ -300,6 +300,6 @@ static void *threadpool_thread(void *threadpool)
     pool->started--;
 
     cthreads_mutex_unlock(&(pool->lock));
-    cthreads_thread_close(NULL);
+    cthreads_thread_exit(NULL);
     return(NULL);
 }

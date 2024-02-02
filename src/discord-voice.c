@@ -881,6 +881,7 @@ _discord_voice_cleanup(struct discord_voice *vc)
     if (vc->ws) ws_cleanup(vc->ws);
     if (vc->parse.pairs) free(vc->parse.pairs);
     if (vc->parse.tokens) free(vc->parse.tokens);
+    cthreads_mutex_destroy(&client_lock);
 }
 
 void

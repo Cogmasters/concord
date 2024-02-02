@@ -780,7 +780,11 @@ struct discord_gateway {
          */
         int ping_ms;
         /** ping rwlock  */
+        #ifdef CTHREADS_RWLOCK
         struct cthreads_rwlock rwlock;
+        #else
+        #error "pthread_rwlock functions are not available on this system."
+        #endif
     } * timer;
 
     /** the identify structure for client authentication */

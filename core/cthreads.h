@@ -224,14 +224,14 @@ struct cthreads_thread cthreads_thread_self(void);
 unsigned long cthreads_thread_id(struct cthreads_thread thread);
 
 /**
- * Closes a thread.
+ * Exits a thread.
  *
  * - pthread: pthread_exit
  * - windows threads: ExitThread
  *
  * @param code Pointer to the thread exit code.
  */
-void cthreads_thread_close(void *code);
+void cthreads_thread_exit(void *code);
 
 /**
  * Initializes a mutex.

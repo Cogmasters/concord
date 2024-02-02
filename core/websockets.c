@@ -50,7 +50,11 @@ struct websockets {
     /** lock for functions that may be called in other threads */
     struct cthreads_mutex lock;
     /** lock for reading/writing the event-loop timestamp */
+    #ifdef CTHREADS_RWLOCK
     struct cthreads_rwlock rwlock;
+    #else
+    #error "pthread_rwlock functions are not available on this system."
+    #endif
 
     /**
      * user-triggered actions
