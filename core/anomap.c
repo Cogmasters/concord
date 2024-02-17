@@ -115,22 +115,29 @@ _anomap_on_empty(struct anomap *map) {
   map->map.highest = 0;
 }
 
+static void
+_anomap_clear_foreach(struct anomap *map, void *data, 
+                      const void *key, const void *val)
+{
+  if (!map->on_changed.cb) return;
+  map->on_changed.cb(
+    &(struct anomap_item_changed) {
+      .map = map,
+      .data = map->on_changed.data,
+      .op = anomap_delete,
+      .key = (void *)key,
+      .val.prev = (void *)val,
+    });
+}
+
 void
 anomap_clear(struct anomap *map) {
   if (0 == map->map.len)
     return;
-
-  for (size_t i = 0; i < map->map.len; i++) {
-    if (!map->on_changed.cb) break;
-    unsigned pos = map->map.arr[i];
-    map->on_changed.cb(
-      &(struct anomap_item_changed) {
-        .map = map,
-        .data = map->on_changed.data,
-        .op = anomap_delete,
-        .key = map->keys.arr + map->keys.size * pos,
-        .val.prev = map->vals.arr + map->vals.size * pos,
-      });
+  if (map->on_changed.cb) {
+    if (map->options & anomap_preserve_order)
+      anomap_foreach_reverse(map, _anomap_clear_foreach, NULL);
+    else anomap_foreach(map, _anomap_clear_foreach, NULL);
   }
   map->map.len = 0;
   _anomap_on_empty(map);
@@ -430,37 +437,72 @@ anomap_delete_range(struct anomap *map, size_t from_index, size_t to_index,
 }
 
 void
-anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data) {
+_anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data,
+                anomap_position start_position)
+{
   const size_t key_size = map->keys.size, val_size = map->vals.size;
   if (0 == map->map.len)
     return;
   if (map->options & anomap_preserve_order) {
-    const unsigned tail = map->order.tail;
-    unsigned pos = map->order.arr[tail].next;
-    switch (val_size ? 1 : 0) {
-      while (tail != pos) {
+    unsigned tail = map->order.tail;
+    unsigned head = map->order.arr[tail].next;
+    unsigned start = start_position == anomap_head ? head : tail;
+    unsigned pos = start;
+    switch ((start_position == anomap_tail ? 2 : 0) | (val_size ? 1 : 0)) {
+      while (pos != tail) {
         pos = map->order.arr[pos].next;
-        case 1:
+        case 0 | 0:
+        cb(map, data, map->keys.arr + key_size * pos, NULL);
+      } break;
+      while (pos != tail) {
+        pos = map->order.arr[pos].next;
+        case 0 | 1:
         cb(map, data, map->keys.arr + key_size * pos,
                       map->vals.arr + val_size * pos);
       } break;
-
-      while (tail != pos) {
-        pos = map->order.arr[pos].next;
-        case 0:
+      while (pos != head) {
+        pos = map->order.arr[pos].prev;
+        case 2 | 0:
         cb(map, data, map->keys.arr + key_size * pos, NULL);
+      } break;
+      while (pos != head) {
+        pos = map->order.arr[pos].prev;
+        case 2 | 1:
+        cb(map, data, map->keys.arr + key_size * pos,
+                      map->vals.arr + val_size * pos);
       } break;
     }
   } else {
-    if (val_size) {
-      for (size_t i=0; i<map->map.len; i++)
-        cb(map, data, map->keys.arr + key_size * map->map.arr[i],
-                      map->vals.arr + val_size * map->map.arr[i]);
+    if (start_position == anomap_head) {
+      if (val_size) {
+        for (size_t i=0; i<map->map.len; i++)
+          cb(map, data, map->keys.arr + key_size * map->map.arr[i],
+                        map->vals.arr + val_size * map->map.arr[i]);
+      } else {
+        for (size_t i=0; i<map->map.len; i++)
+          cb(map, data, map->keys.arr + key_size * map->map.arr[i], NULL);
+      }
     } else {
-      for (size_t i=0; i<map->map.len; i++)
-        cb(map, data, map->keys.arr + key_size * map->map.arr[i], NULL);
+      if (val_size) {
+        for (size_t i = map->map.len; i--;)
+          cb(map, data, map->keys.arr + key_size * map->map.arr[i],
+                        map->vals.arr + val_size * map->map.arr[i]);
+      } else {
+        for (size_t i = map->map.len; i--;)
+          cb(map, data, map->keys.arr + key_size * map->map.arr[i], NULL);
+      }
     }
   } 
+}
+
+void
+anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data) {
+  _anomap_foreach(map, cb, data, anomap_head);
+}
+
+void
+anomap_foreach_reverse(struct anomap *map, anomap_foreach_cb *cb, void *data) {
+  _anomap_foreach(map, cb, data, anomap_tail);
 }
 
 bool

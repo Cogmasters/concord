@@ -94,6 +94,8 @@ size_t anomap_delete_range(struct anomap *map,
 typedef void anomap_foreach_cb(struct anomap *map, void *data,
                                const void *key, const void *val);
 void anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data);
+void anomap_foreach_reverse(struct anomap *map,
+                            anomap_foreach_cb *cb, void *data);
 
 typedef enum {
 #define ANOMAP_HEAD anomap_head
