@@ -136,6 +136,8 @@ io_poller_perform(struct io_poller *io)
             int events = 0;
             if (io->pollfds[i].revents & POLLIN) events |= IO_POLLER_IN;
             if (io->pollfds[i].revents & POLLOUT) events |= IO_POLLER_OUT;
+            if (io->pollfds[i].revents & POLLPRI) events |= IO_POLLER_PRI;
+            if (io->pollfds[i].revents & POLLERR) events |= IO_POLLER_ERR;
             io->pollfds[i].revents = 0;
             struct io_poller_element *element = &io->elements[i];
             element->cb(io, events, element->user_data);
@@ -195,6 +197,7 @@ modify:
     io->pollfds[index].events = 0;
     if (events & IO_POLLER_IN) io->pollfds[index].events |= POLLIN;
     if (events & IO_POLLER_OUT) io->pollfds[index].events |= POLLOUT;
+    if (events & IO_POLLER_PRI) io->pollfds[index].events |= POLLPRI;
     io->elements[index].cb = cb;
     io->elements[index].user_data = user_data;
     return true;
