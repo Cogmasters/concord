@@ -75,28 +75,29 @@ ccord_global_init()
             if (0 != ioctl(shutdown_fds[i], FIOCLEX, NULL)) {
                 fputs("Failed to make shutdown pipe close on execute\n",
                       stderr);
-                goto fail_pipe_init;
+                goto fail_pipe_flags;
             }
             if (0 != ioctl(shutdown_fds[i], FIONBIO, &on)) {
                 fputs("Failed to make shutdown pipe nonblocking\n", stderr);
-                goto fail_pipe_init;
+                goto fail_pipe_flags;
             }
         }
     }
     pthread_mutex_unlock(&lock);
     return CCORD_OK;
 
-fail_pipe_init:
+fail_pipe_flags:
     for (int i = 0; i < 2; i++) {
         if (-1 != shutdown_fds[i]) {
             close(shutdown_fds[i]);
             shutdown_fds[i] = -1;
         }
     }
-fail_discord_worker_init:
+fail_pipe_init:
     discord_worker_global_cleanup();
-fail_curl_init:
+fail_discord_worker_init:
     curl_global_cleanup();
+fail_curl_init:
 
     init_counter = 0;
     pthread_mutex_unlock(&lock);
