@@ -5,6 +5,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <time.h>
+#include <sys/ioctl.h>
 
 #ifndef __MINGW32__
 #include <poll.h>
@@ -49,7 +50,7 @@ on_io_poller_wakeup(struct io_poller *io,
                     enum io_poller_events events,
                     void *user_data)
 {
-    char buf[0x10000];
+    char buf[0x1000];
     (void)!read(io->wakeup_fds[0], buf, sizeof buf);
 }
 
@@ -63,14 +64,19 @@ io_poller_create(void)
         io->pollfds = calloc(io->cap, sizeof *io->pollfds);
         if (io->elements && io->pollfds) {
             if (0 == pipe(io->wakeup_fds)) {
-                int flags = fcntl(io->wakeup_fds[0], F_GETFL);
-                fcntl(io->wakeup_fds[0], F_SETFL, flags | O_NONBLOCK);
-                flags = fcntl(io->wakeup_fds[1], F_GETFL);
-                fcntl(io->wakeup_fds[1], F_SETFL, flags | O_NONBLOCK);
-
-                io_poller_socket_add(io, io->wakeup_fds[0], IO_POLLER_IN,
-                                     on_io_poller_wakeup, NULL);
-                return io;
+                const int on = 1;
+                bool success = true;
+                for (int i = 0; i < 2; i++)
+                    if (0 != ioctl(io->wakeup_fds[i], FIOCLEX, NULL)
+                        && 0 != ioctl(io->wakeup_fds[i], FIONBIO, &on))
+                        success = false;
+                if (success) {
+                    io_poller_socket_add(io, io->wakeup_fds[0], IO_POLLER_IN,
+                                         on_io_poller_wakeup, NULL);
+                    return io;
+                }
+                close(io->wakeup_fds[1]);
+                close(io->wakeup_fds[0]);
             }
         }
         free(io->elements);
@@ -138,7 +144,8 @@ io_poller_perform(struct io_poller *io)
     for (int i = 0; i < io->curlm_cnt; i++) {
         struct io_curlm *curlm = io->curlm[i];
         if (curlm->should_perform
-            || (-1 != curlm->timeout && now >= curlm->timeout)) {
+            || (-1 != curlm->timeout && now >= curlm->timeout))
+        {
             curlm->should_perform = false;
             int result =
                 curlm->cb
