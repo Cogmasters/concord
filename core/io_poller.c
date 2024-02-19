@@ -66,10 +66,14 @@ io_poller_create(void)
             if (0 == pipe(io->wakeup_fds)) {
                 const int on = 1;
                 bool success = true;
-                for (int i = 0; i < 2; i++)
-                    if (0 != ioctl(io->wakeup_fds[i], FIOCLEX, NULL)
-                        && 0 != ioctl(io->wakeup_fds[i], FIONBIO, &on))
+                for (int i = 0; i < 2; i++) {
+                    if (0 != ioctl(io->wakeup_fds[i], FIONBIO, &on))
                         success = false;
+#ifdef FIOCLEX
+                    if (0 != ioctl(io->wakeup_fds[i], FIOCLEX, NULL))
+                        success = false;
+#endif
+                }
                 if (success) {
                     io_poller_socket_add(io, io->wakeup_fds[0], IO_POLLER_IN,
                                          on_io_poller_wakeup, NULL);
