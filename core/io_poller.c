@@ -64,10 +64,10 @@ io_poller_create(void)
         io->pollfds = calloc(io->cap, sizeof *io->pollfds);
         if (io->elements && io->pollfds) {
             if (0 == pipe(io->wakeup_fds)) {
-                const int on = 1;
                 bool success = true;
                 for (int i = 0; i < 2; i++) {
-                    if (0 != ioctl(io->wakeup_fds[i], FIONBIO, &on))
+                    int flags = fcntl(io->wakeup_fds[i], F_GETFL) | O_NONBLOCK;
+                    if (0 != fcntl(io->wakeup_fds[i], F_SETFL, flags))
                         success = false;
 #ifdef FIOCLEX
                     if (0 != ioctl(io->wakeup_fds[i], FIOCLEX, NULL))
