@@ -15,6 +15,8 @@
   #if defined __has_include
     #if __has_include(<pthread.h>)
       #define ANOMAP_NATIVE_LOCKS NATIVE_LOCK_PTHREADS
+    #elif __has_include(<synchapi.h>)
+      #define ANOMAP_NATIVE_LOCKS NATIVE_LOCK_WINDOWS
     #endif
   #endif
 #endif
@@ -145,6 +147,66 @@ static unsigned anomap_has_locks =
         .attempt = _pthread_wr_lock_attempt,
         .acquire = _pthread_wr_lock,
         .release = _pthread_wr_unlock,
+      },
+    };
+  #elif ANOMAP_NATIVE_LOCKS == NATIVE_LOCK_WINDOWS
+    #include <windows.h>
+    #include <synchapi.h>
+    static void *
+    _srw_lock_create(void) {
+      SRWLOCK *lock = calloc(1, sizeof *lock);
+      if (!lock) return NULL;
+      InitializeSRWLock(lock);
+      return lock;
+    }
+
+    static void
+    _srw_lock_destroy(void *lock) {
+      free(lock);
+    }
+
+    static bool
+    _srw_rd_lock_attempt(void *lock) {
+      return TryAcquireSRWLockShared(lock);
+    }
+
+    static void
+    _srw_rd_lock(void *lock) {
+      AcquireSRWLockShared(lock);
+    }
+
+    static void
+    _srw_rd_unlock(void *lock) {
+      ReleaseSRWLockShared(lock);
+    }
+
+    static bool
+    _srw_wr_lock_attempt(void *lock) {
+      return TryAcquireSRWLockExclusive(lock);
+    }
+
+    static void
+    _srw_wr_lock(void *lock) {
+      AcquireSRWLockExclusive(lock);
+    }
+
+    static void
+    _srw_wr_unlock(void *lock) {
+      ReleaseSRWLockExclusive(lock);
+    }
+
+    static struct anomap_lock lock_functions = {
+      .create = _srw_lock_create,
+      .destroy = _srw_lock_destroy,
+      .r = {
+        .attempt = _srw_rd_lock_attempt,
+        .acquire = _srw_rd_lock,
+        .release = _srw_rd_unlock,
+      },
+      .w = {
+        .attempt = _srw_wr_lock_attempt,
+        .acquire = _srw_wr_lock,
+        .release = _srw_wr_unlock,
       },
     };
   #else
