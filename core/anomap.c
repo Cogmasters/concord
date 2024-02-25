@@ -28,12 +28,7 @@ struct anomap_lock {
     bool (*attempt)(void *lock);
     void (*acquire)(void *lock);
     void (*release)(void *lock);
-  } r;
-  struct {
-    bool (*attempt)(void *lock);
-    void (*acquire)(void *lock);
-    void (*release)(void *lock);
-  } w;
+  } r, w;
 };
 
 static void *
@@ -81,7 +76,6 @@ static const struct anomap_lock null_lock = {
 static unsigned anomap_has_locks =
 #if !defined ANOMAP_NATIVE_LOCKS || ANOMAP_NATIVE_LOCKS == NATIVE_LOCK_NONE
   0;
-  static const struct anomap_lock lock_functions = null_lock;
 #else
   anomap_use_lock;
 
@@ -106,47 +100,47 @@ static unsigned anomap_has_locks =
     }
 
     static bool
-    _pthread_rd_lock_attempt(void *lock) {
+    _pthread_rd_attempt(void *lock) {
       return 0 == pthread_rwlock_tryrdlock(lock);
     }
 
     static void
-    _pthread_rd_lock(void *lock) {
+    _pthread_rd_acquire(void *lock) {
       pthread_rwlock_rdlock(lock);
     }
 
     static void
-    _pthread_rd_unlock(void *lock) {
+    _pthread_rd_release(void *lock) {
       pthread_rwlock_unlock(lock);
     }
 
     static bool
-    _pthread_wr_lock_attempt(void *lock) {
+    _pthread_wr_attempt(void *lock) {
       return 0 == pthread_rwlock_trywrlock(lock);
     }
 
     static void
-    _pthread_wr_lock(void *lock) {
+    _pthread_wr_acquire(void *lock) {
       pthread_rwlock_wrlock(lock);
     }
 
     static void
-    _pthread_wr_unlock(void *lock) {
+    _pthread_wr_release(void *lock) {
       pthread_rwlock_unlock(lock);
     }
 
-    static struct anomap_lock lock_functions = {
+    static const struct anomap_lock lock_functions = {
       .create = _pthread_lock_create,
       .destroy = _pthread_lock_destroy,
       .r = {
-        .attempt = _pthread_rd_lock_attempt,
-        .acquire = _pthread_rd_lock,
-        .release = _pthread_rd_unlock,
+        .attempt = _pthread_rd_attempt,
+        .acquire = _pthread_rd_acquire,
+        .release = _pthread_rd_release,
       },
       .w = {
-        .attempt = _pthread_wr_lock_attempt,
-        .acquire = _pthread_wr_lock,
-        .release = _pthread_wr_unlock,
+        .attempt = _pthread_wr_attempt,
+        .acquire = _pthread_wr_acquire,
+        .release = _pthread_wr_release,
       },
     };
   #elif ANOMAP_NATIVE_LOCKS == NATIVE_LOCK_WINDOWS
@@ -166,47 +160,47 @@ static unsigned anomap_has_locks =
     }
 
     static bool
-    _srw_rd_lock_attempt(void *lock) {
+    _srw_rd_attempt(void *lock) {
       return TryAcquireSRWLockShared(lock);
     }
 
     static void
-    _srw_rd_lock(void *lock) {
+    _srw_rd_acquire(void *lock) {
       AcquireSRWLockShared(lock);
     }
 
     static void
-    _srw_rd_unlock(void *lock) {
+    _srw_rd_release(void *lock) {
       ReleaseSRWLockShared(lock);
     }
 
     static bool
-    _srw_wr_lock_attempt(void *lock) {
+    _srw_wr_attempt(void *lock) {
       return TryAcquireSRWLockExclusive(lock);
     }
 
     static void
-    _srw_wr_lock(void *lock) {
+    _srw_wr_acquire(void *lock) {
       AcquireSRWLockExclusive(lock);
     }
 
     static void
-    _srw_wr_unlock(void *lock) {
+    _srw_wr_release(void *lock) {
       ReleaseSRWLockExclusive(lock);
     }
 
-    static struct anomap_lock lock_functions = {
+    static const struct anomap_lock lock_functions = {
       .create = _srw_lock_create,
       .destroy = _srw_lock_destroy,
       .r = {
-        .attempt = _srw_rd_lock_attempt,
-        .acquire = _srw_rd_lock,
-        .release = _srw_rd_unlock,
+        .attempt = _srw_rd_attempt,
+        .acquire = _srw_rd_acquire,
+        .release = _srw_rd_release,
       },
       .w = {
-        .attempt = _srw_wr_lock_attempt,
-        .acquire = _srw_wr_lock,
-        .release = _srw_wr_unlock,
+        .attempt = _srw_wr_attempt,
+        .acquire = _srw_wr_acquire,
+        .release = _srw_wr_release,
       },
     };
   #else
@@ -214,12 +208,14 @@ static unsigned anomap_has_locks =
   #endif
 #endif
 
-#define LOCK_W_ATTEMPT map->lock.functions->w.attempt(map->lock.lock)
-#define LOCK_W_ACQUIRE map->lock.functions->w.acquire(map->lock.lock)
-#define LOCK_W_RELEASE map->lock.functions->w.release(map->lock.lock)
-#define LOCK_R_ATTEMPT map->lock.functions->r.attempt(map->lock.lock)
-#define LOCK_R_ACQUIRE map->lock.functions->r.acquire(map->lock.lock)
-#define LOCK_R_RELEASE map->lock.functions->r.release(map->lock.lock)
+#define LOCK_DO(MODE, FUNC)                        \
+  map->lock.functions->MODE.FUNC(map->lock.lock)
+#define LOCK_W_ATTEMPT LOCK_DO(w, attempt)
+#define LOCK_W_ACQUIRE LOCK_DO(w, acquire)
+#define LOCK_W_RELEASE LOCK_DO(w, release)
+#define LOCK_R_ATTEMPT LOCK_DO(r, attempt)
+#define LOCK_R_ACQUIRE LOCK_DO(r, acquire)
+#define LOCK_R_RELEASE LOCK_DO(r, release)
 
 #define ANOMAP_ALLOWED_OPTIONS ( anomap_reverse_order              \
                                | anomap_direct_access              \
@@ -242,7 +238,7 @@ struct anomap {
   struct {
     unsigned *arr;
     size_t len : 32, cap : 32;
-    size_t highest;
+    unsigned highest;
   } map;
   struct {
     char *arr;
@@ -288,9 +284,13 @@ anomap_init(struct anomap *map,
   map->cmp = cmp;
   map->keys.size = key_size;
   map->vals.size = val_size;
+#if !defined ANOMAP_NATIVE_LOCKS || ANOMAP_NATIVE_LOCKS == NATIVE_LOCK_NONE
+  map->lock.functions = &null_lock;
+#else
   map->lock.functions = options & anomap_use_lock
                       ? &lock_functions
                       : &null_lock;
+#endif
   if ((map->lock.lock = map->lock.functions->create()))
     return true;
 
@@ -322,6 +322,72 @@ anomap_destroy(struct anomap *map) {
   memset(map, 0, sizeof *map);
   if (free_on_cleanup)
     free(map);
+}
+
+struct anomap *
+anomap_clone(struct anomap *map, anomap_clone_options options) {
+  if (options) return NULL;
+  struct anomap *clone = malloc(sizeof *clone);
+  if (!clone) return NULL;
+  struct {
+    void *ptrs[16];
+    size_t len;
+  } cleanup = { .len = 0 };
+
+  LOCK_R_ACQUIRE;
+  memcpy(clone, map, sizeof *clone);
+  clone->free_on_cleanup = true;
+
+  if (!(clone->lock.lock = clone->lock.functions->create()))
+    goto lock_create_fail;
+  
+#define CLONE_ARRAY(ARRAY, SIZE)                      \
+  do {                                                \
+    if ((clone->ARRAY.arr = malloc(SIZE))) {          \
+      memcpy(clone->ARRAY.arr, map->ARRAY.arr, SIZE); \
+      cleanup.ptrs[cleanup.len++] = clone->ARRAY.arr; \
+    } else goto array_copy_fail;                      \
+  } while (0)
+
+  if (clone->map.len) {
+    CLONE_ARRAY(map, clone->map.cap * sizeof *clone->map.arr);
+    CLONE_ARRAY(keys, clone->keys.cap * clone->keys.size);
+    if (clone->vals.size)
+      CLONE_ARRAY(vals, clone->vals.cap * clone->vals.size);
+    if (clone->options & anomap_preserve_order)
+      CLONE_ARRAY(order, clone->order.cap * sizeof *clone->order.arr);
+  } else {
+    memset(&clone->map, 0, sizeof clone->map);
+    memset(&clone->keys, 0, sizeof clone->keys);
+    clone->keys.size = map->keys.size;
+    memset(&clone->vals, 0, sizeof clone->vals);
+    clone->vals.size = map->vals.size;
+    memset(&clone->order, 0, sizeof clone->order);
+  }
+
+  LOCK_R_RELEASE;
+  return clone;
+
+  array_copy_fail:
+  while (cleanup.len)
+    free(cleanup.ptrs[--cleanup.len]);
+  clone->lock.functions->destroy(clone->lock.lock);
+  lock_create_fail:
+  LOCK_R_RELEASE;
+  free(clone);
+  return NULL;
+}
+
+void
+anomap_move(struct anomap *dest, bool free_on_destroy, struct anomap *map) {
+  LOCK_W_ACQUIRE;
+  memcpy(dest, map, sizeof *dest);
+  const bool free_map = map->free_on_cleanup;
+  dest->free_on_cleanup = free_on_destroy;
+  memset(map, 0, sizeof *map);
+  if (free_map) free(map);
+  map = dest;
+  LOCK_W_RELEASE;
 }
 
 void
@@ -527,9 +593,10 @@ anomap_operation
 anomap_do(struct anomap *map, anomap_operation operation,
           void *key, void *val)
 {
-  if (operation == anomap_getval)
-    LOCK_R_ACQUIRE;
-  else LOCK_W_ACQUIRE;
+  const bool use_write_lock = operation != anomap_getval;
+  if (use_write_lock)
+    LOCK_W_ACQUIRE;
+  else LOCK_R_ACQUIRE;
   const size_t key_size = map->keys.size, val_size = map->vals.size;
   anomap_operation result = 0;
   size_t mpos = 0;
@@ -633,9 +700,9 @@ anomap_do(struct anomap *map, anomap_operation operation,
     _anomap_on_empty(map);
   }
   finish:
-  if (operation == anomap_getval)
-    LOCK_R_RELEASE;
-  else LOCK_W_RELEASE;
+  if (use_write_lock)
+    LOCK_W_RELEASE;
+  else LOCK_R_RELEASE;
   return result;
 }
 

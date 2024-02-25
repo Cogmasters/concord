@@ -61,6 +61,14 @@ struct anomap *anomap_create(size_t key_size, size_t val_size,
                              anomap_options options);
 void anomap_destroy(struct anomap *map);
 
+typedef enum {
+#define ANOMAP_CLONE_OPTIONS_NONE anomap_clone_options_none
+  anomap_clone_options_none,
+} anomap_clone_options;
+
+struct anomap *anomap_clone(struct anomap *map, anomap_clone_options options);
+void anomap_move(struct anomap *dest, bool free_on_destroy, struct anomap *map);
+
 struct anomap_item_changed {
   struct anomap *map;
   void *data;
