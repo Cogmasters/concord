@@ -750,6 +750,11 @@ struct discord_gateway {
          */
         int64_t hbeat_interval;
         /**
+         * boolean that indicates if the last heartbeat was answered
+         * @note used to detect zombie connections
+        */
+        bool hbeat_acknowledged;
+        /**
          * Gateway's concept of "now"
          * @note updated at discord_gateway_perform()
          */
