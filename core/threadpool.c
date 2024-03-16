@@ -118,6 +118,7 @@ threadpool_t *threadpool_create(int thread_count, int queue_size, int flags)
     pool->queue = (threadpool_task_t *)malloc
         (sizeof(threadpool_task_t) * queue_size);
 
+
     /* Initialize mutex and conditional variable first */
     if((cthreads_mutex_init(&(pool->lock), NULL) != 0) ||
        (cthreads_cond_init(&(pool->notify), NULL) != 0) ||
@@ -125,6 +126,7 @@ threadpool_t *threadpool_create(int thread_count, int queue_size, int flags)
        (pool->queue == NULL)) {
         goto err;
     }
+
 
     /* Start worker threads */
     for(i = 0; i < thread_count; i++) {

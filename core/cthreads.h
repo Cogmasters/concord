@@ -13,7 +13,7 @@ struct cthreads_args {
   void *data;
 };
 
-#if _WIN32
+#ifdef _WIN32
   #include <windows.h>
 #else
   #include <pthread.h>
@@ -21,13 +21,6 @@ struct cthreads_args {
 
 #ifdef _WIN32
   #define CTHREADS_THREAD_DWCREATIONFLAGS 1
-
-  #define CTHREADS_MUTEX_BINITIALOWNER 1
-  #define CTHREADS_MUTEX_LPNAME 1
-
-  #define CTHREADS_COND_BMANUALRESET 1
-  #define CTHREADS_COND_BINITIALSTATE 1
-  #define CTHREADS_COND_LPNAME 1
 
   #define CTHREADS_RWLOCK 1
 #else
@@ -43,6 +36,8 @@ struct cthreads_args {
     #define CTHREADS_THREAD_STACK 1
   #endif
 
+  #define CTHREADS_MUTEX_ATTR 1
+
   #define CTHREADS_MUTEX_PSHARED 1
   #if _POSIX_C_SOURCE >= 200809L
     #define CTHREADS_MUTEX_TYPE 1
@@ -56,6 +51,8 @@ struct cthreads_args {
     #define CTHREADS_MUTEX_PROTOCOL 1
     #define CTHREADS_MUTEX_PRIOCEILING 1
   #endif
+
+  #define CTHREADS_COND_ATTR 1
 
   #define CTHREADS_COND_PSHARED 1
   #if _POSIX_C_SOURCE >= 200112L
@@ -94,58 +91,56 @@ struct cthreads_thread_attr {
 
 struct cthreads_mutex {
   #ifdef _WIN32
-    HANDLE wMutex;
+    CRITICAL_SECTION wMutex;
   #else
     pthread_mutex_t pMutex;
   #endif
 };
 
-struct cthreads_mutex_attr {
-  #ifdef _WIN32
-    int bInitialOwner;
-    char *lpName;
-  #else
-    int pshared;
-    #ifdef CTHREADS_MUTEX_TYPE
-      int type;
+#ifdef CTHREADS_MUTEX_ATTR
+  struct cthreads_mutex_attr {
+    #ifndef _WIN32
+      int pshared;
+      #ifdef CTHREADS_MUTEX_TYPE
+        int type;
+      #endif
+      #ifdef CTHREADS_MUTEX_ROBUST
+        int robust;
+      #endif
+      #ifdef CTHREADS_MUTEX_PROTOCOL
+        int protocol;
+      #endif
+      #ifdef CTHREADS_MUTEX_PRIOCEILING
+        int prioceiling;
+      #endif
     #endif
-    #ifdef CTHREADS_MUTEX_ROBUST
-      int robust;
-    #endif
-    #ifdef CTHREADS_MUTEX_PROTOCOL
-      int protocol;
-    #endif
-    #ifdef CTHREADS_MUTEX_PRIOCEILING
-      int prioceiling;
-    #endif
-  #endif
-};
+  };
+#endif
 
 struct cthreads_cond {
   #ifdef _WIN32
-    HANDLE wCond;
+    CONDITION_VARIABLE wCond;
   #else
     pthread_cond_t pCond;
   #endif
 };
 
-struct cthreads_cond_attr {
-  #ifdef _WIN32
-    int bManualReset;
-    int bInitialState;
-    char *lpName;
-  #else
-    int pshared;
-    #ifdef CTHREADS_COND_CLOCK
-      int clock;
+#ifdef CTHREADS_COND_ATTR
+  struct cthreads_cond_attr {
+    #ifndef _WIN32
+      int pshared;
+      #ifdef CTHREADS_COND_CLOCK
+        int clock;
+      #endif
     #endif
-  #endif
-};
+  };
+#endif
 
 #ifdef CTHREADS_RWLOCK
 struct cthreads_rwlock {
   #ifdef _WIN32
-    HANDLE wRWLock;
+    int type;
+    PSRWLOCK wRWLock;
   #else
     pthread_rwlock_t pRWLock;
   #endif
@@ -240,10 +235,14 @@ void cthreads_thread_exit(void *code);
  * - windows threads: InitializeCriticalSection
  *
  * @param mutex Pointer to the mutex structure to be initialized.
- * @param attr Pointer to the mutex attributes. Set it to NULL for default attributes.
+ * @param attr Pointer to the mutex attributes. Set it to NULL for default attributes. Only available if CTHREADS_MUTEX_ATTR is defined.
  * @return 0 on success, non-zero error code on failure.
  */
-int cthreads_mutex_init(struct cthreads_mutex *mutex, struct cthreads_mutex_attr *attr);
+#ifdef CTHREADS_MUTEX_ATTR
+  int cthreads_mutex_init(struct cthreads_mutex *mutex, struct cthreads_mutex_attr *attr);
+#else
+  int cthreads_mutex_init(struct cthreads_mutex *mutex, void *attr);
+#endif
 
 /**
  * Locks a mutex.
@@ -296,10 +295,14 @@ int cthreads_mutex_destroy(struct cthreads_mutex *mutex);
  * - windows threads: InitializeConditionVariable
  *
  * @param cond Pointer to the condition variable structure to be initialized.
- * @param attr Pointer to the condition variable attributes. Set it to NULL for default attributes.
+ * @param attr Pointer to the condition variable attributes. Set it to NULL for default attributes. Only available if CTHREADS_COND_ATTR is defined.
  * @return 0 on success, non-zero error code on failure.
  */
-int cthreads_cond_init(struct cthreads_cond *cond, struct cthreads_cond_attr *attr);
+#ifdef CTHREADS_COND_ATTR
+  int cthreads_cond_init(struct cthreads_cond *cond, struct cthreads_cond_attr *attr);
+#else
+  int cthreads_cond_init(struct cthreads_cond *cond, void *attr);
+#endif
 
 /**
  * Signals a condition variable.
@@ -347,60 +350,60 @@ int cthreads_cond_destroy(struct cthreads_cond *cond);
 int cthreads_cond_wait(struct cthreads_cond *cond, struct cthreads_mutex *mutex);
 
 #ifdef CTHREADS_RWLOCK
-/**
- * Initializes a read-write lock.
- *
- * - pthread: pthread_rwlock_init
- * - windows threads: InitializeSRWLock
- *
- * @param rwlock Pointer to the read-write lock structure to be initialized.
- * @return 0 on success, non-zero error code on failure.
- */
-int cthreads_rwlock_init(struct cthreads_rwlock *rwlock);
+  /**
+   * Initializes a read-write lock.
+   *
+   * - pthread: pthread_rwlock_init
+   * - windows threads: InitializeSRWLock
+   *
+   * @param rwlock Pointer to the read-write lock structure to be initialized.
+   * @return 0 on success, non-zero error code on failure.
+   */
+  int cthreads_rwlock_init(struct cthreads_rwlock *rwlock);
 
-/**
- * Acquires a read lock on a read-write lock.
- *
- * - pthread: pthread_rwlock_rdlock
- * - windows threads: AcquireSRWLockShared
- *
- * @param rwlock Pointer to the read-write lock structure to be locked.
- * @return 0 on success, non-zero error code on failure.
- */
-int cthreads_rwlock_rdlock(struct cthreads_rwlock *rwlock);
+  /**
+   * Acquires a read lock on a read-write lock.
+   *
+   * - pthread: pthread_rwlock_rdlock
+   * - windows threads: AcquireSRWLockShared
+   *
+   * @param rwlock Pointer to the read-write lock structure to be locked.
+   * @return 0 on success, non-zero error code on failure.
+   */
+  int cthreads_rwlock_rdlock(struct cthreads_rwlock *rwlock);
 
-/**
- * Unlocks a read-write lock.
- *
- * - pthread: pthread_rwlock_unlock
- * - windows threads: ReleaseSRWLockExclusive for writer, ReleaseSRWLockShared for reader
- *
- * @param rwlock Pointer to the read-write lock structure to be unlocked.
- * @return 0 on success, non-zero error code on failure.
- */
-int cthreads_rwlock_unlock(struct cthreads_rwlock *rwlock);
+  /**
+   * Unlocks a read-write lock.
+   *
+   * - pthread: pthread_rwlock_unlock
+   * - windows threads: ReleaseSRWLockShared or ReleaseSRWLockExclusive
+   *
+   * @param rwlock Pointer to the read-write lock structure to be unlocked.
+   * @return 0 on success, non-zero error code on failure.
+   */
+  int cthreads_rwlock_unlock(struct cthreads_rwlock *rwlock);
 
-/**
- * Acquires a write lock on a read-write lock.
- *
- * - pthread: pthread_rwlock_wrlock
- * - windows threads: AcquireSRWLockExclusive
- *
- * @param rwlock Pointer to the read-write lock structure to be locked.
- * @return 0 on success, non-zero error code on failure.
- */
-int cthreads_rwlock_wrlock(struct cthreads_rwlock *rwlock);
+  /**
+   * Acquires a write lock on a read-write lock.
+   *
+   * - pthread: pthread_rwlock_wrlock
+   * - windows threads: AcquireSRWLockExclusive
+   *
+   * @param rwlock Pointer to the read-write lock structure to be locked.
+   * @return 0 on success, non-zero error code on failure.
+   */
+  int cthreads_rwlock_wrlock(struct cthreads_rwlock *rwlock);
 
-/**
- * Destroys a read-write lock.
- *
- * - pthread: pthread_rwlock_destroy
- * - windows threads: DeleteSRWLock
- *
- * @param rwlock Pointer to the read-write lock structure to be destroyed.
- * @return 0 on success, non-zero error code on failure.
- */
-int cthreads_rwlock_destroy(struct cthreads_rwlock *rwlock);
+  /**
+   * Destroys a read-write lock.
+   *
+   * - pthread: pthread_rwlock_destroy
+   * - windows threads: N/A
+   *
+   * @param rwlock Pointer to the read-write lock structure to be destroyed.
+   * @return 0 on success, non-zero error code on failure.
+   */
+  int cthreads_rwlock_destroy(struct cthreads_rwlock *rwlock);
 #endif
 
 #endif /* CTHREADS_H */

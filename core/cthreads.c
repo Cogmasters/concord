@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include "cthreads.h"
 
@@ -24,6 +25,10 @@ DWORD WINAPI __cthreads_winthreads_function_wrapper(void *data) {
 
 int cthreads_thread_create(struct cthreads_thread *thread, struct cthreads_thread_attr *attr, void *(*func)(void *data), void *data, struct cthreads_args *args) {
   #ifdef _WIN32
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_thread_create\n");
+    #endif
+
     args->func = func;
     args->data = data;
 
@@ -37,6 +42,10 @@ int cthreads_thread_create(struct cthreads_thread *thread, struct cthreads_threa
     pthread_attr_t pAttr;
 
     (void) args;
+
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_thread_create\n");
+    #endif
 
     if (attr) {
       if (pthread_attr_init(&pAttr)) return 1;
@@ -58,6 +67,10 @@ int cthreads_thread_create(struct cthreads_thread *thread, struct cthreads_threa
 }
 
 int cthreads_thread_detach(struct cthreads_thread thread) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_thread_detach\n");
+  #endif
+
   #ifdef _WIN32
     return CloseHandle(thread.wThread);
   #else
@@ -66,6 +79,10 @@ int cthreads_thread_detach(struct cthreads_thread thread) {
 }
 
 int cthreads_thread_join(struct cthreads_thread thread, void *code) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_thread_join\n");
+  #endif
+
   #ifdef _WIN32
     if (WaitForSingleObject(thread.wThread, INFINITE) == WAIT_FAILED) return 0;
 
@@ -76,6 +93,10 @@ int cthreads_thread_join(struct cthreads_thread thread, void *code) {
 }
 
 int cthreads_thread_equal(struct cthreads_thread thread1, struct cthreads_thread thread2) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_thread_equal\n");
+  #endif
+
   #ifdef _WIN32
     return thread1.wThread == thread2.wThread;
   #else
@@ -85,6 +106,10 @@ int cthreads_thread_equal(struct cthreads_thread thread1, struct cthreads_thread
 
 struct cthreads_thread cthreads_thread_self(void) {
   struct cthreads_thread t;
+
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_thread_self\n");
+  #endif
 
   #ifdef _WIN32
     t.wThread = GetCurrentThread();
@@ -96,6 +121,10 @@ struct cthreads_thread cthreads_thread_self(void) {
 }
 
 unsigned long cthreads_thread_id(struct cthreads_thread thread) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_thread_id\n");
+  #endif
+
   #ifdef _WIN32
     return GetThreadId(thread.wThread);
   #else
@@ -104,6 +133,10 @@ unsigned long cthreads_thread_id(struct cthreads_thread thread) {
 }
 
 void cthreads_thread_exit(void *code) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_thread_exit\n");
+  #endif
+
   #ifdef _WIN32
     #if defined  __WATCOMC__ || _MSC_VER || __DMC__
       ExitThread((DWORD)code);
@@ -115,15 +148,29 @@ void cthreads_thread_exit(void *code) {
   #endif
 }
 
-int cthreads_mutex_init(struct cthreads_mutex *mutex, struct cthreads_mutex_attr *attr) {
+#ifdef CTHREADS_MUTEX_ATTR
+  int cthreads_mutex_init(struct cthreads_mutex *mutex, struct cthreads_mutex_attr *attr) {
+#else
+  int cthreads_mutex_init(struct cthreads_mutex *mutex, void *attr) {
+#endif
   #ifdef _WIN32
-    if (attr) mutex->wMutex = CreateMutex(NULL, attr->bInitialOwner ? TRUE : FALSE, 
-                                          attr->lpName ? (LPCSTR)attr->lpName : NULL);
-    else mutex->wMutex = CreateMutex(NULL, FALSE, NULL);
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_mutex_init\n");
+    #endif
 
-    return mutex->wMutex == NULL;
+    (void) attr;
+
+    InitializeCriticalSection(&mutex->wMutex);
+
+    return 0;
   #else
     pthread_mutexattr_t pAttr;
+
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_mutex_init\n");
+    #endif
+  
+    /* CTHREADS_MUTEX_ATTR is always available on non-Windows platforms */
     if (attr) {
       if (pthread_mutexattr_init(&pAttr)) return 1;
       if (attr->pshared) pthread_mutexattr_setpshared(&pAttr, attr->pshared);
@@ -146,47 +193,80 @@ int cthreads_mutex_init(struct cthreads_mutex *mutex, struct cthreads_mutex_attr
 }
 
 int cthreads_mutex_lock(struct cthreads_mutex *mutex) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_mutex_lock\n");
+  #endif
+
   #ifdef _WIN32
-    return WaitForSingleObject(mutex->wMutex, INFINITE) != WAIT_OBJECT_0;
+    EnterCriticalSection(&mutex->wMutex);
+
+    return 0;
   #else
     return pthread_mutex_lock(&mutex->pMutex);
   #endif
 }
 
 int cthreads_mutex_trylock(struct cthreads_mutex *mutex) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_mutex_trylock\n");
+  #endif
+
   #ifdef _WIN32
-    return WaitForSingleObject(mutex->wMutex, 0) != WAIT_OBJECT_0;
+    TryEnterCriticalSection(&mutex->wMutex);
+
+    return 0;
   #else
     return pthread_mutex_trylock(&mutex->pMutex);
   #endif
 }
 
 int cthreads_mutex_unlock(struct cthreads_mutex *mutex) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_mutex_unlock\n");
+  #endif
+
   #ifdef _WIN32
-    return ReleaseMutex(mutex->wMutex) == 0;
+    LeaveCriticalSection(&mutex->wMutex);
+
+    return 0;
   #else
     return pthread_mutex_unlock(&mutex->pMutex);
   #endif
 }
 
 int cthreads_mutex_destroy(struct cthreads_mutex *mutex) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_mutex_destroy\n");
+  #endif
+
   #ifdef _WIN32
-    return CloseHandle(mutex->wMutex) == 0;
+    DeleteCriticalSection(&mutex->wMutex);
+
+    return 0;
   #else
     return pthread_mutex_destroy(&mutex->pMutex);
   #endif
 }
 
-int cthreads_cond_init(struct cthreads_cond *cond, struct cthreads_cond_attr *attr) {
-  #ifdef _WIN32
-    if (attr) cond->wCond = CreateEvent(NULL, attr->bManualReset ? TRUE : FALSE, 
-                                        attr->bInitialState ? TRUE : FALSE,
-                                        attr->lpName ? (LPTSTR)attr->lpName : NULL);
-    else cond->wCond = CreateEvent(NULL, FALSE, FALSE, NULL);
+#ifdef CTHREADS_COND_ATTR
+  int cthreads_cond_init(struct cthreads_cond *cond, struct cthreads_cond_attr *attr) {
+#else
+  int cthreads_cond_init(struct cthreads_cond *cond, void *attr) {
+#endif
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_cond_init\n");
+  #endif
 
-    return cond->wCond == NULL;
+  #ifdef _WIN32
+    (void) attr;
+
+    InitializeConditionVariable(&cond->wCond);
+
+    return 0;
   #else
     pthread_condattr_t pAttr;
+
+    /* CTHREADS_COND_ATTR is always available on non-Windows platforms */
     if (attr) {
       if (pthread_condattr_init(&pAttr) != 0) return 1;
       if (attr->pshared) pthread_condattr_setpshared(&pAttr, attr->pshared);
@@ -200,30 +280,50 @@ int cthreads_cond_init(struct cthreads_cond *cond, struct cthreads_cond_attr *at
 }
 
 int cthreads_cond_signal(struct cthreads_cond *cond) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_cond_signal\n");
+  #endif
+
   #ifdef _WIN32
-    return SetEvent(cond->wCond) == 0;
+    WakeConditionVariable(&cond->wCond);
+
+    return 0;
   #else
     return pthread_cond_signal(&cond->pCond);
   #endif
 }
 
 int cthreads_cond_broadcast(struct cthreads_cond *cond) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_cond_broadcast\n");
+  #endif
+
   #ifdef _WIN32
-    return SetEvent(cond->wCond) == 0;
+    WakeAllConditionVariable(&cond->wCond);
+
+    return 0;
   #else
     return pthread_cond_broadcast(&cond->pCond);
   #endif
 }
 
 int cthreads_cond_destroy(struct cthreads_cond *cond) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_cond_destroy\n");
+  #endif
+
   #ifdef _WIN32
-    return CloseHandle(cond->wCond) == 0;
+    return 0;
   #else
     return pthread_cond_destroy(&cond->pCond);
   #endif
 }
 
 int cthreads_cond_wait(struct cthreads_cond *cond, struct cthreads_mutex *mutex) {
+  #ifdef CTHREADS_DEBUG
+    printf("cthreads_cond_wait\n");
+  #endif
+
   #ifdef _WIN32
     return SleepConditionVariableCS(&cond->wCond, &mutex->wMutex, INFINITE) == 0;
   #else
@@ -233,40 +333,90 @@ int cthreads_cond_wait(struct cthreads_cond *cond, struct cthreads_mutex *mutex)
 
 #ifdef CTHREADS_RWLOCK
   int cthreads_rwlock_init(struct cthreads_rwlock *rwlock) {
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_rwlock_init\n");
+    #endif
+
     #ifdef _WIN32
-      return (rwlock->wRWLock = CreateMutex(NULL, FALSE, NULL)) == NULL;
+      rwlock->wRWLock = malloc(sizeof(SRWLOCK));
+      if (!rwlock->wRWLock) return 1;
+
+      InitializeSRWLock(rwlock->wRWLock);
+
+      return 0;
     #else
       return pthread_rwlock_init(&rwlock->pRWLock, NULL);
     #endif
   }
 
   int cthreads_rwlock_rdlock(struct cthreads_rwlock *rwlock) {
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_rwlock_rdlock\n");
+    #endif
+
     #ifdef _WIN32
-      return WaitForSingleObject(rwlock->wRWLock, INFINITE) == WAIT_FAILED;
+      AcquireSRWLockShared(rwlock->wRWLock);
+      rwlock->type = 1;
+
+      return 0;
     #else
       return pthread_rwlock_rdlock(&rwlock->pRWLock);
     #endif
   }
 
   int cthreads_rwlock_unlock(struct cthreads_rwlock *rwlock) {
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_rwlock_unlock\n");
+    #endif
+
     #ifdef _WIN32
-      return ReleaseMutex(rwlock->wRWLock) == 0;
+      switch (rwlock->type) {
+        case 1: {
+          ReleaseSRWLockShared(rwlock->wRWLock);
+
+          break;
+        }
+        case 2: {
+          ReleaseSRWLockExclusive(rwlock->wRWLock);
+
+          break;
+        }
+      }
+
+      rwlock->type = 0;
+
+      return 0;
     #else
       return pthread_rwlock_unlock(&rwlock->pRWLock);
     #endif
   }
 
   int cthreads_rwlock_wrlock(struct cthreads_rwlock *rwlock) {
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_rwlock_wrlock\n");
+    #endif
+
     #ifdef _WIN32
-      return WaitForSingleObject(rwlock->wRWLock, INFINITE) == WAIT_FAILED;
+      AcquireSRWLockExclusive(rwlock->wRWLock);
+      rwlock->type = 2;
+
+      return 0;
     #else
       return pthread_rwlock_wrlock(&rwlock->pRWLock);
     #endif
   }
 
   int cthreads_rwlock_destroy(struct cthreads_rwlock *rwlock) {
+    #ifdef CTHREADS_DEBUG
+      printf("cthreads_rwlock_destroy\n");
+    #endif
+
     #ifdef _WIN32
-      return CloseHandle(rwlock->wRWLock) == 0;
+      free(rwlock->wRWLock);
+      rwlock->wRWLock = NULL;
+      rwlock->type = 0;
+
+      return 0;
     #else
       return pthread_rwlock_destroy(&rwlock->pRWLock);
     #endif

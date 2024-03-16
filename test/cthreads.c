@@ -28,7 +28,11 @@ TEST mutexes() {
   struct cthreads_mutex mutex;
   int ret;
 
+  #ifdef CTHREADS_MUTEX_ATTR
   ret = cthreads_mutex_init(&mutex, NULL);
+  #else
+  ret = cthreads_mutex_init(&mutex);
+  #endif
   ASSERT_EQ(0, ret);
 
   ret = cthreads_mutex_lock(&mutex);
