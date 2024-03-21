@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include <pthread.h>
 #include <assert.h>
 #include <errno.h>
 #include <inttypes.h> /* SCNu64 */
 
 #include "discord.h"
+#include "cthreads.h"
 #include "log.h"
 
 u64snowflake g_app_id;
@@ -80,7 +80,7 @@ read_input(void *p_client)
     char cmd_action[9 + 1];
     CCORDcode code;
 
-    pthread_detach(pthread_self());
+    cthreads_thread_detach(cthreads_thread_self());
 
     while (1) {
         memset(buf, 0, sizeof(buf));
@@ -254,7 +254,7 @@ read_input(void *p_client)
         print_help();
     }
 
-    pthread_exit(NULL);
+    cthreads_thread_exit(NULL);
 }
 
 int
@@ -284,8 +284,9 @@ main(int argc, char *argv[])
         fscanf(stdin, "%" SCNu64, &g_app_id);
     } while (!g_app_id || errno == ERANGE);
 
-    pthread_t tid;
-    pthread_create(&tid, NULL, &read_input, client);
+    struct cthreads_thread tid;
+    struct cthreads_args args;
+    cthreads_thread_create(&tid, NULL, read_input, client, &args);
 
     discord_run(client);
 

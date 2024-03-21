@@ -317,9 +317,9 @@ static void
 _discord_on_heartbeat_ack(struct discord_gateway *gw)
 {
     /* get request / response interval in milliseconds */
-    pthread_rwlock_wrlock(&gw->timer->rwlock);
+    cthreads_rwlock_wrlock(&gw->timer->rwlock);
     gw->timer->ping_ms = (int)(gw->timer->now - gw->timer->hbeat_last);
-    pthread_rwlock_unlock(&gw->timer->rwlock);
+    cthreads_rwlock_unlock(&gw->timer->rwlock);
 
     logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
 }
@@ -548,7 +548,7 @@ discord_gateway_init(struct discord_gateway *gw,
     logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
     gw->timer = calloc(1, sizeof *gw->timer);
-    ASSERT_S(!pthread_rwlock_init(&gw->timer->rwlock, NULL),
+    ASSERT_S(!cthreads_rwlock_init(&gw->timer->rwlock),
              "Couldn't initialize Gateway's rwlock");
 
     /* client connection status */
@@ -589,7 +589,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     curl_multi_cleanup(gw->mhandle);
     ws_cleanup(gw->ws);
     /* cleanup timers */
-    pthread_rwlock_destroy(&gw->timer->rwlock);
+    cthreads_rwlock_destroy(&gw->timer->rwlock);
     free(gw->timer);
     /* cleanup bot identification */
     free(gw->id.properties);
