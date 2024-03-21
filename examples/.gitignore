@@ -1,6 +1,9 @@
 # Ignore all
 *
 # But these
+!starboard_clone/
+!starboard_clone/
 !.gitignore
+!*.h
 !*.c
 !Makefile
