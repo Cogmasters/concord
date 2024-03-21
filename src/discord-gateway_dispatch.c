@@ -264,6 +264,16 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
+    if (!gw->timer->hbeat_acknowledged) {
+        logconf_warn(&gw->conf, "Heartbeat ACK not received, marked as zombie");
+
+        gw->timer->hbeat_acknowledged = true;
+
+        discord_gateway_reconnect(gw, false);
+
+        return;
+    }
+
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
@@ -272,6 +282,8 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
                 "SEND",
                 ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
+
+        gw->timer->hbeat_acknowledged = false;
 
         /* update heartbeat timestamp */
         gw->timer->hbeat_last = gw->timer->now;
