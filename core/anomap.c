@@ -417,10 +417,8 @@ _anomap_on_empty(struct anomap *map) {
 }
 
 static void
-_anomap_clear_foreach(struct anomap *map, void *data, 
-                      const void *key, const void *val)
-{
-  if (!map->on_changed.cb) return;
+_anomap_clear_foreach(const void *key, const void *val, void *data) {
+  struct anomap *map = data;
   map->on_changed.cb(
     &(struct anomap_item_changed) {
       .map = map,
@@ -437,8 +435,8 @@ anomap_clear(struct anomap *map) {
   if (map->map.len) {
     if (map->on_changed.cb) {
       if (map->options & anomap_preserve_order)
-        _anomap_foreach(map, _anomap_clear_foreach, NULL, anomap_tail);
-      else _anomap_foreach(map, _anomap_clear_foreach, NULL, anomap_head);
+        _anomap_foreach(map, _anomap_clear_foreach, map, anomap_tail);
+      else _anomap_foreach(map, _anomap_clear_foreach, map, anomap_head);
     }
     map->map.len = 0;
     _anomap_on_empty(map);
@@ -802,49 +800,33 @@ _anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data,
     unsigned head = map->order.arr[tail].next;
     unsigned start = start_position == anomap_head ? head : tail;
     unsigned pos = start;
-    switch ((start_position == anomap_tail ? 2 : 0) | (val_size ? 1 : 0)) {
+    switch ((start_position == anomap_tail ? 1 : 0)) {
       while (pos != tail) {
         pos = map->order.arr[pos].next;
-        case 0 | 0:
-        cb(map, data, map->keys.arr + key_size * pos, NULL);
-      } break;
-      while (pos != tail) {
-        pos = map->order.arr[pos].next;
-        case 0 | 1:
-        cb(map, data, map->keys.arr + key_size * pos,
-                      map->vals.arr + val_size * pos);
+        case 0:
+        cb(map->keys.arr + key_size * pos,
+           map->vals.arr + val_size * pos,
+           data);
       } break;
       while (pos != head) {
         pos = map->order.arr[pos].prev;
-        case 2 | 0:
-        cb(map, data, map->keys.arr + key_size * pos, NULL);
-      } break;
-      while (pos != head) {
-        pos = map->order.arr[pos].prev;
-        case 2 | 1:
-        cb(map, data, map->keys.arr + key_size * pos,
-                      map->vals.arr + val_size * pos);
+        case 1:
+        cb(map->keys.arr + key_size * pos,
+           map->vals.arr + val_size * pos,
+           data);
       } break;
     }
   } else {
     if (start_position == anomap_head) {
-      if (val_size) {
-        for (size_t i=0; i<map->map.len; i++)
-          cb(map, data, map->keys.arr + key_size * map->map.arr[i],
-                        map->vals.arr + val_size * map->map.arr[i]);
-      } else {
-        for (size_t i=0; i<map->map.len; i++)
-          cb(map, data, map->keys.arr + key_size * map->map.arr[i], NULL);
-      }
+      for (size_t i=0; i<map->map.len; i++)
+        cb(map->keys.arr + key_size * map->map.arr[i],
+           map->vals.arr + val_size * map->map.arr[i],
+           data);
     } else {
-      if (val_size) {
-        for (size_t i = map->map.len; i--;)
-          cb(map, data, map->keys.arr + key_size * map->map.arr[i],
-                        map->vals.arr + val_size * map->map.arr[i]);
-      } else {
-        for (size_t i = map->map.len; i--;)
-          cb(map, data, map->keys.arr + key_size * map->map.arr[i], NULL);
-      }
+      for (size_t i = map->map.len; i--;)
+        cb(map->keys.arr + key_size * map->map.arr[i],
+           map->vals.arr + val_size * map->map.arr[i],
+           data);
     }
   } 
 }
