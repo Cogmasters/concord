@@ -256,7 +256,8 @@ discord_request_cancel(struct discord_requestor *rqtor,
 
     if (NOT_EMPTY_STR(req->reason)) {
         ua_conn_remove_header(req->conn, "X-Audit-Log-Reason");
-        *req->reason = '\0';
+        free(req->reason);
+        req->reason = NULL;
     }
     if (req->conn) {
         ua_conn_stop(req->conn);
