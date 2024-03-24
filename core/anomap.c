@@ -257,7 +257,7 @@ struct anomap {
   } order;
 };
 
-static void _anomap_foreach(struct anomap *map, anomap_foreach_cb *cb,
+static void _anomap_foreach(anomap *map, anomap_foreach_cb *cb,
                             void *data, anomap_position start_position);
 
 anomap_options
@@ -267,11 +267,11 @@ anomap_supported_options(void) {
 
 size_t
 anomap_struct_size(void) {
-  return sizeof(struct anomap);
+  return sizeof(anomap);
 }
 
 bool
-anomap_init(struct anomap *map,
+anomap_init(anomap *map,
             size_t key_size, size_t val_size,
             int (*cmp)(const void *, const void *),
             anomap_options options)
@@ -298,12 +298,12 @@ anomap_init(struct anomap *map,
   return false;
 }
 
-struct anomap *
+anomap *
 anomap_create(size_t key_size, size_t val_size,
               int (*cmp)(const void *, const void *),
               anomap_options options)
 {
-  struct anomap *map = calloc(1, sizeof *map);
+  anomap *map = calloc(1, sizeof *map);
   if (!map) return NULL;
   if (anomap_init(map, key_size, val_size, cmp, options))
     return map->free_on_cleanup = true, map;
@@ -311,7 +311,7 @@ anomap_create(size_t key_size, size_t val_size,
 }
 
 void
-anomap_destroy(struct anomap *map) {
+anomap_destroy(anomap *map) {
   anomap_clear(map);
   free(map->map.arr);
   free(map->keys.arr);
@@ -324,10 +324,10 @@ anomap_destroy(struct anomap *map) {
     free(map);
 }
 
-struct anomap *
-anomap_clone(struct anomap *map, anomap_clone_options options) {
+anomap *
+anomap_clone(anomap *map, anomap_clone_options options) {
   if (options) return NULL;
-  struct anomap *clone = malloc(sizeof *clone);
+  anomap *clone = malloc(sizeof *clone);
   if (!clone) return NULL;
   struct {
     void *ptrs[16];
@@ -379,7 +379,7 @@ anomap_clone(struct anomap *map, anomap_clone_options options) {
 }
 
 void
-anomap_move(struct anomap *dest, bool free_on_destroy, struct anomap *map) {
+anomap_move(anomap *dest, bool free_on_destroy, anomap *map) {
   LOCK_W_ACQUIRE;
   memcpy(dest, map, sizeof *dest);
   const bool free_map = map->free_on_cleanup;
@@ -392,7 +392,7 @@ anomap_move(struct anomap *dest, bool free_on_destroy, struct anomap *map) {
 
 void
 anomap_set_on_item_changed(
-  struct anomap *map, anomap_on_item_changed *on_changed, void *data)
+  anomap *map, anomap_on_item_changed *on_changed, void *data)
 {
   LOCK_W_ACQUIRE;
   map->on_changed.cb = on_changed;
@@ -401,7 +401,7 @@ anomap_set_on_item_changed(
 }
 
 size_t
-anomap_length(struct anomap *map) {
+anomap_length(anomap *map) {
   LOCK_R_ACQUIRE;
   size_t len = map->map.len;
   LOCK_R_RELEASE;
@@ -409,7 +409,7 @@ anomap_length(struct anomap *map) {
 }
 
 static inline void
-_anomap_on_empty(struct anomap *map) {
+_anomap_on_empty(anomap *map) {
   if (map->map.len) return;
   if (map->options & anomap_preserve_order)
     map->order.tail = map->order.arr[0].next = map->order.arr[0].prev = 0;
@@ -418,7 +418,7 @@ _anomap_on_empty(struct anomap *map) {
 
 static void
 _anomap_clear_foreach(const void *key, const void *val, void *data) {
-  struct anomap *map = data;
+  anomap *map = data;
   map->on_changed.cb(
     &(struct anomap_item_changed) {
       .map = map,
@@ -430,7 +430,7 @@ _anomap_clear_foreach(const void *key, const void *val, void *data) {
 }
 
 void
-anomap_clear(struct anomap *map) {
+anomap_clear(anomap *map) {
   LOCK_W_ACQUIRE;
   if (map->map.len) {
     if (map->on_changed.cb) {
@@ -445,13 +445,13 @@ anomap_clear(struct anomap *map) {
 }
 
 bool
-anomap_contains(struct anomap *map, void *key) {
+anomap_contains(anomap *map, void *key) {
   size_t position;
   return anomap_index_of(map, key, &position);
 }
 
 static bool
-anomap_index_of_no_lock(struct anomap *map, void *key, size_t *position) {
+anomap_index_of_no_lock(anomap *map, void *key, size_t *position) {
   size_t lo = 0, mid, hi = map->map.len;
   const char *const keys = map->keys.arr;
   const size_t key_size = map->keys.size;
@@ -485,7 +485,7 @@ anomap_index_of_no_lock(struct anomap *map, void *key, size_t *position) {
 }
 
 bool
-anomap_index_of(struct anomap *map, void *key, size_t *position) {
+anomap_index_of(anomap *map, void *key, size_t *position) {
   LOCK_R_ACQUIRE;
   bool found = anomap_index_of_no_lock(map, key, position);
   LOCK_R_RELEASE;
@@ -493,7 +493,7 @@ anomap_index_of(struct anomap *map, void *key, size_t *position) {
 }
 
 bool
-anomap_at_index(struct anomap *map, size_t index, void *key, void *val) {
+anomap_at_index(anomap *map, size_t index, void *key, void *val) {
   LOCK_R_ACQUIRE;
   if (index >= map->map.len) {
     LOCK_R_RELEASE;
@@ -508,7 +508,7 @@ anomap_at_index(struct anomap *map, size_t index, void *key, void *val) {
 }
 
 const void *
-anomap_direct_key_at_index(struct anomap *map, size_t index) {
+anomap_direct_key_at_index(anomap *map, size_t index) {
   void *result = NULL;
   LOCK_R_ACQUIRE;
   if (!(map->options & anomap_direct_access))
@@ -524,7 +524,7 @@ anomap_direct_key_at_index(struct anomap *map, size_t index) {
 }
 
 void *
-anomap_direct_val_at_index(struct anomap *map, size_t index) {
+anomap_direct_val_at_index(anomap *map, size_t index) {
   void *result = NULL;
   LOCK_R_ACQUIRE;
   if (!(map->options & anomap_direct_access))
@@ -542,7 +542,7 @@ anomap_direct_val_at_index(struct anomap *map, size_t index) {
 }
 
 static bool
-_anomap_ensure_capacity(struct anomap *map, size_t capacity) {
+_anomap_ensure_capacity(anomap *map, size_t capacity) {
   if (capacity > (size_t)1 << 31) return false;
   if (capacity <= map->map.cap) return true;
   size_t cap = map->map.cap ? map->map.cap << 1 : 8;
@@ -574,7 +574,7 @@ _anomap_ensure_capacity(struct anomap *map, size_t capacity) {
 }
 
 static void
-_unlink_element(struct anomap *map, unsigned pos) {
+_unlink_element(anomap *map, unsigned pos) {
   if (0 == map->map.len) {
     map->order.tail = map->order.arr[0].next = map->order.arr[0].prev = 0;
   } else {
@@ -588,9 +588,7 @@ _unlink_element(struct anomap *map, unsigned pos) {
 }
 
 anomap_operation
-anomap_do(struct anomap *map, anomap_operation operation,
-          void *key, void *val)
-{
+anomap_do(anomap *map, anomap_operation operation, void *key, void *val) {
   const bool use_write_lock = operation != anomap_getval;
   if (use_write_lock)
     LOCK_W_ACQUIRE;
@@ -705,7 +703,7 @@ anomap_do(struct anomap *map, anomap_operation operation,
 }
 
 static size_t
-anomap_copy_range_no_lock(struct anomap *map, 
+anomap_copy_range_no_lock(anomap *map, 
                           size_t from_index, size_t to_index,
                           void *keys, void *vals)
 {
@@ -731,7 +729,7 @@ anomap_copy_range_no_lock(struct anomap *map,
 }
 
 size_t
-anomap_copy_range(struct anomap *map, size_t from_index, size_t to_index,
+anomap_copy_range(anomap *map, size_t from_index, size_t to_index,
                   void *keys, void *vals)
 {
   LOCK_R_ACQUIRE;
@@ -742,7 +740,7 @@ anomap_copy_range(struct anomap *map, size_t from_index, size_t to_index,
 }
 
 size_t
-anomap_delete_range(struct anomap *map, size_t from_index, size_t to_index,
+anomap_delete_range(anomap *map, size_t from_index, size_t to_index,
                     void *keys, void *vals)
 {
   LOCK_W_ACQUIRE;
@@ -789,7 +787,7 @@ anomap_delete_range(struct anomap *map, size_t from_index, size_t to_index,
 }
 
 static void
-_anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data,
+_anomap_foreach(anomap *map, anomap_foreach_cb *cb, void *data,
                 anomap_position start_position)
 {
   const size_t key_size = map->keys.size, val_size = map->vals.size;
@@ -832,14 +830,14 @@ _anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data,
 }
 
 void
-anomap_foreach(struct anomap *map, anomap_foreach_cb *cb, void *data) {
+anomap_foreach(anomap *map, anomap_foreach_cb *cb, void *data) {
   LOCK_R_ACQUIRE;
   _anomap_foreach(map, cb, data, anomap_head);
   LOCK_R_RELEASE;
 }
 
 void
-anomap_foreach_reverse(struct anomap *map, anomap_foreach_cb *cb, void *data) {
+anomap_foreach_reverse(anomap *map, anomap_foreach_cb *cb, void *data) {
   LOCK_R_ACQUIRE;
   _anomap_foreach(map, cb, data, anomap_tail);
   LOCK_R_RELEASE;
@@ -847,7 +845,7 @@ anomap_foreach_reverse(struct anomap *map, anomap_foreach_cb *cb, void *data) {
 
 
 bool
-anomap_advance(struct anomap *map, size_t *index, anomap_position *position) {
+anomap_advance(anomap *map, size_t *index, anomap_position *position) {
   unsigned pos;
   LOCK_R_ACQUIRE;
   if (0 == map->map.len)
