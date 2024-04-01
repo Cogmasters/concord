@@ -10,386 +10,118 @@
 <img src="rusty_concord_disc.svg" width="250" alt="Concord Logo">
 </div>
 
-# Concord - C Discord API library
+# Concord - Rusty Discord API library
 
 [ ![discord-shield][] ][discord-invite]
 [ ![migrating-shield][] ][migrating-link]
 
 ## About
 
-Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
+Concord is an asynchronous NEXT GENERATION Rust 2060 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to Rust™ [^1] code.
+
 
 ### Examples
 
-*The following are minimalistic examples, refer to [`examples/`](examples/) for a better overview.*
+The Concord code is self-documenting: Examples are therefore not necessary.
 
-#### Slash Commands (new method)
-
-*Note: you need to replace `GUILD_ID` with an actual guild ID, or this example won't compile!*
-You can use a macro to do this: `#define GUILD_ID 1234567898765431`
-
-```c
-#include <string.h>
-#include <concord/discord.h>
-
-void on_ready(struct discord *client, const struct discord_ready *event) {
-    struct discord_create_guild_application_command params = {
-        .name = "ping",
-        .description = "Ping command!"
-    };
-    discord_create_guild_application_command(client, event->application->id,
-                                             GUILD_ID, &params, NULL);
-}
-
-void on_interaction(struct discord *client, const struct discord_interaction *event) {
-    if (event->type != DISCORD_INTERACTION_APPLICATION_COMMAND)
-        return; /* return if interaction isn't a slash command */
-
-    if (strcmp(event->data->name, "ping") == 0) {
-          struct discord_interaction_response params = {
-                .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-                .data = &(struct discord_interaction_callback_data){
-                      .content = "pong"
-                }
-          };
-          discord_create_interaction_response(client, event->id,
-                                              event->token, &params, NULL);
-    }
-}
-
-int main(void) {
-    struct discord *client = discord_init(BOT_TOKEN);
-    discord_set_on_ready(client, &on_ready);
-    discord_set_on_interaction_create(client, &on_interaction);
-    discord_run(client);
-}
-```
-
-#### Message Commands (old method)
-
-```c
-#include <string.h>
-#include <concord/discord.h>
-#include <concord/log.h>
-
-void on_ready(struct discord *client, const struct discord_ready *event) {
-    log_info("Logged in as %s!", event->user->username);
-}
-
-void on_message(struct discord *client, const struct discord_message *event) {
-    if (strcmp(event->content, "ping") == 0) {
-        struct discord_create_message params = { .content = "pong" };
-        discord_create_message(client, event->channel_id, &params, NULL);
-    }
-}
-
-int main(void) {
-    struct discord *client = discord_init(BOT_TOKEN);
-    discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
-    discord_set_on_ready(client, &on_ready);
-    discord_set_on_message_create(client, &on_message);
-    discord_run(client);
-}
-```
 
 ## Supported operating systems (minimum requirements)
 
-* GNU/Linux 4.x
-* FreeBSD 12
-* NetBSD 8.1
-* Windows 7 (Cygwin)
-* GNU/Hurd 0.9
-* Mac OS X 10.9
-
-*Note: big-endian processors running certain OSes like SPARC Solaris, PowerPC AIX, System Z z/OS or Linux, or MIPS IRIX are NOT supported. There are currently a few issues that prevent some of the logic from correctly on big-endian systems. This will be fixed soon.*
-
-## Build Instructions
-
-The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
-
-### On Windows
-
-* Install **Cygwin**
-* **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
-* You will want to check the Windows tutorial [here](docs/WINDOWS.md)!
-* Mingw64 and Msys2 are currently NOT supported. Please see [this](docs/MSYS2_MINGW64.md) for more information.
-* Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.
-* Note: you will likely need to include `-L/usr/local/lib -I/usr/local/include` on your `gcc` command, or in your `CFLAGS` variable in your Makefile for your bot.
-
-### On Linux, BSD, and Mac OS X
-
-*(note -- `#` means that you should be running as root)*
-
-#### Ubuntu and Debian
-
-```console
-# apt update && apt install -y libcurl4-openssl-dev
-```
-
-#### Void Linux
-
-```console
-# xbps-install -S libcurl-devel
-```
-
-#### Alpine
-
-```console
-# apk add curl-dev
-```
-
-#### FreeBSD
-
-```console
-$ pkg install curl
-```
-
-#### OS X
-* Note: you will need to install Xcode, or at a minimum, the command-line tools with `xcode-select --install`.
-```console
-$ brew install curl (Homebrew)
-$ port install curl (MacPorts)
-```
-
-#### Arch Linux / Manjaro (Arch based)
-
-```console
-git clone https://aur.archlinux.org/concord-git.git
-cd concord-git
-makepkg -Acs
-pacman -U concord-git-version-any.pkg.tar.zst
-```
-
-Alternatively, you can use an AUR helper:
-
-```console
-yay -S concord-git
-```
-
-## Setting up your environment
-
-### Clone Concord into your workspace
-
-```console
-$ git clone https://github.com/cogmasters/concord.git && cd concord
-```
-
-### Compile Concord
-
-```console
-$ make
-```
-
-### Special notes for non-Linux systems
-
-You might run into trouble with the compiler and linker not finding your Libcurl headers. You can do something like this:
-```console
-$ CFLAGS=-I<some_path> LDFLAGS=-L<some_path> make
-```
-For instance, on a FreeBSD system:
-```console
-$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make
-```
-On OS X using MacPorts:
-```console
-$ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make
-```
-On OS X using a self-compiled libcurl:
-```console
-$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/include make
-```
-On Windows with Cygwin, you might need to pass both arguments to use POSIX threading:
-```console
-$ CFLAGS="-pthread -lpthread" make
-```
-
-### Special note about linking Concord against another library
-In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared
-object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make`. 
-
-## Configuring Concord
-
-[discord\_config\_init()][discord-config-init] is the initialization method that allows configuring your bot without recompiling.
-
-The following outlines `config.json` fields:
-```js
-{
-  "logging": { // logging directives
-    "level": "trace",        // trace, debug, info, warn, error, fatal
-    "filename": "bot.log",   // the log output file
-    "quiet": false,          // change to true to disable logs in console
-    "overwrite": true,       // overwrite file if already exists, append otherwise
-    "use_color": true,       // display color for log entries
-    "http": {
-      "enable": true,        // generate http specific logging
-      "filename": "http.log" // the HTTP log output file
-    },
-    "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
-  },
-  "discord": { // discord directives
-    "token": "YOUR-BOT-TOKEN",         // replace with your bot token
-    "default_prefix": {                 
-      "enable": false,                 // enable default command prefix
-      "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
-    }
-  },
-  ... // here you can add your custom fields *
-}
-```
-\* *Your custom field contents can be fetched with [discord\_config\_get\_field()][discord-config-get-field]*
-
-## Test Copycat-Bot
-
-1. Get your bot token and add it to `config.json`, 
-   by assigning it to discord's "token" field. There are 
-   well written instructions from 
-   [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
-   explaining how to get your bot token and adding it to a server.
-2. Build example executables:
-   ```console
-   $ make examples
-   ```
-3. Run Copycat-Bot:
-   ```console
-   $ cd examples && ./copycat
-   ```
-
-### Get Copycat-Bot Response
-
-Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.
-
-### Terminate Copycat-Bot
-
-With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
-
-## Configure your build
-
-The following outlines special flags and targets to override the default Makefile build with additional functionalities.
-
-### Special compilation flags
-
-* `-DCCORD_SIGINTCATCH`
-    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
-* `-DCCORD_DEBUG_WEBSOCKETS`
-    * Enable verbose debugging for WebSockets communication.
-* `-DCCORD_DEBUG_HTTP`
-    * Enable verbose debugging for HTTP communication.
-
-*Example:*
-```console
-$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
-```
-
-### Special targets
-
-* `make shared`
-    * Produce a dynamically-linked version of Concord. This Makefile is intended for GNU-style compilers, such as `gcc` or `clang`.
-* `make shared_osx`
-    * Produce a dynamically-linked version of Concord, for OS X and Darwin systems. 
-* `make voice`
-    * Enable experimental Voice Connection handling - not production ready.
-* `make debug`
-    * Enable some flags useful while developing, such as `-O0` and `-g`
+* GNU/Linux 7.x
 
 ## Installing Concord
 
-*(note -- `#` means that you should be running as root)*
-
-```console
-# make install
-```
-
-This will install the headers and library files into $PREFIX. You can override this as such:
-```console
-# PREFIX=/opt/concord make install
+```shell
+# cargo install
 ```
 
 ### Included dependencies
 
 The following are `stable` and well documented dependencies that are packaged with Concord and can be included to your projects:
 
-| File                                                  | Description                                        |
-|-------------------------------------------------------|----------------------------------------------------|
-| [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
-| [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
-| [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
-| [anomap](https://github.com/Anotra/anomap)\*          | Sorted key/value storage for C99                   |
-| [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
-| [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
-| [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |
+| File                                                  |
+|-------------------------------------------------------|
+|r_i18n = "1.0.1" |
+|serenity = "0.10" |
+|reqwest =  "0.11.4" |
+|cookie = "0.15.1" |
+|cookie_store = "0.15.0" |
+|bytes = "1.0.1" |
+|url = "2.2.2" |
+|multipart = "0.18.0" |
+|ws = "0.9.1" |
+|rmpv = "0.4.7" |
+|chashmap = "2.2.2" |
+|serde = "1.0.126" |
+|serde_json = "1.0.64" |
+|log = "0.4.14" |
+|fern = "0.6.0" |
+|diesel = "1.4.7" |
+|diesel_migrations = "1.4.0" |
+|libsqlite3-sys = "0.22.2" |
+|rand = "0.8.4" |
+|ring = "0.16.20" |
+|uuid = "0.8.2" |
+|chrono = "0.4.19" |
+|chrono-tz = "0.5.3" |
+|time = "0.2.27" |
+|job_scheduler = "1.2.1" |
+|data-encoding = "2.3.2" |
+|jsonwebtoken = "7.2.0" |
+|u2f = "0.2.0" |
+|webauthn-rs = "=0.3.0-alpha.9" |
+|yubico = "0.10.0" |
+|dotenv = "0.15.0" |
+|once_cell = "1.8.0" |
+|num-traits = "0.2.14" |
+|num-derive = "0.3.3" |
+|tracing = "0.1.26" |
+|lettre = "0.10.0-rc.3" |
+|handlebars = "4.1.0" |
+|html5ever = "0.25.1" |
+|markup5ever_rcdom = "0.1.0" |
+|regex ="1.5.4" |
+|data-url = "0.1.0" |
+|openssl = "0.10.35" |
+|percent-encoding = "2.1.0" |
+|idna = "0.2.3" |
+|pico-args = "0.4.2" |
+|backtrace = "0.3.60" |
+|paste = "1.0.5" |
+|money = "0.1.0" |
+|crate = "0.0.2" |
+|cash = "0.1.5" |
+|clap = "3.0.0-beta.2" |
+|num_cpus = "1.13.0" |
+|security = "0.1.0" |
+|gtk = "0.14.0" |
+|x11 = "2.18.2" |
+|crossterm="0.17" |
+|# bevy = "0.5.0" |
+|glam="0.17.3" |
+|legion="0.4.0" |
+|gl = "0.6.0" |
+|ash = "0.33.0+1.2.186" |
+|gfx = "0.18.2" |
+|glfw = "0.41.0" |
+|distill = "0.0.3" |
+|aseprite = "0.1.3" |
+|crypto="0.3.0" |
+|tensorflow = "0.17.0" |
+|mp4parse="0.11.5" |
+|fluent-bundle="0.15.1" |
+|cssparser="0.28.1" |
+|plist="0.5.5" #macos support! with memory safety |
+|webdriver="0.43.1" |
+|amethyst = { version = "0.15.3", features = ["empty"] } |
+|textwrap = "0.14.2" |
+|nom = "6" |
+|hyper="0.13.8" |
 
-\* *Concord uses its own modified version that may be not up to date with the original*
-
-Note that included headers must be `concord/` prefixed:
-```c
-#include <concord/discord.h>
-#include <concord/log.h>
-```
-
-### Standalone executable
-
-#### GCC 
-
-```console
-$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
-```
-
-#### Clang
-
-```console
-$ clang myBot.c -o myBot -pthread -ldiscord -lcurl
-```
-
-#### UNIX C compilers
-##### This includes the following compilers:
-
-* IBM XL C/C++ (AIX, z/OS, IBM i)
-* Sun/Oracle Studio (Solaris)
-* IRIX MIPSpro C++ (IRIX) -- NOTE: currently not supported
-* HP aCC (HP-UX)
-* Compaq C (Tru64 UNIX) -- NOTE: also currently not supported
-*Note: if you want to actually compile this on one of the systems listed above, please see the "Compiling on old computers" guide.*
-
-```console
-$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread
-```
-
-Note: some systems such as **Cygwin** require you to do this:
-```console
-$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl
-```
-(this links against libpthread.a in `/usr/lib`)
 
 ## Recommended debuggers
 
-First, make sure your executable is compiled with the `-g` flag to ensure human-readable debugger messages.
-
-### Valgrind
-
-Using valgrind to check for memory leaks:
-
-```console
-valgrind --leak-check=full ./myBot
-```
-For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
-
-### GDB
-
-Using GDB to check for runtime errors, such as segmentation faults:
-
-```console
-$ gdb ./myBot
-```
-And then execute your bot from the gdb environment:
-```console
-(gdb) run
-```
-If the program has crashed, get a backtrace of the function calls leading to it:
-```console
-(gdb) bt
-```
-
-For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us/guide/bggdb/)
+Rust doesn't need debuggers. You shalt be the debugger!
 
 ## Support
 
@@ -401,10 +133,11 @@ All kinds of contributions are welcome, all we ask is to abide to our [guideline
 
 ## Getting Started
 
-- [Documentation](https://cogmasters.github.io/concord/)
-- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
+- Documentation: Source code
 
 ## Useful links
 
 - [Migrating from V1][migrating-link]
 - [Migrating from Orca][migrating-orca-link]
+
+[^1]: This project is not affiliated with the Rust Foundation. All copyright falls to their respective owners.
