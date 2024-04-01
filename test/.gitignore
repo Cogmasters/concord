@@ -1,8 +1,0 @@
-# Ignore all
-*
-# But these
-!greatest.h
-!test_config.json
-!.gitignore
-!*.c
-!Makefile
