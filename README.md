@@ -7,7 +7,7 @@
 [discord-config-get-field]: https://cogmasters.github.io/concord/group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
+<img src="rusty_concord_disc.svg" width="250" alt="Concord Logo">
 </div>
 
 # Concord - C Discord API library
