@@ -319,6 +319,7 @@ _discord_on_heartbeat_ack(struct discord_gateway *gw)
     /* get request / response interval in milliseconds */
     cthreads_rwlock_wrlock(&gw->timer->rwlock);
     gw->timer->ping_ms = (int)(gw->timer->now - gw->timer->hbeat_last);
+    gw->timer->hbeat_acknowledged = true;
     cthreads_rwlock_unlock(&gw->timer->rwlock);
 
     logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
@@ -550,6 +551,9 @@ discord_gateway_init(struct discord_gateway *gw,
     gw->timer = calloc(1, sizeof *gw->timer);
     ASSERT_S(!cthreads_rwlock_init(&gw->timer->rwlock),
              "Couldn't initialize Gateway's rwlock");
+
+    /* mark true to not get reconnected each reconnect */
+    gw->timer->hbeat_acknowledged = true;
 
     /* client connection status */
     gw->session = calloc(1, sizeof *gw->session);
