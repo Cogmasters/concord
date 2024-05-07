@@ -171,9 +171,9 @@ _discord_bucket_cancel_all(struct discord_ratelimiter *rl,
     if (b->busy_req) discord_request_cancel(rqtor, b->busy_req);
 
     /* move pending tranfers to recycling */
-    pthread_mutex_lock(&rqtor->qlocks->recycling);
+    cthreads_mutex_lock(&rqtor->qlocks->recycling);
     QUEUE_ADD(&rqtor->queues->recycling, &b->queues.next);
-    pthread_mutex_unlock(&rqtor->qlocks->recycling);
+    cthreads_mutex_unlock(&rqtor->qlocks->recycling);
     QUEUE_INIT(&b->queues.next);
 }
 

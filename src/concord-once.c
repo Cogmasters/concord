@@ -1,15 +1,15 @@
 #include <string.h>
 #include <signal.h>
 #include <curl/curl.h>
-#include <pthread.h>
 #include <unistd.h>
 #include <poll.h>
 #include <sys/ioctl.h>
 
 #include "error.h"
 #include "discord-worker.h"
+#include "cthreads.h"
 
-static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+static struct cthreads_mutex lock;
 
 static int shutdown_fds[2] = {
     -1,
@@ -53,7 +53,9 @@ _ccord_sigint_handler(int signum)
 CCORDcode
 ccord_global_init()
 {
-    pthread_mutex_lock(&lock);
+    cthreads_mutex_init(&lock, NULL);
+
+    cthreads_mutex_lock(&lock);
     if (0 == init_counter++) {
 #ifdef CCORD_SIGINTCATCH
         signal(SIGINT, &_ccord_sigint_handler);
@@ -87,7 +89,7 @@ ccord_global_init()
             }
         }
     }
-    pthread_mutex_unlock(&lock);
+    cthreads_mutex_unlock(&lock);
     return CCORD_OK;
 
 fail_pipe_init:
@@ -103,14 +105,14 @@ fail_curl_init:
     curl_global_cleanup();
 
     init_counter = 0;
-    pthread_mutex_unlock(&lock);
+    cthreads_mutex_unlock(&lock);
     return CCORD_GLOBAL_INIT;
 }
 
 void
 ccord_global_cleanup()
 {
-    pthread_mutex_lock(&lock);
+    cthreads_mutex_lock(&lock);
     if (init_counter && 0 == --init_counter) {
         curl_global_cleanup();
         discord_worker_global_cleanup();
@@ -119,7 +121,7 @@ ccord_global_cleanup()
             shutdown_fds[i] = -1;
         }
     }
-    pthread_mutex_unlock(&lock);
+    cthreads_mutex_unlock(&lock);
 }
 
 int
@@ -142,5 +144,8 @@ discord_dup_shutdown_fd(void)
             return -1;
         }
     }
+
+    cthreads_mutex_destroy(&lock);
+
     return fd;
 }

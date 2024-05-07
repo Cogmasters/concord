@@ -28,6 +28,7 @@ extern "C" {
 #include "io_poller.h"
 #include "queue.h"
 #include "priority_queue.h"
+#include "cthreads.h"
 #include "attributes.h"
 
 /** @brief Return 1 if string isn't considered empty */
@@ -93,12 +94,12 @@ struct discord_timers {
     struct io_poller *io;
     struct {
         bool is_active;
-        pthread_t thread;
+        struct cthreads_thread thread;
         struct discord_timer *timer;
         bool skip_update_phase;
     } active;
-    pthread_mutex_t lock;
-    pthread_cond_t cond;
+    struct cthreads_mutex lock;
+    struct cthreads_cond cond;
 };
 
 /**
@@ -463,7 +464,7 @@ struct discord_request {
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
     /** synchronize synchronous requests */
-    pthread_cond_t *cond;
+    struct cthreads_cond *cond;
     /** entry for @ref discord_ratelimiter and @ref discord_bucket queues */
     QUEUE entry;
 };
@@ -498,11 +499,11 @@ struct discord_requestor {
     /** queue locks */
     struct {
         /** recycling queue lock */
-        pthread_mutex_t recycling;
+        struct cthreads_mutex recycling;
         /** pending queue lock */
-        pthread_mutex_t pending;
+        struct cthreads_mutex pending;
         /** finished queue lock */
-        pthread_mutex_t finished;
+        struct cthreads_mutex finished;
     } * qlocks;
 };
 
@@ -784,7 +785,11 @@ struct discord_gateway {
          */
         int ping_ms;
         /** ping rwlock  */
-        pthread_rwlock_t rwlock;
+        #ifdef CTHREADS_RWLOCK
+        struct cthreads_rwlock rwlock;
+        #else
+        #error "pthread_rwlock functions are not available on this system."
+        #endif
     } * timer;
 
     /** the identify structure for client authentication */
@@ -953,7 +958,7 @@ struct discord_refcounter {
      */
     struct _discord_ref *refs;
     /** global lock */
-    pthread_mutex_t *g_lock;
+    struct cthreads_mutex *g_lock;
 };
 
 /**
@@ -1241,9 +1246,9 @@ struct discord {
         /** amount of worker-threads currently being used by client */
         int count;
         /** synchronize `count` between workers */
-        pthread_mutex_t lock;
+        struct cthreads_mutex lock;
         /** notify of `count` decrement */
-        pthread_cond_t cond;
+        struct cthreads_cond cond;
     } * workers;
 
 #ifdef CCORD_VOICE

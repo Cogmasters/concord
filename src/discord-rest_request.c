@@ -52,11 +52,11 @@ discord_requestor_init(struct discord_requestor *rqtor,
     QUEUE_INIT(&rqtor->queues->finished);
 
     rqtor->qlocks = malloc(sizeof *rqtor->qlocks);
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->recycling, NULL),
+    ASSERT_S(!cthreads_mutex_init(&rqtor->qlocks->recycling, NULL),
              "Couldn't initialize requestor's recycling queue mutex");
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->pending, NULL),
+    ASSERT_S(!cthreads_mutex_init(&rqtor->qlocks->pending, NULL),
              "Couldn't initialize requestor's pending queue mutex");
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->finished, NULL),
+    ASSERT_S(!cthreads_mutex_init(&rqtor->qlocks->finished, NULL),
              "Couldn't initialize requestor's finished queue mutex");
 
     rqtor->mhandle = curl_multi_init();
@@ -94,9 +94,9 @@ discord_requestor_cleanup(struct discord_requestor *rqtor)
     free(rqtor->queues);
 
     /* cleanup queue locks */
-    pthread_mutex_destroy(&rqtor->qlocks->recycling);
-    pthread_mutex_destroy(&rqtor->qlocks->pending);
-    pthread_mutex_destroy(&rqtor->qlocks->finished);
+    cthreads_mutex_destroy(&rqtor->qlocks->recycling);
+    cthreads_mutex_destroy(&rqtor->qlocks->pending);
+    cthreads_mutex_destroy(&rqtor->qlocks->finished);
     free(rqtor->qlocks);
 
     /* cleanup curl's multi handle */
@@ -279,9 +279,9 @@ discord_request_cancel(struct discord_requestor *rqtor,
     memset(req, 0, sizeof(struct discord_attributes));
 
     QUEUE_REMOVE(&req->entry);
-    pthread_mutex_lock(&rqtor->qlocks->recycling);
+    cthreads_mutex_lock(&rqtor->qlocks->recycling);
     QUEUE_INSERT_TAIL(&rqtor->queues->recycling, &req->entry);
-    pthread_mutex_unlock(&rqtor->qlocks->recycling);
+    cthreads_mutex_unlock(&rqtor->qlocks->recycling);
 }
 
 static CCORDcode
@@ -314,10 +314,10 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
 void
 discord_requestor_dispatch_responses(struct discord_requestor *rqtor)
 {
-    if (0 == pthread_mutex_trylock(&rqtor->qlocks->finished)) {
+    if (0 == cthreads_mutex_trylock(&rqtor->qlocks->finished)) {
         QUEUE(struct discord_request) queue;
         QUEUE_MOVE(&rqtor->queues->finished, &queue);
-        pthread_mutex_unlock(&rqtor->qlocks->finished);
+        cthreads_mutex_unlock(&rqtor->qlocks->finished);
 
         if (!QUEUE_EMPTY(&queue)) {
             struct discord_rest *rest =
@@ -433,14 +433,14 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                                                 req);
 
                 if (req->dispatch.sync) {
-                    pthread_mutex_lock(&rqtor->qlocks->pending);
-                    pthread_cond_signal(req->cond);
-                    pthread_mutex_unlock(&rqtor->qlocks->pending);
+                    cthreads_mutex_lock(&rqtor->qlocks->pending);
+                    cthreads_cond_signal(req->cond);
+                    cthreads_mutex_unlock(&rqtor->qlocks->pending);
                 }
                 else {
-                    pthread_mutex_lock(&rqtor->qlocks->finished);
+                    cthreads_mutex_lock(&rqtor->qlocks->finished);
                     QUEUE_INSERT_TAIL(&rqtor->queues->finished, &req->entry);
-                    pthread_mutex_unlock(&rqtor->qlocks->finished);
+                    cthreads_mutex_unlock(&rqtor->qlocks->finished);
                 }
             }
         }
@@ -500,9 +500,9 @@ discord_requestor_start_pending(struct discord_requestor *rqtor)
     struct discord_request *req;
     struct discord_bucket *b;
 
-    pthread_mutex_lock(&rqtor->qlocks->pending);
+    cthreads_mutex_lock(&rqtor->qlocks->pending);
     QUEUE_MOVE(&rqtor->queues->pending, &queue);
-    pthread_mutex_unlock(&rqtor->qlocks->pending);
+    cthreads_mutex_unlock(&rqtor->qlocks->pending);
 
     /* match pending requests to their buckets */
     while (!QUEUE_EMPTY(&queue)) {
@@ -571,7 +571,7 @@ _discord_request_get(struct discord_requestor *rqtor)
 {
     struct discord_request *req;
 
-    pthread_mutex_lock(&rqtor->qlocks->recycling);
+    cthreads_mutex_lock(&rqtor->qlocks->recycling);
     if (QUEUE_EMPTY(&rqtor->queues->recycling)) { /* new request struct */
         req = _discord_request_init();
     }
@@ -582,7 +582,7 @@ _discord_request_get(struct discord_requestor *rqtor)
         QUEUE_REMOVE(qelem);
         req = QUEUE_DATA(qelem, struct discord_request, entry);
     }
-    pthread_mutex_unlock(&rqtor->qlocks->recycling);
+    cthreads_mutex_unlock(&rqtor->qlocks->recycling);
 
     QUEUE_INIT(&req->entry);
 
@@ -636,19 +636,20 @@ discord_request_begin(struct discord_requestor *rqtor,
                                       req->dispatch.cleanup, false);
     }
 
-    pthread_mutex_lock(&rqtor->qlocks->pending);
+    cthreads_mutex_lock(&rqtor->qlocks->pending);
     QUEUE_INSERT_TAIL(&rqtor->queues->pending, &req->entry);
     io_poller_wakeup(rest->io_poller);
     if (!req->dispatch.sync) {
-        pthread_mutex_unlock(&rqtor->qlocks->pending);
+        cthreads_mutex_unlock(&rqtor->qlocks->pending);
         code = CCORD_PENDING;
     }
     else { /* wait for request's completion if sync mode is active */
-        pthread_cond_t temp_cond = PTHREAD_COND_INITIALIZER;
-        req->cond = &temp_cond;
-        pthread_cond_wait(req->cond, &rqtor->qlocks->pending);
-        req->cond = NULL;
-        pthread_mutex_unlock(&rqtor->qlocks->pending);
+        struct cthreads_cond cond;
+        cthreads_cond_init(&cond, NULL);
+        req->cond = &cond;
+        cthreads_cond_wait(req->cond, &rqtor->qlocks->pending);
+        cthreads_cond_destroy(&cond);
+        cthreads_mutex_unlock(&rqtor->qlocks->pending);
         code = _discord_request_dispatch_response(rqtor, req);
     }
     return code;
