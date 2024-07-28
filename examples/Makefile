@@ -41,6 +41,9 @@ LDLIBS   = -ldiscord -lcurl
 
 all: $(BOTS)
 
+starboard:
+	$(MAKE) -C starboard
+
 voice:
 	@ CFLAGS=-DCCORD_VOICE BOTS=$(VOICE_BOTS) $(MAKE)
 
@@ -52,4 +55,4 @@ echo:
 clean:
 	@ rm -f $(STD_BOTS) $(VOICE_BOTS)
 
-.PHONY: all echo clean
+.PHONY: all echo clean starboard

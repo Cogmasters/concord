@@ -1,0 +1,6 @@
+.vscode
+starboard
+!README.md
+!src/
+!src/commands
+!config.json
