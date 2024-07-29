@@ -3,4 +3,6 @@
 # But these
 !.gitignore
 !*.c
+!*.h
 !Makefile
+!starboard/
