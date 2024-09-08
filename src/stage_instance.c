@@ -19,8 +19,8 @@ discord_create_stage_instance(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->channel_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, IS_NOT_EMPTY_STRING(params->topic),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(params->topic), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT_OK(client, discord_create_stage_instance_to_json(
                                 &body.start, &body.size, params));
     DISCORD_ATTR_INIT(attr, discord_stage_instance, ret, params->reason);

@@ -31,6 +31,7 @@ HEADERS = $(API_DIR)/application.h           \
           $(API_DIR)/channel.h               \
           $(API_DIR)/custom.h                \
           $(API_DIR)/emoji.h                 \
+					$(API_DIR)/entitlements.h          \
           $(API_DIR)/gateway.h               \
           $(API_DIR)/guild.h                 \
           $(API_DIR)/guild_scheduled_event.h \
@@ -40,6 +41,7 @@ HEADERS = $(API_DIR)/application.h           \
           $(API_DIR)/message_components.h    \
           $(API_DIR)/oauth2.h                \
           $(API_DIR)/permissions.h           \
+					$(API_DIR)/poll.h                  \
           $(API_DIR)/stage_instance.h        \
           $(API_DIR)/sticker.h               \
           $(API_DIR)/teams.h                 \
