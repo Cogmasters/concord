@@ -36,6 +36,10 @@ discord_create_global_application_command(
                  CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT_OK(client, discord_create_global_application_command_to_json(
                                 &body.start, &body.size, params));
+    if (params->type != 2 && params->type != 3) {
+        CCORD_EXPECT(client, NOT_EMPTY_STR(params->description),
+                     CCORD_BAD_PARAMETER, "");
+    }
     DISCORD_ATTR_INIT(attr, discord_application_command, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/applications/%" PRIu64 "/commands",
@@ -147,6 +151,10 @@ discord_create_guild_application_command(
                  CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT_OK(client, discord_create_guild_application_command_to_json(
                                 &body.start, &body.size, params));
+    if (params->type != 2 && params->type != 3) {
+        CCORD_EXPECT(client, NOT_EMPTY_STR(params->description),
+                     CCORD_BAD_PARAMETER, "");
+    }
     DISCORD_ATTR_INIT(attr, discord_application_command, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
