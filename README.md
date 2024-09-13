@@ -15,6 +15,9 @@
 [ ![discord-shield][] ][discord-invite]
 [ ![migrating-shield][] ][migrating-link]
 
+## 🚨 Concord is not dead! 🚨
+Development has been happening in the dev branch. We are working on new features and improvements. To access the latest version of the library, please check out the dev branch.
+
 ## About
 
 Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
