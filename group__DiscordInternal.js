@@ -19,6 +19,7 @@ var group__DiscordInternal =
       [ "gw", "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5", null ],
       [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
       [ "cache", "structdiscord.html#a1cbdbc3c7dfbf6ecdf82f6784f5e3c38", null ],
+      [ "shutdown_fd", "structdiscord.html#ad97e90d234a7959e6e7ee7265cf46bb5", null ],
       [ "internal", "structdiscord.html#ab587bcec8b91c77ba72a919ba01b15a2", null ],
       [ "user", "structdiscord.html#aece276e567f9230f448c8efea165b5f5", null ],
       [ "timers", "structdiscord.html#ac6bc034780945e0672abd81756a3308a", null ],
@@ -37,5 +38,6 @@ var group__DiscordInternal =
     [ "CCORD_EXPECT", "group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b", null ],
     [ "ASSERT_NOT_OOB", "group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09", null ],
     [ "DISCORD_ENDPT_LEN", "group__DiscordInternal.html#ga6f54459e4a3ef7fae49a92fd6dee7103", null ],
-    [ "DISCORD_ROUTE_LEN", "group__DiscordInternal.html#ga576294a6f05bf60dbf54a275d3c61f8b", null ]
+    [ "DISCORD_ROUTE_LEN", "group__DiscordInternal.html#ga576294a6f05bf60dbf54a275d3c61f8b", null ],
+    [ "discord_dup_shutdown_fd", "group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e", null ]
 ];

@@ -91,7 +91,8 @@ $(document).ready(function(){initNavTree('group__DiscordInternal.html',''); init
 <a href="#groups">Modules</a> &#124;
 <a href="#files">Files</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Internal implementation details</div></div>
 </div><!--header-->
 <div class="contents">
@@ -156,6 +157,12 @@ Macros</h2></td></tr>
 <tr class="separator:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga576294a6f05bf60dbf54a275d3c61f8b">DISCORD_ROUTE_LEN</a>&#160;&#160;&#160;256</td></tr>
 <tr class="separator:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gac9004b30fbb685ccd11a3daa66217c5e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e">discord_dup_shutdown_fd</a> (void)</td></tr>
+<tr class="memdesc:gac9004b30fbb685ccd11a3daa66217c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">dup shutdown fd to listen for <a class="el" href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb" title="Asynchronously shutdown all client(s) from their on-going sessions.">ccord_shutdown_async()</a>  <a href="group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e">More...</a><br /></td></tr>
+<tr class="separator:gac9004b30fbb685ccd11a3daa66217c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Documentation useful when developing or debugging Concord itself. </p>
@@ -313,6 +320,27 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >Route's unique key threshold length </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gac9004b30fbb685ccd11a3daa66217c5e" name="gac9004b30fbb685ccd11a3daa66217c5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac9004b30fbb685ccd11a3daa66217c5e">&#9670;&nbsp;</a></span>discord_dup_shutdown_fd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_dup_shutdown_fd </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>dup shutdown fd to listen for <a class="el" href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb" title="Asynchronously shutdown all client(s) from their on-going sessions.">ccord_shutdown_async()</a> </p>
 
 </div>
 </div>

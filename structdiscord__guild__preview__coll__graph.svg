@@ -33,34 +33,34 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="60.66,-58.16 55.22,-67.25 65.15,-63.53 60.66,-58.16"/>
 <text text-anchor="middle" x="110.5" y="-41" font-family="Helvetica,sans-Serif" font-size="10.00"> emojis</text>
 </g>
-<!-- Node8 -->
+<!-- Node6 -->
 <g id="node3" class="node">
-<title>Node8</title>
+<title>Node6</title>
 <g id="a_node3"><a xlink:href="structstrings.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="108,-67.5 108,-86.5 158,-86.5 158,-67.5 108,-67.5"/>
 <text text-anchor="middle" x="133" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">strings</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node1 -->
+<!-- Node6&#45;&gt;Node1 -->
 <g id="edge2" class="edge">
-<title>Node8&#45;&gt;Node1</title>
+<title>Node6&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M133,-57.04C133,-44.67 133,-29.12 133,-19.63"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="129.5,-57.23 133,-67.23 136.5,-57.23 129.5,-57.23"/>
 <text text-anchor="middle" x="155" y="-41" font-family="Helvetica,sans-Serif" font-size="10.00"> features</text>
 </g>
-<!-- Node9 -->
+<!-- Node7 -->
 <g id="node4" class="node">
-<title>Node9</title>
+<title>Node7</title>
 <g id="a_node4"><a xlink:href="structdiscord__stickers.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="176.5,-67.5 176.5,-86.5 271.5,-86.5 271.5,-67.5 176.5,-67.5"/>
 <text text-anchor="middle" x="224" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_stickers</text>
 </a>
 </g>
 </g>
-<!-- Node9&#45;&gt;Node1 -->
+<!-- Node7&#45;&gt;Node1 -->
 <g id="edge3" class="edge">
-<title>Node9&#45;&gt;Node1</title>
+<title>Node7&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M207.64,-60.08C199.89,-52.92 190.3,-44.61 181,-38 171.34,-31.13 159.77,-24.58 150.42,-19.65"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="205.57,-62.93 215.24,-67.26 210.38,-57.84 205.57,-62.93"/>
 <text text-anchor="middle" x="214.5" y="-41" font-family="Helvetica,sans-Serif" font-size="10.00"> stickers</text>

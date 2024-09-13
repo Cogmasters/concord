@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['trace_0',['TRACE',['../json-build_8h.html#afb5bfdd72388ce075bb0bdd79f985cf6',1,'json-build.h']]]
+  ['vassert_5fs_0',['VASSERT_S',['../logconf_8h.html#ac11b996f7bef220352d0eae863000211',1,'logconf.h']]]
 ];

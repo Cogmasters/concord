@@ -2,7 +2,7 @@ var structdiscord__emoji =
 [
     [ "id", "structdiscord__emoji.html#a47452713ccbe347169104df774da0189", null ],
     [ "name", "structdiscord__emoji.html#a7d50b95159ac0cfcf44fc33b4f139584", null ],
-    [ "roles", "structdiscord__emoji.html#a4b236c483b8de6d2a8caf0250fc82460", null ],
+    [ "roles", "structdiscord__emoji.html#ab78eaff0cdf3ccf018c37ed797b55024", null ],
     [ "user", "structdiscord__emoji.html#a2f8f871daa760513aca81c79f0c9ad82", null ],
     [ "require_colons", "structdiscord__emoji.html#ad8658066357ed9c6c3664ea7e1a2c9c5", null ],
     [ "managed", "structdiscord__emoji.html#aba042a755ea1b4f4b83c88d360dde1c2", null ],

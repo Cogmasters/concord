@@ -24,7 +24,7 @@ var searchData=
   ['membership_5fstate_21',['membership_state',['../structdiscord__team__member.html#a03513c546df058ff3aa357220dff3a6a',1,'discord_team_member']]],
   ['mention_5fchannels_22',['mention_channels',['../structdiscord__message.html#a10876cafc44a9a04704a7726b9ce345f',1,'discord_message']]],
   ['mention_5feveryone_23',['mention_everyone',['../structdiscord__message.html#a9361866859ad03fbbf609a472a6336a5',1,'discord_message']]],
-  ['mention_5froles_24',['mention_roles',['../structdiscord__message.html#a70ac58a38f20f5de26da6b08eb5124fb',1,'discord_message']]],
+  ['mention_5froles_24',['mention_roles',['../structdiscord__message.html#ac420f314a264495b82d83065038463ca',1,'discord_message']]],
   ['mentionable_25',['mentionable',['../structdiscord__create__guild__role.html#a3f05bd7cdb2224b76163a309dd170531',1,'discord_create_guild_role::mentionable()'],['../structdiscord__modify__guild__role.html#ad09c2aed8ea384cd0e0a1dfef38fd30b',1,'discord_modify_guild_role::mentionable()'],['../structdiscord__role.html#ae328403b762539b940f3593cc96b78e3',1,'discord_role::mentionable()']]],
   ['mentions_26',['mentions',['../structdiscord__message.html#a9c11461a5312d51a503a3f75a4305437',1,'discord_message']]],
   ['message_27',['message',['../structdiscord__interaction.html#a4fce044c325fa6452aaa1e8dd89b8d8c',1,'discord_interaction']]],

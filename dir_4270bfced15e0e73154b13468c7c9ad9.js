@@ -1,6 +1,7 @@
 var dir_4270bfced15e0e73154b13468c7c9ad9 =
 [
     [ "anomap.h", "anomap_8h.html", "anomap_8h" ],
+    [ "attributes.h", "attributes_8h.html", "attributes_8h" ],
     [ "carray.h", "carray_8h.html", "carray_8h" ],
     [ "chash.h", "chash_8h.html", "chash_8h" ],
     [ "clock.h", "clock_8h.html", "clock_8h" ],
@@ -8,7 +9,7 @@ var dir_4270bfced15e0e73154b13468c7c9ad9 =
     [ "curl-websocket.h", "curl-websocket_8h.html", "curl-websocket_8h" ],
     [ "error.h", "error_8h.html", "error_8h" ],
     [ "io_poller.h", "io__poller_8h.html", "io__poller_8h" ],
-    [ "jsmn-find.h", "jsmn-find_8h.html", "jsmn-find_8h" ],
+    [ "jsmn-find.h", "jsmn-find_8h.html", null ],
     [ "jsmn.h", "jsmn_8h.html", "jsmn_8h" ],
     [ "json-build.h", "json-build_8h.html", "json-build_8h" ],
     [ "log.h", "log_8h.html", "log_8h" ],

@@ -4,7 +4,9 @@ var group__ConcordError =
     [ "CCORDcode", "group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31", [
       [ "CCORD_MALFORMED_PAYLOAD", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a231696362bb607687a6a0a041621452e", null ],
       [ "CCORD_FULL_WORKER", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a60bc736ec55f07ce325805e3d4b0c338", null ],
+      [ "CCORD_RESOURCE_UNAVAILABLE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aeea8743159d234edeb3566c691d3cd64", null ],
       [ "CCORD_UNAVAILABLE", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a6f539629079e6626d67ff48783db18a1", null ],
+      [ "CCORD_RESOURCE_OWNERSHIP", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ad818dfe44285a4a52cd96be62bcc8736", null ],
       [ "CCORD_OWNERSHIP", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a92366cdfe51909cabf8139d7c6919096", null ],
       [ "CCORD_GLOBAL_INIT", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ab9bd5476c9185cc1fd7a32536c964156", null ],
       [ "CCORD_CURLM_INTERNAL", "group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aa991e50351e2361d20c52ab882a0d120", null ],

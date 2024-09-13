@@ -180,18 +180,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="262.82,-33.56 252.69,-36.68 262.55,-40.55 262.82,-33.56"/>
 <text text-anchor="middle" x="312" y="-62.71" font-family="Helvetica,sans-Serif" font-size="10.00"> self</text>
 </g>
-<!-- Node45 -->
+<!-- Node43 -->
 <g id="node9" class="node">
-<title>Node45</title>
+<title>Node43</title>
 <g id="a_node9"><a xlink:href="structdiscord__cache.html" target="_top" xlink:title="The Discord Cache control handler.">
 <polygon fill="none" stroke="black" points="170.5,-190.21 170.5,-209.21 256.5,-209.21 256.5,-190.21 170.5,-190.21"/>
 <text text-anchor="middle" x="213.5" y="-197.21" font-family="Helvetica,sans-Serif" font-size="10.00">discord_cache</text>
 </a>
 </g>
 </g>
-<!-- Node45&#45;&gt;Node1 -->
+<!-- Node43&#45;&gt;Node1 -->
 <g id="edge14" class="edge">
-<title>Node45&#45;&gt;Node1</title>
+<title>Node43&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M266.52,-189.41C289.27,-184.03 315.96,-176.49 339,-166.71 349.28,-162.35 360.03,-155.85 368.21,-150.44"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="265.67,-186.02 256.7,-191.66 267.23,-192.84 265.67,-186.02"/>
 <text text-anchor="middle" x="312" y="-186.71" font-family="Helvetica,sans-Serif" font-size="10.00"> cache</text>

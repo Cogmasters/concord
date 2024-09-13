@@ -4,6 +4,7 @@ var structdiscord__gateway =
     [ "ws", "structdiscord__gateway.html#a14f4f4117925f91a02e3b9a47cb50475", null ],
     [ "mhandle", "structdiscord__gateway.html#adaaced2674818e71a975c2995d708175", null ],
     [ "hbeat_interval", "structdiscord__gateway.html#a7498626264e15e0965ab77d66c700137", null ],
+    [ "hbeat_acknowledged", "structdiscord__gateway.html#ad40af537128431e35e4335096014166d", null ],
     [ "now", "structdiscord__gateway.html#a4f318b0eb4f8a151fa23236df46ae2cf", null ],
     [ "hbeat_last", "structdiscord__gateway.html#a15cdc971a43f1fbbb4a9dabee20445bc", null ],
     [ "identify_last", "structdiscord__gateway.html#ab97ed571bb1e73d49d6ae86855a9869b", null ],

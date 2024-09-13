@@ -49,18 +49,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="277.31,-194.63 267.86,-199.4 278.23,-201.57 277.31,-194.63"/>
 <text text-anchor="middle" x="363.5" y="-196.5" font-family="Helvetica,sans-Serif" font-size="10.00"> channel</text>
 </g>
-<!-- Node8 -->
+<!-- Node9 -->
 <g id="node4" class="node">
-<title>Node8</title>
+<title>Node9</title>
 <g id="a_node4"><a xlink:href="structdiscord__user.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="0,-99 0,-118 78,-118 78,-99 0,-99"/>
 <text text-anchor="middle" x="39" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00">discord_user</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node1 -->
+<!-- Node9&#45;&gt;Node1 -->
 <g id="edge3" class="edge">
-<title>Node8&#45;&gt;Node1</title>
+<title>Node9&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M81.56,-120.52C86.4,-121.66 91.29,-122.69 96,-123.5 219.3,-144.82 367.94,-144.58 438.88,-142.92"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="82.31,-117.1 71.76,-118.08 80.62,-123.89 82.31,-117.1"/>
 <text text-anchor="middle" x="220" y="-155.5" font-family="Helvetica,sans-Serif" font-size="10.00"> inviter</text>
@@ -75,9 +75,9 @@
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node45 -->
+<!-- Node9&#45;&gt;Node45 -->
 <g id="edge5" class="edge">
-<title>Node8&#45;&gt;Node45</title>
+<title>Node9&#45;&gt;Node45</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M88.47,-108.5C111.91,-108.5 140.15,-108.5 164.36,-108.5"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="88.4,-105 78.4,-108.5 88.4,-112 88.4,-105"/>
 <text text-anchor="middle" x="115" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00"> owner</text>
@@ -92,9 +92,9 @@
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node43 -->
+<!-- Node9&#45;&gt;Node43 -->
 <g id="edge8" class="edge">
-<title>Node8&#45;&gt;Node43</title>
+<title>Node9&#45;&gt;Node43</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M84.84,-96.36C88.61,-95.38 92.37,-94.41 96,-93.5 114.62,-88.81 134.88,-83.94 153.48,-79.56"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="83.69,-93.05 74.91,-98.98 85.47,-99.81 83.69,-93.05"/>
 <text text-anchor="middle" x="115" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00"> creator</text>

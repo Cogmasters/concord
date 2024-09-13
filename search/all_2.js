@@ -18,10 +18,9 @@ var searchData=
   ['bot_5fpublic_15',['bot_public',['../structdiscord__application.html#a6d121ef2bb376448631db2b2f4c38bc6',1,'discord_application']]],
   ['bot_5frequire_5fcode_5fgrant_16',['bot_require_code_grant',['../structdiscord__application.html#acf132a3db4ae1727ee9882e359dd2f71',1,'discord_application']]],
   ['browser_17',['browser',['../structdiscord__identify__connection.html#a71d8334b8cbab862792aedfa6d5543d3',1,'discord_identify_connection']]],
-  ['buf_5fpush_18',['BUF_PUSH',['../jsmn-find_8h.html#a504a7ed788b5ad61ae6367e906b231cd',1,'jsmn-find.h']]],
-  ['buffer_19',['buffer',['../structSHA1__CTX.html#a90100b1aab0fedb1d72ded66abeeffe2',1,'SHA1_CTX']]],
-  ['buffer_5fcopy_20',['BUFFER_COPY',['../json-build_8h.html#a7b1bf49721de244eca1cc90331333f49',1,'json-build.h']]],
-  ['buffer_5fcopy_5fchar_21',['BUFFER_COPY_CHAR',['../json-build_8h.html#a3094210bc76317552ccc2a20c88b1356',1,'json-build.h']]],
-  ['busy_5freq_22',['busy_req',['../structdiscord__bucket.html#a13f78049335cb5df6eb2ba431174a373',1,'discord_bucket']]],
-  ['buttons_23',['buttons',['../structdiscord__activity.html#ae0e7479c1dc08ab8a67a45ab6390ca5e',1,'discord_activity']]]
+  ['buffer_18',['buffer',['../structSHA1__CTX.html#a90100b1aab0fedb1d72ded66abeeffe2',1,'SHA1_CTX']]],
+  ['buffer_5fcopy_19',['BUFFER_COPY',['../json-build_8h.html#a7b1bf49721de244eca1cc90331333f49',1,'json-build.h']]],
+  ['buffer_5fcopy_5fchar_20',['BUFFER_COPY_CHAR',['../json-build_8h.html#a3094210bc76317552ccc2a20c88b1356',1,'json-build.h']]],
+  ['busy_5freq_21',['busy_req',['../structdiscord__bucket.html#a13f78049335cb5df6eb2ba431174a373',1,'discord_bucket']]],
+  ['buttons_22',['buttons',['../structdiscord__activity.html#ae0e7479c1dc08ab8a67a45ab6390ca5e',1,'discord_activity']]]
 ];

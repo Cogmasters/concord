@@ -11,6 +11,6 @@ var group__DiscordInternalREST =
     ] ],
     [ "discord_rest_init", "group__DiscordInternalREST.html#gaf9233add18e0b10b89c291fbc3cb512a", null ],
     [ "discord_rest_cleanup", "group__DiscordInternalREST.html#gad39e9acc2665562f84864b5b0d7f08b4", null ],
-    [ "discord_rest_run", "group__DiscordInternalREST.html#ga865f5ad7e4f12751d5211db212a0b3e0", null ],
-    [ "discord_rest_stop_buckets", "group__DiscordInternalREST.html#ga8eb694f5216e2b3d7e9421e7a303e8ff", null ]
+    [ "discord_rest_run", "group__DiscordInternalREST.html#gaac345ed911d54c52b384ae56d4c82de6", null ],
+    [ "discord_rest_stop_buckets", "group__DiscordInternalREST.html#gaf7ef65d63f8f22a1bec58e04b5c93cbf", null ]
 ];

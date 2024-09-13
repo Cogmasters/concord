@@ -115,6 +115,8 @@ Data Fields</h2></td></tr>
 <tr class="memitem:acc5bb05c24b00d69d13e03e349b86c83"><td class="memItemLeft" >struct {</td></tr>
 <tr class="memitem:a075ae59a26aa799daa808d74aed195b2"><td class="memItemLeft" >&#160;&#160;&#160;int64_t&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a7498626264e15e0965ab77d66c700137">hbeat_interval</a></td></tr>
 <tr class="separator:a075ae59a26aa799daa808d74aed195b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c2bf53dbe7aa988fd240423d597ae38"><td class="memItemLeft" >&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#ad40af537128431e35e4335096014166d">hbeat_acknowledged</a></td></tr>
+<tr class="separator:a7c2bf53dbe7aa988fd240423d597ae38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb504428fc34c2edc6e6852ff4ab816"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a4f318b0eb4f8a151fa23236df46ae2cf">now</a></td></tr>
 <tr class="separator:aadb504428fc34c2edc6e6852ff4ab816"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e87998421f5d67f9f3cedd0e1b671b"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;&#160;&#160;<a class="el" href="structdiscord__gateway.html#a15cdc971a43f1fbbb4a9dabee20445bc">hbeat_last</a></td></tr>
@@ -202,6 +204,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >fixed milliseconds interval between heartbeats </p><dl class="section note"><dt>Note</dt><dd>obtained at <code>HELLO</code> </dd></dl>
+
+</div>
+</div>
+<a id="ad40af537128431e35e4335096014166d" name="ad40af537128431e35e4335096014166d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad40af537128431e35e4335096014166d">&#9670;&nbsp;</a></span>hbeat_acknowledged</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_gateway::hbeat_acknowledged</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >boolean that indicates if the last heartbeat was answered </p><dl class="section note"><dt>Note</dt><dd>used to detect zombie connections </dd></dl>
 
 </div>
 </div>

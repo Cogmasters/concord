@@ -109,10 +109,11 @@ $(document).ready(function(){initNavTree('discord-internal_8h.html',''); initRes
 <code>#include &quot;<a class="el" href="io__poller_8h_source.html">io_poller.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="queue_8h_source.html">queue.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="priority__queue_8h_source.html">priority_queue.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="attributes_8h_source.html">attributes.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for discord-internal.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="discord-internal_8h__incl.svg" width="1224" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="discord-internal_8h__incl.svg" width="1211" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -217,6 +218,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gac9004b30fbb685ccd11a3daa66217c5e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e">discord_dup_shutdown_fd</a> (void)</td></tr>
+<tr class="memdesc:gac9004b30fbb685ccd11a3daa66217c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">dup shutdown fd to listen for <a class="el" href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb" title="Asynchronously shutdown all client(s) from their on-going sessions.">ccord_shutdown_async()</a>  <a href="group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e">More...</a><br /></td></tr>
+<tr class="separator:gac9004b30fbb685ccd11a3daa66217c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4bada3f1f856829605c2021e7d3ca27c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga4bada3f1f856829605c2021e7d3ca27c">discord_timers_init</a> (struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers, struct io_poller *io)</td></tr>
 <tr class="memdesc:ga4bada3f1f856829605c2021e7d3ca27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare timers for usage.  <a href="group__DiscordInternalTimer.html#ga4bada3f1f856829605c2021e7d3ca27c">More...</a><br /></td></tr>
 <tr class="separator:ga4bada3f1f856829605c2021e7d3ca27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,12 +299,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gad39e9acc2665562f84864b5b0d7f08b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gad39e9acc2665562f84864b5b0d7f08b4">discord_rest_cleanup</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest)</td></tr>
 <tr class="memdesc:gad39e9acc2665562f84864b5b0d7f08b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an REST handle.  <a href="group__DiscordInternalREST.html#gad39e9acc2665562f84864b5b0d7f08b4">More...</a><br /></td></tr>
 <tr class="separator:gad39e9acc2665562f84864b5b0d7f08b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga865f5ad7e4f12751d5211db212a0b3e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#ga865f5ad7e4f12751d5211db212a0b3e0">discord_rest_run</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest, struct <a class="el" href="structdiscord__attributes.html">discord_attributes</a> *req, struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> *body, enum http_method method, char endpoint_fmt[],...)</td></tr>
-<tr class="memdesc:ga865f5ad7e4f12751d5211db212a0b3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a request to Discord.  <a href="group__DiscordInternalREST.html#ga865f5ad7e4f12751d5211db212a0b3e0">More...</a><br /></td></tr>
-<tr class="separator:ga865f5ad7e4f12751d5211db212a0b3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8eb694f5216e2b3d7e9421e7a303e8ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#ga8eb694f5216e2b3d7e9421e7a303e8ff">discord_rest_stop_buckets</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest)</td></tr>
-<tr class="memdesc:ga8eb694f5216e2b3d7e9421e7a303e8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop all bucket's on-going, pending and timed-out requests.  <a href="group__DiscordInternalREST.html#ga8eb694f5216e2b3d7e9421e7a303e8ff">More...</a><br /></td></tr>
-<tr class="separator:ga8eb694f5216e2b3d7e9421e7a303e8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac345ed911d54c52b384ae56d4c82de6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gaac345ed911d54c52b384ae56d4c82de6">discord_rest_run</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest, struct <a class="el" href="structdiscord__attributes.html">discord_attributes</a> *req, struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> *body, enum http_method method, char endpoint_fmt[],...) <a class="el" href="attributes_8h.html#ad8efd9b6cb6f1b4d20cf5c8475f0bdf3">PRINTF_LIKE</a>(5</td></tr>
+<tr class="memdesc:gaac345ed911d54c52b384ae56d4c82de6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a request to Discord.  <a href="group__DiscordInternalREST.html#gaac345ed911d54c52b384ae56d4c82de6">More...</a><br /></td></tr>
+<tr class="separator:gaac345ed911d54c52b384ae56d4c82de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gaf7ef65d63f8f22a1bec58e04b5c93cbf">discord_rest_stop_buckets</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest)</td></tr>
+<tr class="memdesc:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop all bucket's on-going, pending and timed-out requests.  <a href="group__DiscordInternalREST.html#gaf7ef65d63f8f22a1bec58e04b5c93cbf">More...</a><br /></td></tr>
+<tr class="separator:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce">discord_gateway_init</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structlogconf.html">logconf</a> *conf, const char token[])</td></tr>
 <tr class="memdesc:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gateway handle.  <a href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce">More...</a><br /></td></tr>
 <tr class="separator:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>

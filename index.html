@@ -160,7 +160,7 @@ Slash Commands (new method)</h4>
 <div class="ttc" id="astructdiscord__interaction_html_ac1e97e032eec047868dce94121a7d234"><div class="ttname"><a href="structdiscord__interaction.html#ac1e97e032eec047868dce94121a7d234">discord_interaction::token</a></div><div class="ttdeci">char * token</div><div class="ttdef"><b>Definition:</b> interactions.h:66</div></div>
 <div class="ttc" id="astructdiscord__ready_html"><div class="ttname"><a href="structdiscord__ready.html">discord_ready</a></div><div class="ttdef"><b>Definition:</b> gateway.h:332</div></div>
 <div class="ttc" id="astructdiscord__ready_html_a50ac4274a6b0d46abaa1af5cc10b4397"><div class="ttname"><a href="structdiscord__ready.html#a50ac4274a6b0d46abaa1af5cc10b4397">discord_ready::application</a></div><div class="ttdeci">struct discord_application * application</div><div class="ttdef"><b>Definition:</b> gateway.h:345</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1180</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1190</div></div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md4"></a>
 Message Commands (old method)</h4>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
@@ -190,11 +190,11 @@ Message Commands (old method)</h4>
 <div class="ttc" id="agroup__DiscordEvents_html_ga4681ad4a8b3ec7c1c777a62b201aec8f"><div class="ttname"><a href="group__DiscordEvents.html#ga4681ad4a8b3ec7c1c777a62b201aec8f">discord_set_on_message_create</a></div><div class="ttdeci">void discord_set_on_message_create(struct discord *client, void(*callback)(struct discord *client, const struct discord_message *event))</div><div class="ttdoc">Triggers when a message is created.</div></div>
 <div class="ttc" id="agroup__DiscordInternalGatewayIntents_html_ga06c22696ba8f99e7ed1c6d4f88de2e5f"><div class="ttname"><a href="group__DiscordInternalGatewayIntents.html#ga06c22696ba8f99e7ed1c6d4f88de2e5f">DISCORD_GATEWAY_MESSAGE_CONTENT</a></div><div class="ttdeci">#define DISCORD_GATEWAY_MESSAGE_CONTENT</div><div class="ttdef"><b>Definition:</b> gateway.h:41</div></div>
 <div class="ttc" id="alog_8h_html_aa1cfe5444875c8eca0ea6f6993977d6d"><div class="ttname"><a href="log_8h.html#aa1cfe5444875c8eca0ea6f6993977d6d">log_info</a></div><div class="ttdeci">#define log_info(...)</div><div class="ttdef"><b>Definition:</b> log.h:52</div></div>
-<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:671</div></div>
-<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:673</div></div>
-<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:191</div></div>
-<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:203</div></div>
-<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:195</div></div>
+<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:683</div></div>
+<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:685</div></div>
+<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:195</div></div>
+<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:207</div></div>
+<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:199</div></div>
 <div class="ttc" id="astructdiscord__ready_html_aeb3c2e1971d7ee5d2049cc0fb53366b6"><div class="ttname"><a href="structdiscord__ready.html#aeb3c2e1971d7ee5d2049cc0fb53366b6">discord_ready::user</a></div><div class="ttdeci">struct discord_user * user</div><div class="ttdef"><b>Definition:</b> gateway.h:336</div></div>
 <div class="ttc" id="astructdiscord__user_html_aa778953d6508e4ed8019be82689ae861"><div class="ttname"><a href="structdiscord__user.html#aa778953d6508e4ed8019be82689ae861">discord_user::username</a></div><div class="ttdeci">char * username</div><div class="ttdef"><b>Definition:</b> user.h:73</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
@@ -235,7 +235,7 @@ Alpine</h4>
 <div class="fragment"><div class="line"># apk add curl-dev</div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md12"></a>
 FreeBSD</h4>
-<div class="fragment"><div class="line">$ pkg install curl</div>
+<div class="fragment"><div class="line"># pkg install curl</div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md13"></a>
 OS X</h4>
 <ul>
@@ -358,6 +358,9 @@ Installing Concord</h2>
 <div class="fragment"><div class="line"># make install</div>
 </div><!-- fragment --><p >This will install the headers and library files into $PREFIX. You can override this as such: </p><div class="fragment"><div class="line"># PREFIX=/opt/concord make install</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md28"></a>
+Cross-compiling Concord</h3>
+<p >To cross-compile Concord, see the manual here.</p>
+<h3><a class="anchor" id="autotoc_md29"></a>
 Included dependencies</h3>
 <p >The following are <code>stable</code> and well documented dependencies that are packaged with Concord and can be included to your projects:</p>
 <table class="markdownTable">
@@ -383,17 +386,17 @@ Included dependencies</h3>
 </ul>
 <p >Note that included headers must be <code>concord/</code> prefixed: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/log.h&gt;</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md29"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md30"></a>
 Standalone executable</h3>
-<h4><a class="anchor" id="autotoc_md30"></a>
+<h4><a class="anchor" id="autotoc_md31"></a>
 GCC</h4>
 <div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md31"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md32"></a>
 Clang</h4>
 <div class="fragment"><div class="line">$ clang myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md33"></a>
 UNIX C compilers</h4>
-<p ><a class="anchor" id="autotoc_md33"></a> </p><h5>This includes the following compilers:</h5>
+<p ><a class="anchor" id="autotoc_md34"></a> </p><h5>This includes the following compilers:</h5>
 <ul>
 <li>IBM XL C/C++ (AIX, z/OS, IBM i)</li>
 <li>Sun/Oracle Studio (Solaris)</li>
@@ -404,34 +407,34 @@ UNIX C compilers</h4>
 <div class="fragment"><div class="line">$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread</div>
 </div><!-- fragment --><p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
 </div><!-- fragment --><p> (this links against libpthread.a in <code>/usr/lib</code>)</p>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Recommended debuggers</h2>
 <p >First, make sure your executable is compiled with the <code>-g</code> flag to ensure human-readable debugger messages.</p>
-<h3><a class="anchor" id="autotoc_md35"></a>
+<h3><a class="anchor" id="autotoc_md36"></a>
 Valgrind</h3>
 <p >Using valgrind to check for memory leaks:</p>
 <div class="fragment"><div class="line">valgrind --leak-check=full ./myBot</div>
 </div><!-- fragment --><p> For a more comprehensive guide check <a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind's Quick Start</a>.</p>
-<h3><a class="anchor" id="autotoc_md36"></a>
+<h3><a class="anchor" id="autotoc_md37"></a>
 GDB</h3>
 <p >Using GDB to check for runtime errors, such as segmentation faults:</p>
 <div class="fragment"><div class="line">$ gdb ./myBot</div>
 </div><!-- fragment --><p> And then execute your bot from the gdb environment: </p><div class="fragment"><div class="line">(gdb) run</div>
 </div><!-- fragment --><p> If the program has crashed, get a backtrace of the function calls leading to it: </p><div class="fragment"><div class="line">(gdb) bt</div>
 </div><!-- fragment --><p >For a more comprehensive guide check <a href="https://beej.us/guide/bggdb/">Beej's Quick Guide to GDB</a></p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 Support</h2>
 <p >Problems? Check out our <a href="https://discord.gg/Y7Xa6MA82v">Discord Server</a></p>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Contributing</h2>
 <p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Getting Started</h2>
 <ul>
 <li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
 <li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md40"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Useful links</h2>
 <ul>
 <li><a href="https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b">Migrating from V1</a></li>

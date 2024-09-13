@@ -1,5 +1,10 @@
 var NAVTREEINDEX7 =
 {
+"group__DiscordAPIWebhook.html#gaaee6a957a85598dd1ce41323b2347db3":[4,4,15,7],
+"group__DiscordAPIWebhook.html#gabefa02a637cb7dd04ce239b72531f70b":[4,4,15,8],
+"group__DiscordAPIWebhook.html#gacf05e949cf4015e4ff2e528040f78dd0":[4,4,15,3],
+"group__DiscordAPIWebhook.html#gadc3a59a88be8e5edffa09b57c1584d83":[4,4,15,10],
+"group__DiscordAPIWebhook.html#gae2fa77b428f26e99c1656dee58fded2c":[4,4,15,4],
 "group__DiscordAPIWebhook.html#gaf07c388d69e82d798519a3c724a091fd":[4,4,15,9],
 "group__DiscordAPIWebhook.html#gafd892b808c7d2bc6f6db5bdbb9d32cb7":[4,4,15,5],
 "group__DiscordActivityFlags.html":[4,3,4],
@@ -219,6 +224,7 @@ var NAVTREEINDEX7 =
 "group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09":[4,5,11],
 "group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926":[4,5,9],
 "group__DiscordInternal.html#ga6f54459e4a3ef7fae49a92fd6dee7103":[4,5,12],
+"group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e":[4,5,14],
 "group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b":[4,5,10],
 "group__DiscordInternalCache.html":[4,5,5],
 "group__DiscordInternalGateway.html":[4,5,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX7 =
 "group__DiscordInternalGatewayIntents.html#ga06c22696ba8f99e7ed1c6d4f88de2e5f":[4,5,2,1,15],
 "group__DiscordInternalGatewayIntents.html#ga217375b0063769c238889ac27be0118e":[4,5,2,1,3],
 "group__DiscordInternalGatewayIntents.html#ga323cdc4826558ea3f38af91916981ce6":[4,5,2,1,5],
-"group__DiscordInternalGatewayIntents.html#ga3bfbdfbf815e7eda6bae22821afa4b80":[4,5,2,1,18],
-"group__DiscordInternalGatewayIntents.html#ga692da49e659d77b7b9b0b87927df20c8":[4,5,2,1,1],
-"group__DiscordInternalGatewayIntents.html#ga783e6ee22410b0b48ec64e18b7128f56":[4,5,2,1,11],
-"group__DiscordInternalGatewayIntents.html#ga831ab57aac84bf9096e072b9d3557298":[4,5,2,1,6],
-"group__DiscordInternalGatewayIntents.html#ga8e2dfc85b2c23357b01e3af35b3ccba6":[4,5,2,1,0],
-"group__DiscordInternalGatewayIntents.html#ga8ea7abc25df479000e7d7b00a54db7e6":[4,5,2,1,16],
-"group__DiscordInternalGatewayIntents.html#gaa194274209b7999a4c77d1f28e1e5967":[4,5,2,1,4]
+"group__DiscordInternalGatewayIntents.html#ga3bfbdfbf815e7eda6bae22821afa4b80":[4,5,2,1,18]
 };

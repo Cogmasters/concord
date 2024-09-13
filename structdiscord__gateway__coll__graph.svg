@@ -17,18 +17,18 @@
 </a>
 </g>
 </g>
-<!-- Node29 -->
+<!-- Node27 -->
 <g id="node7" class="node">
-<title>Node29</title>
+<title>Node27</title>
 <g id="a_node7"><a xlink:href="structdiscord.html" target="_top" xlink:title="The Discord client handler.">
 <polygon fill="none" stroke="red" points="405,-132.5 405,-151.5 457,-151.5 457,-132.5 405,-132.5"/>
 <text text-anchor="middle" x="431" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node29 -->
+<!-- Node1&#45;&gt;Node27 -->
 <g id="edge8" class="edge">
-<title>Node1&#45;&gt;Node29</title>
+<title>Node1&#45;&gt;Node27</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M307.84,-109.93C317.85,-113.4 328.8,-117.01 339,-120 360.99,-126.45 386.36,-132.46 404.72,-136.57"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="308.81,-106.56 298.21,-106.54 306.48,-113.16 308.81,-106.56"/>
 <text text-anchor="middle" x="363" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00"> gw</text>
@@ -49,9 +49,9 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="106.86,-156.41 98.43,-162.82 109.02,-163.07 106.86,-156.41"/>
 <text text-anchor="middle" x="182.5" y="-143" font-family="Helvetica,sans-Serif" font-size="10.00"> conf</text>
 </g>
-<!-- Node2&#45;&gt;Node29 -->
+<!-- Node2&#45;&gt;Node27 -->
 <g id="edge7" class="edge">
-<title>Node2&#45;&gt;Node29</title>
+<title>Node2&#45;&gt;Node27</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M108.4,-168.72C166.84,-164.92 286.17,-156.71 387,-147 392.69,-146.45 398.79,-145.79 404.55,-145.13"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="107.97,-165.25 98.21,-169.38 108.42,-172.23 107.97,-165.25"/>
 <text text-anchor="middle" x="271.5" y="-163" font-family="Helvetica,sans-Serif" font-size="10.00"> conf</text>
@@ -120,9 +120,9 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="138.57,-18.47 128.03,-19.57 136.95,-25.28 138.57,-18.47"/>
 <text text-anchor="middle" x="182.5" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00"> payload</text>
 </g>
-<!-- Node29&#45;&gt;Node1 -->
+<!-- Node27&#45;&gt;Node1 -->
 <g id="edge6" class="edge">
-<title>Node29&#45;&gt;Node1</title>
+<title>Node27&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M418.04,-124.16C410.43,-114.47 399.64,-103.39 387,-98 366.61,-89.31 342.26,-88 321.27,-89.29"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="415.38,-126.45 424.1,-132.47 421.04,-122.33 415.38,-126.45"/>
 <text text-anchor="middle" x="363" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00"> cbs</text>

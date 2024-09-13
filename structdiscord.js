@@ -10,6 +10,7 @@ var structdiscord =
     [ "gw", "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5", null ],
     [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
     [ "cache", "structdiscord.html#a1cbdbc3c7dfbf6ecdf82f6784f5e3c38", null ],
+    [ "shutdown_fd", "structdiscord.html#ad97e90d234a7959e6e7ee7265cf46bb5", null ],
     [ "internal", "structdiscord.html#ab587bcec8b91c77ba72a919ba01b15a2", null ],
     [ "user", "structdiscord.html#aece276e567f9230f448c8efea165b5f5", null ],
     [ "timers", "structdiscord.html#ac6bc034780945e0672abd81756a3308a", null ],

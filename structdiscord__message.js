@@ -11,7 +11,7 @@ var structdiscord__message =
     [ "tts", "structdiscord__message.html#ad78515ac01b381ea3b653a5bd99695a9", null ],
     [ "mention_everyone", "structdiscord__message.html#a9361866859ad03fbbf609a472a6336a5", null ],
     [ "mentions", "structdiscord__message.html#a9c11461a5312d51a503a3f75a4305437", null ],
-    [ "mention_roles", "structdiscord__message.html#a70ac58a38f20f5de26da6b08eb5124fb", null ],
+    [ "mention_roles", "structdiscord__message.html#ac420f314a264495b82d83065038463ca", null ],
     [ "mention_channels", "structdiscord__message.html#a10876cafc44a9a04704a7726b9ce345f", null ],
     [ "attachments", "structdiscord__message.html#a7b62cf083a8b78daeb5679bc6c9cf219", null ],
     [ "embeds", "structdiscord__message.html#a0645ff8640244f0ca44c87d8ef3464b3", null ],

@@ -249,16 +249,18 @@ Enumerations</h2></td></tr>
 , <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea94cd3f5686fc33ae53bc92bb580f8bc1">DISCORD_CHANNEL_GROUP_DM</a> = 3
 , <br />
 &#160;&#160;<a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea5ef54112a43394cee93ce7e4b0597cbb">DISCORD_CHANNEL_GUILD_CATEGORY</a> = 4
-, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd">DISCORD_CHANNEL_GUILD_NEWS</a> = 5
+, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feadf4b824ac744ff39bcb6e74b7fe6102b">DISCORD_CHANNEL_GUILD_ANNOUNCEMENT</a> = 5
+, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd">DISCORD_CHANNEL_GUILD_NEWS</a> = DISCORD_CHANNEL_GUILD_ANNOUNCEMENT
 , <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea3b82da359e955620ec09e26291b3cd2d">DISCORD_CHANNEL_GUILD_STORE</a> = 6
-, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea18fd19a920d0d4da67c1c514ee5cec50">DISCORD_CHANNEL_GUILD_NEWS_THREAD</a> = 10
 , <br />
-&#160;&#160;<a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb">DISCORD_CHANNEL_GUILD_PUBLIC_THREAD</a> = 11
+&#160;&#160;<a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaab48200c31f94974e3013ab72dfcc273">DISCORD_CHANNEL_ANNOUNCEMENT_THREAD</a> = 10
+, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea18fd19a920d0d4da67c1c514ee5cec50">DISCORD_CHANNEL_GUILD_NEWS_THREAD</a> = DISCORD_CHANNEL_ANNOUNCEMENT_THREAD
+, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb">DISCORD_CHANNEL_GUILD_PUBLIC_THREAD</a> = 11
 , <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea0226d4c910a2df5130af32890843ad55">DISCORD_CHANNEL_GUILD_PRIVATE_THREAD</a> = 12
-, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea2683d254ac8e952800d5c621e151db79">DISCORD_CHANNEL_GUILD_STAGE_VOICE</a> = 13
-, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea3c98945b6bfacba113a80372552d2e33">DISCORD_CHANNEL_GUILD_DIRECTORY</a> = 14
 , <br />
-&#160;&#160;<a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea17fab716444735e95787796bb9099824">DISCORD_CHANNEL_GUILD_FORUM</a> = 15
+&#160;&#160;<a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea2683d254ac8e952800d5c621e151db79">DISCORD_CHANNEL_GUILD_STAGE_VOICE</a> = 13
+, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea3c98945b6bfacba113a80372552d2e33">DISCORD_CHANNEL_GUILD_DIRECTORY</a> = 14
+, <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea17fab716444735e95787796bb9099824">DISCORD_CHANNEL_GUILD_FORUM</a> = 15
 <br />
  }</td></tr>
 <tr class="separator:a8da5a4e81d57a68dc380394ef40a12fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -415,123 +417,123 @@ Functions</h2></td></tr>
 <tr class="separator:a4350dec6aa13d1f98f8199d9ec6b7c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3898f414042c58babc7243bf371a7864"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a3898f414042c58babc7243bf371a7864">discord_list_active_threads_cleanup</a> (struct <a class="el" href="structdiscord__list__active__threads.html">discord_list_active_threads</a> *self)</td></tr>
 <tr class="separator:a3898f414042c58babc7243bf371a7864"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7afb8c775798e27fd7dcbce3383511d9"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a7afb8c775798e27fd7dcbce3383511d9">discord_channel_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__channel.html">discord_channel</a> *self)</td></tr>
+<tr class="memitem:a7afb8c775798e27fd7dcbce3383511d9"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a7afb8c775798e27fd7dcbce3383511d9">discord_channel_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__channel.html">discord_channel</a> *self)</td></tr>
 <tr class="separator:a7afb8c775798e27fd7dcbce3383511d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc85cdc87c6d405b9aff3faf74021c53"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abc85cdc87c6d405b9aff3faf74021c53">discord_channel_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__channel.html">discord_channel</a> *self)</td></tr>
 <tr class="separator:abc85cdc87c6d405b9aff3faf74021c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0baa221c751019f10516cf6fe0cdb9"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a6c0baa221c751019f10516cf6fe0cdb9">discord_channels_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__channels.html">discord_channels</a> *self)</td></tr>
+<tr class="memitem:a6c0baa221c751019f10516cf6fe0cdb9"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a6c0baa221c751019f10516cf6fe0cdb9">discord_channels_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__channels.html">discord_channels</a> *self)</td></tr>
 <tr class="separator:a6c0baa221c751019f10516cf6fe0cdb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af41b598bfaf5a1d83a4185539a7ff74c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af41b598bfaf5a1d83a4185539a7ff74c">discord_channels_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__channels.html">discord_channels</a> *self)</td></tr>
 <tr class="separator:af41b598bfaf5a1d83a4185539a7ff74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0cef28e5497b99bf6267f16f9ea7feb"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af0cef28e5497b99bf6267f16f9ea7feb">discord_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__message.html">discord_message</a> *self)</td></tr>
+<tr class="memitem:af0cef28e5497b99bf6267f16f9ea7feb"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af0cef28e5497b99bf6267f16f9ea7feb">discord_message_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__message.html">discord_message</a> *self)</td></tr>
 <tr class="separator:af0cef28e5497b99bf6267f16f9ea7feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c78aae95f6c26bf3b8a754ee82608bc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a7c78aae95f6c26bf3b8a754ee82608bc">discord_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__message.html">discord_message</a> *self)</td></tr>
 <tr class="separator:a7c78aae95f6c26bf3b8a754ee82608bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fe6aa513c37c4736c33b16822b6a0e2"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a4fe6aa513c37c4736c33b16822b6a0e2">discord_messages_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__messages.html">discord_messages</a> *self)</td></tr>
+<tr class="memitem:a4fe6aa513c37c4736c33b16822b6a0e2"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a4fe6aa513c37c4736c33b16822b6a0e2">discord_messages_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__messages.html">discord_messages</a> *self)</td></tr>
 <tr class="separator:a4fe6aa513c37c4736c33b16822b6a0e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab00f5542838a153d57b8ca15e56b6b70"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ab00f5542838a153d57b8ca15e56b6b70">discord_messages_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__messages.html">discord_messages</a> *self)</td></tr>
 <tr class="separator:ab00f5542838a153d57b8ca15e56b6b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d4930f4a8c84073580baa172831488a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a2d4930f4a8c84073580baa172831488a">discord_followed_channel_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__followed__channel.html">discord_followed_channel</a> *self)</td></tr>
+<tr class="memitem:a2d4930f4a8c84073580baa172831488a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a2d4930f4a8c84073580baa172831488a">discord_followed_channel_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__followed__channel.html">discord_followed_channel</a> *self)</td></tr>
 <tr class="separator:a2d4930f4a8c84073580baa172831488a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0c9a3ec797b25f4dcb6af5eae77b217"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af0c9a3ec797b25f4dcb6af5eae77b217">discord_followed_channel_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__followed__channel.html">discord_followed_channel</a> *self)</td></tr>
 <tr class="separator:af0c9a3ec797b25f4dcb6af5eae77b217"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3ea7eebcd97ac3c7c024d00d90d2383"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ad3ea7eebcd97ac3c7c024d00d90d2383">discord_thread_member_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a> *self)</td></tr>
+<tr class="memitem:ad3ea7eebcd97ac3c7c024d00d90d2383"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ad3ea7eebcd97ac3c7c024d00d90d2383">discord_thread_member_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a> *self)</td></tr>
 <tr class="separator:ad3ea7eebcd97ac3c7c024d00d90d2383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4313743e6759e1d3c83c00768d24007"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ab4313743e6759e1d3c83c00768d24007">discord_thread_member_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__thread__member.html">discord_thread_member</a> *self)</td></tr>
 <tr class="separator:ab4313743e6759e1d3c83c00768d24007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5acf1494d3f21db29492d3b40f3e49ea"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a5acf1494d3f21db29492d3b40f3e49ea">discord_thread_members_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__thread__members.html">discord_thread_members</a> *self)</td></tr>
+<tr class="memitem:a5acf1494d3f21db29492d3b40f3e49ea"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a5acf1494d3f21db29492d3b40f3e49ea">discord_thread_members_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__thread__members.html">discord_thread_members</a> *self)</td></tr>
 <tr class="separator:a5acf1494d3f21db29492d3b40f3e49ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe9a830a4d816cfb4fd42dcd79504d14"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abe9a830a4d816cfb4fd42dcd79504d14">discord_thread_members_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__thread__members.html">discord_thread_members</a> *self)</td></tr>
 <tr class="separator:abe9a830a4d816cfb4fd42dcd79504d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b1f9387bc85e1adba13edf3acb42503"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a9b1f9387bc85e1adba13edf3acb42503">discord_attachments_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a> *self)</td></tr>
+<tr class="memitem:a9b1f9387bc85e1adba13edf3acb42503"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a9b1f9387bc85e1adba13edf3acb42503">discord_attachments_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a> *self)</td></tr>
 <tr class="separator:a9b1f9387bc85e1adba13edf3acb42503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71501cd48c725560f976a019d989a896"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a71501cd48c725560f976a019d989a896">discord_attachments_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a> *self)</td></tr>
 <tr class="separator:a71501cd48c725560f976a019d989a896"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a827e7c1f5fa265341ce845f6d22e2a12"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a827e7c1f5fa265341ce845f6d22e2a12">discord_embed_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed.html">discord_embed</a> *self)</td></tr>
+<tr class="memitem:a827e7c1f5fa265341ce845f6d22e2a12"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a827e7c1f5fa265341ce845f6d22e2a12">discord_embed_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed.html">discord_embed</a> *self)</td></tr>
 <tr class="separator:a827e7c1f5fa265341ce845f6d22e2a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d58c8fecc798b05a97f8e775dfbe099"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a3d58c8fecc798b05a97f8e775dfbe099">discord_embed_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed.html">discord_embed</a> *self)</td></tr>
 <tr class="separator:a3d58c8fecc798b05a97f8e775dfbe099"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaf812bb087ab25df52cd36e6b3abb79"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abaf812bb087ab25df52cd36e6b3abb79">discord_embeds_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embeds.html">discord_embeds</a> *self)</td></tr>
+<tr class="memitem:abaf812bb087ab25df52cd36e6b3abb79"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abaf812bb087ab25df52cd36e6b3abb79">discord_embeds_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embeds.html">discord_embeds</a> *self)</td></tr>
 <tr class="separator:abaf812bb087ab25df52cd36e6b3abb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3773f46e731f850f43e127c26d3b41f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ae3773f46e731f850f43e127c26d3b41f">discord_embeds_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embeds.html">discord_embeds</a> *self)</td></tr>
 <tr class="separator:ae3773f46e731f850f43e127c26d3b41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaae4c853b21e544d4d01776180641f4"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abaae4c853b21e544d4d01776180641f4">discord_embed_thumbnail_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__thumbnail.html">discord_embed_thumbnail</a> *self)</td></tr>
+<tr class="memitem:abaae4c853b21e544d4d01776180641f4"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abaae4c853b21e544d4d01776180641f4">discord_embed_thumbnail_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__thumbnail.html">discord_embed_thumbnail</a> *self)</td></tr>
 <tr class="separator:abaae4c853b21e544d4d01776180641f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada6a46c7fee1aa29722a2dad656f5b40"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ada6a46c7fee1aa29722a2dad656f5b40">discord_embed_thumbnail_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__thumbnail.html">discord_embed_thumbnail</a> *self)</td></tr>
 <tr class="separator:ada6a46c7fee1aa29722a2dad656f5b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fd04deffc0e9c8323f915745f3bb347"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a4fd04deffc0e9c8323f915745f3bb347">discord_embed_video_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__video.html">discord_embed_video</a> *self)</td></tr>
+<tr class="memitem:a4fd04deffc0e9c8323f915745f3bb347"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a4fd04deffc0e9c8323f915745f3bb347">discord_embed_video_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__video.html">discord_embed_video</a> *self)</td></tr>
 <tr class="separator:a4fd04deffc0e9c8323f915745f3bb347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bc5c997d19afbf252182fed6ad4d552"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a6bc5c997d19afbf252182fed6ad4d552">discord_embed_video_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__video.html">discord_embed_video</a> *self)</td></tr>
 <tr class="separator:a6bc5c997d19afbf252182fed6ad4d552"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ac9ea6aa1b9e385ae784fce31076c85"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a1ac9ea6aa1b9e385ae784fce31076c85">discord_embed_image_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__image.html">discord_embed_image</a> *self)</td></tr>
+<tr class="memitem:a1ac9ea6aa1b9e385ae784fce31076c85"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a1ac9ea6aa1b9e385ae784fce31076c85">discord_embed_image_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__image.html">discord_embed_image</a> *self)</td></tr>
 <tr class="separator:a1ac9ea6aa1b9e385ae784fce31076c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a370dd11a2bf5070b6b368fa5c39d2392"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a370dd11a2bf5070b6b368fa5c39d2392">discord_embed_image_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__image.html">discord_embed_image</a> *self)</td></tr>
 <tr class="separator:a370dd11a2bf5070b6b368fa5c39d2392"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa42d052df6d225911298ca100ae4f7be"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aa42d052df6d225911298ca100ae4f7be">discord_embed_provider_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__provider.html">discord_embed_provider</a> *self)</td></tr>
+<tr class="memitem:aa42d052df6d225911298ca100ae4f7be"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aa42d052df6d225911298ca100ae4f7be">discord_embed_provider_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__provider.html">discord_embed_provider</a> *self)</td></tr>
 <tr class="separator:aa42d052df6d225911298ca100ae4f7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb9bd2876cfdfdc176ef0f80cbaa207b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#afb9bd2876cfdfdc176ef0f80cbaa207b">discord_embed_provider_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__provider.html">discord_embed_provider</a> *self)</td></tr>
 <tr class="separator:afb9bd2876cfdfdc176ef0f80cbaa207b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a884d3284d909916da44c67eb33444fcb"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a884d3284d909916da44c67eb33444fcb">discord_embed_author_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__author.html">discord_embed_author</a> *self)</td></tr>
+<tr class="memitem:a884d3284d909916da44c67eb33444fcb"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a884d3284d909916da44c67eb33444fcb">discord_embed_author_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__author.html">discord_embed_author</a> *self)</td></tr>
 <tr class="separator:a884d3284d909916da44c67eb33444fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34a9b333b695fbc75193cd96e132f54d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a34a9b333b695fbc75193cd96e132f54d">discord_embed_author_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__author.html">discord_embed_author</a> *self)</td></tr>
 <tr class="separator:a34a9b333b695fbc75193cd96e132f54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9c4a03156a1af98ef98699aa11bdcd7"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ab9c4a03156a1af98ef98699aa11bdcd7">discord_embed_footer_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__footer.html">discord_embed_footer</a> *self)</td></tr>
+<tr class="memitem:ab9c4a03156a1af98ef98699aa11bdcd7"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ab9c4a03156a1af98ef98699aa11bdcd7">discord_embed_footer_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__footer.html">discord_embed_footer</a> *self)</td></tr>
 <tr class="separator:ab9c4a03156a1af98ef98699aa11bdcd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d24d8b2c3e31cbca82e1ec539901e7f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a8d24d8b2c3e31cbca82e1ec539901e7f">discord_embed_footer_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__footer.html">discord_embed_footer</a> *self)</td></tr>
 <tr class="separator:a8d24d8b2c3e31cbca82e1ec539901e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1597f852e369f1232bbc689020d1fd4"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aa1597f852e369f1232bbc689020d1fd4">discord_embed_field_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__field.html">discord_embed_field</a> *self)</td></tr>
+<tr class="memitem:aa1597f852e369f1232bbc689020d1fd4"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aa1597f852e369f1232bbc689020d1fd4">discord_embed_field_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__field.html">discord_embed_field</a> *self)</td></tr>
 <tr class="separator:aa1597f852e369f1232bbc689020d1fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fdb7e38585eb13619b4de9d654a275e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a5fdb7e38585eb13619b4de9d654a275e">discord_embed_field_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__field.html">discord_embed_field</a> *self)</td></tr>
 <tr class="separator:a5fdb7e38585eb13619b4de9d654a275e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04f93cab1f5eb83c6b79a85272425eb7"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a04f93cab1f5eb83c6b79a85272425eb7">discord_embed_fields_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__embed__fields.html">discord_embed_fields</a> *self)</td></tr>
+<tr class="memitem:a04f93cab1f5eb83c6b79a85272425eb7"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a04f93cab1f5eb83c6b79a85272425eb7">discord_embed_fields_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__embed__fields.html">discord_embed_fields</a> *self)</td></tr>
 <tr class="separator:a04f93cab1f5eb83c6b79a85272425eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab44b83083a78d48b403ab70d9eb44058"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ab44b83083a78d48b403ab70d9eb44058">discord_embed_fields_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__embed__fields.html">discord_embed_fields</a> *self)</td></tr>
 <tr class="separator:ab44b83083a78d48b403ab70d9eb44058"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af360336d18cc2158a036a45572831468"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af360336d18cc2158a036a45572831468">discord_thread_response_body_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a> *self)</td></tr>
+<tr class="memitem:af360336d18cc2158a036a45572831468"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af360336d18cc2158a036a45572831468">discord_thread_response_body_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a> *self)</td></tr>
 <tr class="separator:af360336d18cc2158a036a45572831468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5999060470b99a5701df195853cb7ce7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a5999060470b99a5701df195853cb7ce7">discord_thread_response_body_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a> *self)</td></tr>
 <tr class="separator:a5999060470b99a5701df195853cb7ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a526c5f9b5f3bca965fe2cd047c9b663d"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a526c5f9b5f3bca965fe2cd047c9b663d">discord_modify_channel_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__modify__channel.html">discord_modify_channel</a> *self)</td></tr>
+<tr class="memitem:a526c5f9b5f3bca965fe2cd047c9b663d"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a526c5f9b5f3bca965fe2cd047c9b663d">discord_modify_channel_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__modify__channel.html">discord_modify_channel</a> *self)</td></tr>
 <tr class="separator:a526c5f9b5f3bca965fe2cd047c9b663d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c2d6599daa92b7555ad71077333ed4b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a8c2d6599daa92b7555ad71077333ed4b">discord_modify_channel_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__modify__channel.html">discord_modify_channel</a> *self)</td></tr>
 <tr class="separator:a8c2d6599daa92b7555ad71077333ed4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35c77b816b2b066c512252e304511b24"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a35c77b816b2b066c512252e304511b24">discord_create_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__message.html">discord_create_message</a> *self)</td></tr>
+<tr class="memitem:a35c77b816b2b066c512252e304511b24"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a35c77b816b2b066c512252e304511b24">discord_create_message_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__message.html">discord_create_message</a> *self)</td></tr>
 <tr class="separator:a35c77b816b2b066c512252e304511b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc4445084d192d8055df775dcfca45e8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#acc4445084d192d8055df775dcfca45e8">discord_create_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__message.html">discord_create_message</a> *self)</td></tr>
 <tr class="separator:acc4445084d192d8055df775dcfca45e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83a56653dd5da56ce7872d6165e01596"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a83a56653dd5da56ce7872d6165e01596">discord_edit_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__message.html">discord_edit_message</a> *self)</td></tr>
+<tr class="memitem:a83a56653dd5da56ce7872d6165e01596"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a83a56653dd5da56ce7872d6165e01596">discord_edit_message_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__message.html">discord_edit_message</a> *self)</td></tr>
 <tr class="separator:a83a56653dd5da56ce7872d6165e01596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5dd924ddc24ecf8e46beb31e8f157af"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ad5dd924ddc24ecf8e46beb31e8f157af">discord_edit_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__message.html">discord_edit_message</a> *self)</td></tr>
 <tr class="separator:ad5dd924ddc24ecf8e46beb31e8f157af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af81df757c66948b9ebd3e931e26897dc"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af81df757c66948b9ebd3e931e26897dc">discord_bulk_delete_messages_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__bulk__delete__messages.html">discord_bulk_delete_messages</a> *self)</td></tr>
+<tr class="memitem:af81df757c66948b9ebd3e931e26897dc"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#af81df757c66948b9ebd3e931e26897dc">discord_bulk_delete_messages_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__bulk__delete__messages.html">discord_bulk_delete_messages</a> *self)</td></tr>
 <tr class="separator:af81df757c66948b9ebd3e931e26897dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee59faf29e670c39066b5a19d216e238"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aee59faf29e670c39066b5a19d216e238">discord_bulk_delete_messages_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__bulk__delete__messages.html">discord_bulk_delete_messages</a> *self)</td></tr>
 <tr class="separator:aee59faf29e670c39066b5a19d216e238"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74a9d2acb0c3698ac2a033dd65a0ce71"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a74a9d2acb0c3698ac2a033dd65a0ce71">discord_edit_channel_permissions_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__edit__channel__permissions.html">discord_edit_channel_permissions</a> *self)</td></tr>
+<tr class="memitem:a74a9d2acb0c3698ac2a033dd65a0ce71"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a74a9d2acb0c3698ac2a033dd65a0ce71">discord_edit_channel_permissions_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__edit__channel__permissions.html">discord_edit_channel_permissions</a> *self)</td></tr>
 <tr class="separator:a74a9d2acb0c3698ac2a033dd65a0ce71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afafc8acddaef78c00a07192d2c7c8cc2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#afafc8acddaef78c00a07192d2c7c8cc2">discord_edit_channel_permissions_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__edit__channel__permissions.html">discord_edit_channel_permissions</a> *self)</td></tr>
 <tr class="separator:afafc8acddaef78c00a07192d2c7c8cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91740b9277c415b15800aca374d05e45"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a91740b9277c415b15800aca374d05e45">discord_create_channel_invite_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__create__channel__invite.html">discord_create_channel_invite</a> *self)</td></tr>
+<tr class="memitem:a91740b9277c415b15800aca374d05e45"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a91740b9277c415b15800aca374d05e45">discord_create_channel_invite_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__create__channel__invite.html">discord_create_channel_invite</a> *self)</td></tr>
 <tr class="separator:a91740b9277c415b15800aca374d05e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a191adc80b38b9f88e027e63337f8ec9e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a191adc80b38b9f88e027e63337f8ec9e">discord_create_channel_invite_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__create__channel__invite.html">discord_create_channel_invite</a> *self)</td></tr>
 <tr class="separator:a191adc80b38b9f88e027e63337f8ec9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a263220c2623be97845349c180583d11b"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a263220c2623be97845349c180583d11b">discord_follow_news_channel_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__follow__news__channel.html">discord_follow_news_channel</a> *self)</td></tr>
+<tr class="memitem:a263220c2623be97845349c180583d11b"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a263220c2623be97845349c180583d11b">discord_follow_news_channel_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__follow__news__channel.html">discord_follow_news_channel</a> *self)</td></tr>
 <tr class="separator:a263220c2623be97845349c180583d11b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b3986ad49ec79bd9038eaf40f9a91da"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a8b3986ad49ec79bd9038eaf40f9a91da">discord_follow_news_channel_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__follow__news__channel.html">discord_follow_news_channel</a> *self)</td></tr>
 <tr class="separator:a8b3986ad49ec79bd9038eaf40f9a91da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32e2db8266dba7b55e963861532686e3"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a32e2db8266dba7b55e963861532686e3">discord_group_dm_add_recipient_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__group__dm__add__recipient.html">discord_group_dm_add_recipient</a> *self)</td></tr>
+<tr class="memitem:a32e2db8266dba7b55e963861532686e3"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#a32e2db8266dba7b55e963861532686e3">discord_group_dm_add_recipient_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__group__dm__add__recipient.html">discord_group_dm_add_recipient</a> *self)</td></tr>
 <tr class="separator:a32e2db8266dba7b55e963861532686e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaedf0f6b6813916391af8d9bc5966e69"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aaedf0f6b6813916391af8d9bc5966e69">discord_group_dm_add_recipient_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__group__dm__add__recipient.html">discord_group_dm_add_recipient</a> *self)</td></tr>
 <tr class="separator:aaedf0f6b6813916391af8d9bc5966e69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc72a67c882ad0c195261fc5de6a307f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#afc72a67c882ad0c195261fc5de6a307f">discord_start_thread_with_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a> *self)</td></tr>
+<tr class="memitem:afc72a67c882ad0c195261fc5de6a307f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#afc72a67c882ad0c195261fc5de6a307f">discord_start_thread_with_message_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a> *self)</td></tr>
 <tr class="separator:afc72a67c882ad0c195261fc5de6a307f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb1093554fe3920893d303646826a44d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aeb1093554fe3920893d303646826a44d">discord_start_thread_with_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__start__thread__with__message.html">discord_start_thread_with_message</a> *self)</td></tr>
 <tr class="separator:aeb1093554fe3920893d303646826a44d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2db0ae2bf3fd3758af0b063b7702b0a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ad2db0ae2bf3fd3758af0b063b7702b0a">discord_start_thread_without_message_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a> *self)</td></tr>
+<tr class="memitem:ad2db0ae2bf3fd3758af0b063b7702b0a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#ad2db0ae2bf3fd3758af0b063b7702b0a">discord_start_thread_without_message_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a> *self)</td></tr>
 <tr class="separator:ad2db0ae2bf3fd3758af0b063b7702b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed7f9962c2513749fb8ba82943c9ecb5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aed7f9962c2513749fb8ba82943c9ecb5">discord_start_thread_without_message_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__start__thread__without__message.html">discord_start_thread_without_message</a> *self)</td></tr>
 <tr class="separator:aed7f9962c2513749fb8ba82943c9ecb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab1d0f0da9dc3536bc9b4b08a94c01fe"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aab1d0f0da9dc3536bc9b4b08a94c01fe">discord_list_active_threads_from_jsmnf</a> (<a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *root, const char *js, struct <a class="el" href="structdiscord__list__active__threads.html">discord_list_active_threads</a> *self)</td></tr>
+<tr class="memitem:aab1d0f0da9dc3536bc9b4b08a94c01fe"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#aab1d0f0da9dc3536bc9b4b08a94c01fe">discord_list_active_threads_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__list__active__threads.html">discord_list_active_threads</a> *self)</td></tr>
 <tr class="separator:aab1d0f0da9dc3536bc9b4b08a94c01fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfe4f9259f646ef1d009dc28b04ba403"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="docs_2api_2channel_8h.html#abfe4f9259f646ef1d009dc28b04ba403">discord_list_active_threads_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__list__active__threads.html">discord_list_active_threads</a> *self)</td></tr>
 <tr class="separator:abfe4f9259f646ef1d009dc28b04ba403"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -725,11 +727,15 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12fea5ef54112a43394cee93ce7e4b0597cbb" name="a8da5a4e81d57a68dc380394ef40a12fea5ef54112a43394cee93ce7e4b0597cbb"></a>DISCORD_CHANNEL_GUILD_CATEGORY&#160;</td><td class="fielddoc"><p >an organization category that contains up to 50 channels </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd" name="a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd"></a>DISCORD_CHANNEL_GUILD_NEWS&#160;</td><td class="fielddoc"><p >a channel that users can follow and crosspost into their own server </p>
+<tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12feadf4b824ac744ff39bcb6e74b7fe6102b" name="a8da5a4e81d57a68dc380394ef40a12feadf4b824ac744ff39bcb6e74b7fe6102b"></a>DISCORD_CHANNEL_GUILD_ANNOUNCEMENT&#160;</td><td class="fielddoc"><p >a channel that users can follow and crosspost into their own server </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd" name="a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd"></a>DISCORD_CHANNEL_GUILD_NEWS&#160;</td><td class="fielddoc"><p >alias to <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feadf4b824ac744ff39bcb6e74b7fe6102b">DISCORD_CHANNEL_GUILD_ANNOUNCEMENT</a> </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12fea3b82da359e955620ec09e26291b3cd2d" name="a8da5a4e81d57a68dc380394ef40a12fea3b82da359e955620ec09e26291b3cd2d"></a>DISCORD_CHANNEL_GUILD_STORE&#160;</td><td class="fielddoc"><p >a channel in which game developers can seel their game on Discord </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12fea18fd19a920d0d4da67c1c514ee5cec50" name="a8da5a4e81d57a68dc380394ef40a12fea18fd19a920d0d4da67c1c514ee5cec50"></a>DISCORD_CHANNEL_GUILD_NEWS_THREAD&#160;</td><td class="fielddoc"><p >a temporary sub-channel within a <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd">DISCORD_CHANNEL_GUILD_NEWS</a> channel </p>
+<tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12feaab48200c31f94974e3013ab72dfcc273" name="a8da5a4e81d57a68dc380394ef40a12feaab48200c31f94974e3013ab72dfcc273"></a>DISCORD_CHANNEL_ANNOUNCEMENT_THREAD&#160;</td><td class="fielddoc"><p >a temporary sub-channel within a <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaefe01be06f1150e963f0b51dc2324fcd">DISCORD_CHANNEL_GUILD_NEWS</a> channel </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12fea18fd19a920d0d4da67c1c514ee5cec50" name="a8da5a4e81d57a68dc380394ef40a12fea18fd19a920d0d4da67c1c514ee5cec50"></a>DISCORD_CHANNEL_GUILD_NEWS_THREAD&#160;</td><td class="fielddoc"><p >alias to <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaab48200c31f94974e3013ab72dfcc273">DISCORD_CHANNEL_ANNOUNCEMENT_THREAD</a> </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb" name="a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb"></a>DISCORD_CHANNEL_GUILD_PUBLIC_THREAD&#160;</td><td class="fielddoc"><p >a temporary sub-channel within a <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea5617b22701a4d93550f62c4c9dc224b5">DISCORD_CHANNEL_GUILD_TEXT</a> channel </p>
 </td></tr>
@@ -1814,7 +1820,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_channel_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -1882,7 +1888,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_channels_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -1950,7 +1956,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_message_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2018,7 +2024,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_messages_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2086,7 +2092,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_followed_channel_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2154,7 +2160,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_thread_member_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2222,7 +2228,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_thread_members_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2290,7 +2296,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_attachments_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2358,7 +2364,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2428,7 +2434,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embeds_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2496,7 +2502,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_thumbnail_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2564,7 +2570,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_video_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2632,7 +2638,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_image_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2700,7 +2706,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_provider_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2768,7 +2774,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_author_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2836,7 +2842,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_footer_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2904,7 +2910,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_field_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -2972,7 +2978,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_embed_fields_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3040,7 +3046,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_thread_response_body_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3108,7 +3114,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_modify_channel_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3176,7 +3182,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_create_message_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3244,7 +3250,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_edit_message_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3312,7 +3318,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_bulk_delete_messages_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3380,7 +3386,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_edit_channel_permissions_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3448,7 +3454,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_create_channel_invite_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3516,7 +3522,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_follow_news_channel_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3584,7 +3590,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_group_dm_add_recipient_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3652,7 +3658,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_start_thread_with_message_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3720,7 +3726,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_start_thread_without_message_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>
@@ -3788,7 +3794,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">long discord_list_active_threads_from_jsmnf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsmnf__pair.html">jsmnf_pair</a> *&#160;</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
           <td class="paramname"><em>root</em>, </td>
         </tr>
         <tr>

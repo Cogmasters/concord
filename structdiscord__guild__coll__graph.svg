@@ -49,34 +49,34 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="127.99,-359.58 118.07,-363.31 128.15,-366.57 127.99,-359.58"/>
 <text text-anchor="middle" x="224.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00"> emojis</text>
 </g>
-<!-- Node8 -->
+<!-- Node9 -->
 <g id="node4" class="node">
-<title>Node8</title>
+<title>Node9</title>
 <g id="a_node4"><a xlink:href="structstrings.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="48,-316 48,-335 98,-335 98,-316 48,-316"/>
 <text text-anchor="middle" x="73" y="-323" font-family="Helvetica,sans-Serif" font-size="10.00">strings</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node1 -->
+<!-- Node9&#45;&gt;Node1 -->
 <g id="edge3" class="edge">
-<title>Node8&#45;&gt;Node1</title>
+<title>Node9&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M108.44,-325.38C160.58,-324.61 256.51,-320.66 285,-302.5 317.03,-282.08 333.81,-236.83 339.85,-217.06"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="108.28,-321.88 98.32,-325.5 108.36,-328.88 108.28,-321.88"/>
 <text text-anchor="middle" x="224.5" y="-326.5" font-family="Helvetica,sans-Serif" font-size="10.00"> features</text>
 </g>
-<!-- Node9 -->
+<!-- Node10 -->
 <g id="node5" class="node">
-<title>Node9</title>
+<title>Node10</title>
 <g id="a_node5"><a xlink:href="structdiscord__voice__states.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="13.5,-278 13.5,-297 132.5,-297 132.5,-278 13.5,-278"/>
 <text text-anchor="middle" x="73" y="-285" font-family="Helvetica,sans-Serif" font-size="10.00">discord_voice_states</text>
 </a>
 </g>
 </g>
-<!-- Node9&#45;&gt;Node1 -->
+<!-- Node10&#45;&gt;Node1 -->
 <g id="edge4" class="edge">
-<title>Node9&#45;&gt;Node1</title>
+<title>Node10&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M142.68,-289.69C185.46,-288.52 240.6,-282.31 285,-261.5 306.82,-251.27 325.82,-229.58 335.56,-217.03"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="142.58,-286.19 132.65,-289.87 142.71,-293.19 142.58,-286.19"/>
 <text text-anchor="middle" x="224.5" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00"> voice_states</text>
