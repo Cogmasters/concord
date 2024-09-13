@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"structdiscord__guild__preview.html#aebbb6cd68649f0d5308137eef1066e1a":[5,0,141,4],
 "structdiscord__guild__role__create.html":[5,0,142],
 "structdiscord__guild__role__create.html#a2fc27ac7df85cf4203762af0526dac0f":[5,0,142,1],
 "structdiscord__guild__role__create.html#ab18dafc616fa3a5979927fae83078d77":[5,0,142,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "structdiscord__message.html#ac325084b69c1bf35bef45510ab6ce7a7":[5,0,181,4],
 "structdiscord__message.html#ac420f314a264495b82d83065038463ca":[5,0,181,11],
 "structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb":[5,0,181,3],
-"structdiscord__message.html#ad78515ac01b381ea3b653a5bd99695a9":[5,0,181,8],
-"structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48":[5,0,181,1]
+"structdiscord__message.html#ad78515ac01b381ea3b653a5bd99695a9":[5,0,181,8]
 };

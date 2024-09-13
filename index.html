@@ -95,13 +95,16 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 Concord - C Discord API library</h1>
 <p ><a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&amp;logo=discord&amp;logoColor=white" alt="discord-shield" class="inline"/></a> <a href="https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b"><img src="https://img.shields.io/badge/Gist-Migrating%20from%20v1-yellow" alt="migrating-shield" class="inline"/></a></p>
 <h2><a class="anchor" id="autotoc_md1"></a>
+🚨 Concord is not dead! 🚨</h2>
+<p >Development has been happening in the dev branch. We are working on new features and improvements. To access the latest version of the library, please check out the dev branch.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
 About</h2>
 <p >Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.</p>
-<h3><a class="anchor" id="autotoc_md2"></a>
+<h3><a class="anchor" id="autotoc_md3"></a>
 Examples</h3>
 <p ><em>The following are minimalistic examples, refer to <a href="examples/"><code>examples/</code></a> for a better overview.*</em></p>
 <p ><em></em></p>
-<h4><a class="anchor" id="autotoc_md3"></a>
+<h4><a class="anchor" id="autotoc_md4"></a>
 Slash Commands (new method)</h4>
 <p ><em> *Note: you need to replace <code>GUILD_ID</code> with an actual guild ID, or this example won't compile!</em> You can use a macro to do this: <code>#define GUILD_ID 1234567898765431</code></p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
@@ -161,7 +164,7 @@ Slash Commands (new method)</h4>
 <div class="ttc" id="astructdiscord__ready_html"><div class="ttname"><a href="structdiscord__ready.html">discord_ready</a></div><div class="ttdef"><b>Definition:</b> gateway.h:332</div></div>
 <div class="ttc" id="astructdiscord__ready_html_a50ac4274a6b0d46abaa1af5cc10b4397"><div class="ttname"><a href="structdiscord__ready.html#a50ac4274a6b0d46abaa1af5cc10b4397">discord_ready::application</a></div><div class="ttdeci">struct discord_application * application</div><div class="ttdef"><b>Definition:</b> gateway.h:345</div></div>
 <div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1190</div></div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md5"></a>
 Message Commands (old method)</h4>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
@@ -197,7 +200,7 @@ Message Commands (old method)</h4>
 <div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:199</div></div>
 <div class="ttc" id="astructdiscord__ready_html_aeb3c2e1971d7ee5d2049cc0fb53366b6"><div class="ttname"><a href="structdiscord__ready.html#aeb3c2e1971d7ee5d2049cc0fb53366b6">discord_ready::user</a></div><div class="ttdeci">struct discord_user * user</div><div class="ttdef"><b>Definition:</b> gateway.h:336</div></div>
 <div class="ttc" id="astructdiscord__user_html_aa778953d6508e4ed8019be82689ae861"><div class="ttname"><a href="structdiscord__user.html#aa778953d6508e4ed8019be82689ae861">discord_user::username</a></div><div class="ttdeci">char * username</div><div class="ttdef"><b>Definition:</b> user.h:73</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
 Supported operating systems (minimum requirements)</h2>
 <ul>
 <li>GNU/Linux 4.x</li>
@@ -208,10 +211,10 @@ Supported operating systems (minimum requirements)</h2>
 <li>Mac OS X 10.9</li>
 </ul>
 <p ><em>Note: big-endian processors running certain OSes like SPARC Solaris, PowerPC AIX, System Z z/OS or Linux, or MIPS IRIX are NOT supported. There are currently a few issues that prevent some of the logic from correctly on big-endian systems. This will be fixed soon.</em></p>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 Build Instructions</h2>
 <p >The only dependency is <code>curl-7.56.1</code> or higher. If you are compiling libcurl from source, you will need to build it with SSL support.</p>
-<h3><a class="anchor" id="autotoc_md7"></a>
+<h3><a class="anchor" id="autotoc_md8"></a>
 On Windows</h3>
 <ul>
 <li>Install <b>Cygwin</b></li>
@@ -221,29 +224,29 @@ On Windows</h3>
 <li>Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.</li>
 <li>Note: you will likely need to include <code>-L/usr/local/lib -I/usr/local/include</code> on your <code>gcc</code> command, or in your <code>CFLAGS</code> variable in your Makefile for your bot.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md8"></a>
+<h3><a class="anchor" id="autotoc_md9"></a>
 On Linux, BSD, and Mac OS X</h3>
 <p >*(note &ndash; <code>#</code> means that you should be running as root)*</p>
-<h4><a class="anchor" id="autotoc_md9"></a>
+<h4><a class="anchor" id="autotoc_md10"></a>
 Ubuntu and Debian</h4>
 <div class="fragment"><div class="line"># apt update &amp;&amp; apt install -y libcurl4-openssl-dev</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md11"></a>
 Void Linux</h4>
 <div class="fragment"><div class="line"># xbps-install -S libcurl-devel</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md12"></a>
 Alpine</h4>
 <div class="fragment"><div class="line"># apk add curl-dev</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md13"></a>
 FreeBSD</h4>
 <div class="fragment"><div class="line"># pkg install curl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md14"></a>
 OS X</h4>
 <ul>
 <li>Note: you will need to install Xcode, or at a minimum, the command-line tools with <code>xcode-select --install</code>. <div class="fragment"><div class="line">$ brew install curl (Homebrew)</div>
 <div class="line">$ port install curl (MacPorts)</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md14"></a>
+<h4><a class="anchor" id="autotoc_md15"></a>
 Arch Linux / Manjaro (Arch based)</h4>
 <div class="fragment"><div class="line">git clone https://aur.archlinux.org/concord-git.git</div>
 <div class="line">cd concord-git</div>
@@ -251,25 +254,25 @@ Arch Linux / Manjaro (Arch based)</h4>
 <div class="line">pacman -U concord-git-version-any.pkg.tar.zst</div>
 </div><!-- fragment --><p >Alternatively, you can use an AUR helper:</p>
 <div class="fragment"><div class="line">yay -S concord-git</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
 Setting up your environment</h2>
-<h3><a class="anchor" id="autotoc_md16"></a>
+<h3><a class="anchor" id="autotoc_md17"></a>
 Clone Concord into your workspace</h3>
 <div class="fragment"><div class="line">$ git clone https://github.com/cogmasters/concord.git &amp;&amp; cd concord</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md17"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md18"></a>
 Compile Concord</h3>
 <div class="fragment"><div class="line">$ make</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md18"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md19"></a>
 Special notes for non-Linux systems</h3>
 <p >You might run into trouble with the compiler and linker not finding your Libcurl headers. You can do something like this: </p><div class="fragment"><div class="line">$ CFLAGS=-I&lt;some_path&gt; LDFLAGS=-L&lt;some_path&gt; make</div>
 </div><!-- fragment --><p> For instance, on a FreeBSD system: </p><div class="fragment"><div class="line">$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make</div>
 </div><!-- fragment --><p> On OS X using MacPorts: </p><div class="fragment"><div class="line">$ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make</div>
 </div><!-- fragment --><p> On OS X using a self-compiled libcurl: </p><div class="fragment"><div class="line">$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/include make</div>
 </div><!-- fragment --><p> On Windows with Cygwin, you might need to pass both arguments to use POSIX threading: </p><div class="fragment"><div class="line">$ CFLAGS=&quot;-pthread -lpthread&quot; make</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md19"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md20"></a>
 Special note about linking Concord against another library</h3>
 <p >In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared object. In that case, you will need to compile Concord with <code>CFLAGS="-fpic" make</code>.</p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Configuring Concord</h2>
 <p ><a href="https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init()</a> is the initialization method that allows configuring your bot without recompiling.</p>
 <p >The following outlines <code>config.json</code> fields: </p><div class="fragment"><div class="line">{</div>
@@ -297,7 +300,7 @@ Configuring Concord</h2>
 </div><!-- fragment --><ul>
 <li><em>Your custom field contents can be fetched with <a href="https://cogmasters.github.io/concord/group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307">discord_config_get_field()</a></em></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Test Copycat-Bot</h2>
 <ol type="1">
 <li>Get your bot token and add it to <code>config.json</code>, by assigning it to discord's "token" field. There are well written instructions from <a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">discord-irc</a> explaining how to get your bot token and adding it to a server.</li>
@@ -306,16 +309,16 @@ Test Copycat-Bot</h2>
 <li>Run Copycat-Bot: <div class="fragment"><div class="line">$ cd examples &amp;&amp; ./copycat</div>
 </div><!-- fragment --></li>
 </ol>
-<h3><a class="anchor" id="autotoc_md22"></a>
+<h3><a class="anchor" id="autotoc_md23"></a>
 Get Copycat-Bot Response</h3>
 <p >Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.</p>
-<h3><a class="anchor" id="autotoc_md23"></a>
+<h3><a class="anchor" id="autotoc_md24"></a>
 Terminate Copycat-Bot</h3>
 <p >With <code>Ctrl</code>+<code>c</code> or with <code>Ctrl</code>+<code>|</code></p>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Configure your build</h2>
 <p >The following outlines special flags and targets to override the default Makefile build with additional functionalities.</p>
-<h3><a class="anchor" id="autotoc_md25"></a>
+<h3><a class="anchor" id="autotoc_md26"></a>
 Special compilation flags</h3>
 <ul>
 <li><code>-DCCORD_SIGINTCATCH</code><ul>
@@ -332,7 +335,7 @@ Special compilation flags</h3>
 </li>
 </ul>
 <p ><em>Example:</em> </p><div class="fragment"><div class="line">$ CFLAGS=&quot;-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP&quot; make</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md27"></a>
 Special targets</h3>
 <ul>
 <li><code>make shared</code><ul>
@@ -352,15 +355,15 @@ Special targets</h3>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Installing Concord</h2>
 <p >*(note &ndash; <code>#</code> means that you should be running as root)*</p>
 <div class="fragment"><div class="line"># make install</div>
 </div><!-- fragment --><p >This will install the headers and library files into $PREFIX. You can override this as such: </p><div class="fragment"><div class="line"># PREFIX=/opt/concord make install</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md29"></a>
 Cross-compiling Concord</h3>
 <p >To cross-compile Concord, see the manual here.</p>
-<h3><a class="anchor" id="autotoc_md29"></a>
+<h3><a class="anchor" id="autotoc_md30"></a>
 Included dependencies</h3>
 <p >The following are <code>stable</code> and well documented dependencies that are packaged with Concord and can be included to your projects:</p>
 <table class="markdownTable">
@@ -386,17 +389,17 @@ Included dependencies</h3>
 </ul>
 <p >Note that included headers must be <code>concord/</code> prefixed: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/log.h&gt;</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md30"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md31"></a>
 Standalone executable</h3>
-<h4><a class="anchor" id="autotoc_md31"></a>
+<h4><a class="anchor" id="autotoc_md32"></a>
 GCC</h4>
 <div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md33"></a>
 Clang</h4>
 <div class="fragment"><div class="line">$ clang myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md33"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md34"></a>
 UNIX C compilers</h4>
-<p ><a class="anchor" id="autotoc_md34"></a> </p><h5>This includes the following compilers:</h5>
+<p ><a class="anchor" id="autotoc_md35"></a> </p><h5>This includes the following compilers:</h5>
 <ul>
 <li>IBM XL C/C++ (AIX, z/OS, IBM i)</li>
 <li>Sun/Oracle Studio (Solaris)</li>
@@ -407,34 +410,34 @@ UNIX C compilers</h4>
 <div class="fragment"><div class="line">$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread</div>
 </div><!-- fragment --><p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
 </div><!-- fragment --><p> (this links against libpthread.a in <code>/usr/lib</code>)</p>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 Recommended debuggers</h2>
 <p >First, make sure your executable is compiled with the <code>-g</code> flag to ensure human-readable debugger messages.</p>
-<h3><a class="anchor" id="autotoc_md36"></a>
+<h3><a class="anchor" id="autotoc_md37"></a>
 Valgrind</h3>
 <p >Using valgrind to check for memory leaks:</p>
 <div class="fragment"><div class="line">valgrind --leak-check=full ./myBot</div>
 </div><!-- fragment --><p> For a more comprehensive guide check <a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind's Quick Start</a>.</p>
-<h3><a class="anchor" id="autotoc_md37"></a>
+<h3><a class="anchor" id="autotoc_md38"></a>
 GDB</h3>
 <p >Using GDB to check for runtime errors, such as segmentation faults:</p>
 <div class="fragment"><div class="line">$ gdb ./myBot</div>
 </div><!-- fragment --><p> And then execute your bot from the gdb environment: </p><div class="fragment"><div class="line">(gdb) run</div>
 </div><!-- fragment --><p> If the program has crashed, get a backtrace of the function calls leading to it: </p><div class="fragment"><div class="line">(gdb) bt</div>
 </div><!-- fragment --><p >For a more comprehensive guide check <a href="https://beej.us/guide/bggdb/">Beej's Quick Guide to GDB</a></p>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Support</h2>
 <p >Problems? Check out our <a href="https://discord.gg/Y7Xa6MA82v">Discord Server</a></p>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Contributing</h2>
 <p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
-<h2><a class="anchor" id="autotoc_md40"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Getting Started</h2>
 <ul>
 <li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
 <li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 Useful links</h2>
 <ul>
 <li><a href="https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b">Migrating from V1</a></li>
