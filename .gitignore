@@ -29,3 +29,4 @@
 !Makefile
 !config.json
 !.github/**
+!concord.pc
