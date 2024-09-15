@@ -85,7 +85,9 @@ PUB_STRUCT(discord_component)
   /** whether this componentis required to be filled */
     FIELD(required, bool, false)
   /** a pre-filled value for this component */
+  COND_WRITE(self->value != NULL)
     FIELD_PTR(value, char, *)
+  COND_END
 STRUCT_END
 #endif
 
