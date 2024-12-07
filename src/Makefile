@@ -20,7 +20,9 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/anomap.o         \
                 $(CORE_DIR)/sha1.o           \
                 $(CORE_DIR)/threadpool.o     \
-                $(CORE_DIR)/queriec.o
+                $(CORE_DIR)/queriec.o        \
+                $(CORE_DIR)/cthreads.o
+
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 VOICE_OBJS    = discord-voice.o
 

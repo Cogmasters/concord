@@ -5,11 +5,11 @@
 #include <ctype.h> /* isspace() */
 #include <string.h>
 #include <strings.h>
-#include <pthread.h>
 
 #include "user-agent.h"
 #include "cog-utils.h"
 #include "queue.h"
+#include "cthreads.h"
 
 #define CURLE_LOG(conn, ecode)                                                \
     logconf_fatal(&conn->ua->conf, "(CURLE code: %d) %s", ecode,              \
@@ -51,7 +51,7 @@ struct ua_conn_queue {
     /** total amount of created connection handles  */
     int total;
     /** lock for blocking queue operations */
-    pthread_mutex_t lock;
+    struct cthreads_mutex lock;
 };
 
 struct ua_conn {
@@ -474,7 +474,7 @@ ua_conn_start(struct user_agent *ua)
     QUEUE(struct ua_conn) *qelem = NULL;
     struct ua_conn *conn = NULL;
 
-    pthread_mutex_lock(&ua->connq->lock);
+    cthreads_mutex_lock(&ua->connq->lock);
 
     if (QUEUE_EMPTY(&ua->connq->idle)) {
         conn = _ua_conn_init(ua);
@@ -489,7 +489,7 @@ ua_conn_start(struct user_agent *ua)
     }
     QUEUE_INSERT_TAIL(&ua->connq->busy, &conn->entry);
 
-    pthread_mutex_unlock(&ua->connq->lock);
+    cthreads_mutex_unlock(&ua->connq->lock);
 
     return conn;
 }
@@ -550,10 +550,10 @@ ua_conn_stop(struct ua_conn *conn)
     }
 
     /* move conn from 'busy' to 'idle' queue */
-    pthread_mutex_lock(&ua->connq->lock);
+    cthreads_mutex_lock(&ua->connq->lock);
     QUEUE_REMOVE(&conn->entry);
     QUEUE_INSERT_TAIL(&ua->connq->idle, &conn->entry);
-    pthread_mutex_unlock(&ua->connq->lock);
+    cthreads_mutex_unlock(&ua->connq->lock);
 }
 
 struct user_agent *
@@ -567,7 +567,7 @@ ua_init(struct ua_attr *attr)
     QUEUE_INIT(&new_ua->connq->idle);
     QUEUE_INIT(&new_ua->connq->busy);
 
-    if (pthread_mutex_init(&new_ua->connq->lock, NULL)) {
+    if (cthreads_mutex_init(&new_ua->connq->lock, NULL)) {
         logconf_fatal(&new_ua->conf, "Couldn't initialize mutex");
         abort();
     }
@@ -593,7 +593,7 @@ ua_cleanup(struct user_agent *ua)
             _ua_conn_cleanup(conn);
         }
     }
-    pthread_mutex_destroy(&ua->connq->lock);
+    cthreads_mutex_destroy(&ua->connq->lock);
     free(ua->connq);
 
     /* cleanup logging module */
