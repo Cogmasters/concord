@@ -195,21 +195,15 @@ cws_on_connect_cb(void *p_ws)
 
     _ws_set_status(ws, WS_CONNECTED);
 
-    logconf_http(
-        &ws->conf, &ws->info.loginfo, ws->base_url,
-        (struct logconf_szbuf){ "", 0 },
-        (struct logconf_szbuf){ "", 0 },
-        "WS_RCV_CONNECT");
+    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url,
+                 (struct logconf_szbuf){ "", 0 },
+                 (struct logconf_szbuf){ "", 0 }, "WS_RCV_CONNECT");
 
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR(
-            "RCV",
-            ANSI_FG_YELLOW) " CONNECT [@@@_%zu_@@@]",
-        ws->info.loginfo.counter);
+    logconf_trace(&ws->conf,
+                  ANSICOLOR("RCV", ANSI_FG_YELLOW) " CONNECT [@@@_%zu_@@@]",
+                  ws->info.loginfo.counter);
 
-    if (ws->cbs.on_connect)
-        ws->cbs.on_connect(ws->cbs.data, ws, &ws->info);
+    if (ws->cbs.on_connect) ws->cbs.on_connect(ws->cbs.data, ws, &ws->info);
 }
 
 static void
@@ -380,7 +374,8 @@ _curl_ws_header_cb(char *buffer, size_t size, size_t nitems, void *userdata)
     size_t realsize = size * nitems;
 
     if (realsize == 2 && memcmp(buffer, "\r\n", 2) == 0) {
-        /* according to curl-websockets code, this should be where it has connected. */
+        /* according to curl-websockets code, this should be where it has
+         * connected. */
         cws_on_connect_cb(ws);
 
         return realsize;
@@ -406,7 +401,7 @@ _ws_cws_new(struct websockets *ws)
     curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, ws);
     /* set the function to call when receiving data */
     curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &_curl_ws_write_cb);
-    curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, ws);    
+    curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, ws);
 
     /* set error buffer for capturing CURL error descriptions */
     curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, ws->errbuf);
@@ -457,7 +452,9 @@ _ws_close(struct websockets *ws,
     _ws_set_status_nolock(ws, WS_DISCONNECTING);
 
     size_t sent = 0;
-    if (curl_ws_send(ws->ehandle, reason, strlen(reason), &sent, 0, CURLWS_CLOSE) != CURLE_OK)
+    if (curl_ws_send(ws->ehandle, reason, strlen(reason), &sent, 0,
+                     CURLWS_CLOSE)
+        != CURLE_OK)
     {
         logconf_error(
             &ws->conf,
@@ -502,9 +499,10 @@ default_on_ping(void *a,
     ws_pong(ws, &ws->info, reason, len);
 }
 
-size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
+size_t
+_curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
 {
-    again:
+again:
 
     struct websockets *ws = userdata;
     size_t realsize = size * nmemb;
@@ -521,22 +519,28 @@ size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
             ws->bytesleft -= realsize;
 
             return realsize;
-        } else {        
+        }
+        else {
             /* the received amount of bytes is bigger than what we need, so we
                  we need to just copy what is from our frame, then let the next
-                 be handled alone. The same happens when it is exactly what we need. */
-            ws->msg_buf = realloc(ws->msg_buf, ws->msg_len + ws->bytesleft + 1);
+                 be handled alone. The same happens when it is exactly what we
+               need. */
+            ws->msg_buf =
+                realloc(ws->msg_buf, ws->msg_len + ws->bytesleft + 1);
             memcpy(ws->msg_buf + ws->msg_len, ptr, ws->bytesleft);
             ws->msg_buf[ws->msg_len + ws->bytesleft] = '\0';
             ws->msg_len += ws->bytesleft;
 
             if (ws->exp_msg_type == CURLWS_TEXT) {
                 cws_on_text_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-            } else if (ws->exp_msg_type == CURLWS_BINARY) {
+            }
+            else if (ws->exp_msg_type == CURLWS_BINARY) {
                 cws_on_binary_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-            } else if (ws->exp_msg_type == CURLWS_PING) {
+            }
+            else if (ws->exp_msg_type == CURLWS_PING) {
                 cws_on_ping_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-            } else if (ws->exp_msg_type == CURLWS_PONG) {
+            }
+            else if (ws->exp_msg_type == CURLWS_PONG) {
                 cws_on_pong_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
             }
 
@@ -547,7 +551,8 @@ size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
                 ws->bytesleft = 0;
 
                 return realsize;
-            } else {
+            }
+            else {
                 ptr += ws->bytesleft;
                 realsize -= ws->bytesleft;
                 ws->bytesleft = 0;
@@ -559,8 +564,8 @@ size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
 
     const struct curl_ws_frame *meta = curl_ws_meta(ws->ehandle);
 
-
-    /* this is a fragmentated message, see FIN: https://datatracker.ietf.org/doc/html/rfc6455#section-5.2 */
+    /* this is a fragmentated message, see FIN:
+     * https://datatracker.ietf.org/doc/html/rfc6455#section-5.2 */
     if (meta->flags & CURLWS_CONT) {
         /* if there's more to be read (as fragments!), then we must wait. */
         ws->msg_buf = realloc(ws->msg_buf, ws->msg_len + meta->len + 1);
@@ -579,7 +584,8 @@ size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
         ws->msg_buf[ws->msg_len + meta->len] = '\0';
         ws->msg_len += meta->len;
         ws->is_continued = false;
-    } else {
+    }
+    else {
         /* fill normally the buffer. */
         ws->msg_buf = realloc(ws->msg_buf, meta->len + 1);
         memcpy(ws->msg_buf, ptr + meta->offset, meta->len);
@@ -596,22 +602,27 @@ size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
 
     if (meta->flags & CURLWS_TEXT) {
         cws_on_text_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-    } else if (meta->flags & CURLWS_BINARY) {
+    }
+    else if (meta->flags & CURLWS_BINARY) {
         cws_on_binary_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-    } else if (meta->flags & CURLWS_PING) {
+    }
+    else if (meta->flags & CURLWS_PING) {
         cws_on_ping_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-    } else if (meta->flags & CURLWS_PONG) {
+    }
+    else if (meta->flags & CURLWS_PONG) {
         cws_on_pong_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
-    } else if (meta->flags & CURLWS_CLOSE) {
+    }
+    else if (meta->flags & CURLWS_CLOSE) {
         uint8_t *code_ptr = (uint8_t *)ws->msg_buf;
         /* TODO: I don't think that's very portable */
         uint16_t code = (code_ptr[0] << 8) | code_ptr[1];
 
         /* 2 because it's a 2-byte (2 * 8 == 16) integer */
-        cws_on_close_cb(ws, ws->ehandle, code, ws->msg_buf + 2, ws->msg_len - 2);
+        cws_on_close_cb(ws, ws->ehandle, code, ws->msg_buf + 2,
+                        ws->msg_len - 2);
     }
 
-    jump_cbs:
+jump_cbs:
 
     /* it is not guaranteed that each buffer will contain only frame,
          so, if offset + length isn't equal to the length of the entire
@@ -622,7 +633,8 @@ size_t _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
         realsize -= meta->offset + meta->len;
 
         goto again;
-    } else {
+    }
+    else {
         return realsize;
     }
 }
@@ -659,8 +671,7 @@ ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
 }
 
 void
-ws_set_url(struct websockets *ws,
-           const char base_url[])
+ws_set_url(struct websockets *ws, const char base_url[])
 {
     size_t len;
 
@@ -725,7 +736,9 @@ ws_send_binary(struct websockets *ws,
     if (info) *info = ws->info;
 
     size_t sent = 0;
-    if (curl_ws_send(ws->ehandle, msg, msglen, &sent, 0, CURLWS_BINARY) != CURLE_OK) {
+    if (curl_ws_send(ws->ehandle, msg, msglen, &sent, 0, CURLWS_BINARY)
+        != CURLE_OK)
+    {
         logconf_error(
             &ws->conf,
             ANSICOLOR("Failed", ANSI_FG_RED) " at SEND BINARY [@@@_%zu_@@@]",
@@ -765,7 +778,9 @@ ws_send_text(struct websockets *ws,
     if (info) *info = ws->info;
 
     size_t sent = 0;
-    if (curl_ws_send(ws->ehandle, text, len, &sent, 0, CURLWS_TEXT) != CURLE_OK) {
+    if (curl_ws_send(ws->ehandle, text, len, &sent, 0, CURLWS_TEXT)
+        != CURLE_OK)
+    {
         logconf_error(
             &ws->conf,
             ANSICOLOR("Failed", ANSI_FG_RED) " at SEND TEXT [@@@_%zu_@@@]",
@@ -1002,8 +1017,9 @@ ws_close(struct websockets *ws,
          const size_t len)
 {
     if (WS_DISCONNECTED == ws->status) {
-        logconf_warn(&ws->conf,
-                     "Attempt to close WebSockets connection that has already ended");
+        logconf_warn(
+            &ws->conf,
+            "Attempt to close WebSockets connection that has already ended");
 
         return;
     }
@@ -1027,7 +1043,7 @@ ws_add_header(struct websockets *ws, const char field[], const char value[])
 {
     ASSERT_S(ws_is_alive(ws),
              "ws_start() must have been called prior to ws_add_header()");
-    
+
     size_t header_len = strlen(field) + strlen(": ") + strlen(value) + 1;
     char *header = malloc(header_len);
     snprintf(header, header_len, "%s: %s", field, value);

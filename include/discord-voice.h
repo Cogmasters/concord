@@ -7,7 +7,6 @@
 #ifndef DISCORD_VOICE_CONNECTIONS_H
 #define DISCORD_VOICE_CONNECTIONS_H
 
-
 #define DISCORD_VCS_URL_SUFFIX "?v=4"
 /* TODO: add to DiscordLimitsGeneral group */
 #define DISCORD_MAX_VCS 512
@@ -118,10 +117,11 @@ enum discord_voice_status discord_voice_join(struct discord *client,
  * @param vc the voice client created at discord_voice_join()
  * @param flags @ref DiscordVoiceSpeakingFlags
  * @param delay should be set to 0.
+ * @CCORD_return
  */
-void discord_send_speaking(struct discord_voice *vc,
-                           u64bitmask flags,
-                           int delay);
+CCORDcode discord_send_speaking(struct discord_voice *vc,
+                                u64bitmask flags,
+                                int delay);
 
 /**
  * @brief Update the voice session with a new session_id

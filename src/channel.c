@@ -77,8 +77,10 @@ discord_get_channel_at_pos(struct discord *client,
     if (ret->keep) {
         CCORDcode code =
             discord_refcounter_incr(&client->refcounter, (void *)ret->keep);
-        ASSERT_S(code == CCORD_OK,
-                 "'.keep' data must be a Concord callback parameter");
+        if (code != CCORD_OK) {
+            logconf_error(&client->conf, "'.keep' data must be a Concord "
+                                         "callback parameter");
+        }
     }
     if (ret->data
         && CCORD_RESOURCE_UNAVAILABLE

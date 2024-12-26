@@ -105,7 +105,8 @@ discord_gateway_dispatch(struct discord_gateway *gw)
     switch (event) {
     case DISCORD_EV_MESSAGE_CREATE:
         if (discord_message_commands_try_perform(&client->commands,
-                                                 &gw->payload)) {
+                                                 &gw->payload))
+        {
             return;
         }
     /* fall-through */
@@ -146,11 +147,14 @@ discord_gateway_send_identify(struct discord_gateway *gw,
 
     /* Ratelimit check */
     if (gw->timer->now - gw->timer->identify_last < 5) {
-        ++gw->session->concurrent;
-        VASSERT_S(gw->session->concurrent
-                      < gw->session->start_limit.max_concurrency,
-                  "Reach identify request threshold (%d every 5 seconds)",
-                  gw->session->start_limit.max_concurrency);
+        if (++gw->session->concurrent
+            >= gw->session->start_limit.max_concurrency)
+        {
+            logconf_warn(
+                &gw->conf,
+                "Reach identify request threshold (%d every 5 seconds)",
+                gw->session->start_limit.max_concurrency);
+        }
     }
     else {
         gw->session->concurrent = 0;
@@ -265,7 +269,8 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
     }
 
     if (!gw->timer->hbeat_acknowledged) {
-        logconf_warn(&gw->conf, "Heartbeat ACK not received, marked as zombie");
+        logconf_warn(&gw->conf,
+                     "Heartbeat ACK not received, marked as zombie");
 
         gw->timer->hbeat_acknowledged = true;
 
