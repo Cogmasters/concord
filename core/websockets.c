@@ -101,9 +101,9 @@ _ws_curl_tls_check(
         _ws_set_status(ws, WS_DISCONNECTED);
 
         if (ws->cbs.on_close)
-          ws->cbs.on_close(ws->cbs.data, ws, &ws->info,
-                           WS_CLOSE_REASON_ABRUPTLY, reason, sizeof(reason) - 1);
-
+            ws->cbs.on_close(ws->cbs.data, ws, &ws->info,
+                             WS_CLOSE_REASON_ABRUPTLY, reason,
+                             sizeof(reason) - 1);
     }
     return 0;
 }
@@ -872,8 +872,9 @@ ws_close(struct websockets *ws,
          const size_t len)
 {
     if (WS_DISCONNECTED == ws->status) {
-        logconf_warn(&ws->conf,
-                     "Attempt to close WebSockets connection that has already ended");
+        logconf_warn(
+            &ws->conf,
+            "Attempt to close WebSockets connection that has already ended");
 
         return;
     }
