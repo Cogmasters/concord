@@ -586,14 +586,17 @@ _discord_voice_init(struct discord_voice *new_vc,
     reset_vc(new_vc);
 }
 
-void
+CCORDcode
 discord_send_speaking(struct discord_voice *vc, u64bitmask flags, int delay)
 {
     char buf[128];
     jsonb b;
 
-    ASSERT_S(WS_CONNECTED == ws_get_status(vc->ws),
-             "Action requires an active connection to Discord");
+    if (ws_get_status(vc->ws) != WS_CONNECTED) {
+        logconf_error(&vc->conf,
+                      "Action requires an active connection to Discord");
+        return CCORD_DISCORD_CONNECTION;
+    }
 
     jsonb_init(&b);
     jsonb_object(&b, buf, sizeof(buf));
@@ -620,7 +623,8 @@ discord_send_speaking(struct discord_voice *vc, u64bitmask flags, int delay)
         ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_SPEAKING (%d bytes)",
         b.pos);
 
-    ws_send_text(vc->ws, NULL, buf, b.pos);
+    return ws_send_text(vc->ws, NULL, buf, b.pos) ? CCORD_OK
+                                                  : CCORD_CURL_NO_RESPONSE;
 }
 
 static void

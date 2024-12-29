@@ -61,11 +61,14 @@ _on_shutdown_triggered(struct io_poller *io,
     discord_shutdown(data);
 }
 
-static void
+static CCORDcode
 _discord_init(struct discord *new_client)
 {
+    CCORDcode code = CCORD_OK;
+
     ccord_global_init();
 
+    new_client->is_original = true;
     new_client->io_poller = io_poller_create();
     discord_timers_init(&new_client->timers.internal, new_client->io_poller);
     discord_timers_init(&new_client->timers.user, new_client->io_poller);
@@ -89,13 +92,17 @@ _discord_init(struct discord *new_client)
 #endif
 
     if (new_client->token) { /* fetch client's user structure */
-        CCORDcode code =
+        code =
             discord_get_current_user(new_client, &(struct discord_ret_user){
                                                      .sync = &new_client->self,
                                                  });
-        ASSERT_S(CCORD_OK == code, "Couldn't fetch client's user object");
+        if (CCORD_OK != code) {
+            logconf_error(&new_client->conf,
+                          "Couldn't fetch client's user object: %d", code,
+                          discord_strerror(code, NULL));
+        }
     }
-    new_client->is_original = true;
+    return code;
 }
 
 struct discord *
@@ -103,8 +110,10 @@ discord_init(const char token[])
 {
     struct discord *new_client;
     char parsed_token[4096];
+
     if (!_parse_init_string(parsed_token, sizeof parsed_token, token))
         return NULL;
+
     new_client = calloc(1, sizeof *new_client);
     logconf_setup(&new_client->conf, "DISCORD", NULL);
     /* silence terminal input by default */
@@ -112,8 +121,10 @@ discord_init(const char token[])
     if (token && *token)
         cog_strndup(parsed_token, strlen(parsed_token), &new_client->token);
 
-    _discord_init(new_client);
-
+    if (_discord_init(new_client) != CCORD_OK) {
+        discord_cleanup(new_client);
+        new_client = NULL;
+    }
     return new_client;
 }
 
@@ -124,6 +135,7 @@ discord_config_init(const char config_file[])
     struct discord *new_client;
     FILE *fp;
     char parsed_config_file[4096];
+
     if (!_parse_init_string(parsed_config_file, sizeof parsed_config_file,
                             config_file))
         return NULL;
@@ -217,43 +229,37 @@ _discord_clone_gateway_cleanup(struct discord_gateway *clone)
     free(clone->payload.json.start);
 }
 
-static void
-_discord_clone_cleanup(struct discord *client)
-{
-    _discord_clone_gateway_cleanup(&client->gw);
-}
-
 void
 discord_cleanup(struct discord *client)
 {
     if (!client->is_original) {
-        _discord_clone_cleanup(client);
+        _discord_clone_gateway_cleanup(&client->gw);
         free(client);
-        return;
     }
-
-    close(client->shutdown_fd);
-    discord_worker_join(client);
-    discord_rest_cleanup(&client->rest);
-    discord_gateway_cleanup(&client->gw);
-    discord_message_commands_cleanup(&client->commands);
+    else {
+        close(client->shutdown_fd);
+        discord_worker_join(client);
+        discord_rest_cleanup(&client->rest);
+        discord_gateway_cleanup(&client->gw);
+        discord_message_commands_cleanup(&client->commands);
 #ifdef CCORD_VOICE
-    discord_voice_connections_cleanup(client);
+        discord_voice_connections_cleanup(client);
 #endif
-    discord_user_cleanup(&client->self);
-    if (client->cache.cleanup) client->cache.cleanup(client);
-    discord_refcounter_cleanup(&client->refcounter);
-    discord_timers_cleanup(client, &client->timers.user);
-    discord_timers_cleanup(client, &client->timers.internal);
-    io_poller_destroy(client->io_poller);
-    logconf_cleanup(&client->conf);
-    if (client->token) free(client->token);
-    pthread_mutex_destroy(&client->workers->lock);
-    pthread_cond_destroy(&client->workers->cond);
-    free(client->workers);
-    free(client);
+        discord_user_cleanup(&client->self);
+        if (client->cache.cleanup) client->cache.cleanup(client);
+        discord_refcounter_cleanup(&client->refcounter);
+        discord_timers_cleanup(client, &client->timers.user);
+        discord_timers_cleanup(client, &client->timers.internal);
+        logconf_cleanup(&client->conf);
 
-    ccord_global_cleanup();
+        if (client->token) free(client->token);
+        pthread_mutex_destroy(&client->workers->lock);
+        pthread_cond_destroy(&client->workers->cond);
+        free(client->workers);
+        io_poller_destroy(client->io_poller);
+        ccord_global_cleanup();
+    }
+    free(client);
 }
 
 CCORDcode
@@ -392,8 +398,10 @@ void
 __discord_claim(struct discord *client, const void *data)
 {
     CCORDcode code = discord_refcounter_claim(&client->refcounter, data);
-    VASSERT_S(code == CCORD_OK, "Failed attempt to claim resource (code %d)",
-              code);
+    if (CCORD_OK != code) {
+        logconf_error(&client->conf,
+                      "Failed attempt to claim resource (code %d)", code);
+    }
 }
 
 void
@@ -401,6 +409,8 @@ discord_unclaim(struct discord *client, const void *data)
 {
     CCORDcode code =
         discord_refcounter_unclaim(&client->refcounter, (void *)data);
-    VASSERT_S(code == CCORD_OK, "Failed attempt to unclaim resource (code %d)",
-              code);
+    if (CCORD_OK != code) {
+        logconf_error(&client->conf,
+                      "Failed attempt to unclaim resource (code %d)", code);
+    }
 }
