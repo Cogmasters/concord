@@ -423,7 +423,7 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
+PUB_STRUCT(discord_bulk_overwrite_guild_application_command)
   /** ID of the command, if known */
     FIELD_SNOWFLAKE(id)
   /** Name of the command, 1-32 characters */
@@ -458,4 +458,10 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
 STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_LIST(discord_bulk_overwrite_guild_application_commands)
+    LISTTYPE_STRUCT(discord_bulk_overwrite_guild_application_command)
+LIST_END
 #endif
