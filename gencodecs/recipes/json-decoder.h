@@ -81,6 +81,15 @@
         carray_insert(self, i, o);                                            \
     }
 
+#define GENCODECS_LISTTYPE_ENUM(_type)                                        \
+        __carray_init(self, root->length, enum _type, , );                    \
+        for (i = 0; i < root->length; ++i) {                                  \
+            const jsmnf_pair *f = root->fields + i;                                 \
+            enum _type o;                                                     \
+            GENCODECS_JSON_DECODER_int(f, js, o, _type);                      \
+            carray_insert(self, i, o);                                        \
+        }
+
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
     __carray_init(self, root->length, struct _type, , );                      \
     for (i = 0; i < root->length; ++i) {                                      \

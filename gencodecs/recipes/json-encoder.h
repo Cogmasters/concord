@@ -74,8 +74,13 @@
             int i;
 #define GENCODECS_LIST(_type) static GENCODECS_PUB_LIST(_type)
 #define GENCODECS_LISTTYPE(_type)                                             \
-    for (i = 0; i < self->size; ++i)                                          \
-        GENCODECS_JSON_ENCODER_##_type(b, buf, size, self->array[i], _type);
+        for (i = 0; i < self->size; ++i)                                      \
+            GENCODECS_JSON_ENCODER_##_type(b, buf, size, self->array[i],      \
+                                           _type);
+#define GENCODECS_LISTTYPE_ENUM(_type)                                        \
+        for (i = 0; i < self->size; ++i)                                      \
+            GENCODECS_JSON_ENCODER_int(b, buf, size, self->array[i],          \
+                                           enum _type);
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
     for (i = 0; i < self->size; ++i)                                          \
         if ((code = _type##_to_jsonb(b, buf, size, &self->array[i])))         \

@@ -38,6 +38,13 @@ ENUM_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
+ENUM(discord_application_command_entry_point_command_handler_types)
+    ENUMERATOR(DISCORD_APPLICATION_HANDLER_APP_HANDLER, = 1)
+    ENUMERATOR_LAST(DISCORD_APPLICATION_HANDLER_DISCORD_LAUNCH_ACTIVITY, = 2)
+ENUM_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_application_command_permission_types)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_ROLE, = 1)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_USER, = 2)
@@ -85,10 +92,8 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->default_member_permissions != 0)
     FIELD_BITMASK(default_member_permissions)
   COND_END
-  /** 
-   * Indicates whether the command is available in DMs with the app, only
-   *    for globally-scoped commands. By default, commands are invisible.
-   */
+  /**  indicates whether the command is available in DMs with the app, only
+        for globally-scoped commands. By default, commands are invisible. */
   COND_WRITE(self->dm_permission != false)
     FIELD(dm_permission, bool, false)
   COND_END
@@ -100,10 +105,21 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->nsfw != false)
     FIELD(nsfw, bool, false)
   COND_END
+  /* TODO: integration_types */
+  /** Interaction context(s) where the command can be used,
+       only for globally-scoped commands. */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** autoincrementing version identifier updated during substantial
        record changes */
   COND_WRITE(self->version != 0)
     FIELD_SNOWFLAKE(version)
+  COND_END
+  /** 	Determines whether the interaction is handled by the
+         app's interactions handler or by Discord */
+  COND_WRITE(self->handler != 0)
+    FIELD_ENUM(handler, discord_application_command_entry_point_command_handler_types)
   COND_END
 STRUCT_END
 #endif
@@ -298,6 +314,10 @@ PUB_STRUCT(discord_create_global_application_command)
     FIELD(dm_permission, bool, false)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+  /** interaction context(s) where the command can be used  */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** the type of command, default `1` if not set */
   COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_application_command_types)

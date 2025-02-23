@@ -14,14 +14,21 @@ ENUM_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
-ENUM(discord_interaction_context_types)
+ENUM(discord_interaction_context_type)
   /** interaction can be used within servers */
-    ENUMERATOR(DISCORD_INTERACTION_GUILD, = 1)
+    ENUMERATOR(DISCORD_INTERACTION_CONTEXT_GUILD, = 1)
   /** interaction can be used within DMs with the app's bot user */
-    ENUMERATOR(DISCORD_INTERACTION_BOT_DM, = 2)
+    ENUMERATOR(DISCORD_INTERACTION_CONTEXT_BOT_DM, = 2)
   /** interaction can be used within Group DMs and DMs other than the app's bot user */
-    ENUMERATOR_LAST(DISCORD_INTERACTION_PRIVATE_CHANNEL, = 3)
+    ENUMERATOR_LAST(DISCORD_INTERACTION_CONTEXT_PRIVATE_CHANNEL, = 3)
 ENUM_END
+#endif
+
+/** @CCORD_pub_list{discord_interaction_context_type} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_LIST(discord_interaction_context_types)
+    LISTTYPE_ENUM(discord_interaction_context_type)
+LIST_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
@@ -89,7 +96,7 @@ PUB_STRUCT(discord_interaction)
   COND_END
   /* TODO: Add "authorizing_integration_owners" -- What do they mean with dictionary? */
   /** context where the interaction was triggered from */
-  FIELD_ENUM(context, discord_interaction_context_types)
+  FIELD_ENUM(context, discord_interaction_context_type)
 STRUCT_END
 #endif
 

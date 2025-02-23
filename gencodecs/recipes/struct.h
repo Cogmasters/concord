@@ -35,6 +35,8 @@
         int size;
 #define GENCODECS_LISTTYPE(_type)                                             \
         _type *array;
+#define GENCODECS_LISTTYPE_ENUM(_type)                                        \
+        enum _type *array;
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         struct _type *array;
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
@@ -123,6 +125,8 @@
     static GENCODECS_PUB_LIST(_type)
 #define GENCODECS_LISTTYPE(_type)                                             \
         __carray_free(self, _type, NULL, NULL);
+#define GENCODECS_LISTTYPE_ENUM(_type)                                        \
+        __carray_free(self, enum _type, NULL, NULL);
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         __carray_free(self, struct _type, NULL,                               \
                       _type##_cleanup(&__CARRAY_OPERAND_A));
