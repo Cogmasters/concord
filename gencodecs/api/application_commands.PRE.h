@@ -12,7 +12,10 @@ ENUM(discord_application_command_types)
     ENUMERATOR(DISCORD_APPLICATION_USER, = 2)
   /** A UI-based command that shows up when a user
        right clicks or tap on a message */
-    ENUMERATOR_LAST(DISCORD_APPLICATION_MESSAGE, = 3)
+    ENUMERATOR(DISCORD_APPLICATION_MESSAGE, = 3)
+  /** A UI-based command that represents the primary
+       way to invoke an app's Activity */
+    ENUMERATOR_LAST(DISCORD_APPLICATION_PRIMARY_ENTRY_POINT, = 4)
 ENUM_END
 #endif
 
@@ -105,8 +108,12 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->nsfw != false)
     FIELD(nsfw, bool, false)
   COND_END
-  /* TODO: integration_types */
-  /** Interaction context(s) where the command can be used,
+  /** installation contexts where the command is available,
+       only for globally-scoped commands */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used,
        only for globally-scoped commands. */
   COND_WRITE(self->contexts != NULL)
     FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
@@ -314,6 +321,10 @@ PUB_STRUCT(discord_create_global_application_command)
     FIELD(dm_permission, bool, false)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+  /** installation context(s) where the command is available */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
   /** interaction context(s) where the command can be used  */
   COND_WRITE(self->contexts != NULL)
     FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
@@ -360,6 +371,14 @@ PUB_STRUCT(discord_edit_global_application_command)
     FIELD(dm_permission, bool, false)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+  /** installation context(s) where the command is available */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used  */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** indicates whether the command is age-restricted */
   COND_WRITE(self->nsfw != false)
     FIELD(nsfw, bool, false)
@@ -473,9 +492,23 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_command)
    *    for globally-scoped commands. By default, commands are invisible.
    */
     FIELD(dm_permission, bool, false)
+  /** @deprecated use `default_member_permissions` instead */
+    FIELD(default_permission, bool, true)
+  /** installation context(s) where the command is available */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used  */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** one of application command types */
   COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
+  COND_END
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
   COND_END
 STRUCT_END
 #endif
