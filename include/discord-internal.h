@@ -460,6 +460,8 @@ struct discord_request {
     struct ua_conn *conn;
     /** request's status code */
     CCORDcode code;
+    /** response payload */
+    struct ccord_szbuf_readonly json;
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
     /** synchronize synchronous requests */

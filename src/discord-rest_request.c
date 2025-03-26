@@ -17,6 +17,7 @@ _discord_request_cleanup(struct discord_request *req)
     discord_attachments_cleanup(&req->attachments);
     if (req->body.start) free(req->body.start);
     if (req->reason) free(req->reason);
+    if (req->json.start) free((char *)req->json.start);
     free(req);
 }
 
@@ -172,6 +173,10 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
     ua_info_extract(req->conn, info);
 
     if (info->code != CCORD_HTTP_CODE) { /* CCORD_OK or internal error */
+        if (info->code == CCORD_OK) {
+            req->json.size = cog_strndup(info->body.buf, info->body.len,
+                                         (char **)&req->json.start);
+        }
         req->code = info->code;
         return false;
     }
@@ -181,6 +186,8 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
     case HTTP_NOT_FOUND:
     case HTTP_BAD_REQUEST:
         req->code = CCORD_DISCORD_JSON_CODE;
+        req->json.size = cog_strndup(info->body.buf, info->body.len,
+                                     (char **)&req->json.start);
         return false;
     case HTTP_UNAUTHORIZED:
         logconf_fatal(
@@ -268,7 +275,10 @@ discord_request_cancel(struct discord_requestor *rqtor,
     if (req->dispatch.data) {
         discord_refcounter_decr(rc, req->dispatch.data);
     }
-
+    if (req->json.start) {
+        free((char *)req->json.start);
+        memset(&req->json, 0, sizeof req->json);
+    }
     req->body.size = 0;
     req->method = 0;
     *req->endpoint = '\0';
@@ -291,7 +301,8 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
     struct discord *client = CLIENT(rqtor, rest.requestor);
     struct discord_response resp = { .data = req->dispatch.data,
                                      .keep = req->dispatch.keep,
-                                     .code = req->code };
+                                     .code = req->code,
+                                     .json = req->json };
 
     if (req->code != CCORD_OK) {
         if (req->dispatch.fail) req->dispatch.fail(client, &resp);
@@ -392,7 +403,8 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                                   body.start);
                 }
                 else if (req->dispatch.has_type
-                         && req->dispatch.sync != DISCORD_SYNC_FLAG) {
+                         && req->dispatch.sync != DISCORD_SYNC_FLAG)
+                {
                     if (req->dispatch.sync) {
                         req->response.data = req->dispatch.sync;
                     }
