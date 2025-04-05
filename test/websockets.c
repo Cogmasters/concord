@@ -27,15 +27,12 @@ print_usage(char *prog)
 }
 
 void
-on_connect_cb(void *data,
-              struct websockets *ws,
-              struct ws_info *info,
-              const char *ws_protocols)
+on_connect_cb(void *data, struct websockets *ws, struct ws_info *info)
 {
     (void)data;
     (void)ws;
     (void)info;
-    log_info("Connected, WS-Protocols: '%s'", ws_protocols);
+    log_info("Connected!");
 }
 
 void
@@ -138,7 +135,7 @@ main(int argc, char *argv[])
     mhandle = curl_multi_init();
     attr.conf = &conf;
     ws = ws_init(&cbs, mhandle, &attr);
-    ws_set_url(ws, url, NULL);
+    ws_set_url(ws, url);
 
     /* run the event-loop */
     ws_start(ws);

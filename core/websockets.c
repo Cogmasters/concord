@@ -126,7 +126,7 @@ _ws_status_print(enum ws_status status)
     }
 }
 
-static CURL *_ws_cws_new(struct websockets *ws);
+static CURL *_ws_ehandle_init(struct websockets *ws);
 
 static void
 _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
@@ -189,7 +189,7 @@ _ws_set_status(struct websockets *ws, enum ws_status status)
 }
 
 static void
-cws_on_connect_cb(void *p_ws)
+ws_on_connect_cb(void *p_ws)
 {
     struct websockets *ws = p_ws;
 
@@ -207,11 +207,11 @@ cws_on_connect_cb(void *p_ws)
 }
 
 static void
-cws_on_close_cb(void *p_ws,
-                CURL *ehandle,
-                unsigned int cwscode,
-                const char *reason,
-                size_t len)
+ws_on_close_cb(void *p_ws,
+               CURL *ehandle,
+               unsigned int wscode,
+               const char *reason,
+               size_t len)
 {
     struct websockets *ws = p_ws;
     struct logconf_szbuf logheader = { "", 0 };
@@ -221,17 +221,17 @@ cws_on_close_cb(void *p_ws,
     _ws_set_status(ws, WS_DISCONNECTING);
 
     logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
-                 logbody, "WS_RCV_CLOSE(%d)", cwscode);
+                 logbody, "WS_RCV_CLOSE(%d)", wscode);
 
     logconf_trace(
         &ws->conf,
         ANSICOLOR("RCV",
                   ANSI_FG_YELLOW) " CLOSE(%d) (%zu bytes) [@@@_%zu_@@@]",
-        cwscode, len, ws->info.loginfo.counter);
+        wscode, len, ws->info.loginfo.counter);
 
     if (ws->cbs.on_close)
         ws->cbs.on_close(ws->cbs.data, ws, &ws->info,
-                         (enum ws_close_reason)cwscode, reason, len);
+                         (enum ws_close_reason)wscode, reason, len);
 
     ws->action = WS_ACTION_END_CLOSE;
 
@@ -239,7 +239,7 @@ cws_on_close_cb(void *p_ws,
 }
 
 static void
-cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
+ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
     struct websockets *ws = p_ws;
     struct logconf_szbuf logheader = { "", 0 };
@@ -259,7 +259,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 }
 
 static void
-cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
+ws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
     struct websockets *ws = p_ws;
     struct logconf_szbuf logheader = { "", 0 };
@@ -279,7 +279,7 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 }
 
 static void
-cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
+ws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
     (void)ehandle;
@@ -301,7 +301,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 }
 
 static void
-cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
+ws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
     (void)ehandle;
@@ -371,12 +371,12 @@ _curl_ws_header_cb(char *buffer, size_t size, size_t nitems, void *userdata)
 {
     /* check if it has connected to call the callback */
     struct websockets *ws = userdata;
-    size_t realsize = size * nitems;
+    const size_t realsize = size * nitems;
 
     if (realsize == 2 && memcmp(buffer, "\r\n", 2) == 0) {
         /* according to curl-websockets code, this should be where it has
          * connected. */
-        cws_on_connect_cb(ws);
+        ws_on_connect_cb(ws);
 
         return realsize;
     }
@@ -386,7 +386,7 @@ _curl_ws_header_cb(char *buffer, size_t size, size_t nitems, void *userdata)
 
 /* init easy handle with some default opt */
 static CURL *
-_ws_cws_new(struct websockets *ws)
+_ws_ehandle_init(struct websockets *ws)
 {
     CURL *new_ehandle = curl_easy_init();
     if (!new_ehandle) {
@@ -532,16 +532,16 @@ again:
             ws->msg_len += ws->bytesleft;
 
             if (ws->exp_msg_type == CURLWS_TEXT) {
-                cws_on_text_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+                ws_on_text_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
             }
             else if (ws->exp_msg_type == CURLWS_BINARY) {
-                cws_on_binary_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+                ws_on_binary_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
             }
             else if (ws->exp_msg_type == CURLWS_PING) {
-                cws_on_ping_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+                ws_on_ping_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
             }
             else if (ws->exp_msg_type == CURLWS_PONG) {
-                cws_on_pong_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+                ws_on_pong_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
             }
 
             /* useless, but just to enphasize that we are done. */
@@ -601,16 +601,16 @@ again:
     }
 
     if (meta->flags & CURLWS_TEXT) {
-        cws_on_text_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+        ws_on_text_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
     }
     else if (meta->flags & CURLWS_BINARY) {
-        cws_on_binary_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+        ws_on_binary_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
     }
     else if (meta->flags & CURLWS_PING) {
-        cws_on_ping_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+        ws_on_ping_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
     }
     else if (meta->flags & CURLWS_PONG) {
-        cws_on_pong_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
+        ws_on_pong_cb(ws, ws->ehandle, ws->msg_buf, ws->msg_len);
     }
     else if (meta->flags & CURLWS_CLOSE) {
         uint8_t *code_ptr = (uint8_t *)ws->msg_buf;
@@ -618,8 +618,8 @@ again:
         uint16_t code = (code_ptr[0] << 8) | code_ptr[1];
 
         /* 2 because it's a 2-byte (2 * 8 == 16) integer */
-        cws_on_close_cb(ws, ws->ehandle, code, ws->msg_buf + 2,
-                        ws->msg_len - 2);
+        ws_on_close_cb(ws, ws->ehandle, code, ws->msg_buf + 2,
+                       ws->msg_len - 2);
     }
 
 jump_cbs:
@@ -888,7 +888,7 @@ ws_start(struct websockets *ws)
               "closing the connection",
               ws->conf.id);
 
-    if (!ws->ehandle) ws->ehandle = _ws_cws_new(ws);
+    if (!ws->ehandle) ws->ehandle = _ws_ehandle_init(ws);
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
 
     _ws_set_status(ws, WS_CONNECTING);
