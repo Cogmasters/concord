@@ -106,10 +106,13 @@ _on_shard_disconnected(struct discord *client,
     guild->members = NULL;                                                    \
     guild->roles = NULL;                                                      \
     do {                                                                      \
-        char buf[0x40000];                                                    \
-        const size_t size = discord_guild_to_json(buf, sizeof buf, guild);    \
-        memset(guild, 0, sizeof *guild);                                      \
-        discord_guild_from_json(buf, size, guild);                            \
+        char *buf = NULL;                                                     \
+        size_t size = 0;                                                      \
+        if (discord_guild_to_json(&buf, &size, guild) == CCORD_OK) {          \
+            memset(guild, 0, sizeof *guild);                                  \
+            discord_guild_from_json(buf, size, guild);                        \
+            free(buf);                                                        \
+        }                                                                     \
         discord_refcounter_add_internal(                                      \
             &client->refcounter, guild,                                       \
             (void (*)(void *))discord_guild_cleanup, true);                   \

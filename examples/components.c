@@ -176,9 +176,9 @@ on_interaction_create(struct discord *client,
 
     if (!event->data || !event->data->values) return;
 
-    char values[1024];
-    strings_to_json(values, sizeof(values), event->data->values);
-
+    char *values = NULL;
+    size_t size = 0;
+    strings_to_json(&values, &size, event->data->values);
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text),
              "So you have chosen:\n"
@@ -186,6 +186,7 @@ on_interaction_create(struct discord *client,
              "%s\n"
              "```",
              values);
+    free(values);
 
     struct discord_interaction_response params = {
         .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE, // 4

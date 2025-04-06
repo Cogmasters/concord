@@ -69,7 +69,7 @@ discord_message_commands_find(struct discord_message_commands *cmds,
                               const char command[],
                               size_t length)
 {
-    struct ccord_szbuf key = { (char *)command, length };
+    struct ccord_szbuf key = { (char *)command, length, true };
     discord_ev_message callback = NULL;
     int ret;
 

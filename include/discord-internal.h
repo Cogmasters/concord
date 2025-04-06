@@ -70,6 +70,25 @@ int discord_dup_shutdown_fd(void);
     } while (0)
 
 /**
+ * @brief log and return `code` if function call doesn't returns @ref CCORD_OK
+ *
+ * @param[in] client the Discord client
+ * @param[in] fn the function call that returns CCORDcode
+ * @return the returned @ref CCORDcode `code` parameter
+ */
+#define CCORD_EXPECT_OK(client, fn)                                           \
+    do {                                                                      \
+        const CCORDcode code = (fn);                                          \
+        if (code != CCORD_OK) {                                               \
+            logconf_error(&(client)->conf,                                    \
+                          "Expected: CCORD_OK == " #fn " | %s (%s)",          \
+                          discord_strerror(code, client),                     \
+                          discord_code_as_string(code));                      \
+            return code;                                                      \
+        }                                                                     \
+    } while (0)
+
+/**
  * @brief Shortcut for checking OOB-write attempts
  * @note unsigned values are expected
  *
@@ -448,8 +467,8 @@ struct discord_request {
 
     /** the request's bucket */
     struct discord_bucket *b;
-    /** request body handle @note buffer is kept and reused */
-    struct ccord_szbuf_reusable body;
+    /** request body handle */
+    struct ccord_szbuf body;
     /** the request's http method */
     enum http_method method;
     /** the request's endpoint */

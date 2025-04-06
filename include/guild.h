@@ -233,23 +233,6 @@ CCORDcode discord_modify_current_member(
     struct discord_ret_guild_member *ret);
 
 /**
- * @deprecated use discord_modify_current_member() instead
- * @brief Modify the nickname of the current user in a guild
- * @note Fires a `Guild Member Update` event
- *
- * @param client the client created with discord_init()
- * @param guild_id guild the member belongs to
- * @param params request parameters
- * @CCORD_ret_obj{ret,guild_member}
- * @CCORD_return
- */
-CCORDcode discord_modify_current_user_nick(
-    struct discord *client,
-    u64snowflake guild_id,
-    struct discord_modify_current_user_nick *params,
-    struct discord_ret_guild_member *ret);
-
-/**
  * @brief Adds a role to a guild member
  * @note Fires a `Guild Member Update` event
  *
