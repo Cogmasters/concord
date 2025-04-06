@@ -7,7 +7,6 @@
 #include "discord-worker.h"
 #include "osname.h"
 
-/* return enumerator as string in case of a match */
 #define CASE_RETURN_STR(code)                                                 \
     case code:                                                                \
         return #code
@@ -60,6 +59,8 @@ _discord_gateway_close_opcode_print(enum discord_gateway_close_opcodes opcode)
         return "UNKNOWN_WEBSOCKETS_CLOSE_OPCODE";
     }
 }
+
+#undef CASE_RETURN_STR
 
 static void
 _discord_on_hello(struct discord_gateway *gw)

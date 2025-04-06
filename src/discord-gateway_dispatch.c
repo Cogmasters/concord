@@ -142,7 +142,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
                               struct discord_identify *identify)
 {
     struct ws_info info = { 0 };
-    char buf[2056];
+    struct ccord_szbuf body = { 0 };
     jsonb b;
 
     /* Ratelimit check */
@@ -161,16 +161,16 @@ discord_gateway_send_identify(struct discord_gateway *gw,
     }
 
     jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
+    jsonb_object_auto(&b, &body.start, &body.size);
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 2);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_identify_to_jsonb(&b, buf, sizeof(buf), identify);
-        jsonb_object_pop(&b, buf, sizeof(buf));
+        jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
+        jsonb_number_auto(&b, &body.start, &body.size, 2);
+        jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
+        discord_identify_to_jsonb(&b, &body.start, &body.size, identify);
+        jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
@@ -189,6 +189,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
                       ANSI_FG_RED) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
     }
+    free(body.start);
 }
 
 void
@@ -196,23 +197,23 @@ discord_gateway_send_resume(struct discord_gateway *gw,
                             struct discord_resume *event)
 {
     struct ws_info info = { 0 };
-    char buf[1024];
+    struct ccord_szbuf body = { 0 };
     jsonb b;
 
     /* reset */
     gw->session->status ^= DISCORD_SESSION_RESUMABLE;
 
     jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
+    jsonb_object_auto(&b, &body.start, &body.size);
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 6);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_resume_to_jsonb(&b, buf, sizeof(buf), event);
-        jsonb_object_pop(&b, buf, sizeof(buf));
+        jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
+        jsonb_number_auto(&b, &body.start, &body.size, 6);
+        jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
+        discord_resume_to_jsonb(&b, &body.start, &body.size, event);
+        jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
@@ -226,6 +227,7 @@ discord_gateway_send_resume(struct discord_gateway *gw,
                                ANSI_FG_RED) " RESUME (%d bytes) [@@@_%zu_@@@]",
                      b.pos, info.loginfo.counter + 1);
     }
+    free(body.start);
 }
 
 static void
@@ -311,20 +313,21 @@ discord_gateway_send_request_guild_members(
     struct discord_gateway *gw, struct discord_request_guild_members *event)
 {
     struct ws_info info = { 0 };
-    char buf[4096];
+    struct ccord_szbuf body = { 0 };
     jsonb b;
 
     jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
+    jsonb_object_auto(&b, &body.start, &body.size);
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 8);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_request_guild_members_to_jsonb(&b, buf, sizeof(buf), event);
-        jsonb_object_pop(&b, buf, sizeof(buf));
+        jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
+        jsonb_number_auto(&b, &body.start, &body.size, 8);
+        jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
+        discord_request_guild_members_to_jsonb(&b, &body.start, &body.size,
+                                               event);
+        jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
@@ -340,6 +343,7 @@ discord_gateway_send_request_guild_members(
                 ANSI_FG_RED) " REQUEST_GUILD_MEMBERS (%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
     }
+    free(body.start);
 }
 
 void
@@ -347,20 +351,21 @@ discord_gateway_send_update_voice_state(
     struct discord_gateway *gw, struct discord_update_voice_state *event)
 {
     struct ws_info info = { 0 };
-    char buf[256];
+    struct ccord_szbuf body = { 0 };
     jsonb b;
 
     jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
+    jsonb_object_auto(&b, &body.start, &body.size);
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 4);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_update_voice_state_to_jsonb(&b, buf, sizeof(buf), event);
-        jsonb_object_pop(&b, buf, sizeof(buf));
+        jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
+        jsonb_number_auto(&b, &body.start, &body.size, 4);
+        jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
+        discord_update_voice_state_to_jsonb(&b, &body.start, &body.size,
+                                            event);
+        jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
@@ -379,6 +384,7 @@ discord_gateway_send_update_voice_state(
                 ANSI_FG_RED) " UPDATE_VOICE_STATE (%d bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
     }
+    free(body.start);
 }
 
 void
@@ -386,22 +392,23 @@ discord_gateway_send_presence_update(struct discord_gateway *gw,
                                      struct discord_presence_update *presence)
 {
     struct ws_info info = { 0 };
-    char buf[2048];
+    struct ccord_szbuf body = { 0 };
     jsonb b;
 
     if (!gw->session->is_ready) return;
 
     jsonb_init(&b);
-    jsonb_object(&b, buf, sizeof(buf));
+    jsonb_object_auto(&b, &body.start, &body.size);
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", 2);
-        jsonb_number(&b, buf, sizeof(buf), 3);
-        jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_presence_update_to_jsonb(&b, buf, sizeof(buf), presence);
-        jsonb_object_pop(&b, buf, sizeof(buf));
+        jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
+        jsonb_number_auto(&b, &body.start, &body.size, 3);
+        jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
+        discord_presence_update_to_jsonb(&b, &body.start, &body.size,
+                                         presence);
+        jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
@@ -416,4 +423,5 @@ discord_gateway_send_presence_update(struct discord_gateway *gw,
                                                 "bytes) [@@@_%zu_@@@]",
             b.pos, info.loginfo.counter + 1);
     }
+    free(body.start);
 }
