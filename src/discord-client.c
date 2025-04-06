@@ -268,14 +268,49 @@ discord_cleanup(struct discord *client)
     free(client);
 }
 
-CCORDcode
-discord_return_error(struct discord *client,
-                     const char error[],
-                     CCORDcode code)
+#define CASE_RETURN_STR(event)                                                \
+    case event:                                                               \
+        return #event
+
+static const char *
+_ccord_code_as_string(CCORDcode code)
 {
-    logconf_info(&client->conf, "(%d) %s", code, error);
-    return code;
+    switch (code) {
+        CASE_RETURN_STR(CCORD_OK);
+        CASE_RETURN_STR(CCORD_HTTP_CODE);
+        CASE_RETURN_STR(CCORD_CURL_NO_RESPONSE);
+        CASE_RETURN_STR(CCORD_UNUSUAL_HTTP_CODE);
+        CASE_RETURN_STR(CCORD_BAD_PARAMETER);
+        CASE_RETURN_STR(CCORD_BAD_JSON);
+        CASE_RETURN_STR(CCORD_CURLE_INTERNAL);
+        CASE_RETURN_STR(CCORD_CURLM_INTERNAL);
+        CASE_RETURN_STR(CCORD_GLOBAL_INIT);
+        CASE_RETURN_STR(CCORD_RESOURCE_OWNERSHIP);
+        CASE_RETURN_STR(CCORD_RESOURCE_UNAVAILABLE);
+        CASE_RETURN_STR(CCORD_FULL_WORKER);
+        CASE_RETURN_STR(CCORD_MALFORMED_PAYLOAD);
+        CASE_RETURN_STR(CCORD_CURL_WEBSOCKETS_MISSING);
+        CASE_RETURN_STR(CCORD_CURL_OUTDATED_VERSION);
+    default:
+        return "Unknown: Code received doesn't match any description";
+    }
 }
+
+const char *
+discord_code_as_string(CCORDcode code)
+{
+    switch (code) {
+        CASE_RETURN_STR(CCORD_PENDING);
+        CASE_RETURN_STR(CCORD_DISCORD_JSON_CODE);
+        CASE_RETURN_STR(CCORD_DISCORD_BAD_AUTH);
+        CASE_RETURN_STR(CCORD_DISCORD_RATELIMIT);
+        CASE_RETURN_STR(CCORD_DISCORD_CONNECTION);
+    default:
+        return _ccord_code_as_string(code);
+    }
+}
+
+#undef CASE_RETURN_STR
 
 static const char *
 _ccord_strerror(CCORDcode code)
@@ -307,6 +342,11 @@ _ccord_strerror(CCORDcode code)
         return "Failure: Couldn't enqueue worker thread (queue is full)";
     case CCORD_MALFORMED_PAYLOAD:
         return "Failure: Couldn't create request payload";
+    case CCORD_CURL_WEBSOCKETS_MISSING:
+        return "Failure: Libcurl has been compiled without the "
+               "--enable-websockets flag";
+    case CCORD_CURL_OUTDATED_VERSION:
+        return "Failure: Libcurl need to be updated to 8.7.1 or greater";
     default:
         return "Unknown: Code received doesn't match any description";
     }

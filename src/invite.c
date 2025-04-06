@@ -13,17 +13,12 @@ discord_get_invite(struct discord *client,
                    struct discord_ret_invite *ret)
 {
     struct discord_attributes attr = { 0 };
-    struct ccord_szbuf body;
-    char buf[1024];
-
+    struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, NOT_EMPTY_STR(invite_code), CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-
-    body.size = discord_get_invite_to_json(buf, sizeof(buf), params);
-    body.start = buf;
-
+    CCORD_EXPECT_OK(
+        client, discord_get_invite_to_json(&body.start, &body.size, params));
     DISCORD_ATTR_INIT(attr, discord_invite, ret, NULL);
-
     return discord_rest_run(&client->rest, &attr, &body, HTTP_GET,
                             "/invites/%s", invite_code);
 }
@@ -35,12 +30,9 @@ discord_delete_invite(struct discord *client,
                       struct discord_ret_invite *ret)
 {
     struct discord_attributes attr = { 0 };
-
     CCORD_EXPECT(client, NOT_EMPTY_STR(invite_code), CCORD_BAD_PARAMETER, "");
-
     DISCORD_ATTR_INIT(attr, discord_invite, ret,
                       params ? params->reason : NULL);
-
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_DELETE,
                             "/invites/%s", invite_code);
 }

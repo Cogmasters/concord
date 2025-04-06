@@ -89,17 +89,12 @@ struct discord;
  *  @{ */
 
 /**
- * @brief Return a Concord's error
- * @note used to log and return an error
+ * @brief Return the value of CCORDcode as a string
  *
- * @param client the client created with discord_init(), NULL for generic error
- * @param error the error string to be logged
- * @param code the error code
- * @return the error code
+ * @param code the CCORDcode value
+ * @return the enum value as a string
  */
-CCORDcode discord_return_error(struct discord *client,
-                               const char error[],
-                               CCORDcode code);
+const char *discord_code_as_string(CCORDcode code);
 
 /**
  * @brief Return the meaning of CCORDcode

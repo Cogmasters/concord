@@ -117,7 +117,7 @@ discord_rest_run(struct discord_rest *rest,
         attr = &blank;
     }
     if (!body) {
-        static struct ccord_szbuf blank = { 0 };
+        static struct ccord_szbuf blank = { NULL, 0, true };
         body = &blank;
     }
     else if (body->start && !body->size) {
