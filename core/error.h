@@ -10,6 +10,10 @@
 /* XXX: As new values are added, discord_strerror() should be updated
  *      accordingly! */
 typedef enum CCORDcode {
+    /** curl has been compiled without the --enable-websockets flag */
+    CCORD_CURL_WEBSOCKETS_MISSING = -14,
+    /** curl need to be updated to 8.7.1 or greater */
+    CCORD_CURL_OUTDATED_VERSION = -13,
     /** failure when creating request's payload */
     CCORD_MALFORMED_PAYLOAD = -12,
     /** couldn't enqueue worker thread (queue is full) */

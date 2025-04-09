@@ -152,6 +152,10 @@ $ cd curl-8.7.1
 $ ./configure --with-openssl --enable-websockets
 $ make
 $ sudo make install
+
+# You might need to inform the system's dynamic linker about the new library location with:
+$ echo "/usr/local/lib" > /etc/ld.so.conf.d/curl.conf
+$ sudo ldconfig
 ```
 
 ## Setting up your environment
