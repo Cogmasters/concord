@@ -50,9 +50,40 @@ _ccord_sigint_handler(int signum)
 }
 #endif /* CCORD_SIGINTCATCH */
 
+static CCORDcode
+_check_curl_compatibility(void)
+{
+    const curl_version_info_data *curl_info =
+        curl_version_info(CURLVERSION_NOW);
+
+    // check version 8.7.1 for websockets support
+    if (curl_info->version_num < 0x080701) {
+        fprintf(stderr,
+                "libcurl version 8.7.1 or higher required (found %s)\n",
+                curl_info->version);
+        return CCORD_CURL_OUTDATED_VERSION;
+    }
+
+    _Bool wss_enabled = 0;
+    for (const char *const *proto = curl_info->protocols; *proto; ++proto) {
+        if (0 == strncmp(*proto, "wss", 3)) wss_enabled = 1;
+    }
+    if (!wss_enabled) {
+        fprintf(stderr, "libcurl must be compiled with websockets support\n");
+        fprintf(
+            stderr,
+            "Please recompile libcurl with the --enable-websockets flag\n");
+        return CCORD_CURL_WEBSOCKETS_MISSING;
+    }
+    return CCORD_OK;
+}
+
 CCORDcode
 ccord_global_init()
 {
+    const CCORDcode code = _check_curl_compatibility();
+    if (code != CCORD_OK) return code;
+
     pthread_mutex_lock(&lock);
     if (0 == init_counter++) {
 #ifdef CCORD_SIGINTCATCH
@@ -73,13 +104,13 @@ ccord_global_init()
         for (int i = 0; i < 2; i++) {
             const int on = 1;
 
-            #ifdef FIOCLEX
-                if (0 != ioctl(shutdown_fds[i], FIOCLEX, NULL)) {
-                    fputs("Failed to make shutdown pipe close on execute\n",
-                        stderr);
-                    goto fail_pipe_init;
-                }
-            #endif
+#ifdef FIOCLEX
+            if (0 != ioctl(shutdown_fds[i], FIOCLEX, NULL)) {
+                fputs("Failed to make shutdown pipe close on execute\n",
+                      stderr);
+                goto fail_pipe_init;
+            }
+#endif
 
             if (0 != ioctl(shutdown_fds[i], (int)FIONBIO, &on)) {
                 fputs("Failed to make shutdown pipe nonblocking\n", stderr);
@@ -130,12 +161,12 @@ discord_dup_shutdown_fd(void)
     if (-1 != (fd = dup(shutdown_fds[0]))) {
         const int on = 1;
 
-        #ifdef FIOCLEX
-            if (0 != ioctl(fd, FIOCLEX, NULL)) {
-                close(fd);
-                return -1;
-            }
-        #endif
+#ifdef FIOCLEX
+        if (0 != ioctl(fd, FIOCLEX, NULL)) {
+            close(fd);
+            return -1;
+        }
+#endif
 
         if (0 != ioctl(fd, (int)FIONBIO, &on)) {
             close(fd);
