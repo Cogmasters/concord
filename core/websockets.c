@@ -502,11 +502,11 @@ default_on_ping(void *a,
 size_t
 _curl_ws_write_cb(char *ptr, size_t size, size_t nmemb, void *userdata)
 {
-again:
-
     struct websockets *ws = userdata;
-    size_t realsize = size * nmemb;
+    size_t realsize;
 
+again:
+    realsize = size * nmemb;
     if (ws->bytesleft != 0) {
         /* the amount bytes left to complete the message is bigger
              than the entire received message right now, so we
