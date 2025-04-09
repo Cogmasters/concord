@@ -64,9 +64,13 @@ _on_shutdown_triggered(struct io_poller *io,
 static CCORDcode
 _discord_init(struct discord *new_client)
 {
-    CCORDcode code = CCORD_OK;
-
-    ccord_global_init();
+    CCORDcode code = ccord_global_init();
+    if (code != CCORD_OK) {
+        logconf_fatal(&new_client->conf,
+                      "Couldn't initialize global resources: %d", code,
+                      discord_strerror(code, NULL));
+        return code;
+    }
 
     new_client->is_original = true;
     new_client->io_poller = io_poller_create();
@@ -96,7 +100,7 @@ _discord_init(struct discord *new_client)
             discord_get_current_user(new_client, &(struct discord_ret_user){
                                                      .sync = &new_client->self,
                                                  });
-        if (CCORD_OK != code) {
+        if (code != CCORD_OK) {
             logconf_error(&new_client->conf,
                           "Couldn't fetch client's user object: %d", code,
                           discord_strerror(code, NULL));
@@ -153,7 +157,10 @@ discord_config_init(const char config_file[])
     if (field.size && 0 != strncmp("YOUR-BOT-TOKEN", field.start, field.size))
         cog_strndup(field.start, field.size, &new_client->token);
 
-    _discord_init(new_client);
+    if (_discord_init(new_client) != CCORD_OK) {
+        discord_cleanup(new_client);
+        return NULL;
+    }
 
     /* check for default prefix in config file */
     field = discord_config_get_field(
