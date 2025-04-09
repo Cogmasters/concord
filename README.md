@@ -108,68 +108,50 @@ int main(void) {
 
 ## Build Instructions
 
-The only dependency is `curl-7.86.0` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
+The only dependency is `curl-8.7.1` or higher with websockets support. Since many system package managers don't provide this specific version with websockets enabled, we recommend compiling from source.
 
-> [!NOTE]
-> Not all installations of libcurl has websocket support enabled. If your system packager's libcurl does not have support it, you will need to compile libcurl from source with the `--enable-websocket` flag.
+> [!IMPORTANT]
+> Libcurl must be compiled with the `--enable-websockets` flag to work with Concord.
 
 ### On Windows
 
 * Install **Cygwin**
-* **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
-* You will want to check the Windows tutorial [here](docs/guides/compiling_on_windows.md)!
-* Mingw64 and Msys2 are currently NOT supported. Please see [this](docs/guides/msys2_and_mingw64.md) for more information.
-* Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.
-* Note: you will likely need to include `-L/usr/local/lib -I/usr/local/include` on your `gcc` command, or in your `CFLAGS` variable in your Makefile for your bot.
+* During Cygwin installation, select packages: `gcc`, `make`, `git`, `autoconf`, `libtool`, `pkg-config`, `openssl-devel`, `zlib-devel`
+* Follow the Windows tutorial [here](docs/guides/compiling_on_windows.md)
+* Then compile libcurl from source (instructions below)
 
-### On Linux, BSD, and Mac OS X
-
-*(note -- `#` means that you should be running as root)*
-
-#### Ubuntu and Debian
+### Compiling libcurl from source (recommended for all platforms)
 
 ```console
-# apt update && apt install -y libcurl4-openssl-dev
-```
+# Install build dependencies
+# Ubuntu/Debian:
+$ sudo apt-get update && sudo apt-get install -y build-essential autoconf libtool pkg-config libssl-dev zlib1g-dev
 
-#### Void Linux
+# Fedora/RHEL/CentOS:
+$ sudo dnf install -y gcc make autoconf libtool pkgconfig openssl-devel zlib-devel
 
-```console
-# xbps-install -S libcurl-devel
-```
+# Arch/Manjaro:
+$ sudo pacman -S --needed base-devel openssl zlib
 
-#### Alpine
+# Alpine:
+$ apk add build-base autoconf libtool pkgconfig openssl-dev zlib-dev
 
-```console
-# apk add curl-dev
-```
+# FreeBSD:
+$ pkg install autoconf libtool pkgconf openssl
 
-#### FreeBSD
+# OS X:
+$ xcode-select --install
+$ brew install autoconf libtool pkg-config openssl@3
+# or with MacPorts:
+$ port install autoconf libtool pkgconfig openssl
 
-```console
-# pkg install curl
-```
-
-#### OS X
-* Note: you will need to install Xcode, or at a minimum, the command-line tools with `xcode-select --install`.
-```console
-$ brew install curl (Homebrew)
-$ port install curl (MacPorts)
-```
-
-#### Arch Linux / Manjaro (Arch based)
-
-```console
-git clone https://aur.archlinux.org/concord-git.git
-cd concord-git
-makepkg -Acs
-pacman -U concord-git-version-any.pkg.tar.zst
-```
-
-Alternatively, you can use an AUR helper:
-
-```console
-yay -S concord-git
+# Download and compile libcurl
+$ curl -LO https://curl.se/download/curl-8.7.1.tar.gz
+$ tar -xzf curl-8.7.1.tar.gz
+$ cd curl-8.7.1
+$ ./configure --with-openssl --enable-websockets
+$ make
+$ sudo make install
 ```
 
 ## Setting up your environment
