@@ -7,7 +7,7 @@
 #ifndef CONCORD_ONCE_H
 
 /** @brief Asynchronously shutdown all client(s) from their on-going sessions */
-void ccord_shutdown_async();
+void ccord_shutdown_async(void);
 
 /**
  * @brief Whether or not concord is currently shutting down
@@ -17,16 +17,17 @@ void ccord_shutdown_async();
  * @note client shall only attempt to disconnect if there aren't any active
  *    events waiting to be listened or reacted to
  */
-int ccord_shutting_down();
+int ccord_shutting_down(void);
 
 /**
  * @brief Initialize global shared-resources not API-specific
  *
  * @return CCORD_OK on success, CCORD_GLOBAL_INIT on error
  */
-CCORDcode ccord_global_init();
+CCORDcode ccord_global_init(void);
 
 /** @brief Cleanup global shared-resources */
-void ccord_global_cleanup();
+void ccord_global_cleanup(void);
 
 #endif /* CONCORD_ONCE_H */
+
