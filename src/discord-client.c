@@ -234,7 +234,6 @@ discord_cleanup(struct discord *client)
 {
     if (!client->is_original) {
         _discord_clone_gateway_cleanup(&client->gw);
-        free(client);
     }
     else {
         close(client->shutdown_fd);
