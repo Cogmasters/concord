@@ -79,7 +79,7 @@ _check_curl_compatibility(void)
 }
 
 CCORDcode
-ccord_global_init()
+ccord_global_init(void)
 {
     const CCORDcode code = _check_curl_compatibility();
     if (code != CCORD_OK) return code;
@@ -104,15 +104,23 @@ ccord_global_init()
         for (int i = 0; i < 2; i++) {
             const int on = 1;
 
-#ifdef FIOCLEX
-            if (0 != ioctl(shutdown_fds[i], FIOCLEX, NULL)) {
-                fputs("Failed to make shutdown pipe close on execute\n",
-                      stderr);
-                goto fail_pipe_init;
-            }
+            #ifdef FIOCLEX
+                if (0 != ioctl(shutdown_fds[i], FIOCLEX, NULL)) {
+                    fputs("Failed to make shutdown pipe close on execute\n",
+                        stderr);
+                    goto fail_pipe_init;
+                }
+            #endif
+/*BSD based systems and glibc use unsigned long for ioctl*/
+#if defined __FreeBSD__ || defined __NetBSD__ || \
+				defined __DragonFly__ || defined __bsdi__ || \
+				defined __APPLE__ || defined __GLIBC__
+			if (0 != ioctl(shutdown_fds[i], FIONBIO, &on)) {
+#elif OSCLASS == UNIX
+			if (0 != ioctl(shutdown_fds[i], (int)FIONBIO, &on)) {
+#else
+			if (0 != ioctl(shutdown_fds[i], FIONBIO, &on)) {
 #endif
-
-            if (0 != ioctl(shutdown_fds[i], (int)FIONBIO, &on)) {
                 fputs("Failed to make shutdown pipe nonblocking\n", stderr);
                 goto fail_pipe_init;
             }
@@ -139,7 +147,7 @@ fail_curl_init:
 }
 
 void
-ccord_global_cleanup()
+ccord_global_cleanup(void)
 {
     pthread_mutex_lock(&lock);
     if (init_counter && 0 == --init_counter) {
@@ -168,7 +176,16 @@ discord_dup_shutdown_fd(void)
         }
 #endif
 
-        if (0 != ioctl(fd, (int)FIONBIO, &on)) {
+/*BSD based systems and glibc use unsigned long for ioctl*/
+#if defined __FReeBSD__ || defined __NetBSD__ || \
+				defined __DragonFly__ || defined __bsdi__ || \
+				defined __APPLE__ || defined __GLIBC__
+		if (0 != ioctl(fd, FIONBIO, &on)) {
+#elif OSCLASS == UNIX
+		if (0 != ioctl(fd, (int)FIONBIO, &on)) {
+#else
+		if (0 != ioctl(fd, FIONBIO, &on)) {
+#endif
             close(fd);
             return -1;
         }
