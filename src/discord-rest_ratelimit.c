@@ -39,7 +39,7 @@ struct _discord_route {
 
 #define KEY_PUSH(key, len, ...)                                               \
     do {                                                                      \
-        *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t)*len,        \
+        *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t) * len,      \
                          ":" __VA_ARGS__);                                    \
         ASSERT_NOT_OOB(*len, DISCORD_ROUTE_LEN);                              \
     } while (0)

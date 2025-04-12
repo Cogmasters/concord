@@ -101,10 +101,10 @@ discord_rest_cleanup(struct discord_rest *rest)
 /* template function for performing requests */
 CCORDcode
 discord_rest_run(struct discord_rest *rest,
-                 struct discord_attributes *attr,
-                 struct ccord_szbuf *body,
-                 enum http_method method,
-                 char endpoint_fmt[],
+                 const struct discord_attributes *attr,
+                 const struct ccord_szbuf *body,
+                 const enum http_method method,
+                 const char endpoint_fmt[],
                  ...)
 {
     char endpoint[DISCORD_ENDPT_LEN], key[DISCORD_ROUTE_LEN];

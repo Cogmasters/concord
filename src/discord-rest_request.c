@@ -606,11 +606,11 @@ _discord_request_get(struct discord_requestor *rqtor)
 
 CCORDcode
 discord_request_begin(struct discord_requestor *rqtor,
-                      struct discord_attributes *attr,
-                      struct ccord_szbuf *body,
-                      enum http_method method,
-                      char endpoint[DISCORD_ENDPT_LEN],
-                      char key[DISCORD_ROUTE_LEN])
+                      const struct discord_attributes *attr,
+                      const struct ccord_szbuf *body,
+                      const enum http_method method,
+                      const char endpoint[DISCORD_ENDPT_LEN],
+                      const char key[DISCORD_ROUTE_LEN])
 {
     struct discord_rest *rest =
         CONTAINEROF(rqtor, struct discord_rest, requestor);
