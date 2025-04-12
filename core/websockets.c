@@ -413,9 +413,6 @@ _ws_ehandle_init(struct websockets *ws)
     curl_easy_setopt(new_ehandle, CURLOPT_XFERINFODATA, ws);
     curl_easy_setopt(new_ehandle, CURLOPT_NOPROGRESS, 0L);
 
-    curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
-    curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, ws);
-
     logconf_info(&ws->conf, "Initialized WebSockets handler");
 
     return new_ehandle;

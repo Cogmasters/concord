@@ -327,9 +327,7 @@ _discord_on_heartbeat_ack(struct discord_gateway *gw)
 }
 
 static void
-_ws_on_connect(void *p_gw,
-               struct websockets *ws,
-               struct ws_info *info)
+_ws_on_connect(void *p_gw, struct websockets *ws, struct ws_info *info)
 {
     (void)ws;
     (void)info;
@@ -632,7 +630,8 @@ _ws_curl_debug_dump(const char *text,
             /* check for 0D0A; if found, skip past and start a new line of
              * output */
             if ((i + c + 1 < size) && ptr[i + c] == 0x0D
-                && ptr[i + c + 1] == 0x0A) {
+                && ptr[i + c + 1] == 0x0A)
+            {
                 i += (c + 2 - width);
                 break;
             }
@@ -641,7 +640,8 @@ _ws_curl_debug_dump(const char *text,
                                                                 : '.');
             /* check again for 0D0A, to avoid an extra \n if it's at width */
             if ((i + c + 2 < size) && ptr[i + c + 1] == 0x0D
-                && ptr[i + c + 2] == 0x0A) {
+                && ptr[i + c + 2] == 0x0A)
+            {
                 i += (c + 3 - width);
                 break;
             }
@@ -776,6 +776,7 @@ discord_gateway_start(struct discord_gateway *gw)
     ws_start(gw->ws);
 #else
     CURL *ehandle = ws_start(gw->ws);
+    curl_easy_setopt(ehandle, CURLOPT_DEBUGDATA, gw->ws);
     curl_easy_setopt(ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
     curl_easy_setopt(ehandle, CURLOPT_VERBOSE, 1L);
 #endif /* CCORD_DEBUG_WEBSOCKETS */
