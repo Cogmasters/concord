@@ -40,7 +40,7 @@ extern "C" {
  * @param[in] path the path to the field from the container POV
  */
 #define CONTAINEROF(ptr, type, path)                                          \
-    ((type *)((char *)(ptr)-offsetof(type, path)))
+    ((type *)((char *)(ptr) - offsetof(type, path)))
 
 /** @defgroup DiscordInternal Internal implementation details
  * @brief Documentation useful when developing or debugging Concord itself
@@ -64,7 +64,8 @@ int discord_dup_shutdown_fd(void);
 #define CCORD_EXPECT(client, expect, code, reason)                            \
     do {                                                                      \
         if (!(expect)) {                                                      \
-            logconf_error(&(client)->conf, "Expected: " #expect ": " reason); \
+            logconf_error(&(client)->conf,                                    \
+                          "Expected: " #expect " (" reason ")");              \
             return code;                                                      \
         }                                                                     \
     } while (0)
@@ -514,7 +515,7 @@ struct discord_requestor {
          *      their callbacks to be called from the main thread
          */
         QUEUE(struct discord_request) finished;
-    } * queues;
+    } *queues;
 
     /** queue locks */
     struct {
@@ -524,7 +525,7 @@ struct discord_requestor {
         pthread_mutex_t pending;
         /** finished queue lock */
         pthread_mutex_t finished;
-    } * qlocks;
+    } *qlocks;
 };
 
 /**
@@ -593,11 +594,11 @@ void discord_request_cancel(struct discord_requestor *rqtor,
  * @CCORD_return
  */
 CCORDcode discord_request_begin(struct discord_requestor *rqtor,
-                                struct discord_attributes *req,
-                                struct ccord_szbuf *body,
-                                enum http_method method,
-                                char endpoint[DISCORD_ENDPT_LEN],
-                                char key[DISCORD_ROUTE_LEN]);
+                                const struct discord_attributes *req,
+                                const struct ccord_szbuf *body,
+                                const enum http_method method,
+                                const char endpoint[DISCORD_ENDPT_LEN],
+                                const char key[DISCORD_ROUTE_LEN]);
 
 /** @} DiscordInternalRESTRequest */
 
@@ -655,10 +656,10 @@ void discord_rest_cleanup(struct discord_rest *rest);
  *              immediately
  */
 CCORDcode discord_rest_run(struct discord_rest *rest,
-                           struct discord_attributes *req,
-                           struct ccord_szbuf *body,
-                           enum http_method method,
-                           char endpoint_fmt[],
+                           const struct discord_attributes *req,
+                           const struct ccord_szbuf *body,
+                           const enum http_method method,
+                           const char endpoint_fmt[],
                            ...) PRINTF_LIKE(5, 6);
 
 /**
@@ -773,7 +774,7 @@ struct discord_gateway {
         /**
          * boolean that indicates if the last heartbeat was answered
          * @note used to detect zombie connections
-        */
+         */
         bool hbeat_acknowledged;
         /**
          * Gateway's concept of "now"
@@ -806,7 +807,7 @@ struct discord_gateway {
         int ping_ms;
         /** ping rwlock  */
         pthread_rwlock_t rwlock;
-    } * timer;
+    } *timer;
 
     /** the identify structure for client authentication */
     struct discord_identify id;
@@ -1265,7 +1266,7 @@ struct discord {
         pthread_mutex_t lock;
         /** notify of `count` decrement */
         pthread_cond_t cond;
-    } * workers;
+    } *workers;
 
 #ifdef CCORD_VOICE
     struct discord_voice *vcs;
