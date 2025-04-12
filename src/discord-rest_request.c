@@ -477,17 +477,27 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
     req->conn = ua_conn_start(rqtor->ua);
     ehandle = ua_conn_get_easy_handle(req->conn);
 
-    if (NOT_EMPTY_STR(req->reason))
+    if (NOT_EMPTY_STR(req->reason)) {
         ua_conn_add_header(req->conn, "X-Audit-Log-Reason", req->reason);
+        logconf_debug(&rqtor->conf, "Sending request with reason: %s",
+                      req->reason);
+    }
 
     if (HTTP_MIMEPOST == req->method) {
         ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
         ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
+        logconf_debug(&rqtor->conf, "Sending multipart/form-data body");
     }
-    else if (req->body.size)
+    else if (req->body.size) {
         ua_conn_add_header(req->conn, "Content-Type", "application/json");
-    else
+        logconf_debug(&rqtor->conf, "Sending JSON body: %.*s",
+                      (int)req->body.size, req->body.start);
+    }
+    else {
         ua_conn_remove_header(req->conn, "Content-Type");
+        logconf_debug(&rqtor->conf,
+                      "Sending empty body (no Content-Type header)");
+    }
 
     ua_conn_setup(req->conn, &(struct ua_conn_attr){
                                  .method = req->method,
