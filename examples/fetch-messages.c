@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
 
 void
 print_usage(void)
@@ -129,7 +128,8 @@ fetch_member_msgs(struct discord *client,
 
             for (n_msg = 0; n_msg < msgs.size; ++n_msg) {
                 if (user_id == msgs.array[n_msg].author->id
-                    && *msgs.array[n_msg].content) {
+                    && *msgs.array[n_msg].content)
+                {
                     printf("%s\n", msgs.array[n_msg].content);
                 }
             }

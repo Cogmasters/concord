@@ -10,7 +10,7 @@ To usage of the scheduler is easy, take a look at the example below of printing 
 enum discord_event_scheduler scheduler(struct discord *client, const char data[], size_t length, enum discord_gateway_events event) {
     /* The "event" parameter is the parameter allows you to distinguish the events, and the data one is the JSON Discord sent. */
     if (event == DISCORD_EV_MESSAGE_CREATE) {
-        log_debug("Received event JSON: %s", data);
+        logmod_log(DEBUG, NULL, "Received event JSON: %s", data);
         /* Returning the "event ignore" enum, that says to Concord to ignore the event. */
         return DISCORD_EVENT_IGNORE;
     }
@@ -21,7 +21,7 @@ enum discord_event_scheduler scheduler(struct discord *client, const char data[]
 enum discord_event_scheduler scheduler(struct discord *client, const char data[], size_t length, enum discord_gateway_events event) {
     /* The "event" parameter is the parameter allows you to distinguish the events, and the data one is the JSON Discord sent. */
     if (event == DISCORD_EV_MESSAGE_CREATE) {
-        log_debug("Received event JSON: %s", data);
+        logmod_log(DEBUG, NULL, "Received event JSON: %s", data);
         /* Returning the "event ignore" enum, that says to Concord to ignore the event. */
         return DISCORD_EVENT_IGNORE;
     }
@@ -54,7 +54,7 @@ enum discord_event_scheduler scheduler(struct discord *client, const char data[]
         struct discord_message self;
         /* Parse the JSON and store the it in the "self" struct. */
         discord_message_from_json(data, length, &self);
-        log_debug("Message content: %s", self.content);
+        logmod_log(DEBUG, NULL, "Message content: %s", self.content);
         /* Free the struct. */
         discord_message_cleanup(&self);
         return DISCORD_EVENT_IGNORE;
@@ -86,7 +86,7 @@ enum discord_event_scheduler scheduler(struct discord *client, const char data[]
 
         /* Check if the parsing was successful. */
         if (r < 0) {
-            log_error("Failed to parse JSON.");
+            logmod_log(ERROR, NULL, "Failed to parse JSON.");
             return DISCORD_EVENT_IGNORE;
         }
 
@@ -99,13 +99,13 @@ enum discord_event_scheduler scheduler(struct discord *client, const char data[]
         r = jsmnf_load(&loader, data, tokens, parser.toknext, pairs, sizeof(pairs) / sizeof(*pairs));
 
         if (r < 0) {
-            log_error("Failed to load jsmn-find.");
+            logmod_log(ERROR, NULL, "Failed to load jsmn-find.");
             return DISCORD_EVENT_IGNORE;
         }
 
         jsmnf_pair *content = jsmnf_find(pairs, data, "content", strlen("content"));
         if (!content) {
-            log_error("Failed to find the \"content\" key.");
+            logmod_log(ERROR, NULL, "Failed to find the \"content\" key.");
             return DISCORD_EVENT_IGNORE;
         }
 
@@ -113,7 +113,7 @@ enum discord_event_scheduler scheduler(struct discord *client, const char data[]
         char contentStr[2000 + 1];
         snprintf(contentStr, sizeof(contentStr), "%.*s", (int)content->v.len, data + content->v.pos);
 
-        log_debug("Message content: %s", contentStr);
+        logmod_log(DEBUG, NULL, "Message content: %s", contentStr);
         return DISCORD_EVENT_IGNORE;
     }
     return DISCORD_EVENT_MAIN_THREAD;

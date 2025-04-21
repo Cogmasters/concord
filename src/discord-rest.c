@@ -58,19 +58,17 @@ _discord_on_rest_perform(struct io_poller *io, CURLM *mhandle, void *p_rest)
 }
 
 void
-discord_rest_init(struct discord_rest *rest,
-                  struct logconf *conf,
-                  const char token[])
+discord_rest_init(struct discord_rest *rest, const char token[])
 {
-    if (!token || !*token)
-        logconf_branch(&rest->conf, conf, "DISCORD_WEBHOOK");
-    else
-        logconf_branch(&rest->conf, conf, "DISCORD_HTTP");
+    struct discord *client = CLIENT(rest, rest);
 
+    rest->logger = logmod_get_logger(&client->logmod, NOT_EMPTY_STR(token)
+                                                          ? "DISCORD_HTTP"
+                                                          : "DISCORD_WEBHOOK");
     rest->io_poller = io_poller_create();
     discord_timers_init(&rest->timers, rest->io_poller);
 
-    discord_requestor_init(&rest->requestor, &rest->conf, token);
+    discord_requestor_init(&rest->requestor, token);
     io_poller_curlm_add(rest->io_poller, rest->requestor.mhandle,
                         &_discord_on_rest_perform, rest);
 
@@ -109,7 +107,6 @@ discord_rest_run(struct discord_rest *rest,
 {
     char endpoint[DISCORD_ENDPT_LEN], key[DISCORD_ROUTE_LEN];
     va_list args;
-    int len;
 
     /* have it point somewhere */
     if (!attr) {
@@ -121,15 +118,22 @@ discord_rest_run(struct discord_rest *rest,
         body = &blank;
     }
     else if (body->start && !body->size) {
-        logconf_error(&rest->conf, "(Internal error) Request body couldn't "
-                                   "be formed, please report it.");
+        logmod_log(
+            ERROR, rest->logger,
+            "(Internal error) Request body is empty, please report it.");
         return CCORD_MALFORMED_PAYLOAD;
     }
 
     /* build the endpoint string */
     va_start(args, endpoint_fmt);
-    len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-    ASSERT_NOT_OOB(len, sizeof(endpoint));
+    if ((vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args))
+        >= (int)sizeof(endpoint))
+    {
+        logmod_log(ERROR, rest->logger,
+                   "Internal error: Endpoint string too long: %s",
+                   endpoint_fmt);
+        return va_end(args), CCORD_ERRNO;
+    }
     va_end(args);
 
     /* build the bucket's key */

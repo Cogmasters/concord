@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
 
 static void
 print_usage(char *prog)

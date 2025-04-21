@@ -77,12 +77,12 @@ Using `${}` (this only applies to [discord_config](https://cogmasters.github.io/
 #include <stdio.h>
 
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 
 #define ENV_VARIABLE_NAME "YOUR_ENV_NAME"
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
-    log_trace("Logged in as %s", event->username);
+    logmod_log(TRACE, NULL, "Logged in as %s", event->username);
 }
 
 int main() {

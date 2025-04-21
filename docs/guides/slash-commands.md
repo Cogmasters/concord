@@ -99,11 +99,11 @@ You will have `.createslash` that will create a guild specific slash command. Th
 #include <stdlib.h>
 
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 
 void on_ready(struct discord *client, const struct discord_ready *bot) {
     (void) client;
-    log_info("Logged in as %s!", bot->user->username);
+    logmod_log(INFO, NULL, "Logged in as %s!", bot->user->username);
 }
 
 void on_createslash(struct discord *client, const struct discord_message *msg) {

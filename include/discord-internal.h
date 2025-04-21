@@ -20,8 +20,9 @@ extern "C" {
 #define JSMN_HEADER
 #include "jsmn.h"
 #include "jsmn-find.h"
+#define LOGMOD_HEADER
+#include "logmod.h"
 
-#include "logconf.h"
 #include "user-agent.h"
 #include "websockets.h"
 #include "cog-utils.h"
@@ -64,8 +65,10 @@ int discord_dup_shutdown_fd(void);
 #define CCORD_EXPECT(client, expect, code, reason)                            \
     do {                                                                      \
         if (!(expect)) {                                                      \
-            logconf_error(&(client)->conf,                                    \
-                          "Expected: " #expect " (" reason ")");              \
+            logmod_log(ERROR, (client)->logger,                               \
+                       "Expected: " #expect " | %s (%s)",                     \
+                       discord_strerror(code, client),                        \
+                       discord_code_as_string(code));                         \
             return code;                                                      \
         }                                                                     \
     } while (0)
@@ -81,10 +84,10 @@ int discord_dup_shutdown_fd(void);
     do {                                                                      \
         const CCORDcode code = (fn);                                          \
         if (code != CCORD_OK) {                                               \
-            logconf_error(&(client)->conf,                                    \
-                          "Expected: CCORD_OK == " #fn " | %s (%s)",          \
-                          discord_strerror(code, client),                     \
-                          discord_code_as_string(code));                      \
+            logmod_log(ERROR, (client)->logger,                               \
+                       "Expected: CCORD_OK == " #fn " | %s (%s)",             \
+                       discord_strerror(code, client),                        \
+                       discord_code_as_string(code));                         \
             return code;                                                      \
         }                                                                     \
     } while (0)
@@ -226,7 +229,7 @@ unsigned discord_internal_timer(struct discord *client,
  */
 struct discord_ratelimiter {
     /** `DISCORD_RATELIMIT` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** amount of bucket's routes discovered */
     int length;
     /** route's cap before increase */
@@ -258,10 +261,8 @@ struct discord_ratelimiter {
  *
  * A hashtable shall be used for storage and retrieval of discovered buckets
  * @param rl the ratelimiter handle to be initialized
- * @param conf pointer to @ref discord_rest logging module
  */
-void discord_ratelimiter_init(struct discord_ratelimiter *rl,
-                              struct logconf *conf);
+void discord_ratelimiter_init(struct discord_ratelimiter *rl);
 
 /**
  * @brief Cleanup all buckets that have been discovered
@@ -493,7 +494,7 @@ struct discord_request {
 /** @brief The handle used for handling asynchronous requests */
 struct discord_requestor {
     /** `DISCORD_REQUEST` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
     /** curl_multi handle for performing asynchronous requests */
@@ -534,11 +535,9 @@ struct discord_requestor {
  * This shall initialize a `CURLM` multi handle for performing requests
  *      asynchronously, and a queue for storing individual requests
  * @param rqtor the requestor handle to be initialized
- * @param conf pointer to @ref discord_rest logging module
  * @param token the bot token
  */
 void discord_requestor_init(struct discord_requestor *rqtor,
-                            struct logconf *conf,
                             const char token[]);
 
 /**
@@ -610,7 +609,7 @@ CCORDcode discord_request_begin(struct discord_requestor *rqtor,
  */
 struct discord_rest {
     /** `DISCORD_HTTP` or `DISCORD_WEBHOOK` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** the requests handler */
     struct discord_requestor requestor;
     /** the timer queue for the rest thread */
@@ -626,12 +625,9 @@ struct discord_rest {
  *
  * Structure used for interfacing with the Discord's REST API
  * @param rest the REST handle to be initialized
- * @param conf pointer to @ref discord logging module
  * @param token the bot token
  */
-void discord_rest_init(struct discord_rest *rest,
-                       struct logconf *conf,
-                       const char token[]);
+void discord_rest_init(struct discord_rest *rest, const char token[]);
 
 /**
  * @brief Free an REST handle
@@ -758,7 +754,7 @@ typedef void (*discord_ev_message)(struct discord *client,
 /** @brief The handle used for interfacing with Discord's Gateway API */
 struct discord_gateway {
     /** `DISCORD_GATEWAY` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** the websockets handle that connects to Discord */
     struct websockets *ws;
     /** curl_multi handle for non-blocking transfer over websockets */
@@ -833,12 +829,9 @@ struct discord_gateway {
  *
  * Structure used for interfacing with the Discord's Gateway API
  * @param gw the gateway handle to be initialized
- * @param conf pointer to @ref discord logging module
  * @param token the bot token
  */
-void discord_gateway_init(struct discord_gateway *gw,
-                          struct logconf *conf,
-                          const char token[]);
+void discord_gateway_init(struct discord_gateway *gw, const char token[]);
 
 /**
  * @brief Free a Gateway handle
@@ -964,7 +957,7 @@ void discord_gateway_dispatch(struct discord_gateway *gw);
  */
 struct discord_refcounter {
     /** `DISCORD_REFCOUNT` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** amount of individual user's data held for automatic cleanup */
     int length;
     /** cap before increase */
@@ -983,10 +976,8 @@ struct discord_refcounter {
  *
  * A hashtable shall be used for storage and retrieval of user data
  * @param rc the reference counter handle to be initialized
- * @param conf pointer to @ref discord logging module
  */
-void discord_refcounter_init(struct discord_refcounter *rc,
-                             struct logconf *conf);
+void discord_refcounter_init(struct discord_refcounter *rc);
 
 /**
  * @brief Add a new internal reference to the reference counter
@@ -1092,7 +1083,7 @@ CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
  */
 struct discord_message_commands {
     /** `DISCORD_MESSAGE_COMMANDS` logging module */
-    struct logconf conf;
+    const struct logmod_logger *logger;
     /** the prefix expected for every command */
     struct ccord_szbuf prefix;
     /** fallback message command @see discord_set_on_command() */
@@ -1112,10 +1103,8 @@ struct discord_message_commands {
  * @brief Initialize a Message Commands handle
  *
  * @param cmds the message commands handle to be initialized
- * @param conf pointer to @ref discord logging module
  */
-void discord_message_commands_init(struct discord_message_commands *cmds,
-                                   struct logconf *conf);
+void discord_message_commands_init(struct discord_message_commands *cmds);
 
 /**
  * @brief Free a Message Commands handle
@@ -1205,6 +1194,35 @@ struct discord_cache {
 /** @} DiscordInternalCache */
 
 /**
+ * @brief The Discord configuration handler
+ *
+ * This struct is used to store the Discord client configuration
+ */
+struct discord_config {
+    /** config file contents */
+    struct ccord_szbuf file;
+    /** minimum logging level */
+    enum logmod_levels level;
+    /** silence terminal logging */
+    bool quiet;
+    /** enable color to terminal logging */
+    bool color;
+    /** overwrite existing files */
+    bool overwrite;
+    /** the bot token */
+    char *token;
+    /* the trace log file */
+    FILE *trace;
+    /* the http log file */
+    FILE *http;
+    /** list of 'id' that should be ignored */
+    struct {
+        size_t size;
+        char **ids;
+    } disable;
+};
+
+/**
  * @brief The Discord client handler
  *
  * Used to access/perform public functions from discord.h
@@ -1212,11 +1230,17 @@ struct discord_cache {
  */
 struct discord {
     /** `DISCORD` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
+    /** LogMod loggers table */
+    struct logmod_logger table[64];
+    /** LogMod handler */
+    struct logmod logmod;
+    /** the configuration handler */
+    struct discord_config config;
+    /** the id of the process where this modules was created */
+    unsigned pid;
     /** whether this is the original client or a clone */
     bool is_original;
-    /** the bot token */
-    char *token;
     /** the io poller for listening to file descriptors */
     struct io_poller *io_poller;
 

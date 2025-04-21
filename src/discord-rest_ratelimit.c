@@ -22,8 +22,7 @@
     chash_string_compare(_cmp_a, _cmp_b)
 #define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
     {                                                                         \
-        size_t _l = strlen(_key) + 1;                                         \
-        ASSERT_NOT_OOB(_l, sizeof(route.key));                                \
+        const size_t _l = strlen(_key) + 1;                                   \
         memcpy(route.key, _key, _l);                                          \
     }                                                                         \
     route.bucket = _value
@@ -140,13 +139,14 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
 }
 
 void
-discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
+discord_ratelimiter_init(struct discord_ratelimiter *rl)
 {
+    struct discord *client = CLIENT(rl, rest.requestor.ratelimiter);
     struct ua_szbuf_readonly keynull = { "null", 4 }, keymiss = { "miss", 4 };
 
     __chash_init(rl, RATELIMITER_TABLE);
 
-    logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
+    rl->logger = logmod_get_logger(&client->logmod, "DISCORD_RATELIMIT");
 
     /* global ratelimiting */
     rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp);
@@ -233,8 +233,8 @@ _discord_bucket_try_timeout(struct discord_ratelimiter *rl,
                            .flags = DISCORD_TIMER_DELETE_AUTO,
                        });
 
-    logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
-                 b->hash, wait_ms);
+    logmod_log(INFO, rl->logger, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
+               b->hash, wait_ms);
 }
 
 /* attempt to find a bucket associated key */
@@ -244,13 +244,13 @@ discord_bucket_get(struct discord_ratelimiter *rl, const char key[])
     struct discord_bucket *b;
 
     if (NULL != (b = _discord_bucket_find(rl, key))) {
-        logconf_trace(&rl->conf, "[%.4s] Found a bucket match for '%s'!",
-                      b->hash, key);
+        logmod_log(TRACE, rl->logger, "[%.4s] Found a bucket match for '%s'!",
+                   b->hash, key);
     }
     else {
         b = rl->null;
-        logconf_trace(&rl->conf, "[null] Couldn't match known buckets to '%s'",
-                      key);
+        logmod_log(TRACE, rl->logger,
+                   "[null] Couldn't match known buckets to '%s'", key);
     }
     return b;
 }
@@ -298,7 +298,8 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
         }
     }
 
-    logconf_debug(&rl->conf, "[%.4s] Match '%s' to bucket", b->hash, key);
+    logmod_log(DEBUG, rl->logger, "[%.4s] Found a bucket match for '%s'!",
+               b->hash, key);
 
     _discord_ratelimiter_null_filter(rl, b, key);
 
@@ -354,8 +355,8 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
             now + ((u64unix_ms)(1000 * strtod(reset.start, NULL)) - offset);
     }
 
-    logconf_debug(&rl->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
-                  b->hash, b->remaining, b->reset_tstamp);
+    logmod_log(DEBUG, rl->logger, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
+               b->hash, b->remaining, b->reset_tstamp);
 }
 
 /* attempt to create and/or update bucket's values */
