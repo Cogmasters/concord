@@ -71,10 +71,10 @@ int main(void) {
 ```c
 #include <string.h>
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
-    log_info("Logged in as %s!", event->user->username);
+    logmod_log(INFO, NULL, "Logged in as %s!", event->user->username);
 }
 
 void on_message(struct discord *client, const struct discord_message *event) {
@@ -209,29 +209,23 @@ object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make
 The following outlines `config.json` fields:
 ```js
 {
-  "logging": { // logging directives
-    "level": "trace",        // trace, debug, info, warn, error, fatal
-    "filename": "bot.log",   // the log output file
-    "quiet": false,          // change to true to disable logs in console
-    "overwrite": true,       // overwrite file if already exists, append otherwise
-    "use_color": true,       // display color for log entries
-    "http": {
-      "enable": true,        // generate http specific logging
-      "filename": "http.log" // the HTTP log output file
-    },
-    "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
-  },
-  "discord": { // discord directives
-    "token": "YOUR-BOT-TOKEN",         // replace with your bot token
-    "default_prefix": {                 
-      "enable": false,                 // enable default command prefix
-      "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
-    }
-  },
-  ... // here you can add your custom fields *
+  "token": "YOUR-BOT-TOKEN", // replace with your bot token
+  "log": {                   // logging directives
+    "level": "TRACE",           // TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+    "trace": "bot.log",         // the log output file (null to disable)
+    "quiet": false,             // true to disable logs in console
+    "overwrite": true,          // true overwrites the file on each run
+    "color": true,              // display color on console
+    "http": "http.log",         // the HTTP log output file (null to disable)
+    "ws": "ws.log",             // the WebSockets log output file (null to disable)
+    "disable": ["WEBSOCKETS", "HTTP"] // disable logging for specific modules
+  }
+  // here you can add your custom fields *
 }
 ```
 \* *Your custom field contents can be fetched with [discord\_config\_get\_field()][discord-config-get-field]*
+
+See more information about the `config.json` file in the [config.json directives](docs/guides/config.json_directives.md) guide.
 
 ## Test Copycat-Bot
 
@@ -307,7 +301,7 @@ The following are `stable` and well documented dependencies that are packaged wi
 | File                                                  | Description                                        |
 |-------------------------------------------------------|----------------------------------------------------|
 | [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
-| [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
+| [logmod](https://github.com/lcsmuller/logmod)\*       | A modular logging library                       |
 | [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
 | [anomap](https://github.com/Anotra/anomap)\*          | Sorted key/value storage for C99                   |
 | [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
@@ -319,7 +313,7 @@ The following are `stable` and well documented dependencies that are packaged wi
 Note that included headers must be `concord/` prefixed:
 ```c
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 ```
 
 ### Standalone executable

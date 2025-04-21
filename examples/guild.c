@@ -5,7 +5,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -28,29 +28,30 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Guild-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Guild-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
 log_on_role_create(struct discord *client,
                    const struct discord_guild_role_create *event)
 {
-    log_warn("Role (%" PRIu64 ") created", event->role->id);
+    logmod_log(WARN, NULL, "Role (%" PRIu64 ") created", event->role->id);
 }
 
 void
 log_on_role_update(struct discord *client,
                    const struct discord_guild_role_update *event)
 {
-    log_warn("Role (%" PRIu64 ") updated", event->role->id);
+    logmod_log(WARN, NULL, "Role (%" PRIu64 ") updated", event->role->id);
 }
 
 void
 log_on_role_delete(struct discord *client,
                    const struct discord_guild_role_delete *event)
 {
-    log_warn("Role (%" PRIu64 ") deleted", event->role_id);
+    logmod_log(WARN, NULL, "Role (%" PRIu64 ") deleted", event->role_id);
 }
 
 void
@@ -62,7 +63,7 @@ on_role_create(struct discord *client, const struct discord_message *event)
 
     sscanf(event->content, "%s", name);
     if (!*name) {
-        log_error("Couldn't create role `%s`", name);
+        logmod_log(ERROR, NULL, "Couldn't create role `%s`", name);
         return;
     }
 
@@ -79,7 +80,8 @@ on_role_delete(struct discord *client, const struct discord_message *event)
 
     sscanf(event->content, "%" SCNu64, &role_id);
     if (!role_id) {
-        log_error("Invalid format for `guild.role_delete <role_id>`");
+        logmod_log(ERROR, NULL,
+                   "Invalid format for `guild.role_delete <role_id>`");
         return;
     }
 
@@ -96,7 +98,8 @@ on_role_member_add(struct discord *client, const struct discord_message *event)
 
     sscanf(event->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
     if (!user_id || !role_id) {
-        log_error(
+        logmod_log(
+            ERROR, NULL,
             "Invalid format for `guild.role_member_add <user_id> <role_id>`");
         return;
     }
@@ -118,8 +121,9 @@ on_role_member_remove(struct discord *client,
 
     sscanf(event->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
     if (!user_id || !role_id) {
-        log_error("Invalid format for `guild.role_member_remove <user_id> "
-                  "<role_id>`");
+        logmod_log(ERROR, NULL,
+                   "Invalid format for `guild.role_member_remove <user_id> "
+                   "<role_id>`");
         return;
     }
 
@@ -156,14 +160,14 @@ done_get_guild_roles(struct discord *client,
         }
     }
 
-    log_info("%s", text);
+    logmod_log(INFO, NULL, "%s", text);
 }
 
 void
 fail_get_guild_roles(struct discord *client, struct discord_response *resp)
 {
-    log_error("Couldn't fetch guild roles: %s",
-              discord_strerror(resp->code, client));
+    logmod_log(ERROR, NULL, "Couldn't fetch guild roles: %s",
+               discord_strerror(resp->code, client));
 }
 
 void
@@ -184,15 +188,15 @@ done_get_guild_member(struct discord *client,
                       const struct discord_guild_member *member)
 {
     (void)resp;
-    log_info("Member %s (%" PRIu64 ") found!", member->user->username,
-             member->user->id);
+    logmod_log(INFO, NULL, "Member %s (%" PRIu64 ") found!",
+               member->user->username, member->user->id);
 }
 
 void
 fail_get_guild_member(struct discord *client, struct discord_response *resp)
 {
-    log_error("Couldn't fetch guild member: %s",
-              discord_strerror(resp->code, client));
+    logmod_log(ERROR, NULL, "Couldn't fetch guild member: %s",
+               discord_strerror(resp->code, client));
 }
 
 void
@@ -204,7 +208,8 @@ on_member_get(struct discord *client, const struct discord_message *event)
 
     sscanf(event->content, "%" SCNu64, &user_id);
     if (!user_id) {
-        log_error("Invalid format for `guild.member_get <user_id>`");
+        logmod_log(ERROR, NULL,
+                   "Invalid format for `guild.member_get <user_id>`");
         return;
     }
 

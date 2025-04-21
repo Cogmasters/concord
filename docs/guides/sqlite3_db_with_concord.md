@@ -21,14 +21,14 @@ int rc = sqlite3_open("db.sqlite", &db);
 
 if (rc != SQLITE_OK) {  // Checking if something failed while opening the DB file.
     /* As it saw something went wrong, it is going to log a fatal debug message with the error message of what went wrong. */
-    log_fatal("[SQLITE] Error when opening the DB file. [%s]", sqlite3_errmsg(db));
+    logmod_log(FATAL, NULL, "[SQLITE] Error when opening the DB file. [%s]", sqlite3_errmsg(db));
 
     /* Since it failed, the resources must be deallocated. We are using the sqlite3_close for that. 
     If something went wrong while trying to close it, the code inside this if will be executed. (NOTE: Yes, even failing to open, you MUST use `sqlite3_close` as said in the sqlite3 docs!) */
       
     if (sqlite3_close(db) != SQLITE_OK) {
         /* Logging a fatal saying that it failed to close the DB. (NOTE: The sqlite3_errmsg function shows the error message of what happened) */
-        log_fatal("[SQLITE] Failed to close sqlite DB. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite DB. [%s]", sqlite3_errmsg(db));
 
         /* This is not a high-detailed guide, so we are not going to explain how to deal with this case with a lot of details. 
         But you will need to finalize the ongoing statement and execute the sqlite3_close again. */
@@ -52,9 +52,9 @@ rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
 sqlite3_free(query);
 
 if (rc != SQLITE_OK) {
-    log_fatal("[SQLITE] Something went wrong while creating concord_guides table. [%s]", msgErr);
+    logmod_log(FATAL, NULL, "[SQLITE] Something went wrong while creating concord_guides table. [%s]", msgErr);
     if (sqlite3_close(db) != SQLITE_OK) {
-        log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
         abort();
     }
     return;
@@ -86,9 +86,9 @@ rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
 sqlite3_free(query);
 
 if (rc != SQLITE_OK) {
-  log_fatal("[SQLITE] Something went wrong while inserting values into concord_guides table. [%s]", msgErr);
+  logmod_log(FATAL, NULL, "[SQLITE] Something went wrong while inserting values into concord_guides table. [%s]", msgErr);
   if (sqlite3_close(db) != SQLITE_OK) {
-        log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
         abort();
     }
 }
@@ -111,11 +111,11 @@ query = sqlite3_mprintf("SELECT user_id FROM concord_guides WHERE guild_id = %"P
 rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
 
 if ((rc = sqlite3_step(stmt)) != SQLITE_ERROR) {
-    log_trace("Sucessfully read the record: %lld.", sqlite3_column_int64(stmt, 0));
+    logmod_log(TRACE, NULL, "Sucessfully read the record: %lld.", sqlite3_column_int64(stmt, 0));
 }
 
 if (sqlite3_finalize(stmt) != SQLITE_OK) {
-    log_fatal("[SQLITE] Error while executing function sqlite3_finalize.");
+    logmod_log(FATAL, NULL, "[SQLITE] Error while executing function sqlite3_finalize.");
     abort();
 }
 
@@ -139,9 +139,9 @@ query = sqlite3_mprintf("DELETE FROM concord_guides WHERE guild_id = %"PRIu64";"
 rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
 
 if (rc != SQLITE_OK) {
-    log_fatal("[SYSTEM] Something went wrong while deleting concord_guides table from guild_id. [%s]", msgErr);
+    logmod_log(FATAL, NULL, "[SYSTEM] Something went wrong while deleting concord_guides table from guild_id. [%s]", msgErr);
     if (sqlite3_close(db) != SQLITE_OK) {
-        log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
         abort();
     }
 }
@@ -172,12 +172,12 @@ And finally, the `.deletedata`, which **deletes the record inserted with `.inser
 #include <stdlib.h>
 
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 
 #include <sqlite3.h>
 
 void on_ready(struct discord *client, const struct discord_ready *bot) {
-    log_info("Logged in as %s!", bot->user->username);
+    logmod_log(INFO, NULL, "Logged in as %s!", bot->user->username);
 }
 
 void on_createtable(struct discord *client, const struct discord_message *msg) {
@@ -185,10 +185,10 @@ void on_createtable(struct discord *client, const struct discord_message *msg) {
     int rc = sqlite3_open("db.sqlite", &db);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
       
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
         return;
@@ -202,9 +202,9 @@ void on_createtable(struct discord *client, const struct discord_message *msg) {
     sqlite3_free(query);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SQLITE] Something went wrong while creating concord_guides table. [%s]", msgErr);
+        logmod_log(FATAL, NULL, "[SQLITE] Something went wrong while creating concord_guides table. [%s]", msgErr);
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
         return;
@@ -221,10 +221,10 @@ void on_insertdata(struct discord *client, const struct discord_message *msg) {
     int rc = sqlite3_open("db.sqlite", &db);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
       
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
         return;
@@ -238,10 +238,10 @@ void on_insertdata(struct discord *client, const struct discord_message *msg) {
     sqlite3_free(query);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SQLITE] Something went wrong while inserting values into concord_guides table. [%s]", msgErr);
+        logmod_log(FATAL, NULL, "[SQLITE] Something went wrong while inserting values into concord_guides table. [%s]", msgErr);
 
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
     }
@@ -257,10 +257,10 @@ void on_retrievedata(struct discord *client, const struct discord_message *msg) 
     int rc = sqlite3_open("db.sqlite", &db);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
       
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
         return;
@@ -280,7 +280,7 @@ void on_retrievedata(struct discord *client, const struct discord_message *msg) 
     }
 
     if (sqlite3_finalize(stmt) != SQLITE_OK) {
-        log_fatal("[SQLITE] Error while executing function sqlite3_finalize.");
+        logmod_log(FATAL, NULL, "[SQLITE] Error while executing function sqlite3_finalize.");
         abort();
     }
 
@@ -293,10 +293,10 @@ void on_deletedata(struct discord *client, const struct discord_message *msg) {
     int rc = sqlite3_open("db.sqlite", &db);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
+        logmod_log(FATAL, NULL, "[SQLITE] Error when opening the db file. [%s]", sqlite3_errmsg(db));
       
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
         return;
@@ -308,9 +308,9 @@ void on_deletedata(struct discord *client, const struct discord_message *msg) {
     rc = sqlite3_exec(db, query, NULL, NULL, &msgErr);
 
     if (rc != SQLITE_OK) {
-        log_fatal("[SYSTEM] Something went wrong while deleting concord_guides table from guild_id. [%s]", msgErr);
+        logmod_log(FATAL, NULL, "[SYSTEM] Something went wrong while deleting concord_guides table from guild_id. [%s]", msgErr);
         if (sqlite3_close(db) != SQLITE_OK) {
-            log_fatal("[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
+            logmod_log(FATAL, NULL, "[SQLITE] Failed to close sqlite db. [%s]", sqlite3_errmsg(db));
             abort();
         }
     }

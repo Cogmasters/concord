@@ -35,13 +35,13 @@ _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 }
 
 void
-discord_requestor_init(struct discord_requestor *rqtor,
-                       struct logconf *conf,
-                       const char token[])
+discord_requestor_init(struct discord_requestor *rqtor, const char token[])
 {
-    logconf_branch(&rqtor->conf, conf, "DISCORD_REQUEST");
+    struct discord *client = CLIENT(rqtor, rest.requestor);
 
-    rqtor->ua = ua_init(&(struct ua_attr){ .conf = conf });
+    rqtor->logger = logmod_get_logger(&client->logmod, "DISCORD_REQUEST");
+
+    rqtor->ua = ua_init(&(struct ua_attr){ .logmod = &client->logmod });
     ua_set_url(rqtor->ua, DISCORD_API_BASE_URL);
     ua_set_opt(rqtor->ua, (char *)token, &_discord_on_curl_setopt);
 
@@ -63,13 +63,13 @@ discord_requestor_init(struct discord_requestor *rqtor,
     rqtor->mhandle = curl_multi_init();
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
 
-    discord_ratelimiter_init(&rqtor->ratelimiter, &rqtor->conf);
+    discord_ratelimiter_init(&rqtor->ratelimiter);
 }
 
 void
 discord_requestor_cleanup(struct discord_requestor *rqtor)
 {
-    struct discord_rest *rest =
+    const struct discord_rest *rest =
         CONTAINEROF(rqtor, struct discord_rest, requestor);
     QUEUE *const req_queues[] = { &rqtor->queues->recycling,
                                   &rqtor->queues->pending,
@@ -190,15 +190,15 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
                                      (char **)&req->json.start);
         return false;
     case HTTP_UNAUTHORIZED:
-        logconf_fatal(
-            &rqtor->conf,
-            "UNAUTHORIZED: Please provide a valid authentication token");
+        logmod_log(
+            FATAL, rqtor->logger,
+            "401 UNAUTHORIZED: Please provide a valid authentication token");
         req->code = CCORD_DISCORD_BAD_AUTH;
         return false;
     case HTTP_METHOD_NOT_ALLOWED:
-        logconf_fatal(&rqtor->conf,
-                      "METHOD_NOT_ALLOWED: The server couldn't recognize the "
-                      "received HTTP method");
+        logmod_log(FATAL, rqtor->logger,
+                   "405 METHOD_NOT_ALLOWED: The server couldn't recognize the "
+                   "received HTTP method");
 
         req->code = info->code;
         return false;
@@ -235,10 +235,10 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
             }
         }
 
-        logconf_warn(&rqtor->conf,
-                     "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
-                     is_global ? "GLOBAL " : "", retry_after_ms, message.len,
-                     body.start + message.pos);
+        logmod_log(WARN, rqtor->logger,
+                   "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
+                   is_global ? "GLOBAL " : "", retry_after_ms,
+                   (int)message.len, body.start + message.pos);
 
         if (is_global)
             discord_ratelimiter_set_global_timeout(&rqtor->ratelimiter, req->b,
@@ -402,8 +402,8 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                 body = ua_info_get_body(&info);
 
                 if (info.code != CCORD_OK) {
-                    logconf_error(&rqtor->conf, "%.*s", (int)body.size,
-                                  body.start);
+                    logmod_log(ERROR, rqtor->logger, "%.*s (HTTP code: %ld)",
+                               (int)body.size, body.start, info.httpcode);
                 }
                 else if (req->dispatch.has_type
                          && req->dispatch.sync != DISCORD_SYNC_FLAG)
@@ -435,8 +435,8 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                 ua_info_cleanup(&info);
             } break;
             default:
-                logconf_warn(&rqtor->conf, "%s (CURLE code: %d)",
-                             curl_easy_strerror(ecode), ecode);
+                logmod_log(WARN, rqtor->logger, "%s (CURLE code: %d)",
+                           curl_easy_strerror(ecode), ecode);
 
                 retry = (ecode == CURLE_READ_ERROR);
                 req->code = CCORD_CURLE_INTERNAL;
@@ -470,7 +470,6 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
     static struct ua_szbuf_readonly hide_headers[] = {
         { "Authorization", sizeof("Authorization") - 1 }
     };
-
     struct discord_requestor *rqtor = p_rqtor;
     CURL *ehandle;
 
@@ -479,24 +478,22 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
 
     if (NOT_EMPTY_STR(req->reason)) {
         ua_conn_add_header(req->conn, "X-Audit-Log-Reason", req->reason);
-        logconf_debug(&rqtor->conf, "Sending request with reason: %s",
-                      req->reason);
+        logmod_log(DEBUG, rqtor->logger, "Request reason: %s", req->reason);
     }
 
     if (HTTP_MIMEPOST == req->method) {
         ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
         ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
-        logconf_debug(&rqtor->conf, "Sending multipart/form-data body");
+        logmod_log(DEBUG, rqtor->logger, "Sending multipart/form-data body");
     }
     else if (req->body.size) {
         ua_conn_add_header(req->conn, "Content-Type", "application/json");
-        logconf_debug(&rqtor->conf, "Sending JSON body: %.*s",
-                      (int)req->body.size, req->body.start);
+        logmod_log(DEBUG, rqtor->logger, "Sending application/json body");
     }
     else {
         ua_conn_remove_header(req->conn, "Content-Type");
-        logconf_debug(&rqtor->conf,
-                      "Sending empty body (no Content-Type header)");
+        logmod_log(DEBUG, rqtor->logger,
+                   "Sending empty body (no Content-Type header)");
     }
 
     ua_conn_setup(req->conn, &(struct ua_conn_attr){
@@ -622,7 +619,7 @@ discord_request_begin(struct discord_requestor *rqtor,
                       const char endpoint[DISCORD_ENDPT_LEN],
                       const char key[DISCORD_ROUTE_LEN])
 {
-    struct discord_rest *rest =
+    const struct discord_rest *rest =
         CONTAINEROF(rqtor, struct discord_rest, requestor);
     struct discord *client = CLIENT(rest, rest);
 

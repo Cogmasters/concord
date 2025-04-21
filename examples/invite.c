@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -21,8 +21,9 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Invite-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Invite-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void

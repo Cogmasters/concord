@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <inttypes.h>
 #include <pthread.h>
@@ -8,9 +9,17 @@
 #include "websockets.h"
 #include "cog-utils.h"
 
+#define LOGMOD_APPLICATION_ID "CORE"
+#define LOGMOD_CONTEXT_ID     "WEBSOCKETS"
+#define LOGMOD_STATIC
+#include "logmod.h"
+
+/** @brief Custom logging level for tracing WebSockets requests */
+enum { LOGMOD_LEVEL_WS = LOGMOD_LEVEL_CUSTOM };
+
 #define CURLM_LOG(ws, mcode)                                                  \
-    logconf_fatal(&ws->conf, "(CURLM code: %d) %s", mcode,                    \
-                  curl_multi_strerror(mcode))
+    logmod_log(FATAL, ws->logger, "(CURLM code: %d) %s", mcode,               \
+               curl_multi_strerror(mcode))
 #define CASE_RETURN_STR(code)                                                 \
     case code:                                                                \
         return #code
@@ -28,10 +37,8 @@ struct websockets {
     int exp_msg_type;
     /** the headers to be sent */
     struct curl_slist *headers;
-    /** the logconf structure for logging @see logconf_setup() */
-    struct logconf conf;
-    /** stores info on the latest transfer performed via websockets */
-    struct ws_info info;
+    /** the @ref logmod_logger structure for logging */
+    struct logmod_logger *logger;
     /**
      * the client connections status
      * @note `WS_CONNECTING` set at ws_start()
@@ -138,43 +145,53 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
     switch (status) {
     case WS_DISCONNECTED:
         if (WS_DISCONNECTED == ws->status) {
-            logconf_info(
-                &ws->conf,
-                "Client is already disconnected, skipping WS_DISCONNECT");
+            logmod_log(INFO, ws->logger,
+                       "Client is already disconnected, skipping "
+                       "WS_DISCONNECT");
             break;
         }
         else if (WS_DISCONNECTING != ws->status) {
-            logconf_warn(&ws->conf,
-                         "Abruptly changed status to WS_DISCONNECTED "
-                         "(previous status: %s)",
-                         _ws_status_print(ws->status));
+            logmod_log(WARN, ws->logger,
+                       "Abruptly changed status to WS_DISCONNECTED "
+                       "(previous status: %s)",
+                       _ws_status_print(ws->status));
         }
 
-        logconf_info(&ws->conf, "Change status to WS_DISCONNECTED");
+        logmod_log(INFO, ws->logger,
+                   "Client disconnected from %s (status: %s)", ws->base_url,
+                   _ws_status_print(status));
         break;
     case WS_CONNECTED:
-        VASSERT_S(WS_CONNECTING == ws->status,
-                  "[%s] Missing ws_start() before the event loop (Current "
-                  "status: %s)",
-                  ws->conf.id, _ws_status_print(ws->status));
-
-        logconf_info(&ws->conf, "Change status to WS_CONNECTED");
+        if (ws->status != WS_CONNECTING) {
+            /* if the status is not WS_CONNECTING, it means that
+             * ws_start() was not called before the event loop */
+            logmod_log(WARN, ws->logger,
+                       "Abruptly changed status to WS_CONNECTED "
+                       "(previous status: %s), this may be a bug!",
+                       _ws_status_print(ws->status));
+        }
+        logmod_log(INFO, ws->logger, "Client connected to %s (status: %s)",
+                   ws->base_url, _ws_status_print(status));
         break;
     case WS_DISCONNECTING:
         if (WS_DISCONNECTED == ws->status) {
-            logconf_info(
-                &ws->conf,
-                "Client is already disconnected, skipping WS_DISCONNECTING");
+            logmod_log(WARN, ws->logger,
+                       "Client is already disconnected, skipping "
+                       "WS_DISCONNECTING");
             break;
         }
 
-        logconf_info(&ws->conf, "Change status to WS_DISCONNECTING");
+        logmod_log(INFO, ws->logger,
+                   "Client is disconnecting from %s (status: %s)",
+                   ws->base_url, _ws_status_print(status));
         break;
     case WS_CONNECTING: /* triggered at ws_start() */
-        logconf_info(&ws->conf, "Change status to WS_CONNECTING");
+        logmod_log(INFO, ws->logger, "Client is connecting to %s (status: %s)",
+                   ws->base_url, _ws_status_print(status));
         break;
     default:
-        ERR("[%s] Unknown ws_status (code: %d)", ws->conf.id, status);
+        logmod_log(WARN, ws->logger, "Unknown status change to %s (code: %d)",
+                   _ws_status_print(status), status);
         break;
     }
     ws->status = status;
@@ -192,18 +209,16 @@ static void
 ws_on_connect_cb(void *p_ws)
 {
     struct websockets *ws = p_ws;
+    char timestr[64];
 
     _ws_set_status(ws, WS_CONNECTED);
 
-    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url,
-                 (struct logconf_szbuf){ "", 0 },
-                 (struct logconf_szbuf){ "", 0 }, "WS_RCV_CONNECT");
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(&ws->conf,
-                  ANSICOLOR("RCV", ANSI_FG_YELLOW) " CONNECT [@@@_%zu_@@@]",
-                  ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s CONNECT",
+               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND));
 
-    if (ws->cbs.on_connect) ws->cbs.on_connect(ws->cbs.data, ws, &ws->info);
+    if (ws->cbs.on_connect) ws->cbs.on_connect(ws->cbs.data, ws);
 }
 
 static void
@@ -214,24 +229,20 @@ ws_on_close_cb(void *p_ws,
                size_t len)
 {
     struct websockets *ws = p_ws;
-    struct logconf_szbuf logheader = { "", 0 };
-    struct logconf_szbuf logbody = { (char *)reason, len };
+    char timestr[64];
     (void)ehandle;
 
     _ws_set_status(ws, WS_DISCONNECTING);
 
-    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
-                 logbody, "WS_RCV_CLOSE(%d)", wscode);
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("RCV",
-                  ANSI_FG_YELLOW) " CLOSE(%d) (%zu bytes) [@@@_%zu_@@@]",
-        wscode, len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s CLOSE(%d) (%zu bytes)",
+               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), wscode,
+               len);
 
     if (ws->cbs.on_close)
-        ws->cbs.on_close(ws->cbs.data, ws, &ws->info,
-                         (enum ws_close_reason)wscode, reason, len);
+        ws->cbs.on_close(ws->cbs.data, ws, (enum ws_close_reason)wscode,
+                         reason, len);
 
     ws->action = WS_ACTION_END_CLOSE;
 
@@ -242,84 +253,60 @@ static void
 ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
     struct websockets *ws = p_ws;
-    struct logconf_szbuf logheader = { "", 0 };
-    struct logconf_szbuf logbody = { (char *)text, len };
+    char timestr[64];
     (void)ehandle;
 
-    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
-                 logbody, "WS_RCV_TEXT");
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("RCV", ANSI_FG_YELLOW) " TEXT (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s TEXT (%zu bytes)",
+               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
 
-    if (ws->cbs.on_text)
-        ws->cbs.on_text(ws->cbs.data, ws, &ws->info, text, len);
+    if (ws->cbs.on_text) ws->cbs.on_text(ws->cbs.data, ws, text, len);
 }
 
 static void
 ws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
     struct websockets *ws = p_ws;
-    struct logconf_szbuf logheader = { "", 0 };
-    struct logconf_szbuf logbody = { (char *)mem, len };
+    char timestr[64];
     (void)ehandle;
 
-    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
-                 logbody, "WS_RCV_BINARY");
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("RCV", ANSI_FG_YELLOW) " BINARY (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s BINARY (%zu bytes)",
+               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
 
-    if (ws->cbs.on_binary)
-        ws->cbs.on_binary(ws->cbs.data, ws, &ws->info, mem, len);
+    if (ws->cbs.on_binary) ws->cbs.on_binary(ws->cbs.data, ws, mem, len);
 }
 
 static void
 ws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
+    char timestr[64];
     (void)ehandle;
-#if 0
-  struct logconf_szbuf logheader = { "", 0 };
-  struct logconf_szbuf logbody   = { (char *)reason, len };
 
-  logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
-               "WS_RCV_PING");
-#endif
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("RCV", ANSI_FG_YELLOW) " PING (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s PING (%zu bytes)",
+               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
 
-    if (ws->cbs.on_ping)
-        ws->cbs.on_ping(ws->cbs.data, ws, &ws->info, reason, len);
+    if (ws->cbs.on_ping) ws->cbs.on_ping(ws->cbs.data, ws, reason, len);
 }
 
 static void
 ws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
+    char timestr[64];
     (void)ehandle;
-#if 0
-  struct logconf_szbuf logheader = { "", 0 };
-  struct logconf_szbuf logbody   = { (char *)reason, len };
 
-  logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
-               "WS_RCV_PONG");
-#endif
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("RCV", ANSI_FG_YELLOW) " PONG (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s PONG (%zu bytes)",
+               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
 
-    if (ws->cbs.on_pong)
-        ws->cbs.on_pong(ws->cbs.data, ws, &ws->info, reason, len);
+    if (ws->cbs.on_pong) ws->cbs.on_pong(ws->cbs.data, ws, reason, len);
 }
 
 static bool _ws_close(struct websockets *ws,
@@ -343,9 +330,9 @@ _ws_check_action_cb(void *p_userdata,
     pthread_mutex_lock(&ws->lock);
     switch (ws->action) {
     case WS_ACTION_BEGIN_CLOSE:
-        logconf_warn(&ws->conf,
-                     "Received pending %s, closing the connection ...",
-                     ws_close_opcode_print(ws->pending_close.code));
+        logmod_log(WARN, ws->logger,
+                   "Received pending %s, closing the connection ...",
+                   ws_close_opcode_print(ws->pending_close.code));
 
         _ws_close(ws, ws->pending_close.code, ws->pending_close.reason);
     /* fall-through */
@@ -390,7 +377,8 @@ _ws_ehandle_init(struct websockets *ws)
 {
     CURL *new_ehandle = curl_easy_init();
     if (!new_ehandle) {
-        logconf_fatal(&ws->conf, "Failed to initialize WebSockets handler");
+        logmod_log(FATAL, ws->logger,
+                   "Failed to initialize WebSockets handler");
         return NULL;
     }
 
@@ -413,7 +401,8 @@ _ws_ehandle_init(struct websockets *ws)
     curl_easy_setopt(new_ehandle, CURLOPT_XFERINFODATA, ws);
     curl_easy_setopt(new_ehandle, CURLOPT_NOPROGRESS, 0L);
 
-    logconf_info(&ws->conf, "Initialized WebSockets handler");
+    logmod_log(INFO, ws->logger,
+               "Initialized WebSockets handler (base_url: %s)", ws->base_url);
 
     return new_ehandle;
 }
@@ -423,26 +412,19 @@ _ws_close(struct websockets *ws,
           enum ws_close_reason code,
           const char reason[])
 {
-    struct logconf_szbuf logheader = { "", 0 };
-    struct logconf_szbuf logbody = { (char *)reason, strlen(reason) };
+    char timestr[64];
 
     if (WS_DISCONNECTED == ws->status) {
-        logconf_warn(
-            &ws->conf,
-            ANSICOLOR("Failed",
-                      ANSI_FG_RED) " at SEND CLOSE : Connection already "
-                                   "closed [@@@_%zu_@@@]",
-            ws->info.loginfo.counter);
+        logmod_log(WARN, ws->logger,
+                   "%s at SEND CLOSE : Connection already closed",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
 
         return false;
     }
     if (WS_DISCONNECTING == ws->status) {
-        logconf_warn(
-            &ws->conf,
-            ANSICOLOR("Failed",
-                      ANSI_FG_RED) " at SEND CLOSE : Close already taking "
-                                   "place [@@@_%zu_@@@]",
-            ws->info.loginfo.counter);
+        logmod_log(WARN, ws->logger,
+                   "%s at SEND CLOSE : Close already taking place",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
 
         return false;
     }
@@ -453,21 +435,16 @@ _ws_close(struct websockets *ws,
                      CURLWS_CLOSE)
         != CURLE_OK)
     {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed",
-                      ANSI_FG_RED) " at SEND CLOSE(%d): %s [@@@_%zu_@@@]",
-            code, reason, ws->info.loginfo.counter);
-
+        logmod_log(ERROR, ws->logger, "%s at SEND CLOSE(%d): %s",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), code,
+                   reason);
         return false;
     }
 
-    logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader,
-                 logbody, "WS_SEND_CLOSE(%d)", code);
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
-    logconf_trace(&ws->conf,
-                  ANSICOLOR("SEND", ANSI_FG_GREEN) " CLOSE (%s) [@@@_%zu_@@@]",
-                  reason, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s CLOSE (%s)",
+               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), reason);
 
     return true;
 }
@@ -485,15 +462,10 @@ ws_get_status(struct websockets *ws)
 }
 
 static void
-default_on_ping(void *a,
-                struct websockets *ws,
-                struct ws_info *info,
-                const char *reason,
-                size_t len)
+default_on_ping(void *a, struct websockets *ws, const char *reason, size_t len)
 {
     (void)a;
-    (void)info;
-    ws_pong(ws, &ws->info, reason, len);
+    ws_pong(ws, reason, len);
 }
 
 size_t
@@ -636,18 +608,67 @@ jump_cbs:
     }
 }
 
+static logmod_err
+_ws_log_comm(const struct logmod_logger *logger,
+             const struct logmod_entry_info *info,
+             const char *fmt,
+             va_list args)
+{
+    time_t time_raw;
+    const struct tm *time_info;
+
+    if (info->level != LOGMOD_LEVEL_WS) {
+        return LOGMOD_OK_CONTINUE;
+    }
+    if (!logger->options.logfile) {
+        return LOGMOD_OK;
+    }
+
+    time_raw = time(NULL);
+    time_info = localtime(&time_raw);
+    if (logger->options.color) {
+        if (0 >= fprintf(
+                logger->options.logfile,
+                "%02d:%02d:%02d \x1b%um%s\x1b[0m %s:%d: ", time_info->tm_hour,
+                time_info->tm_min, time_info->tm_sec, info->label->color,
+                info->label->name, info->filename, info->line))
+        {
+            return LOGMOD_ERRNO;
+        }
+        return fflush(logger->options.logfile), LOGMOD_OK;
+    }
+    else if (0 >= fprintf(logger->options.logfile,
+                          "%02d:%02d:%02d %s %s:%d: ", time_info->tm_hour,
+                          time_info->tm_min, time_info->tm_sec,
+                          info->label->name, info->filename, info->line))
+    {
+        return LOGMOD_ERRNO;
+    }
+
+    if (0 >= vfprintf(logger->options.logfile, fmt, args)) {
+        return LOGMOD_ERRNO;
+    }
+    if (fprintf(logger->options.logfile, "\n@@@_%ld_@@@\n",
+                logmod_logger_get_counter(logger))
+        == EOF)
+    {
+        return LOGMOD_ERRNO;
+    }
+    if (fflush(logger->options.logfile) == EOF) {
+        return LOGMOD_ERRNO;
+    }
+    return LOGMOD_OK;
+}
+
 struct websockets *
 ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
 {
-    struct logconf *conf = NULL;
-    struct websockets *new_ws;
+    static const struct logmod_label custom_labels[] = {
+        { "WS", LOGMOD_COLOR(CYAN, BACKGROUND), LOGMOD_STYLE(REGULAR), 0 },
+    };
+    struct websockets *new_ws = calloc(1, sizeof *new_ws);
 
-    if (attr) {
-        conf = attr->conf;
-    }
-
-    new_ws = calloc(1, sizeof *new_ws);
-    logconf_branch(&new_ws->conf, conf, "WEBSOCKETS");
+    new_ws->logger = logmod_get_logger(attr->logmod, "WEBSOCKETS");
 
     if (cbs) new_ws->cbs = *cbs;
     new_ws->mhandle = mhandle;
@@ -659,11 +680,18 @@ ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
     /** respond ping with a pong by default */
     if (!new_ws->cbs.on_ping) new_ws->cbs.on_ping = &default_on_ping;
 
-    if (pthread_mutex_init(&new_ws->lock, NULL))
-        ERR("[%s] Couldn't initialize pthread mutex", new_ws->conf.id);
-    if (pthread_rwlock_init(&new_ws->rwlock, NULL))
-        ERR("[%s] Couldn't initialize pthread rwlock", new_ws->conf.id);
-
+    if (pthread_mutex_init(&new_ws->lock, NULL)) {
+        logmod_log(FATAL, new_ws->logger, "Couldn't initialize pthread mutex");
+        free(new_ws);
+        return NULL;
+    }
+    if (pthread_rwlock_init(&new_ws->rwlock, NULL)) {
+        logmod_log(FATAL, new_ws->logger,
+                   "Couldn't initialize pthread rwlock");
+        pthread_mutex_destroy(&new_ws->lock);
+        free(new_ws);
+        return NULL;
+    }
     return new_ws;
 }
 
@@ -675,18 +703,20 @@ ws_set_url(struct websockets *ws, const char base_url[])
     pthread_mutex_lock(&ws->lock);
 
     if (!*ws->base_url) {
-        logconf_info(&ws->conf, "Websockets new URL: %s", base_url);
+        logmod_log(INFO, ws->logger, "Websockets new URL: %s", base_url);
     }
     else {
-        logconf_info(&ws->conf,
-                     "WebSockets redirecting:\n\tfrom: %s\n\tto: %s",
-                     ws->base_url, base_url);
+        logmod_log(INFO, ws->logger,
+                   "Websockets redirecting:\n\tfrom: %s\n\tto: %s",
+                   ws->base_url, base_url);
     }
 
-    len = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
-    VASSERT_S(len < sizeof(ws->base_url), "[%s] Out of bounds write attempt",
-              ws->conf.id);
-
+    if ((len = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url))
+        < 0)
+    {
+        logmod_log(ERROR, ws->logger,
+                   "Failed to set URL: %s due to snprintf error", base_url);
+    }
     pthread_mutex_unlock(&ws->lock);
 }
 
@@ -705,83 +735,54 @@ ws_cleanup(struct websockets *ws)
 }
 
 bool
-ws_send_binary(struct websockets *ws,
-               struct ws_info *info,
-               const char msg[],
-               size_t msglen)
+ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
 {
-    struct logconf_szbuf logheader = { "", 0 };
-    struct logconf_szbuf logbody = { (char *)msg, msglen };
+    char timestr[64];
 
-    logconf_http(&ws->conf, NULL, ws->base_url, logheader, logbody,
-                 "WS_SEND_BINARY");
-
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("SEND", ANSI_FG_GREEN) " BINARY (%zu bytes) [@@@_%zu_@@@]",
-        msglen, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s BINARY (%zu bytes)",
+               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), msglen);
 
     if (WS_CONNECTED != ws->status) {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed", ANSI_FG_RED) " at SEND BINARY : No active "
-                                             "connection [@@@_%zu_@@@]",
-            ws->info.loginfo.counter);
+        logmod_log(ERROR, ws->logger,
+                   "%s at SEND BINARY : No active connection",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
         return false;
     }
-
-    if (info) *info = ws->info;
 
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, msg, msglen, &sent, 0, CURLWS_BINARY)
         != CURLE_OK)
     {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed", ANSI_FG_RED) " at SEND BINARY [@@@_%zu_@@@]",
-            ws->info.loginfo.counter);
+        logmod_log(ERROR, ws->logger, "%s at SEND BINARY (%zu bytes) %s",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), msglen,
+                   !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
         return false;
     }
     return true;
 }
 
 bool
-ws_send_text(struct websockets *ws,
-             struct ws_info *info,
-             const char text[],
-             size_t len)
+ws_send_text(struct websockets *ws, const char text[], size_t len)
 {
-    struct logconf_szbuf logheader = { "", 0 };
-    struct logconf_szbuf logbody = { (char *)text, len };
+    char timestr[64];
 
-    logconf_http(&ws->conf, NULL, ws->base_url, logheader, logbody,
-                 "WS_SEND_TEXT");
-
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("SEND", ANSI_FG_GREEN) " TEXT (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s TEXT (%zu bytes)",
+               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), len);
 
     if (WS_CONNECTED != ws->status) {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed", ANSI_FG_RED) " at SEND TEXT : No active "
-                                             "connection [@@@_%zu_@@@]",
-            ws->info.loginfo.counter);
+        logmod_log(ERROR, ws->logger, "%s at SEND TEXT : No active connection",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
 
         return false;
     }
-
-    if (info) *info = ws->info;
 
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, text, len, &sent, 0, CURLWS_TEXT)
         != CURLE_OK)
     {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed", ANSI_FG_RED) " at SEND TEXT [@@@_%zu_@@@]",
-            ws->info.loginfo.counter);
+        logmod_log(ERROR, ws->logger, "%s at SEND TEXT (%zu bytes) %s",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+                   !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
     }
@@ -790,38 +791,25 @@ ws_send_text(struct websockets *ws,
 }
 
 bool
-ws_ping(struct websockets *ws,
-        struct ws_info *info,
-        const char *reason,
-        size_t len)
+ws_ping(struct websockets *ws, const char *reason, size_t len)
 {
-    (void)info;
-#if 0
-  struct logconf_szbuf logheader = { "", 0 };
-  struct logconf_szbuf logbody   = { (char *)reason, len };
+    char timestr[64];
 
-  logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
-               "WS_SEND_PING");
-#endif
-
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("SEND", ANSI_FG_GREEN) " PING (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s PING (%zu bytes)",
+               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), len);
 
     if (WS_CONNECTED != ws->status) {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed",
-                      ANSI_FG_RED) " at SEND PING : No active connection");
+        logmod_log(ERROR, ws->logger, "%s to send PING (%zu bytes)",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len);
 
         return false;
     }
 
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, "", 0, &sent, 0, CURLWS_PING) != CURLE_OK) {
-        logconf_error(&ws->conf,
-                      ANSICOLOR("Failed", ANSI_FG_RED) " at SEND PING.");
+        logmod_log(ERROR, ws->logger, "%s to send PING (%zu bytes) %s",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+                   !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
     }
@@ -830,38 +818,27 @@ ws_ping(struct websockets *ws,
 }
 
 bool
-ws_pong(struct websockets *ws,
-        struct ws_info *info,
-        const char *reason,
-        size_t len)
+ws_pong(struct websockets *ws, const char *reason, size_t len)
 {
-    (void)info;
-#if 0
-  struct logconf_szbuf logheader = { "", 0 };
-  struct logconf_szbuf logbody   = { (char *)reason, len };
+    char timestr[64];
 
-  logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
-               "WS_SEND_PONG");
-#endif
-
-    logconf_trace(
-        &ws->conf,
-        ANSICOLOR("SEND", ANSI_FG_GREEN) " PONG (%zu bytes) [@@@_%zu_@@@]",
-        len, ws->info.loginfo.counter);
+    logmod_log(TRACE, ws->logger, "%s PONG (%zu bytes) %s",
+               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), len,
+               !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
     if (WS_CONNECTED != ws->status) {
-        logconf_error(
-            &ws->conf,
-            ANSICOLOR("Failed",
-                      ANSI_FG_RED) " at SEND PONG : No active connection");
+        logmod_log(ERROR, ws->logger, "%s to send PONG (%zu bytes) %s",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+                   !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
     }
 
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, "", 0, &sent, 0, CURLWS_PONG) != CURLE_OK) {
-        logconf_error(&ws->conf,
-                      ANSICOLOR("Failed", ANSI_FG_RED) " at SEND PONG.");
+        logmod_log(ERROR, ws->logger, "%s to send PONG (%zu bytes) %s",
+                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+                   !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
     }
@@ -875,15 +852,18 @@ ws_start(struct websockets *ws)
     memset(&ws->pending_close, 0, sizeof ws->pending_close);
     ws->action = WS_ACTION_NONE;
 
-    VASSERT_S(!ws_is_alive(ws),
-              "[%s] Please shutdown current WebSockets connection before "
-              "calling ws_start() (Current status: %s)",
-              ws->conf.id, _ws_status_print(ws->status));
-
-    VASSERT_S(NULL == ws->ehandle,
-              "[%s] (Internal error) Attempt to reconnect without properly "
-              "closing the connection",
-              ws->conf.id);
+    if (ws_is_alive(ws)) {
+        logmod_log(ERROR, ws->logger,
+                   "Attempt to start WebSockets connection that is already "
+                   "alive, please close it first");
+        return NULL;
+    }
+    if (ws->ehandle != NULL) {
+        logmod_log(ERROR, ws->logger,
+                   "Attempt to reconnect without properly closing the "
+                   "connection, likely a bug");
+        return NULL;
+    }
 
     if (!ws->ehandle) ws->ehandle = _ws_ehandle_init(ws);
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
@@ -911,14 +891,15 @@ ws_end(struct websockets *ws)
         switch (ecode = curlmsg->data.result) {
         case CURLE_OK:
         case CURLE_ABORTED_BY_CALLBACK: /* _ws_check_action_cb() */
-            logconf_info(&ws->conf, "Disconnected gracefully");
+            logmod_log(INFO, ws->logger,
+                       "Disconnected gracefully (CURLE code: %d) %s", ecode,
+                       !*ws->errbuf ? curl_easy_strerror(ecode) : ws->errbuf);
             break;
         case CURLE_READ_ERROR:
         default:
-            logconf_error(&ws->conf, "(CURLE code: %d) %s", ecode,
-                          !*ws->errbuf ? curl_easy_strerror(ecode)
-                                       : ws->errbuf);
-            logconf_error(&ws->conf, "Disconnected abruptly");
+            logmod_log(ERROR, ws->logger,
+                       "Disconnected abruptly (CURLE code: %d) %s", ecode,
+                       !*ws->errbuf ? curl_easy_strerror(ecode) : ws->errbuf);
             break;
         }
 
@@ -1014,16 +995,15 @@ ws_close(struct websockets *ws,
          const size_t len)
 {
     if (WS_DISCONNECTED == ws->status) {
-        logconf_warn(
-            &ws->conf,
-            "Attempt to close WebSockets connection that has already ended");
-
+        logmod_log(WARN, ws->logger,
+                   "Attempt to close WebSockets connection that has already "
+                   "ended");
         return;
     }
 
-    logconf_warn(&ws->conf,
-                 "Attempting to close WebSockets connection with %s : %.*s",
-                 ws_close_opcode_print(code), (int)len, reason);
+    logmod_log(WARN, ws->logger,
+               "Attempting to close WebSockets connection with %s : %.*s",
+               ws_close_opcode_print(code), (int)len, reason);
 
     pthread_mutex_lock(&ws->lock);
     ws->action = WS_ACTION_BEGIN_CLOSE;
@@ -1038,8 +1018,12 @@ ws_close(struct websockets *ws,
 void
 ws_add_header(struct websockets *ws, const char field[], const char value[])
 {
-    ASSERT_S(ws_is_alive(ws),
-             "ws_start() must have been called prior to ws_add_header()");
+    if (!ws_is_alive(ws)) {
+        logmod_log(ERROR, ws->logger,
+                   "Attempt to add header to WebSockets connection that is "
+                   "not alive");
+        return;
+    }
 
     size_t header_len = strlen(field) + strlen(": ") + strlen(value) + 1;
     char *header = malloc(header_len);

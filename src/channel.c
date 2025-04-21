@@ -78,8 +78,8 @@ discord_get_channel_at_pos(struct discord *client,
         CCORDcode code =
             discord_refcounter_incr(&client->refcounter, (void *)ret->keep);
         if (code != CCORD_OK) {
-            logconf_error(&client->conf, "'.keep' data must be a Concord "
-                                         "callback parameter");
+            logmod_log(ERROR, client->logger,
+                       "'.keep' data must be a Concord callback parameter");
         }
     }
     if (ret->data

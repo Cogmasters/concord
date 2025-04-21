@@ -10,7 +10,7 @@ extern "C" {
 #include <curl/curl.h>
 
 #include "error.h" /* CCORDcode */
-#include "logconf.h" /* logging facilities */
+#include "logmod.h" /* logging facilities */
 
 /** @brief HTTP methods */
 enum http_method {
@@ -80,6 +80,10 @@ const char *http_reason_print(int httpcode);
  */
 struct user_agent;
 
+/* forward declaration */
+struct logmod;
+/**/
+
 /**
  * @struct ua_conn
  * @brief Opaque connection handle
@@ -93,7 +97,7 @@ struct ua_conn;
 /** @brief User-Agent handle initialization attributes */
 struct ua_attr {
     /** pre-initialized logging module */
-    struct logconf *conf;
+    struct logmod *logmod;
 };
 
 /** @brief Read-only generic sized buffer */
@@ -164,8 +168,6 @@ struct ua_resp_body {
 
 /** @brief Informational handle received on request's completion */
 struct ua_info {
-    /** logging informational */
-    struct loginfo loginfo;
     /** response code for latest request */
     CCORDcode code;
     /** the HTTP response code */

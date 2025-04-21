@@ -8,7 +8,7 @@
 #include <inttypes.h> /* SCNu64 */
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 u64snowflake g_app_id;
 
@@ -26,33 +26,35 @@ print_usage(void)
 void
 print_help(void)
 {
-    log_info("\nHelp :\n"
-             "\tPrint help : HELP\n"
-             "\tList Commands : LIST <?guild_id>\n"
-             "\tCreate Command : CREATE <cmd_name>[<cmd_desc>] <?guild_id>\n"
-             "\tUpdate Command : UPDATE <cmd_id> <cmd_name>[<cmd_desc>] "
-             "<?guild_id>\n"
-             "\tDelete Command : DELETE <cmd_id> <?guild_id>\n");
+    logmod_log(INFO, NULL,
+               "\nHelp :\n"
+               "\tPrint help : HELP\n"
+               "\tList Commands : LIST <?guild_id>\n"
+               "\tCreate Command : CREATE <cmd_name>[<cmd_desc>] <?guild_id>\n"
+               "\tUpdate Command : UPDATE <cmd_id> <cmd_name>[<cmd_desc>] "
+               "<?guild_id>\n"
+               "\tDelete Command : DELETE <cmd_id> <?guild_id>\n");
 }
 
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
 fail_interaction_create(struct discord *client, struct discord_response *resp)
 {
-    log_error("%s", discord_strerror(resp->code, client));
+    logmod_log(ERROR, NULL, "%s", discord_strerror(resp->code, client));
 }
 
 void
 on_interaction_create(struct discord *client,
                       const struct discord_interaction *event)
 {
-    log_info("Interaction %" PRIu64 " received", event->id);
+    logmod_log(INFO, NULL, "Interaction %" PRIu64 " received", event->id);
 
     struct discord_interaction_callback_data data = {
         .content = "Hello World!",
@@ -122,12 +124,12 @@ read_input(void *p_client)
                                  app_cmds.array[i].name, app_cmds.array[i].id);
                 }
 
-                log_info("\nCommands: \n%.*s", (int)len, list);
+                logmod_log(INFO, NULL, "\nCommands: \n%.*s", (int)len, list);
 
                 discord_application_commands_cleanup(&app_cmds);
             }
             else {
-                log_error("Couldn't list commands");
+                logmod_log(ERROR, NULL, "Couldn't list commands");
             }
         }
         else if (0 == strcasecmp(cmd_action, "CREATE")) {
@@ -168,12 +170,13 @@ read_input(void *p_client)
             }
 
             if (CCORD_OK == code && app_cmd.id) {
-                log_info("Created command:\t%s (" PRIu64 ")", app_cmd.name,
-                         app_cmd.id);
+                logmod_log(INFO, NULL, "Created command:\t%s (%" PRIu64 ")",
+                           app_cmd.name, app_cmd.id);
                 discord_application_command_cleanup(&app_cmd);
             }
             else {
-                log_error("Couldn't create command '%s'", cmd_name);
+                logmod_log(ERROR, NULL, "Couldn't create command '%s'",
+                           cmd_name);
             }
         }
         else if (0 == strcasecmp(cmd_action, "UPDATE")) {
@@ -213,12 +216,13 @@ read_input(void *p_client)
             }
 
             if (CCORD_OK == code && app_cmd.id) {
-                log_info("Edited command:\t%s (%" PRIu64 ")", app_cmd.name,
-                         app_cmd.id);
+                logmod_log(INFO, NULL, "Edited command:\t%s (%" PRIu64 ")",
+                           app_cmd.name, app_cmd.id);
                 discord_application_command_cleanup(&app_cmd);
             }
             else {
-                log_error("Couldn't create command '%s'", cmd_name);
+                logmod_log(ERROR, NULL, "Couldn't create command '%s'",
+                           cmd_name);
             }
         }
         else if (0 == strcasecmp(cmd_action, "DELETE")) {
@@ -241,9 +245,9 @@ read_input(void *p_client)
             }
 
             if (CCORD_OK == code)
-                log_info("Deleted command");
+                logmod_log(INFO, NULL, "Deleted command");
             else
-                log_error("Couldn't delete command");
+                logmod_log(ERROR, NULL, "Couldn't delete command");
         }
         else {
             goto _help;

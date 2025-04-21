@@ -9,7 +9,7 @@
 #include "jsmn-find.h"
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 #define THREADPOOL_SIZE "4"
 #define PREFIX          "!"
@@ -17,8 +17,7 @@
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL, "Discord Client ID: %" PRIu64, event->user->id);
 }
 
 void

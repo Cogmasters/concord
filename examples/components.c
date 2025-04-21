@@ -5,7 +5,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -70,8 +70,9 @@ char JSON[] =
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Components-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Components-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
@@ -172,7 +173,7 @@ void
 on_interaction_create(struct discord *client,
                       const struct discord_interaction *event)
 {
-    log_info("Interaction %" PRIu64 " received", event->id);
+    logmod_log(INFO, NULL, "Interaction %" PRIu64 " received", event->id);
 
     if (!event->data || !event->data->values) return;
 

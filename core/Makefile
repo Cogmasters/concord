@@ -6,8 +6,7 @@ OBJS = cog-utils.o      \
        websockets.o     \
        jsmn-find.o      \
        json-build.o     \
-       log.o            \
-       logconf.o        \
+       logmod.o         \
        priority_queue.o \
        anomap.o         \
        threadpool.o     \

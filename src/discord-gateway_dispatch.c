@@ -130,9 +130,9 @@ discord_gateway_dispatch(struct discord_gateway *gw)
         }
         break;
     case DISCORD_EV_NONE:
-        logconf_warn(
-            &gw->conf,
-            "Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
+        logmod_log(WARN, gw->logger,
+                   "Received unimplemented GATEWAY_DISPATCH event (code: %d)",
+                   event);
         break;
     }
 }
@@ -141,7 +141,6 @@ void
 discord_gateway_send_identify(struct discord_gateway *gw,
                               struct discord_identify *identify)
 {
-    struct ws_info info = { 0 };
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -150,10 +149,10 @@ discord_gateway_send_identify(struct discord_gateway *gw,
         if (++gw->session->concurrent
             >= gw->session->start_limit.max_concurrency)
         {
-            logconf_warn(
-                &gw->conf,
-                "Reach identify request threshold (%d every 5 seconds)",
-                gw->session->start_limit.max_concurrency);
+            logmod_log(WARN, gw->logger,
+                       "Too many IDENTIFY requests in a short period of "
+                       "time (expected maximum of %d every 5 seconds)",
+                       gw->session->start_limit.max_concurrency);
         }
     }
     else {
@@ -170,24 +169,19 @@ discord_gateway_send_identify(struct discord_gateway *gw,
         jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
+    if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "SEND",
-                ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger, "%s IDENTIFY (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   logmod_logger_get_counter(gw->logger));
 
         /* get timestamp for this identify */
         gw->timer->identify_last = gw->timer->now;
     }
     else {
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("FAIL SEND",
-                      ANSI_FG_RED) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger, "%s IDENTIFY (%zu bytes)[@@@_%ld_@@@]",
+                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
 }
@@ -196,7 +190,6 @@ void
 discord_gateway_send_resume(struct discord_gateway *gw,
                             struct discord_resume *event)
 {
-    struct ws_info info = { 0 };
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -213,19 +206,16 @@ discord_gateway_send_resume(struct discord_gateway *gw,
         jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
+    if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("SEND",
-                      ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger, "%s RESUME (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   logmod_logger_get_counter(gw->logger));
     }
     else {
-        logconf_info(&gw->conf,
-                     ANSICOLOR("FAIL SEND",
-                               ANSI_FG_RED) " RESUME (%d bytes) [@@@_%zu_@@@]",
-                     b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger, "%s RESUME (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
 }
@@ -256,7 +246,6 @@ _discord_on_heartbeat_timeout(struct discord *client,
 void
 discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
 {
-    struct ws_info info = { 0 };
     char buf[64];
     jsonb b;
 
@@ -271,8 +260,8 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
     }
 
     if (!gw->timer->hbeat_acknowledged) {
-        logconf_warn(&gw->conf,
-                     "Heartbeat ACK not received, marked as zombie");
+        logmod_log(WARN, gw->logger,
+                   "Heartbeat ACK not received, marked as zombie");
 
         gw->timer->hbeat_acknowledged = true;
 
@@ -281,14 +270,11 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
         return;
     }
 
-    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+    if (ws_send_text(gw->ws, buf, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "SEND",
-                ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger, "%s HEARTBEAT (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   logmod_logger_get_counter(gw->logger));
 
         gw->timer->hbeat_acknowledged = false;
 
@@ -300,11 +286,9 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
                 gw->timer->hbeat_interval);
     }
     else {
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("FAIL SEND",
-                      ANSI_FG_RED) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger, "%s HEARTBEAT (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   b.pos, logmod_logger_get_counter(gw->logger));
     }
 }
 
@@ -312,7 +296,6 @@ void
 discord_gateway_send_request_guild_members(
     struct discord_gateway *gw, struct discord_request_guild_members *event)
 {
-    struct ws_info info = { 0 };
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -327,21 +310,18 @@ discord_gateway_send_request_guild_members(
         jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
+    if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " REQUEST_GUILD_MEMBERS "
-                                                    "(%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger,
+                   "%s REQUEST_GUILD_MEMBERS (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   logmod_logger_get_counter(gw->logger));
     }
     else {
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "FAIL SEND",
-                ANSI_FG_RED) " REQUEST_GUILD_MEMBERS (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger,
+                   "%s REQUEST_GUILD_MEMBERS (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
 }
@@ -350,7 +330,6 @@ void
 discord_gateway_send_update_voice_state(
     struct discord_gateway *gw, struct discord_update_voice_state *event)
 {
-    struct ws_info info = { 0 };
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -365,24 +344,22 @@ discord_gateway_send_update_voice_state(
         jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
+    if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "SEND",
-                ANSI_FG_BRIGHT_GREEN) " UPDATE_VOICE_STATE "
-                                      "(%d bytes): %s channels [@@@_%zu_@@@]",
-            b.pos, event->channel_id ? "join" : "leave",
-            info.loginfo.counter + 1);
+        logmod_log(
+            INFO, gw->logger,
+            "%s UPDATE_VOICE_STATE (%zu bytes): %s channels [@@@_%ld_@@@]",
+            LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+            event->channel_id ? "join" : "leave",
+            logmod_logger_get_counter(gw->logger));
     }
     else {
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR(
-                "FAIL SEND",
-                ANSI_FG_RED) " UPDATE_VOICE_STATE (%d bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(
+            INFO, gw->logger,
+            "%s UPDATE_VOICE_STATE (%zu bytes): %s channels [@@@_%ld_@@@]",
+            LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND), b.pos,
+            event->channel_id ? "join" : "leave",
+            logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
 }
@@ -391,7 +368,6 @@ void
 discord_gateway_send_presence_update(struct discord_gateway *gw,
                                      struct discord_presence_update *presence)
 {
-    struct ws_info info = { 0 };
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -408,20 +384,18 @@ discord_gateway_send_presence_update(struct discord_gateway *gw,
         jsonb_object_pop_auto(&b, &body.start, &body.size);
     }
 
-    if (ws_send_text(gw->ws, &info, body.start, b.pos)) {
+    if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-        logconf_info(
-            &gw->conf,
-            ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " PRESENCE UPDATE (%d "
-                                                    "bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(INFO, gw->logger,
+                   "%s PRESENCE UPDATE (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   logmod_logger_get_counter(gw->logger));
     }
     else {
-        logconf_error(
-            &gw->conf,
-            ANSICOLOR("FAIL SEND", ANSI_FG_RED) " PRESENCE UPDATE (%d "
-                                                "bytes) [@@@_%zu_@@@]",
-            b.pos, info.loginfo.counter + 1);
+        logmod_log(ERROR, gw->logger,
+                   "%s PRESENCE UPDATE (%zu bytes) [@@@_%ld_@@@]",
+                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
 }

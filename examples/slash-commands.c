@@ -6,7 +6,7 @@
 #include <inttypes.h> /* SCNu64, PRIu64 */
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 u64snowflake g_app_id;
 
@@ -24,8 +24,9 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 
     g_app_id = event->application->id;
 }

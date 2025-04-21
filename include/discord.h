@@ -166,7 +166,7 @@ void discord_unclaim(struct discord *client, const void *data);
 
 /**
  * @brief Create a Discord Client handle by its token
- * @see discord_get_logconf() to configure logging behavior
+ * @see discord_get_logmod() to configure logging behavior
  *
  * @param token the bot token
  * @return the newly created Discord Client handle
@@ -314,12 +314,12 @@ uint64_t discord_timestamp_us(struct discord *client);
 
 /**
  * @brief Retrieve client's logging module for configuration purposes
- * @see logconf_setup(), logconf_set_quiet(), logconf_set_level()
+ * @see logmod.h
  *
  * @param client the client created with discord_init()
- * @return the client's logging module
+ * @return the client's logging manager
  */
-struct logconf *discord_get_logconf(struct discord *client);
+struct logmod *discord_get_logmod(struct discord *client);
 
 /**
  * @brief get the io_poller used by the discord client

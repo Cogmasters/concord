@@ -2,12 +2,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 #include <unistd.h>
+#include <bits/getopt_core.h>
 #include <curl/curl.h>
 
 #include "websockets.h"
 
-#include "log.h"
+#define LOGMOD_FALLBACK_APPLICATION_ID "TEST"
+#define LOGMOD_FALLBACK_CONTEXT_ID     "WEBSOCKETS"
+#include "logmod.h"
 
 void
 print_usage(char *prog)
@@ -27,67 +31,50 @@ print_usage(char *prog)
 }
 
 void
-on_connect_cb(void *data, struct websockets *ws, struct ws_info *info)
+on_connect_cb(void *data, struct websockets *ws)
 {
     (void)data;
     (void)ws;
-    (void)info;
-    log_info("Connected!");
+    logmod_log(INFO, NULL, "Connected!");
 }
 
 void
-on_text_cb(void *data,
-           struct websockets *ws,
-           struct ws_info *info,
-           const char *text,
-           size_t len)
+on_text_cb(void *data, struct websockets *ws, const char *text, size_t len)
 {
     (void)data;
     (void)ws;
-    (void)info;
-    log_trace("RECEIVE:\n%.*s", (int)len, text);
+    logmod_log(TRACE, NULL, "RECEIVE: %.*s", (int)len, text);
 }
 
 void
-on_ping_cb(void *data,
-           struct websockets *ws,
-           struct ws_info *info,
-           const char *reason,
-           size_t len)
+on_ping_cb(void *data, struct websockets *ws, const char *reason, size_t len)
 {
     (void)data;
     (void)ws;
-    (void)info;
-    log_trace("PING:\n%.*s", (int)len, reason);
-    ws_pong(ws, NULL, "just pong", SIZE_MAX);
+    logmod_log(TRACE, NULL, "PONG: %.*s", (int)len, reason);
+    ws_pong(ws, "just pong", SIZE_MAX);
 }
 
 void
-on_pong_cb(void *data,
-           struct websockets *ws,
-           struct ws_info *info,
-           const char *reason,
-           size_t len)
+on_pong_cb(void *data, struct websockets *ws, const char *reason, size_t len)
 {
     (void)data;
     (void)ws;
-    (void)info;
-    log_trace("PONG:\n%.*s", (int)len, reason);
+    logmod_log(TRACE, NULL, "PONG: %.*s", (int)len, reason);
     ws_close(ws, WS_CLOSE_REASON_NORMAL, "close it!", SIZE_MAX);
 }
 
 void
 on_close_cb(void *data,
             struct websockets *ws,
-            struct ws_info *info,
             enum ws_close_reason wscode,
             const char *reason,
             size_t len)
 {
     (void)data;
     (void)ws;
-    (void)info;
-    log_info("Closed connection (%d) : %.*s", wscode, (int)len, reason);
+    logmod_log(INFO, NULL, "Closed connection (%d) : %.*s", wscode, (int)len,
+               reason);
 }
 
 int
@@ -102,9 +89,7 @@ main(int argc, char *argv[])
         .on_close = &on_close_cb,
     };
     struct websockets *ws;
-    struct ws_attr attr = { 0 };
     CURLM *mhandle = NULL;
-    struct logconf conf;
     uint64_t tstamp;
 
     char *url = NULL;
@@ -129,12 +114,10 @@ main(int argc, char *argv[])
 
     /* init logging */
     fp = fopen(config_file, "rb");
-    logconf_setup(&conf, "TEST", fp);
 
     /* init websockets handle */
     mhandle = curl_multi_init();
-    attr.conf = &conf;
-    ws = ws_init(&cbs, mhandle, &attr);
+    ws = ws_init(&cbs, mhandle, NULL);
     ws_set_url(ws, url);
 
     /* run the event-loop */
@@ -145,6 +128,5 @@ main(int argc, char *argv[])
 
     ws_cleanup(ws);
     curl_multi_cleanup(mhandle);
-    logconf_cleanup(&conf);
     fclose(fp);
 }

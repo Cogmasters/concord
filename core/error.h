@@ -10,6 +10,16 @@
 /* XXX: As new values are added, discord_strerror() should be updated
  *      accordingly! */
 typedef enum CCORDcode {
+    /** most likely a bug in the library, please report it */
+    CCORD_INTERNAL_ERROR = -200,
+    /** couldn't encode format */
+    CCORD_BAD_ENCODE = -101,
+    /** couldn't decode format */
+    CCORD_BAD_DECODE = -100,
+    /** out of memory, something really bad happened! */
+    CCORD_OUT_OF_MEMORY = -60,
+    /** check strerror() for more information */
+    CCORD_ERRNO = -50,
     /** curl has been compiled without the --enable-websockets flag */
     CCORD_CURL_WEBSOCKETS_MISSING = -14,
     /** curl need to be updated to 8.7.1 or greater */
@@ -20,11 +30,11 @@ typedef enum CCORDcode {
     CCORD_FULL_WORKER = -11,
     /** couldn't perform action because resource is unavailable */
     CCORD_RESOURCE_UNAVAILABLE = -10,
-    /* deprecated */
+    /** @deprecated use @ref CCORD_RESOURCE_UNAVAILABLE instead */
     CCORD_UNAVAILABLE = CCORD_RESOURCE_UNAVAILABLE,
     /** couldn't cleanup resource automatically due to being claimed */
     CCORD_RESOURCE_OWNERSHIP = -9,
-    /* deprecated */
+    /** @deprecated use @ref CCORD_RESOURCE_OWNERSHIP instead */
     CCORD_OWNERSHIP = CCORD_RESOURCE_OWNERSHIP,
     /** attempt to initialize globals more than once */
     CCORD_GLOBAL_INIT = -8,

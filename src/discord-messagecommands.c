@@ -46,12 +46,13 @@ struct _discord_message_commands_entry {
 };
 
 void
-discord_message_commands_init(struct discord_message_commands *cmds,
-                              struct logconf *conf)
+discord_message_commands_init(struct discord_message_commands *cmds)
 {
+    struct discord *client = CLIENT(cmds, commands);
     __chash_init(cmds, COMMANDS_TABLE);
 
-    logconf_branch(&cmds->conf, conf, "DISCORD_MESSAGE_COMMANDS");
+    cmds->logger =
+        logmod_get_logger(&client->logmod, "DISCORD_MESSAGE_COMMANDS");
 
     cmds->fallback = NULL;
     memset(&cmds->prefix, 0, sizeof(cmds->prefix));

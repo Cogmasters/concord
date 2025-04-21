@@ -124,9 +124,9 @@ discord_run(struct discord *client)
             discord_requestor_dispatch_responses(&client->rest.requestor);
         }
 
-        logconf_info(&client->conf,
-                     "Exits main gateway loop (code: %d, reason: %s)", code,
-                     discord_strerror(code, client));
+        logmod_log(INFO, client->logger,
+                   "Exits main gateway loop (code: %d, reason: %s)", code,
+                   discord_strerror(code, client));
 
         /* stop all pending requests in case of connection shutdown */
         if (true == discord_gateway_end(&client->gw)) break;
