@@ -1,8 +1,9 @@
 var structdiscord__component =
 [
+    [ "id", "structdiscord__component.html#a292aa9d6d7255e4aa5e1dfefdbf0780a", null ],
     [ "type", "structdiscord__component.html#a35503ea32c59eaad2cf0e389e0564dc8", null ],
     [ "custom_id", "structdiscord__component.html#ab28a3af8ee42311d1ac1f75da1d45c36", null ],
-    [ "disabled", "structdiscord__component.html#aef289819cd584601e589b35c25b2fe62", null ],
+    [ "sku_id", "structdiscord__component.html#a546fba52bbace5b89aab49db90148879", null ],
     [ "style", "structdiscord__component.html#ab4c4e6fc04489f9073625a255f07f353", null ],
     [ "label", "structdiscord__component.html#a7e78cfc0d7bcb493cd6dbb0684d61886", null ],
     [ "emoji", "structdiscord__component.html#a6623fd5c27ecd1f6550415599f44c10e", null ],
@@ -15,5 +16,16 @@ var structdiscord__component =
     [ "min_length", "structdiscord__component.html#afce2b727ea5e5fee984ceca35cd70f71", null ],
     [ "max_length", "structdiscord__component.html#a27d831f2e753f4c085d57e64caa0077a", null ],
     [ "required", "structdiscord__component.html#a7977bfd67a3df9e947450668e10dec7b", null ],
-    [ "value", "structdiscord__component.html#a0a41a275645eada59c0da37a2dd49900", null ]
+    [ "value", "structdiscord__component.html#a0a41a275645eada59c0da37a2dd49900", null ],
+    [ "disabled", "structdiscord__component.html#aef289819cd584601e589b35c25b2fe62", null ],
+    [ "accessory", "structdiscord__component.html#a54b85e2f8d35894b986edd0cadf752ab", null ],
+    [ "media", "structdiscord__component.html#a9ef27db5550048064b59780075db6b95", null ],
+    [ "content", "structdiscord__component.html#affec749f8b5a1cf1014c92eff44fa3b8", null ],
+    [ "description", "structdiscord__component.html#a818c3ee054ea8fdbc72f279daead74b3", null ],
+    [ "spoiler", "structdiscord__component.html#abd9525891d5e9e1ce4d95ec5bc9b40d6", null ],
+    [ "items", "structdiscord__component.html#a5705b96e61f5365e50928d619cf52ee5", null ],
+    [ "file", "structdiscord__component.html#a1cb5c0dd70b72b2a8e9325c64ee16d8b", null ],
+    [ "divider", "structdiscord__component.html#a78878616c4119aa20fc8dbc9fbee7d93", null ],
+    [ "spacing", "structdiscord__component.html#a5c9feb08b2c103aec78db117fbea624f", null ],
+    [ "color", "structdiscord__component.html#a9e02e435b888d9fe6e358527d992a0b6", null ]
 ];

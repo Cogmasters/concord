@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('structdiscord__reaction.html',''); ini
 <div class="dynheader">
 Collaboration diagram for discord_reaction:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__reaction__coll__graph.svg" width="140" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__reaction__coll__graph.svg" width="320" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -105,10 +105,16 @@ Collaboration diagram for discord_reaction:</div>
 Data Fields</h2></td></tr>
 <tr class="memitem:a9e4f2cbc5b263a07d20c10c3bc7e36b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__reaction.html#a9e4f2cbc5b263a07d20c10c3bc7e36b9">count</a></td></tr>
 <tr class="separator:a9e4f2cbc5b263a07d20c10c3bc7e36b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebbfcc0d92ddcb1e7560a4d6db2e0c2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__reaction__count__details.html">discord_reaction_count_details</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__reaction.html#a8ebbfcc0d92ddcb1e7560a4d6db2e0c2">count_details</a></td></tr>
+<tr class="separator:a8ebbfcc0d92ddcb1e7560a4d6db2e0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dbaea0abada92e675325a75b0df6b9c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__reaction.html#a0dbaea0abada92e675325a75b0df6b9c">me</a></td></tr>
 <tr class="separator:a0dbaea0abada92e675325a75b0df6b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab40db536ed54620db0b5a2cc376a4836"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__reaction.html#ab40db536ed54620db0b5a2cc376a4836">me_burst</a></td></tr>
+<tr class="separator:ab40db536ed54620db0b5a2cc376a4836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed1ec8db0afc271f3ddbb4380762ae54"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__reaction.html#aed1ec8db0afc271f3ddbb4380762ae54">emoji</a></td></tr>
 <tr class="separator:aed1ec8db0afc271f3ddbb4380762ae54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7a295a9943219c966f19a42788bd05b"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__reaction.html#ab7a295a9943219c966f19a42788bd05b">burst_colors</a></td></tr>
+<tr class="separator:ab7a295a9943219c966f19a42788bd05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="a9e4f2cbc5b263a07d20c10c3bc7e36b9" name="a9e4f2cbc5b263a07d20c10c3bc7e36b9"></a>
@@ -123,6 +129,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >times this emoji has been used to react </p>
+
+</div>
+</div>
+<a id="a8ebbfcc0d92ddcb1e7560a4d6db2e0c2" name="a8ebbfcc0d92ddcb1e7560a4d6db2e0c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ebbfcc0d92ddcb1e7560a4d6db2e0c2">&#9670;&nbsp;</a></span>count_details</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__reaction__count__details.html">discord_reaction_count_details</a>* discord_reaction::count_details</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >breakdown of normal and super reaction counts for the associated emoji </p>
 
 </div>
 </div>
@@ -141,6 +162,21 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="ab40db536ed54620db0b5a2cc376a4836" name="ab40db536ed54620db0b5a2cc376a4836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab40db536ed54620db0b5a2cc376a4836">&#9670;&nbsp;</a></span>me_burst</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_reaction::me_burst</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >whether the current user super-reacted using this emoji </p>
+
+</div>
+</div>
 <a id="aed1ec8db0afc271f3ddbb4380762ae54" name="aed1ec8db0afc271f3ddbb4380762ae54"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed1ec8db0afc271f3ddbb4380762ae54">&#9670;&nbsp;</a></span>emoji</h2>
 
@@ -153,6 +189,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >emoji information </p>
+
+</div>
+</div>
+<a id="ab7a295a9943219c966f19a42788bd05b" name="ab7a295a9943219c966f19a42788bd05b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7a295a9943219c966f19a42788bd05b">&#9670;&nbsp;</a></span>burst_colors</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* discord_reaction::burst_colors</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >HEX colors used for super reaction </p>
 
 </div>
 </div>

@@ -121,6 +121,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a065a3f860696847ffd9f675e976b1925"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c7adafb00478f6e77360e428d2951c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__message.html#a3c7adafb00478f6e77360e428d2951c2">flags</a></td></tr>
 <tr class="separator:a3c7adafb00478f6e77360e428d2951c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02c1aa70f4bf091feb5b33ac9642c67e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__create__message.html#a02c1aa70f4bf091feb5b33ac9642c67e">enforce_nonce</a></td></tr>
+<tr class="separator:a02c1aa70f4bf091feb5b33ac9642c67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
@@ -284,6 +286,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p ><a class="el" href="group__DiscordAPIChannelMessageFlags.html">Message flags</a> combined as a bitfield (only <code>SUPPRESS_EMBEDS</code> can be set) </p>
+
+</div>
+</div>
+<a id="a02c1aa70f4bf091feb5b33ac9642c67e" name="a02c1aa70f4bf091feb5b33ac9642c67e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02c1aa70f4bf091feb5b33ac9642c67e">&#9670;&nbsp;</a></span>enforce_nonce</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_create_message::enforce_nonce</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >If true and nonce is present, it will be checked for uniqueness in the past few minutes. </p>
 
 </div>
 </div>

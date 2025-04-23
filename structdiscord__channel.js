@@ -16,6 +16,7 @@ var structdiscord__channel =
     [ "icon", "structdiscord__channel.html#a564314bbe8ddd958787c9568e5482fb2", null ],
     [ "owner_id", "structdiscord__channel.html#a1674586c5acece2b9d3d6d04f4b0ade3", null ],
     [ "application_id", "structdiscord__channel.html#a6493baae7316d5bce5a1312214a0a73c", null ],
+    [ "managed", "structdiscord__channel.html#a9f88329f446b0cfd887c93827db107ff", null ],
     [ "parent_id", "structdiscord__channel.html#a7748e3a6748385d7013c0d2c5caa9dc2", null ],
     [ "last_pin_timestamp", "structdiscord__channel.html#aa8e72f02043508f3bc9f3b6eb3e6f842", null ],
     [ "rtc_region", "structdiscord__channel.html#ab5ae5d7ef4e34e5fc4fc7439f13ff2ec", null ],
@@ -25,5 +26,13 @@ var structdiscord__channel =
     [ "thread_metadata", "structdiscord__channel.html#a646b4e712f05c59a18c7ba044c02bb71", null ],
     [ "member", "structdiscord__channel.html#a005a619e397ed6f05c366aa2378d1a5d", null ],
     [ "default_auto_archive_duration", "structdiscord__channel.html#a0b4ffc3b1f46b00fd14458f858572b01", null ],
-    [ "permissions", "structdiscord__channel.html#ad7a6f64334ff3a943f80b47208df0deb", null ]
+    [ "permissions", "structdiscord__channel.html#ad7a6f64334ff3a943f80b47208df0deb", null ],
+    [ "flags", "structdiscord__channel.html#a2c0b1311a60f03d9a8f8c38acd936ea0", null ],
+    [ "total_message_sent", "structdiscord__channel.html#a9ae6abdd35748b2fa611da1b6d524edc", null ],
+    [ "available_tags", "structdiscord__channel.html#a9ec095edc887e0d6e1fa1dc1d73ee2f2", null ],
+    [ "applied_tags", "structdiscord__channel.html#acdc2e490911f09a39bfc692b91f17411", null ],
+    [ "default_reaction_emoji", "structdiscord__channel.html#a5153d8782ad58f8613afc5c18ef96572", null ],
+    [ "default_thread_rate_limit_per_user", "structdiscord__channel.html#a7080dc91dc522dd885591ec25a59dd86", null ],
+    [ "default_sort_order", "structdiscord__channel.html#a61e9fc8aae1f49c13816352f3cca3d35", null ],
+    [ "default_forum_layout", "structdiscord__channel.html#acb9fab8a64742c673b0f1d7257fa5508", null ]
 ];

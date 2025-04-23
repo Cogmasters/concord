@@ -2,7 +2,9 @@ var group__DiscordAPIChannel =
 [
     [ "Embed builder", "group__DiscordAPIChannelEmbed.html", "group__DiscordAPIChannelEmbed" ],
     [ "Helper functions", "group__DiscordAPIChannelHelper.html", "group__DiscordAPIChannelHelper" ],
+    [ "Message flags", "group__DiscordAPIChannelFlags.html", "group__DiscordAPIChannelFlags" ],
     [ "Message flags", "group__DiscordAPIChannelMessageFlags.html", "group__DiscordAPIChannelMessageFlags" ],
+    [ "Attachment flags", "group__DiscordAPIChannelAttachmentFlags.html", "group__DiscordAPIChannelAttachmentFlags" ],
     [ "discord_ret_channel", "structdiscord__ret__channel.html", [
       [ "data", "structdiscord__ret__channel.html#a0d6b4df0e2dc6950ed4a6cc3f1922bcb", null ],
       [ "cleanup", "structdiscord__ret__channel.html#a404da6422e1a9f54ee3c2efedec484f3", null ],

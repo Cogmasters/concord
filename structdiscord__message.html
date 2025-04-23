@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('structdiscord__message.html',''); init
 <div class="dynheader">
 Collaboration diagram for discord_message:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__message__coll__graph.svg" width="1363" height="795"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__message__coll__graph.svg" width="1392" height="942"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -163,6 +163,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a69d5c1cd30980d580937f87330427698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76f862cd00b8096b56ad0cf2d86d9fa2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__sticker__items.html">discord_sticker_items</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a76f862cd00b8096b56ad0cf2d86d9fa2">sticker_items</a></td></tr>
 <tr class="separator:a76f862cd00b8096b56ad0cf2d86d9fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab539f27c92d2050b0333b5ff3fa714b6"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__stickers.html">discord_stickers</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#ab539f27c92d2050b0333b5ff3fa714b6">stickers</a></td></tr>
+<tr class="separator:ab539f27c92d2050b0333b5ff3fa714b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95bd637490a71a1f6f5b050fe53127fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a95bd637490a71a1f6f5b050fe53127fd">position</a></td></tr>
+<tr class="separator:a95bd637490a71a1f6f5b050fe53127fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20afa57524fe521467d64fd19893727"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__role__subscription__data.html">discord_role_subscription_data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#ad20afa57524fe521467d64fd19893727">role_subscription_data</a></td></tr>
+<tr class="separator:ad20afa57524fe521467d64fd19893727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26dfb37462965f0ab2e2d9735cf221de"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__resolved__data.html">discord_resolved_data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__message.html#a26dfb37462965f0ab2e2d9735cf221de">resolved</a></td></tr>
+<tr class="separator:a26dfb37462965f0ab2e2d9735cf221de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
@@ -651,6 +659,66 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >sent if the message contains stickers </p>
+
+</div>
+</div>
+<a id="ab539f27c92d2050b0333b5ff3fa714b6" name="ab539f27c92d2050b0333b5ff3fa714b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab539f27c92d2050b0333b5ff3fa714b6">&#9670;&nbsp;</a></span>stickers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__stickers.html">discord_stickers</a>* discord_message::stickers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>use <code>sticker_items</code> instead </dd></dl>
+
+</div>
+</div>
+<a id="a95bd637490a71a1f6f5b050fe53127fd" name="a95bd637490a71a1f6f5b050fe53127fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95bd637490a71a1f6f5b050fe53127fd">&#9670;&nbsp;</a></span>position</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_message::position</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >A generally increasing integer that represents the approximate position of the message in a thread </p>
+
+</div>
+</div>
+<a id="ad20afa57524fe521467d64fd19893727" name="ad20afa57524fe521467d64fd19893727"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20afa57524fe521467d64fd19893727">&#9670;&nbsp;</a></span>role_subscription_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__role__subscription__data.html">discord_role_subscription_data</a>* discord_message::role_subscription_data</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >data of the role subscription purchase or renewal that prompted this ROLE_SUBSCRIPTION_PURCHASE message </p>
+
+</div>
+</div>
+<a id="a26dfb37462965f0ab2e2d9735cf221de" name="a26dfb37462965f0ab2e2d9735cf221de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26dfb37462965f0ab2e2d9735cf221de">&#9670;&nbsp;</a></span>resolved</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__resolved__data.html">discord_resolved_data</a>* discord_message::resolved</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >data for users, members, channels, and roles in the message's auto-populated select menus </p>
 
 </div>
 </div>

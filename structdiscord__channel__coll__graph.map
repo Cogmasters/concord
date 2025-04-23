@@ -1,7 +1,10 @@
 <map id="discord_channel" name="discord_channel">
-<area shape="rect" id="node1" title=" " alt="" coords="269,95,396,121"/>
-<area shape="rect" id="node2" href="$structdiscord__overwrites.html" title=" " alt="" coords="5,5,151,32"/>
-<area shape="rect" id="node3" href="$structdiscord__users.html" title=" " alt="" coords="191,5,301,32"/>
-<area shape="rect" id="node4" href="$structdiscord__thread__metadata.html" title=" " alt="" coords="325,5,513,32"/>
-<area shape="rect" id="node5" href="$structdiscord__thread__member.html" title=" " alt="" coords="537,5,717,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="396,161,523,188"/>
+<area shape="rect" id="node2" href="$structdiscord__overwrites.html" title=" " alt="" coords="27,9,172,36"/>
+<area shape="rect" id="node3" href="$structdiscord__users.html" title=" " alt="" coords="44,60,155,87"/>
+<area shape="rect" id="node4" href="$structdiscord__thread__metadata.html" title=" " alt="" coords="5,111,193,137"/>
+<area shape="rect" id="node5" href="$structdiscord__thread__member.html" title=" " alt="" coords="9,161,189,188"/>
+<area shape="rect" id="node6" href="$structdiscord__thread__tags.html" title=" " alt="" coords="23,212,176,239"/>
+<area shape="rect" id="node7" href="$structsnowflakes.html" title=" " alt="" coords="52,263,147,289"/>
+<area shape="rect" id="node8" href="$structdiscord__thread__default__reaction.html" title=" " alt="" coords="14,314,185,355"/>
 </map>

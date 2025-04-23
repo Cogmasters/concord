@@ -119,6 +119,12 @@ Data Fields</h2></td></tr>
 <tr class="separator:a660081fc4e27f558f0052c644a9f0615"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc4c8cfae775278db3bcf3c7f7586df7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attachment.html#abc4c8cfae775278db3bcf3c7f7586df7">ephemeral</a></td></tr>
 <tr class="separator:abc4c8cfae775278db3bcf3c7f7586df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a952efdea5007f6fb2fa76485ffa7972d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attachment.html#a952efdea5007f6fb2fa76485ffa7972d">duration_secs</a></td></tr>
+<tr class="separator:a952efdea5007f6fb2fa76485ffa7972d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae770a69b2acf4e9762ff3f0aa61707f3"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attachment.html#ae770a69b2acf4e9762ff3f0aa61707f3">waveform</a></td></tr>
+<tr class="separator:ae770a69b2acf4e9762ff3f0aa61707f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5f3d0a977106963342690987c4bafca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__attachment.html#ae5f3d0a977106963342690987c4bafca">flags</a></td></tr>
+<tr class="separator:ae5f3d0a977106963342690987c4bafca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Field Documentation</h2>
 <a id="a04835644eda6a43e132dd7321299096a" name="a04835644eda6a43e132dd7321299096a"></a>
@@ -283,6 +289,51 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >whether this attachment is ephemeral </p>
+
+</div>
+</div>
+<a id="a952efdea5007f6fb2fa76485ffa7972d" name="a952efdea5007f6fb2fa76485ffa7972d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a952efdea5007f6fb2fa76485ffa7972d">&#9670;&nbsp;</a></span>duration_secs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_attachment::duration_secs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the duration of the audio file </p>
+
+</div>
+</div>
+<a id="ae770a69b2acf4e9762ff3f0aa61707f3" name="ae770a69b2acf4e9762ff3f0aa61707f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae770a69b2acf4e9762ff3f0aa61707f3">&#9670;&nbsp;</a></span>waveform</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* discord_attachment::waveform</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >base64 encoded bytearray representing a sampled waveform </p>
+
+</div>
+</div>
+<a id="ae5f3d0a977106963342690987c4bafca" name="ae5f3d0a977106963342690987c4bafca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5f3d0a977106963342690987c4bafca">&#9670;&nbsp;</a></span>flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> discord_attachment::flags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >attachment flags combined as a bitfield </p>
 
 </div>
 </div>

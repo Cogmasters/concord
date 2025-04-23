@@ -126,6 +126,12 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__select__options.html">discord_select_options</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__component__media.html">discord_component_media</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__component__item.html">discord_component_item</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__component__items.html">discord_component_items</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -138,10 +144,27 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ad6539677dbe0f162ab7f448aedc4552c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552c">discord_component_types</a> { <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca7757d541a7e5c21b2191a7e656470e93">DISCORD_COMPONENT_ACTION_ROW</a> = 1
+<tr class="memitem:ad6539677dbe0f162ab7f448aedc4552c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552c">discord_component_types</a> { <br />
+&#160;&#160;<a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca7757d541a7e5c21b2191a7e656470e93">DISCORD_COMPONENT_ACTION_ROW</a> = 1
 , <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca19caf222528f799a21a77ffd5cf6888e">DISCORD_COMPONENT_BUTTON</a> = 2
 , <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552caecc2c8835eaa4aa34cbf60ec8f05b17f">DISCORD_COMPONENT_SELECT_MENU</a> = 3
 , <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552cafc1136c4e554d567dd6368a47ba866e4">DISCORD_COMPONENT_TEXT_INPUT</a> = 4
+, <br />
+&#160;&#160;<a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552cada49a5ad54c468dd3f91ac3f4e5feb0f">DISCORD_COMPONENT_USER_SELECT</a> = 5
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552caeccb31fc8eadc174c8bb23570b122938">DISCORD_COMPONENT_ROLE_SELECT</a> = 6
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca214d5c171baef636c4291821f6207fbf">DISCORD_COMPONENT_MENTION_SELECT</a> = 7
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552cabbaa86ce4662f958d2c11f0503cfdc95">DISCORD_COMPONENT_CHANNEL_SELECT</a> = 8
+, <br />
+&#160;&#160;<a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca41f54686438cc4261da20ae48db23e33">DISCORD_COMPONENT_SECTION</a> = 9
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca5163c509d986abf37d3979626530325e">DISCORD_COMPONENT_TEXT_DISPLAY</a> = 10
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca56d2f0dd19110e2ec5a0f278aceeb223">DISCORD_COMPONENT_THUMBNAIL</a> = 11
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552cacea7eeb4e2bdce9223e6a0f3c0c7e07e">DISCORD_COMPONENT_MEDIA_GALLERY</a> = 12
+, <br />
+&#160;&#160;<a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552cace53bdb0ca29584aff6da2312eb75303">DISCORD_COMPONENT_FILE</a> = 13
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552caf00a6f7230385d62aaf7575935cb5bb1">DISCORD_COMPONENT_SEPARATOR</a> = 14
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552cac79d60f6e053fc0717364963f4b942ec">DISCORD_COMPONENT_CONTENT_INVENTORY_ENTRY</a> = 16
+, <a class="el" href="message__components_8h.html#ad6539677dbe0f162ab7f448aedc4552ca15f8f3db3ee4e7804af5a339fcd2b7c4">DISCORD_COMPONENT_CONTAINER</a> = 17
+<br />
  }</td></tr>
 <tr class="separator:ad6539677dbe0f162ab7f448aedc4552c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a1ed7aae34243c82aaad9498e8fc7a6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a6a1ed7aae34243c82aaad9498e8fc7a6">discord_component_styles</a> { <br />
@@ -156,6 +179,10 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a6a1ed7aae34243c82aaad9498e8fc7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe85a0cfdd9623e658c9196d2f069c05"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#afe85a0cfdd9623e658c9196d2f069c05">discord_component_spacing</a> { <a class="el" href="message__components_8h.html#afe85a0cfdd9623e658c9196d2f069c05a47686fe759488cc105eacd060ffe15d3">DISCORD_COMPONENT_SPACING_SMALL</a> = 1
+, <a class="el" href="message__components_8h.html#afe85a0cfdd9623e658c9196d2f069c05a4493ae855d5d67675bf9e56d01ae57dd">DISCORD_COMPONENT_SPACING_LARGE</a> = 2
+ }</td></tr>
+<tr class="separator:afe85a0cfdd9623e658c9196d2f069c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -167,6 +194,8 @@ Functions</h2></td></tr>
 <tr class="separator:aebbe06d50a05b3ea9db69f53d22e5208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3baeb346652218c36319d58f3cd044e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#ad3baeb346652218c36319d58f3cd044e">discord_select_options_cleanup</a> (struct <a class="el" href="structdiscord__select__options.html">discord_select_options</a> *self)</td></tr>
 <tr class="separator:ad3baeb346652218c36319d58f3cd044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d5dc9091df8d9ba341d2c78df4ca1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a32d5dc9091df8d9ba341d2c78df4ca1e">discord_component_items_cleanup</a> (struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *self)</td></tr>
+<tr class="separator:a32d5dc9091df8d9ba341d2c78df4ca1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa9c7b38b492eaf2c0f2e6037b45e41a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#afa9c7b38b492eaf2c0f2e6037b45e41a">discord_component_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__component.html">discord_component</a> *self)</td></tr>
 <tr class="separator:afa9c7b38b492eaf2c0f2e6037b45e41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa94e047d4f7433bbda6a079cfc3a1e71"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#aa94e047d4f7433bbda6a079cfc3a1e71">discord_component_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__component.html">discord_component</a> *self)</td></tr>
@@ -179,6 +208,10 @@ Functions</h2></td></tr>
 <tr class="separator:ab2fb5f1abe681bebbfa565daae0bea03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e0e251891947edd0675d1eef219ae8a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a2e0e251891947edd0675d1eef219ae8a">discord_select_options_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__select__options.html">discord_select_options</a> *self)</td></tr>
 <tr class="separator:a2e0e251891947edd0675d1eef219ae8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621788c502220f4a8f201dc8ab0b9752"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a621788c502220f4a8f201dc8ab0b9752">discord_component_items_from_jsmnf</a> (jsmnf_pair *root, const char *js, struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *self)</td></tr>
+<tr class="separator:a621788c502220f4a8f201dc8ab0b9752"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44946ee46c9eaab6fe33bad622be24bc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a44946ee46c9eaab6fe33bad622be24bc">discord_component_items_from_json</a> (const char buf[], size_t size, struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *self)</td></tr>
+<tr class="separator:a44946ee46c9eaab6fe33bad622be24bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bfe84da51b7e9f9b12d21619bbec7dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a0bfe84da51b7e9f9b12d21619bbec7dc">discord_component_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__component.html">discord_component</a> *self)</td></tr>
 <tr class="separator:a0bfe84da51b7e9f9b12d21619bbec7dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9e00e3d6a009800b223b41587ede417"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#aa9e00e3d6a009800b223b41587ede417">discord_component_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__component.html">discord_component</a> *self)</td></tr>
@@ -191,6 +224,10 @@ Functions</h2></td></tr>
 <tr class="separator:acbb42e5d9bfc0129eeb99f62b1af1277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a89eede08e8202497904ce195fe0d16"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a3a89eede08e8202497904ce195fe0d16">discord_select_options_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__select__options.html">discord_select_options</a> *self)</td></tr>
 <tr class="separator:a3a89eede08e8202497904ce195fe0d16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ab9715f67d05d678716ac7d02271789"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a4ab9715f67d05d678716ac7d02271789">discord_component_items_to_jsonb</a> (<a class="el" href="structjsonb.html">jsonb</a> *b, char buf[], size_t size, const struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *self)</td></tr>
+<tr class="separator:a4ab9715f67d05d678716ac7d02271789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4eb217b890b0a1ad2955d9d626464d80"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__components_8h.html#a4eb217b890b0a1ad2955d9d626464d80">discord_component_items_to_json</a> (char buf[], size_t size, const struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *self)</td></tr>
+<tr class="separator:a4eb217b890b0a1ad2955d9d626464d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
@@ -259,6 +296,38 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552cafc1136c4e554d567dd6368a47ba866e4" name="ad6539677dbe0f162ab7f448aedc4552cafc1136c4e554d567dd6368a47ba866e4"></a>DISCORD_COMPONENT_TEXT_INPUT&#160;</td><td class="fielddoc"><p >a text input object </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552cada49a5ad54c468dd3f91ac3f4e5feb0f" name="ad6539677dbe0f162ab7f448aedc4552cada49a5ad54c468dd3f91ac3f4e5feb0f"></a>DISCORD_COMPONENT_USER_SELECT&#160;</td><td class="fielddoc"><p >a select menu for users </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552caeccb31fc8eadc174c8bb23570b122938" name="ad6539677dbe0f162ab7f448aedc4552caeccb31fc8eadc174c8bb23570b122938"></a>DISCORD_COMPONENT_ROLE_SELECT&#160;</td><td class="fielddoc"><p >a select menu for roles </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552ca214d5c171baef636c4291821f6207fbf" name="ad6539677dbe0f162ab7f448aedc4552ca214d5c171baef636c4291821f6207fbf"></a>DISCORD_COMPONENT_MENTION_SELECT&#160;</td><td class="fielddoc"><p >a select menu for mentionables (users and roles) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552cabbaa86ce4662f958d2c11f0503cfdc95" name="ad6539677dbe0f162ab7f448aedc4552cabbaa86ce4662f958d2c11f0503cfdc95"></a>DISCORD_COMPONENT_CHANNEL_SELECT&#160;</td><td class="fielddoc"><p >a select menu for channels </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552ca41f54686438cc4261da20ae48db23e33" name="ad6539677dbe0f162ab7f448aedc4552ca41f54686438cc4261da20ae48db23e33"></a>DISCORD_COMPONENT_SECTION&#160;</td><td class="fielddoc"><p >a section component</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552ca5163c509d986abf37d3979626530325e" name="ad6539677dbe0f162ab7f448aedc4552ca5163c509d986abf37d3979626530325e"></a>DISCORD_COMPONENT_TEXT_DISPLAY&#160;</td><td class="fielddoc"><p >a text display component</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552ca56d2f0dd19110e2ec5a0f278aceeb223" name="ad6539677dbe0f162ab7f448aedc4552ca56d2f0dd19110e2ec5a0f278aceeb223"></a>DISCORD_COMPONENT_THUMBNAIL&#160;</td><td class="fielddoc"><p >a thumbnail component for a section component</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552cacea7eeb4e2bdce9223e6a0f3c0c7e07e" name="ad6539677dbe0f162ab7f448aedc4552cacea7eeb4e2bdce9223e6a0f3c0c7e07e"></a>DISCORD_COMPONENT_MEDIA_GALLERY&#160;</td><td class="fielddoc"><p >a media gallery component</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552cace53bdb0ca29584aff6da2312eb75303" name="ad6539677dbe0f162ab7f448aedc4552cace53bdb0ca29584aff6da2312eb75303"></a>DISCORD_COMPONENT_FILE&#160;</td><td class="fielddoc"><p >a file display component</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552caf00a6f7230385d62aaf7575935cb5bb1" name="ad6539677dbe0f162ab7f448aedc4552caf00a6f7230385d62aaf7575935cb5bb1"></a>DISCORD_COMPONENT_SEPARATOR&#160;</td><td class="fielddoc"><p >a separator component</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552cac79d60f6e053fc0717364963f4b942ec" name="ad6539677dbe0f162ab7f448aedc4552cac79d60f6e053fc0717364963f4b942ec"></a>DISCORD_COMPONENT_CONTENT_INVENTORY_ENTRY&#160;</td><td class="fielddoc"><p >a content inventory entry</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ad6539677dbe0f162ab7f448aedc4552ca15f8f3db3ee4e7804af5a339fcd2b7c4" name="ad6539677dbe0f162ab7f448aedc4552ca15f8f3db3ee4e7804af5a339fcd2b7c4"></a>DISCORD_COMPONENT_CONTAINER&#160;</td><td class="fielddoc"><p >a container for other components</p>
+<dl class="section warning"><dt>Warning</dt><dd>This type is only available when using components v2 </dd></dl>
+</td></tr>
 </table>
 
 </div>
@@ -288,6 +357,26 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a6a1ed7aae34243c82aaad9498e8fc7a6a671744cf02963605e19a3695be8471a5" name="a6a1ed7aae34243c82aaad9498e8fc7a6a671744cf02963605e19a3695be8471a5"></a>DISCORD_TEXT_SHORT&#160;</td><td class="fielddoc"><p >a single-line input </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a6a1ed7aae34243c82aaad9498e8fc7a6a37e1d3a70b57dc69e1f429c18e541b92" name="a6a1ed7aae34243c82aaad9498e8fc7a6a37e1d3a70b57dc69e1f429c18e541b92"></a>DISCORD_TEXT_PARAGRAPH&#160;</td><td class="fielddoc"><p >a multi-line input </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="afe85a0cfdd9623e658c9196d2f069c05" name="afe85a0cfdd9623e658c9196d2f069c05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe85a0cfdd9623e658c9196d2f069c05">&#9670;&nbsp;</a></span>discord_component_spacing</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="message__components_8h.html#afe85a0cfdd9623e658c9196d2f069c05">discord_component_spacing</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afe85a0cfdd9623e658c9196d2f069c05a47686fe759488cc105eacd060ffe15d3" name="afe85a0cfdd9623e658c9196d2f069c05a47686fe759488cc105eacd060ffe15d3"></a>DISCORD_COMPONENT_SPACING_SMALL&#160;</td><td class="fielddoc"><p >small spacing size </p>
+</td></tr>
+<tr><td class="fieldname"><a id="afe85a0cfdd9623e658c9196d2f069c05a4493ae855d5d67675bf9e56d01ae57dd" name="afe85a0cfdd9623e658c9196d2f069c05a4493ae855d5d67675bf9e56d01ae57dd"></a>DISCORD_COMPONENT_SPACING_LARGE&#160;</td><td class="fielddoc"><p >large spacing size </p>
 </td></tr>
 </table>
 
@@ -360,6 +449,24 @@ Functions</h2></td></tr>
           <td class="memname">void discord_select_options_cleanup </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__select__options.html">discord_select_options</a> *&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32d5dc9091df8d9ba341d2c78df4ca1e" name="a32d5dc9091df8d9ba341d2c78df4ca1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32d5dc9091df8d9ba341d2c78df4ca1e">&#9670;&nbsp;</a></span>discord_component_items_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_component_items_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
           <td></td>
         </tr>
@@ -562,6 +669,74 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">struct <a class="el" href="structdiscord__select__options.html">discord_select_options</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a621788c502220f4a8f201dc8ab0b9752" name="a621788c502220f4a8f201dc8ab0b9752"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a621788c502220f4a8f201dc8ab0b9752">&#9670;&nbsp;</a></span>discord_component_items_from_jsmnf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long discord_component_items_from_jsmnf </td>
+          <td>(</td>
+          <td class="paramtype">jsmnf_pair *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>js</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44946ee46c9eaab6fe33bad622be24bc" name="a44946ee46c9eaab6fe33bad622be24bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44946ee46c9eaab6fe33bad622be24bc">&#9670;&nbsp;</a></span>discord_component_items_from_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_component_items_from_json </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *&#160;</td>
           <td class="paramname"><em>self</em>&#160;</td>
         </tr>
         <tr>
@@ -784,6 +959,80 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const struct <a class="el" href="structdiscord__select__options.html">discord_select_options</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ab9715f67d05d678716ac7d02271789" name="a4ab9715f67d05d678716ac7d02271789"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ab9715f67d05d678716ac7d02271789">&#9670;&nbsp;</a></span>discord_component_items_to_jsonb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> discord_component_items_to_jsonb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *&#160;</td>
+          <td class="paramname"><em>self</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4eb217b890b0a1ad2955d9d626464d80" name="a4eb217b890b0a1ad2955d9d626464d80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4eb217b890b0a1ad2955d9d626464d80">&#9670;&nbsp;</a></span>discord_component_items_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t discord_component_items_to_json </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>buf</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structdiscord__component__items.html">discord_component_items</a> *&#160;</td>
           <td class="paramname"><em>self</em>&#160;</td>
         </tr>
         <tr>

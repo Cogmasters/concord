@@ -29,5 +29,9 @@ var structdiscord__message =
     [ "interaction", "structdiscord__message.html#a61201eedef29ca05775190c82487d69a", null ],
     [ "thread", "structdiscord__message.html#a0cf481b0e351625aaf1105b8110525a6", null ],
     [ "components", "structdiscord__message.html#a69d5c1cd30980d580937f87330427698", null ],
-    [ "sticker_items", "structdiscord__message.html#a76f862cd00b8096b56ad0cf2d86d9fa2", null ]
+    [ "sticker_items", "structdiscord__message.html#a76f862cd00b8096b56ad0cf2d86d9fa2", null ],
+    [ "stickers", "structdiscord__message.html#ab539f27c92d2050b0333b5ff3fa714b6", null ],
+    [ "position", "structdiscord__message.html#a95bd637490a71a1f6f5b050fe53127fd", null ],
+    [ "role_subscription_data", "structdiscord__message.html#ad20afa57524fe521467d64fd19893727", null ],
+    [ "resolved", "structdiscord__message.html#a26dfb37462965f0ab2e2d9735cf221de", null ]
 ];

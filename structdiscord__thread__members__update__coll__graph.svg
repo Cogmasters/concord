@@ -34,18 +34,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="72.5,-67.86 72.4,-78.45 79.08,-70.23 72.5,-67.86"/>
 <text text-anchor="middle" x="129.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00"> added_members</text>
 </g>
-<!-- Node4 -->
+<!-- Node6 -->
 <g id="node3" class="node">
-<title>Node4</title>
+<title>Node6</title>
 <g id="a_node3"><a xlink:href="structsnowflakes.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="black" points="158.5,-78.5 158.5,-97.5 229.5,-97.5 229.5,-78.5 158.5,-78.5"/>
 <text text-anchor="middle" x="194" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">snowflakes</text>
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node1 -->
+<!-- Node6&#45;&gt;Node1 -->
 <g id="edge2" class="edge">
-<title>Node4&#45;&gt;Node1</title>
+<title>Node6&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M185.47,-69.25C181.82,-62.55 177.19,-55.08 172,-49 166.31,-42.33 159.11,-36.01 152.4,-30.74"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="182.42,-70.97 190.09,-78.28 188.65,-67.78 182.42,-70.97"/>
 <text text-anchor="middle" x="235.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00"> removed_member_ids</text>

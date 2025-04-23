@@ -98,18 +98,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="122.41,-45.59 112.27,-48.66 122.11,-52.58 122.41,-45.59"/>
 <text text-anchor="middle" x="219.5" y="-75" font-family="Helvetica,sans-Serif" font-size="10.00"> users</text>
 </g>
-<!-- Node23 -->
+<!-- Node28 -->
 <g id="node7" class="node">
-<title>Node23</title>
+<title>Node28</title>
 <g id="a_node7"><a xlink:href="structdiscord__webhooks.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="17,-0.5 17,-19.5 124,-19.5 124,-0.5 17,-0.5"/>
 <text text-anchor="middle" x="70.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_webhooks</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node1 -->
+<!-- Node28&#45;&gt;Node1 -->
 <g id="edge6" class="edge">
-<title>Node23&#45;&gt;Node1</title>
+<title>Node28&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M134.41,-7.28C177.46,-7.88 234.72,-13.66 280,-36 308.05,-49.84 331.24,-79.99 341.82,-95.45"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="134.36,-3.78 124.34,-7.23 134.32,-10.78 134.36,-3.78"/>
 <text text-anchor="middle" x="219.5" y="-39" font-family="Helvetica,sans-Serif" font-size="10.00"> webhooks</text>

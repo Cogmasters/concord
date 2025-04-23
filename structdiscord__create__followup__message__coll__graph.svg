@@ -66,18 +66,18 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="320.95,-70.91 328.48,-78.36 327.24,-67.84 320.95,-70.91"/>
 <text text-anchor="middle" x="350" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00"> components</text>
 </g>
-<!-- Node21 -->
+<!-- Node24 -->
 <g id="node5" class="node">
-<title>Node21</title>
+<title>Node24</title>
 <g id="a_node5"><a xlink:href="structdiscord__attachments.html" target="_top" xlink:title=" ">
 <polygon fill="none" stroke="red" points="408.5,-78.5 408.5,-97.5 527.5,-97.5 527.5,-78.5 408.5,-78.5"/>
 <text text-anchor="middle" x="468" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">discord_attachments</text>
 </a>
 </g>
 </g>
-<!-- Node21&#45;&gt;Node1 -->
+<!-- Node24&#45;&gt;Node1 -->
 <g id="edge4" class="edge">
-<title>Node21&#45;&gt;Node1</title>
+<title>Node24&#45;&gt;Node1</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M442.54,-73.71C426.6,-65.77 405.47,-55.92 386,-49 365.91,-41.86 343.52,-35.62 323.16,-30.57"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="441.23,-76.97 451.73,-78.36 444.39,-70.72 441.23,-76.97"/>
 <text text-anchor="middle" x="443.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00"> attachments</text>

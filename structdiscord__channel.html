@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('structdiscord__channel.html',''); init
 <div class="dynheader">
 Collaboration diagram for discord_channel:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__channel__coll__graph.svg" width="723" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__channel__coll__graph.svg" width="528" height="362"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -135,6 +135,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a1674586c5acece2b9d3d6d04f4b0ade3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6493baae7316d5bce5a1312214a0a73c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a6493baae7316d5bce5a1312214a0a73c">application_id</a></td></tr>
 <tr class="separator:a6493baae7316d5bce5a1312214a0a73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f88329f446b0cfd887c93827db107ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a9f88329f446b0cfd887c93827db107ff">managed</a></td></tr>
+<tr class="separator:a9f88329f446b0cfd887c93827db107ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7748e3a6748385d7013c0d2c5caa9dc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a7748e3a6748385d7013c0d2c5caa9dc2">parent_id</a></td></tr>
 <tr class="separator:a7748e3a6748385d7013c0d2c5caa9dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8e72f02043508f3bc9f3b6eb3e6f842"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#aa8e72f02043508f3bc9f3b6eb3e6f842">last_pin_timestamp</a></td></tr>
@@ -155,6 +157,22 @@ Data Fields</h2></td></tr>
 <tr class="separator:a0b4ffc3b1f46b00fd14458f858572b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7a6f64334ff3a943f80b47208df0deb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#ad7a6f64334ff3a943f80b47208df0deb">permissions</a></td></tr>
 <tr class="separator:ad7a6f64334ff3a943f80b47208df0deb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c0b1311a60f03d9a8f8c38acd936ea0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a2c0b1311a60f03d9a8f8c38acd936ea0">flags</a></td></tr>
+<tr class="separator:a2c0b1311a60f03d9a8f8c38acd936ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ae6abdd35748b2fa611da1b6d524edc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a9ae6abdd35748b2fa611da1b6d524edc">total_message_sent</a></td></tr>
+<tr class="separator:a9ae6abdd35748b2fa611da1b6d524edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ec095edc887e0d6e1fa1dc1d73ee2f2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__thread__tags.html">discord_thread_tags</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a9ec095edc887e0d6e1fa1dc1d73ee2f2">available_tags</a></td></tr>
+<tr class="separator:a9ec095edc887e0d6e1fa1dc1d73ee2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdc2e490911f09a39bfc692b91f17411"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structsnowflakes.html">snowflakes</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#acdc2e490911f09a39bfc692b91f17411">applied_tags</a></td></tr>
+<tr class="separator:acdc2e490911f09a39bfc692b91f17411"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5153d8782ad58f8613afc5c18ef96572"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__thread__default__reaction.html">discord_thread_default_reaction</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a5153d8782ad58f8613afc5c18ef96572">default_reaction_emoji</a></td></tr>
+<tr class="separator:a5153d8782ad58f8613afc5c18ef96572"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7080dc91dc522dd885591ec25a59dd86"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a7080dc91dc522dd885591ec25a59dd86">default_thread_rate_limit_per_user</a></td></tr>
+<tr class="separator:a7080dc91dc522dd885591ec25a59dd86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61e9fc8aae1f49c13816352f3cca3d35"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="docs_2api_2channel_8h.html#a10b4e93ba50d6ab1202ace7e8795ff6e">discord_sort_order_types</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#a61e9fc8aae1f49c13816352f3cca3d35">default_sort_order</a></td></tr>
+<tr class="separator:a61e9fc8aae1f49c13816352f3cca3d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb9fab8a64742c673b0f1d7257fa5508"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="docs_2api_2channel_8h.html#afb490ae92676a5cb0b000f46425d267c">discord_forum_layout_types</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__channel.html#acb9fab8a64742c673b0f1d7257fa5508">default_forum_layout</a></td></tr>
+<tr class="separator:acb9fab8a64742c673b0f1d7257fa5508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><b>Public methods</b></p><ul>
@@ -424,6 +442,21 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="a9f88329f446b0cfd887c93827db107ff" name="a9f88329f446b0cfd887c93827db107ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f88329f446b0cfd887c93827db107ff">&#9670;&nbsp;</a></span>managed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool discord_channel::managed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >for group DM channels: whether the channel is managed by an application via the gdm.join OAuth2 scope </p>
+
+</div>
+</div>
 <a id="a7748e3a6748385d7013c0d2c5caa9dc2" name="a7748e3a6748385d7013c0d2c5caa9dc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7748e3a6748385d7013c0d2c5caa9dc2">&#9670;&nbsp;</a></span>parent_id</h2>
 
@@ -571,6 +604,126 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >computed permissions for the invoking user in the channel, including overwrites, only included when part of the <code>resolved</code> data received on a application command interaction </p>
+
+</div>
+</div>
+<a id="a2c0b1311a60f03d9a8f8c38acd936ea0" name="a2c0b1311a60f03d9a8f8c38acd936ea0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c0b1311a60f03d9a8f8c38acd936ea0">&#9670;&nbsp;</a></span>flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> discord_channel::flags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >channel flags combined as a bitfield </p>
+
+</div>
+</div>
+<a id="a9ae6abdd35748b2fa611da1b6d524edc" name="a9ae6abdd35748b2fa611da1b6d524edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ae6abdd35748b2fa611da1b6d524edc">&#9670;&nbsp;</a></span>total_message_sent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_channel::total_message_sent</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >number of messages ever sent in a thread </p>
+
+</div>
+</div>
+<a id="a9ec095edc887e0d6e1fa1dc1d73ee2f2" name="a9ec095edc887e0d6e1fa1dc1d73ee2f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ec095edc887e0d6e1fa1dc1d73ee2f2">&#9670;&nbsp;</a></span>available_tags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__thread__tags.html">discord_thread_tags</a>* discord_channel::available_tags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the set of tags that can be used in a GUILD_FORUM or a GUILD_MEDIA channel </p>
+
+</div>
+</div>
+<a id="acdc2e490911f09a39bfc692b91f17411" name="acdc2e490911f09a39bfc692b91f17411"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdc2e490911f09a39bfc692b91f17411">&#9670;&nbsp;</a></span>applied_tags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structsnowflakes.html">snowflakes</a>* discord_channel::applied_tags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the IDs of the set of tags that have been applied to a thread in a GUILD_FORUM or a GUILD_MEDIA channel </p>
+
+</div>
+</div>
+<a id="a5153d8782ad58f8613afc5c18ef96572" name="a5153d8782ad58f8613afc5c18ef96572"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5153d8782ad58f8613afc5c18ef96572">&#9670;&nbsp;</a></span>default_reaction_emoji</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structdiscord__thread__default__reaction.html">discord_thread_default_reaction</a>* discord_channel::default_reaction_emoji</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the emoji to show in the add reaction button on a thread in a GUILD_FORUM or a GUILD_MEDIA channel </p>
+
+</div>
+</div>
+<a id="a7080dc91dc522dd885591ec25a59dd86" name="a7080dc91dc522dd885591ec25a59dd86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7080dc91dc522dd885591ec25a59dd86">&#9670;&nbsp;</a></span>default_thread_rate_limit_per_user</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int discord_channel::default_thread_rate_limit_per_user</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the initial rate_limit_per_user to set on newly created threads in a channel </p>
+
+</div>
+</div>
+<a id="a61e9fc8aae1f49c13816352f3cca3d35" name="a61e9fc8aae1f49c13816352f3cca3d35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61e9fc8aae1f49c13816352f3cca3d35">&#9670;&nbsp;</a></span>default_sort_order</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="docs_2api_2channel_8h.html#a10b4e93ba50d6ab1202ace7e8795ff6e">discord_sort_order_types</a> discord_channel::default_sort_order</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >the default sort order type used to order posts in GUILD_FORUM and GUILD_MEDIA channels </p>
+
+</div>
+</div>
+<a id="acb9fab8a64742c673b0f1d7257fa5508" name="acb9fab8a64742c673b0f1d7257fa5508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb9fab8a64742c673b0f1d7257fa5508">&#9670;&nbsp;</a></span>default_forum_layout</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="docs_2api_2channel_8h.html#afb490ae92676a5cb0b000f46425d267c">discord_forum_layout_types</a> discord_channel::default_forum_layout</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >he default forum layout view used to display posts in GUILD_FORUM channels </p>
 
 </div>
 </div>

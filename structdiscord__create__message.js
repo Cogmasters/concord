@@ -8,5 +8,6 @@ var structdiscord__create__message =
     [ "components", "structdiscord__create__message.html#aab6197d571cb69f0259186a071a35fd9", null ],
     [ "sticker_ids", "structdiscord__create__message.html#af94365379ee5f65c72917fe2caa3eed2", null ],
     [ "attachments", "structdiscord__create__message.html#a065a3f860696847ffd9f675e976b1925", null ],
-    [ "flags", "structdiscord__create__message.html#a3c7adafb00478f6e77360e428d2951c2", null ]
+    [ "flags", "structdiscord__create__message.html#a3c7adafb00478f6e77360e428d2951c2", null ],
+    [ "enforce_nonce", "structdiscord__create__message.html#a02c1aa70f4bf091feb5b33ac9642c67e", null ]
 ];
