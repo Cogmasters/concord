@@ -169,6 +169,55 @@ Alternatively, you can use an AUR helper:
 yay -S concord-git
 ```
 
+#### Lix/Nix/Nixos
+
+Flake file
+```nix
+{
+  description = "Concord build flake";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  };
+
+  outputs = { self, nixpkgs }: {
+    packages.x86_64-linux.concord = with nixpkgs.legacyPackages.x86_64-linux; stdenv.mkDerivation {
+      name = "concord";
+      nativeBuildInputs = [ pkg-config ];
+      buildInputs = [
+        curl
+      ];
+      src = pkgs.fetchFromGitHub {
+        owner = "cogmasters";
+        repo = "concord";
+        rev = "dev";
+        hash = "sha256-j2yXpaxOWELRiSLZco8xWaobs/2WD5IfKn7gJPl7B30=";
+      };
+      installPhase = ''
+        mkdir -pv $out/usr/local
+	mkdir -pv $out/usr/share
+	make install PREFIX="$out/usr/local" SHAREDIR="$out/usr/share"
+      '';
+    };
+    packages.x86_64-linux.default = with nixpkgs.legacyPackages.x86_64-linux; stdenv.mkDerivation {
+	name = "concord-bot";
+	src = ./.;
+
+	buildInputs = [ concord curl ];
+	nativeBuildInputs = [ concord curl ];
+
+	buildPhase = ''
+		$CC main.c -o main -ldiscord -lcurl
+	'';
+        installPhase = ''
+		mkdir -pv $out/bin
+		cp main $out/bin
+	'';
+    };
+  };
+}
+```
+
 ## Setting up your environment
 
 ### Clone Concord into your workspace
