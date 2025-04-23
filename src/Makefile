@@ -49,6 +49,9 @@ OBJS += concord-once.o             \
         guild_template.o           \
         invite.o                   \
         oauth2.o                   \
+				poll.o                     \
+				stage_instance.o           \
+				sticker.o                  \
         user.o                     \
         voice.o                    \
         webhook.o

@@ -12,7 +12,10 @@ ENUM(discord_application_command_types)
     ENUMERATOR(DISCORD_APPLICATION_USER, = 2)
   /** A UI-based command that shows up when a user
        right clicks or tap on a message */
-    ENUMERATOR_LAST(DISCORD_APPLICATION_MESSAGE, = 3)
+    ENUMERATOR(DISCORD_APPLICATION_MESSAGE, = 3)
+  /** A UI-based command that represents the primary
+       way to invoke an app's Activity */
+    ENUMERATOR_LAST(DISCORD_APPLICATION_PRIMARY_ENTRY_POINT, = 4)
 ENUM_END
 #endif
 
@@ -38,6 +41,13 @@ ENUM_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
+ENUM(discord_application_command_entry_point_command_handler_types)
+    ENUMERATOR(DISCORD_APPLICATION_HANDLER_APP_HANDLER, = 1)
+    ENUMERATOR_LAST(DISCORD_APPLICATION_HANDLER_DISCORD_LAUNCH_ACTIVITY, = 2)
+ENUM_END
+#endif
+
+#if GENCODECS_RECIPE == DATA
 ENUM(discord_application_command_permission_types)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_ROLE, = 1)
     ENUMERATOR(DISCORD_APPLICATION_PERMISSION_USER, = 2)
@@ -59,18 +69,23 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->application_id != 0)
     FIELD_SNOWFLAKE(application_id)
   COND_END
-  COND_WRITE(self->guild_id != 0)
   /** guild ID of the command, if not global */
+  COND_WRITE(self->guild_id != 0)
     FIELD_SNOWFLAKE(guild_id)
   COND_END
-  /** 1-32 character name */
-  COND_WRITE(self->name != NULL)
+  /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
   COND_END
-  /** 1-100 character description for `CHAT_INPUT` commands, empty string
-       for `USER` and `MESSAGE` commands */
-  COND_WRITE(self->description != NULL)
+  /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
   COND_END
   /** the parameters for the command, max 25 */
   COND_WRITE(self->options != NULL)
@@ -80,10 +95,8 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->default_member_permissions != 0)
     FIELD_BITMASK(default_member_permissions)
   COND_END
-  /** 
-   * Indicates whether the command is available in DMs with the app, only
-   *    for globally-scoped commands. By default, commands are invisible.
-   */
+  /**  indicates whether the command is available in DMs with the app, only
+        for globally-scoped commands. By default, commands are invisible. */
   COND_WRITE(self->dm_permission != false)
     FIELD(dm_permission, bool, false)
   COND_END
@@ -91,10 +104,29 @@ PUB_STRUCT(discord_application_command)
   COND_WRITE(self->default_permission != true)
     FIELD(default_permission, bool, true)
   COND_END
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
+  COND_END
+  /** installation contexts where the command is available,
+       only for globally-scoped commands */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used,
+       only for globally-scoped commands. */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** autoincrementing version identifier updated during substantial
        record changes */
   COND_WRITE(self->version != 0)
     FIELD_SNOWFLAKE(version)
+  COND_END
+  /** 	Determines whether the interaction is handled by the
+         app's interactions handler or by Discord */
+  COND_WRITE(self->handler != 0)
+    FIELD_ENUM(handler, discord_application_command_entry_point_command_handler_types)
   COND_END
 STRUCT_END
 #endif
@@ -109,10 +141,20 @@ LIST_END
 STRUCT(discord_application_command_option)
   /** value of application command option type */
     FIELD_ENUM(type, discord_application_command_option_types)
-  /** 1-32 character name */
+  /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
   /** if the parameter is required or optional -- default `false` */
   COND_WRITE(self->required != false)
     FIELD(required, bool, false)
@@ -132,15 +174,24 @@ STRUCT(discord_application_command_option)
     FIELD_STRUCT_PTR(channel_types, integers, *)
   COND_END
   /** if the option is an INTEGER or NUMBER type, the minimum value permitted */
-  COND_WRITE(self->min_value != NULL)
-    FIELD_PTR(min_value, char, *)
+  COND_WRITE(self->min_value != 0)
+    FIELD(min_value, int, 0)
   COND_END
   /** if the option is an INTEGER or NUMBER type, the maximum value permitted */
-  COND_WRITE(self->max_value != NULL)
-    FIELD_PTR(max_value, char, *)
+  COND_WRITE(self->max_value != 0)
+    FIELD(max_value, int, 0)
   COND_END
-  /** enable autocomplete interactions for this option */
-  COND_WRITE(self->choices == NULL)
+  /** for option type STRING, the minimum allowed length */
+  COND_WRITE(self->min_length != 0)
+    FIELD(min_length, int, 0)
+  COND_END
+  /** for option type STRING, the maximum allowed length */
+  COND_WRITE(self->max_length != 0)
+    FIELD(max_length, int, 0)
+  COND_END
+  /** if autocomplete interactions are enabled for this STRING, INTEGER,
+       or NUMBER type option */
+  COND_WRITE(self->autocomplete != 0)
     FIELD(autocomplete, bool, false)
   COND_END
 STRUCT_END
@@ -156,6 +207,11 @@ LIST_END
 STRUCT(discord_application_command_option_choice)
   /** 1-100 character choice name */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** value of the choice, up to 100 characters if string @note in case of a
        string the value must be enclosed with escaped commas, ex: `\"hi\"` */
     FIELD_PTR(value, json_char, *)
@@ -236,10 +292,20 @@ LIST_END
 
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_global_application_command)
-  /** 1-32 lowercase character name */
+  /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
@@ -255,19 +321,41 @@ PUB_STRUCT(discord_create_global_application_command)
     FIELD(dm_permission, bool, false)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+  /** installation context(s) where the command is available */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used  */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** the type of command, default `1` if not set */
   COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
+  COND_END
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
   COND_END
 STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_global_application_command)
-  /** 1-32 lowercase character name */
+  /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
@@ -283,15 +371,37 @@ PUB_STRUCT(discord_edit_global_application_command)
     FIELD(dm_permission, bool, false)
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+  /** installation context(s) where the command is available */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used  */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
+  COND_END
 STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_create_guild_application_command)
-  /** 1-32 lowercase character name */
+  /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
@@ -311,15 +421,29 @@ PUB_STRUCT(discord_create_guild_application_command)
   COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
+  COND_END
 STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_edit_guild_application_command)
-  /** 1-32 lowercase character name */
+  /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
@@ -330,23 +454,31 @@ PUB_STRUCT(discord_edit_guild_application_command)
   COND_END
   /** @deprecated use `default_member_permissions` instead */
     FIELD(default_permission, bool, true)
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
+  COND_END
 STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
+PUB_STRUCT(discord_bulk_overwrite_guild_application_command)
   /** ID of the command, if known */
     FIELD_SNOWFLAKE(id)
   /** Name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
   /** Localization dictionary for the `name` field. Values follow the same
    *    restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
     FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
   /** Localization dictionary for the `description` field. Values follow the
    *    same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
     FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
@@ -360,9 +492,29 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
    *    for globally-scoped commands. By default, commands are invisible.
    */
     FIELD(dm_permission, bool, false)
+  /** @deprecated use `default_member_permissions` instead */
+    FIELD(default_permission, bool, true)
+  /** installation context(s) where the command is available */
+  COND_WRITE(self->integration_types != NULL)
+    FIELD_STRUCT_PTR(integration_types, discord_application_integration_types, *)
+  COND_END
+  /** interaction context(s) where the command can be used  */
+  COND_WRITE(self->contexts != NULL)
+    FIELD_STRUCT_PTR(contexts, discord_interaction_context_types, *)
+  COND_END
   /** one of application command types */
   COND_WRITE(self->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
+  /** indicates whether the command is age-restricted */
+  COND_WRITE(self->nsfw != false)
+    FIELD(nsfw, bool, false)
+  COND_END
 STRUCT_END
+#endif
+
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_LIST(discord_bulk_overwrite_guild_application_commands)
+    LISTTYPE_STRUCT(discord_bulk_overwrite_guild_application_command)
+LIST_END
 #endif

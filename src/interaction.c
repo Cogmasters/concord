@@ -39,17 +39,16 @@ discord_create_interaction_response(
 }
 
 CCORDcode
-discord_get_original_interaction_response(
-    struct discord *client,
-    u64snowflake application_id,
-    const char interaction_token[],
-    struct discord_ret_interaction_response *ret)
+discord_get_original_interaction_response(struct discord *client,
+                                          u64snowflake application_id,
+                                          const char interaction_token[],
+                                          struct discord_ret_message *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
-    DISCORD_ATTR_INIT(attr, discord_interaction_response, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/webhooks/%" PRIu64 "/%s/messages/@original",
                             application_id, interaction_token);
