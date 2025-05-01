@@ -517,7 +517,6 @@ _ua_info_populate(struct ua_info *new_info, struct ua_conn *conn)
 {
     const struct ua_info *info = &conn->info;
     char *resp_url = NULL;
-    char timestr[64];
 
     memcpy(new_info, info, sizeof(struct ua_info));
     new_info->body.len =
@@ -529,18 +528,13 @@ _ua_info_populate(struct ua_info *new_info, struct ua_conn *conn)
                       &new_info->httpcode);
     curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
-    logmod_log(HTTP, conn->ua->logger, "HTTP_RCV_%s(%ld) [%s] - %s - %s\n",
-               "%.*s%s%.*s\n"
-               "@@@_%u_@@@\n",
-               /* 1st LINE ARGS */
+    logmod_log(HTTP, conn->ua->logger,
+               "HTTP_RCV_%s(%ld) [%s] - %s\n"
+               "%.*s%s%.*s",
                http_code_print(info->httpcode), info->httpcode,
-               logmod_logger_get_label(conn->ua->logger, LOGMOD_LEVEL_HTTP),
-               timestr, resp_url,
-               /* 2nd LINE ARGS */
-               (int)info->header.len, info->header.buf,
-               info->header.len ? "\n" : "", (int)info->body.len,
-               info->body.buf, logmod_logger_get_counter(conn->ua->logger));
+               conn->ua->logger->context_id, resp_url, (int)info->header.len,
+               info->header.buf, info->header.len ? "\n" : "",
+               (int)info->body.len, info->body.buf);
 }
 
 void
@@ -582,7 +576,7 @@ _ua_log_http(const struct logmod_logger *logger,
     if (info->level != LOGMOD_LEVEL_HTTP) {
         return LOGMOD_OK_CONTINUE;
     }
-    if (!logger->options.logfile) {
+    if (logger->options.logfile) {
         return LOGMOD_OK;
     }
 
@@ -597,7 +591,6 @@ _ua_log_http(const struct logmod_logger *logger,
         {
             return LOGMOD_ERRNO;
         }
-        return fflush(logger->options.logfile), LOGMOD_OK;
     }
     else if (0 >= fprintf(logger->options.logfile,
                           "%02d:%02d:%02d %s %s:%d: ", time_info->tm_hour,
@@ -700,24 +693,12 @@ _ua_conn_set_method(struct ua_conn *conn,
                     struct ua_log_filter *log_filter)
 {
     char header[1024] = "";
-    char timestr[64];
 
     ua_conn_print_header(conn, header, sizeof(header), log_filter);
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
 
     logmod_log(HTTP, conn->ua->logger,
-               "HTTP_SEND_%s [%s] - %s - %s\n"
-               "%s%s%.*s\n"
-               "@@@_%u_@@@\n",
-               /* 1st LINE ARGS */
-               http_method_print(method),
-               logmod_logger_get_label(conn->ua->logger, LOGMOD_LEVEL_HTTP),
-               timestr, conn->url.start,
-               /* 2nd LINE ARGS */
-               header, *header ? "\n" : "", (int)body_len, body,
-               logmod_logger_get_counter(conn->ua->logger));
-
-    logmod_log(HTTP, conn->ua->logger, "HTTP_SEND_%s [%s] - %s\n%s%s%.*s",
+               "HTTP_SEND_%s [%s] - %s\n"
+               "%s%s%.*s",
                http_method_print(method), conn->ua->logger->context_id,
                conn->url.start, header, *header ? "\n" : "", (int)body_len,
                body);
@@ -848,8 +829,42 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
             ERROR, conn->ua->logger, "%s (%ld)%s - %s",
             LML(conn->ua->logger, "SERVER ERROR", RED, REGULAR, FOREGROUND),
             info->httpcode, http_code_print(info->httpcode),
-            http_reason_print(info->httpcode),
-            logmod_logger_get_counter(logger));
+            http_reason_print(info->httpcode));
+
+        info->code = CCORD_HTTP_CODE;
+    }
+    else if (info->httpcode >= 400) {
+        logmod_log(
+            ERROR, conn->ua->logger, "%s (%ld)%s - %s",
+            LME(conn->ua->logger, "CLIENT ERROR", RED, REGULAR, FOREGROUND),
+            info->httpcode, http_code_print(info->httpcode),
+            http_reason_print(info->httpcode));
+
+        info->code = CCORD_HTTP_CODE;
+    }
+    else if (info->httpcode >= 300) {
+        logmod_log(
+            WARN, conn->ua->logger, "%s (%ld)%s - %s",
+            LME(conn->ua->logger, "REDIRECTING", YELLOW, REGULAR, FOREGROUND),
+            info->httpcode, http_code_print(info->httpcode),
+            http_reason_print(info->httpcode));
+
+        info->code = CCORD_HTTP_CODE;
+    }
+    else if (info->httpcode >= 200) {
+        logmod_log(
+            INFO, conn->ua->logger, "%s (%ld)%s - %s",
+            LME(conn->ua->logger, "SUCCESS", GREEN, REGULAR, FOREGROUND),
+            info->httpcode, http_code_print(info->httpcode),
+            http_reason_print(info->httpcode));
+
+        info->code = CCORD_OK;
+    }
+    else if (info->httpcode >= 100) {
+        logmod_log(INFO, conn->ua->logger, "%s (%ld)%s - %s",
+                   LME(conn->ua->logger, "INFO", BLACK, REGULAR, INTENSITY),
+                   info->httpcode, http_code_print(info->httpcode),
+                   http_reason_print(info->httpcode));
 
         info->code = CCORD_HTTP_CODE;
     }

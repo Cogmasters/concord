@@ -127,7 +127,8 @@ discord_create_followup_message(struct discord *client,
         int res = queriec_snprintf_add(&queriec, query, "thread_id",
                                        sizeof("thread_id"), qbuf, sizeof(qbuf),
                                        "%" PRIu64, params->thread_id);
-        ASSERT_S(res != QUERIEC_ERROR_NOMEM, "Out of bounds write attempt");
+        CCORD_EXPECT(client, res >= 0, CCORD_ERRNO,
+                     "Out of bounds write attempt");
     }
     if (params->attachments) {
         method = HTTP_MIMEPOST;

@@ -289,7 +289,8 @@ _discord_on_dispatch(struct discord_gateway *gw)
         }
     } break;
     default:
-        ERR("Unknown event handling mode (code: %d)", mode);
+        logmod_log(ERROR, gw->logger, "Unknown event handling mode (code: %d)",
+                   mode);
     }
 }
 

@@ -25,8 +25,13 @@ void
 discord_request_guild_members(struct discord *client,
                               struct discord_request_guild_members *request)
 {
-    ASSERT_S(GATEWAY_CB(DISCORD_EV_GUILD_MEMBERS_CHUNK) != NULL,
-             "Missing callback for discord_set_on_guild_members_chunk()");
+
+    if (!GATEWAY_CB(DISCORD_EV_GUILD_MEMBERS_CHUNK)) {
+        logmod_log(
+            ERROR, client->logger,
+            "Missing callback for discord_set_on_guild_members_chunk()");
+        return;
+    }
     discord_gateway_send_request_guild_members(&client->gw, request);
 }
 
