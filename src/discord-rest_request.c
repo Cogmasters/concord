@@ -47,7 +47,7 @@ discord_requestor_init(struct discord_requestor *rqtor, const char token[])
 
     rqtor->logger = logmod_get_logger(&client->logmod, "DISCORD_REQUEST");
 
-    rqtor->ua = ua_init(&(struct ua_attr){ .logmod = &client->logmod });
+    rqtor->ua = ua_init(&client->logmod);
     ua_set_url(rqtor->ua, DISCORD_API_BASE_URL);
     ua_set_opt(rqtor->ua, (char *)token, &_discord_on_curl_setopt);
 
@@ -188,42 +188,41 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
 static bool
 _discord_request_info_extract(struct discord_requestor *rqtor,
                               struct discord_request *req,
+                              const CURLcode ecode,
                               struct ua_info *info)
 {
-    ua_info_extract(req->conn, info);
-
-    if (info->code != CCORD_HTTP_CODE) { /* CCORD_OK or internal error */
-        if (info->code == CCORD_OK) {
-            req->json.size = cog_strndup(info->body.buf, info->body.len,
-                                         (char **)&req->json.start);
-        }
-        req->code = info->code;
-        return false;
+    if (ecode != CURLE_OK) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't extract information from request: %s",
+                   curl_easy_strerror(ecode));
+        return (req->code = CCORD_CURLE_INTERNAL), false;
     }
 
-    switch (info->httpcode) {
+    switch (ua_info_extract(req->conn, info), info->httpcode) {
+    case HTTP_OK:
+    case HTTP_CREATED:
+    case HTTP_NO_CONTENT:
+        req->json.size = cog_strndup(info->body.buf, info->body.len,
+                                     (char **)&req->json.start);
+        return (req->code = CCORD_OK), false;
     case HTTP_FORBIDDEN:
     case HTTP_NOT_FOUND:
     case HTTP_BAD_REQUEST:
-        req->code = CCORD_DISCORD_JSON_CODE;
         req->json.size = cog_strndup(info->body.buf, info->body.len,
                                      (char **)&req->json.start);
-        return false;
+        return (req->code = CCORD_DISCORD_JSON_CODE), false;
     case HTTP_UNAUTHORIZED:
         logmod_log(
-            FATAL, rqtor->logger,
+            ERROR, rqtor->logger,
             "401 UNAUTHORIZED: Please provide a valid authentication token");
-        req->code = CCORD_DISCORD_BAD_AUTH;
-        return false;
+        return (req->code = CCORD_DISCORD_BAD_AUTH), false;
     case HTTP_METHOD_NOT_ALLOWED:
-        logmod_log(FATAL, rqtor->logger,
+        logmod_log(ERROR, rqtor->logger,
                    "405 METHOD_NOT_ALLOWED: The server couldn't recognize the "
                    "received HTTP method");
-
-        req->code = info->code;
-        return false;
+        return (req->code = CCORD_HTTP_CODE), false;
     case HTTP_TOO_MANY_REQUESTS: {
-        struct ua_szbuf_readonly body = ua_info_get_body(info);
+        const struct ua_szbuf_readonly body = ua_info_get_body(info);
         struct jsmnftok message = { 0 };
         u64unix_ms retry_after_ms = 1000;
         bool is_global = false;
@@ -255,7 +254,7 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
             }
         }
 
-        logmod_log(WARN, rqtor->logger,
+        logmod_log(ERROR, rqtor->logger,
                    "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
                    is_global ? "GLOBAL " : "", retry_after_ms,
                    (int)message.len, body.start + message.pos);
@@ -266,12 +265,11 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
         else
             discord_bucket_set_timeout(req->b, retry_after_ms);
 
-        req->code = info->code;
-        return true;
+        return (req->code = CCORD_DISCORD_RATELIMIT), true;
     }
     default:
-        req->code = info->code;
-        return (info->httpcode >= 500); /* retry if Server Error */
+        return (req->code = CCORD_HTTP_CODE),
+               (info->httpcode >= 500); /* retry if Server Error */
     }
 }
 
@@ -418,10 +416,11 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                 struct ua_szbuf_readonly body;
                 struct ua_info info;
 
-                retry = _discord_request_info_extract(rqtor, req, &info);
+                retry =
+                    _discord_request_info_extract(rqtor, req, ecode, &info);
                 body = ua_info_get_body(&info);
 
-                if (info.code != CCORD_OK) {
+                if (req->code != CCORD_OK) {
                     logmod_log(ERROR, rqtor->logger, "%.*s (HTTP code: %ld)",
                                (int)body.size, body.start, info.httpcode);
                 }

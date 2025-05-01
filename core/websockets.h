@@ -12,8 +12,6 @@ extern "C" {
 #include <stdint.h>
 #include <curl/curl.h>
 
-#include "error.h" /* CCORDcode */
-
 /**
  * @struct websockets
  * @brief Opaque handler for WebSockets
