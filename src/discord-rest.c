@@ -73,8 +73,10 @@ discord_rest_init(struct discord_rest *rest, const char token[])
                         &_discord_on_rest_perform, rest);
 
     rest->tpool = threadpool_create(1, 1024, 0);
-    ASSERT_S(!threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0),
-             "Couldn't initialize REST managagement thread");
+    if (threadpool_add(rest->tpool, &_discord_rest_manager, rest, 0)) {
+        logmod_log(ERROR, rest->logger,
+                   "Couldn't initialize REST managagement thread");
+    }
 }
 
 void

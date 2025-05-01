@@ -40,7 +40,6 @@ struct _discord_route {
     do {                                                                      \
         *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t) * len,      \
                          ":" __VA_ARGS__);                                    \
-        ASSERT_NOT_OOB(*len, DISCORD_ROUTE_LEN);                              \
     } while (0)
 
 /* determine which ratelimit group a request belongs to by generating its key.
@@ -76,8 +75,12 @@ discord_ratelimiter_build_key(enum http_method method,
             const char *type = &curr[i + 1];
             switch (*type) {
             default:
-                VASSERT_S(0 == strncmp(type, PRIu64, sizeof(PRIu64) - 1),
-                          "Internal error: Missing check for '%%%s'", type);
+                if (strncmp(type, PRIu64, sizeof(PRIu64) - 1)) {
+                    logmod_log(ERROR, NULL,
+                               "Internal error: Missing check for '%%%s'",
+                               type);
+                    return;
+                }
 
                 id_arg = va_arg(args, u64snowflake);
                 break;
@@ -123,9 +126,16 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
                      const long limit)
 {
     struct discord_bucket *b = calloc(1, sizeof *b);
-    int len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
-                       hash->start);
-    ASSERT_NOT_OOB(len, sizeof(b->hash));
+
+    if ((snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
+                  hash->start))
+        >= (int)sizeof(b->hash))
+    {
+        logmod_log(ERROR, rl->logger,
+                   "Internal error: Bucket hash too long: %.*s",
+                   (int)hash->size, hash->start);
+        return free(b), NULL;
+    }
 
     b->remaining = 1;
     b->limit = limit;
@@ -444,9 +454,11 @@ discord_bucket_request_unselect(struct discord_ratelimiter *rl,
                                 struct discord_bucket *b,
                                 struct discord_request *req)
 {
-    (void)rl;
-    ASSERT_S(req == b->busy_req,
-             "Attempt to unlock a bucket with a non-busy request");
+    if (req != b->busy_req) {
+        logmod_log(ERROR, rl->logger,
+                   "Attempt to unlock a bucket with a non-busy request");
+        return;
+    }
 
     if (QUEUE_EMPTY(&b->queues.next)) {
         QUEUE_REMOVE(&b->entry);

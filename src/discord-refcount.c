@@ -95,14 +95,17 @@ _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
 void
 discord_refcounter_init(struct discord_refcounter *rc)
 {
-    const struct discord *client = CLIENT(rc, refcounter);
+    struct discord *client = CLIENT(rc, refcounter);
 
     rc->logger = logmod_get_logger(&client->logmod, "DISCORD_REFCOUNT");
     __chash_init(rc, REFCOUNTER_TABLE);
 
     rc->g_lock = malloc(sizeof *rc->g_lock);
-    ASSERT_S(!pthread_mutex_init(rc->g_lock, NULL),
-             "Couldn't initialize refcounter mutex");
+    if (pthread_mutex_init(rc->g_lock, NULL)) {
+        logmod_log(FATAL, rc->logger, "Couldn't initialize refcounter mutex");
+        free(rc->g_lock);
+        rc->g_lock = NULL;
+    }
 }
 
 void

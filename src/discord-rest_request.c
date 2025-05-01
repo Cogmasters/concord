@@ -25,8 +25,14 @@ static void
 _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 {
     char auth[128];
-    int len = snprintf(auth, sizeof(auth), "Bot %s", (char *)p_token);
-    ASSERT_NOT_OOB(len, sizeof(auth));
+    if ((snprintf(auth, sizeof(auth), "Bot %s", (char *)p_token)
+         >= (int)sizeof(auth)))
+    {
+        logmod_log(ERROR, NULL,
+                   "Internal error: Authorization header too long: %s",
+                   (char *)p_token);
+        return;
+    }
 
     ua_conn_add_header(conn, "Authorization", auth);
 #ifdef CCORD_DEBUG_HTTP
@@ -53,12 +59,21 @@ discord_requestor_init(struct discord_requestor *rqtor, const char token[])
     QUEUE_INIT(&rqtor->queues->finished);
 
     rqtor->qlocks = malloc(sizeof *rqtor->qlocks);
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->recycling, NULL),
-             "Couldn't initialize requestor's recycling queue mutex");
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->pending, NULL),
-             "Couldn't initialize requestor's pending queue mutex");
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->finished, NULL),
-             "Couldn't initialize requestor's finished queue mutex");
+    if (pthread_mutex_init(&rqtor->qlocks->recycling, NULL)) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's recycling queue mutex");
+        return;
+    }
+    if (pthread_mutex_init(&rqtor->qlocks->pending, NULL)) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's pending queue mutex");
+        return;
+    }
+    if (pthread_mutex_init(&rqtor->qlocks->finished, NULL)) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's finished queue mutex");
+        return;
+    }
 
     rqtor->mhandle = curl_multi_init();
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
@@ -124,9 +139,14 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
 
     /* attachment part */
     for (int i = 0; i < req->attachments.size; ++i) {
-        int len = snprintf(name, sizeof(name), "files[%" PRIu64 "]",
-                           req->attachments.array[i].id);
-        ASSERT_NOT_OOB(len, sizeof(name));
+        if ((snprintf(name, sizeof(name), "files[%" PRIu64 "]",
+                      req->attachments.array[i].id))
+            >= (int)sizeof(name))
+        {
+            logmod_log(ERROR, NULL, "Attachment's filename is too long: %s",
+                       req->attachments.array[i].filename);
+            continue;
+        }
 
         if (req->attachments.array[i].content) {
             part = curl_mime_addpart(mime);
@@ -634,10 +654,14 @@ discord_request_begin(struct discord_requestor *rqtor,
     _discord_request_attributes_copy(req, attr);
 
     if (req->dispatch.keep) {
-        code = discord_refcounter_incr(&client->refcounter,
-                                       (void *)req->dispatch.keep);
-
-        ASSERT_S(code == CCORD_OK, "'.keep' data must be a Concord resource");
+        if ((code = discord_refcounter_incr(&client->refcounter,
+                                            (void *)req->dispatch.keep))
+            < 0)
+        {
+            logmod_log(ERROR, rest->logger,
+                       "'.keep' data must point to a Concord resource");
+            return code;
+        }
     }
     if (req->dispatch.data
         && CCORD_RESOURCE_UNAVAILABLE

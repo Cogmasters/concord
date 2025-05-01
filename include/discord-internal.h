@@ -92,16 +92,6 @@ int discord_dup_shutdown_fd(void);
         }                                                                     \
     } while (0)
 
-/**
- * @brief Shortcut for checking OOB-write attempts
- * @note unsigned values are expected
- *
- * @param[in] nbytes amount of bytes to be written
- * @param[in] destsz size of dest in bytes
- */
-#define ASSERT_NOT_OOB(nbytes, destsz)                                        \
-    ASSERT_S((size_t)nbytes < (size_t)destsz, "Out of bounds write attempt");
-
 /** URL endpoint threshold length */
 #define DISCORD_ENDPT_LEN 512
 /** Route's unique key threshold length */

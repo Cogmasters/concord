@@ -88,11 +88,15 @@ _discord_init(struct discord *client)
                          IO_POLLER_IN, _discord_on_shutdown, client);
 
     client->workers = calloc(1, sizeof *client->workers);
-    ASSERT_S(!pthread_mutex_init(&client->workers->lock, NULL),
-             "Couldn't initialize Client's mutex");
-    ASSERT_S(!pthread_cond_init(&client->workers->cond, NULL),
-             "Couldn't initialize Client's cond");
-
+    if (pthread_mutex_init(&client->workers->lock, NULL)) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize Client's mutex");
+        return CCORD_ERRNO;
+    }
+    if (pthread_cond_init(&client->workers->cond, NULL)) {
+        logmod_log(FATAL, client->logger, "Couldn't initialize Client's cond");
+        return CCORD_ERRNO;
+    }
     discord_refcounter_init(&client->refcounter);
     discord_message_commands_init(&client->commands);
     discord_rest_init(&client->rest, client->config.token);

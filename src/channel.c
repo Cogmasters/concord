@@ -370,16 +370,16 @@ discord_get_reactions(struct discord *client,
         res =
             queriec_snprintf_add(&queriec, query, "after", sizeof("after"),
                                  buf, sizeof(buf), "%" PRIu64, params->after);
-        CCORD_EXPECT(client, res != QUERIEC_ERROR_NOMEM,
-                     CCORD_MALFORMED_PAYLOAD, "Out of bounds write attempt");
+        CCORD_EXPECT(client, res >= 0, CCORD_ERRNO,
+                     "Out of bounds write attempt");
         if (params->limit) {
             CCORD_EXPECT(client, params->limit > 0 && params->limit <= 100,
                          CCORD_BAD_PARAMETER, "");
             res =
                 queriec_snprintf_add(&queriec, query, "limit", sizeof("limit"),
                                      buf, sizeof(buf), "%d", params->limit);
-            ASSERT_S(res != QUERIEC_ERROR_NOMEM,
-                     "Out of bounds write attempt");
+            CCORD_EXPECT(client, res >= 0, CCORD_ERRNO,
+                         "Out of bounds write attempt");
         }
     }
     pct_emoji_name =
