@@ -120,12 +120,6 @@ struct ws_callbacks {
     void *data;
 };
 
-/** @brief WebSockets handle initialization attributes */
-struct ws_attr {
-    /** pre-initialized logging module */
-    struct logmod *logmod;
-};
-
 /**
  * @brief Check if a WebSockets connection is alive
  *
@@ -153,12 +147,12 @@ struct ws_attr {
  * @param cbs set of functions to call back when server report events.
  * @param mhandle user-owned curl_multi handle for performing non-blocking
  * transfers
- * @param attr optional attributes to override defaults
+ * @param logmod optional pre-initialized logging handler
  * @return newly created WebSockets handle, free with ws_cleanup()
  */
 struct websockets *ws_init(struct ws_callbacks *cbs,
                            CURLM *mhandle,
-                           struct ws_attr *attr);
+                           struct logmod *logmod);
 
 /**
  * @brief Free a WebSockets handle created with ws_init()

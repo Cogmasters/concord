@@ -14,17 +14,16 @@
 #define LOGMOD_STATIC
 #include "logmod.h"
 
-/** @brief Custom logging level for tracing WebSockets requests */
-enum { LOGMOD_LEVEL_WS = LOGMOD_LEVEL_CUSTOM };
-
 #define CURLM_LOG(ws, mcode)                                                  \
-    logmod_log(FATAL, ws->logger, "(CURLM code: %d) %s", mcode,               \
+    logmod_log(FATAL, ws->loggers.trace, "(CURLM code: %d) %s", mcode,        \
                curl_multi_strerror(mcode))
 #define CASE_RETURN_STR(code)                                                 \
     case code:                                                                \
         return #code
 
 struct websockets {
+    /** LogMod handler */
+    struct logmod logmod;
     /** the buffer of the received messages */
     char *msg_buf;
     /** the length of the received messages */
@@ -37,8 +36,12 @@ struct websockets {
     int exp_msg_type;
     /** the headers to be sent */
     struct curl_slist *headers;
-    /** the @ref logmod_logger structure for logging */
-    struct logmod_logger *logger;
+    struct {
+        /** the websockets agent logging module */
+        struct logmod_logger *trace;
+        /** the user agent raw websockets logging module */
+        struct logmod_logger *raw;
+    } loggers;
     /**
      * the client connections status
      * @note `WS_CONNECTING` set at ws_start()
@@ -145,19 +148,19 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
     switch (status) {
     case WS_DISCONNECTED:
         if (WS_DISCONNECTED == ws->status) {
-            logmod_log(INFO, ws->logger,
+            logmod_log(INFO, ws->loggers.trace,
                        "Client is already disconnected, skipping "
                        "WS_DISCONNECT");
             break;
         }
         else if (WS_DISCONNECTING != ws->status) {
-            logmod_log(WARN, ws->logger,
+            logmod_log(WARN, ws->loggers.trace,
                        "Abruptly changed status to WS_DISCONNECTED "
                        "(previous status: %s)",
                        _ws_status_print(ws->status));
         }
 
-        logmod_log(INFO, ws->logger,
+        logmod_log(INFO, ws->loggers.trace,
                    "Client disconnected from %s (status: %s)", ws->base_url,
                    _ws_status_print(status));
         break;
@@ -165,32 +168,35 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
         if (ws->status != WS_CONNECTING) {
             /* if the status is not WS_CONNECTING, it means that
              * ws_start() was not called before the event loop */
-            logmod_log(WARN, ws->logger,
+            logmod_log(WARN, ws->loggers.trace,
                        "Abruptly changed status to WS_CONNECTED "
                        "(previous status: %s), this may be a bug!",
                        _ws_status_print(ws->status));
         }
-        logmod_log(INFO, ws->logger, "Client connected to %s (status: %s)",
-                   ws->base_url, _ws_status_print(status));
+        logmod_log(INFO, ws->loggers.trace,
+                   "Client connected to %s (status: %s)", ws->base_url,
+                   _ws_status_print(status));
         break;
     case WS_DISCONNECTING:
         if (WS_DISCONNECTED == ws->status) {
-            logmod_log(WARN, ws->logger,
+            logmod_log(WARN, ws->loggers.trace,
                        "Client is already disconnected, skipping "
                        "WS_DISCONNECTING");
             break;
         }
 
-        logmod_log(INFO, ws->logger,
+        logmod_log(INFO, ws->loggers.trace,
                    "Client is disconnecting from %s (status: %s)",
                    ws->base_url, _ws_status_print(status));
         break;
     case WS_CONNECTING: /* triggered at ws_start() */
-        logmod_log(INFO, ws->logger, "Client is connecting to %s (status: %s)",
-                   ws->base_url, _ws_status_print(status));
+        logmod_log(INFO, ws->loggers.trace,
+                   "Client is connecting to %s (status: %s)", ws->base_url,
+                   _ws_status_print(status));
         break;
     default:
-        logmod_log(WARN, ws->logger, "Unknown status change to %s (code: %d)",
+        logmod_log(WARN, ws->loggers.trace,
+                   "Unknown status change to %s (code: %d)",
                    _ws_status_print(status), status);
         break;
     }
@@ -209,14 +215,14 @@ static void
 ws_on_connect_cb(void *p_ws)
 {
     struct websockets *ws = p_ws;
-    char timestr[64];
 
     _ws_set_status(ws, WS_CONNECTED);
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(INFO, ws->loggers.raw, "WS_RCV_CONNECT [%s] - %s",
+               ws->loggers.trace->context_id, ws->base_url);
 
-    logmod_log(TRACE, ws->logger, "%s CONNECT",
-               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND));
+    logmod_log(TRACE, ws->loggers.trace, "%s CONNECT",
+               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND));
 
     if (ws->cbs.on_connect) ws->cbs.on_connect(ws->cbs.data, ws);
 }
@@ -229,16 +235,17 @@ ws_on_close_cb(void *p_ws,
                size_t len)
 {
     struct websockets *ws = p_ws;
-    char timestr[64];
     (void)ehandle;
 
     _ws_set_status(ws, WS_DISCONNECTING);
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(WARN, ws->loggers.raw, "WS_RCV_CLOSE(%d) [%s] - %s\n%.*s",
+               wscode, ws->loggers.trace->context_id, ws->base_url, (int)len,
+               reason);
 
-    logmod_log(TRACE, ws->logger, "%s CLOSE(%d) (%zu bytes)",
-               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), wscode,
-               len);
+    logmod_log(TRACE, ws->loggers.trace, "%s CLOSE(%d) (%zu bytes)",
+               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               wscode, len);
 
     if (ws->cbs.on_close)
         ws->cbs.on_close(ws->cbs.data, ws, (enum ws_close_reason)wscode,
@@ -253,13 +260,14 @@ static void
 ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
     struct websockets *ws = p_ws;
-    char timestr[64];
     (void)ehandle;
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(INFO, ws->loggers.raw, "WS_RCV_TEXT [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)len, text);
 
-    logmod_log(TRACE, ws->logger, "%s TEXT (%zu bytes)",
-               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
+    logmod_log(TRACE, ws->loggers.trace, "%s TEXT (%zu bytes)",
+               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               len);
 
     if (ws->cbs.on_text) ws->cbs.on_text(ws->cbs.data, ws, text, len);
 }
@@ -268,13 +276,14 @@ static void
 ws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
     struct websockets *ws = p_ws;
-    char timestr[64];
     (void)ehandle;
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(INFO, ws->loggers.raw, "WS_RCV_BINARY [%s] - %s",
+               ws->loggers.trace->context_id, ws->base_url);
 
-    logmod_log(TRACE, ws->logger, "%s BINARY (%zu bytes)",
-               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
+    logmod_log(TRACE, ws->loggers.trace, "%s BINARY (%zu bytes)",
+               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               len);
 
     if (ws->cbs.on_binary) ws->cbs.on_binary(ws->cbs.data, ws, mem, len);
 }
@@ -283,13 +292,14 @@ static void
 ws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
-    char timestr[64];
     (void)ehandle;
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(DEBUG, ws->loggers.raw, "WS_RCV_PING [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
-    logmod_log(TRACE, ws->logger, "%s PING (%zu bytes)",
-               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
+    logmod_log(TRACE, ws->loggers.trace, "%s PING (%zu bytes)",
+               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               len);
 
     if (ws->cbs.on_ping) ws->cbs.on_ping(ws->cbs.data, ws, reason, len);
 }
@@ -298,13 +308,14 @@ static void
 ws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
-    char timestr[64];
     (void)ehandle;
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(DEBUG, ws->loggers.raw, "WS_RCV_PONG [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
-    logmod_log(TRACE, ws->logger, "%s PONG (%zu bytes)",
-               LML(ws->logger, "RCV", YELLOW, REGULAR, FOREGROUND), len);
+    logmod_log(TRACE, ws->loggers.trace, "%s PONG (%zu bytes)",
+               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               len);
 
     if (ws->cbs.on_pong) ws->cbs.on_pong(ws->cbs.data, ws, reason, len);
 }
@@ -330,7 +341,7 @@ _ws_check_action_cb(void *p_userdata,
     pthread_mutex_lock(&ws->lock);
     switch (ws->action) {
     case WS_ACTION_BEGIN_CLOSE:
-        logmod_log(WARN, ws->logger,
+        logmod_log(WARN, ws->loggers.trace,
                    "Received pending %s, closing the connection ...",
                    ws_close_opcode_print(ws->pending_close.code));
 
@@ -377,7 +388,7 @@ _ws_ehandle_init(struct websockets *ws)
 {
     CURL *new_ehandle = curl_easy_init();
     if (!new_ehandle) {
-        logmod_log(FATAL, ws->logger,
+        logmod_log(FATAL, ws->loggers.trace,
                    "Failed to initialize WebSockets handler");
         return NULL;
     }
@@ -401,7 +412,7 @@ _ws_ehandle_init(struct websockets *ws)
     curl_easy_setopt(new_ehandle, CURLOPT_XFERINFODATA, ws);
     curl_easy_setopt(new_ehandle, CURLOPT_NOPROGRESS, 0L);
 
-    logmod_log(INFO, ws->logger,
+    logmod_log(INFO, ws->loggers.trace,
                "Initialized WebSockets handler (base_url: %s)", ws->base_url);
 
     return new_ehandle;
@@ -412,19 +423,17 @@ _ws_close(struct websockets *ws,
           enum ws_close_reason code,
           const char reason[])
 {
-    char timestr[64];
-
     if (WS_DISCONNECTED == ws->status) {
-        logmod_log(WARN, ws->logger,
+        logmod_log(WARN, ws->loggers.trace,
                    "%s at SEND CLOSE : Connection already closed",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
 
         return false;
     }
     if (WS_DISCONNECTING == ws->status) {
-        logmod_log(WARN, ws->logger,
+        logmod_log(WARN, ws->loggers.trace,
                    "%s at SEND CLOSE : Close already taking place",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
 
         return false;
     }
@@ -435,16 +444,18 @@ _ws_close(struct websockets *ws,
                      CURLWS_CLOSE)
         != CURLE_OK)
     {
-        logmod_log(ERROR, ws->logger, "%s at SEND CLOSE(%d): %s",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), code,
-                   reason);
+        logmod_log(ERROR, ws->loggers.trace, "%s at SEND CLOSE(%d): %s",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   code, reason);
         return false;
     }
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), cog_timestamp_ms());
+    logmod_log(WARN, ws->loggers.raw, "WS_SEND_CLOSE(%d) [%s] - %s\n%s", code,
+               ws->loggers.trace->context_id, ws->base_url, reason);
 
-    logmod_log(TRACE, ws->logger, "%s CLOSE (%s)",
-               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), reason);
+    logmod_log(TRACE, ws->loggers.trace, "%s CLOSE (%s)",
+               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               reason);
 
     return true;
 }
@@ -608,67 +619,27 @@ jump_cbs:
     }
 }
 
-static logmod_err
-_ws_log_comm(const struct logmod_logger *logger,
-             const struct logmod_entry_info *info,
-             const char *fmt,
-             va_list args)
-{
-    time_t time_raw;
-    const struct tm *time_info;
-
-    if (info->level != LOGMOD_LEVEL_WS) {
-        return LOGMOD_OK_CONTINUE;
-    }
-    if (!logger->options.logfile) {
-        return LOGMOD_OK;
-    }
-
-    time_raw = time(NULL);
-    time_info = localtime(&time_raw);
-    if (logger->options.color) {
-        if (0 >= fprintf(
-                logger->options.logfile,
-                "%02d:%02d:%02d \x1b%um%s\x1b[0m %s:%d: ", time_info->tm_hour,
-                time_info->tm_min, time_info->tm_sec, info->label->color,
-                info->label->name, info->filename, info->line))
-        {
-            return LOGMOD_ERRNO;
-        }
-        return fflush(logger->options.logfile), LOGMOD_OK;
-    }
-    else if (0 >= fprintf(logger->options.logfile,
-                          "%02d:%02d:%02d %s %s:%d: ", time_info->tm_hour,
-                          time_info->tm_min, time_info->tm_sec,
-                          info->label->name, info->filename, info->line))
-    {
-        return LOGMOD_ERRNO;
-    }
-
-    if (0 >= vfprintf(logger->options.logfile, fmt, args)) {
-        return LOGMOD_ERRNO;
-    }
-    if (fprintf(logger->options.logfile, "\n@@@_%ld_@@@\n",
-                logmod_logger_get_counter(logger))
-        == EOF)
-    {
-        return LOGMOD_ERRNO;
-    }
-    if (fflush(logger->options.logfile) == EOF) {
-        return LOGMOD_ERRNO;
-    }
-    return LOGMOD_OK;
-}
-
 struct websockets *
-ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
+ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct logmod *logmod)
 {
-    static const struct logmod_label custom_labels[] = {
-        { "WS", LOGMOD_COLOR(CYAN, BACKGROUND), LOGMOD_STYLE(REGULAR), 0 },
-    };
-    struct websockets *new_ws = calloc(1, sizeof *new_ws);
+    struct websockets *new_ws;
 
-    new_ws->logger = logmod_get_logger(attr->logmod, "WEBSOCKETS");
+    if (!(new_ws = calloc(1, sizeof *new_ws))) {
+        logmod_log(FATAL, NULL, "Couldn't allocate memory for WebSockets");
+        return NULL;
+    }
+    if (!(new_ws->loggers.trace = logmod_get_logger(
+              logmod ? logmod : &new_ws->logmod, "WEBSOCKETS")))
+    {
+        logmod_log(FATAL, NULL, "Couldn't get logger");
+        return ws_cleanup(new_ws), NULL;
+    }
+    if (!(new_ws->loggers.raw = logmod_get_logger(
+              logmod ? logmod : &new_ws->logmod, "WEBSOCKETS_RAW")))
+    {
+        logmod_log(FATAL, NULL, "Couldn't get logger");
+        return ws_cleanup(new_ws), NULL;
+    }
 
     if (cbs) new_ws->cbs = *cbs;
     new_ws->mhandle = mhandle;
@@ -681,16 +652,14 @@ ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr)
     if (!new_ws->cbs.on_ping) new_ws->cbs.on_ping = &default_on_ping;
 
     if (pthread_mutex_init(&new_ws->lock, NULL)) {
-        logmod_log(FATAL, new_ws->logger, "Couldn't initialize pthread mutex");
-        free(new_ws);
-        return NULL;
+        logmod_log(FATAL, new_ws->loggers.trace,
+                   "Couldn't initialize pthread mutex");
+        return ws_cleanup(new_ws), NULL;
     }
     if (pthread_rwlock_init(&new_ws->rwlock, NULL)) {
-        logmod_log(FATAL, new_ws->logger,
+        logmod_log(FATAL, new_ws->loggers.trace,
                    "Couldn't initialize pthread rwlock");
-        pthread_mutex_destroy(&new_ws->lock);
-        free(new_ws);
-        return NULL;
+        return ws_cleanup(new_ws), NULL;
     }
     return new_ws;
 }
@@ -703,10 +672,11 @@ ws_set_url(struct websockets *ws, const char base_url[])
     pthread_mutex_lock(&ws->lock);
 
     if (!*ws->base_url) {
-        logmod_log(INFO, ws->logger, "Websockets new URL: %s", base_url);
+        logmod_log(INFO, ws->loggers.trace, "Websockets new URL: %s",
+                   base_url);
     }
     else {
-        logmod_log(INFO, ws->logger,
+        logmod_log(INFO, ws->loggers.trace,
                    "Websockets redirecting:\n\tfrom: %s\n\tto: %s",
                    ws->base_url, base_url);
     }
@@ -714,7 +684,7 @@ ws_set_url(struct websockets *ws, const char base_url[])
     if ((len = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url))
         < 0)
     {
-        logmod_log(ERROR, ws->logger,
+        logmod_log(ERROR, ws->loggers.trace,
                    "Failed to set URL: %s due to snprintf error", base_url);
     }
     pthread_mutex_unlock(&ws->lock);
@@ -723,29 +693,42 @@ ws_set_url(struct websockets *ws, const char base_url[])
 void
 ws_cleanup(struct websockets *ws)
 {
-    curl_easy_cleanup(ws->ehandle);
-    if (ws->headers) curl_slist_free_all(ws->headers);
+    static const pthread_mutex_t blank_lock;
+    static const pthread_rwlock_t blank_rwlock;
 
-    if (ws->msg_buf) free(ws->msg_buf);
-
-    pthread_mutex_destroy(&ws->lock);
-    pthread_rwlock_destroy(&ws->rwlock);
-    /* TODO: Aren't we supposed to clean multi here? */
+    if (ws->ehandle) {
+        curl_easy_cleanup(ws->ehandle);
+    }
+    if (ws->headers) {
+        curl_slist_free_all(ws->headers);
+    }
+    if (ws->msg_buf) {
+        free(ws->msg_buf);
+    }
+    if (memcmp(&ws->lock, &blank_lock, sizeof(pthread_mutex_t)) != 0) {
+        pthread_mutex_destroy(&ws->lock);
+    }
+    if (memcmp(&ws->rwlock, &blank_rwlock, sizeof(pthread_rwlock_t)) != 0) {
+        pthread_rwlock_destroy(&ws->rwlock);
+    }
+    logmod_cleanup(&ws->logmod);
     free(ws);
 }
 
 bool
 ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
 {
-    char timestr[64];
+    logmod_log(INFO, ws->loggers.raw, "WS_SEND_BINARY [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)msglen, msg);
 
-    logmod_log(TRACE, ws->logger, "%s BINARY (%zu bytes)",
-               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), msglen);
+    logmod_log(TRACE, ws->loggers.trace, "%s BINARY (%zu bytes)",
+               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               msglen);
 
     if (WS_CONNECTED != ws->status) {
-        logmod_log(ERROR, ws->logger,
+        logmod_log(ERROR, ws->loggers.trace,
                    "%s at SEND BINARY : No active connection",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
         return false;
     }
 
@@ -753,9 +736,10 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
     if (curl_ws_send(ws->ehandle, msg, msglen, &sent, 0, CURLWS_BINARY)
         != CURLE_OK)
     {
-        logmod_log(ERROR, ws->logger, "%s at SEND BINARY (%zu bytes) %s",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), msglen,
-                   !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
+        logmod_log(
+            ERROR, ws->loggers.trace, "%s at SEND BINARY (%zu bytes) %s",
+            LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND), msglen,
+            !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
         return false;
     }
     return true;
@@ -764,14 +748,17 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
 bool
 ws_send_text(struct websockets *ws, const char text[], size_t len)
 {
-    char timestr[64];
+    logmod_log(INFO, ws->loggers.raw, "WS_SEND_TEXT [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)len, text);
 
-    logmod_log(TRACE, ws->logger, "%s TEXT (%zu bytes)",
-               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), len);
+    logmod_log(TRACE, ws->loggers.trace, "%s TEXT (%zu bytes)",
+               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               len);
 
     if (WS_CONNECTED != ws->status) {
-        logmod_log(ERROR, ws->logger, "%s at SEND TEXT : No active connection",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND));
+        logmod_log(ERROR, ws->loggers.trace,
+                   "%s at SEND TEXT : No active connection",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
 
         return false;
     }
@@ -780,8 +767,9 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
     if (curl_ws_send(ws->ehandle, text, len, &sent, 0, CURLWS_TEXT)
         != CURLE_OK)
     {
-        logmod_log(ERROR, ws->logger, "%s at SEND TEXT (%zu bytes) %s",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+        logmod_log(ERROR, ws->loggers.trace, "%s at SEND TEXT (%zu bytes) %s",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
@@ -793,22 +781,26 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
 bool
 ws_ping(struct websockets *ws, const char *reason, size_t len)
 {
-    char timestr[64];
+    logmod_log(DEBUG, ws->loggers.raw, "WS_SEND_PING [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
-    logmod_log(TRACE, ws->logger, "%s PING (%zu bytes)",
-               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), len);
+    logmod_log(TRACE, ws->loggers.trace, "%s PING (%zu bytes)",
+               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               len);
 
     if (WS_CONNECTED != ws->status) {
-        logmod_log(ERROR, ws->logger, "%s to send PING (%zu bytes)",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len);
+        logmod_log(ERROR, ws->loggers.trace, "%s to send PING (%zu bytes)",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   len);
 
         return false;
     }
 
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, "", 0, &sent, 0, CURLWS_PING) != CURLE_OK) {
-        logmod_log(ERROR, ws->logger, "%s to send PING (%zu bytes) %s",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+        logmod_log(ERROR, ws->loggers.trace, "%s to send PING (%zu bytes) %s",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
@@ -820,15 +812,17 @@ ws_ping(struct websockets *ws, const char *reason, size_t len)
 bool
 ws_pong(struct websockets *ws, const char *reason, size_t len)
 {
-    char timestr[64];
+    logmod_log(DEBUG, ws->loggers.raw, "WS_SEND_PONG [%s] - %s\n%.*s",
+               ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
-    logmod_log(TRACE, ws->logger, "%s PONG (%zu bytes) %s",
-               LML(ws->logger, "SEND", GREEN, REGULAR, FOREGROUND), len,
+    logmod_log(TRACE, ws->loggers.trace, "%s PONG (%zu bytes) %s",
+               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND), len,
                !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
     if (WS_CONNECTED != ws->status) {
-        logmod_log(ERROR, ws->logger, "%s to send PONG (%zu bytes) %s",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+        logmod_log(ERROR, ws->loggers.trace, "%s to send PONG (%zu bytes) %s",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
@@ -836,8 +830,9 @@ ws_pong(struct websockets *ws, const char *reason, size_t len)
 
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, "", 0, &sent, 0, CURLWS_PONG) != CURLE_OK) {
-        logmod_log(ERROR, ws->logger, "%s to send PONG (%zu bytes) %s",
-                   LML(ws->logger, "Failed", RED, REGULAR, FOREGROUND), len,
+        logmod_log(ERROR, ws->loggers.trace, "%s to send PONG (%zu bytes) %s",
+                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
         return false;
@@ -853,13 +848,13 @@ ws_start(struct websockets *ws)
     ws->action = WS_ACTION_NONE;
 
     if (ws_is_alive(ws)) {
-        logmod_log(ERROR, ws->logger,
+        logmod_log(ERROR, ws->loggers.trace,
                    "Attempt to start WebSockets connection that is already "
                    "alive, please close it first");
         return NULL;
     }
     if (ws->ehandle != NULL) {
-        logmod_log(ERROR, ws->logger,
+        logmod_log(ERROR, ws->loggers.trace,
                    "Attempt to reconnect without properly closing the "
                    "connection, likely a bug");
         return NULL;
@@ -891,13 +886,13 @@ ws_end(struct websockets *ws)
         switch (ecode = curlmsg->data.result) {
         case CURLE_OK:
         case CURLE_ABORTED_BY_CALLBACK: /* _ws_check_action_cb() */
-            logmod_log(INFO, ws->logger,
+            logmod_log(INFO, ws->loggers.trace,
                        "Disconnected gracefully (CURLE code: %d) %s", ecode,
                        !*ws->errbuf ? curl_easy_strerror(ecode) : ws->errbuf);
             break;
         case CURLE_READ_ERROR:
         default:
-            logmod_log(ERROR, ws->logger,
+            logmod_log(ERROR, ws->loggers.trace,
                        "Disconnected abruptly (CURLE code: %d) %s", ecode,
                        !*ws->errbuf ? curl_easy_strerror(ecode) : ws->errbuf);
             break;
@@ -995,13 +990,13 @@ ws_close(struct websockets *ws,
          const size_t len)
 {
     if (WS_DISCONNECTED == ws->status) {
-        logmod_log(WARN, ws->logger,
+        logmod_log(WARN, ws->loggers.trace,
                    "Attempt to close WebSockets connection that has already "
                    "ended");
         return;
     }
 
-    logmod_log(WARN, ws->logger,
+    logmod_log(WARN, ws->loggers.trace,
                "Attempting to close WebSockets connection with %s : %.*s",
                ws_close_opcode_print(code), (int)len, reason);
 
@@ -1019,7 +1014,7 @@ void
 ws_add_header(struct websockets *ws, const char field[], const char value[])
 {
     if (!ws_is_alive(ws)) {
-        logmod_log(ERROR, ws->logger,
+        logmod_log(ERROR, ws->loggers.trace,
                    "Attempt to add header to WebSockets connection that is "
                    "not alive");
         return;

@@ -552,8 +552,7 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
                         _discord_on_gateway_perform, gw);
 
     gw->logger = logmod_get_logger(&client->logmod, "DISCORD_GATEWAY");
-    gw->ws = ws_init(&cbs, gw->mhandle,
-                     &(struct ws_attr){ .logmod = &client->logmod });
+    gw->ws = ws_init(&cbs, gw->mhandle, &client->logmod);
 
     gw->timer = calloc(1, sizeof *gw->timer);
     if (pthread_rwlock_init(&gw->timer->rwlock, NULL)) {
