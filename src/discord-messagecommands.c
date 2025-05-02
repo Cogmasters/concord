@@ -45,17 +45,21 @@ struct _discord_message_commands_entry {
     int state;
 };
 
-void
+CCORDcode
 discord_message_commands_init(struct discord_message_commands *cmds)
 {
     struct discord *client = CLIENT(cmds, commands);
     __chash_init(cmds, COMMANDS_TABLE);
 
-    cmds->logger =
-        logmod_get_logger(&client->logmod, "DISCORD_MESSAGE_COMMANDS");
-
+    if (!(cmds->logger =
+              logmod_get_logger(&client->logmod, "MESSAGE_COMMANDS")))
+    {
+        logmod_log(FATAL, NULL, "Couldn't create logger for message commands");
+        return discord_message_commands_cleanup(cmds), CCORD_INTERNAL_ERROR;
+    }
     cmds->fallback = NULL;
     memset(&cmds->prefix, 0, sizeof(cmds->prefix));
+    return CCORD_OK;
 }
 
 void

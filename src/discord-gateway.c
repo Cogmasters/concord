@@ -535,7 +535,7 @@ _discord_on_gateway_perform(struct io_poller *io, CURLM *mhandle, void *p_gw)
     return discord_gateway_perform(p_gw);
 }
 
-void
+CCORDcode
 discord_gateway_init(struct discord_gateway *gw, const char token[])
 {
     struct discord *client = CLIENT(gw, gw);
@@ -546,28 +546,45 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
                                 .on_close = &_ws_on_close };
 
     /* Web-Sockets handler */
-    gw->mhandle = curl_multi_init();
-
-    io_poller_curlm_add(client->io_poller, gw->mhandle,
-                        _discord_on_gateway_perform, gw);
-
-    gw->logger = logmod_get_logger(&client->logmod, "DISCORD_GATEWAY");
-    gw->ws = ws_init(&cbs, gw->mhandle, &client->logmod);
-
-    gw->timer = calloc(1, sizeof *gw->timer);
+    if (!(gw->mhandle = curl_multi_init())) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize WebSockets handle");
+        return discord_gateway_cleanup(gw), CCORD_CURLM_INTERNAL;
+    }
+    if (!io_poller_curlm_add(client->io_poller, gw->mhandle,
+                             _discord_on_gateway_perform, gw))
+    {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't add WebSockets handle to IO poller");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
+    if (!(gw->logger = logmod_get_logger(&client->logmod, "GATEWAY"))) {
+        logmod_log(FATAL, NULL, "Couldn't initialize Gateway logger");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
+    if (!(gw->ws = ws_init(&cbs, gw->mhandle, &client->logmod))) {
+        logmod_log(FATAL, gw->logger, "Couldn't initialize WebSockets handle");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
+    if (!(gw->timer = calloc(1, sizeof *gw->timer))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway timer");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     if (pthread_rwlock_init(&gw->timer->rwlock, NULL)) {
         logmod_log(FATAL, gw->logger,
                    "Couldn't initialize pthread rwlock for timer");
-        free(gw->timer);
-        // TODO: cleanup
-        return;
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
     }
 
     /* mark true to not get reconnected each reconnect */
     gw->timer->hbeat_acknowledged = true;
-
     /* client connection status */
-    gw->session = calloc(1, sizeof *gw->session);
+    if (!(gw->session = calloc(1, sizeof *gw->session))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway session");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     gw->session->retry.enable = true;
     /* default infinite retries TODO: configurable */
     gw->session->retry.limit = -1;
@@ -578,41 +595,70 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
     /* connection identify token */
     gw->id.token = (char *)token;
     /* connection identify properties */
-    gw->id.properties = calloc(1, sizeof *gw->id.properties);
+    if (!(gw->id.properties = calloc(1, sizeof *gw->id.properties))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway properties");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     gw->id.properties->os = OSNAME;
     gw->id.properties->browser = "concord";
     gw->id.properties->device = "concord";
     /* the bot initial presence */
-    gw->id.presence = calloc(1, sizeof *gw->id.presence);
+    if (!(gw->id.presence = calloc(1, sizeof *gw->id.presence))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway presence");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     gw->id.presence->status = "online";
     gw->id.presence->since = cog_timestamp_ms();
 
     discord_gateway_send_presence_update(gw, gw->id.presence);
+
+    return CCORD_OK;
 }
 
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-    if (gw->timer->hbeat_timer)
-        discord_internal_timer_ctl(CLIENT(gw, gw),
-                                   &(struct discord_timer){
-                                       .id = gw->timer->hbeat_timer,
-                                       .flags = DISCORD_TIMER_DELETE,
-                                   });
-    /* cleanup WebSockets handle */
-    io_poller_curlm_del(CLIENT(gw, gw)->io_poller, gw->mhandle);
-    curl_multi_cleanup(gw->mhandle);
-    ws_cleanup(gw->ws);
+    struct discord *client = CLIENT(gw, gw);
+
     /* cleanup timers */
-    pthread_rwlock_destroy(&gw->timer->rwlock);
-    free(gw->timer);
+    if (gw->timer) {
+        if (gw->timer->hbeat_timer) {
+            discord_internal_timer_ctl(client,
+                                       &(struct discord_timer){
+                                           .id = gw->timer->hbeat_timer,
+                                           .flags = DISCORD_TIMER_DELETE,
+                                       });
+        }
+        pthread_rwlock_destroy(&gw->timer->rwlock);
+        free(gw->timer);
+    }
+    /* cleanup WebSockets handle */
+    if (gw->mhandle) {
+        io_poller_curlm_del(client->io_poller, gw->mhandle);
+        curl_multi_cleanup(gw->mhandle);
+    }
+    if (gw->ws) {
+        ws_cleanup(gw->ws);
+    }
     /* cleanup bot identification */
-    free(gw->id.properties);
-    free(gw->id.presence);
-    /* cleanup client session */
-    free(gw->session);
-    if (gw->payload.json.pairs) free(gw->payload.json.pairs);
-    if (gw->payload.json.tokens) free(gw->payload.json.tokens);
+    if (gw->id.properties) {
+        free(gw->id.properties);
+    }
+    if (gw->id.presence) {
+        free(gw->id.presence);
+    }
+    if (gw->session) {
+        free(gw->session);
+    }
+    if (gw->payload.json.pairs) {
+        free(gw->payload.json.pairs);
+    }
+    if (gw->payload.json.tokens) {
+        free(gw->payload.json.tokens);
+    }
+    memset(gw, 0, sizeof *gw);
 }
 
 #ifdef CCORD_DEBUG_WEBSOCKETS

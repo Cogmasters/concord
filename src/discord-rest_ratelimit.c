@@ -148,7 +148,7 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     return b;
 }
 
-void
+CCORDcode
 discord_ratelimiter_init(struct discord_ratelimiter *rl)
 {
     struct discord *client = CLIENT(rl, rest.requestor.ratelimiter);
@@ -156,17 +156,30 @@ discord_ratelimiter_init(struct discord_ratelimiter *rl)
 
     __chash_init(rl, RATELIMITER_TABLE);
 
-    rl->logger = logmod_get_logger(&client->logmod, "DISCORD_RATELIMIT");
-
+    if (!(rl->logger = logmod_get_logger(&client->logmod, "RATELIMIT"))) {
+        logmod_log(ERROR, NULL, "Couldn't create logger for ratelimiter");
+        return CCORD_INTERNAL_ERROR;
+    }
     /* global ratelimiting */
-    rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp);
-
+    if (!(rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp)))
+    {
+        logmod_log(ERROR, rl->logger,
+                   "Couldn't allocate memory for global wait timestamp");
+        return CCORD_OUT_OF_MEMORY;
+    }
     /* initialize 'singleton' buckets */
-    rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
-    rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX);
-
-    /* initialize bucket queues */
+    if (!(rl->null = _discord_bucket_init(rl, "null", &keynull, 1L))) {
+        logmod_log(ERROR, rl->logger,
+                   "Couldn't allocate memory for null bucket");
+        return CCORD_OUT_OF_MEMORY;
+    }
+    if (!(rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX))) {
+        logmod_log(ERROR, rl->logger,
+                   "Couldn't allocate memory for miss bucket");
+        return CCORD_OUT_OF_MEMORY;
+    }
     QUEUE_INIT(&rl->queues.pending);
+    return CCORD_OK;
 }
 
 /* cancel all pending and busy requests from a bucket */
@@ -178,8 +191,9 @@ _discord_bucket_cancel_all(struct discord_ratelimiter *rl,
         CONTAINEROF(rl, struct discord_requestor, ratelimiter);
 
     /* cancel busy transfer */
-    if (b->busy_req) discord_request_cancel(rqtor, b->busy_req);
-
+    if (b->busy_req) {
+        discord_request_cancel(rqtor, b->busy_req);
+    }
     /* move pending tranfers to recycling */
     pthread_mutex_lock(&rqtor->qlocks->recycling);
     QUEUE_ADD(&rqtor->queues->recycling, &b->queues.next);
@@ -196,8 +210,11 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
         if (CHASH_FILLED == r->state)
             _discord_bucket_cancel_all(rl, r->bucket);
     }
-    free(rl->global_wait_tstamp);
+    if (rl->global_wait_tstamp) {
+        free(rl->global_wait_tstamp);
+    }
     __chash_free(rl, RATELIMITER_TABLE);
+    memset(rl, 0, sizeof *rl);
 }
 
 static struct discord_bucket *

@@ -92,28 +92,36 @@ _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
     chash_delete(rc, (intptr_t)data, REFCOUNTER_TABLE);
 }
 
-void
+CCORDcode
 discord_refcounter_init(struct discord_refcounter *rc)
 {
     struct discord *client = CLIENT(rc, refcounter);
 
-    rc->logger = logmod_get_logger(&client->logmod, "DISCORD_REFCOUNT");
+    if (!(rc->logger = logmod_get_logger(&client->logmod, "REFCOUNT"))) {
+        logmod_log(FATAL, NULL, "Couldn't create logger for refcounter");
+        return discord_refcounter_cleanup(rc), CCORD_INTERNAL_ERROR;
+    }
     __chash_init(rc, REFCOUNTER_TABLE);
-
-    rc->g_lock = malloc(sizeof *rc->g_lock);
+    if (!(rc->g_lock = malloc(sizeof *rc->g_lock))) {
+        logmod_log(FATAL, rc->logger,
+                   "Couldn't allocate memory for refcounter mutex");
+        return discord_refcounter_cleanup(rc), CCORD_OUT_OF_MEMORY;
+    }
     if (pthread_mutex_init(rc->g_lock, NULL)) {
         logmod_log(FATAL, rc->logger, "Couldn't initialize refcounter mutex");
-        free(rc->g_lock);
-        rc->g_lock = NULL;
+        return discord_refcounter_cleanup(rc), CCORD_ERRNO;
     }
+    return CCORD_OK;
 }
 
 void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
     __chash_free(rc, REFCOUNTER_TABLE);
-    pthread_mutex_destroy(rc->g_lock);
-    free(rc->g_lock);
+    if (rc->g_lock) {
+        pthread_mutex_destroy(rc->g_lock);
+        free(rc->g_lock);
+    }
 }
 
 static bool
