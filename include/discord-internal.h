@@ -118,8 +118,10 @@ struct discord_timers {
  * @brief Prepare timers for usage
  *
  * @param timers the 'struct discord_timers' to init
+ * @CCORD_return
  */
-void discord_timers_init(struct discord_timers *timers, struct io_poller *io);
+CCORDcode discord_timers_init(struct discord_timers *timers,
+                              struct io_poller *io);
 
 /**
  * @brief Cleanup timers and call cancel any running ones
@@ -251,8 +253,9 @@ struct discord_ratelimiter {
  *
  * A hashtable shall be used for storage and retrieval of discovered buckets
  * @param rl the ratelimiter handle to be initialized
+ * @CCORD_return
  */
-void discord_ratelimiter_init(struct discord_ratelimiter *rl);
+CCORDcode discord_ratelimiter_init(struct discord_ratelimiter *rl);
 
 /**
  * @brief Cleanup all buckets that have been discovered
@@ -526,9 +529,10 @@ struct discord_requestor {
  *      asynchronously, and a queue for storing individual requests
  * @param rqtor the requestor handle to be initialized
  * @param token the bot token
+ * @CCORD_return
  */
-void discord_requestor_init(struct discord_requestor *rqtor,
-                            const char token[]);
+CCORDcode discord_requestor_init(struct discord_requestor *rqtor,
+                                 const char token[]);
 
 /**
  * @brief Free the request handler
@@ -616,8 +620,9 @@ struct discord_rest {
  * Structure used for interfacing with the Discord's REST API
  * @param rest the REST handle to be initialized
  * @param token the bot token
+ * @CCORD_return
  */
-void discord_rest_init(struct discord_rest *rest, const char token[]);
+CCORDcode discord_rest_init(struct discord_rest *rest, const char token[]);
 
 /**
  * @brief Free an REST handle
@@ -820,8 +825,9 @@ struct discord_gateway {
  * Structure used for interfacing with the Discord's Gateway API
  * @param gw the gateway handle to be initialized
  * @param token the bot token
+ * @CCORD_return
  */
-void discord_gateway_init(struct discord_gateway *gw, const char token[]);
+CCORDcode discord_gateway_init(struct discord_gateway *gw, const char token[]);
 
 /**
  * @brief Free a Gateway handle
@@ -966,8 +972,9 @@ struct discord_refcounter {
  *
  * A hashtable shall be used for storage and retrieval of user data
  * @param rc the reference counter handle to be initialized
+ * @CCORD_return
  */
-void discord_refcounter_init(struct discord_refcounter *rc);
+CCORDcode discord_refcounter_init(struct discord_refcounter *rc);
 
 /**
  * @brief Add a new internal reference to the reference counter
@@ -1093,8 +1100,9 @@ struct discord_message_commands {
  * @brief Initialize a Message Commands handle
  *
  * @param cmds the message commands handle to be initialized
+ * @CCORD_return
  */
-void discord_message_commands_init(struct discord_message_commands *cmds);
+CCORDcode discord_message_commands_init(struct discord_message_commands *cmds);
 
 /**
  * @brief Free a Message Commands handle

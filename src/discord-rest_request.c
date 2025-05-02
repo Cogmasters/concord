@@ -40,86 +40,122 @@ _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 #endif
 }
 
-void
+CCORDcode
 discord_requestor_init(struct discord_requestor *rqtor, const char token[])
 {
     struct discord *client = CLIENT(rqtor, rest.requestor);
+    CCORDcode code;
 
-    rqtor->logger = logmod_get_logger(&client->logmod, "DISCORD_REQUEST");
-
-    rqtor->ua = ua_init(&client->logmod);
+    if (!(rqtor->logger = logmod_get_logger(&client->logmod, "REQUEST"))) {
+        logmod_log(ERROR, NULL, "Couldn't create logger for requestor");
+        return CCORD_INTERNAL_ERROR;
+    }
+    if (!(rqtor->ua = ua_init(&client->logmod))) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize User-Agent handle");
+        return CCORD_INTERNAL_ERROR;
+    }
     ua_set_url(rqtor->ua, DISCORD_API_BASE_URL);
     ua_set_opt(rqtor->ua, (char *)token, &_discord_on_curl_setopt);
 
     /* queues are malloc'd to guarantee a client cloned by
      * discord_clone() will share the same queue with the original */
-    rqtor->queues = malloc(sizeof *rqtor->queues);
+    if (!(rqtor->queues = malloc(sizeof *rqtor->queues))) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't allocate memory for requestor's queues");
+        return CCORD_OUT_OF_MEMORY;
+    }
     QUEUE_INIT(&rqtor->queues->recycling);
     QUEUE_INIT(&rqtor->queues->pending);
     QUEUE_INIT(&rqtor->queues->finished);
 
-    rqtor->qlocks = malloc(sizeof *rqtor->qlocks);
+    if (!(rqtor->qlocks = malloc(sizeof *rqtor->qlocks))) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't allocate memory for requestor's queue locks");
+        return CCORD_OUT_OF_MEMORY;
+    }
     if (pthread_mutex_init(&rqtor->qlocks->recycling, NULL)) {
         logmod_log(ERROR, rqtor->logger,
                    "Couldn't initialize requestor's recycling queue mutex");
-        return;
+        return CCORD_ERRNO;
     }
     if (pthread_mutex_init(&rqtor->qlocks->pending, NULL)) {
         logmod_log(ERROR, rqtor->logger,
                    "Couldn't initialize requestor's pending queue mutex");
-        return;
+        return CCORD_ERRNO;
     }
     if (pthread_mutex_init(&rqtor->qlocks->finished, NULL)) {
         logmod_log(ERROR, rqtor->logger,
                    "Couldn't initialize requestor's finished queue mutex");
-        return;
+        return CCORD_ERRNO;
     }
 
-    rqtor->mhandle = curl_multi_init();
+    if (!(rqtor->mhandle = curl_multi_init())) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's multi handle");
+        return CCORD_INTERNAL_ERROR;
+    }
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
-
-    discord_ratelimiter_init(&rqtor->ratelimiter);
+    if ((code = discord_ratelimiter_init(&rqtor->ratelimiter)) != CCORD_OK) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's ratelimiter");
+        return code;
+    }
+    return CCORD_OK;
 }
 
 void
 discord_requestor_cleanup(struct discord_requestor *rqtor)
 {
-    const struct discord_rest *rest =
-        CONTAINEROF(rqtor, struct discord_rest, requestor);
-    QUEUE *const req_queues[] = { &rqtor->queues->recycling,
-                                  &rqtor->queues->pending,
-                                  &rqtor->queues->finished };
+    if (rqtor->queues) {
+        QUEUE *const req_queues[] = { &rqtor->queues->recycling,
+                                      &rqtor->queues->pending,
+                                      &rqtor->queues->finished };
+        /* cleanup ratelimiting handle */
+        discord_ratelimiter_cleanup(&rqtor->ratelimiter);
 
-    /* cleanup ratelimiting handle */
-    discord_ratelimiter_cleanup(&rqtor->ratelimiter);
+        /* cleanup queues */
+        for (size_t i = 0; i < sizeof(req_queues) / sizeof *req_queues; ++i) {
+            QUEUE(struct discord_request) queue, *qelem;
+            struct discord_request *req;
 
-    /* cleanup queues */
-    for (size_t i = 0; i < sizeof(req_queues) / sizeof *req_queues; ++i) {
-        QUEUE(struct discord_request) queue, *qelem;
-        struct discord_request *req;
+            QUEUE_MOVE(req_queues[i], &queue);
+            while (!QUEUE_EMPTY(&queue)) {
+                qelem = QUEUE_HEAD(&queue);
+                QUEUE_REMOVE(qelem);
 
-        QUEUE_MOVE(req_queues[i], &queue);
-        while (!QUEUE_EMPTY(&queue)) {
-            qelem = QUEUE_HEAD(&queue);
-            QUEUE_REMOVE(qelem);
-
-            req = QUEUE_DATA(qelem, struct discord_request, entry);
-            _discord_request_cleanup(req);
+                req = QUEUE_DATA(qelem, struct discord_request, entry);
+                _discord_request_cleanup(req);
+            }
         }
+        free(rqtor->queues);
     }
-    free(rqtor->queues);
-
-    /* cleanup queue locks */
-    pthread_mutex_destroy(&rqtor->qlocks->recycling);
-    pthread_mutex_destroy(&rqtor->qlocks->pending);
-    pthread_mutex_destroy(&rqtor->qlocks->finished);
-    free(rqtor->qlocks);
-
+    if (rqtor->qlocks) {
+        pthread_mutex_t *const qlocks[] = { &rqtor->qlocks->recycling,
+                                            &rqtor->qlocks->pending,
+                                            &rqtor->qlocks->finished };
+        for (size_t i = 0; i < sizeof(qlocks) / sizeof *qlocks; ++i) {
+            if (memcmp(qlocks[i], &(pthread_mutex_t){ 0 },
+                       sizeof(pthread_mutex_t))
+                != 0)
+            {
+                pthread_mutex_destroy(qlocks[i]);
+            }
+        }
+        free(rqtor->qlocks);
+    }
     /* cleanup curl's multi handle */
-    io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
-    curl_multi_cleanup(rqtor->mhandle);
+    if (rqtor->mhandle) {
+        const struct discord_rest *rest =
+            CONTAINEROF(rqtor, struct discord_rest, requestor);
+        io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
+        curl_multi_cleanup(rqtor->mhandle);
+    }
     /* cleanup User-Agent handle */
-    ua_cleanup(rqtor->ua);
+    if (rqtor->ua) {
+        ua_cleanup(rqtor->ua);
+    }
+    memset(rqtor, 0, sizeof *rqtor);
 }
 
 static void
