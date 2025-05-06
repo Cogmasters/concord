@@ -62,8 +62,6 @@ echo:
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 
-voice:
-	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 debug:
 	@ CFLAGS="$(DEBUG_FLAGS)" $(MAKE)
 

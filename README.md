@@ -278,8 +278,6 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
     * Produce a dynamically-linked version of Concord. This Makefile is intended for GNU-style compilers, such as `gcc` or `clang`.
 * `make shared_osx`
     * Produce a dynamically-linked version of Concord, for OS X and Darwin systems. 
-* `make voice`
-    * Enable experimental Voice Connection handling - not production ready.
 * `make debug`
     * Enable some flags useful while developing, such as `-O0` and `-g`
 

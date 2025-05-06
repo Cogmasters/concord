@@ -91,9 +91,6 @@ _discord_init(struct discord *new_client)
     discord_rest_init(&new_client->rest, &new_client->conf, new_client->token);
     discord_gateway_init(&new_client->gw, &new_client->conf,
                          new_client->token);
-#ifdef CCORD_VOICE
-    discord_voice_connections_init(new_client);
-#endif
 
     if (new_client->token) { /* fetch client's user structure */
         code =
@@ -248,9 +245,6 @@ discord_cleanup(struct discord *client)
         discord_rest_cleanup(&client->rest);
         discord_gateway_cleanup(&client->gw);
         discord_message_commands_cleanup(&client->commands);
-#ifdef CCORD_VOICE
-        discord_voice_connections_cleanup(client);
-#endif
         discord_user_cleanup(&client->self);
         if (client->cache.cleanup) client->cache.cleanup(client);
         discord_refcounter_cleanup(&client->refcounter);

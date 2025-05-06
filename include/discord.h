@@ -39,9 +39,6 @@ struct discord;
 /**/
 
 #include "discord_codecs.h"
-#ifdef CCORD_VOICE
-#include "discord-voice.h"
-#endif /* CCORD_VOICE */
 #include "discord-response.h"
 
 /** @defgroup DiscordClient Client */
