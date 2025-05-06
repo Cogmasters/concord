@@ -5,6 +5,7 @@
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
 [discord-config-init]: https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb
 [discord-config-get-field]: https://cogmasters.github.io/concord/group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307
+[coglink-link]: https://github.com/PerformanC/CogLink
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
@@ -14,9 +15,6 @@
 
 [ ![discord-shield][] ][discord-invite]
 [ ![migrating-shield][] ][migrating-link]
-
-## 🚨 Concord is not dead! 🚨
-Development has been happening in the dev branch. We are working on new features and improvements. To access the latest version of the library, please check out the dev branch.
 
 ## About
 
@@ -171,6 +169,11 @@ $ git clone https://github.com/cogmasters/concord.git && cd concord
 ```console
 $ make
 ```
+
+### Special notes about Voice Connections
+
+Concord does not support voice connections yet. If you want to use voice connections, you can use [CogLink][coglink-link] instead.
+CogLink is a separate project that provides a LavaLink client for Concord. It is not part of the Concord library, but it is designed to work seamlessly with Concord.
 
 ### Special notes for non-Linux systems
 
@@ -399,5 +402,6 @@ All kinds of contributions are welcome, all we ask is to abide to our [guideline
 
 ## Useful links
 
+- [CogLink][coglink-link] - LavaLink client for Concord
 - [Migrating from V1][migrating-link]
 - [Migrating from Orca][migrating-orca-link]
