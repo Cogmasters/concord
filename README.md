@@ -20,6 +20,35 @@
 
 Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
+### Guides
+
+Following are guides created by the community to help you get started with Concord, organized by category:
+
+#### Installation & Setup
+
+- [Compiling on Windows](docs/guides/compiling_on_windows.md) - Build Concord on Windows systems
+- [Installing Concord (Termux)](docs/guides/installing_concord_termux.md) - Install on Android using Termux
+- [Msys2 and Mingw64](docs/guides/msys2_and_mingw64.md) - Setup using MSYS2 environment
+- [Cross Compiling](docs/guides/cross_compiling.md) - Compile for different target platforms
+- [Concord on Old Systems](docs/guides/concord_on_old_systems.md) - Support for legacy systems
+
+#### Configuration
+
+- [Config.json Directives](docs/guides/config.json_directives.md) - Configure your bot using JSON
+- [Setup with Environment Variables](docs/guides/setup_concord_with_env.md) - Use environment variables
+
+#### Discord Features
+
+- [Embeds](docs/guides/embeds.md) - Create rich message embeds
+- [Slash Commands](docs/guides/slash-commands.md) - Implement Discord application commands
+- [Event Scheduler](docs/guides/scheduler_event.md) - Control Discord event processing
+- [SQLite3 with Concord](docs/guides/sqlite3_db_with_concord.md) - Persist data with SQLite
+- [Databases with Concord](docs/guides/databases_with_concord.md) - General database integration
+
+#### Debugging & Troubleshooting
+
+- [Debugging](docs/guides/debugging.md) - Debug your Concord applications
+
 ### Examples
 
 *The following are minimalistic examples, refer to [`examples/`](examples/) for a better overview.*
