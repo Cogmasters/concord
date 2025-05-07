@@ -32,6 +32,10 @@ shared:
 	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
 	@ CFLAGS="$(SOFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
+shared_nosoname:
+	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
+	@ CFLAGS="$(SOFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
+	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 shared_osx:
 	@ CFLAGS="$(DYFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
 	@ CFLAGS="$(DYFLAGS)" $(MAKE) -C $(GENCODECS_DIR)

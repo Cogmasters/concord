@@ -7,6 +7,9 @@ LIBDIR        = $(TOP)/lib
 GENCODECS_DIR = $(TOP)/gencodecs
 CORE_DIR      = $(TOP)/core
 
+VERSION_MAJOR = 2.3
+VERSION_MINOR = 1
+
 CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/io_poller.o      \
                 $(CORE_DIR)/user-agent.o     \
@@ -57,7 +60,8 @@ CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR) -I$(PREFIX)/include
 
 ARLIB = $(LIBDIR)/libdiscord.a
-SOLIB = $(LIBDIR)/libdiscord.so
+SOLIB = $(LIBDIR)/libdiscord.so.$(VERSION_MAJOR).$(VERSION_MINOR)
+SOLIBNOSONAME = $(LIBDIR)/libdiscord.so
 DYLIB = $(LIBDIR)/libdiscord.dylib
 
 ARFLAGS = -cqsv
@@ -73,15 +77,19 @@ static: $(ARLIB)
 
 shared:
 	@ CFLAGS="$(SOFLAGS)" $(MAKE) $(SOLIB)
+shared_nosoname:
+	@ CFLAGS="$(SOFLAGS)" $(MAKE) $(SOLIBNOSONAME)
 shared_osx:
 	@ CFLAGS="$(DYFLAGS)" $(MAKE) $(DYLIB)
 
 $(ARLIB): deps
 	$(AR) $(ARFLAGS) $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
 $(SOLIB): deps
-	$(CC) -shared -lcurl -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
+	$(CC) -shared -Wl,-soname,libdiscord.so.$(VERSION_MAJOR) $(LDFLAGS) -lcurl -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
+$(SOLIBNOSONAME): deps
+	$(CC) -shared $(LDFLAGS) -lcurl -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
 $(DYLIB): deps
-	$(CC) -dynamiclib $(DYFLAGS) -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
+	$(CC) -dynamiclib $(DYFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
 
 deps:
 	@ $(MAKE) -C $(CORE_DIR)
