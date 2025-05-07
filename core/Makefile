@@ -7,6 +7,7 @@ OBJS = cog-utils.o      \
        jsmn-find.o      \
        json-build.o     \
        logmod.o         \
+       oa_hash.o        \
        priority_queue.o \
        anomap.o         \
        threadpool.o     \

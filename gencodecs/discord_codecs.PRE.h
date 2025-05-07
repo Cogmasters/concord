@@ -42,19 +42,19 @@ PP_INCLUDE("error.h")
 /* Custom JSON decoding macros */
 #define GENCODECS_JSON_DECODER_PTR_json_char(_f, _js, _var, _type)            \
     if (_f) {                                                                 \
-        _var = _gc_strndup(js + _f->v.pos, _f->v.len);                        \
-        ret += _f->v.len;                                                     \
+        _var = _gc_strndup(js + _f->v->start, _f->v->end - _f->v->start);                        \
+        ret += _f->v->end - _f->v->start;                                                     \
     }
 #define GENCODECS_JSON_DECODER_size_t(_f, _js, _var, _type)                   \
-    if (_f && _f->type == JSMN_PRIMITIVE)                                     \
-    _var = (size_t)strtoull(_js + _f->v.pos, NULL, 10)
+    if (_f && _f->v->type == JSMN_PRIMITIVE)                                  \
+    _var = (size_t)strtoull(_js + _f->v->start, NULL, 10)
 #define GENCODECS_JSON_DECODER_uint64_t(_f, _js, _var, _type)                 \
-    if (_f) sscanf(_js + _f->v.pos, "%" SCNu64, &_var)
+    if (_f) sscanf(_js + _f->v->start, "%" SCNu64, &_var)
 #define GENCODECS_JSON_DECODER_u64snowflake GENCODECS_JSON_DECODER_uint64_t
 #define GENCODECS_JSON_DECODER_u64bitmask   GENCODECS_JSON_DECODER_uint64_t
 #define GENCODECS_JSON_DECODER_u64unix_ms(_f, _js, _var, _type)               \
-    if (_f && _f->type == JSMN_STRING)                                        \
-    cog_iso8601_to_unix_ms(_js + _f->v.pos, _f->v.len, &_var)
+    if (_f && _f->v->type == JSMN_STRING)                                     \
+    cog_iso8601_to_unix_ms(_js + _f->v->start, _f->v->end - _f->v->start, &_var)
 
 /* Custom field macros */
 #define FIELD_SNOWFLAKE(_name)                                                \

@@ -66,12 +66,11 @@ _discord_gateway_close_opcode_print(enum discord_gateway_close_opcodes opcode)
 static void
 _discord_on_hello(struct discord_gateway *gw)
 {
-    jsmnf_pair *f;
+    const jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
-                        "heartbeat_interval", 18)))
+    if ((f = jsmnf_find(gw->payload.data, "heartbeat_interval", 18)))
         gw->timer->hbeat_interval =
-            strtoll(gw->payload.json.start + f->v.pos, NULL, 10);
+            strtoll(gw->payload.json.start + f->v->start, NULL, 10);
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         discord_gateway_send_resume(gw, &(struct discord_resume){
@@ -212,15 +211,15 @@ _discord_on_dispatch(struct discord_gateway *gw)
 
     switch (gw->payload.event) {
     case DISCORD_EV_READY: {
-        jsmnf_pair *f;
+        const jsmnf_pair *f;
 
         logmod_log(INFO, gw->logger,
                    "Successfully started a Discord session!");
 
-        if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
-                            "session_id", 10)))
+        if ((f = jsmnf_find(gw->payload.data, "session_id", 10)))
             snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
-                     (int)f->v.len, gw->payload.json.start + f->v.pos);
+                     f->v->end - f->v->start,
+                     gw->payload.json.start + f->v->start);
         if (!*gw->session->id) {
             logmod_log(ERROR, gw->logger,
                        "Missing session_id from READY event");
@@ -228,11 +227,9 @@ _discord_on_dispatch(struct discord_gateway *gw)
             return;
         }
 
-        if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
-                            "resume_gateway_url", 18)))
-        {
-            const char *url = gw->payload.json.start + f->v.pos;
-            int url_len = (int)f->v.len;
+        if ((f = jsmnf_find(gw->payload.data, "resume_gateway_url", 18))) {
+            const char *url = gw->payload.json.start + f->v->start;
+            int url_len = f->v->end - f->v->start;
             if ((url_len = snprintf(
                      gw->session->resume_url, sizeof(gw->session->resume_url),
                      "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
@@ -267,9 +264,10 @@ _discord_on_dispatch(struct discord_gateway *gw)
     }
 
     /* get dispatch event opcode */
-    enum discord_event_scheduler mode =
-        gw->scheduler(client, gw->payload.json.start + gw->payload.data->v.pos,
-                      gw->payload.data->v.len, gw->payload.event);
+    enum discord_event_scheduler mode = gw->scheduler(
+        client, gw->payload.json.start + gw->payload.data->v->start,
+        (size_t)(gw->payload.data->v->end - gw->payload.data->v->start),
+        gw->payload.event);
 
     switch (mode) {
     case DISCORD_EVENT_IGNORE:
@@ -303,9 +301,9 @@ _discord_on_invalid_session(struct discord_gateway *gw)
     /* attempt to resume if session isn't invalid */
     gw->session->retry.enable = true;
     gw->session->status = DISCORD_SESSION_SHUTDOWN;
-    if (gw->payload.data->v.len != 5
-        || strncmp("false", gw->payload.json.start + gw->payload.data->v.pos,
-                   5))
+    if (gw->payload.data->v->end - gw->payload.data->v->start != 5
+        || strncmp("false",
+                   gw->payload.json.start + gw->payload.data->v->start, 5))
     {
         gw->session->status |= DISCORD_SESSION_RESUMABLE;
         reason = "Invalid session, will attempt to resume";
@@ -434,41 +432,37 @@ _discord_gateway_payload_from_json(struct discord_gateway_payload *payload,
                                    const char text[],
                                    size_t len)
 {
+    jsmnf_loader loader;
+    const jsmnf_pair *f;
+
     payload->json.start = (char *)text;
     payload->json.size = len;
 
-    jsmn_parser parser;
-    jsmn_init(&parser);
-    if (jsmn_parse_auto(&parser, text, len, &payload->json.tokens,
-                        &payload->json.ntokens)
-        <= 0)
-        return false;
-
-    jsmnf_loader loader;
     jsmnf_init(&loader);
-    if (jsmnf_load_auto(&loader, text, payload->json.tokens, parser.toknext,
-                        &payload->json.pairs, &payload->json.npairs)
+    if (jsmnf_load_auto(&loader, text, len, &payload->json.table,
+                        &payload->json.ntable)
         <= 0)
+    {
         return false;
+    }
 
-    jsmnf_pair *f;
-    if ((f = jsmnf_find(payload->json.pairs, text, "t", 1))) {
-        if (JSMN_STRING == f->type)
+    if ((f = jsmnf_find(loader.root, "t", 1))) {
+        if (JSMN_STRING == f->v->type)
             snprintf(payload->name, sizeof(payload->name), "%.*s",
-                     (int)f->v.len, text + f->v.pos);
+                     f->v->end - f->v->start, text + f->v->start);
         else
             *payload->name = '\0';
 
         payload->event = _discord_gateway_event_eval(payload->name);
     }
-    if ((f = jsmnf_find(payload->json.pairs, text, "s", 1))) {
-        int seq = (int)strtol(text + f->v.pos, NULL, 10);
+    if ((f = jsmnf_find(loader.root, "s", 1))) {
+        int seq = (int)strtol(text + f->v->start, NULL, 10);
         if (seq) payload->seq = seq;
     }
-    if ((f = jsmnf_find(payload->json.pairs, text, "op", 2)))
+    if ((f = jsmnf_find(loader.root, "op", 2)))
         payload->opcode =
-            (enum discord_gateway_opcodes)strtol(text + f->v.pos, NULL, 10);
-    payload->data = jsmnf_find(payload->json.pairs, text, "d", 1);
+            (enum discord_gateway_opcodes)strtol(text + f->v->start, NULL, 10);
+    payload->data = jsmnf_find(loader.root, "d", 1);
 
     return true;
 }
@@ -652,11 +646,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     if (gw->session) {
         free(gw->session);
     }
-    if (gw->payload.json.pairs) {
-        free(gw->payload.json.pairs);
-    }
-    if (gw->payload.json.tokens) {
-        free(gw->payload.json.tokens);
+    if (gw->payload.json.table) {
+        free(gw->payload.json.table);
     }
     memset(gw, 0, sizeof *gw);
 }
@@ -755,25 +746,19 @@ _discord_gateway_session_from_json(struct discord_gateway_session *session,
                                    const char text[],
                                    size_t len)
 {
-    jsmn_parser parser;
-    jsmntok_t tokens[32];
-    jsmn_init(&parser);
-    if (jsmn_parse(&parser, text, len, tokens, sizeof(tokens) / sizeof *tokens)
-        <= 0)
-        return false;
-
     jsmnf_loader loader;
-    jsmnf_pair pairs[32];
+    jsmnf_table table[0x20];
     jsmnf_init(&loader);
-    if (jsmnf_load(&loader, text, tokens, parser.toknext, pairs,
-                   sizeof(pairs) / sizeof *pairs)
+    if (jsmnf_load(&loader, text, len, table, sizeof(table) / sizeof *table)
         <= 0)
+    {
         return false;
+    }
 
-    jsmnf_pair *f;
-    if ((f = jsmnf_find(pairs, text, "url", 3))) {
-        const char *url = text + f->v.pos;
-        int url_len = (int)f->v.len;
+    const jsmnf_pair *f;
+    if ((f = jsmnf_find(loader.root, "url", 3))) {
+        const char *url = text + f->v->start;
+        int url_len = f->v->end - f->v->start;
         if ((url_len = snprintf(session->base_url, sizeof(session->base_url),
                                 "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len,
                                 url, ('/' == url[url_len - 1]) ? "" : "/"))
@@ -784,9 +769,9 @@ _discord_gateway_session_from_json(struct discord_gateway_session *session,
             return false;
         }
     }
-    if ((f = jsmnf_find(pairs, text, "shards", 6)))
-        session->shards = (int)strtol(text + f->v.pos, NULL, 10);
-    if ((f = jsmnf_find(pairs, text, "session_start_limit", 19)))
+    if ((f = jsmnf_find(loader.root, "shards", 6)))
+        session->shards = (int)strtol(text + f->v->start, NULL, 10);
+    if ((f = jsmnf_find(loader.root, "session_start_limit", 19)))
         discord_session_start_limit_from_jsmnf(f, text, &session->start_limit);
     return true;
 }

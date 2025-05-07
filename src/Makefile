@@ -14,6 +14,7 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/jsmn-find.o      \
                 $(CORE_DIR)/json-build.o     \
                 $(CORE_DIR)/logmod.o         \
+                $(CORE_DIR)/oa_hash.o        \
                 $(CORE_DIR)/priority_queue.o \
                 $(CORE_DIR)/anomap.o         \
                 $(CORE_DIR)/threadpool.o     \

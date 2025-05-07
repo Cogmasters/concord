@@ -215,42 +215,34 @@ discord_init(const char token[])
 static void
 _discord_config_load_disabled_modules(struct discord_config *config)
 {
-    jsmn_parser parser;
-    jsmntok_t tokens[256];
+    jsmnf_table table[0x100];
+    jsmnf_loader loader;
 
-    jsmn_init(&parser);
-    if (0 < jsmn_parse(&parser, config->file.start, config->file.size, tokens,
-                       sizeof(tokens) / sizeof *tokens))
+    jsmnf_init(&loader);
+    if (0 < jsmnf_load(&loader, config->file.start, config->file.size, table,
+                       sizeof(table) / sizeof *table))
     {
-        jsmnf_loader loader;
-        jsmnf_pair pairs[256];
-
-        jsmnf_init(&loader);
-        if (0 < jsmnf_load(&loader, config->file.start, tokens, parser.toknext,
-                           pairs, sizeof(pairs) / sizeof *pairs))
-        {
-            const char *file = config->file.start;
-            jsmnf_pair *f;
-
-            if ((f = jsmnf_find(pairs, file, "log", 3))) {
-                jsmnf_pair *f1;
-
-                if ((f1 = jsmnf_find(f, file, "disable", 7)) && f1->size >= 0)
-                {
-                    const size_t size = (size_t)f1->size;
-                    config->disable.ids = malloc(size * sizeof(char *));
-                    for (size_t i = 0; i < size; ++i) {
-                        jsmnf_pair *f2 = f1->fields + i;
-                        if (f2->type == JSMN_STRING) {
-                            const size_t length = f2->v.len + 1;
-                            char *id = malloc(length);
-                            memcpy(id, file + f2->v.pos, f2->v.len);
-                            id[f2->v.len] = '\0';
-                            config->disable.ids[i] = id;
-                        }
+        const char *file = config->file.start;
+        const jsmnf_pair *f;
+        if ((f = jsmnf_find(loader.root, "log", 3))) {
+            const jsmnf_pair *f1;
+            if ((f1 = jsmnf_find(f, "disable", 7))
+                && f1->v->end - f1->v->start >= 0)
+            {
+                const size_t size = (size_t)f1->v->size;
+                config->disable.ids = malloc(size * sizeof(char *));
+                for (size_t i = 0; i < size; ++i) {
+                    const jsmnf_pair *f2 = f1->fields + i;
+                    if (f2->v->type == JSMN_STRING) {
+                        const size_t length =
+                            (size_t)(f2->v->end - f2->v->start);
+                        char *id = malloc(length + 1);
+                        memcpy(id, file + f2->v->start, length);
+                        id[length] = '\0';
+                        config->disable.ids[i] = id;
                     }
-                    config->disable.size = size;
                 }
+                config->disable.size = size;
             }
         }
     }
@@ -441,66 +433,85 @@ discord_config_init(const char config_file[])
     return client;
 }
 
+static void
+_discord_clone_gateway_cleanup(struct discord_gateway *clone)
+{
+    if (clone->payload.json.table) free(clone->payload.json.table);
+    if (clone->payload.data) free((void *)clone->payload.data);
+    if (clone->payload.json.start) free(clone->payload.json.start);
+    memset(clone, 0, sizeof *clone);
+}
+
 static CCORDcode
 _discord_clone_gateway(struct discord_gateway *clone,
                        const struct discord_gateway *orig)
 {
-    const size_t n = orig->payload.json.npairs
-                     - (size_t)(orig->payload.data - orig->payload.json.pairs);
-
-    if (!(clone->payload.data = malloc(n * sizeof *orig->payload.json.pairs)))
+    const struct discord_gateway_payload *orig_payload = &orig->payload;
+    struct discord_gateway_payload *payload = &clone->payload;
+    jsmnf_loader loader;
+    if (!(payload->json.size =
+              cog_strndup(orig_payload->json.start, orig_payload->json.size,
+                          &payload->json.start)))
     {
-        logmod_log(FATAL, clone->logger,
-                   "Couldn't allocate memory for gateway payload");
-        return CCORD_ERRNO;
+        return _discord_clone_gateway_cleanup(clone), CCORD_ERRNO;
     }
-    memcpy(clone->payload.data, orig->payload.data,
-           n * sizeof *orig->payload.json.pairs);
-    if (!(clone->payload.json.size =
-              cog_strndup(orig->payload.json.start, orig->payload.json.size,
-                          &clone->payload.json.start)))
+    if (!(payload->json.table =
+              calloc(orig_payload->json.ntable, sizeof(*payload->json.table))))
     {
-        logmod_log(FATAL, clone->logger,
-                   "Couldn't copy gateway payload json string");
-        return free(clone->payload.data), CCORD_ERRNO;
+        return _discord_clone_gateway_cleanup(clone), CCORD_ERRNO;
+    }
+    jsmnf_init(&loader);
+    if (jsmnf_load(&loader, payload->json.start, payload->json.size,
+                   payload->json.table, payload->json.ntable)
+        <= 0)
+    {
+        return _discord_clone_gateway_cleanup(clone), CCORD_BAD_DECODE;
+    }
+    if (!(payload->data = jsmnf_find(loader.root, "d", 1))) {
+        return _discord_clone_gateway_cleanup(clone), CCORD_BAD_DECODE;
     }
     return CCORD_OK;
+}
+
+static void
+_discord_clone_cleanup(struct discord *client)
+{
+    if (client->is_original) {
+        logmod_log(ERROR, client->logger,
+                   "Attempted to cleanup original client");
+        return;
+    }
+    _discord_clone_gateway_cleanup(&client->gw);
+    free(client);
 }
 
 struct discord *
 discord_clone(const struct discord *orig)
 {
     struct discord *clone;
-
+    CCORDcode code;
     if (!(clone = malloc(sizeof(struct discord)))) {
         logmod_log(FATAL, orig->logger, "Couldn't allocate memory for client");
         return NULL;
     }
     memcpy(clone, orig, sizeof(struct discord));
     clone->is_original = false;
-    if (_discord_clone_gateway(&clone->gw, &orig->gw)) {
-        logmod_log(FATAL, clone->logger,
-                   "Couldn't clone gateway payload data");
-        return free(clone), NULL;
+    if ((code = _discord_clone_gateway(&clone->gw, &orig->gw)) != CCORD_OK) {
+        logmod_log(FATAL, orig->logger, "Couldn't clone gateway: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return _discord_clone_cleanup(clone), NULL;
     }
     return clone;
-}
-
-static void
-_discord_clone_gateway_cleanup(struct discord_gateway *clone)
-{
-    if (clone->payload.data) free(clone->payload.data);
-    if (clone->payload.json.start) free(clone->payload.json.start);
 }
 
 void
 discord_cleanup(struct discord *client)
 {
     if (!client->is_original) {
-        _discord_clone_gateway_cleanup(&client->gw);
-        free(client);
+        _discord_clone_cleanup(client);
         return;
     }
+
     close(client->shutdown_fd);
     if (client->workers) {
         discord_worker_join(client);
@@ -522,6 +533,7 @@ discord_cleanup(struct discord *client)
         io_poller_destroy(client->io_poller);
     }
     ccord_global_cleanup();
+    free(client);
 }
 
 #define CASE_RETURN_STR(event)                                                \
@@ -691,30 +703,23 @@ discord_config_get_field(struct discord *client,
                          char *const path[],
                          unsigned depth)
 {
-    static const size_t num_tokens = 256;
     const struct ccord_szbuf *file = &client->config.file;
     struct ccord_szbuf field = { 0 };
 
     if (file->size) {
-        jsmn_parser parser;
-        jsmntok_t tokens[num_tokens];
+        jsmnf_loader loader;
+        jsmnf_table table[0x100];
 
-        jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, file->start, file->size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, file->start, file->size, table,
+                           sizeof(table) / sizeof *table))
         {
-            jsmnf_loader loader;
-            jsmnf_pair pairs[num_tokens];
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, file->start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
-            {
-                jsmnf_pair *f;
-                if ((f = jsmnf_find_path(pairs, file->start, path, depth))) {
-                    field = (struct ccord_szbuf){ file->start + f->v.pos,
-                                                  f->v.len, 1 };
-                }
+            const jsmnf_pair *f;
+            if ((f = jsmnf_find_path(loader.root, path, depth))) {
+                field =
+                    (struct ccord_szbuf){ file->start + f->v->start,
+                                          (size_t)(f->v->end - f->v->start),
+                                          1 };
             }
         }
     }

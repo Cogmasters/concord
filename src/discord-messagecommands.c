@@ -127,13 +127,12 @@ bool
 discord_message_commands_try_perform(struct discord_message_commands *cmds,
                                      struct discord_gateway_payload *payload)
 {
-    jsmnf_pair *f;
+    const jsmnf_pair *f;
 
-    if (!(f = jsmnf_find(payload->data, payload->json.start, "content", 7)))
-        return false;
+    if (!(f = jsmnf_find(payload->data, "content", 7))) return false;
 
     if (cmds->length
-        && !strncmp(cmds->prefix.start, payload->json.start + f->v.pos,
+        && !strncmp(cmds->prefix.start, payload->json.start + f->v->start,
                     cmds->prefix.size))
     {
         struct discord *client = CLIENT(cmds, commands);

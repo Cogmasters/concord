@@ -174,29 +174,18 @@ scheduler(struct discord *client,
 {
     if (event == DISCORD_EV_MESSAGE_CREATE) {
         char cmd[DISCORD_MAX_MESSAGE_LEN] = "";
+        jsmnf_table *table = NULL;
+        size_t ntable = 0;
+        jsmnf_loader loader;
 
-        jsmntok_t *tokens = NULL;
-        unsigned ntokens = 0;
-        jsmn_parser parser;
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load_auto(&loader, data, size, &table, &ntable)) {
+            const jsmnf_pair *f;
 
-        jsmn_init(&parser);
-        if (0 < jsmn_parse_auto(&parser, data, size, &tokens, &ntokens)) {
-            jsmnf_pair *pairs = NULL;
-            unsigned npairs = 0;
-            jsmnf_loader loader;
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load_auto(&loader, data, tokens, parser.toknext,
-                                    &pairs, &npairs))
-            {
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, data, "content", 7)))
-                    snprintf(cmd, sizeof(cmd), "%.*s", (int)f->v.len,
-                             data + f->v.pos);
-                free(pairs);
-            }
-            free(tokens);
+            if ((f = jsmnf_find(loader.root, "content", 7)))
+                snprintf(cmd, sizeof(cmd), "%.*s", f->v->end - f->v->start,
+                         data + f->v->start);
+            free(table);
         }
 
         if (0 == strcmp(PREFIX "spam_sync", cmd))
