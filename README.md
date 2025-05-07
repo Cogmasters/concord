@@ -1,3 +1,5 @@
+[migrating-shield]: https://img.shields.io/badge/Gist-Migrating%20from%20v2-yellow
+[migrating-link]: https://gist.github.com/lcsmuller/8a60b7ccfd9abd4a7f5d8b723f6a2857
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
 [discord-config-init]: https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb
@@ -11,6 +13,7 @@
 # Concord - C Discord API library
 
 [ ![discord-shield][] ][discord-invite]
+[ ![migrating-shield][] ][migrating-link]
 
 ## About
 
