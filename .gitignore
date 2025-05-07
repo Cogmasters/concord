@@ -16,10 +16,8 @@
 !lib
 !lib/.gitkeep
 !licenses
-!scripts
 !src
 !src/*.c
-!templates
 !test
 !.clang-format
 !.git*

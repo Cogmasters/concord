@@ -1,3 +1,0 @@
-include(./concord.m4)
-
-CONCORD_HEADER(`concord')
