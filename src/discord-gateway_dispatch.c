@@ -8,7 +8,8 @@
 #define INIT(type)                                                            \
     {                                                                         \
         sizeof(struct type),                                                  \
-            (size_t(*)(jsmnf_pair *, const char *, void *))type##_from_jsmnf, \
+            (long (*)(const jsmnf_pair *, const char *,                       \
+                      void *))type##_from_jsmnf,                              \
             (void (*)(void *))type##_cleanup                                  \
     }
 
@@ -17,7 +18,7 @@ static const struct {
     /** size of event's datatype */
     size_t size;
     /** event's payload deserializer */
-    size_t (*from_jsmnf)(jsmnf_pair *, const char *, void *);
+    long (*from_jsmnf)(const jsmnf_pair *, const char *, void *);
     /** event's cleanup */
     void (*cleanup)(void *);
 } dispatch[] = {

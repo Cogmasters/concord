@@ -718,14 +718,10 @@ struct discord_gateway_payload {
         char *start;
         /** the text length */
         size_t size;
-        /** jsmn tokens */
-        jsmntok_t *tokens;
-        /** amount of jsmn tokens */
-        unsigned ntokens;
-        /** jsmn-find key/value pairs */
-        jsmnf_pair *pairs;
-        /** amount of jsmn-find key/value pairs */
-        unsigned npairs;
+        /** jsmn-find lookup table */
+        jsmnf_table *table;
+        /** lookup table size */
+        size_t ntable;
     } json;
 
     /** field 'op' */
@@ -737,7 +733,7 @@ struct discord_gateway_payload {
     /** field 't' enumerator value */
     enum discord_gateway_events event;
     /** field 'd' */
-    jsmnf_pair *data;
+    const jsmnf_pair *data;
 };
 
 /** A generic event callback for casting */

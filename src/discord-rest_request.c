@@ -259,41 +259,35 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
         return (req->code = CCORD_HTTP_CODE), false;
     case HTTP_TOO_MANY_REQUESTS: {
         const struct ua_szbuf_readonly body = ua_info_get_body(info);
-        struct jsmnftok message = { 0 };
         u64unix_ms retry_after_ms = 1000;
+        struct jsmntok message = { 0 };
         bool is_global = false;
-        jsmn_parser parser;
-        jsmntok_t tokens[16];
+        jsmnf_table table[0x10];
+        jsmnf_loader loader;
 
-        jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, body.start, body.size, table,
+                           sizeof(table) / sizeof *table))
         {
-            jsmnf_loader loader;
-            jsmnf_pair pairs[16];
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
-            {
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, body.start, "global", 6)))
-                    is_global = ('t' == body.start[f->v.pos]);
-                if ((f = jsmnf_find(pairs, body.start, "message", 7)))
-                    message = f->v;
-                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11))) {
-                    double retry_after = strtod(body.start + f->v.pos, NULL);
-                    if (retry_after > 0)
-                        retry_after_ms = (u64unix_ms)(1000 * retry_after);
-                }
+            const jsmnf_pair *f;
+            if ((f = jsmnf_find(loader.root, "global", 6))) {
+                is_global = ('t' == body.start[f->v->start]);
+            }
+            if ((f = jsmnf_find(loader.root, "message", 7))) {
+                message = *f->v;
+            }
+            if ((f = jsmnf_find(loader.root, "retry_after", 11))) {
+                const double retry_after =
+                    strtod(body.start + f->v->start, NULL);
+                if (retry_after > 0)
+                    retry_after_ms = (u64unix_ms)(1000 * retry_after);
             }
         }
 
         logmod_log(ERROR, rqtor->logger,
                    "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
                    is_global ? "GLOBAL " : "", retry_after_ms,
-                   (int)message.len, body.start + message.pos);
+                   message.end - message.start, body.start + message.start);
 
         if (is_global)
             discord_ratelimiter_set_global_timeout(&rqtor->ratelimiter, req->b,
