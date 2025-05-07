@@ -1,91 +1,229 @@
-# Debugging
+# Debugging Concord Applications
 
-## Debugging? What it is and why?
+## Introduction
 
-Debugging is one of **the most important things** when it comes to C programming, not only Concord. It is important **because a debugger will show you where the error** (like, a segmentation fault or core dump) **came from**, since you cannot know it with ease without it.
+Debugging is an essential skill for C programmers. While compilers catch many errors at compile-time, runtime issues like segmentation faults, memory leaks, and race conditions require specialized tools to diagnose and fix.
 
-We will be focusing on two popular tools for debugging, `GDB` and `Valgrind`.
+This guide covers the two most important debugging tools for Concord development:
+- **GDB** - For tracking down crashes and runtime errors
+- **Valgrind** - For detecting memory leaks and other memory-related issues
 
-Now, you could say "`But, doesn't the compiler already tell me the errors?`". Well, it does, but it is not perfect; some errors are only detectable during runtime and are completely uncheckable by the compiler!
+## Prerequisites for Effective Debugging
 
-## Debugging (segmentation faults and core dumps)
-
-For this guide, we are going to use GDB, an easy debugging tool for those types of errors.
-
-### Installing GDB
-
-Before we use GDB, we must install it. We can easily do this with apt (or whatever package manager you have on your system), but first, let's check if your machine already has it:
+Before starting to debug, make sure your code is compiled with these flags:
 
 ```console
-$ gdb
+$ CFLAGS="-g -O0" make
 ```
 
-In case this command failed, we can proceed with the installation of GDB (you need to run `apt` with root permissions, and this command only works on Debian-based systems):
+- `-g` adds debugging symbols that tools need to show meaningful information
+- `-O0` disables compiler optimizations that can make debugging more difficult
+
+## Using GDB to Debug Crashes
+
+### Installation
+
+GDB is available on most platforms:
 
 ```console
-# apt install gdb
+# Debian/Ubuntu
+$ sudo apt install gdb
+
+# Fedora/RHEL/CentOS
+$ sudo dnf install gdb
+
+# Arch/Manjaro
+$ sudo pacman -S gdb
+
+# macOS
+$ brew install gdb
+
+# FreeBSD
+$ pkg install gdb
 ```
 
-### Notes before debugging
+### Basic GDB Usage
 
-For better debugging results, **you must disable all types of compiler optimizations** (-O1, -O2, -O3, -Ofast and etc) and **enable the `-g` flag**.
-
-This is important, enabling **optimization flags will just make debugging harder** and can make it impossible to get a backtrace if they are enabled.
-
-### Proceeding with debugging
-
-Since we now installed `GDB`, we can use it. For example, if the file that you want to debug is named `ConcordGuides`, the command that you will need to execute is:
+1. Start your application under GDB:
 
 ```console
-$ gdb ./ConcordGuides
-``` 
-
-After we execute this command, you should see some copyright messages; just press `c` and `enter`, and you are now inside GDB's shell.
-
-To start debugging, just **use the command `r`** (shorter version of `run`) and GDB **will start running and debugging your program**. You will **need to wait until your program/bot crashes** to see the results.
-
-After your program/bot crashes, you can run the command `bt` to **see the backtrace of the crash**. You will need to find which line of your code is throwing the segmentation fault/coredump (please note that the crash doesn't always come from your program, it could be from a library), and see what's wrong with it.
-
-Sadly it doesn't say what is wrong, or the error message, but it already helps a lot.
-
-If you want to know more GDB commands, you should take a look at [Beej's Quick Guide to GDB](https://beej.us/guide/bggdb/).
-
-## Debugging (memory leaks)
-
-Valgrind is an **awesome tool for debugging memory leaks**, and it's the tool that we are going to use here.
-
-### Installing Valgrind
-
-Before trying to install Valgrind, we first need to check if you already have it, use the command below:
-
-```console
-$ valgrind
+$ gdb ./your_bot
 ```
 
-If Valgrind fails to execute, it means that you don't have it; we must proceed with installing it (run apt as root, and, again, this only applies to Debian systems):
+2. Run your application:
 
 ```console
-# apt install valgrind
+(gdb) run
 ```
 
-### Proceeding with debugging
-
-Now that we have Valgrind, we can proceed with debugging our program/bot. Use the command below to start debugging (expecting the file of your program/bot to be called ConcordGuides):
+3. When a crash occurs, get a backtrace:
 
 ```console
-$ valgrind --leak-check=full ./ConcordGuides
+(gdb) bt
 ```
 
-Then Valgrind will start to debug (NOTE: This will cause the program/bot to use much more resources than before, don't worry, it's normal)
+This will show the call stack at the point of the crash, helping you identify where the problem occurred.
 
-After it, you can execute commands that you suspect that is generating a memory leak, after it, you can stop the program/bot process and see the results of it.
+### Useful GDB Commands
 
-NOTE: Concord itself may cause some memory leaks if you don't use discord_shutdown when finalizing the bot's process. You can enable Concord to handle this for you by compiling Concord with:
+| Command | Description |
+|---------|-------------|
+| `run` or `r` | Start your program |
+| `bt` | Show backtrace (call stack) |
+| `frame N` | Switch to frame N in the backtrace |
+| `print VARIABLE` | Display the value of a variable |
+| `list` | Show source code around current line |
+| `break FUNCTION` | Set breakpoint at function |
+| `break FILE:LINE` | Set breakpoint at specific line |
+| `continue` or `c` | Continue execution after stop |
+| `next` or `n` | Execute next line (step over function calls) |
+| `step` or `s` | Execute next line (step into function calls) |
+| `quit` or `q` | Exit GDB |
+
+## Using Valgrind to Find Memory Issues
+
+### Installation
+
+Valgrind is available on most Unix-like platforms:
+
+```console
+# Debian/Ubuntu
+$ sudo apt install valgrind
+
+# Fedora/RHEL/CentOS
+$ sudo dnf install valgrind
+
+# Arch/Manjaro
+$ sudo pacman -S valgrind
+
+# macOS
+$ brew install valgrind
+
+# FreeBSD
+$ pkg install valgrind
+```
+
+### Basic Valgrind Usage
+
+Run your application with memory leak checking enabled:
+
+```console
+$ valgrind --leak-check=full --show-leak-kinds=all ./your_bot
+```
+
+When you exit your application, Valgrind will report any memory leaks detected.
+
+### Understanding Valgrind Output
+
+Valgrind's output includes:
+
+1. **Definitely Lost**: Memory that was allocated but never freed
+2. **Indirectly Lost**: Memory that was allocated but became unreachable when parent pointers were lost
+3. **Possibly Lost**: Memory that Valgrind cannot determine if it is accessible
+4. **Still Reachable**: Memory that was still accessible at program exit (not necessarily a problem)
+
+For each leak, Valgrind shows a backtrace indicating where the memory was allocated.
+
+### Concord-specific Valgrind Tips
+
+Concord uses many asynchronous operations that can complicate memory management. When using Valgrind with Concord:
+
+1. Ensure you call `discord_shutdown()` before exiting, or compile with the SIGINT handler:
 
 ```console
 $ CFLAGS="-DCCORD_SIGINTCATCH" make
 ```
 
-Done, now you will see the backtrace of where a memory leak happened.
+2. Be aware that some false positives may occur due to libcurl's internal memory management
 
-This is a simple guide intended to be used by people that want just the basics of it, however, if you want to get more knowledge on it, you should take a look at [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
+## Advanced Debugging Techniques
+
+### Address Sanitizer (ASan)
+
+For faster and more detailed memory error detection than Valgrind, consider using Address Sanitizer:
+
+```console
+$ CFLAGS="-g -fsanitize=address -fno-omit-frame-pointer" LDFLAGS="-fsanitize=address" make
+```
+
+Run your program normally, and ASan will report memory errors as they occur.
+
+### Thread Sanitizer (TSan)
+
+For detecting race conditions and threading issues:
+
+```console
+$ CFLAGS="-g -fsanitize=thread -fno-omit-frame-pointer" LDFLAGS="-fsanitize=thread" make
+```
+
+### Core Dumps Analysis
+
+If your program crashes, the system might generate a core dump file. To enable core dumps:
+
+```console
+$ ulimit -c unlimited
+```
+
+After a crash, you can analyze the core dump with GDB:
+
+```console
+$ gdb ./your_bot core
+```
+
+### Discord-Specific Debugging
+
+To enable verbose logging of HTTP and WebSocket communications:
+
+```console
+$ CFLAGS="-DCCORD_DEBUG_HTTP -DCCORD_DEBUG_WEBSOCKETS" make
+```
+
+You can also configure logging in your `config.json`:
+
+```json
+{
+  "log": {
+    "level": "TRACE",
+    "trace": "debug.log",
+    "http": "http.log",
+    "ws": "ws.log"
+  }
+}
+```
+
+## Common Issues and Solutions
+
+### SIGSEGV (Segmentation Fault)
+
+Common causes:
+- Dereferencing NULL pointers
+- Accessing freed memory
+- Buffer overflows
+- Stack overflows
+
+Diagnosis: Use GDB to get a backtrace and examine variables at the point of crash.
+
+### Memory Leaks
+
+Common causes:
+- Forgetting to free allocated memory
+- Losing the pointer to allocated memory
+- Not calling `discord_shutdown()`
+
+Diagnosis: Use Valgrind to identify where the memory was allocated.
+
+### Deadlocks
+
+Common causes:
+- Circular waits for resources
+- Improper lock ordering
+
+Diagnosis: Use GDB to examine the state of all threads when the program hangs.
+
+## Further Reading
+
+- [GDB Documentation](https://sourceware.org/gdb/current/onlinedocs/gdb/)
+- [Beej's Quick Guide to GDB](https://beej.us/guide/bggdb/)
+- [Valgrind User Manual](https://valgrind.org/docs/manual/manual.html)
+- [Valgrind Quick Start](https://valgrind.org/docs/manual/quick-start.html)
+- [Address Sanitizer Wiki](https://github.com/google/sanitizers/wiki/AddressSanitizer)
