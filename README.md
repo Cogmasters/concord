@@ -1,6 +1,3 @@
-[migrating-shield]: https://img.shields.io/badge/Gist-Migrating%20from%20v1-yellow
-[migrating-link]: https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b
-[migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
 [discord-config-init]: https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb
@@ -14,23 +11,25 @@
 # Concord - C Discord API library
 
 [ ![discord-shield][] ][discord-invite]
-[ ![migrating-shield][] ][migrating-link]
 
 ## About
 
 Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
-### Guides
+| Contents                                   | Description                                  |
+|-------------------------------------------|----------------------------------------------|
+| [Build Instructions](#build-instructions) | How to build libcurl and Concord             |
+| [Environment Setup](#setting-up-your-environment) | Project setup and compilation        |
+| [Configuration](#configuring-concord)     | How to configure Concord with config.json    |
+| [Example Bot](#test-copycat-bot)          | Test Concord with a simple copycat bot       |
+| [Build Options](#configure-your-build)    | Special flags and build targets              |
+| [Installation](#installing-concord)       | Installing Concord on your system            |
+| [Contributing](#contributing)             | How to contribute to Concord                 |
 
-Following are guides created by the community to help you get started with Concord, organized by category:
+### Getting Started
 
-#### Installation & Setup
-
-- [Compiling on Windows](docs/guides/compiling_on_windows.md) - Build Concord on Windows systems
-- [Installing Concord (Termux)](docs/guides/installing_concord_termux.md) - Install on Android using Termux
-- [Msys2 and Mingw64](docs/guides/msys2_and_mingw64.md) - Setup using MSYS2 environment
-- [Cross Compiling](docs/guides/cross_compiling.md) - Compile for different target platforms
-- [Concord on Old Systems](docs/guides/concord_on_old_systems.md) - Support for legacy systems
+- [Documentation](https://cogmasters.github.io/concord/)
+- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
 
 #### Configuration
 
@@ -49,18 +48,27 @@ Following are guides created by the community to help you get started with Conco
 
 - [Debugging](docs/guides/debugging.md) - Debug your Concord applications
 
+### Other Guides
+
+Following are other standalone guides created by the community to help you get started with Concord, organized by category:
+
+- [Compiling on Windows](docs/guides/compiling_on_windows.md) - Build Concord on Windows systems
+- [Installing Concord (Termux)](docs/guides/installing_concord_termux.md) - Install on Android using Termux
+- [Msys2 and Mingw64](docs/guides/msys2_and_mingw64.md) - Setup using MSYS2 environment
+- [Cross Compiling](docs/guides/cross_compiling.md) - Compile for different target platforms
+- [Concord on Old Systems](docs/guides/concord_on_old_systems.md) - Support for legacy systems
+
 ### Examples
 
 *The following are minimalistic examples, refer to [`examples/`](examples/) for a better overview.*
 
 #### Slash Commands (new method)
 
-*Note: you need to replace `GUILD_ID` with an actual guild ID, or this example won't compile!*
-You can use a macro to do this: `#define GUILD_ID 1234567898765431`
-
 ```c
 #include <string.h>
 #include <concord/discord.h>
+
+#define GUILD_ID 1234567898765431 // replace with your guild ID
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
     struct discord_create_guild_application_command params = {
@@ -199,6 +207,14 @@ $ git clone https://github.com/cogmasters/concord.git && cd concord
 $ make
 ```
 
+#### Optional: speed up compilation
+
+You can speed up the compilation process by using `-j` flag with `make`:
+```console
+$ make -j$(nproc)
+```
+This will use all available CPU cores to compile Concord. You can also specify a number instead of `$(nproc)` to limit the number of jobs.
+
 ### Special notes about Voice Connections
 
 Concord does not support voice connections yet. If you want to use voice connections, you can use [CogLink][coglink-link] instead.
@@ -228,6 +244,7 @@ $ CFLAGS="-pthread -lpthread" make
 ```
 
 ### Special note about linking Concord against another library
+
 In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared
 object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make`. 
 
@@ -379,52 +396,16 @@ $ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl
 ```
 (this links against libpthread.a in `/usr/lib`)
 
-## Recommended debuggers
-
-First, make sure your executable is compiled with the `-g` flag to ensure human-readable debugger messages.
-
-### Valgrind
-
-Using valgrind to check for memory leaks:
-
-```console
-valgrind --leak-check=full ./myBot
-```
-For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
-
-### GDB
-
-Using GDB to check for runtime errors, such as segmentation faults:
-
-```console
-$ gdb ./myBot
-```
-And then execute your bot from the gdb environment:
-```console
-(gdb) run
-```
-If the program has crashed, get a backtrace of the function calls leading to it:
-```console
-(gdb) bt
-```
-
-For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us/guide/bggdb/)
-
 ## Support
 
 Problems? Check out our [Discord Server][discord-invite]
 
 ## Contributing
 
-All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
+All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check the following guides for more information on how to contribute:
 
-## Getting Started
-
-- [Documentation](https://cogmasters.github.io/concord/)
-- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
-
-## Useful links
-
-- [CogLink][coglink-link] - LavaLink client for Concord
-- [Migrating from V1][migrating-link]
-- [Migrating from Orca][migrating-orca-link]
+- [Contributing](docs/CONTRIBUTING.md) - How to contribute to Concord
+- [Project Outline](docs/PROJECT_OUTLINE.md) - Overview of the project structure
+- [Coding Guidelines](docs/CODING_GUIDELINES.md) - Coding style and best practices
+- [Discord API Roadmap](docs/DISCORD_ROADMAP.md) - Overview of Discord API features and their status
+- [Concord Internals](docs/INTERNALS.md) - Understand how Concord works internally

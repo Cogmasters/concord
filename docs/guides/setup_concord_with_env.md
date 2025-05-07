@@ -1,60 +1,107 @@
-# Setting up with env variables
+# Using Environment Variables with Concord
 
-## What is an "env variable"?
+## Introduction
 
-Environment variables are dynamically named values that can affect how processes behave when their values are edited. The shell is responsible for defining and managing environment variables. They can store values like paths, names, ints, and anything (except for files). They are widely used in many applications.
+This guide explains how to use environment variables with your Concord bot for safely storing sensitive information such as bot tokens, API keys, and other configuration values. Environment variables provide a more secure alternative to hardcoding sensitive data or storing it in configuration files that might be accidentally committed to version control systems.
 
-## JSON fields vs env variables
+## What are Environment Variables?
 
-Even though JSON is widely used by applications for storing data, it is NOT good for storing sensitive data. **Env variables are much easier to read** than JSON fields, since you can use very straightforward functions like `getenv`, while in **JSON you would require third-party libraries** such [jsmn-find](https://github.com/lcsmuller/jsmn-find) to read stored data.
+Environment variables are dynamic named values that can affect how running processes behave on a computer. They are part of the environment in which a process runs and provide a way to:
 
-## Setting an env variable
+- Configure application behavior without modifying code
+- Store sensitive information securely
+- Share configuration across multiple applications
+- Override default settings when needed
 
-There are **multiple ways of setting env variables**, but **we don't want all the users in the machine to know the values of the env variables**, so we are going to stick with setting them into a `.sh` file that runs the bot (if using Concord or any type of program).
+Environment variables can store various types of data including strings, paths, numbers, and boolean values. They're widely used in development, deployment, and production environments.
 
-First, **create a file** with whatever name you want, for example, `foo.sh`. Then, **put in the file the following content** (`myBot` is the file with the binary result of your bot).
+## Environment Variables vs. JSON Configuration
 
-Depending on the shell you are using, **the way that you set an env variable will be different**, please choose the example below that matches your OS shell:
+While JSON configuration files are commonly used for storing application settings, they have several disadvantages for sensitive data:
 
-**csh**:
+| Environment Variables | JSON Configuration Files |
+|----------------------|--------------------------|
+| Not typically stored in version control | Can be accidentally committed to repositories |
+| Access restricted by operating system permissions | Accessible to anyone with file access |
+| Simple to read with standard library functions | Require parsing libraries or custom code |
+| Easy to change between environments | Need different files for different environments |
+| Native support in deployment platforms | Need additional mechanisms for secure storage |
 
-```sh
-#!/bin/csh
-setenv ENV_VARIABLE_NAME "The value of the env variable"
-./myBot
-```
+Concord supports both methods, but environment variables are recommended for sensitive information like tokens and API keys.
 
-**bash**:
+## Setting Environment Variables
+
+There are multiple ways to set environment variables. For development purposes, we recommend creating a script file that sets the variables and then launches your bot.
+
+### Method 1: Using Shell Scripts
+
+First, create a file (e.g., `run-bot.sh`) with the following content based on your shell:
+
+**Bash (most common):**
 
 ```sh
 #!/bin/bash
-export ENV_VARIABLE_NAME="The value of the env variable"
+export DISCORD_BOT_TOKEN="your_bot_token_here"
+export DATABASE_URL="your_database_connection_string"
 ./myBot
 ```
 
-**korn shell / ksh**:
+**C Shell (csh/tcsh):**
+
+```sh
+#!/bin/csh
+setenv DISCORD_BOT_TOKEN "your_bot_token_here"
+setenv DATABASE_URL "your_database_connection_string"
+./myBot
+```
+
+**Korn Shell (ksh):**
 
 ```sh
 #!/bin/ksh
-export ENV_VARIABLE_NAME="The value of the env variable"
+export DISCORD_BOT_TOKEN="your_bot_token_here"
+export DATABASE_URL="your_database_connection_string"
 ./myBot
 ```
 
-**borne shell / POSIX shell**:
+**POSIX Shell (sh):**
 
 ```sh
 #!/bin/sh
-ENV_VARIABLE_NAME="The value of the env variable"; export ENV_VARIABLE_NAME
+DISCORD_BOT_TOKEN="your_bot_token_here"
+DATABASE_URL="your_database_connection_string"
+export DISCORD_BOT_TOKEN DATABASE_URL
+./myBot
 ```
 
-NOTE: **Change the `ENV_VARIABLE_NAME` for whatever env variable name you want to, and also the value of it.**
+Then make the script executable and run it:
 
-Done! It is that simple, you can now proceed to read its value.
+```sh
+chmod +x run-bot.sh
+./run-bot.sh
+```
 
-## Reading env variables
+### Method 2: Setting Variables for the Current Session
 
+You can also set environment variables for your current terminal session:
 
-You have set the env variable - now you **will need to get it**. There are two easy ways to **get the env variable value**, take a look and choose the best one for you:
+**Bash/Ksh/Zsh:**
+```sh
+export DISCORD_BOT_TOKEN="your_bot_token_here"
+```
+
+**C Shell:**
+```sh
+setenv DISCORD_BOT_TOKEN "your_bot_token_here"
+```
+
+### Method 3: Using .env Files with External Tools
+
+For more complex projects, you might want to use a `.env` file with a tool like [dotenv](https://github.com/motdotla/dotenv):
+
+## Reading Environment Variables
+
+You have set the environment variable - now you will need to get it. There are two easy ways to get the environment variable value, take a look and choose the best one for you:
 
 Example using the `getenv` function:
 
