@@ -522,7 +522,7 @@ int main(void) {
     }
     
     // Initialize Discord bot
-    struct discord *client = discord_config_init("config.json");
+    struct discord *client = discord_from_json("config.json");
     discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
     
     // Set up event handlers

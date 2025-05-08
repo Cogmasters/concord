@@ -16,7 +16,7 @@
  * @brief Get audit log for a given guild
  *
  * @note Requires the 'VIEW_AUDIT_LOG' permission
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to retrieve the audit log from
  * @param params request parameters
  * @CCORD_ret_obj{ret,audit_log}

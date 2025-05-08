@@ -197,7 +197,7 @@ main(int argc, char *argv[])
 {
     GREATEST_MAIN_BEGIN();
     ccord_global_init();
-    CLIENT = discord_config_init("test_config.json");
+    CLIENT = discord_from_json("test_config.json");
     assert(CLIENT != NULL && "Couldn't initialize client");
 
     RUN_SUITE(synchronous);

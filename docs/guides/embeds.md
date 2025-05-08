@@ -195,7 +195,7 @@ void on_sendembed(struct discord *client, const struct discord_message *msg) {
 }
 
 int main(void) {
-    struct discord *client = discord_config_init("config.json");
+    struct discord *client = discord_from_json("config.json");
 
     discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
 

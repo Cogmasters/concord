@@ -16,8 +16,8 @@
  * @brief Creates a new Stage Instance associated to a Stage channel
  * @note requires the user to be a moderator of the Stage channel
  *
- * @param client the client created with discord_init()
- * @param params the request parameters 
+ * @param client the client created with discord_from_token()
+ * @param params the request parameters
  * @CCORD_ret_obj{ret,stage_instance}
  * @CCORD_return
  */
@@ -30,7 +30,7 @@ CCORDcode discord_create_stage_instance(
  * @brief Gets the stage instance associated with the Stage channel, if it
  *      exists
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the stage channel id
  * @CCORD_ret_obj{ret,stage_instance}
  * @CCORD_return
@@ -43,9 +43,9 @@ CCORDcode discord_get_stage_instance(struct discord *client,
  * @brief Updates fields of an existing Stage instance
  * @note requires the user to be a moderator of the Stage channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the stage channel id
- * @param params the request parameters 
+ * @param params the request parameters
  * @CCORD_ret_obj{ret,stage_instance}
  * @CCORD_return
  */
@@ -59,7 +59,7 @@ CCORDcode discord_modify_stage_instance(
  * @brief Deletes the Stage instance
  * @note requires the user to be a moderator of the Stage channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the stage channel to be deleted
  * @CCORD_ret{ret}
  * @CCORD_return

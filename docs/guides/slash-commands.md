@@ -360,7 +360,7 @@ void on_interaction(struct discord *client, const struct discord_interaction *in
 }
 
 int main(void) {
-    struct discord *client = discord_config_init("config.json");
+    struct discord *client = discord_from_json("config.json");
     
     // Register event handlers
     discord_set_on_ready(client, &on_ready);

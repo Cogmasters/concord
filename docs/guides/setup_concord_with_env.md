@@ -118,7 +118,7 @@ int main() {
 }
 ```
 
-Using `${}` (this only applies to [discord_config](https://cogmasters.github.io/concord/group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d) and [discord_config_init](https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb)):
+Using `${}` (this only applies to [discord_config](https://cogmasters.github.io/concord/group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d) and [discord_from_json](https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb)):
 
 ```c
 #include <stdio.h>
@@ -133,7 +133,7 @@ void on_ready(struct discord *client, const struct discord_ready *event) {
 }
 
 int main() {
-    struct discord *client = discord_init("${" ENV_VARIABLE_NAME "}");
+    struct discord *client = discord_from_token("${" ENV_VARIABLE_NAME "}");
 
     discord_set_on_ready(client, &on_ready);
 

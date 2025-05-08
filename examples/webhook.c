@@ -41,7 +41,7 @@ main(int argc, char *argv[])
     fgetc(stdin); // wait for input
 
     ccord_global_init();
-    struct discord *client = discord_init(NULL);
+    struct discord *client = discord_from_token(NULL);
     assert(NULL != client && "Couldn't initialize client");
 
     /* Get Webhook */

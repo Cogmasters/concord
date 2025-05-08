@@ -1188,37 +1188,6 @@ struct discord_cache {
 /** @} DiscordInternalCache */
 
 /**
- * @brief The Discord configuration handler
- *
- * This struct is used to store the Discord client configuration
- */
-struct discord_config {
-    /** config file contents */
-    struct ccord_szbuf file;
-    /** minimum logging level */
-    enum logmod_levels level;
-    /** silence terminal logging */
-    bool quiet;
-    /** enable color to terminal logging */
-    bool color;
-    /** overwrite existing files */
-    bool overwrite;
-    /** the bot token */
-    char *token;
-    /* the trace log file */
-    FILE *trace;
-    /* the http log file */
-    FILE *http;
-    /* the ws log file */
-    FILE *ws;
-    /** list of 'id' that should be ignored */
-    struct {
-        size_t size;
-        char **ids;
-    } disable;
-};
-
-/**
  * @brief The Discord client handler
  *
  * Used to access/perform public functions from discord.h
@@ -1287,6 +1256,10 @@ struct discord {
         /** notify of `count` decrement */
         pthread_cond_t cond;
     } *workers;
+
+    /** config.json file contents if client was initialized with
+     *      discord_from_json() */
+    struct ccord_szbuf file;
 };
 
 /** @} DiscordInternal */

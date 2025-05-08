@@ -16,7 +16,7 @@
  * @brief Get voice regions that can be used when setting a
  *        voice or stage channel's `rtc_region`
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,voice_regions}
  * @CCORD_return
  */
