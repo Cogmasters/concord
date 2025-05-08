@@ -173,7 +173,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
     if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logmod_log(INFO, gw->logger, "%s IDENTIFY (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   LML(gw->logger, REGULAR, INTENSITY, GREEN, "SEND"), b.pos,
                    logmod_logger_get_counter(gw->logger));
 
         /* get timestamp for this identify */
@@ -181,7 +181,7 @@ discord_gateway_send_identify(struct discord_gateway *gw,
     }
     else {
         logmod_log(INFO, gw->logger, "%s IDENTIFY (%zu bytes)[@@@_%ld_@@@]",
-                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   LML(gw->logger, REGULAR, FOREGROUND, RED, "FAIL SEND"),
                    b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
@@ -210,12 +210,12 @@ discord_gateway_send_resume(struct discord_gateway *gw,
     if (ws_send_text(gw->ws, body.start, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logmod_log(INFO, gw->logger, "%s RESUME (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   LML(gw->logger, REGULAR, INTENSITY, GREEN, "SEND"), b.pos,
                    logmod_logger_get_counter(gw->logger));
     }
     else {
         logmod_log(INFO, gw->logger, "%s RESUME (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   LML(gw->logger, REGULAR, FOREGROUND, RED, "FAIL SEND"),
                    b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
@@ -274,7 +274,7 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
     if (ws_send_text(gw->ws, buf, b.pos)) {
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logmod_log(INFO, gw->logger, "%s HEARTBEAT (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   LML(gw->logger, REGULAR, INTENSITY, GREEN, "SEND"), b.pos,
                    logmod_logger_get_counter(gw->logger));
 
         gw->timer->hbeat_acknowledged = false;
@@ -288,7 +288,7 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
     }
     else {
         logmod_log(INFO, gw->logger, "%s HEARTBEAT (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   LML(gw->logger, REGULAR, FOREGROUND, RED, "FAIL SEND"),
                    b.pos, logmod_logger_get_counter(gw->logger));
     }
 }
@@ -315,13 +315,13 @@ discord_gateway_send_request_guild_members(
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logmod_log(INFO, gw->logger,
                    "%s REQUEST_GUILD_MEMBERS (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   LML(gw->logger, REGULAR, INTENSITY, GREEN, "SEND"), b.pos,
                    logmod_logger_get_counter(gw->logger));
     }
     else {
         logmod_log(INFO, gw->logger,
                    "%s REQUEST_GUILD_MEMBERS (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   LML(gw->logger, REGULAR, FOREGROUND, RED, "FAIL SEND"),
                    b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);
@@ -350,7 +350,7 @@ discord_gateway_send_update_voice_state(
         logmod_log(
             INFO, gw->logger,
             "%s UPDATE_VOICE_STATE (%zu bytes): %s channels [@@@_%ld_@@@]",
-            LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+            LML(gw->logger, REGULAR, INTENSITY, GREEN, "SEND"), b.pos,
             event->channel_id ? "join" : "leave",
             logmod_logger_get_counter(gw->logger));
     }
@@ -358,7 +358,7 @@ discord_gateway_send_update_voice_state(
         logmod_log(
             INFO, gw->logger,
             "%s UPDATE_VOICE_STATE (%zu bytes): %s channels [@@@_%ld_@@@]",
-            LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND), b.pos,
+            LML(gw->logger, REGULAR, FOREGROUND, RED, "FAIL SEND"), b.pos,
             event->channel_id ? "join" : "leave",
             logmod_logger_get_counter(gw->logger));
     }
@@ -389,13 +389,13 @@ discord_gateway_send_presence_update(struct discord_gateway *gw,
         io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
         logmod_log(INFO, gw->logger,
                    "%s PRESENCE UPDATE (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "SEND", GREEN, REGULAR, INTENSITY), b.pos,
+                   LML(gw->logger, REGULAR, INTENSITY, GREEN, "SEND"), b.pos,
                    logmod_logger_get_counter(gw->logger));
     }
     else {
         logmod_log(ERROR, gw->logger,
                    "%s PRESENCE UPDATE (%zu bytes) [@@@_%ld_@@@]",
-                   LML(gw->logger, "FAIL SEND", RED, REGULAR, FOREGROUND),
+                   LML(gw->logger, REGULAR, FOREGROUND, RED, "FAIL SEND"),
                    b.pos, logmod_logger_get_counter(gw->logger));
     }
     free(body.start);

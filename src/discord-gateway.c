@@ -173,13 +173,13 @@ _discord_gateway_dispatch_thread(void *p_gw)
     struct discord_gateway *gw = p_gw;
 
     logmod_log(INFO, gw->logger, "Thread %s to serve %s",
-               LML(gw->logger, "START", GREEN, REGULAR, INTENSITY),
+               LML(gw->logger, REGULAR, INTENSITY, GREEN, "START"),
                gw->payload.name);
 
     discord_gateway_dispatch(gw);
 
     logmod_log(INFO, gw->logger, "Thread %s to serve %s",
-               LML(gw->logger, "END", RED, REGULAR, INTENSITY),
+               LML(gw->logger, REGULAR, INTENSITY, RED, "END"),
                gw->payload.name);
 
     _discord_gateway_clone_cleanup(gw);
@@ -366,7 +366,7 @@ _ws_on_close(void *p_gw,
         (enum discord_gateway_close_opcodes)wscode;
 
     logmod_log(WARN, gw->logger, "%s %s (code: %4d, %zu bytes): '%.*s'",
-               LML(gw->logger, "CLOSE", RED, REGULAR, FOREGROUND),
+               LML(gw->logger, REGULAR, FOREGROUND, RED, "CLOSE"),
                _discord_gateway_close_opcode_print(opcode), opcode, len,
                (int)len, reason);
 
@@ -479,7 +479,7 @@ _ws_on_text(void *p_gw, struct websockets *ws, const char *text, size_t len)
     }
 
     logmod_log(TRACE, gw->logger, "%s %s%s%s (%zu bytes) [@@@_%ld_@@@]",
-               LML(gw->logger, "RCV", YELLOW, REGULAR, INTENSITY),
+               LML(gw->logger, REGULAR, INTENSITY, YELLOW, "RCV"),
                _discord_gateway_opcode_print(gw->payload.opcode),
                *gw->payload.name ? " -> " : "", gw->payload.name, len,
                logmod_logger_get_counter(gw->logger));

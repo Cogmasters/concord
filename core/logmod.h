@@ -18,6 +18,7 @@ extern "C" {
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <time.h>
 
 /**
  * @brief Format string checking attribute for printf-like functions
@@ -94,6 +95,8 @@ struct logmod_options {
     int hide_context_id; /**< If 1, suppress context ID in log messages */
     int show_application_id; /**< If 1, show application ID in log messages */
     unsigned level; /**< Minimum level to log (suppress messages below this) */
+    int suppress_time; /**< If 1, suppress time in log messages */
+    int hide_counter; /**< If 1, hide message counter in log messages */
 };
 
 /**
@@ -103,22 +106,22 @@ struct logmod_options {
  */
 struct logmod_label {
     const char *const name; /**< Display name of the log level */
-    const char *const color; /**< ANSI color code for this label */
     const char *const style; /**< ANSI style code for this label */
     const char *const visibility; /**< ANSI visibility code for this label */
+    const char *const color; /**< ANSI color code for this label */
     const int output; /**< Output stream: 0 = stdout, 1 = stderr */
 };
 
 /**
  * @brief Helper macro to define label color, style, and visibility at once
  *
- * @param _color Color name (e.g., RED, GREEN)
  * @param _style Style name (e.g., BOLD, REGULAR)
  * @param _visibility Visibility name (e.g., FOREGROUND, BACKGROUND)
+ * @param _color Color name (e.g., RED, GREEN)
  */
-#define LOGMOD_LABEL_COLOR(_color, _style, _visibility)                       \
-    LOGMOD_COLOR_##_color, LOGMOD_STYLE_##_style,                             \
-        LOGMOD_VISIBILITY_##_visibility
+#define LOGMOD_LABEL_COLOR(_style, _visibility, _color)                       \
+    LOGMOD_STYLE_##_style, LOGMOD_VISIBILITY_##_visibility,                   \
+        LOGMOD_COLOR_##_color
 
 /**
  * @brief Information about a log entry
@@ -128,8 +131,7 @@ struct logmod_info {
     const char *const filename; /**< Source filename */
     const unsigned level; /**< Log level */
     const struct logmod_label *const label; /**< Label for this log level */
-    const struct tm
-        *const time_info; /**< Time for when entry has been triggered */
+    const struct tm time; /**< Time for when entry has been triggered */
 };
 
 /* forward declaration */
@@ -162,18 +164,6 @@ typedef logmod_err (*logmod_callback)(const struct logmod_logger *logger,
                                       va_list args);
 
 /**
- * @brief ANSI color values
- */
-#define LOGMOD_COLOR_BLACK   "0" /**< Black color */
-#define LOGMOD_COLOR_RED     "1" /**< Red color */
-#define LOGMOD_COLOR_GREEN   "2" /**< Green color */
-#define LOGMOD_COLOR_YELLOW  "3" /**< Yellow color */
-#define LOGMOD_COLOR_BLUE    "4" /**< Blue color */
-#define LOGMOD_COLOR_MAGENTA "5" /**< Magenta color */
-#define LOGMOD_COLOR_CYAN    "6" /**< Cyan color */
-#define LOGMOD_COLOR_WHITE   "7" /**< White color */
-
-/**
  * @brief ANSI text style values
  */
 #define LOGMOD_STYLE_REGULAR       "0" /**< Regular text style */
@@ -191,6 +181,18 @@ typedef logmod_err (*logmod_callback)(const struct logmod_logger *logger,
     "10" /**< Intensity (bright) background */
 
 /**
+ * @brief ANSI color values
+ */
+#define LOGMOD_COLOR_BLACK   "0" /**< Black color */
+#define LOGMOD_COLOR_RED     "1" /**< Red color */
+#define LOGMOD_COLOR_GREEN   "2" /**< Green color */
+#define LOGMOD_COLOR_YELLOW  "3" /**< Yellow color */
+#define LOGMOD_COLOR_BLUE    "4" /**< Blue color */
+#define LOGMOD_COLOR_MAGENTA "5" /**< Magenta color */
+#define LOGMOD_COLOR_CYAN    "6" /**< Cyan color */
+#define LOGMOD_COLOR_WHITE   "7" /**< White color */
+
+/**
  * @brief Internal macro for defining logger attributes
  *
  * Used to define both const and non-const versions of the logger structure
@@ -203,7 +205,7 @@ typedef logmod_err (*logmod_callback)(const struct logmod_logger *logger,
     _qualifier struct logmod_options options;                                 \
     const long *counter;                                                      \
     _qualifier logmod_callback callback;                                      \
-    _qualifier void *user_data;                                               \
+    void *user_data;                                                          \
     const struct logmod_label *_qualifier custom_labels;                      \
     _qualifier size_t num_custom_labels;                                      \
     _qualifier int disabled
@@ -384,6 +386,26 @@ LOGMOD_API logmod_err logmod_logger_set_logfile(struct logmod_logger *logger,
                                                 FILE *logfile);
 
 /**
+ * @brief Set time display for a logger
+ *
+ * @param logger Pointer to the logger
+ * @param show_time 0 to suppress time in log messages, 1 to show it
+ * @return LOGMOD_OK on success, error code on failure
+ */
+LOGMOD_API logmod_err logmod_logger_set_time(struct logmod_logger *logger,
+                                             int show_time);
+
+/**
+ * @brief Set counter display for a logger
+ *
+ * @param logger Pointer to the logger
+ * @param show_counter 0 to hide counter in log messages, 1 to show it
+ * @return LOGMOD_OK on success, error code on failure
+ */
+LOGMOD_API logmod_err logmod_logger_set_counter(struct logmod_logger *logger,
+                                                int show_counter);
+
+/**
  * @brief Get or create a logger by context ID
  *
  * @param logmod Pointer to the logging context
@@ -486,56 +508,53 @@ LOGMOD_API logmod_err _logmod_log(const struct logmod_logger *logger,
 /**
  * @brief Encodes text with ANSI colors and styles
  *
- * @param buf Text buffer to encode
- * @param _color Color code (LOGMOD_COLOR_* macros)
  * @param _style Style code (LOGMOD_STYLE_* macros)
  * @param _visibility Visibility code (LOGMOD_VISIBILITY_* macros)
+ * @param _color Color code (LOGMOD_COLOR_* macros)
+ * @param buf Text buffer to encode
  */
-#define LOGMOD_ENCODE(buf, _color, _style, _visibility)                       \
+#define LOGMOD_ENCODE(_style, _visibility, _color, buf)                       \
     "\x1b[" _style ";" _visibility _color "m" buf "\x1b[0m"
 
 /**
  * @brief Static encoding of text with ANSI colors (compile-time)
  *
- * @param buf The text to encode
- * @param _color Color name (e.g., RED, GREEN)
  * @param _style Style name (e.g., BOLD, REGULAR)
  * @param _visibility Visibility name (e.g., FOREGROUND, BACKGROUND)
+ * @param _color Color name (e.g., RED, GREEN)
+ * @param buf The text to encode
  */
-#define LOGMOD_ENCODE_STATIC(buf, _color, _style, _visibility)                \
-    LOGMOD_ENCODE(buf, LOGMOD_COLOR_##_color, LOGMOD_STYLE_##_style,          \
-                  LOGMOD_VISIBILITY_##_visibility)
+#define LOGMOD_ENCODE_STATIC(_style, _visibility, _color, buf)                \
+    LOGMOD_ENCODE(LOGMOD_STYLE_##_style, LOGMOD_VISIBILITY_##_visibility,     \
+                  LOGMOD_COLOR_##_color, buf)
 
 /**
  * @brief Dynamic encoding of text with ANSI colors (respects toggle)
  *
  * @param _toggle Toggle to enable or disable color encoding
- * @param buf The text to encode
- * @param _color Color name (e.g., RED, GREEN)
  * @param _style Style name (e.g., BOLD, REGULAR)
  * @param _visibility Visibility name (e.g., FOREGROUND, BACKGROUND)
+ * @param _color Color name (e.g., RED, GREEN)
+ * @param buf The text to encode
  * @return Colored text if toggle is enabled, or original text otherwise
  */
-#define LOGMOD_ENCODE_TOGGLE(_toggle, buf, _color, _style, _visibility)       \
-    ((_toggle)                                                                \
-         ? LOGMOD_ENCODE(buf, LOGMOD_COLOR_##_color, LOGMOD_STYLE_##_style,   \
-                         LOGMOD_VISIBILITY_##_visibility)                     \
-         : buf)
+#define LOGMOD_ENCODE_TOGGLE(_toggle, _style, _visibility, _color, buf)       \
+    ((_toggle) ? LOGMOD_ENCODE_STATIC(_style, _visibility, _color, buf) : buf)
 
 /**
  * @brief Dynamic encoding of text with ANSI colors (respects logger color
  * setting)
  *
  * @param _logger The logger instance to check for color enabled setting
- * @param buf The text to encode
- * @param _color Color name (e.g., RED, GREEN)
  * @param _style Style name (e.g., BOLD, REGULAR)
  * @param _visibility Visibility name (e.g., FOREGROUND, BACKGROUND)
+ * @param _color Color name (e.g., RED, GREEN)
+ * @param buf The text to encode
  * @return Colored text if colors enabled, or original text otherwise
  */
-#define LOGMOD_ENCODE_LOGGER(_logger, buf, _color, _style, _visibility)       \
-    LOGMOD_ENCODE_TOGGLE((_logger)->options.color, buf, _color, _style,       \
-                         _visibility)
+#define LOGMOD_ENCODE_LOGGER(_logger, _style, _visibility, _color, buf)       \
+    LOGMOD_ENCODE_TOGGLE((_logger)->options.color, _style, _visibility,       \
+                         _color, buf)
 
 /** @brief Shorthand for LOGMOD_ENCODE_STATIC */
 #define LMS LOGMOD_ENCODE_STATIC
@@ -595,17 +614,17 @@ LOGMOD_API logmod_err _logmod_log(const struct logmod_logger *logger,
 
 static const struct logmod_label default_labels[__LOGMOD_LEVEL_MAX] = {
     /*[LOGMOD_LEVEL_TRACE]:*/
-    { "TRACE", LOGMOD_LABEL_COLOR(BLUE, REGULAR, BACKGROUND_INTENSITY), 0 },
+    { "TRACE", LOGMOD_LABEL_COLOR(REGULAR, BACKGROUND_INTENSITY, BLUE), 0 },
     /*[LOGMOD_LEVEL_DEBUG]:*/
-    { "DEBUG", LOGMOD_LABEL_COLOR(CYAN, REGULAR, BACKGROUND), 0 },
+    { "DEBUG", LOGMOD_LABEL_COLOR(REGULAR, BACKGROUND, CYAN), 0 },
     /*[LOGMOD_LEVEL_INFO]: */
-    { "INFO", LOGMOD_LABEL_COLOR(GREEN, REGULAR, BACKGROUND), 0 },
+    { "INFO", LOGMOD_LABEL_COLOR(REGULAR, BACKGROUND, GREEN), 0 },
     /*[LOGMOD_LEVEL_WARN]: */
-    { "WARN", LOGMOD_LABEL_COLOR(YELLOW, REGULAR, BACKGROUND), 1 },
+    { "WARN", LOGMOD_LABEL_COLOR(REGULAR, BACKGROUND, YELLOW), 1 },
     /*[LOGMOD_LEVEL_ERROR]:*/
-    { "ERROR", LOGMOD_LABEL_COLOR(RED, REGULAR, BACKGROUND), 1 },
+    { "ERROR", LOGMOD_LABEL_COLOR(REGULAR, BACKGROUND, RED), 1 },
     /*[LOGMOD_LEVEL_FATAL]:*/
-    { "FATAL", LOGMOD_LABEL_COLOR(MAGENTA, REGULAR, BACKGROUND), 1 },
+    { "FATAL", LOGMOD_LABEL_COLOR(REGULAR, BACKGROUND, MAGENTA), 1 },
 };
 
 /** @brief Get @ref logmod from any @ref logmod_logger */
@@ -697,11 +716,8 @@ logmod_set_options(struct logmod *logmod, struct logmod_options options)
 LOGMOD_API logmod_err
 logmod_toggle_logger(struct logmod *logmod, const char *const context_id)
 {
-    struct logmod_mut_logger *mut_logger;
-    logmod->lock(NULL, 1);
-    mut_logger =
+    struct logmod_mut_logger *mut_logger =
         (struct logmod_mut_logger *)logmod_get_logger(logmod, context_id);
-    logmod->lock(NULL, 0);
     LOGMOD_EXPECT(mut_logger != NULL, LOGMOD_BAD_PARAMETER);
     mut_logger->disabled = !mut_logger->disabled;
     return LOGMOD_OK;
@@ -738,7 +754,6 @@ logmod_logger_set_callback(struct logmod_logger *logger,
     LOGMOD_EXPECT(logger != NULL, LOGMOD_BAD_PARAMETER);
     mut_logger->callback = callback;
     if (custom_labels != NULL) {
-        LOGMOD_EXPECT(callback != NULL, LOGMOD_BAD_PARAMETER);
         LOGMOD_EXPECT(num_custom_labels > 0, LOGMOD_BAD_PARAMETER);
         mut_logger->custom_labels = custom_labels;
         mut_logger->num_custom_labels = num_custom_labels;
@@ -792,10 +807,32 @@ logmod_logger_set_logfile(struct logmod_logger *logger, FILE *logfile)
     return LOGMOD_OK;
 }
 
+LOGMOD_API logmod_err
+logmod_logger_set_time(struct logmod_logger *logger, int show_time)
+{
+    struct logmod_mut_logger *mut_logger = (struct logmod_mut_logger *)logger;
+    LOGMOD_EXPECT(logger != NULL, LOGMOD_BAD_PARAMETER);
+    mut_logger->options.suppress_time = !show_time;
+    return LOGMOD_OK;
+}
+
+LOGMOD_API logmod_err
+logmod_logger_set_counter(struct logmod_logger *logger, int show_counter)
+{
+    struct logmod_mut_logger *mut_logger = (struct logmod_mut_logger *)logger;
+    LOGMOD_EXPECT(logger != NULL, LOGMOD_BAD_PARAMETER);
+    mut_logger->options.hide_counter = !show_counter;
+    return LOGMOD_OK;
+}
+
 LOGMOD_API const struct logmod_label *
 logmod_logger_get_label(const struct logmod_logger *logger,
                         const unsigned level)
 {
+    static const struct logmod_label unknown_label = {
+        "#UNKNOWN LABEL!!",
+        LOGMOD_LABEL_COLOR(STRIKETHROUGH, BACKGROUND_INTENSITY, YELLOW), 1
+    };
     if (level < LOGMOD_LEVEL_CUSTOM) {
         return &default_labels[level];
     }
@@ -804,7 +841,11 @@ logmod_logger_get_label(const struct logmod_logger *logger,
     {
         return &logger->custom_labels[level - LOGMOD_LEVEL_CUSTOM];
     }
-    return NULL;
+    logmod_nlog(ERROR, NULL,
+                ("Invalid log level %u for logger %s", level,
+                 logger ? logger->context_id : "NULL"),
+                2);
+    return &unknown_label;
 }
 
 LOGMOD_API long
@@ -879,43 +920,57 @@ _logmod_print(const struct logmod_logger *logger,
               const int color,
               FILE *output)
 {
-    const int show_apid = logger->options.show_application_id,
-              show_ctid = !logger->options.hide_context_id;
-    LOGMOD_EXPECT(
-        fprintf(output,
-                LMT(color, "%02d:%02d:%02d", BLACK, REGULAR, BACKGROUND),
-                info->time_info->tm_hour, info->time_info->tm_min,
-                info->time_info->tm_sec)
-            >= 0,
-        LOGMOD_ERRNO);
-    if (show_apid) {
+    if (!logger->options.hide_counter) {
+        LOGMOD_EXPECT(fprintf(output,
+                              LMT(color, BOLD, FOREGROUND, WHITE, "%-3ld "),
+                              logmod_logger_get_counter(logger))
+                          >= 0,
+                      LOGMOD_ERRNO);
+    }
+    if (!logger->options.suppress_time) {
+        LOGMOD_EXPECT(
+            fprintf(output,
+                    LMT(color, UNDERLINE, FOREGROUND, WHITE, "%02d:%02d:%02d"),
+                    info->time.tm_hour, info->time.tm_min, info->time.tm_sec)
+                >= 0,
+            LOGMOD_ERRNO);
+        LOGMOD_EXPECT(putc(' ', output) != EOF, LOGMOD_ERRNO);
+    }
+    if (logger->options.show_application_id) {
         const struct logmod *logmod = LOGMOD_FROM_LOGGER(logger);
         LOGMOD_EXPECT(fprintf(output,
-                              LMT(color, " %s »", WHITE, REGULAR, FOREGROUND),
+                              LMT(color, BOLD, FOREGROUND, BLACK, "%s"),
                               logmod->application_id)
                           >= 0,
                       LOGMOD_ERRNO);
+        LOGMOD_EXPECT(fputs(LMT(color, BOLD, FOREGROUND, BLACK, " » "), output)
+                          != EOF,
+                      LOGMOD_ERRNO);
     }
-    if (show_ctid) {
+    if (!logger->options.hide_context_id) {
         LOGMOD_EXPECT(fprintf(output,
-                              LMT(color, " %s »", WHITE, REGULAR, FOREGROUND),
+                              LMT(color, BOLD, FOREGROUND, WHITE, "%s"),
                               logger->context_id)
                           >= 0,
                       LOGMOD_ERRNO);
+        LOGMOD_EXPECT(fputs(LMT(color, BOLD, FOREGROUND, WHITE, " » "), output)
+                          != EOF,
+                      LOGMOD_ERRNO);
     }
     if (color) {
-        LOGMOD_EXPECT(
-            fprintf(output,
-                    LME(" %s", "%s", LOGMOD_STYLE_REGULAR,
-                        LOGMOD_VISIBILITY_FOREGROUND)
-                        LMS(" %s:%d", YELLOW, REGULAR, FOREGROUND) ": ",
-                    info->label->color, info->label->name, info->filename,
-                    info->line)
-                >= 0,
-            LOGMOD_ERRNO);
+        LOGMOD_EXPECT(fprintf(output,
+                              LME("%s", "%s", "%s", "%s") " " LMS(
+                                  REGULAR, FOREGROUND, YELLOW,
+                                  "%s") LMS(BOLD, FOREGROUND, WHITE, ":")
+                                  LMS(REGULAR, FOREGROUND, WHITE, "%d") ": ",
+                              info->label->style, info->label->visibility,
+                              info->label->color, info->label->name,
+                              info->filename, info->line)
+                          >= 0,
+                      LOGMOD_ERRNO);
     }
     else {
-        LOGMOD_EXPECT(fprintf(output, " %s %s:%d: ", info->label->name,
+        LOGMOD_EXPECT(fprintf(output, "%s %s:%d: ", info->label->name,
                               info->filename, info->line)
                           >= 0,
                       LOGMOD_ERRNO);
@@ -932,7 +987,7 @@ static struct logmod g_logmod;
 static struct logmod_logger g_loggers[] = {
     {
         LOGMOD_FALLBACK_CONTEXT_ID,
-        { NULL, 0, 1, LOGMOD_LEVEL_TRACE },
+        { NULL, 0, 1 },
         &g_logmod.counter,
         NULL,
         NULL,
@@ -947,7 +1002,7 @@ static struct logmod g_logmod = {
     sizeof(g_loggers) / sizeof *g_loggers,
     sizeof(g_loggers) / sizeof *g_loggers,
     0,
-    { NULL, 0, 1, LOGMOD_LEVEL_TRACE },
+    { NULL, 0, 1 },
     _logmod_lock_noop,
 };
 
@@ -965,13 +1020,13 @@ _logmod_info_populate(const struct logmod_logger *logger,
     unsigned *mut_level = (unsigned *)&info.level;
     const struct logmod_label **mut_label =
         (const struct logmod_label **)&info.label;
-    const struct tm **mut_time_info = (const struct tm **)&info.time_info;
+    struct tm *mut_time = (struct tm *)&info.time;
     *mut_line = line;
     *mut_filename = filename;
     *mut_level = level;
     *mut_label = logmod_logger_get_label(logger, level);
     logmod->lock(logger, 1);
-    *mut_time_info = localtime(&time_raw);
+    *mut_time = *localtime(&time_raw);
     logmod->lock(logger, 0);
     return info;
 }

@@ -727,7 +727,7 @@ _ua_conn_set_method(struct ua_conn *conn,
                body);
     logmod_log(
         TRACE, conn->ua->loggers.trace, "%s %s",
-        LML(conn->ua->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+        LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"),
         http_method_print(method));
 
     /* resets any preexisting CUSTOMREQUEST */
@@ -913,36 +913,36 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
 
     if (info->httpcode >= 500 && info->httpcode < 600) {
         logmod_log(ERROR, conn->ua->loggers.trace, "%s (%ld)%s - %s",
-                   LML(conn->ua->loggers.trace, "SERVER ERROR", RED, REGULAR,
-                       FOREGROUND),
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, RED,
+                       "SERVER ERROR"),
                    info->httpcode, http_code_print(info->httpcode),
                    http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 400) {
         logmod_log(ERROR, conn->ua->loggers.trace, "%s (%ld)%s - %s",
-                   LML(conn->ua->loggers.trace, "CLIENT ERROR", RED, REGULAR,
-                       FOREGROUND),
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, RED,
+                       "CLIENT ERROR"),
                    info->httpcode, http_code_print(info->httpcode),
                    http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 300) {
         logmod_log(WARN, conn->ua->loggers.trace, "%s (%ld)%s - %s",
-                   LML(conn->ua->loggers.trace, "REDIRECTING", YELLOW, REGULAR,
-                       FOREGROUND),
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, YELLOW,
+                       "REDIRECTING"),
                    info->httpcode, http_code_print(info->httpcode),
                    http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 200) {
         logmod_log(INFO, conn->ua->loggers.trace, "%s (%ld)%s - %s",
-                   LML(conn->ua->loggers.trace, "SUCCESS", GREEN, REGULAR,
-                       FOREGROUND),
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, GREEN,
+                       "SUCCESS"),
                    info->httpcode, http_code_print(info->httpcode),
                    http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 100) {
         logmod_log(
             INFO, conn->ua->loggers.trace, "%s (%ld)%s - %s",
-            LML(conn->ua->loggers.trace, "INFO", BLACK, REGULAR, INTENSITY),
+            LML(conn->ua->loggers.trace, REGULAR, INTENSITY, BLACK, "INFO"),
             info->httpcode, http_code_print(info->httpcode),
             http_reason_print(info->httpcode));
     }
