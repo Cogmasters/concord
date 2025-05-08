@@ -222,7 +222,7 @@ ws_on_connect_cb(void *p_ws)
                ws->loggers.trace->context_id, ws->base_url);
 
     logmod_log(TRACE, ws->loggers.trace, "%s CONNECT",
-               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND));
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, YELLOW, "RCV"));
 
     if (ws->cbs.on_connect) ws->cbs.on_connect(ws->cbs.data, ws);
 }
@@ -244,7 +244,7 @@ ws_on_close_cb(void *p_ws,
                reason);
 
     logmod_log(TRACE, ws->loggers.trace, "%s CLOSE(%d) (%zu bytes)",
-               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, YELLOW, "RCV"),
                wscode, len);
 
     if (ws->cbs.on_close)
@@ -266,7 +266,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
                ws->loggers.trace->context_id, ws->base_url, (int)len, text);
 
     logmod_log(TRACE, ws->loggers.trace, "%s TEXT (%zu bytes)",
-               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, YELLOW, "RCV"),
                len);
 
     if (ws->cbs.on_text) ws->cbs.on_text(ws->cbs.data, ws, text, len);
@@ -282,7 +282,7 @@ ws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
                ws->loggers.trace->context_id, ws->base_url);
 
     logmod_log(TRACE, ws->loggers.trace, "%s BINARY (%zu bytes)",
-               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, YELLOW, "RCV"),
                len);
 
     if (ws->cbs.on_binary) ws->cbs.on_binary(ws->cbs.data, ws, mem, len);
@@ -298,7 +298,7 @@ ws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
                ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
     logmod_log(TRACE, ws->loggers.trace, "%s PING (%zu bytes)",
-               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, YELLOW, "RCV"),
                len);
 
     if (ws->cbs.on_ping) ws->cbs.on_ping(ws->cbs.data, ws, reason, len);
@@ -314,7 +314,7 @@ ws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
                ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
     logmod_log(TRACE, ws->loggers.trace, "%s PONG (%zu bytes)",
-               LML(ws->loggers.trace, "RCV", YELLOW, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, YELLOW, "RCV"),
                len);
 
     if (ws->cbs.on_pong) ws->cbs.on_pong(ws->cbs.data, ws, reason, len);
@@ -426,14 +426,14 @@ _ws_close(struct websockets *ws,
     if (WS_DISCONNECTED == ws->status) {
         logmod_log(WARN, ws->loggers.trace,
                    "%s at SEND CLOSE : Connection already closed",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"));
 
         return false;
     }
     if (WS_DISCONNECTING == ws->status) {
         logmod_log(WARN, ws->loggers.trace,
                    "%s at SEND CLOSE : Close already taking place",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"));
 
         return false;
     }
@@ -445,7 +445,7 @@ _ws_close(struct websockets *ws,
         != CURLE_OK)
     {
         logmod_log(ERROR, ws->loggers.trace, "%s at SEND CLOSE(%d): %s",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"),
                    code, reason);
         return false;
     }
@@ -454,7 +454,7 @@ _ws_close(struct websockets *ws,
                ws->loggers.trace->context_id, ws->base_url, reason);
 
     logmod_log(TRACE, ws->loggers.trace, "%s CLOSE (%s)",
-               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"),
                reason);
 
     return true;
@@ -722,13 +722,13 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
                ws->loggers.trace->context_id, ws->base_url, (int)msglen, msg);
 
     logmod_log(TRACE, ws->loggers.trace, "%s BINARY (%zu bytes)",
-               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"),
                msglen);
 
     if (WS_CONNECTED != ws->status) {
         logmod_log(ERROR, ws->loggers.trace,
                    "%s at SEND BINARY : No active connection",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"));
         return false;
     }
 
@@ -738,7 +738,7 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
     {
         logmod_log(
             ERROR, ws->loggers.trace, "%s at SEND BINARY (%zu bytes) %s",
-            LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND), msglen,
+            LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"), msglen,
             !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
         return false;
     }
@@ -752,13 +752,13 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
                ws->loggers.trace->context_id, ws->base_url, (int)len, text);
 
     logmod_log(TRACE, ws->loggers.trace, "%s TEXT (%zu bytes)",
-               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"),
                len);
 
     if (WS_CONNECTED != ws->status) {
         logmod_log(ERROR, ws->loggers.trace,
                    "%s at SEND TEXT : No active connection",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND));
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"));
 
         return false;
     }
@@ -768,7 +768,7 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
         != CURLE_OK)
     {
         logmod_log(ERROR, ws->loggers.trace, "%s at SEND TEXT (%zu bytes) %s",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"),
                    len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
@@ -785,12 +785,12 @@ ws_ping(struct websockets *ws, const char *reason, size_t len)
                ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
     logmod_log(TRACE, ws->loggers.trace, "%s PING (%zu bytes)",
-               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND),
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"),
                len);
 
     if (WS_CONNECTED != ws->status) {
         logmod_log(ERROR, ws->loggers.trace, "%s to send PING (%zu bytes)",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"),
                    len);
 
         return false;
@@ -799,7 +799,7 @@ ws_ping(struct websockets *ws, const char *reason, size_t len)
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, "", 0, &sent, 0, CURLWS_PING) != CURLE_OK) {
         logmod_log(ERROR, ws->loggers.trace, "%s to send PING (%zu bytes) %s",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"),
                    len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
@@ -816,12 +816,12 @@ ws_pong(struct websockets *ws, const char *reason, size_t len)
                ws->loggers.trace->context_id, ws->base_url, (int)len, reason);
 
     logmod_log(TRACE, ws->loggers.trace, "%s PONG (%zu bytes) %s",
-               LML(ws->loggers.trace, "SEND", GREEN, REGULAR, FOREGROUND), len,
+               LML(ws->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"), len,
                !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
     if (WS_CONNECTED != ws->status) {
         logmod_log(ERROR, ws->loggers.trace, "%s to send PONG (%zu bytes) %s",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"),
                    len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
@@ -831,7 +831,7 @@ ws_pong(struct websockets *ws, const char *reason, size_t len)
     size_t sent = 0;
     if (curl_ws_send(ws->ehandle, "", 0, &sent, 0, CURLWS_PONG) != CURLE_OK) {
         logmod_log(ERROR, ws->loggers.trace, "%s to send PONG (%zu bytes) %s",
-                   LML(ws->loggers.trace, "Failed", RED, REGULAR, FOREGROUND),
+                   LML(ws->loggers.trace, REGULAR, FOREGROUND, RED, "Failed"),
                    len,
                    !*ws->errbuf ? curl_easy_strerror(CURLE_OK) : ws->errbuf);
 
