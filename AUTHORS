@@ -1,5 +1,6 @@
 core, utilities, gencodecs, API coverage, documentation:
     Lucas Müller (lcsmuller) <lucas@muller.codes>
+    (ThePedroo) <github.com/ThePedroo>
 
 timers, IO polling improvements, priority queue:
     (Anotra) <github.com/Anotra>

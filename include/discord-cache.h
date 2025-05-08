@@ -24,7 +24,7 @@ void discord_cache_enable(struct discord *client,
  * @brief Get a message from cache, only if locally available in RAM
  * @note When done, discord_unclaim() must be called on the message resource
  *
- * @param client the client initialized with discord_init()
+ * @param client the client initialized with discord_from_token()
  * @param channel_id the channel id the message is in
  * @param message_id the id of the message
  * @return `NULL` if not found, or a cache'd message
@@ -36,7 +36,7 @@ const struct discord_message *discord_cache_get_channel_message(
  * @brief Get a guild from cache, only if locally available in RAM
  * @note When done, discord_unclaim() must be called on the guild resource
  *
- * @param client the client initialized with discord_init()
+ * @param client the client initialized with discord_from_token()
  * @param guild_id the id of the guild
  * @return `NULL` if not found, or a cache'd guild
  */

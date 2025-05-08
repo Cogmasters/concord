@@ -14,10 +14,16 @@ queriec_init(struct queriec *queriec, size_t size)
 }
 
 static void
-_queriec_add(struct queriec *queriec, char *query, char *letter, const char key[], size_t key_sz, char value[], size_t value_sz)
+_queriec_add(struct queriec *queriec,
+             char *query,
+             char *letter,
+             const char key[],
+             size_t key_sz,
+             char value[],
+             size_t value_sz)
 {
     size_t i = 0;
-        
+
     query[queriec->offset++] = letter[0];
     while (i < key_sz) {
         query[queriec->offset++] = key[i++];
@@ -32,8 +38,15 @@ _queriec_add(struct queriec *queriec, char *query, char *letter, const char key[
     --queriec->offset;
 }
 
-int queriec_snprintf_add(struct queriec *queriec, char *query, const char key[], size_t keySize, 
-                         char buffer[], size_t bufferLen, const char *format, ...)
+int
+queriec_snprintf_add(struct queriec *queriec,
+                     char *query,
+                     const char key[],
+                     size_t keySize,
+                     char buffer[],
+                     size_t bufferLen,
+                     const char *format,
+                     ...)
 {
     va_list args;
 
@@ -41,7 +54,10 @@ int queriec_snprintf_add(struct queriec *queriec, char *query, const char key[],
     size_t expectedSize = (size_t)vsnprintf(buffer, bufferLen, format, args);
     va_end(args);
 
-    if (queriec->offset + keySize + expectedSize + QUERIEC_ADDITIONAL_LETTERS_SIZE > queriec->size) return QUERIEC_ERROR_NOMEM;
+    if (queriec->offset + keySize + expectedSize
+            + QUERIEC_ADDITIONAL_LETTERS_SIZE
+        > queriec->size)
+        return QUERIEC_ERROR_NOMEM;
 
     char *c = NULL;
     switch (queriec->state) {
@@ -53,9 +69,9 @@ int queriec_snprintf_add(struct queriec *queriec, char *query, const char key[],
         c = "&";
         break;
     default:
-       fprintf(stderr, "queriec_snprintf_add: invalid state.\n");
-
-       abort();
+        fprintf(stderr, "queriec_snprintf_add: invalid state.\n");
+        // TODO return error code
+        abort();
     }
 
     _queriec_add(queriec, query, c, key, keySize, buffer, expectedSize);
@@ -64,9 +80,16 @@ int queriec_snprintf_add(struct queriec *queriec, char *query, const char key[],
 }
 
 int
-queriec_add(struct queriec *queriec, char *query, char key[], size_t keySize, char value[], size_t valueSize)
+queriec_add(struct queriec *queriec,
+            char *query,
+            char key[],
+            size_t keySize,
+            char value[],
+            size_t valueSize)
 {
-    if (queriec->offset + keySize + valueSize + QUERIEC_ADDITIONAL_LETTERS_SIZE > queriec->size) return QUERIEC_ERROR_NOMEM;
+    if (queriec->offset + keySize + valueSize + QUERIEC_ADDITIONAL_LETTERS_SIZE
+        > queriec->size)
+        return QUERIEC_ERROR_NOMEM;
 
     char *c = NULL;
     switch (queriec->state) {
@@ -79,7 +102,7 @@ queriec_add(struct queriec *queriec, char *query, char key[], size_t keySize, ch
         break;
     default:
         fprintf(stderr, "queriec_add: invalid state.\n");
-
+        // TODO return error code
         abort();
     }
 

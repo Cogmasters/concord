@@ -22,6 +22,8 @@ extern "C" {
 #include "types.h"
 #include "concord-once.h"
 #include "io_poller.h"
+#define LOGMOD_HEADER
+#include "logmod.h"
 
 #ifndef DISCORD_VERSION
 /**
@@ -39,9 +41,6 @@ struct discord;
 /**/
 
 #include "discord_codecs.h"
-#ifdef CCORD_VOICE
-#include "discord-voice.h"
-#endif /* CCORD_VOICE */
 #include "discord-response.h"
 
 /** @defgroup DiscordClient Client */
@@ -89,17 +88,12 @@ struct discord;
  *  @{ */
 
 /**
- * @brief Return a Concord's error
- * @note used to log and return an error
+ * @brief Return the value of CCORDcode as a string
  *
- * @param client the client created with discord_init(), NULL for generic error
- * @param error the error string to be logged
- * @param code the error code
- * @return the error code
+ * @param code the CCORDcode value
+ * @return the enum value as a string
  */
-CCORDcode discord_return_error(struct discord *client,
-                               const char error[],
-                               CCORDcode code);
+const char *discord_code_as_string(CCORDcode code);
 
 /**
  * @brief Return the meaning of CCORDcode
@@ -153,7 +147,7 @@ const char *discord_strerror(CCORDcode code, struct discord *client);
  * @brief Claim ownership of a resource provided by Concord
  * @see discord_unclaim()
  *
- * @param client the client initialized with discord_init()
+ * @param client the client initialized with discord_from_token()
  * @param data a resource provided by Concord
  * @return pointer to `data` (for one-liners)
  */
@@ -166,32 +160,83 @@ void __discord_claim(struct discord *client, const void *data);
  *      only be called when you no longer plan to use it
  * @see discord_claim()
  *
- * @param client the client initialized with discord_init()
+ * @param client the client initialized with discord_from_token()
  * @param data a resource provided by Concord, that has been
  *      previously claimed with discord_claim()
  */
 void discord_unclaim(struct discord *client, const void *data);
 
 /**
- * @brief Create a Discord Client handle by its token
- * @see discord_get_logconf() to configure logging behavior
+ * @brief Creates a Discord Client handle from a token
+ * @see discord_get_logmod() to configure logging behavior
  *
  * @param token the bot token
  * @return the newly created Discord Client handle
  */
-struct discord *discord_init(const char token[]);
+struct discord *discord_from_token(const char token[]);
 
 /**
- * @brief Create a Discord Client handle by a `config.json` file
+ * @brief Creates a Discord Client handle from a `config.json` file
+ * @see discord_get_logmod() to configure logging behavior
  *
  * @param config_file the `config.json` file name
  * @return the newly created Discord Client handle
  */
-struct discord *discord_config_init(const char config_file[]);
+struct discord *discord_from_json(const char config_file[]);
+
+/**
+ * @brief The Discord configuration handler
+ *
+ * This struct is used to store the Discord client configuration
+ */
+struct discord_config {
+    /** minimum logging level */
+    enum logmod_levels level;
+    /** silence terminal logging */
+    bool quiet;
+    /** enable color to terminal logging */
+    bool color;
+    /** overwrite existing files */
+    bool overwrite;
+    /** the bot token */
+    char *token;
+    /* the trace log file */
+    FILE *trace;
+    /* the http log file */
+    FILE *http;
+    /* the ws log file */
+    FILE *ws;
+    struct {
+        size_t size;
+        char **ids;
+    } disable; /**< list of 'id' that should be ignored */
+};
+
+/**
+ * @brief Creates a Discord Client handle from a
+ *      @ref discord_config structure
+ * @see discord_get_logmod() to configure logging behavior
+ *
+ * @param config the @ref discord_config structure
+ * @return the newly created Discord Client handle
+ */
+struct discord *discord_from_config(const struct discord_config *config);
+
+/**
+ * @brief Backwards compatible alias for discord_from_token()
+ * @deprecated since v3.0.0
+ */
+#define discord_init discord_from_token
+
+/**
+ * @brief Backwards compatible alias for discord_from_json()
+ * @deprecated since v3.0.0
+ */
+#define discord_config_init discord_from_json
 
 /**
  * @brief Get the contents from the config file field
- * @note your bot **MUST** have been initialized with discord_config_init()
+ * @note your bot **MUST** have been initialized with discord_from_json()
  *
  * @code{.c}
  * // Assume the following custom config.json field to be extracted
@@ -212,7 +257,7 @@ struct discord *discord_config_init(const char config_file[]);
  * printf("%s %ld", foo, bar); // "a string" 1234
  * @endcode
  *
- * @param client the client created with discord_config_init()
+ * @param client the client created with discord_from_json()
  * @param path the JSON key path
  * @param depth the path depth
  * @return a read-only sized buffer containing the field's contents
@@ -226,7 +271,7 @@ struct ccord_szbuf_readonly discord_config_get_field(struct discord *client,
  *
  * Should be called before entering a thread, to ensure each thread
  *        has its own client instance with unique buffers, url and headers
- * @param orig the original client created with discord_init()
+ * @param orig the original client created with discord_from_token()
  * @return the client clone
  */
 
@@ -235,7 +280,7 @@ struct discord *discord_clone(const struct discord *orig);
 /**
  * @brief Free a Discord Client handle
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  */
 
 void discord_cleanup(struct discord *client);
@@ -243,7 +288,7 @@ void discord_cleanup(struct discord *client);
 /**
  * @brief Get the client's cached user
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @warning the returned structure should NOT be modified
  */
 
@@ -252,7 +297,7 @@ const struct discord_user *discord_get_self(struct discord *client);
 /**
  * @brief Start a connection to the Discord Gateway
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_return
  */
 CCORDcode discord_run(struct discord *client);
@@ -260,14 +305,14 @@ CCORDcode discord_run(struct discord *client);
 /**
  * @brief Gracefully shutdown an ongoing Discord connection
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  */
 void discord_shutdown(struct discord *client);
 
 /**
  * @brief Gracefully reconnects an ongoing Discord connection
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param resume true to attempt to resume to previous session,
  *        false restart a fresh session
  */
@@ -276,7 +321,7 @@ void discord_reconnect(struct discord *client, bool resume);
 /**
  * @brief Store user arbitrary data that can be retrieved by discord_get_data()
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param data user arbitrary data
  * @return pointer to user data
  * @warning the user should provide their own locking mechanism to protect
@@ -287,7 +332,7 @@ void *discord_set_data(struct discord *client, void *data);
 /**
  * @brief Receive user arbitrary data stored with discord_set_data()
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @return pointer to user data
  * @warning the user should provide their own locking mechanism to protect
  *        its data from race conditions
@@ -299,7 +344,7 @@ void *discord_get_data(struct discord *client);
  * @note Only works after a connection has been established via
  * discord_run()
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @return the ping in milliseconds
  */
 int discord_get_ping(struct discord *client);
@@ -307,7 +352,7 @@ int discord_get_ping(struct discord *client);
 /**
  * @brief Get the current timestamp (in milliseconds)
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @return the timestamp in milliseconds
  */
 uint64_t discord_timestamp(struct discord *client);
@@ -315,24 +360,24 @@ uint64_t discord_timestamp(struct discord *client);
 /**
  * @brief Get the current timestamp (in microseconds)
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @return the timestamp in microseconds
  */
 uint64_t discord_timestamp_us(struct discord *client);
 
 /**
  * @brief Retrieve client's logging module for configuration purposes
- * @see logconf_setup(), logconf_set_quiet(), logconf_set_level()
+ * @see logmod.h
  *
- * @param client the client created with discord_init()
- * @return the client's logging module
+ * @param client the client created with discord_from_token()
+ * @return the client's logging manager
  */
-struct logconf *discord_get_logconf(struct discord *client);
+struct logmod *discord_get_logmod(struct discord *client);
 
 /**
  * @brief get the io_poller used by the discord client
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @return struct io_poller*
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
@@ -393,7 +438,7 @@ struct discord_timer {
 /**
  * @brief modifies or creates a timer
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param timer the timer that should be modified
  * @return the id of the timer
  */
@@ -404,7 +449,7 @@ unsigned discord_timer_ctl(struct discord *client,
  * @brief creates a one shot timer that automatically
  *        deletes itself upon completion
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param on_tick_cb (nullable) the callback that should be called when timer
  * triggers
  * @param on_status_changed_cb (nullable) the callback for status updates
@@ -423,7 +468,7 @@ unsigned discord_timer(struct discord *client,
  * @brief creates a repeating timer that automatically
  *        deletes itself upon completion
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param on_tick_cb (nullable) the callback that should be called when timer
  * triggers
  * @param on_status_changed_cb (nullable) the callback for status updates
@@ -445,7 +490,7 @@ unsigned discord_timer_interval(struct discord *client,
 /**
  * @brief get the data associated with the timer
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param id id of the timer
  * @param timer where to copy the timer data to
  * @return true on success
@@ -457,7 +502,7 @@ bool discord_timer_get(struct discord *client,
 /**
  * @brief starts a timer
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param id id of the timer
  * @return true on success
  */
@@ -466,7 +511,7 @@ bool discord_timer_start(struct discord *client, unsigned id);
 /**
  * @brief stops a timer
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param id id of the timer
  * @return true on success
  */
@@ -476,7 +521,7 @@ bool discord_timer_stop(struct discord *client, unsigned id);
  * @brief cancels a timer,
  * this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param id id of the timer
  * @return true on success
  */
@@ -485,7 +530,7 @@ bool discord_timer_cancel(struct discord *client, unsigned id);
 /**
  * @brief deletes a timer
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param id id of the timer
  * @return true on success
  */
@@ -494,7 +539,7 @@ bool discord_timer_delete(struct discord *client, unsigned id);
 /**
  * @brief cancels, and deletes a timer
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param id id of the timer
  * @return true on success
  */

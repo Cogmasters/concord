@@ -9,10 +9,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#include <stdint.h>
 #include <curl/curl.h>
-
-#include "error.h" /* CCORDcode */
-#include "logconf.h" /* logging facilities */
 
 /**
  * @struct websockets
@@ -22,15 +20,9 @@ extern "C" {
  */
 struct websockets;
 
-/**
- * @brief Stores info on the latest transfer performed via websockets
- */
-struct ws_info {
-    /** logging info */
-    struct loginfo loginfo;
-    /** how the transfer went @todo implement */
-    CCORDcode code;
-};
+/* forward declaration */
+struct logmod;
+/**/
 
 /**
  * @brief The WebSockets client status
@@ -75,13 +67,8 @@ enum ws_close_reason {
 struct ws_callbacks {
     /**
      * @brief Called upon connection
-     *
-     * @note It is not validated if matches the proposed protocols.
      */
-    void (*on_connect)(void *data,
-                       struct websockets *ws,
-                       struct ws_info *info,
-                       const char *protocols);
+    void (*on_connect)(void *data, struct websockets *ws);
 
     /**
      * @brief Reports UTF-8 text messages.
@@ -92,14 +79,12 @@ struct ws_callbacks {
      */
     void (*on_text)(void *data,
                     struct websockets *ws,
-                    struct ws_info *info,
                     const char *text,
                     size_t len);
 
     /** @brief reports binary data.  */
     void (*on_binary)(void *data,
                       struct websockets *ws,
-                      struct ws_info *info,
                       const void *mem,
                       size_t len);
     /**
@@ -110,14 +95,12 @@ struct ws_callbacks {
      */
     void (*on_ping)(void *data,
                     struct websockets *ws,
-                    struct ws_info *info,
                     const char *reason,
                     size_t len);
 
     /** @brief reports PONG.  */
     void (*on_pong)(void *data,
                     struct websockets *ws,
-                    struct ws_info *info,
                     const char *reason,
                     size_t len);
 
@@ -129,19 +112,12 @@ struct ws_callbacks {
      */
     void (*on_close)(void *data,
                      struct websockets *ws,
-                     struct ws_info *info,
                      enum ws_close_reason wscode,
                      const char *reason,
                      size_t len);
 
     /** @brief user arbitrary data to be passed around callbacks */
     void *data;
-};
-
-/** @brief WebSockets handle initialization attributes */
-struct ws_attr {
-    /** pre-initialized logging module */
-    struct logconf *conf;
 };
 
 /**
@@ -171,12 +147,14 @@ struct ws_attr {
  * @param cbs set of functions to call back when server report events.
  * @param mhandle user-owned curl_multi handle for performing non-blocking
  * transfers
- * @param attr optional attributes to override defaults
+ * @param logmod optional pre-initialized logging handler
+ * @param fp file pointer for writing WebSockets traces to
  * @return newly created WebSockets handle, free with ws_cleanup()
  */
 struct websockets *ws_init(struct ws_callbacks *cbs,
                            CURLM *mhandle,
-                           struct ws_attr *attr);
+                           struct logmod *logmod,
+                           FILE *fp);
 
 /**
  * @brief Free a WebSockets handle created with ws_init()
@@ -190,11 +168,8 @@ void ws_cleanup(struct websockets *ws);
  *
  * @param ws the WebSockets handle created with ws_init()
  * @param base_url the URL to connect, such as ws://echo.websockets.org
- * @param ws_protocols NULL or something like "chat", "superchat",...
  */
-void ws_set_url(struct websockets *ws,
-                const char base_url[],
-                const char ws_protocols[]);
+void ws_set_url(struct websockets *ws, const char base_url[]);
 
 /**
  * @brief Send a binary message of given size.
@@ -203,15 +178,11 @@ void ws_set_url(struct websockets *ws,
  * will be read up to @a msglen.
  *
  * @param ws the WebSockets handle created with ws_init()
- * @param info get information on how this transfer went
  * @param msg the pointer to memory (linear) to send.
  * @param msglen the length in bytes of @a msg.
  * @return true if sent, false on errors.
  */
-_Bool ws_send_binary(struct websockets *ws,
-                     struct ws_info *info,
-                     const char msg[],
-                     size_t msglen);
+_Bool ws_send_binary(struct websockets *ws, const char msg[], size_t msglen);
 /**
  * @brief Send a text message of given size.
  *
@@ -219,29 +190,21 @@ _Bool ws_send_binary(struct websockets *ws,
  * will be read up to @a len.
  *
  * @param ws the WebSockets handle created with ws_init()
- * @param info get information on how this transfer went
  * @param text the pointer to memory (linear) to send.
  * @param len the length in bytes of @a text.
  * @return true if sent, false on errors.
  */
-_Bool ws_send_text(struct websockets *ws,
-                   struct ws_info *info,
-                   const char text[],
-                   size_t len);
+_Bool ws_send_text(struct websockets *ws, const char text[], size_t len);
 /**
  * @brief Send a PING (opcode 0x9) frame with @a reason as payload.
  *
  * @param ws the WebSockets handle created with ws_init()
- * @param info get information on how this transfer went
  * @param reason NULL or some UTF-8 string null ('\0') terminated.
  * @param len the length of @a reason in bytes. If SIZE_MAX, uses
  *        strlen() on @a reason if it's not NULL.
  * @return true if sent, false on errors.
  */
-_Bool ws_ping(struct websockets *ws,
-              struct ws_info *info,
-              const char reason[],
-              size_t len);
+_Bool ws_ping(struct websockets *ws, const char reason[], size_t len);
 /**
  * @brief Send a PONG (opcode 0xA) frame with @a reason as payload.
  *
@@ -249,16 +212,12 @@ _Bool ws_ping(struct websockets *ws,
  * defined. If one is defined you must send pong manually.
  *
  * @param ws the WebSockets handle created with ws_init()
- * @param info get information on how this transfer went
  * @param reason NULL or some UTF-8 string null ('\0') terminated.
  * @param len the length of @a reason in bytes. If SIZE_MAX, uses
  *        strlen() on @a reason if it's not NULL.
  * @return true if sent, false on errors.
  */
-_Bool ws_pong(struct websockets *ws,
-              struct ws_info *info,
-              const char reason[],
-              size_t len);
+_Bool ws_pong(struct websockets *ws, const char reason[], size_t len);
 
 /**
  * @brief Signals connecting state before entering the WebSockets event loop
@@ -266,7 +225,7 @@ _Bool ws_pong(struct websockets *ws,
  * @param ws the WebSockets handle created with ws_init()
  * @return the WebSockets easy_handle that is free'd at ws_end()
  */
-CURL* ws_start(struct websockets *ws);
+CURL *ws_start(struct websockets *ws);
 
 /**
  * @brief Cleanup and reset `ws` connection resources

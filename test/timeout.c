@@ -36,7 +36,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     discord_set_on_wakeup(client, on_wakeup);
     discord_set_next_wakeup(client, 3000);
     discord_set_on_cycle(client, on_cycle);

@@ -11,18 +11,15 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/io_poller.o      \
                 $(CORE_DIR)/user-agent.o     \
                 $(CORE_DIR)/websockets.o     \
-                $(CORE_DIR)/curl-websocket.o \
                 $(CORE_DIR)/jsmn-find.o      \
                 $(CORE_DIR)/json-build.o     \
-                $(CORE_DIR)/log.o            \
-                $(CORE_DIR)/logconf.o        \
+                $(CORE_DIR)/logmod.o         \
+                $(CORE_DIR)/oa_hash.o        \
                 $(CORE_DIR)/priority_queue.o \
                 $(CORE_DIR)/anomap.o         \
-                $(CORE_DIR)/sha1.o           \
                 $(CORE_DIR)/threadpool.o     \
                 $(CORE_DIR)/queriec.o
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
-VOICE_OBJS    = discord-voice.o
 
 OBJS += concord-once.o             \
         discord-refcount.o         \
@@ -97,15 +94,11 @@ echo:
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'GENCODECS_OBJ: $(GENCODECS_OBJ)\n'
 	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
-	@ echo -e 'VOICE_OBJS: $(VOICE_OBJS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
-
-voice:
-	@ CFLAGS="-DCCORD_VOICE" OBJS="$(VOICE_OBJS)" $(MAKE)
 
 clean: 
 	@ rm -rf $(LIBDIR)/*
-	@ rm -f $(OBJS) $(VOICE_OBJS)
+	@ rm -f $(OBJS)
 	@ $(MAKE) -C $(CORE_DIR) clean
 purge: clean
 	@ $(MAKE) -C $(GENCODECS_DIR) clean

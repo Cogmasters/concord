@@ -49,6 +49,8 @@ struct ccord_szbuf {
     char *start;
     /** the buffer's size in bytes */
     size_t size;
+    /** true if buffer is static (else is dynamic and shall be freed) */
+    bool is_static;
 };
 
 /** @brief Read-only generic sized buffer */
@@ -57,16 +59,6 @@ struct ccord_szbuf_readonly {
     const char *start;
     /** the buffer's size in bytes */
     size_t size;
-};
-
-/** @brief Reusable generic sized buffer */
-struct ccord_szbuf_reusable {
-    /** the buffer's start */
-    char *start;
-    /** the buffer's relative size in bytes */
-    size_t size;
-    /** the buffer's real size in bytes */
-    size_t realsize;
 };
 
 /** @} ConcordTypes */

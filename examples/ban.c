@@ -5,7 +5,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -21,24 +21,25 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Ban-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Ban-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
 log_on_guild_ban_add(struct discord *client,
                      const struct discord_guild_ban_add *event)
 {
-    log_info("User `%s#%s` has been banned.", event->user->username,
-             event->user->discriminator);
+    logmod_log(INFO, NULL, "User `%s#%s` has been banned.",
+               event->user->username, event->user->discriminator);
 }
 
 void
 log_on_guild_ban_remove(struct discord *client,
                         const struct discord_guild_ban_remove *event)
 {
-    log_info("User `%s#%s` has been unbanned.", event->user->username,
-             event->user->discriminator);
+    logmod_log(INFO, NULL, "User `%s#%s` has been unbanned.",
+               event->user->username, event->user->discriminator);
 }
 
 void
@@ -118,7 +119,7 @@ main(int argc, char *argv[])
         config_file = "../config.json";
 
     ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     discord_set_on_ready(client, &on_ready);

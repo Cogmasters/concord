@@ -1,6 +1,8 @@
 PREFIX          ?= /usr/local
+SHAREDIR        ?= /usr/share
 DESTINCLUDE_DIR  = $(PREFIX)/include/concord
 DESTLIBDIR       = $(PREFIX)/lib
+PKGCONFIGDIR     = $(SHAREDIR)/pkgconfig
 
 SRC_DIR       = src
 INCLUDE_DIR   = include
@@ -43,12 +45,14 @@ install:
 	install -d $(DESTINCLUDE_DIR)
 	install -m 644 $(INCLUDE_DIR)/*.h $(CORE_DIR)/*.h $(GENCODECS_DIR)/*.h \
 	               $(DESTINCLUDE_DIR)
+	install -D concord.pc $(PKGCONFIGDIR)/concord.pc
 
 uninstall:
 	rm -rf $(PREFIX)/include/concord
 	rm -rf $(PREFIX)/lib/libdiscord.a
 	rm -rf $(PREFIX)/lib/libdiscord.so
 	rm -rf $(PREFIX)/lib/libdiscord.dylib
+	rm -f $(PKGCONFIGDIR)/concord.pc
 
 docs:
 	@ $(MAKE) -C $(GENCODECS_DIR) headers
@@ -58,8 +62,6 @@ echo:
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 
-voice:
-	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 debug:
 	@ CFLAGS="$(DEBUG_FLAGS)" $(MAKE)
 

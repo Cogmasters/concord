@@ -149,76 +149,8 @@ PUB_STRUCT(discord_component)
   /** whether this componentis required to be filled */
     FIELD(required, bool, false)
   /** a pre-filled value for this component */
+  COND_WRITE(self->value != NULL)
     FIELD_PTR(value, char, *)
-  /** whether the component is disabled, default `false` */
-  COND_WRITE(self->disabled != false)
-    FIELD(disabled, bool, false)
-  COND_END
-  /** an accessory component, can be Thumbnail or Button
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->accessory != NULL)
-    FIELD_STRUCT_PTR(accessory, discord_component, *)
-  COND_END
-  /** the media item for the thumbnail
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->media != NULL)
-    FIELD_STRUCT_PTR(media, discord_component_media, *)
-  COND_END
-  /** the content of the text display component
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->content != NULL)
-    FIELD_PTR(content, char, *)
-  COND_END
-  /** the description for the thumbnai
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->description != NULL)
-    FIELD_PTR(description, char, *)
-  COND_END
-  /** whether the thumbnail/file/container is a spoiler
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-    FIELD(spoiler, bool, false)
-  /** array of media gallery items
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->items != NULL)
-    FIELD_STRUCT_PTR(items, discord_component_items, *)
-  COND_END
-  /** the file to be displayed, supports only attachment://<filename> references
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->file != NULL)
-    FIELD_STRUCT_PTR(file, discord_component_media, *)
-  COND_END
-  /** whether the separator is a divider
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->divider != false)
-    FIELD(divider, bool, false)
-  COND_END
-  /** spacing size for the separator
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-    FIELD_ENUM(spacing, discord_component_spacing)
-  /** color code for the container
-   * 
-   * @note This field is only available when using components v2 flag
-   */
-  COND_WRITE(self->color != 0)
-    FIELD(color, int, 0)
   COND_END
 STRUCT_END
 #endif

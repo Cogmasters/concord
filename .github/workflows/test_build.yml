@@ -4,17 +4,24 @@ on:
   push:
     branches: [master]
   pull_request:
-    
+
 jobs:
   test-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
       - name: Dependencies
         run: |
-          echo "Installing libcurl"
-          sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
+          echo "Installing libcurl from source with WebSocket support"
+          sudo apt-get update
+          sudo apt-get install -y build-essential autoconf libtool pkg-config libssl-dev zlib1g-dev
+          curl -LO https://curl.se/download/curl-8.7.1.tar.gz
+          tar -xzf curl-8.7.1.tar.gz
+          cd curl-8.7.1 && ./configure --with-openssl --enable-websockets
+          make -j$(nproc)
+          sudo make install
+          sudo ldconfig
 
       - name: Run Makefile
         run: |
@@ -24,8 +31,6 @@ jobs:
           make examples
           echo "Building tests"
           make test
-          echo "Building voice"
-          make clean && make voice
 
       - name: Run Makefile with parallelism
         run: |
@@ -35,5 +40,3 @@ jobs:
           make clean && make examples -j$(nproc)
           echo "Building tests with parallelism"
           make clean && make test -j$(nproc)
-          echo "Building voice with parallelism"
-          make clean && make voice -j$(nproc)

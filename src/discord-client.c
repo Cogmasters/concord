@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <errno.h>
 #include <unistd.h>
 
@@ -10,7 +11,7 @@
 #include "cog-utils.h"
 
 static size_t
-_parse_env(char **dest, char *end, const char **src)
+_discord_envs_parse(char **dest, char *end, const char **src)
 {
     const char *p = ++*src;
     if ('{' != *p++) return 0;
@@ -33,11 +34,16 @@ _parse_env(char **dest, char *end, const char **src)
 }
 
 static bool
-_parse_init_string(char *dest, size_t dest_size, const char *src)
+_discord_envs_expand(char *dest, size_t dest_size, const char *src)
 {
+    if (!src || !*src) {
+        *dest = 0;
+        return true;
+    }
+
     while (*src) {
         if (*src == '$') {
-            size_t len = _parse_env(&dest, dest + dest_size, &src);
+            size_t len = _discord_envs_parse(&dest, dest + dest_size, &src);
             if (!len) return false;
             dest_size -= len;
         }
@@ -52,175 +58,491 @@ _parse_init_string(char *dest, size_t dest_size, const char *src)
 }
 
 static void
-_on_shutdown_triggered(struct io_poller *io,
-                       enum io_poller_events events,
-                       void *data)
+_discord_on_shutdown(struct io_poller *io,
+                     enum io_poller_events events,
+                     void *data)
 {
     (void)io;
     (void)events;
     discord_shutdown(data);
 }
 
-static void
-_discord_init(struct discord *new_client)
+static CCORDcode
+_discord_init(struct discord *client)
 {
-    ccord_global_init();
+    CCORDcode code;
 
-    new_client->io_poller = io_poller_create();
-    discord_timers_init(&new_client->timers.internal, new_client->io_poller);
-    discord_timers_init(&new_client->timers.user, new_client->io_poller);
-    io_poller_socket_add(new_client->io_poller,
-                         new_client->shutdown_fd = discord_dup_shutdown_fd(),
-                         IO_POLLER_IN, _on_shutdown_triggered, new_client);
-
-    new_client->workers = calloc(1, sizeof *new_client->workers);
-    ASSERT_S(!pthread_mutex_init(&new_client->workers->lock, NULL),
-             "Couldn't initialize Client's mutex");
-    ASSERT_S(!pthread_cond_init(&new_client->workers->cond, NULL),
-             "Couldn't initialize Client's cond");
-
-    discord_refcounter_init(&new_client->refcounter, &new_client->conf);
-    discord_message_commands_init(&new_client->commands, &new_client->conf);
-    discord_rest_init(&new_client->rest, &new_client->conf, new_client->token);
-    discord_gateway_init(&new_client->gw, &new_client->conf,
-                         new_client->token);
-#ifdef CCORD_VOICE
-    discord_voice_connections_init(new_client);
-#endif
-
-    if (new_client->token) { /* fetch client's user structure */
-        CCORDcode code =
-            discord_get_current_user(new_client, &(struct discord_ret_user){
-                                                     .sync = &new_client->self,
-                                                 });
-        ASSERT_S(CCORD_OK == code, "Couldn't fetch client's user object");
+    if (logmod_set_options(&client->logmod,
+                           (struct logmod_options){
+                               .logfile = client->config.trace,
+                               .quiet = client->config.quiet,
+                               .color = client->config.color,
+                               .hide_context_id = 0,
+                               .show_application_id = 1,
+                               .level = client->config.level,
+                           })
+        < 0)
+    {
+        logmod_log(ERROR, client->logger, "Couldn't set logger options");
     }
-    new_client->is_original = true;
-}
+    if ((code = ccord_global_init()) != CCORD_OK) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize global resources: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
+    client->pid = (unsigned)getpid();
+    client->is_original = true;
+    if (!(client->io_poller = io_poller_create())) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize IO poller: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return CCORD_INTERNAL_ERROR;
+    }
+    if ((code =
+             discord_timers_init(&client->timers.internal, client->io_poller)))
+    {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize internal timers: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
+    if ((code = discord_timers_init(&client->timers.user, client->io_poller))
+        != CCORD_OK)
+    {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize user timers: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
+    if (!io_poller_socket_add(client->io_poller,
+                              client->shutdown_fd = discord_dup_shutdown_fd(),
+                              IO_POLLER_IN, _discord_on_shutdown, client))
+    {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't add shutdown fd to IO poller");
+        return CCORD_INTERNAL_ERROR;
+    }
 
-struct discord *
-discord_init(const char token[])
-{
-    struct discord *new_client;
-    char parsed_token[4096];
-    if (!_parse_init_string(parsed_token, sizeof parsed_token, token))
-        return NULL;
-    new_client = calloc(1, sizeof *new_client);
-    logconf_setup(&new_client->conf, "DISCORD", NULL);
-    /* silence terminal input by default */
-    logconf_set_quiet(&new_client->conf, true);
-    if (token && *token)
-        cog_strndup(parsed_token, strlen(parsed_token), &new_client->token);
+    if (!(client->workers = calloc(1, sizeof *client->workers))) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't allocate memory for Client's workers");
+        return CCORD_OUT_OF_MEMORY;
+    }
+    if (pthread_mutex_init(&client->workers->lock, NULL)) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize Client's mutex");
+        return CCORD_ERRNO;
+    }
+    if (pthread_cond_init(&client->workers->cond, NULL)) {
+        logmod_log(FATAL, client->logger, "Couldn't initialize Client's cond");
+        return CCORD_ERRNO;
+    }
+    if ((code = discord_refcounter_init(&client->refcounter))) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize Client's refcounter: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
+    if ((code = discord_message_commands_init(&client->commands))) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize Client's commands: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
+    if ((code = discord_rest_init(&client->rest, client->config.token))) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize REST API: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
+    if ((code = discord_gateway_init(&client->gw, client->config.token))) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize Gateway API: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return code;
+    }
 
-    _discord_init(new_client);
-
-    return new_client;
-}
-
-struct discord *
-discord_config_init(const char config_file[])
-{
-    struct ccord_szbuf_readonly field;
-    struct discord *new_client;
-    FILE *fp;
-    char parsed_config_file[4096];
-    if (!_parse_init_string(parsed_config_file, sizeof parsed_config_file,
-                            config_file))
-        return NULL;
-    fp = fopen(parsed_config_file, "rb");
-    VASSERT_S(fp != NULL, "Couldn't open '%s': %s", parsed_config_file,
-              strerror(errno));
-
-    new_client = calloc(1, sizeof *new_client);
-    logconf_setup(&new_client->conf, "DISCORD", fp);
-
-    fclose(fp);
-
-    field = discord_config_get_field(new_client,
-                                     (char *[2]){ "discord", "token" }, 2);
-    if (field.size && 0 != strncmp("YOUR-BOT-TOKEN", field.start, field.size))
-        cog_strndup(field.start, field.size, &new_client->token);
-
-    _discord_init(new_client);
-
-    /* check for default prefix in config file */
-    field = discord_config_get_field(
-        new_client, (char *[2]){ "discord", "default_prefix" }, 2);
-    if (field.size) {
-        jsmn_parser parser;
-        jsmntok_t tokens[16];
-
-        jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, field.start, field.size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
+    if (client->config.token) {
+        if ((code = discord_get_current_user(client,
+                                             &(struct discord_ret_user){
+                                                 .sync = &client->self,
+                                             }))
+            != CCORD_OK)
         {
-            jsmnf_loader loader;
-            jsmnf_pair pairs[16];
+            logmod_log(ERROR, client->logger,
+                       "Couldn't fetch client's user object: %s (code %d)",
+                       discord_strerror(code, NULL), code);
+            return code;
+        }
+    }
+    return CCORD_OK;
+}
 
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, field.start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
+struct discord *
+discord_from_token(const char token[])
+{
+    struct discord *client;
+    char parsed_token[0x1000];
+    CCORDcode code;
+
+    if (!(client = calloc(1, sizeof *client))) {
+        logmod_log(FATAL, NULL, "Couldn't allocate memory for client");
+        return NULL;
+    }
+    if (logmod_init(&client->logmod, "CONCORD", client->table,
+                    sizeof(client->table) / sizeof *client->table)
+        != LOGMOD_OK)
+    {
+        logmod_log(FATAL, NULL, "Couldn't initialize logging module");
+        return discord_cleanup(client), NULL;
+    }
+    if (!(client->logger = logmod_get_logger(&client->logmod, "CLIENT"))) {
+        logmod_log(FATAL, NULL, "Couldn't create logger for client");
+        return discord_cleanup(client), NULL;
+    }
+    if (!_discord_envs_expand(parsed_token, sizeof parsed_token, token)) {
+        logmod_log(FATAL, client->logger, "Couldn't parse token: %s", token);
+        return discord_cleanup(client), NULL;
+    }
+    if (*parsed_token != '\0'
+        && !cog_strndup(parsed_token, strlen(parsed_token),
+                        &client->config.token))
+    {
+        logmod_log(FATAL, client->logger, "Couldn't copy token: %s",
+                   parsed_token);
+        return discord_cleanup(client), NULL;
+    }
+    if ((code = _discord_init(client)) != CCORD_OK) {
+        logmod_log(FATAL, client->logger, "Couldn't initialize client: %s",
+                   discord_strerror(code, NULL));
+        return discord_cleanup(client), NULL;
+    }
+    if (logmod_logger_set_quiet(client->logger, 1) != LOGMOD_OK) {
+        logmod_log(ERROR, client->logger, "Couldn't silence console output");
+    }
+    return client;
+}
+
+static void
+_discord_config_disable_from_json(struct discord_config *config,
+                                  const struct ccord_szbuf *file)
+{
+    jsmnf_table table[0x100];
+    jsmnf_loader loader;
+
+    jsmnf_init(&loader);
+    if (0 < jsmnf_load(&loader, file->start, file->size, table,
+                       sizeof(table) / sizeof *table))
+    {
+        const jsmnf_pair *f;
+        if ((f = jsmnf_find(loader.root, "log", 3))) {
+            const jsmnf_pair *f1;
+            if ((f1 = jsmnf_find(f, "disable", 7))
+                && f1->v->end - f1->v->start >= 0)
             {
-                bool enable_prefix = false;
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, field.start, "enable", 6)))
-                    enable_prefix = ('t' == field.start[f->v.pos]);
-
-                if (enable_prefix
-                    && (f = jsmnf_find(pairs, field.start, "prefix", 6)))
-                {
-                    discord_message_commands_set_prefix(&new_client->commands,
-                                                        field.start + f->v.pos,
-                                                        f->v.len);
+                const size_t size = (size_t)f1->v->size;
+                config->disable.ids = malloc(size * sizeof(char *));
+                for (size_t i = 0; i < size; ++i) {
+                    const jsmnf_pair *f2 = f1->fields + i;
+                    if (f2->v->type == JSMN_STRING) {
+                        const size_t length =
+                            (size_t)(f2->v->end - f2->v->start);
+                        char *id = malloc(length + 1);
+                        memcpy(id, file->start + f2->v->start, length);
+                        id[length] = '\0';
+                        config->disable.ids[i] = id;
+                    }
                 }
+                config->disable.size = size;
             }
         }
     }
-
-    return new_client;
 }
 
-static void
-_discord_clone_gateway(struct discord_gateway *clone,
-                       const struct discord_gateway *orig)
+static void _discord_config_cleanup(struct discord_config *config);
+
+static CCORDcode
+_discord_config_from_json(struct discord_config *config,
+                          const char config_file[])
 {
-    const size_t n = orig->payload.json.npairs
-                     - (size_t)(orig->payload.data - orig->payload.json.pairs);
+    struct discord *client = CLIENT(config, config);
+    struct ccord_szbuf_readonly field;
+    char parsed_config_file[0x1000];
 
-    clone->payload.data = malloc(n * sizeof *orig->payload.json.pairs);
-    memcpy(clone->payload.data, orig->payload.data,
-           n * sizeof *orig->payload.json.pairs);
+    if (!_discord_envs_expand(parsed_config_file, sizeof parsed_config_file,
+                              config_file))
+    {
+        logmod_log(FATAL, client->logger, "Couldn't parse config file: %s",
+                   config_file);
+        return CCORD_BAD_DECODE;
+    }
+    if (!(client->file.start =
+              cog_load_whole_file(parsed_config_file, &client->file.size)))
+    {
+        logmod_log(FATAL, client->logger, "Couldn't load '%s': %s",
+                   parsed_config_file, strerror(errno));
+        return _discord_config_cleanup(config), CCORD_ERRNO;
+    }
 
-    clone->payload.json.size =
-        cog_strndup(orig->payload.json.start, orig->payload.json.size,
-                    &clone->payload.json.start);
+    if ((field = discord_config_get_field(client, (char *[1]){ "token" }, 1)),
+        0 == strncmp("YOUR-BOT-TOKEN", field.start, field.size))
+    {
+        logmod_log(FATAL, client->logger, "Bad token at '%s'",
+                   parsed_config_file);
+        return _discord_config_cleanup(config), CCORD_BAD_DECODE;
+    }
+    if (field.size && !cog_strndup(field.start, field.size, &config->token)) {
+        logmod_log(FATAL, client->logger, "Couldn't copy token: %.*s",
+                   (int)field.size, field.start);
+        return _discord_config_cleanup(config), CCORD_BAD_DECODE;
+    }
+
+    if ((field = discord_config_get_field(client,
+                                          (char *[2]){ "log", "level" }, 2)),
+        field.size)
+    {
+        char label[64];
+        snprintf(label, sizeof(label), "%.*s", (int)field.size, field.start);
+        for (char *it = label; *it; ++it) {
+            *it = (char)toupper((int)*it);
+        }
+        if ((config->level = logmod_logger_get_level(client->logger, label))
+            < 0)
+        {
+            logmod_log(ERROR, client->logger, "Invalid logging level: %s",
+                       label);
+            config->level = LOGMOD_LEVEL_TRACE;
+        }
+    }
+    if ((field = discord_config_get_field(client,
+                                          (char *[2]){ "log", "quiet" }, 2)),
+        field.size)
+    {
+        config->quiet = 't' == field.start[0];
+    }
+    if ((field = discord_config_get_field(client,
+                                          (char *[2]){ "log", "color" }, 2)),
+        field.size)
+    {
+        config->color = 't' == field.start[0];
+    }
+    if ((field = discord_config_get_field(
+             client, (char *[2]){ "log", "overwrite" }, 2)),
+        field.size)
+    {
+        config->overwrite = 't' == field.start[0];
+    }
+    if ((field = discord_config_get_field(client,
+                                          (char *[2]){ "log", "trace" }, 2)),
+        field.size)
+    {
+        char *filename;
+        if (!cog_strndup(field.start, field.size, &filename)) {
+            logmod_log(FATAL, client->logger, "Couldn't copy trace file");
+            return _discord_config_cleanup(config), CCORD_BAD_DECODE;
+        }
+        if (!(config->trace =
+                  fopen(filename, config->overwrite ? "w+" : "a+")))
+        {
+            logmod_log(FATAL, client->logger, "Couldn't open trace file: %s",
+                       filename);
+            free(filename);
+            return _discord_config_cleanup(config), CCORD_ERRNO;
+        }
+        free(filename);
+    }
+    if ((field = discord_config_get_field(client, (char *[2]){ "log", "http" },
+                                          2)),
+        field.size)
+    {
+        char *filename;
+        if (!cog_strndup(field.start, field.size, &filename)) {
+            logmod_log(FATAL, client->logger, "Couldn't copy http log file");
+            return _discord_config_cleanup(config), CCORD_BAD_DECODE;
+        }
+        if (!(config->http = fopen(filename, config->overwrite ? "w+" : "a+")))
+        {
+            return _discord_config_cleanup(config), CCORD_ERRNO;
+        }
+        free(filename);
+    }
+    if ((field =
+             discord_config_get_field(client, (char *[2]){ "log", "ws" }, 2)),
+        field.size)
+    {
+        char *filename;
+        if (!cog_strndup(field.start, field.size, &filename)) {
+            logmod_log(FATAL, client->logger, "Couldn't copy ws log file");
+            return _discord_config_cleanup(config), CCORD_BAD_DECODE;
+        }
+        if (!(config->ws = fopen(filename, config->overwrite ? "w+" : "a+"))) {
+            return _discord_config_cleanup(config), CCORD_ERRNO;
+        }
+        free(filename);
+    }
+    _discord_config_disable_from_json(config, &client->file);
+    for (size_t i = 0; i < config->disable.size; ++i) {
+        logmod_toggle_logger(&client->logmod, config->disable.ids[i]);
+        logmod_log(INFO, client->logger, "Disabled logging for '%s'",
+                   config->disable.ids[i]);
+    }
+    return CCORD_OK;
+}
+
+void
+_discord_config_cleanup(struct discord_config *config)
+{
+    if (config->token) {
+        free(config->token);
+    }
+    if (config->trace) {
+        fclose(config->trace);
+    }
+    if (config->http) {
+        fclose(config->http);
+    }
+    if (config->disable.ids) {
+        for (size_t i = 0; i < config->disable.size; ++i)
+            free(config->disable.ids[i]);
+        free(config->disable.ids);
+    }
+    memset(config, 0, sizeof *config);
 }
 
 struct discord *
-discord_clone(const struct discord *orig)
+discord_from_json(const char config_file[])
 {
-    struct discord *clone = malloc(sizeof(struct discord));
+    struct discord *client;
+    CCORDcode code;
 
-    memcpy(clone, orig, sizeof(struct discord));
-    clone->is_original = false;
+    if (!(client = calloc(1, sizeof *client))) {
+        logmod_log(FATAL, NULL, "Couldn't allocate memory for client");
+        return NULL;
+    }
+    if (logmod_init(&client->logmod, "CONCORD", client->table,
+                    sizeof(client->table) / sizeof *client->table)
+        != LOGMOD_OK)
+    {
+        logmod_log(FATAL, NULL, "Couldn't initialize logging module");
+        return discord_cleanup(client), NULL;
+    }
+    if (!(client->logger = logmod_get_logger(&client->logmod, "CLIENT"))) {
+        logmod_log(FATAL, NULL, "Couldn't create logger for client");
+        return discord_cleanup(client), NULL;
+    }
+    if (_discord_config_from_json(&client->config, config_file) != CCORD_OK) {
+        logmod_log(FATAL, client->logger, "Couldn't load config file: %s",
+                   config_file);
+        return discord_cleanup(client), NULL;
+    }
+    if ((code = _discord_init(client)) != CCORD_OK) {
+        logmod_log(FATAL, client->logger, "Couldn't initialize client: %s",
+                   discord_strerror(code, NULL));
+        return discord_cleanup(client), NULL;
+    }
+    return client;
+}
 
-    _discord_clone_gateway(&clone->gw, &orig->gw);
+struct discord *
+discord_from_config(const struct discord_config *config)
+{
+    struct discord *client;
+    CCORDcode code;
 
-    return clone;
+    if (!(client = calloc(1, sizeof *client))) {
+        logmod_log(FATAL, NULL, "Couldn't allocate memory for client");
+        return NULL;
+    }
+    if (logmod_init(&client->logmod, "CONCORD", client->table,
+                    sizeof(client->table) / sizeof *client->table)
+        != LOGMOD_OK)
+    {
+        logmod_log(FATAL, NULL, "Couldn't initialize logging module");
+        return discord_cleanup(client), NULL;
+    }
+    if (!(client->logger = logmod_get_logger(&client->logmod, "CLIENT"))) {
+        logmod_log(FATAL, NULL, "Couldn't create logger for client");
+        return discord_cleanup(client), NULL;
+    }
+    client->config = *config;
+    if ((code = _discord_init(client)) != CCORD_OK) {
+        logmod_log(FATAL, client->logger, "Couldn't initialize client: %s",
+                   discord_strerror(code, NULL));
+        return discord_cleanup(client), NULL;
+    }
+    return client;
 }
 
 static void
 _discord_clone_gateway_cleanup(struct discord_gateway *clone)
 {
-    free(clone->payload.data);
-    free(clone->payload.json.start);
+    if (clone->payload.json.table) free(clone->payload.json.table);
+    if (clone->payload.data) free((void *)clone->payload.data);
+    if (clone->payload.json.start) free(clone->payload.json.start);
+    memset(clone, 0, sizeof *clone);
+}
+
+static CCORDcode
+_discord_clone_gateway(struct discord_gateway *clone,
+                       const struct discord_gateway *orig)
+{
+    const struct discord_gateway_payload *orig_payload = &orig->payload;
+    struct discord_gateway_payload *payload = &clone->payload;
+    jsmnf_loader loader;
+    if (!(payload->json.size =
+              cog_strndup(orig_payload->json.start, orig_payload->json.size,
+                          &payload->json.start)))
+    {
+        return _discord_clone_gateway_cleanup(clone), CCORD_ERRNO;
+    }
+    if (!(payload->json.table =
+              calloc(orig_payload->json.ntable, sizeof(*payload->json.table))))
+    {
+        return _discord_clone_gateway_cleanup(clone), CCORD_ERRNO;
+    }
+    jsmnf_init(&loader);
+    if (jsmnf_load(&loader, payload->json.start, payload->json.size,
+                   payload->json.table, payload->json.ntable)
+        <= 0)
+    {
+        return _discord_clone_gateway_cleanup(clone), CCORD_BAD_DECODE;
+    }
+    if (!(payload->data = jsmnf_find(loader.root, "d", 1))) {
+        return _discord_clone_gateway_cleanup(clone), CCORD_BAD_DECODE;
+    }
+    return CCORD_OK;
 }
 
 static void
 _discord_clone_cleanup(struct discord *client)
 {
+    if (client->is_original) {
+        logmod_log(ERROR, client->logger,
+                   "Attempted to cleanup original client");
+        return;
+    }
     _discord_clone_gateway_cleanup(&client->gw);
+    free(client);
+}
+
+struct discord *
+discord_clone(const struct discord *orig)
+{
+    struct discord *clone;
+    CCORDcode code;
+    if (!(clone = malloc(sizeof(struct discord)))) {
+        logmod_log(FATAL, orig->logger, "Couldn't allocate memory for client");
+        return NULL;
+    }
+    memcpy(clone, orig, sizeof(struct discord));
+    clone->is_original = false;
+    if ((code = _discord_clone_gateway(&clone->gw, &orig->gw)) != CCORD_OK) {
+        logmod_log(FATAL, orig->logger, "Couldn't clone gateway: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        return _discord_clone_cleanup(clone), NULL;
+    }
+    return clone;
 }
 
 void
@@ -228,42 +550,79 @@ discord_cleanup(struct discord *client)
 {
     if (!client->is_original) {
         _discord_clone_cleanup(client);
-        free(client);
         return;
     }
 
     close(client->shutdown_fd);
-    discord_worker_join(client);
+    if (client->workers) {
+        discord_worker_join(client);
+        pthread_mutex_destroy(&client->workers->lock);
+        pthread_cond_destroy(&client->workers->cond);
+        free(client->workers);
+    }
     discord_rest_cleanup(&client->rest);
     discord_gateway_cleanup(&client->gw);
     discord_message_commands_cleanup(&client->commands);
-#ifdef CCORD_VOICE
-    discord_voice_connections_cleanup(client);
-#endif
     discord_user_cleanup(&client->self);
     if (client->cache.cleanup) client->cache.cleanup(client);
     discord_refcounter_cleanup(&client->refcounter);
     discord_timers_cleanup(client, &client->timers.user);
     discord_timers_cleanup(client, &client->timers.internal);
-    io_poller_destroy(client->io_poller);
-    logconf_cleanup(&client->conf);
-    if (client->token) free(client->token);
-    pthread_mutex_destroy(&client->workers->lock);
-    pthread_cond_destroy(&client->workers->cond);
-    free(client->workers);
-    free(client);
-
+    logmod_cleanup(&client->logmod);
+    _discord_config_cleanup(&client->config);
+    if (client->io_poller) {
+        io_poller_destroy(client->io_poller);
+    }
+    if (client->file.start) {
+        free(client->file.start);
+    }
     ccord_global_cleanup();
+    free(client);
 }
 
-CCORDcode
-discord_return_error(struct discord *client,
-                     const char error[],
-                     CCORDcode code)
+#define CASE_RETURN_STR(event)                                                \
+    case event:                                                               \
+        return #event
+
+static const char *
+_ccord_code_as_string(CCORDcode code)
 {
-    logconf_info(&client->conf, "(%d) %s", code, error);
-    return code;
+    switch (code) {
+        CASE_RETURN_STR(CCORD_OK);
+        CASE_RETURN_STR(CCORD_HTTP_CODE);
+        CASE_RETURN_STR(CCORD_CURL_NO_RESPONSE);
+        CASE_RETURN_STR(CCORD_UNUSUAL_HTTP_CODE);
+        CASE_RETURN_STR(CCORD_BAD_PARAMETER);
+        CASE_RETURN_STR(CCORD_BAD_JSON);
+        CASE_RETURN_STR(CCORD_CURLE_INTERNAL);
+        CASE_RETURN_STR(CCORD_CURLM_INTERNAL);
+        CASE_RETURN_STR(CCORD_GLOBAL_INIT);
+        CASE_RETURN_STR(CCORD_RESOURCE_OWNERSHIP);
+        CASE_RETURN_STR(CCORD_RESOURCE_UNAVAILABLE);
+        CASE_RETURN_STR(CCORD_FULL_WORKER);
+        CASE_RETURN_STR(CCORD_MALFORMED_PAYLOAD);
+        CASE_RETURN_STR(CCORD_CURL_WEBSOCKETS_MISSING);
+        CASE_RETURN_STR(CCORD_CURL_OUTDATED_VERSION);
+    default:
+        return "Unknown: Code received doesn't match any description";
+    }
 }
+
+const char *
+discord_code_as_string(CCORDcode code)
+{
+    switch (code) {
+        CASE_RETURN_STR(CCORD_PENDING);
+        CASE_RETURN_STR(CCORD_DISCORD_JSON_CODE);
+        CASE_RETURN_STR(CCORD_DISCORD_BAD_AUTH);
+        CASE_RETURN_STR(CCORD_DISCORD_RATELIMIT);
+        CASE_RETURN_STR(CCORD_DISCORD_CONNECTION);
+    default:
+        return _ccord_code_as_string(code);
+    }
+}
+
+#undef CASE_RETURN_STR
 
 static const char *
 _ccord_strerror(CCORDcode code)
@@ -295,6 +654,11 @@ _ccord_strerror(CCORDcode code)
         return "Failure: Couldn't enqueue worker thread (queue is full)";
     case CCORD_MALFORMED_PAYLOAD:
         return "Failure: Couldn't create request payload";
+    case CCORD_CURL_WEBSOCKETS_MISSING:
+        return "Failure: Libcurl has been compiled without the "
+               "--enable-websockets flag";
+    case CCORD_CURL_OUTDATED_VERSION:
+        return "Failure: Libcurl need to be updated to 8.7.1 or greater";
     default:
         return "Unknown: Code received doesn't match any description";
     }
@@ -366,10 +730,10 @@ discord_timestamp_us(struct discord *client)
     return cog_timestamp_us();
 }
 
-struct logconf *
-discord_get_logconf(struct discord *client)
+struct logmod *
+discord_get_logmod(struct discord *client)
 {
-    return &client->conf;
+    return &client->logmod;
 }
 
 struct io_poller *
@@ -383,8 +747,34 @@ discord_config_get_field(struct discord *client,
                          char *const path[],
                          unsigned depth)
 {
-    struct logconf_field field = logconf_get_field(&client->conf, path, depth);
+    struct ccord_szbuf field = { 0 };
 
+    if (!client->file.size) {
+        logmod_log(ERROR, client->logger,
+                   "discord_config_get_field() expects a client "
+                   "initialized with discord_from_json()");
+    }
+    else {
+        jsmnf_loader loader;
+        jsmnf_table table[0x100];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, client->file.start, client->file.size,
+                           table, sizeof(table) / sizeof *table))
+        {
+            const jsmnf_pair *f;
+            if ((f = jsmnf_find_path(loader.root, path, depth))
+                && strncmp("null", client->file.start + f->v->start,
+                           (size_t)(f->v->end - f->v->start))
+                       != 0)
+            {
+                field =
+                    (struct ccord_szbuf){ client->file.start + f->v->start,
+                                          (size_t)(f->v->end - f->v->start),
+                                          1 };
+            }
+        }
+    }
     return (struct ccord_szbuf_readonly){ field.start, field.size };
 }
 
@@ -392,8 +782,10 @@ void
 __discord_claim(struct discord *client, const void *data)
 {
     CCORDcode code = discord_refcounter_claim(&client->refcounter, data);
-    VASSERT_S(code == CCORD_OK, "Failed attempt to claim resource (code %d)",
-              code);
+    if (CCORD_OK != code) {
+        logmod_log(ERROR, client->logger,
+                   "Failed attempt to claim resource (code %d)", code);
+    }
 }
 
 void
@@ -401,6 +793,8 @@ discord_unclaim(struct discord *client, const void *data)
 {
     CCORDcode code =
         discord_refcounter_unclaim(&client->refcounter, (void *)data);
-    VASSERT_S(code == CCORD_OK, "Failed attempt to unclaim resource (code %d)",
-              code);
+    if (CCORD_OK != code) {
+        logmod_log(ERROR, client->logger,
+                   "Failed attempt to unclaim resource (code %d)", code);
+    }
 }

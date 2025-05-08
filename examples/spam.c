@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
 
 void
 print_usage(void)
@@ -64,7 +63,7 @@ main(int argc, char *argv[])
         config_file = "../config.json";
 
     ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     discord_set_on_command(client, "!spam-async", &on_spam_async);
