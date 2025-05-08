@@ -478,11 +478,10 @@ _ws_on_text(void *p_gw, struct websockets *ws, const char *text, size_t len)
         return;
     }
 
-    logmod_log(TRACE, gw->logger, "%s %s%s%s (%zu bytes) [@@@_%ld_@@@]",
+    logmod_log(TRACE, gw->logger, "%s %s%s%s (%zu bytes)",
                LML(gw->logger, REGULAR, INTENSITY, YELLOW, "RCV"),
                _discord_gateway_opcode_print(gw->payload.opcode),
-               *gw->payload.name ? " -> " : "", gw->payload.name, len,
-               logmod_logger_get_counter(gw->logger));
+               *gw->payload.name ? " -> " : "", gw->payload.name, len);
 
     switch (gw->payload.opcode) {
     case DISCORD_GATEWAY_DISPATCH:
