@@ -21,7 +21,7 @@ struct discord_ret_users;
  * @note If the channel is a thread, a thread member object is included in the
  * returned result
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be retrieved
  * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
@@ -33,7 +33,7 @@ CCORDcode discord_get_channel(struct discord *client,
 /**
  * @brief Update a channel's settings
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be modified
  * @param params request parameters
  * @CCORD_ret_obj{ret,channel}
@@ -54,7 +54,7 @@ CCORDcode discord_modify_channel(struct discord *client,
  * @note Fires a `Channel Delete` event (or `Thread Delete` if the channel
  *       was a thread)
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be deleted
  * @param params request parameters
  * @CCORD_ret_obj{ret,channel}
@@ -75,7 +75,7 @@ CCORDcode discord_delete_channel(struct discord *client,
  * @note The before, after, and around keys are mutually exclusive, only one
  *       may be passed at a time
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to get messages from
  * @param params request parameters
  * @CCORD_ret_obj{ret,messages}
@@ -91,7 +91,7 @@ CCORDcode discord_get_channel_messages(
  * @brief Get a specific message in the channel
  * @note If operating on a guild channel, this endpoint requires the
  * 'READ_MESSAGE_HISTORY' permission to be present on the current user
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel where the message resides
  * @param message_id the message itself
  * @CCORD_ret_obj{ret,message}
@@ -106,7 +106,7 @@ CCORDcode discord_get_channel_message(struct discord *client,
  * @brief Post a message to a guild text or DM channel
  * @note Fires a `Message Create` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to send the message at
  * @param params request parameters
  * @CCORD_ret_obj{ret,message}
@@ -124,7 +124,7 @@ CCORDcode discord_create_message(struct discord *client,
  *        permission, for all other messages, to be present for the current
  *        user
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the news channel that will crosspost
  * @param message_id the message that will crospost
  * @CCORD_ret_obj{ret,message}
@@ -138,7 +138,7 @@ CCORDcode discord_crosspost_message(struct discord *client,
 /**
  * @brief Create a reaction for the message
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message to receive a reaction
  * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
@@ -156,7 +156,7 @@ CCORDcode discord_create_reaction(struct discord *client,
 /**
  * @brief Delete a reaction the current user has made for the message
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message to have a reaction deleted
  * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
@@ -174,7 +174,7 @@ CCORDcode discord_delete_own_reaction(struct discord *client,
 /**
  * @brief Deletes another user's reaction
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message to have a reaction deleted
  * @param user_id the user the reaction belongs to
@@ -194,7 +194,7 @@ CCORDcode discord_delete_user_reaction(struct discord *client,
 /**
  * @brief Get a list of users that reacted with given emoji
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message reacted to
  * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
@@ -214,7 +214,7 @@ CCORDcode discord_get_reactions(struct discord *client,
 /**
  * @brief Deletes all reactions from message
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions
  * @CCORD_ret{ret}
@@ -228,7 +228,7 @@ CCORDcode discord_delete_all_reactions(struct discord *client,
 /**
  * @brief Deletes all the reactions for a given emoji on message
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
  *       particular emoji
@@ -247,7 +247,7 @@ CCORDcode discord_delete_all_reactions_for_emoji(struct discord *client,
 /**
  * @brief Edit a previously sent message
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
  *       particular emoji
@@ -264,7 +264,7 @@ CCORDcode discord_edit_message(struct discord *client,
 /**
  * @brief Delete a message
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
  *       particular emoji
@@ -280,7 +280,7 @@ CCORDcode discord_delete_message(struct discord *client,
 /**
  * @brief Delete multiple messages in a single request
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param params request parameters
  * @CCORD_ret{ret}
@@ -296,7 +296,7 @@ CCORDcode discord_bulk_delete_messages(
  * @brief Edit the channel permission overwrites for a user or role in a
  *        channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param overwrite_id
  * @param params request parameters
@@ -313,7 +313,7 @@ CCORDcode discord_edit_channel_permissions(
 /**
  * @brief Get invites (with invite metadata) for the channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @CCORD_ret_obj{ret,invites}
  * @CCORD_return
@@ -325,7 +325,7 @@ CCORDcode discord_get_channel_invites(struct discord *client,
 /**
  * @brief Create a new invite for the channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the message belongs to
  * @param params request parameters
  * @CCORD_ret_obj{ret,invite}
@@ -341,7 +341,7 @@ CCORDcode discord_create_channel_invite(
  * @brief Delete a channel permission overwrite for a user or role in a
  *        channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to the permission deleted
  * @param overwrite_id the id of the overwritten permission
  * @param params request parameters
@@ -358,7 +358,7 @@ CCORDcode discord_delete_channel_permission(
 /**
  * @brief Post a typing indicator for the specified channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to post the typing indicator to
  * @CCORD_ret{ret}
  * @CCORD_return
@@ -372,7 +372,7 @@ CCORDcode discord_trigger_typing_indicator(struct discord *client,
  * @note Requires MANAGE_WEBHOOKS permission in the target channel
  *        MANAGE_WEBHOOKS permission in the target channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be followed
  * @CCORD_ret_obj{ret,followed_channel}
  * @CCORD_return
@@ -386,7 +386,7 @@ CCORDcode discord_follow_news_channel(
 /**
  * @brief Get all pinned messages in the channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel where the get pinned messages from
  * @CCORD_ret_obj{ret,messages}
  * @CCORD_return
@@ -398,7 +398,7 @@ CCORDcode discord_get_pinned_messages(struct discord *client,
 /**
  * @brief Pin a message to a channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id channel to pin the message on
  * @param message_id message to be pinned
  * @param params request parameters
@@ -414,7 +414,7 @@ CCORDcode discord_pin_message(struct discord *client,
 /**
  * @brief Unpin a message from a channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id channel for the message to be unpinned
  * @param message_id message to be unpinned
  * @param params request parameters
@@ -430,7 +430,7 @@ CCORDcode discord_unpin_message(struct discord *client,
 /**
  * @brief Adds a recipient to a Group DM using their access token
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id group to add the user in
  * @param user_id user to be added
  * @param params request parameters
@@ -447,7 +447,7 @@ CCORDcode discord_group_dm_add_recipient(
 /**
  * @brief Removes a recipient from a Group DM
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id channel for the user to be removed from
  * @param user_id user to be removed
  * @CCORD_ret{ret}
@@ -462,7 +462,7 @@ CCORDcode discord_group_dm_remove_recipient(struct discord *client,
  * @brief Creates a new thread from an existing message
  * @note Fires a `Thread Create` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id channel to start a thread on
  * @param message_id message to start a thread from
  * @param params request parameters
@@ -480,7 +480,7 @@ CCORDcode discord_start_thread_with_message(
  * @brief Creates a new thread that is not connected to an existing message
  * @note Fires a `Thread Create` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id channel to start a thread on
  * @param params request parameters
  * @CCORD_ret_obj{ret,channel}
@@ -496,7 +496,7 @@ CCORDcode discord_start_thread_without_message(
  * @brief Adds the current user to an un-archived thread
  * @note Fires a `Thread Members Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the thread to be joined
  * @CCORD_ret{ret}
  * @CCORD_return
@@ -509,7 +509,7 @@ CCORDcode discord_join_thread(struct discord *client,
  * @brief Adds another member to an un-archived thread
  * @note Fires a `Thread Members Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the thread to be joined
  * @param user_id user to be added to thread
  * @CCORD_ret{ret}
@@ -524,7 +524,7 @@ CCORDcode discord_add_thread_member(struct discord *client,
  * @brief Removes the current user from a un-archived thread
  * @note Fires a `Thread Members Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the thread to be removed from
  * @CCORD_ret{ret}
  * @CCORD_return
@@ -538,7 +538,7 @@ CCORDcode discord_leave_thread(struct discord *client,
  * @note Fires a `Thread Members Update` event
  * @note Requires `MANAGE_THREADS` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the thread to be removed from
  * @param user_id user to be removed
  * @CCORD_ret{ret}
@@ -554,7 +554,7 @@ CCORDcode discord_remove_thread_member(struct discord *client,
  * @note Fires a `Thread Members Update` event
  * @note Requires `MANAGE_THREADS` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the thread to be joined
  * @CCORD_ret_obj{ret,thread_members}
  * @CCORD_return
@@ -569,7 +569,7 @@ CCORDcode discord_list_thread_members(struct discord *client,
  * @deprecated Discord will deprecate this in V10
  * @brief Get all active threads in a given channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be searched for threads
  * @CCORD_ret_obj{ret,thread_response_body}
  * @CCORD_return
@@ -582,7 +582,7 @@ CCORDcode discord_list_active_threads(
 /**
  * @brief Get public archived threads in a given channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
@@ -599,7 +599,7 @@ CCORDcode discord_list_public_archived_threads(
 /**
  * @brief Get private archived threads in a given channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
@@ -616,7 +616,7 @@ CCORDcode discord_list_private_archived_threads(
 /**
  * @brief Get private archived threads that current user has joined
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
@@ -637,7 +637,7 @@ CCORDcode discord_list_joined_private_archived_threads(
 /**
  * @brief Get a guild's channel from its given numerical position
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the channel belongs to
  * @param type the channel type where to take position reference from
  * @CCORD_ret_obj{ret,channel}

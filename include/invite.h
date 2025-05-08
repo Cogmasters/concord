@@ -15,7 +15,7 @@
 /**
  * @brief Get an invite for the given code
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param invite_code the invite code
  * @param params request parameters
  * @CCORD_ret_obj{ret,invite}
@@ -32,7 +32,7 @@ CCORDcode discord_get_invite(struct discord *client,
  *        belongs to, or MANAGE_GUILD to remove any invite across the guild.
  * @note Fires a `Invite Delete` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param invite_code the invite code
  * @param params request parameters
  * @CCORD_ret_obj{ret,invite}

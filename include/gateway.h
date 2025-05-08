@@ -18,7 +18,7 @@
  *        unable to properly establishing a connection with the cached version
  * @warning This function blocks the running thread
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param ret if successful, a @ref ccord_szbuf containing the JSON response
  * @param ret a sized buffer containing the response JSON
  * @CCORD_return
@@ -33,7 +33,7 @@ CCORDcode discord_get_gateway(struct discord *client, struct ccord_szbuf *ret);
  *        bot joins/leaves guilds
  * @warning This function blocks the running thread
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param ret if successful, a @ref ccord_szbuf containing the JSON response
  * @param ret a sized buffer containing the response JSON
  * @CCORD_return
@@ -48,7 +48,7 @@ CCORDcode discord_get_gateway_bot(struct discord *client,
 /**
  * @brief Disconnect a member from voice channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild the member belongs to
  * @param user_id the user to be disconnected
  * @param params request parameters

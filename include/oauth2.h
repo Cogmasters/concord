@@ -15,7 +15,7 @@
 /**
  * @brief Returns the bot's application object
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,application}
  * @CCORD_return
  */
@@ -26,7 +26,7 @@ CCORDcode discord_get_current_bot_application_information(
  * @brief Returns info about the current authorization
  * @note Requires authentication with a bearer token
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,auth_response}
  * @CCORD_return
  */

@@ -15,7 +15,7 @@
 /**
  * @brief Get client's user
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,user}
  * @CCORD_return
  */
@@ -25,7 +25,7 @@ CCORDcode discord_get_current_user(struct discord *client,
 /**
  * @brief Get user for a given id
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param user_id user to be fetched
  * @CCORD_ret_obj{ret,user}
  * @CCORD_return
@@ -37,7 +37,7 @@ CCORDcode discord_get_user(struct discord *client,
 /**
  * @brief Modify client's user account settings
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param params request parameters
  * @CCORD_ret_obj{ret,user}
  * @CCORD_return
@@ -51,7 +51,7 @@ CCORDcode discord_modify_current_user(
  * @brief Get guilds client is a member of
  * @note Requires the `guilds` oauth2 scope
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,guilds}
  * @CCORD_return
  */
@@ -61,7 +61,7 @@ CCORDcode discord_get_current_user_guilds(struct discord *client,
 /**
  * @brief Leave a guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to exit from
  * @CCORD_ret{ret}
  * @CCORD_return
@@ -76,7 +76,7 @@ CCORDcode discord_leave_guild(struct discord *client,
  *        significant amount of DMs too quickly, your bot may be rate limited
  *        or blocked from opening new ones
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param params the request parameters
  * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
@@ -90,7 +90,7 @@ CCORDcode discord_create_dm(struct discord *client,
  * @note DMs created with this function will not be shown in the Discord client
  * @note Limited to 10 active group DMs
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param params the request parameters
  * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
@@ -103,7 +103,7 @@ CCORDcode discord_create_group_dm(struct discord *client,
  * @brief Get a list of connection objects
  * @note Requires the `connections` oauth2 scope
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,connections}
  * @CCORD_return
  */

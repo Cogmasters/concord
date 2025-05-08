@@ -96,7 +96,7 @@ void on_interaction(struct discord *client, const struct discord_interaction *ev
 }
 
 int main(void) {
-    struct discord *client = discord_init(BOT_TOKEN);
+    struct discord *client = discord_from_token(BOT_TOKEN);
     discord_set_on_ready(client, &on_ready);
     discord_set_on_interaction_create(client, &on_interaction);
     discord_run(client);
@@ -122,7 +122,7 @@ void on_message(struct discord *client, const struct discord_message *event) {
 }
 
 int main(void) {
-    struct discord *client = discord_init(BOT_TOKEN);
+    struct discord *client = discord_from_token(BOT_TOKEN);
     discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message);

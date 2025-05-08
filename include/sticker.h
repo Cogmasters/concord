@@ -15,7 +15,7 @@
 /**
  * @brief Get a sticker from a given ID
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param sticker_id the sticker to be fetched
  * @CCORD_ret_obj{ret,sticker}
  * @CCORD_return
@@ -27,20 +27,19 @@ CCORDcode discord_get_sticker(struct discord *client,
 /**
  * @brief Get a list of sticker packs available to Nitro subscribers
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @CCORD_ret_obj{ret,list_nitro_sticker_packs}
  * @CCORD_return
  */
 CCORDcode discord_list_nitro_sticker_packs(
-    struct discord *client,
-    struct discord_ret_list_nitro_sticker_packs *ret);
+    struct discord *client, struct discord_ret_list_nitro_sticker_packs *ret);
 
 /**
  * @brief Get stickers for the given guild
  * @note includes `user` fields if the bot has the `MANAGE_EMOJIS_AND_STICKERS`
  *      permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to fetch the stickers from
  * @CCORD_ret_obj{ret,stickers}
  * @CCORD_return
@@ -54,7 +53,7 @@ CCORDcode discord_list_guild_stickers(struct discord *client,
  * @note includes the `user` field if the bot has the
  *      `MANAGE_EMOJIS_AND_STICKERS` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild where the sticker belongs to
  * @param sticker_id the sticker to be fetched
  * @CCORD_ret_obj{ret,sticker}
@@ -69,10 +68,10 @@ CCORDcode discord_get_guild_sticker(struct discord *client,
  * @brief Modify the given sticker
  * @note requires the `MANAGE_EMOJIS_AND_STICKERS` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild where the sticker belongs to
  * @param sticker_id the sticker to be modified
- * @param params the request parameters 
+ * @param params the request parameters
  * @CCORD_ret_obj{ret,sticker}
  * @CCORD_return
  */
@@ -87,7 +86,7 @@ CCORDcode discord_modify_guild_sticker(
  * @brief Delete the given sticker
  * @note requires the `MANAGE_EMOJIS_AND_STICKERS` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild where the sticker belongs to
  * @param sticker_id the sticker to be deleted
  * @CCORD_ret{ret}

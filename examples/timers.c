@@ -60,7 +60,7 @@ main(int argc, char *argv[])
 {
     const char *config_file = argc > 1 ? argv[1] : "../config.json";
     ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
 
     for (int i = 0; i < 10; i++)
         // one shot auto deleting timer

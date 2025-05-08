@@ -36,7 +36,7 @@ main(int argc, char *argv[])
 {
     const char *const config_file = argc > 1 ? argv[1] : "../config.json";
     ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
 
     // enable message caching
     discord_cache_enable(client,

@@ -22,7 +22,7 @@ The `config.json` file is a configuration file that can be used to start your bo
 
 ### token
 
-The token that Concord will use to log in to the bot, in case you use the `discord_config_init` to define the `struct discord *client`.
+The token that Concord will use to log in to the bot, in case you use the `discord_from_json` to define the `struct discord *client`.
 
 ### log
 
@@ -111,9 +111,9 @@ snprintf(foo, sizeof(foo), "%.*s", (int)value.size, value.start);
 struct ccord_szbuf_readonly discord_config_get_field(struct discord *client, char *const path[], unsigned depth)
 ```
 
-Attention: this function will only work if you initialize your bot with the `discord_config_init`.
+Attention: this function will only work if you initialize your bot with the `discord_from_json`.
 
-The first argument of `discord_config_get_field` is the `struct discord *client` that `discord_init`/`discord_config_init` (or also, in case the code is inside some kind of event, it might be on the event parameters) returns to you.
+The first argument of `discord_config_get_field` is the `struct discord *client` that `discord_from_token`/`discord_from_json` (or also, in case the code is inside some kind of event, it might be on the event parameters) returns to you.
 
 The second argument is a `const x[]` (also known as `array`) the path to the field where you want to get its value.
 
