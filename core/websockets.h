@@ -148,11 +148,13 @@ struct ws_callbacks {
  * @param mhandle user-owned curl_multi handle for performing non-blocking
  * transfers
  * @param logmod optional pre-initialized logging handler
+ * @param fp file pointer for writing WebSockets traces to
  * @return newly created WebSockets handle, free with ws_cleanup()
  */
 struct websockets *ws_init(struct ws_callbacks *cbs,
                            CURLM *mhandle,
-                           struct logmod *logmod);
+                           struct logmod *logmod,
+                           FILE *fp);
 
 /**
  * @brief Free a WebSockets handle created with ws_init()

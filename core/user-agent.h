@@ -230,9 +230,10 @@ void ua_set_opt(struct user_agent *ua,
  * @brief Initialize User-Agent handle
  *
  * @param logmod optional pre-initialized logging module
+ * @param fp file pointer for writing HTTP traces to
  * @return the user agent handle
  */
-struct user_agent *ua_init(struct logmod *logmod);
+struct user_agent *ua_init(struct logmod *logmod, FILE *fp);
 
 /**
  * @brief Cleanup User-Agent handle resources

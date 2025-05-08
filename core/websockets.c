@@ -621,7 +621,10 @@ jump_cbs:
 }
 
 struct websockets *
-ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct logmod *logmod)
+ws_init(struct ws_callbacks *cbs,
+        CURLM *mhandle,
+        struct logmod *logmod,
+        FILE *fp)
 {
     struct websockets *new_ws;
 
@@ -639,6 +642,15 @@ ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct logmod *logmod)
               logmod ? logmod : &new_ws->logmod, "WEBSOCKETS_RAW")))
     {
         logmod_log(FATAL, NULL, "Couldn't get logger");
+        return ws_cleanup(new_ws), NULL;
+    }
+    if (logmod_logger_set_logfile(new_ws->loggers.raw, fp) != LOGMOD_OK) {
+        logmod_log(FATAL, NULL, "Couldn't set logfile for WebSockets");
+        return ws_cleanup(new_ws), NULL;
+    }
+    if (logmod_logger_set_quiet(new_ws->loggers.raw, 1) != LOGMOD_OK) {
+        logmod_log(FATAL, NULL,
+                   "Couldn't suppress WebSockets output to console");
         return ws_cleanup(new_ws), NULL;
     }
 
