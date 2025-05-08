@@ -729,7 +729,11 @@ discord_config_get_field(struct discord *client,
                            sizeof(table) / sizeof *table))
         {
             const jsmnf_pair *f;
-            if ((f = jsmnf_find_path(loader.root, path, depth))) {
+            if ((f = jsmnf_find_path(loader.root, path, depth))
+                && strncmp("null", file->start + f->v->start,
+                           f->v->end - f->v->start)
+                       != 0)
+            {
                 field =
                     (struct ccord_szbuf){ file->start + f->v->start,
                                           (size_t)(f->v->end - f->v->start),
