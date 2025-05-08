@@ -7,7 +7,7 @@
 #ifndef DISCORD_WORKER_H
 #define DISCORD_WORKER_H
 
-#include "error.h"
+#include "concord-error.h"
 
 /* forward declaration */
 struct discord;
@@ -20,9 +20,11 @@ struct discord;
 
 /**
  * @brief Initialize global threadpool and priority queue
- * @return `0` on success, `1` if it has already been initialized
+ *
+ * @param flags unused for now, but reserved for future use
+ * @CCORD_return
  */
-int discord_worker_global_init(void);
+CCORDcode discord_worker_global_init(long flags);
 
 /** @brief Cleanup global threadpool and priority queue */
 void discord_worker_global_cleanup(void);

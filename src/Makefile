@@ -8,6 +8,8 @@ GENCODECS_DIR = $(TOP)/gencodecs
 CORE_DIR      = $(TOP)/core
 
 CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
+                $(CORE_DIR)/concord-error.o  \
+                $(CORE_DIR)/concord-once.o   \
                 $(CORE_DIR)/io_poller.o      \
                 $(CORE_DIR)/user-agent.o     \
                 $(CORE_DIR)/websockets.o     \
@@ -21,8 +23,7 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
                 $(CORE_DIR)/queriec.o
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 
-OBJS += concord-once.o             \
-        discord-refcount.o         \
+OBJS += discord-refcount.o         \
         discord-rest.o             \
         discord-rest_request.o     \
         discord-rest_ratelimit.o   \
@@ -53,7 +54,7 @@ OBJS += concord-once.o             \
         webhook.o
 
 WFLAGS  = -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
-CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
+CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 \
           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR) -I$(PREFIX)/include
 
 ARLIB = $(LIBDIR)/libdiscord.a

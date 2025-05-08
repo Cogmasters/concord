@@ -8,6 +8,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-worker.h"
+#include "concord-once.h"
 #include "cog-utils.h"
 
 static size_t
@@ -68,6 +69,56 @@ _discord_on_shutdown(struct io_poller *io,
 }
 
 static CCORDcode
+_discord_global_init()
+{
+    static _Bool g_initialized = false;
+    CCORDcode code;
+
+    if (g_initialized) {
+        logmod_log(WARN, NULL,
+                   "Global resources already initialized, skipping");
+        return CCORD_OK;
+    }
+
+    if ((code = ccord_once_set_callback((ccord_once_cb)&curl_global_init,
+                                        CURL_GLOBAL_ALL))
+        != CCORD_OK)
+    {
+        logmod_log(
+            FATAL, NULL,
+            "Couldn't set curl's global initialization callback: %s (code %d)",
+            discord_strerror(code, NULL), code);
+        goto fail_curl_init;
+    }
+    if ((code = ccord_once_set_callback(
+             (ccord_once_cb)&discord_worker_global_init, 0))
+        != CCORD_OK)
+    {
+        logmod_log(FATAL, NULL,
+                   "Couldn't set worker thread's global initialization "
+                   "callback: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        goto fail_discord_worker_init;
+    }
+    if ((code = ccord_once(&g_initialized)) != CCORD_OK) {
+        logmod_log(FATAL, NULL,
+                   "Couldn't initialize global resources: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        goto fail_ccord_once;
+    }
+    return CCORD_OK;
+
+fail_ccord_once:
+    ccord_once_cleanup();
+fail_discord_worker_init:
+    discord_worker_global_cleanup();
+fail_curl_init:
+    curl_global_cleanup();
+
+    return CCORD_GLOBAL_INIT;
+}
+
+static CCORDcode
 _discord_init(struct discord *client)
 {
     CCORDcode code;
@@ -85,7 +136,7 @@ _discord_init(struct discord *client)
     {
         logmod_log(ERROR, client->logger, "Couldn't set logger options");
     }
-    if ((code = ccord_global_init()) != CCORD_OK) {
+    if ((code = _discord_global_init()) != CCORD_OK) {
         logmod_log(FATAL, client->logger,
                    "Couldn't initialize global resources: %s (code %d)",
                    discord_strerror(code, NULL), code);
@@ -116,7 +167,7 @@ _discord_init(struct discord *client)
         return code;
     }
     if (!io_poller_socket_add(client->io_poller,
-                              client->shutdown_fd = discord_dup_shutdown_fd(),
+                              client->shutdown_fd = ccord_dup_shutdown_fd(),
                               IO_POLLER_IN, _discord_on_shutdown, client))
     {
         logmod_log(FATAL, client->logger,
@@ -545,6 +596,14 @@ discord_clone(const struct discord *orig)
     return clone;
 }
 
+static void
+_discord_global_cleanup()
+{
+    ccord_once_cleanup();
+    discord_worker_global_cleanup();
+    curl_global_cleanup();
+}
+
 void
 discord_cleanup(struct discord *client)
 {
@@ -576,38 +635,13 @@ discord_cleanup(struct discord *client)
     if (client->file.start) {
         free(client->file.start);
     }
-    ccord_global_cleanup();
+    _discord_global_cleanup();
     free(client);
 }
 
 #define CASE_RETURN_STR(event)                                                \
     case event:                                                               \
         return #event
-
-static const char *
-_ccord_code_as_string(CCORDcode code)
-{
-    switch (code) {
-        CASE_RETURN_STR(CCORD_OK);
-        CASE_RETURN_STR(CCORD_HTTP_CODE);
-        CASE_RETURN_STR(CCORD_CURL_NO_RESPONSE);
-        CASE_RETURN_STR(CCORD_UNUSUAL_HTTP_CODE);
-        CASE_RETURN_STR(CCORD_BAD_PARAMETER);
-        CASE_RETURN_STR(CCORD_BAD_JSON);
-        CASE_RETURN_STR(CCORD_CURLE_INTERNAL);
-        CASE_RETURN_STR(CCORD_CURLM_INTERNAL);
-        CASE_RETURN_STR(CCORD_GLOBAL_INIT);
-        CASE_RETURN_STR(CCORD_RESOURCE_OWNERSHIP);
-        CASE_RETURN_STR(CCORD_RESOURCE_UNAVAILABLE);
-        CASE_RETURN_STR(CCORD_FULL_WORKER);
-        CASE_RETURN_STR(CCORD_MALFORMED_PAYLOAD);
-        CASE_RETURN_STR(CCORD_CURL_WEBSOCKETS_MISSING);
-        CASE_RETURN_STR(CCORD_CURL_OUTDATED_VERSION);
-    default:
-        return "Unknown: Code received doesn't match any description";
-    }
-}
-
 const char *
 discord_code_as_string(CCORDcode code)
 {
@@ -618,51 +652,10 @@ discord_code_as_string(CCORDcode code)
         CASE_RETURN_STR(CCORD_DISCORD_RATELIMIT);
         CASE_RETURN_STR(CCORD_DISCORD_CONNECTION);
     default:
-        return _ccord_code_as_string(code);
+        return ccord_code_as_string(code);
     }
 }
-
 #undef CASE_RETURN_STR
-
-static const char *
-_ccord_strerror(CCORDcode code)
-{
-    switch (code) {
-    case CCORD_OK:
-        return "Success: The request was a success";
-    case CCORD_HTTP_CODE:
-        return "Failure: The request was a failure";
-    case CCORD_CURL_NO_RESPONSE:
-        return "Failure: No response came through from libcurl";
-    case CCORD_UNUSUAL_HTTP_CODE:
-        return "Failure: The request was a failure";
-    case CCORD_BAD_PARAMETER:
-        return "Failure: Bad value for parameter";
-    case CCORD_BAD_JSON:
-        return "Failure: Internal failure when encoding or decoding JSON";
-    case CCORD_CURLE_INTERNAL:
-        return "Failure: Libcurl's internal error (CURLE)";
-    case CCORD_CURLM_INTERNAL:
-        return "Failure: Libcurl's internal error (CURLM)";
-    case CCORD_GLOBAL_INIT:
-        return "Failure: Attempt to initialize globals more than once";
-    case CCORD_RESOURCE_OWNERSHIP:
-        return "Failure: Claimed resource can't be cleaned up automatically";
-    case CCORD_RESOURCE_UNAVAILABLE:
-        return "Failure: Can't perform action on unavailable resource";
-    case CCORD_FULL_WORKER:
-        return "Failure: Couldn't enqueue worker thread (queue is full)";
-    case CCORD_MALFORMED_PAYLOAD:
-        return "Failure: Couldn't create request payload";
-    case CCORD_CURL_WEBSOCKETS_MISSING:
-        return "Failure: Libcurl has been compiled without the "
-               "--enable-websockets flag";
-    case CCORD_CURL_OUTDATED_VERSION:
-        return "Failure: Libcurl need to be updated to 8.7.1 or greater";
-    default:
-        return "Unknown: Code received doesn't match any description";
-    }
-}
 
 const char *
 discord_strerror(CCORDcode code, struct discord *client)
@@ -671,7 +664,7 @@ discord_strerror(CCORDcode code, struct discord *client)
 
     switch (code) {
     default:
-        return _ccord_strerror(code);
+        return ccord_strerror(code);
     case CCORD_PENDING:
         return "Discord Pending: Request has been added enqueued and will be "
                "performed asynchronously";

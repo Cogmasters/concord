@@ -47,10 +47,7 @@ extern "C" {
  * @brief Documentation useful when developing or debugging Concord itself
  *  @{ */
 
-/** @brief dup shutdown fd to listen for ccord_shutdown_async() */
-int discord_dup_shutdown_fd(void);
-
-/** @brief Get client from its nested field */
+/** @brief cet client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
 /**

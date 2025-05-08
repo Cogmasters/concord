@@ -59,7 +59,7 @@ int
 main(int argc, char *argv[])
 {
     const char *config_file = argc > 1 ? argv[1] : "../config.json";
-    ccord_global_init();
+
     struct discord *client = discord_from_json(config_file);
 
     for (int i = 0; i < 10; i++)
@@ -81,5 +81,4 @@ main(int argc, char *argv[])
 
     // discord_cleanup will cancel all timers that are still active
     discord_cleanup(client);
-    ccord_global_cleanup();
 }
