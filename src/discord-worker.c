@@ -9,41 +9,41 @@
 #include "discord-internal.h"
 #include "discord-worker.h"
 
-/** true after threadpool initialization */
-static _Bool once;
-
-/** global threadpool manager */
 threadpool_t *g_tpool;
 
-int
-discord_worker_global_init(void)
+CCORDcode
+discord_worker_global_init(long flags)
 {
     static int nthreads;
     static int queue_size;
     const char *val;
     char *p_end;
+    (void)flags;
 
-    if (once) return 1;
+    if (g_tpool) {
+        logmod_log(
+            WARN, NULL,
+            "Threadpool already initialized, skipping global initialization");
+        return CCORD_OK;
+    }
 
-    /* get threadpool thread amount */
     if (!nthreads) {
         if ((val = getenv("CCORD_THREADPOOL_SIZE")))
             nthreads = (int)strtol(val, &p_end, 10);
         if (nthreads < 2 || ERANGE == errno || p_end == val) nthreads = 2;
     }
-    /* get threadpool queue size */
     if (!queue_size) {
         if ((val = getenv("CCORD_THREADPOOL_QUEUE_SIZE")))
             queue_size = (int)strtol(val, &p_end, 10);
         if (queue_size < 8 || ERANGE == errno || p_end == val) queue_size = 8;
     }
 
-    /* initialize threadpool */
-    g_tpool = threadpool_create(nthreads, queue_size, 0);
+    if (!(g_tpool = threadpool_create(nthreads, queue_size, 0))) {
+        fprintf(stderr, "Couldn't create threadpool\n");
+        return CCORD_GLOBAL_INIT;
+    }
 
-    once = 1;
-
-    return 0;
+    return CCORD_OK;
 }
 
 struct discord_worker_context {
@@ -98,7 +98,6 @@ discord_worker_join(struct discord *client)
 void
 discord_worker_global_cleanup(void)
 {
-    /* cleanup thread-pool manager */
     threadpool_destroy(g_tpool, threadpool_graceful);
-    once = 0;
+    g_tpool = NULL;
 }

@@ -1,6 +1,8 @@
 PREFIX = /usr/local
 
 OBJS = cog-utils.o      \
+       concord-error.o  \
+       concord-once.o   \
        io_poller.o      \
        user-agent.o     \
        websockets.o     \
@@ -13,9 +15,7 @@ OBJS = cog-utils.o      \
        threadpool.o     \
        queriec.o
 
-WFLAGS  = -Wall -Wextra -Wpedantic
-CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -DLOG_USE_COLOR \
-          -I. -I$(PREFIX)/include # $(WFLAGS)
+CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 -I. -I$(PREFIX)/include
 
 all: $(OBJS)
 

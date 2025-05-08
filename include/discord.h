@@ -18,9 +18,8 @@ extern "C" {
 #include <inttypes.h>
 #include <stdbool.h>
 
-#include "error.h"
+#include "concord-error.h"
 #include "types.h"
-#include "concord-once.h"
 #include "io_poller.h"
 #define LOGMOD_HEADER
 #include "logmod.h"
@@ -87,6 +86,26 @@ struct discord;
 /** @addtogroup ConcordError
  *  @{ */
 
+/* XXX: As new values are added, discord_strerror() and
+ *      discord_code_as_string() should be updated accordingly! */
+/** @defgroup DiscordError Discord error codes
+ *  @brief Error codes triggered from Discord
+ *  @{ */
+
+/** Alias for @ref CCORD_OK */
+#define CCORD_DISCORD_OK CCORD_OK
+/** action is pending (ex: request has been enqueued and will be performed
+ *      later) */
+#define CCORD_PENDING 1
+/** received a JSON error message */
+#define CCORD_DISCORD_JSON_CODE 100
+/** bad authentication token */
+#define CCORD_DISCORD_BAD_AUTH 101
+/** being ratelimited */
+#define CCORD_DISCORD_RATELIMIT 102
+/** couldn't establish connection to Discord */
+#define CCORD_DISCORD_CONNECTION 103
+
 /**
  * @brief Return the value of CCORDcode as a string
  *
@@ -103,6 +122,8 @@ const char *discord_code_as_string(CCORDcode code);
  * @return a string containing the code meaning
  */
 const char *discord_strerror(CCORDcode code, struct discord *client);
+
+/** @} DiscordError */
 
 /** @} ConcordError */
 
@@ -165,6 +186,12 @@ void __discord_claim(struct discord *client, const void *data);
  *      previously claimed with discord_claim()
  */
 void discord_unclaim(struct discord *client, const void *data);
+
+/** @deprecated since v3.0.0, keep backwards compatibility */
+#define ccord_global_init()
+
+/** @deprecated since v3.0.0, keep backwards compatibility */
+#define ccord_global_cleanup()
 
 /**
  * @brief Creates a Discord Client handle from a token
