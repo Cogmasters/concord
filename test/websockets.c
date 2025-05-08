@@ -117,7 +117,7 @@ main(int argc, char *argv[])
 
     /* init websockets handle */
     mhandle = curl_multi_init();
-    ws = ws_init(&cbs, mhandle, NULL);
+    ws = ws_init(&cbs, mhandle, NULL, NULL);
     ws_set_url(ws, url);
 
     /* run the event-loop */

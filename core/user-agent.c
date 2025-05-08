@@ -622,7 +622,7 @@ ua_conn_stop(struct ua_conn *conn)
 }
 
 struct user_agent *
-ua_init(struct logmod *logmod)
+ua_init(struct logmod *logmod, FILE *fp)
 {
     struct user_agent *new_ua = calloc(1, sizeof *new_ua);
     if (!(new_ua = calloc(1, sizeof *new_ua))) {
@@ -639,6 +639,14 @@ ua_init(struct logmod *logmod)
               logmod ? logmod : &new_ua->logmod, "HTTP_RAW")))
     {
         logmod_log(FATAL, NULL, "Couldn't create logger for user agent");
+        return ua_cleanup(new_ua), NULL;
+    }
+    if (logmod_logger_set_logfile(new_ua->loggers.raw, fp) != LOGMOD_OK) {
+        logmod_log(FATAL, NULL, "Couldn't set logfile for HTTP");
+        return ua_cleanup(new_ua), NULL;
+    }
+    if (logmod_logger_set_quiet(new_ua->loggers.raw, 1) != LOGMOD_OK) {
+        logmod_log(FATAL, NULL, "Couldn't suppress HTTP output to console");
         return ua_cleanup(new_ua), NULL;
     }
     if (!(new_ua->connq = calloc(1, sizeof *new_ua->connq))) {

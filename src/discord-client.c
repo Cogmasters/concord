@@ -354,6 +354,20 @@ _discord_config_load(struct discord_config *config, const char config_file[])
         }
         free(filename);
     }
+    if ((field =
+             discord_config_get_field(client, (char *[2]){ "log", "ws" }, 2)),
+        field.size)
+    {
+        char *filename;
+        if (!cog_strndup(field.start, field.size, &filename)) {
+            logmod_log(FATAL, client->logger, "Couldn't copy ws log file");
+            return _discord_config_cleanup(config), CCORD_BAD_DECODE;
+        }
+        if (!(config->ws = fopen(filename, config->overwrite ? "w+" : "a+"))) {
+            return _discord_config_cleanup(config), CCORD_ERRNO;
+        }
+        free(filename);
+    }
     _discord_config_load_disabled_modules(config);
     for (size_t i = 0; i < config->disable.size; ++i) {
         logmod_toggle_logger(&client->logmod, config->disable.ids[i]);

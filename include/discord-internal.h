@@ -1209,6 +1209,8 @@ struct discord_config {
     FILE *trace;
     /* the http log file */
     FILE *http;
+    /* the ws log file */
+    FILE *ws;
     /** list of 'id' that should be ignored */
     struct {
         size_t size;
