@@ -7,19 +7,20 @@ LIBDIR        = $(TOP)/lib
 GENCODECS_DIR = $(TOP)/gencodecs
 CORE_DIR      = $(TOP)/core
 
-CORE_OBJS     = $(CORE_DIR)/cog-utils.o      \
-                $(CORE_DIR)/concord-error.o  \
-                $(CORE_DIR)/concord-once.o   \
-                $(CORE_DIR)/io_poller.o      \
-                $(CORE_DIR)/user-agent.o     \
-                $(CORE_DIR)/websockets.o     \
-                $(CORE_DIR)/jsmn-find.o      \
-                $(CORE_DIR)/json-build.o     \
-                $(CORE_DIR)/logmod.o         \
-                $(CORE_DIR)/oa_hash.o        \
-                $(CORE_DIR)/priority_queue.o \
-                $(CORE_DIR)/anomap.o         \
-                $(CORE_DIR)/threadpool.o     \
+CORE_OBJS     = $(CORE_DIR)/cog-utils.o          \
+                $(CORE_DIR)/concord-error.o      \
+                $(CORE_DIR)/concord-notifier.o   \
+                $(CORE_DIR)/concord-once.o       \
+                $(CORE_DIR)/io_poller.o          \
+                $(CORE_DIR)/user-agent.o         \
+                $(CORE_DIR)/websockets.o         \
+                $(CORE_DIR)/jsmn-find.o          \
+                $(CORE_DIR)/json-build.o         \
+                $(CORE_DIR)/logmod.o             \
+                $(CORE_DIR)/oa_hash.o            \
+                $(CORE_DIR)/priority_queue.o     \
+                $(CORE_DIR)/anomap.o             \
+                $(CORE_DIR)/threadpool.o         \
                 $(CORE_DIR)/queriec.o
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 
