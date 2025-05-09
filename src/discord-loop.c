@@ -5,40 +5,6 @@
 #include "discord-internal.h"
 #include "cog-utils.h"
 
-static void
-discord_wake_timer_cb(struct discord *client, struct discord_timer *timer)
-{
-    (void)timer;
-    if (client->wakeup_timer.cb) client->wakeup_timer.cb(client);
-}
-
-void
-discord_set_next_wakeup(struct discord *client, int64_t delay)
-{
-    unsigned id = discord_internal_timer_ctl(
-        client, &(struct discord_timer){
-                    .id = client->wakeup_timer.id,
-                    .on_tick = discord_wake_timer_cb,
-                    .delay = delay,
-                });
-    client->wakeup_timer.id = id;
-}
-
-void
-discord_set_on_wakeup(struct discord *client,
-                      void (*callback)(struct discord *client))
-{
-    client->wakeup_timer.cb = callback;
-    if (client->wakeup_timer.id) {
-        discord_internal_timer_ctl(client,
-                                   &(struct discord_timer){
-                                       .id = client->wakeup_timer.id,
-                                       .on_tick = discord_wake_timer_cb,
-                                       .delay = -1,
-                                   });
-    }
-}
-
 void
 discord_set_on_idle(struct discord *client,
                     void (*callback)(struct discord *client))

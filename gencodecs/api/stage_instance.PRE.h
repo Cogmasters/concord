@@ -4,7 +4,7 @@
 
 #if GENCODECS_RECIPE == DATA
 ENUM(discord_privacy_level)
-  /** the stage instance is visible publicly @deprecated deprecated value */
+  /** @deprecated the stage instance is visible publicly */
     ENUMERATOR(DISCORD_PRIVACY_PUBLIC, = 1)
   /** the stage instance is visible to only guild members */
     ENUMERATOR_LAST(DISCORD_PRIVACY_GUILD_ONLY, = 2)
@@ -26,7 +26,7 @@ PUB_STRUCT(discord_stage_instance)
   COND_WRITE(self->privacy_level != 0)
     FIELD_ENUM(privacy_level, discord_privacy_level)
   COND_END
-  /** whether or not stage discovery is disabled @deprecated deprecated field */
+  /** @deprecated whether or not stage discovery is disabled */
     FIELD(discoverable_disabled, bool, false)
 STRUCT_END
 #endif

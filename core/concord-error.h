@@ -38,12 +38,8 @@ typedef int CCORDcode;
 #define CCORD_FULL_WORKER -11
 /** couldn't perform action because resource is unavailable */
 #define CCORD_RESOURCE_UNAVAILABLE -10
-/** @deprecated use @ref CCORD_RESOURCE_UNAVAILABLE instead */
-#define CCORD_UNAVAILABLE CCORD_RESOURCE_UNAVAILABLE
 /** couldn't cleanup resource automatically due to being claimed */
 #define CCORD_RESOURCE_OWNERSHIP -9
-/** @deprecated use @ref CCORD_RESOURCE_OWNERSHIP instead */
-#define CCORD_OWNERSHIP CCORD_RESOURCE_OWNERSHIP
 /** attempt to initialize globals more than once */
 #define CCORD_GLOBAL_INIT -8
 /** curl's multi handle internal error */
