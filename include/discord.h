@@ -233,26 +233,28 @@ struct discord *discord_from_json(const char config_file[]);
  * This struct is used to store the Discord client configuration
  */
 struct discord_config {
-    /** minimum logging level */
-    enum logmod_levels level;
-    /** silence terminal logging */
-    bool quiet;
-    /** enable color to terminal logging */
-    bool color;
-    /** overwrite existing files */
-    bool overwrite;
     /** the bot token */
     char *token;
-    /* the trace log file */
-    FILE *trace;
-    /* the http log file */
-    FILE *http;
-    /* the ws log file */
-    FILE *ws;
     struct {
-        size_t size;
-        char **ids;
-    } disable; /**< list of 'id' that should be ignored */
+        /** minimum logging level */
+        enum logmod_levels level;
+        /** silence terminal logging */
+        bool quiet;
+        /** enable color to terminal logging */
+        bool color;
+        /** overwrite existing files */
+        bool overwrite;
+        /* the trace log file */
+        FILE *trace;
+        /* the http log file */
+        FILE *http;
+        /* the ws log file */
+        FILE *ws;
+        struct {
+            size_t size;
+            char **ids;
+        } disable; /**< list of 'id' that should be ignored */
+    } log; /**< logging directives */
 };
 
 /**

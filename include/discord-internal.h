@@ -1228,14 +1228,6 @@ struct discord {
         struct discord_timers user;
     } timers;
 
-    /** wakeup timer handle */
-    struct {
-        /** callback to be triggered on timer's timeout */
-        void (*cb)(struct discord *client);
-        /** the id of the wake timer */
-        unsigned id;
-    } wakeup_timer;
-
     /** triggers when idle */
     void (*on_idle)(struct discord *client);
     /** triggers once per loop cycle */

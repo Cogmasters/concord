@@ -555,8 +555,8 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
         logmod_log(FATAL, NULL, "Couldn't initialize Gateway logger");
         return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
     }
-    if (!(gw->ws =
-              ws_init(&cbs, gw->mhandle, &client->logmod, client->config.ws)))
+    if (!(gw->ws = ws_init(&cbs, gw->mhandle, &client->logmod,
+                           client->config.log.ws)))
     {
         logmod_log(FATAL, gw->logger, "Couldn't initialize WebSockets handle");
         return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;

@@ -504,7 +504,7 @@ PUB_STRUCT(discord_create_guild)
 #endif
   /** name of the guild (2-100 charaters) */
     FIELD_PTR(name, char, *)
-  /** voice region ID @deprecated deprecated field */
+  /** @deprecated voice region ID */
   COND_WRITE(self->region != NULL)
     FIELD_PTR(region, char, *)
   COND_END
