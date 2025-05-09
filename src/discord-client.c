@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <ctype.h>
 #include <errno.h>
 #include <unistd.h>
@@ -8,7 +9,11 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-worker.h"
+#include "concord-once.h"
+#include "concord-notifier.h"
 #include "cog-utils.h"
+
+static int g_shutdown_pipe[2] = { -1, -1 };
 
 static size_t
 _discord_envs_parse(char **dest, char *end, const char **src)
@@ -68,6 +73,148 @@ _discord_on_shutdown(struct io_poller *io,
 }
 
 static CCORDcode
+_discord_check_curl_compatibility(void)
+{
+    const curl_version_info_data *curl_info =
+        curl_version_info(CURLVERSION_NOW);
+
+    // check version 8.7.1 for websockets support
+    if (curl_info->version_num < 0x080701) {
+        logmod_log(FATAL, NULL,
+                   "libcurl version 8.7.1 or higher required (found %s)",
+                   curl_info->version);
+        return CCORD_CURL_OUTDATED_VERSION;
+    }
+
+    _Bool wss_enabled = 0;
+    for (const char *const *proto = curl_info->protocols; *proto; ++proto) {
+        if (0 == strncmp(*proto, "wss", 3)) wss_enabled = 1;
+    }
+    if (!wss_enabled) {
+        logmod_log(FATAL, NULL,
+                   "libcurl must be compiled with websockets support");
+        logmod_log(
+            FATAL, NULL,
+            "Please recompile libcurl with the --enable-websockets flag");
+        return CCORD_CURL_WEBSOCKETS_MISSING;
+    }
+    return CCORD_OK;
+}
+
+static void
+_discord_notifier_close(void)
+{
+    ccord_notifier_close(g_shutdown_pipe);
+}
+
+#ifdef CCORD_SIGINTCATCH
+/* notifier gracefully on SIGINT received */
+static void
+_discord_sigint_handler(int signum)
+{
+    (void)signum;
+    static const char err_str[] =
+        "\nSIGINT: Disconnecting running concord client(s) ...\n";
+    write(STDERR_FILENO, err_str, sizeof(err_str) - 1);
+    ccord_notifier_notify(g_shutdown_pipe);
+}
+#endif /* CCORD_SIGINTCATCH */
+
+static CCORDcode
+_discord_notifier_open(long flags)
+{
+    (void)flags;
+    CCORDcode code;
+
+#ifdef CCORD_SIGINTCATCH
+    signal(SIGINT, &_discord_sigint_handler);
+#endif
+    if ((code = ccord_notifier_open(g_shutdown_pipe)) != CCORD_OK) {
+        logmod_log(ERROR, NULL,
+                   "Couldn't open shutdown notifier pipe: %s (code %d)",
+                   ccord_strerror(code), code);
+    }
+    return code;
+}
+
+void
+discord_shutdown_all(void)
+{
+    ccord_notifier_notify(g_shutdown_pipe);
+}
+
+bool
+discord_shutdown_all_ongoing(void)
+{
+    return ccord_notifier_is_notifying(g_shutdown_pipe);
+}
+
+static CCORDcode
+_discord_global_init()
+{
+    static _Bool g_initialized = false;
+    CCORDcode code;
+
+    if (g_initialized) {
+        logmod_log(WARN, NULL,
+                   "Global resources already initialized, skipping");
+        return CCORD_OK;
+    }
+
+    if ((code = _discord_check_curl_compatibility()) != CCORD_OK) {
+        logmod_log(ERROR, NULL,
+                   "libcurl compatibility check failed: %s (code %d)",
+                   ccord_strerror(code), code);
+        return code;
+    }
+    if ((code = ccord_once_set_callback((ccord_once_cb)&curl_global_init,
+                                        CURL_GLOBAL_ALL))
+        != CCORD_OK)
+    {
+        logmod_log(
+            FATAL, NULL,
+            "Couldn't set curl's global initialization callback: %s (code %d)",
+            discord_strerror(code, NULL), code);
+        goto fail_curl_init;
+    }
+    if ((code = ccord_once_set_callback(
+             (ccord_once_cb)&discord_worker_global_init, 0))
+        != CCORD_OK)
+    {
+        logmod_log(FATAL, NULL,
+                   "Couldn't set worker thread's global initialization "
+                   "callback: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        goto fail_discord_worker_init;
+    }
+    if ((code = ccord_once_set_callback((ccord_once_cb)&_discord_notifier_open,
+                                        0))
+        != CCORD_OK)
+    {
+        logmod_log(ERROR, NULL,
+                   "Couldn't set notifier's global initialization callback: "
+                   "%s (code %d)",
+                   discord_strerror(code, NULL), code);
+    }
+    if ((code = ccord_once(&g_initialized)) != CCORD_OK) {
+        logmod_log(FATAL, NULL,
+                   "Couldn't initialize global resources: %s (code %d)",
+                   discord_strerror(code, NULL), code);
+        goto fail_ccord_once;
+    }
+    return CCORD_OK;
+
+fail_ccord_once:
+    ccord_once_cleanup();
+fail_discord_worker_init:
+    discord_worker_global_cleanup();
+fail_curl_init:
+    curl_global_cleanup();
+
+    return CCORD_GLOBAL_INIT;
+}
+
+static CCORDcode
 _discord_init(struct discord *client)
 {
     CCORDcode code;
@@ -85,7 +232,7 @@ _discord_init(struct discord *client)
     {
         logmod_log(ERROR, client->logger, "Couldn't set logger options");
     }
-    if ((code = ccord_global_init()) != CCORD_OK) {
+    if ((code = _discord_global_init()) != CCORD_OK) {
         logmod_log(FATAL, client->logger,
                    "Couldn't initialize global resources: %s (code %d)",
                    discord_strerror(code, NULL), code);
@@ -116,7 +263,8 @@ _discord_init(struct discord *client)
         return code;
     }
     if (!io_poller_socket_add(client->io_poller,
-                              client->shutdown_fd = discord_dup_shutdown_fd(),
+                              client->shutdown_fd =
+                                  ccord_notifier_listen(g_shutdown_pipe),
                               IO_POLLER_IN, _discord_on_shutdown, client))
     {
         logmod_log(FATAL, client->logger,
@@ -545,6 +693,15 @@ discord_clone(const struct discord *orig)
     return clone;
 }
 
+static void
+_discord_global_cleanup()
+{
+    ccord_once_cleanup();
+    discord_worker_global_cleanup();
+    curl_global_cleanup();
+    _discord_notifier_close();
+}
+
 void
 discord_cleanup(struct discord *client)
 {
@@ -576,38 +733,13 @@ discord_cleanup(struct discord *client)
     if (client->file.start) {
         free(client->file.start);
     }
-    ccord_global_cleanup();
+    _discord_global_cleanup();
     free(client);
 }
 
 #define CASE_RETURN_STR(event)                                                \
     case event:                                                               \
         return #event
-
-static const char *
-_ccord_code_as_string(CCORDcode code)
-{
-    switch (code) {
-        CASE_RETURN_STR(CCORD_OK);
-        CASE_RETURN_STR(CCORD_HTTP_CODE);
-        CASE_RETURN_STR(CCORD_CURL_NO_RESPONSE);
-        CASE_RETURN_STR(CCORD_UNUSUAL_HTTP_CODE);
-        CASE_RETURN_STR(CCORD_BAD_PARAMETER);
-        CASE_RETURN_STR(CCORD_BAD_JSON);
-        CASE_RETURN_STR(CCORD_CURLE_INTERNAL);
-        CASE_RETURN_STR(CCORD_CURLM_INTERNAL);
-        CASE_RETURN_STR(CCORD_GLOBAL_INIT);
-        CASE_RETURN_STR(CCORD_RESOURCE_OWNERSHIP);
-        CASE_RETURN_STR(CCORD_RESOURCE_UNAVAILABLE);
-        CASE_RETURN_STR(CCORD_FULL_WORKER);
-        CASE_RETURN_STR(CCORD_MALFORMED_PAYLOAD);
-        CASE_RETURN_STR(CCORD_CURL_WEBSOCKETS_MISSING);
-        CASE_RETURN_STR(CCORD_CURL_OUTDATED_VERSION);
-    default:
-        return "Unknown: Code received doesn't match any description";
-    }
-}
-
 const char *
 discord_code_as_string(CCORDcode code)
 {
@@ -618,51 +750,10 @@ discord_code_as_string(CCORDcode code)
         CASE_RETURN_STR(CCORD_DISCORD_RATELIMIT);
         CASE_RETURN_STR(CCORD_DISCORD_CONNECTION);
     default:
-        return _ccord_code_as_string(code);
+        return ccord_code_as_string(code);
     }
 }
-
 #undef CASE_RETURN_STR
-
-static const char *
-_ccord_strerror(CCORDcode code)
-{
-    switch (code) {
-    case CCORD_OK:
-        return "Success: The request was a success";
-    case CCORD_HTTP_CODE:
-        return "Failure: The request was a failure";
-    case CCORD_CURL_NO_RESPONSE:
-        return "Failure: No response came through from libcurl";
-    case CCORD_UNUSUAL_HTTP_CODE:
-        return "Failure: The request was a failure";
-    case CCORD_BAD_PARAMETER:
-        return "Failure: Bad value for parameter";
-    case CCORD_BAD_JSON:
-        return "Failure: Internal failure when encoding or decoding JSON";
-    case CCORD_CURLE_INTERNAL:
-        return "Failure: Libcurl's internal error (CURLE)";
-    case CCORD_CURLM_INTERNAL:
-        return "Failure: Libcurl's internal error (CURLM)";
-    case CCORD_GLOBAL_INIT:
-        return "Failure: Attempt to initialize globals more than once";
-    case CCORD_RESOURCE_OWNERSHIP:
-        return "Failure: Claimed resource can't be cleaned up automatically";
-    case CCORD_RESOURCE_UNAVAILABLE:
-        return "Failure: Can't perform action on unavailable resource";
-    case CCORD_FULL_WORKER:
-        return "Failure: Couldn't enqueue worker thread (queue is full)";
-    case CCORD_MALFORMED_PAYLOAD:
-        return "Failure: Couldn't create request payload";
-    case CCORD_CURL_WEBSOCKETS_MISSING:
-        return "Failure: Libcurl has been compiled without the "
-               "--enable-websockets flag";
-    case CCORD_CURL_OUTDATED_VERSION:
-        return "Failure: Libcurl need to be updated to 8.7.1 or greater";
-    default:
-        return "Unknown: Code received doesn't match any description";
-    }
-}
 
 const char *
 discord_strerror(CCORDcode code, struct discord *client)
@@ -671,7 +762,7 @@ discord_strerror(CCORDcode code, struct discord *client)
 
     switch (code) {
     default:
-        return _ccord_strerror(code);
+        return ccord_strerror(code);
     case CCORD_PENDING:
         return "Discord Pending: Request has been added enqueued and will be "
                "performed asynchronously";

@@ -5,7 +5,7 @@ PP_INCLUDE(<inttypes.h>)
 PP_INCLUDE("carray.h")
 PP_INCLUDE("cog-utils.h")
 PP_INCLUDE("types.h")
-PP_INCLUDE("error.h")
+PP_INCLUDE("concord-error.h")
 #endif
 
 /* Custom JSON encoding macros */
