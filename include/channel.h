@@ -564,22 +564,6 @@ CCORDcode discord_list_thread_members(struct discord *client,
                                       struct discord_ret_thread_members *ret);
 
 /**
- * @todo replace with
- * https://discord.com/developers/docs/resources/guild#list-active-threads
- * @deprecated Discord will deprecate this in V10
- * @brief Get all active threads in a given channel
- *
- * @param client the client created with discord_from_token()
- * @param channel_id the channel to be searched for threads
- * @CCORD_ret_obj{ret,thread_response_body}
- * @CCORD_return
- */
-CCORDcode discord_list_active_threads(
-    struct discord *client,
-    u64snowflake channel_id,
-    struct discord_ret_thread_response_body *ret);
-
-/**
  * @brief Get public archived threads in a given channel
  *
  * @param client the client created with discord_from_token()

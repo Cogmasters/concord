@@ -796,19 +796,6 @@ discord_list_thread_members(struct discord *client,
 }
 
 CCORDcode
-discord_list_active_threads(struct discord *client,
-                            u64snowflake channel_id,
-                            struct discord_ret_thread_response_body *ret)
-{
-    struct discord_attributes attr = { 0 };
-    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_INIT(attr, discord_thread_response_body, ret, NULL);
-    return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
-                            "/channels/%" PRIu64 "/threads/active",
-                            channel_id);
-}
-
-CCORDcode
 discord_list_public_archived_threads(
     struct discord *client,
     u64snowflake channel_id,

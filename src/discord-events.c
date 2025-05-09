@@ -49,14 +49,6 @@ discord_update_presence(struct discord *client,
     discord_gateway_send_presence_update(&client->gw, presence);
 }
 
-/* deprecated, use discord_update_presence() instead */
-void
-discord_set_presence(struct discord *client,
-                     struct discord_presence_update *presence)
-{
-    discord_update_presence(client, presence);
-}
-
 void
 discord_add_intents(struct discord *client, uint64_t code)
 {

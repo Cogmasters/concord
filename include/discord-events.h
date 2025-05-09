@@ -43,17 +43,6 @@ void discord_update_voice_state(struct discord *client,
 void discord_update_presence(struct discord *client,
                              struct discord_presence_update *presence);
 
-/**
- * @brief Set the client presence status
- * @deprecated since v2.0.0, use discord_update_presence() instead
- * @see discord_presence_add_activity()
- *
- * @param client the client created with discord_from_token()
- * @param presence status to update the client's to
- */
-void discord_set_presence(struct discord *client,
-                          struct discord_presence_update *presence);
-
 /** @} DiscordCommands */
 
 /** @defgroup DiscordEvents Events
@@ -138,10 +127,7 @@ typedef enum discord_event_scheduler {
     DISCORD_EVENT_IGNORE,
     /** handle this event in main thread */
     DISCORD_EVENT_MAIN_THREAD,
-    /**
-     * handle this event in a worker thread
-     * @deprecated functionality will be removed in the future
-     */
+    /** handle this event in a worker thread */
     DISCORD_EVENT_WORKER_THREAD
 } discord_event_scheduler_t;
 
@@ -235,27 +221,6 @@ void discord_set_on_commands(
     int amount,
     void (*callback)(struct discord *client,
                      const struct discord_message *event));
-
-/**
- * @brief Set the time for wakeup function to be called
- * @see discord_set_on_wakeup
- * @deprecated since v2.1.0, rely on @ref DiscordTimer instead
- *
- * @param delay time to delay in milliseconds, or -1 to disable
- */
-void discord_set_next_wakeup(struct discord *client, int64_t delay);
-
-/**
- * @brief Triggered at a arbitrary interval value set at
- *      discord_set_next_wakeup()
- * @note This is a Concord custom event
- * @deprecated since v2.1.0, rely on @ref DiscordTimer instead
- *
- * @param client the client created with discord_from_token()
- * @param callback the callback to be triggered on event
- */
-void discord_set_on_wakeup(struct discord *client,
-                           void (*callback)(struct discord *client));
 
 /**
  * @brief Triggers when idle
