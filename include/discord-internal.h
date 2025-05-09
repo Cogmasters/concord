@@ -1220,7 +1220,7 @@ struct discord {
     /** the handle for registering and retrieving Discord data */
     struct discord_cache cache;
 
-    /** fd that gets triggered when discord_shutdown_async() is called */
+    /** fd that gets triggered when discord_shutdown_all() is called */
     int shutdown_fd;
 
     struct {
