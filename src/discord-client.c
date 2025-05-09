@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <ctype.h>
 #include <errno.h>
 #include <unistd.h>
@@ -9,7 +10,10 @@
 #include "discord-internal.h"
 #include "discord-worker.h"
 #include "concord-once.h"
+#include "concord-notifier.h"
 #include "cog-utils.h"
+
+static int g_shutdown_pipe[2] = { -1, -1 };
 
 static size_t
 _discord_envs_parse(char **dest, char *end, const char **src)
@@ -69,6 +73,71 @@ _discord_on_shutdown(struct io_poller *io,
 }
 
 static CCORDcode
+_discord_check_curl_compatibility(void)
+{
+    const curl_version_info_data *curl_info =
+        curl_version_info(CURLVERSION_NOW);
+
+    // check version 8.7.1 for websockets support
+    if (curl_info->version_num < 0x080701) {
+        logmod_log(FATAL, NULL,
+                   "libcurl version 8.7.1 or higher required (found %s)",
+                   curl_info->version);
+        return CCORD_CURL_OUTDATED_VERSION;
+    }
+
+    _Bool wss_enabled = 0;
+    for (const char *const *proto = curl_info->protocols; *proto; ++proto) {
+        if (0 == strncmp(*proto, "wss", 3)) wss_enabled = 1;
+    }
+    if (!wss_enabled) {
+        logmod_log(FATAL, NULL,
+                   "libcurl must be compiled with websockets support");
+        logmod_log(
+            FATAL, NULL,
+            "Please recompile libcurl with the --enable-websockets flag");
+        return CCORD_CURL_WEBSOCKETS_MISSING;
+    }
+    return CCORD_OK;
+}
+
+static void
+_discord_notifier_close(void)
+{
+    ccord_notifier_close(g_shutdown_pipe);
+}
+
+#ifdef CCORD_SIGINTCATCH
+/* notifier gracefully on SIGINT received */
+static void
+_discord_sigint_handler(int signum)
+{
+    (void)signum;
+    static const char err_str[] =
+        "\nSIGINT: Disconnecting running concord client(s) ...\n";
+    write(STDERR_FILENO, err_str, sizeof(err_str) - 1);
+    ccord_notifier_notify(g_shutdown_pipe);
+}
+#endif /* CCORD_SIGINTCATCH */
+
+static CCORDcode
+_discord_notifier_open(long flags)
+{
+    (void)flags;
+    CCORDcode code;
+
+#ifdef CCORD_SIGINTCATCH
+    signal(SIGINT, &_discord_sigint_handler);
+#endif
+    if ((code = ccord_notifier_open(g_shutdown_pipe)) != CCORD_OK) {
+        logmod_log(ERROR, NULL,
+                   "Couldn't open shutdown notifier pipe: %s (code %d)",
+                   ccord_strerror(code), code);
+    }
+    return code;
+}
+
+static CCORDcode
 _discord_global_init()
 {
     static _Bool g_initialized = false;
@@ -80,6 +149,12 @@ _discord_global_init()
         return CCORD_OK;
     }
 
+    if ((code = _discord_check_curl_compatibility()) != CCORD_OK) {
+        logmod_log(ERROR, NULL,
+                   "libcurl compatibility check failed: %s (code %d)",
+                   ccord_strerror(code), code);
+        return code;
+    }
     if ((code = ccord_once_set_callback((ccord_once_cb)&curl_global_init,
                                         CURL_GLOBAL_ALL))
         != CCORD_OK)
@@ -99,6 +174,15 @@ _discord_global_init()
                    "callback: %s (code %d)",
                    discord_strerror(code, NULL), code);
         goto fail_discord_worker_init;
+    }
+    if ((code = ccord_once_set_callback((ccord_once_cb)&_discord_notifier_open,
+                                        0))
+        != CCORD_OK)
+    {
+        logmod_log(ERROR, NULL,
+                   "Couldn't set notifier's global initialization callback: "
+                   "%s (code %d)",
+                   discord_strerror(code, NULL), code);
     }
     if ((code = ccord_once(&g_initialized)) != CCORD_OK) {
         logmod_log(FATAL, NULL,
@@ -167,7 +251,8 @@ _discord_init(struct discord *client)
         return code;
     }
     if (!io_poller_socket_add(client->io_poller,
-                              client->shutdown_fd = ccord_dup_shutdown_fd(),
+                              client->shutdown_fd =
+                                  ccord_notifier_listen(g_shutdown_pipe),
                               IO_POLLER_IN, _discord_on_shutdown, client))
     {
         logmod_log(FATAL, client->logger,
@@ -602,6 +687,7 @@ _discord_global_cleanup()
     ccord_once_cleanup();
     discord_worker_global_cleanup();
     curl_global_cleanup();
+    _discord_notifier_close();
 }
 
 void
