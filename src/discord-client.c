@@ -137,6 +137,18 @@ _discord_notifier_open(long flags)
     return code;
 }
 
+void
+discord_shutdown_all(void)
+{
+    ccord_notifier_notify(g_shutdown_pipe);
+}
+
+bool
+discord_shutdown_all_ongoing(void)
+{
+    return ccord_notifier_is_notifying(g_shutdown_pipe);
+}
+
 static CCORDcode
 _discord_global_init()
 {

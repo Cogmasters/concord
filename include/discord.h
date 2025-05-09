@@ -194,6 +194,22 @@ void discord_unclaim(struct discord *client, const void *data);
 #define ccord_global_cleanup()
 
 /**
+ * @brief Gracefully notify all Discord connections for shutting down
+ *
+ * @note this function will not wait before returning, and will
+ *      return immediately. The shutdown process will be handled
+ *      in the background.
+ */
+void discord_shutdown_all(void);
+
+/**
+ * @brief Check if all Discord connections shutting down is in progress
+ *
+ * @return true if all shutdown is in progress, false otherwise
+ */
+bool discord_shutdown_all_ongoing(void);
+
+/**
  * @brief Creates a Discord Client handle from a token
  * @see discord_get_logmod() to configure logging behavior
  *
