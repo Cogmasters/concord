@@ -50,7 +50,7 @@ discord_requestor_init(struct discord_requestor *rqtor, const char token[])
         logmod_log(ERROR, NULL, "Couldn't create logger for requestor");
         return CCORD_INTERNAL_ERROR;
     }
-    if (!(rqtor->ua = ua_init(&client->logmod, client->config.http))) {
+    if (!(rqtor->ua = ua_init(&client->logmod, client->config.log.http))) {
         logmod_log(ERROR, rqtor->logger,
                    "Couldn't initialize User-Agent handle");
         return CCORD_INTERNAL_ERROR;

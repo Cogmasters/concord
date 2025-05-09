@@ -221,12 +221,12 @@ _discord_init(struct discord *client)
 
     if (logmod_set_options(&client->logmod,
                            (struct logmod_options){
-                               .logfile = client->config.trace,
-                               .quiet = client->config.quiet,
-                               .color = client->config.color,
+                               .logfile = client->config.log.trace,
+                               .quiet = client->config.log.quiet,
+                               .color = client->config.log.color,
                                .hide_context_id = 0,
                                .show_application_id = 1,
-                               .level = client->config.level,
+                               .level = client->config.log.level,
                            })
         < 0)
     {
@@ -327,6 +327,34 @@ _discord_init(struct discord *client)
     return CCORD_OK;
 }
 
+static bool
+_discord_token_is_valid(const char *const token, const size_t len)
+{
+    if (!token || !*token) return false;
+
+    // 1. Check overall length (generally 59-72 characters)
+    if (len < 50 || len > 80) return false;
+    // 2. Count the dots (should be exactly 2)
+    int dot_count = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (token[i] == '.') dot_count++;
+    }
+    if (dot_count != 2) return false;
+    // 3. Check for three parts and validate their lengths
+    const char *first_dot = strchr(token, '.');
+    if (!first_dot) return false;
+    const char *second_dot = strchr(first_dot + 1, '.');
+    if (!second_dot) return false;
+    // Calculate lengths of each part
+    const ptrdiff_t first_part_len = first_dot - token,
+                    second_part_len = second_dot - (first_dot + 1),
+                    third_part_len = (ptrdiff_t)len - (second_dot - token) - 1;
+    // Validate part lengths
+    return (first_part_len >= 20 && first_part_len <= 40
+            && second_part_len >= 5 && second_part_len <= 10
+            && third_part_len >= 25 && third_part_len <= 40);
+}
+
 struct discord *
 discord_from_token(const char token[])
 {
@@ -338,6 +366,20 @@ discord_from_token(const char token[])
         logmod_log(FATAL, NULL, "Couldn't allocate memory for client");
         return NULL;
     }
+    if (!_discord_envs_expand(parsed_token, sizeof parsed_token, token)) {
+        logmod_log(FATAL, client->logger, "Couldn't parse token");
+        return discord_cleanup(client), NULL;
+    }
+    if (!_discord_token_is_valid(parsed_token, strlen(parsed_token))) {
+        logmod_log(FATAL, client->logger, "Invalid token format");
+        return discord_cleanup(client), NULL;
+    }
+    if (!cog_strndup(parsed_token, strlen(parsed_token),
+                     &client->config.token))
+    {
+        logmod_log(FATAL, client->logger, "Couldn't copy token");
+        return discord_cleanup(client), NULL;
+    }
     if (logmod_init(&client->logmod, "CONCORD", client->table,
                     sizeof(client->table) / sizeof *client->table)
         != LOGMOD_OK)
@@ -347,18 +389,6 @@ discord_from_token(const char token[])
     }
     if (!(client->logger = logmod_get_logger(&client->logmod, "CLIENT"))) {
         logmod_log(FATAL, NULL, "Couldn't create logger for client");
-        return discord_cleanup(client), NULL;
-    }
-    if (!_discord_envs_expand(parsed_token, sizeof parsed_token, token)) {
-        logmod_log(FATAL, client->logger, "Couldn't parse token: %s", token);
-        return discord_cleanup(client), NULL;
-    }
-    if (*parsed_token != '\0'
-        && !cog_strndup(parsed_token, strlen(parsed_token),
-                        &client->config.token))
-    {
-        logmod_log(FATAL, client->logger, "Couldn't copy token: %s",
-                   parsed_token);
         return discord_cleanup(client), NULL;
     }
     if ((code = _discord_init(client)) != CCORD_OK) {
@@ -390,7 +420,7 @@ _discord_config_disable_from_json(struct discord_config *config,
                 && f1->v->end - f1->v->start >= 0)
             {
                 const size_t size = (size_t)f1->v->size;
-                config->disable.ids = malloc(size * sizeof(char *));
+                config->log.disable.ids = malloc(size * sizeof(char *));
                 for (size_t i = 0; i < size; ++i) {
                     const jsmnf_pair *f2 = f1->fields + i;
                     if (f2->v->type == JSMN_STRING) {
@@ -399,10 +429,10 @@ _discord_config_disable_from_json(struct discord_config *config,
                         char *id = malloc(length + 1);
                         memcpy(id, file->start + f2->v->start, length);
                         id[length] = '\0';
-                        config->disable.ids[i] = id;
+                        config->log.disable.ids[i] = id;
                     }
                 }
-                config->disable.size = size;
+                config->log.disable.size = size;
             }
         }
     }
@@ -434,15 +464,14 @@ _discord_config_from_json(struct discord_config *config,
     }
 
     if ((field = discord_config_get_field(client, (char *[1]){ "token" }, 1)),
-        0 == strncmp("YOUR-BOT-TOKEN", field.start, field.size))
+        !_discord_token_is_valid(field.start, field.size))
     {
         logmod_log(FATAL, client->logger, "Bad token at '%s'",
                    parsed_config_file);
         return _discord_config_cleanup(config), CCORD_BAD_DECODE;
     }
     if (field.size && !cog_strndup(field.start, field.size, &config->token)) {
-        logmod_log(FATAL, client->logger, "Couldn't copy token: %.*s",
-                   (int)field.size, field.start);
+        logmod_log(FATAL, client->logger, "Couldn't copy token");
         return _discord_config_cleanup(config), CCORD_BAD_DECODE;
     }
 
@@ -455,31 +484,32 @@ _discord_config_from_json(struct discord_config *config,
         for (char *it = label; *it; ++it) {
             *it = (char)toupper((int)*it);
         }
-        if ((config->level = logmod_logger_get_level(client->logger, label))
+        if ((config->log.level =
+                 logmod_logger_get_level(client->logger, label))
             < 0)
         {
             logmod_log(ERROR, client->logger, "Invalid logging level: %s",
                        label);
-            config->level = LOGMOD_LEVEL_TRACE;
+            config->log.level = LOGMOD_LEVEL_TRACE;
         }
     }
     if ((field = discord_config_get_field(client,
                                           (char *[2]){ "log", "quiet" }, 2)),
         field.size)
     {
-        config->quiet = 't' == field.start[0];
+        config->log.quiet = 't' == field.start[0];
     }
     if ((field = discord_config_get_field(client,
                                           (char *[2]){ "log", "color" }, 2)),
         field.size)
     {
-        config->color = 't' == field.start[0];
+        config->log.color = 't' == field.start[0];
     }
     if ((field = discord_config_get_field(
              client, (char *[2]){ "log", "overwrite" }, 2)),
         field.size)
     {
-        config->overwrite = 't' == field.start[0];
+        config->log.overwrite = 't' == field.start[0];
     }
     if ((field = discord_config_get_field(client,
                                           (char *[2]){ "log", "trace" }, 2)),
@@ -490,8 +520,8 @@ _discord_config_from_json(struct discord_config *config,
             logmod_log(FATAL, client->logger, "Couldn't copy trace file");
             return _discord_config_cleanup(config), CCORD_BAD_DECODE;
         }
-        if (!(config->trace =
-                  fopen(filename, config->overwrite ? "w+" : "a+")))
+        if (!(config->log.trace =
+                  fopen(filename, config->log.overwrite ? "w+" : "a+")))
         {
             logmod_log(FATAL, client->logger, "Couldn't open trace file: %s",
                        filename);
@@ -509,7 +539,8 @@ _discord_config_from_json(struct discord_config *config,
             logmod_log(FATAL, client->logger, "Couldn't copy http log file");
             return _discord_config_cleanup(config), CCORD_BAD_DECODE;
         }
-        if (!(config->http = fopen(filename, config->overwrite ? "w+" : "a+")))
+        if (!(config->log.http =
+                  fopen(filename, config->log.overwrite ? "w+" : "a+")))
         {
             return _discord_config_cleanup(config), CCORD_ERRNO;
         }
@@ -524,16 +555,18 @@ _discord_config_from_json(struct discord_config *config,
             logmod_log(FATAL, client->logger, "Couldn't copy ws log file");
             return _discord_config_cleanup(config), CCORD_BAD_DECODE;
         }
-        if (!(config->ws = fopen(filename, config->overwrite ? "w+" : "a+"))) {
+        if (!(config->log.ws =
+                  fopen(filename, config->log.overwrite ? "w+" : "a+")))
+        {
             return _discord_config_cleanup(config), CCORD_ERRNO;
         }
         free(filename);
     }
     _discord_config_disable_from_json(config, &client->file);
-    for (size_t i = 0; i < config->disable.size; ++i) {
-        logmod_toggle_logger(&client->logmod, config->disable.ids[i]);
+    for (size_t i = 0; i < config->log.disable.size; ++i) {
+        logmod_toggle_logger(&client->logmod, config->log.disable.ids[i]);
         logmod_log(INFO, client->logger, "Disabled logging for '%s'",
-                   config->disable.ids[i]);
+                   config->log.disable.ids[i]);
     }
     return CCORD_OK;
 }
@@ -544,16 +577,16 @@ _discord_config_cleanup(struct discord_config *config)
     if (config->token) {
         free(config->token);
     }
-    if (config->trace) {
-        fclose(config->trace);
+    if (config->log.trace) {
+        fclose(config->log.trace);
     }
-    if (config->http) {
-        fclose(config->http);
+    if (config->log.http) {
+        fclose(config->log.http);
     }
-    if (config->disable.ids) {
-        for (size_t i = 0; i < config->disable.size; ++i)
-            free(config->disable.ids[i]);
-        free(config->disable.ids);
+    if (config->log.disable.ids) {
+        for (size_t i = 0; i < config->log.disable.size; ++i)
+            free(config->log.disable.ids[i]);
+        free(config->log.disable.ids);
     }
     memset(config, 0, sizeof *config);
 }
@@ -596,11 +629,22 @@ struct discord *
 discord_from_config(const struct discord_config *config)
 {
     struct discord *client;
+    char parsed_token[0x1000];
     CCORDcode code;
 
     if (!(client = calloc(1, sizeof *client))) {
         logmod_log(FATAL, NULL, "Couldn't allocate memory for client");
         return NULL;
+    }
+    if (!_discord_envs_expand(parsed_token, sizeof parsed_token,
+                              config->token))
+    {
+        logmod_log(FATAL, client->logger, "Couldn't parse token");
+        return discord_cleanup(client), NULL;
+    }
+    if (!_discord_token_is_valid(parsed_token, strlen(parsed_token))) {
+        logmod_log(FATAL, client->logger, "Invalid token format");
+        return discord_cleanup(client), NULL;
     }
     if (logmod_init(&client->logmod, "CONCORD", client->table,
                     sizeof(client->table) / sizeof *client->table)
