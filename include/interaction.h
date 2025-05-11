@@ -15,7 +15,7 @@
 /**
  * @brief Create a response to an Interaction from the gateway
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
  * @param params the request parameters
@@ -32,7 +32,7 @@ CCORDcode discord_create_interaction_response(
 /**
  * @brief Get the initial Interaction response
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @CCORD_ret_obj{ret,interaction_response}
@@ -47,7 +47,7 @@ CCORDcode discord_get_original_interaction_response(
 /**
  * @brief Edit the initial Interaction response
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
@@ -64,7 +64,7 @@ CCORDcode discord_edit_original_interaction_response(
 /**
  * @brief Delete the initial Interaction response
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @CCORD_ret{ret}
@@ -79,7 +79,7 @@ CCORDcode discord_delete_original_interaction_response(
 /**
  * @brief Create a followup message for an Interaction
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
@@ -96,7 +96,7 @@ CCORDcode discord_create_followup_message(
 /**
  * @brief Get a followup message for an interaction
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
@@ -112,7 +112,7 @@ CCORDcode discord_get_followup_message(struct discord *client,
 /**
  * @brief Edits a followup message for an interaction
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
@@ -131,7 +131,7 @@ CCORDcode discord_edit_followup_message(
 /**
  * @brief Edits a followup message for an interaction
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message

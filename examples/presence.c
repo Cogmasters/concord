@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -19,8 +19,9 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Presence-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Presence-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 
     struct discord_activity activities[] = {
         {
@@ -53,8 +54,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     discord_set_on_ready(client, &on_ready);
@@ -65,5 +65,4 @@ main(int argc, char *argv[])
     discord_run(client);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

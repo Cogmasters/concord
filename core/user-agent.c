@@ -11,9 +11,10 @@
 #include "cog-utils.h"
 #include "queue.h"
 
-#define CURLE_LOG(conn, ecode)                                                \
-    logconf_fatal(&conn->ua->conf, "(CURLE code: %d) %s", ecode,              \
-                  !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf)
+#define LOGMOD_APPLICATION_ID "CORE"
+#define LOGMOD_CONTEXT_ID     "USER_AGENT"
+#define LOGMOD_STATIC
+#include "logmod.h"
 
 /** @brief Generic sized buffer */
 struct _ua_szbuf {
@@ -24,6 +25,8 @@ struct _ua_szbuf {
 };
 
 struct user_agent {
+    /** LogMod handler */
+    struct logmod logmod;
     /**
      * queue of connection nodes for easy reuse
      * @note conns are wrappers around basic CURL functionalities,
@@ -32,8 +35,12 @@ struct user_agent {
     struct ua_conn_queue *connq;
     /** the base_url for every conn */
     struct _ua_szbuf base_url;
-    /** the user agent logging module */
-    struct logconf conf;
+    struct {
+        /** the user agent logging module */
+        struct logmod_logger *trace;
+        /** the user agent raw HTTP logging module */
+        struct logmod_logger *raw;
+    } loggers;
 
     struct {
         /** user arbitrary data for callback */
@@ -49,7 +56,7 @@ struct ua_conn_queue {
     /* busy connections */
     QUEUE(struct ua_conn) busy;
     /** total amount of created connection handles  */
-    int total;
+    unsigned total;
     /** lock for blocking queue operations */
     pthread_mutex_t lock;
 };
@@ -113,8 +120,8 @@ http_code_print(int httpcode)
         return "UNPROCESSABLE_ENTITY";
     case HTTP_TOO_MANY_REQUESTS:
         return "TOO_MANY_REQUESTS";
-    case HTTP_GATEWAY_UNAVAILABLE:
-        return "GATEWAY_UNAVAILABLE";
+    case HTTP_BAD_GATEWAY:
+        return "BAD_GATEWAY";
     default:
         if (httpcode >= 500) return "5xx_SERVER_ERROR";
         if (httpcode >= 400) return "4xx_CLIENT_ERROR";
@@ -152,7 +159,7 @@ http_reason_print(int httpcode)
         return "The HTTP method used is not valid for the location specified.";
     case HTTP_TOO_MANY_REQUESTS:
         return "You got ratelimited.";
-    case HTTP_GATEWAY_UNAVAILABLE:
+    case HTTP_BAD_GATEWAY:
         return "There was not a gateway available to process your request. "
                "Wait a "
                "bit and retry.";
@@ -209,26 +216,31 @@ http_method_eval(char method[])
     return HTTP_INVALID;
 }
 
-void
+CURLcode
 ua_conn_add_header(struct ua_conn *conn,
                    const char field[],
                    const char value[])
 {
     size_t fieldlen = strlen(field);
     struct curl_slist *node, *prev;
-    char buf[4096];
+    char buf[0x1000];
     size_t buflen;
     char *ptr;
 
-    buflen = snprintf(buf, sizeof(buf), "%s: %s", field, value);
-    ASSERT_S(buflen < sizeof(buf), "Out of bounds write attempt");
+    if ((buflen = snprintf(buf, sizeof(buf), "%s: %s", field, value)) < 0) {
+        logmod_log(ERROR, conn->ua->loggers.trace, "snprintf() failed");
+        return CURLE_TOO_LARGE;
+    }
 
     /* check for match in existing fields */
     for (prev = NULL, node = conn->header; node != NULL;
          prev = node, node = node->next)
     {
-        if (!(ptr = strchr(node->data, ':')))
-            ERR("Missing ':' in header:\n\t%s", node->data);
+        if (!(ptr = strchr(node->data, ':'))) {
+            logmod_log(ERROR, conn->ua->loggers.trace,
+                       "Missing ':' in header:\n\t%s", node->data);
+            return CURLE_BAD_FUNCTION_ARGUMENT;
+        }
 
         if (fieldlen == (size_t)(ptr - node->data)
             && 0 == strncasecmp(node->data, field, fieldlen))
@@ -248,19 +260,14 @@ ua_conn_add_header(struct ua_conn *conn,
             else {
                 memcpy(node->data, buf, buflen + 1);
             }
-
-            return;
+            return CURLE_OK;
         }
     }
-
-    /* couldn't find match, we will create a new field */
-    if (NULL == conn->header)
-        conn->header = curl_slist_append(NULL, buf);
-    else
-        curl_slist_append(conn->header, buf);
+    conn->header = curl_slist_append(conn->header, buf);
+    return CURLE_OK;
 }
 
-void
+CURLcode
 ua_conn_remove_header(struct ua_conn *conn, const char field[])
 {
     size_t fieldlen = strlen(field);
@@ -269,8 +276,11 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
 
     /* check for match in existing fields */
     for (node = conn->header; node != NULL; prev = node, node = node->next) {
-        if (!(ptr = strchr(node->data, ':')))
-            ERR("Missing ':' in header:\n\t%s", node->data);
+        if (!(ptr = strchr(node->data, ':'))) {
+            logmod_log(ERROR, conn->ua->loggers.trace,
+                       "Missing ':' in header:\n\t%s", node->data);
+            return CURLE_BAD_FUNCTION_ARGUMENT;
+        }
 
         if (fieldlen == (size_t)(ptr - node->data)
             && 0 == strncasecmp(node->data, field, fieldlen))
@@ -283,9 +293,12 @@ ua_conn_remove_header(struct ua_conn *conn, const char field[])
             curl_free(node->data);
             curl_free(node);
 
-            return;
+            return CURLE_OK;
         }
     }
+    logmod_log(WARN, conn->ua->loggers.trace,
+               "Header field '%s' not found in request header", field);
+    return CURLE_OK;
 }
 
 char *
@@ -317,8 +330,11 @@ ua_conn_print_header(struct ua_conn *conn,
                             header_name_size, node->data);
         else
             ret += snprintf(buf + ret, bufsize - ret, "%s\r\n", node->data);
-        VASSERT_S(ret < bufsize, "[%s] Out of bounds write attempt",
-                  conn->ua->conf.id);
+        if (ret >= bufsize) {
+            logmod_log(ERROR, conn->ua->loggers.trace,
+                       "Out of bounds write attempt");
+            return NULL;
+        }
     }
     if (!ret) return NULL;
 
@@ -370,8 +386,10 @@ _ua_conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
     /* update amount of headers */
     ++header->n_pairs;
 
-    ASSERT_S(header->n_pairs < UA_MAX_HEADER_PAIRS,
-             "Out of bounds write attempt");
+    if (header->n_pairs >= UA_MAX_HEADER_PAIRS) {
+        logmod_log(ERROR, NULL, "Out of bounds write attempt");
+        return CURL_WRITEFUNC_ERROR;
+    }
 
     return bufsize;
 }
@@ -417,34 +435,92 @@ ua_conn_set_mime(struct ua_conn *conn,
     conn->multipart.data = data;
 }
 
+static void _ua_conn_cleanup(struct ua_conn *conn);
+
 static struct ua_conn *
 _ua_conn_init(struct user_agent *ua)
 {
     static const char *user_agent =
         "Cogmasters (https://github.com/Cogmasters)";
-    struct ua_conn *new_conn = calloc(1, sizeof(struct ua_conn));
-    CURL *new_ehandle = curl_easy_init();
+    struct ua_conn *new_conn;
+    CURL *new_ehandle;
+    CURLcode code;
 
-    /* default user agent */
-    ua_conn_add_header(new_conn, "User-Agent", user_agent);
-
-    /* set error buffer for capturing CURL error descriptions */
-    curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, new_conn->errbuf);
-    /* set ptr to request header we will be using for API communication */
-    curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, new_conn->header);
-    /* enable follow redirections */
-    curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
-    /* set response body callback */
-    curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION,
-                     &_ua_conn_respbody_cb);
-    /* set ptr to response body to be filled at callback */
-    curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->info.body);
-    /* set response header callback */
-    curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION,
-                     &_ua_conn_respheader_cb);
-    /* set ptr to response header to be filled at callback */
-    curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.header);
-
+    if (!(new_conn = calloc(1, sizeof *new_conn))) {
+        logmod_log(ERROR, ua->loggers.trace,
+                   "Couldn't allocate memory for connection");
+        return NULL;
+    }
+    if (!(new_ehandle = curl_easy_init())) {
+        logmod_log(ERROR, ua->loggers.trace,
+                   "Couldn't initialize easy handle");
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = ua_conn_add_header(new_conn, "User-Agent", user_agent))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace,
+                   "Couldn't add User-Agent header: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER,
+                                 new_conn->errbuf))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace, "Couldn't set error buffer: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER,
+                                 new_conn->header))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace, "Couldn't set request header: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace,
+                   "Couldn't set follow location: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION,
+                                 &_ua_conn_respbody_cb))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace, "Couldn't set write function: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA,
+                                 &new_conn->info.body))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace, "Couldn't set write data: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION,
+                                 &_ua_conn_respheader_cb))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace,
+                   "Couldn't set header function: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
+    if ((code = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA,
+                                 &new_conn->info.header))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, ua->loggers.trace, "Couldn't set header data: %s",
+                   curl_easy_strerror(code));
+        return _ua_conn_cleanup(new_conn), NULL;
+    }
     new_conn->ehandle = new_ehandle;
     new_conn->ua = ua;
 
@@ -462,7 +538,7 @@ static void
 _ua_conn_cleanup(struct ua_conn *conn)
 {
     ua_info_cleanup(&conn->info);
-    curl_easy_cleanup(conn->ehandle);
+    if (conn->ehandle) curl_easy_cleanup(conn->ehandle);
     if (conn->url.start) free(conn->url.start);
     if (conn->header) curl_slist_free_all(conn->header);
     free(conn);
@@ -495,45 +571,36 @@ ua_conn_start(struct user_agent *ua)
 }
 
 static void
-_ua_info_reset(struct ua_info *info)
+_ua_info_populate(struct ua_info *new_info, struct ua_conn *conn)
 {
-    info->httpcode = 0;
-    info->body.len = 0;
-    info->header.len = 0;
-    info->header.n_pairs = 0;
-}
-
-/* TODO: src should be 'struct ua_conn' */
-static void
-_ua_info_populate(struct ua_info *info, struct ua_conn *conn)
-{
-    struct logconf_szbuf logheader = { conn->info.header.buf,
-                                       conn->info.header.len };
-    struct logconf_szbuf logbody = { conn->info.body.buf,
-                                     conn->info.body.len };
+    const struct ua_info *info = &conn->info;
     char *resp_url = NULL;
 
-    memcpy(info, &conn->info, sizeof(struct ua_info));
+    memcpy(new_info, info, sizeof(struct ua_info));
+    new_info->body.len =
+        cog_strndup(info->body.buf, info->body.len, &new_info->body.buf);
+    new_info->header.len =
+        cog_strndup(info->header.buf, info->header.len, &new_info->header.buf);
 
-    info->body.len = cog_strndup(logbody.start, logbody.size, &info->body.buf);
-    info->header.len =
-        cog_strndup(logheader.start, logheader.size, &info->header.buf);
-
-    /* get response's code */
-    curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &info->httpcode);
-    /* get response's url */
+    curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE,
+                      &new_info->httpcode);
     curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
-    logconf_http(&conn->ua->conf, &conn->info.loginfo, resp_url, logheader,
-                 logbody, "HTTP_RCV_%s(%ld)", http_code_print(info->httpcode),
-                 info->httpcode);
+    logmod_log(
+        INFO, conn->ua->loggers.raw, "HTTP_RCV_%s(%ld) [%s] - %s\n%.*s%s%.*s",
+        http_code_print(info->httpcode), info->httpcode,
+        conn->ua->loggers.trace->context_id, resp_url, (int)info->header.len,
+        info->header.buf, info->header.len ? "\n" : "", (int)info->body.len,
+        info->body.buf);
 }
 
 void
 ua_conn_reset(struct ua_conn *conn)
 {
-    /* reset conn fields for next iteration */
-    _ua_info_reset(&conn->info);
+    conn->info.httpcode = 0;
+    conn->info.body.len = 0;
+    conn->info.header.len = 0;
+    conn->info.header.n_pairs = 0;
     *conn->errbuf = '\0';
 }
 
@@ -543,12 +610,10 @@ ua_conn_stop(struct ua_conn *conn)
     struct user_agent *ua = conn->ua;
 
     ua_conn_reset(conn);
-
     if (conn->multipart.mime) {
         curl_mime_free(conn->multipart.mime);
         conn->multipart.mime = NULL;
     }
-
     /* move conn from 'busy' to 'idle' queue */
     pthread_mutex_lock(&ua->connq->lock);
     QUEUE_REMOVE(&conn->entry);
@@ -557,19 +622,43 @@ ua_conn_stop(struct ua_conn *conn)
 }
 
 struct user_agent *
-ua_init(struct ua_attr *attr)
+ua_init(struct logmod *logmod, FILE *fp)
 {
     struct user_agent *new_ua = calloc(1, sizeof *new_ua);
-
-    logconf_branch(&new_ua->conf, attr ? attr->conf : NULL, "USER_AGENT");
-
-    new_ua->connq = calloc(1, sizeof *new_ua->connq);
+    if (!(new_ua = calloc(1, sizeof *new_ua))) {
+        logmod_log(FATAL, NULL, "Couldn't allocate memory for user agent");
+        return NULL;
+    }
+    if (!(new_ua->loggers.trace =
+              logmod_get_logger(logmod ? logmod : &new_ua->logmod, "HTTP")))
+    {
+        logmod_log(FATAL, NULL, "Couldn't create logger for user agent");
+        return ua_cleanup(new_ua), NULL;
+    }
+    if (!(new_ua->loggers.raw = logmod_get_logger(
+              logmod ? logmod : &new_ua->logmod, "HTTP_RAW")))
+    {
+        logmod_log(FATAL, NULL, "Couldn't create logger for user agent");
+        return ua_cleanup(new_ua), NULL;
+    }
+    if (logmod_logger_set_logfile(new_ua->loggers.raw, fp) != LOGMOD_OK) {
+        logmod_log(FATAL, NULL, "Couldn't set logfile for HTTP");
+        return ua_cleanup(new_ua), NULL;
+    }
+    if (logmod_logger_set_quiet(new_ua->loggers.raw, 1) != LOGMOD_OK) {
+        logmod_log(FATAL, NULL, "Couldn't suppress HTTP output to console");
+        return ua_cleanup(new_ua), NULL;
+    }
+    if (!(new_ua->connq = calloc(1, sizeof *new_ua->connq))) {
+        logmod_log(FATAL, new_ua->loggers.trace,
+                   "Couldn't allocate memory for connection queue");
+        return ua_cleanup(new_ua), NULL;
+    }
     QUEUE_INIT(&new_ua->connq->idle);
     QUEUE_INIT(&new_ua->connq->busy);
-
     if (pthread_mutex_init(&new_ua->connq->lock, NULL)) {
-        logconf_fatal(&new_ua->conf, "Couldn't initialize mutex");
-        abort();
+        logmod_log(FATAL, new_ua->loggers.trace, "Couldn't initialize mutex");
+        return ua_cleanup(new_ua), NULL;
     }
     return new_ua;
 }
@@ -577,32 +666,35 @@ ua_init(struct ua_attr *attr)
 void
 ua_cleanup(struct user_agent *ua)
 {
-    QUEUE *const ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
+    if (!ua) return;
 
-    /* cleanup connection queues */
-    for (size_t i = 0; i < sizeof(ua_queues) / sizeof *ua_queues; ++i) {
-        QUEUE(struct ua_conn) queue, *qelem;
-        struct ua_conn *conn;
+    if (ua->connq) {
+        QUEUE *const ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
+        for (size_t i = 0; i < sizeof(ua_queues) / sizeof *ua_queues; ++i) {
+            QUEUE(struct ua_conn) queue, *qelem;
+            struct ua_conn *conn;
+            QUEUE_MOVE(ua_queues[i], &queue);
+            while (!QUEUE_EMPTY(&queue)) {
+                qelem = QUEUE_HEAD(&queue);
+                QUEUE_REMOVE(qelem);
 
-        QUEUE_MOVE(ua_queues[i], &queue);
-        while (!QUEUE_EMPTY(&queue)) {
-            qelem = QUEUE_HEAD(&queue);
-            QUEUE_REMOVE(qelem);
-
-            conn = QUEUE_DATA(qelem, struct ua_conn, entry);
-            _ua_conn_cleanup(conn);
+                conn = QUEUE_DATA(qelem, struct ua_conn, entry);
+                _ua_conn_cleanup(conn);
+            }
         }
+        if (memcmp(&ua->connq->lock, &(pthread_mutex_t){},
+                   sizeof(pthread_mutex_t))
+            != 0)
+        {
+            abort();
+            pthread_mutex_destroy(&ua->connq->lock);
+        }
+        free(ua->connq);
     }
-    pthread_mutex_destroy(&ua->connq->lock);
-    free(ua->connq);
-
-    /* cleanup logging module */
-    logconf_cleanup(&ua->conf);
-
-    /* cleanup base URL */
-    if (ua->base_url.start) free(ua->base_url.start);
-
-    /* cleanup User-Agent handle */
+    if (ua->base_url.start) {
+        free(ua->base_url.start);
+    }
+    logmod_cleanup(&ua->logmod);
     free(ua);
 }
 
@@ -621,73 +713,128 @@ ua_set_url(struct user_agent *ua, const char base_url[])
 }
 
 /* set specific http method used for the request */
-static void
+static CURLcode
 _ua_conn_set_method(struct ua_conn *conn,
                     enum http_method method,
                     char *body,
-                    size_t body_size,
+                    size_t body_len,
                     struct ua_log_filter *log_filter)
 {
-    char logbuf[1024] = "";
-    struct logconf_szbuf logheader = { logbuf, sizeof(logbuf) };
-    struct logconf_szbuf logbody = { body, body_size };
-    const char *method_str = http_method_print(method);
-    struct logconf *conf = &conn->ua->conf;
+    char header[1024] = "";
+    CURLcode ecode;
 
-    ua_conn_print_header(conn, logbuf, sizeof(logbuf), log_filter);
+    if (!ua_conn_print_header(conn, header, sizeof(header), log_filter)) {
+        logmod_log(ERROR, conn->ua->loggers.trace,
+                   "Couldn't print request header, size: %zu", sizeof(header));
+        return CURLE_BAD_FUNCTION_ARGUMENT;
+    }
 
-    /* make sure body points to something */
-    if (!body) body = "";
-
-    logconf_http(conf, &conn->info.loginfo, conn->url.start, logheader,
-                 logbody, "HTTP_SEND_%s", method_str);
-
-    logconf_trace(conf, ANSICOLOR("SEND", ANSI_FG_GREEN) " %s [@@@_%zu_@@@]",
-                  method_str, conn->info.loginfo.counter);
+    logmod_log(INFO, conn->ua->loggers.raw, "HTTP_SEND_%s [%s] - %s\n%s%s%.*s",
+               http_method_print(method), conn->ua->loggers.trace->context_id,
+               conn->url.start, header, *header ? "\n" : "", (int)body_len,
+               body);
+    logmod_log(
+        TRACE, conn->ua->loggers.trace, "%s %s",
+        LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, GREEN, "SEND"),
+        http_method_print(method));
 
     /* resets any preexisting CUSTOMREQUEST */
-    curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL);
+    if ((ecode = curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
 
     switch (method) {
     case HTTP_DELETE:
-        curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
+        ecode =
+            curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
         break;
     case HTTP_GET:
-        curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L);
-        return;
+        if ((ecode = curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L))
+            != CURLE_OK)
+        {
+            logmod_log(
+                ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s", ecode,
+                !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+            return ecode;
+        }
+        return CURLE_OK;
     case HTTP_POST:
-        curl_easy_setopt(conn->ehandle, CURLOPT_POST, 1L);
+        ecode = curl_easy_setopt(conn->ehandle, CURLOPT_POST, 1L);
         break;
     case HTTP_MIMEPOST:
-        ASSERT_S(NULL != conn->multipart.callback,
-                 "Missing 'ua_conn_set_mime()' callback");
-        ASSERT_S(NULL == conn->multipart.mime, "Previous 'mime' not freed");
-
-        conn->multipart.mime = curl_mime_init(conn->ehandle);
+        if (!conn->multipart.callback) {
+            logmod_log(ERROR, conn->ua->loggers.trace,
+                       "Missing 'ua_conn_set_mime()' callback");
+            return CURLE_BAD_FUNCTION_ARGUMENT;
+        }
+        if (conn->multipart.mime) {
+            logmod_log(WARN, conn->ua->loggers.trace,
+                       "Previous 'mime' not freed, freeing it now");
+            curl_mime_free(conn->multipart.mime);
+            conn->multipart.mime = NULL;
+        }
+        if (!(conn->multipart.mime = curl_mime_init(conn->ehandle))) {
+            logmod_log(ERROR, conn->ua->loggers.trace,
+                       "Couldn't initialize mime handle");
+            return CURLE_OUT_OF_MEMORY;
+        }
         conn->multipart.callback(conn->multipart.mime, conn->multipart.data);
-
-        curl_easy_setopt(conn->ehandle, CURLOPT_MIMEPOST,
-                         conn->multipart.mime);
-        return;
+        if ((ecode = curl_easy_setopt(conn->ehandle, CURLOPT_MIMEPOST,
+                                      conn->multipart.mime))
+            != CURLE_OK)
+        {
+            logmod_log(
+                ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s", ecode,
+                !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+            return ecode;
+        }
+        return CURLE_OK;
     case HTTP_PATCH:
-        curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
+        ecode =
+            curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
         break;
     case HTTP_PUT:
-        curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
+        ecode = curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
         break;
     default:
-        logconf_fatal(&conn->ua->conf, "Unknown http method (code: %d)",
-                      method);
-        abort();
+        logmod_log(WARN, conn->ua->loggers.trace,
+                   "Unknown http method (code: %d)", method);
+        ecode = CURLE_UNKNOWN_OPTION;
     }
 
-    /* set ptr to payload that will be sent via POST/PUT/PATCH */
-    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, body_size);
-    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, body);
+    if (ecode != CURLE_OK) {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
+    if ((ecode =
+             curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, body_len))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
+    if ((ecode = curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, body))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
+    return CURLE_OK;
 }
 
 /* combine base url with endpoint and assign it to 'conn' */
-static void
+static CURLcode
 _ua_conn_set_url(struct ua_conn *conn, char base_url[], char endpoint[])
 {
     size_t size = 2;
@@ -710,162 +857,117 @@ _ua_conn_set_url(struct ua_conn *conn, char base_url[], char endpoint[])
     /* increase buffer length if necessary */
     if (size > conn->url.size) {
         void *tmp = realloc(conn->url.start, size);
-        ASSERT_S(NULL != tmp, "Couldn't increase buffer's length");
-
+        if (!tmp) {
+            logmod_log(ERROR, conn->ua->loggers.trace,
+                       "Couldn't allocate memory for URL");
+            return CURLE_OUT_OF_MEMORY;
+        }
         conn->url.start = tmp;
         conn->url.size = size;
     }
 
     /* append endpoint to base url */
-    ret =
-        snprintf(conn->url.start, conn->url.size, "%s%s", base_url, endpoint);
-    ASSERT_S(ret < conn->url.size, "Out of bounds write attempt");
+    if ((ret = snprintf(conn->url.start, conn->url.size, "%s%s", base_url,
+                        endpoint))
+        >= conn->url.size)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace,
+                   "snprintf() failed to write URL, size: %zu", size);
+        return CURLE_BAD_FUNCTION_ARGUMENT;
+    }
 
-    logconf_trace(&conn->ua->conf, "Request URL: %s", conn->url.start);
+    logmod_log(TRACE, conn->ua->loggers.trace, "Request URL: %s",
+               conn->url.start);
+    if ((ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->url.start))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
+    return CURLE_OK;
+}
 
-    /* assign url to conn's easy handle */
-    ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->url.start);
-    if (ecode != CURLE_OK) CURLE_LOG(conn, ecode);
+CURLcode
+ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr)
+{
+    CURLcode ecode;
+    if ((ecode = _ua_conn_set_url(conn, attr->base_url, attr->endpoint))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
+    if ((ecode = _ua_conn_set_method(conn, attr->method, attr->body,
+                                     attr->body_size, &attr->log_filter))
+        != CURLE_OK)
+    {
+        logmod_log(ERROR, conn->ua->loggers.trace, "(CURLE code: %d) %s",
+                   ecode,
+                   !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf);
+        return ecode;
+    }
 }
 
 void
-ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr)
-{
-    _ua_conn_set_url(conn, attr->base_url, attr->endpoint);
-    _ua_conn_set_method(conn, attr->method, attr->body, attr->body_size,
-                        &attr->log_filter);
-}
-
-/* get request results */
-CCORDcode
 ua_info_extract(struct ua_conn *conn, struct ua_info *info)
 {
+    const struct logmod_logger *logger = conn->ua->loggers.trace;
+
     _ua_info_populate(info, conn);
 
-    /* triggers response callbacks */
     if (info->httpcode >= 500 && info->httpcode < 600) {
-        logconf_error(&conn->ua->conf,
-                      ANSICOLOR("SERVER ERROR",
-                                ANSI_FG_RED) " (%d)%s - %s [@@@_%zu_@@@]",
-                      info->httpcode, http_code_print(info->httpcode),
-                      http_reason_print(info->httpcode),
-                      info->loginfo.counter);
-
-        info->code = CCORD_HTTP_CODE;
+        logmod_log(ERROR, conn->ua->loggers.trace, "%s (%ld)%s - %s",
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, RED,
+                       "SERVER ERROR"),
+                   info->httpcode, http_code_print(info->httpcode),
+                   http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 400) {
-        logconf_error(&conn->ua->conf,
-                      ANSICOLOR("CLIENT ERROR",
-                                ANSI_FG_RED) " (%d)%s - %s [@@@_%zu_@@@]",
-                      info->httpcode, http_code_print(info->httpcode),
-                      http_reason_print(info->httpcode),
-                      info->loginfo.counter);
-
-        info->code = CCORD_HTTP_CODE;
+        logmod_log(ERROR, conn->ua->loggers.trace, "%s (%ld)%s - %s",
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, RED,
+                       "CLIENT ERROR"),
+                   info->httpcode, http_code_print(info->httpcode),
+                   http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 300) {
-        logconf_warn(&conn->ua->conf,
-                     ANSICOLOR("REDIRECTING",
-                               ANSI_FG_YELLOW) " (%d)%s - %s [@@@_%zu_@@@]",
-                     info->httpcode, http_code_print(info->httpcode),
-                     http_reason_print(info->httpcode), info->loginfo.counter);
-
-        info->code = CCORD_HTTP_CODE;
+        logmod_log(WARN, conn->ua->loggers.trace, "%s (%ld)%s - %s",
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, YELLOW,
+                       "REDIRECTING"),
+                   info->httpcode, http_code_print(info->httpcode),
+                   http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 200) {
-        logconf_info(
-            &conn->ua->conf,
-            ANSICOLOR("SUCCESS", ANSI_FG_GREEN) " (%d)%s - %s [@@@_%zu_@@@]",
-            info->httpcode, http_code_print(info->httpcode),
-            http_reason_print(info->httpcode), info->loginfo.counter);
-
-        info->code = CCORD_OK;
+        logmod_log(INFO, conn->ua->loggers.trace, "%s (%ld)%s - %s",
+                   LML(conn->ua->loggers.trace, REGULAR, FOREGROUND, GREEN,
+                       "SUCCESS"),
+                   info->httpcode, http_code_print(info->httpcode),
+                   http_reason_print(info->httpcode));
     }
     else if (info->httpcode >= 100) {
-        logconf_info(
-            &conn->ua->conf,
-            ANSICOLOR("INFO", ANSI_FG_GRAY) " (%d)%s - %s [@@@_%zu_@@@]",
+        logmod_log(
+            INFO, conn->ua->loggers.trace, "%s (%ld)%s - %s",
+            LML(conn->ua->loggers.trace, REGULAR, INTENSITY, BLACK, "INFO"),
             info->httpcode, http_code_print(info->httpcode),
-            http_reason_print(info->httpcode), info->loginfo.counter);
-
-        info->code = CCORD_HTTP_CODE;
+            http_reason_print(info->httpcode));
     }
     else if (info->httpcode > 0) {
-        logconf_error(&conn->ua->conf, "Unusual HTTP response code: %d",
-                      info->httpcode);
-
-        info->code = CCORD_UNUSUAL_HTTP_CODE;
+        logmod_log(WARN, conn->ua->loggers.trace,
+                   "Unusual HTTP response code: %ld", info->httpcode);
     }
     else {
-        logconf_error(&conn->ua->conf, "No http response received by libcurl");
-
-        info->code = CCORD_CURL_NO_RESPONSE;
+        logmod_log(ERROR, conn->ua->loggers.trace,
+                   "No http response received by libcurl");
     }
-
-    return info->code;
 }
 
 CURL *
 ua_conn_get_easy_handle(struct ua_conn *conn)
 {
     return conn->ehandle;
-}
-
-CCORDcode
-ua_conn_easy_perform(struct ua_conn *conn)
-{
-    CURLcode ecode;
-
-    ecode = curl_easy_perform(conn->ehandle);
-    if (ecode != CURLE_OK) {
-        CURLE_LOG(conn, ecode);
-        return CCORD_CURLE_INTERNAL;
-    }
-    return CCORD_OK;
-}
-
-/* template function for performing blocking requests */
-CCORDcode
-ua_easy_run(struct user_agent *ua,
-            struct ua_info *info,
-            struct ua_resp_handle *handle,
-            struct ua_conn_attr *attr)
-{
-    struct ua_conn *conn = ua_conn_start(ua);
-    CCORDcode code;
-
-    /* populate conn with parameters */
-    if (attr) ua_conn_setup(conn, attr);
-
-    /* perform blocking request, and check results */
-    if (CCORD_OK == (code = ua_conn_easy_perform(conn))) {
-        struct ua_info _info = { 0 };
-
-        code = ua_info_extract(conn, &_info);
-
-        if (handle) {
-            if (_info.httpcode >= 400 && _info.httpcode < 600) {
-                if (handle->err_cb)
-                    handle->err_cb(_info.body.buf, _info.body.len,
-                                   handle->err_obj);
-            }
-            else if (_info.httpcode >= 200 && _info.httpcode < 300) {
-                if (handle->ok_cb)
-                    handle->ok_cb(_info.body.buf, _info.body.len,
-                                  handle->ok_obj);
-            }
-        }
-
-        if (info)
-            memcpy(info, &_info, sizeof(struct ua_info));
-        else
-            ua_info_cleanup(&_info);
-    }
-
-    /* reset conn and mark it as free to use */
-    ua_conn_stop(conn);
-
-    return code;
 }
 
 void
@@ -880,7 +982,7 @@ ua_info_cleanup(struct ua_info *info)
 struct ua_szbuf_readonly
 ua_info_get_header(struct ua_info *info, char field[])
 {
-    size_t len = strlen(field);
+    const size_t len = strlen(field);
     struct ua_szbuf_readonly value;
     int i;
 
@@ -910,6 +1012,5 @@ struct ua_szbuf_readonly
 ua_info_get_body(struct ua_info *info)
 {
     struct ua_szbuf_readonly body = { info->body.buf, info->body.len };
-
     return body;
 }

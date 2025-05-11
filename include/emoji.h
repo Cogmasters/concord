@@ -15,7 +15,7 @@
 /**
  * @brief Get emojis of a given guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to get emojis from
  * @CCORD_ret_obj{ret,emojis}
  * @CCORD_return
@@ -27,7 +27,7 @@ CCORDcode discord_list_guild_emojis(struct discord *client,
 /**
  * @brief Get a specific emoji from a guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the emoji belongs to
  * @param emoji_id the emoji to be fetched
  * @CCORD_ret_obj{ret,emoji}
@@ -42,7 +42,7 @@ CCORDcode discord_get_guild_emoji(struct discord *client,
  * @brief Create a new emoji for the guild
  * @note Fires a `Guild Emojis Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to add the new emoji to
  * @param params request parameters
  * @CCORD_ret_obj{ret,emoji}
@@ -57,7 +57,7 @@ CCORDcode discord_create_guild_emoji(struct discord *client,
  * @brief Modify the given emoji
  * @note Fires a `Guild Emojis Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the emoji belongs to
  * @param emoji_id the emoji to be modified
  * @param params request parameters
@@ -74,7 +74,7 @@ CCORDcode discord_modify_guild_emoji(struct discord *client,
  * @brief Deletes the given emoji
  * @note Fires a `Guild Emojis Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the emoji belongs to
  * @param emoji_id the emoji to be deleted
  * @param params request parameters

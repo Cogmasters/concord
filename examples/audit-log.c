@@ -6,7 +6,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -24,16 +24,18 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Audit-Log-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Audit-Log-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
 log_on_guild_member_add(struct discord *client,
                         const struct discord_guild_member *event)
 {
-    log_info("%s#%s joined guild %" PRIu64, event->user->username,
-             event->user->discriminator, event->guild_id);
+    logmod_log(INFO, NULL, "%s#%s joined guild %" PRIu64,
+               event->user->username, event->user->discriminator,
+               event->guild_id);
 }
 
 void
@@ -45,16 +47,17 @@ log_on_guild_member_update(struct discord *client,
     if (event->nick && *event->nick)
         snprintf(nick, sizeof(nick), " (%s)", event->nick);
 
-    log_info("%s#%s%s updated (guild %" PRIu64 ")", event->user->username,
-             event->user->discriminator, nick, event->guild_id);
+    logmod_log(INFO, NULL, "%s#%s%s updated (guild %" PRIu64 ")",
+               event->user->username, event->user->discriminator, nick,
+               event->guild_id);
 }
 
 void
 log_on_guild_member_remove(struct discord *client,
                            const struct discord_guild_member_remove *event)
 {
-    log_info("%s#%s left guild %" PRIu64, event->user->username,
-             event->user->discriminator, event->guild_id);
+    logmod_log(INFO, NULL, "%s#%s left guild %" PRIu64, event->user->username,
+               event->user->discriminator, event->guild_id);
 }
 
 void
@@ -65,7 +68,7 @@ done(struct discord *client,
     const struct discord_message *event = resp->keep;
 
     if (!audit_log->audit_log_entries || !audit_log->audit_log_entries->size) {
-        log_warn("No audit log entries found!");
+        logmod_log(WARN, NULL, "No audit log entries found!");
         return;
     }
 
@@ -85,8 +88,8 @@ fail(struct discord *client, struct discord_response *resp)
 {
     (void)resp;
 
-    log_error("Couldn't retrieve audit log: %s",
-              discord_strerror(resp->code, client));
+    logmod_log(ERROR, NULL, "Couldn't retrieve audit log: %s",
+               discord_strerror(resp->code, client));
 }
 
 void
@@ -116,8 +119,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     discord_add_intents(client, 32767); // subscribe to all events
@@ -135,5 +137,4 @@ main(int argc, char *argv[])
     discord_run(client);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

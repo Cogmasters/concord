@@ -17,7 +17,7 @@
  * @see
  * https://discord.com/developers/docs/topics/gateway#request-guild-members
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param request request guild members information
  */
 void discord_request_guild_members(
@@ -27,7 +27,7 @@ void discord_request_guild_members(
  * @brief Sent when a client wants to join, move or disconnect from a voice
  *      channel
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param update request guild members information
  */
 void discord_update_voice_state(struct discord *client,
@@ -37,22 +37,11 @@ void discord_update_voice_state(struct discord *client,
  * @brief Update the client presence status
  * @see discord_presence_add_activity()
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param presence status to update the client's to
  */
 void discord_update_presence(struct discord *client,
                              struct discord_presence_update *presence);
-
-/**
- * @brief Set the client presence status
- * @deprecated since v2.0.0, use discord_update_presence() instead
- * @see discord_presence_add_activity()
- *
- * @param client the client created with discord_init()
- * @param presence status to update the client's to
- */
-void discord_set_presence(struct discord *client,
-                          struct discord_presence_update *presence);
 
 /** @} DiscordCommands */
 
@@ -138,10 +127,7 @@ typedef enum discord_event_scheduler {
     DISCORD_EVENT_IGNORE,
     /** handle this event in main thread */
     DISCORD_EVENT_MAIN_THREAD,
-    /**
-     * handle this event in a worker thread
-     * @deprecated functionality will be removed in the future
-     */
+    /** handle this event in a worker thread */
     DISCORD_EVENT_WORKER_THREAD
 } discord_event_scheduler_t;
 
@@ -164,7 +150,7 @@ typedef enum discord_event_scheduler (*discord_ev_scheduler)(
  *
  * Allows the user to scan the preliminary raw JSON event payload, and control
  *      whether it should trigger callbacks
- * @param client the client created_with discord_init()
+ * @param client the client created_with discord_from_token()
  * @param fn the function that will be executed
  * @warning The user is responsible for providing their own locking mechanism
  *      to avoid race-condition on sensitive data
@@ -175,7 +161,7 @@ void discord_set_event_scheduler(struct discord *client,
 /**
  * @brief Subscribe to Discord Events
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param code the intents opcode, can be set as a bitmask operation
  */
 void discord_add_intents(struct discord *client, uint64_t code);
@@ -183,7 +169,7 @@ void discord_add_intents(struct discord *client, uint64_t code);
 /**
  * @brief Unsubscribe from Discord Events
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param code the intents opcode, can be set as bitmask operation
  *        Ex: 1 << 0 | 1 << 1 | 1 << 4
  */
@@ -195,7 +181,7 @@ void discord_remove_intents(struct discord *client, uint64_t code);
  *
  * Example: If @a 'help' is a command and @a '!' prefix is set, the command
  *       will only be validated if @a '!help' is sent
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param prefix the mandatory command prefix
  */
 void discord_set_prefix(struct discord *client, const char prefix[]);
@@ -205,7 +191,7 @@ void discord_set_prefix(struct discord *client, const char prefix[]);
  *
  * The callback is triggered when a user types the assigned command in a
  *        chat visible to the client
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param command the command to trigger the callback
  * @param callback the callback to be triggered on event
  * @note The command and any subjacent empty space is left out of
@@ -222,7 +208,7 @@ void discord_set_on_command(
  *
  * The callback is triggered when a user types one of the assigned commands in
  *        a chat visble to the client
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param commands array of commands to trigger the callback
  * @param amount amount of commands provided
  * @param callback the callback to be triggered on event
@@ -237,31 +223,10 @@ void discord_set_on_commands(
                      const struct discord_message *event));
 
 /**
- * @brief Set the time for wakeup function to be called
- * @see discord_set_on_wakeup
- * @deprecated since v2.1.0, rely on @ref DiscordTimer instead
- *
- * @param delay time to delay in milliseconds, or -1 to disable
- */
-void discord_set_next_wakeup(struct discord *client, int64_t delay);
-
-/**
- * @brief Triggered at a arbitrary interval value set at
- *      discord_set_next_wakeup()
- * @note This is a Concord custom event
- * @deprecated since v2.1.0, rely on @ref DiscordTimer instead
- *
- * @param client the client created with discord_init()
- * @param callback the callback to be triggered on event
- */
-void discord_set_on_wakeup(struct discord *client,
-                           void (*callback)(struct discord *client));
-
-/**
  * @brief Triggers when idle
  * @note This is a Concord custom event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_idle(struct discord *client,
@@ -271,7 +236,7 @@ void discord_set_on_idle(struct discord *client,
  * @brief Triggers once per event-loop cycle
  * @note This is a Concord custom event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_cycle(struct discord *client,
@@ -280,7 +245,7 @@ void discord_set_on_cycle(struct discord *client,
 /**
  * @brief Triggers when the client session is ready
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_ready(struct discord *client,
@@ -290,7 +255,7 @@ void discord_set_on_ready(struct discord *client,
 /**
  * @brief Triggers when an application command permission is updated
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_application_command_permissions_update(
@@ -304,7 +269,7 @@ void discord_set_on_application_command_permissions_update(
  * @note This implicitly sets
  *      @ref DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_auto_moderation_rule_create(
@@ -317,7 +282,7 @@ void discord_set_on_auto_moderation_rule_create(
  * @note This implicitly sets
  *      @ref DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_auto_moderation_rule_update(
@@ -330,7 +295,7 @@ void discord_set_on_auto_moderation_rule_update(
  * @note This implicitly sets
  *      @ref DISCORD_GATEWAY_AUTO_MODERATION_CONFIGURATION intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_auto_moderation_rule_delete(
@@ -344,7 +309,7 @@ void discord_set_on_auto_moderation_rule_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_AUTO_MODERATION_EXECUTION
  *      intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_auto_moderation_action_execution(
@@ -357,7 +322,7 @@ void discord_set_on_auto_moderation_action_execution(
  * @brief Triggers when a channel is created
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_channel_create(
@@ -369,7 +334,7 @@ void discord_set_on_channel_create(
  * @brief Triggers when a channel is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_channel_update(
@@ -381,7 +346,7 @@ void discord_set_on_channel_update(
  * @brief Triggers when a channel is deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_channel_delete(
@@ -394,7 +359,7 @@ void discord_set_on_channel_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_channel_pins_update(
@@ -406,7 +371,7 @@ void discord_set_on_channel_pins_update(
  * @brief Triggers when a thread is created
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_thread_create(
@@ -418,7 +383,7 @@ void discord_set_on_thread_create(
  * @brief Triggers when a thread is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_thread_update(
@@ -430,7 +395,7 @@ void discord_set_on_thread_update(
  * @brief Triggers when a thread is deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_thread_delete(
@@ -442,7 +407,7 @@ void discord_set_on_thread_delete(
  * @brief Triggers when the current user gains access to a channel
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_thread_list_sync(
@@ -456,7 +421,7 @@ void discord_set_on_thread_list_sync(
  *      the thread
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_thread_member_update(
@@ -469,7 +434,7 @@ void discord_set_on_thread_member_update(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS and
  *      @ref DISCORD_GATEWAY_GUILD_MEMBERS intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_thread_members_update(
@@ -481,7 +446,7 @@ void discord_set_on_thread_members_update(
  * @brief Triggers when a guild is created
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_create(
@@ -493,7 +458,7 @@ void discord_set_on_guild_create(
  * @brief Triggers when a guild is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_update(
@@ -505,7 +470,7 @@ void discord_set_on_guild_update(
  * @brief Triggers when a guild is deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_delete(
@@ -517,7 +482,7 @@ void discord_set_on_guild_delete(
  * @brief Triggers when a user is banned from a guild
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_BANS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_ban_add(
@@ -529,7 +494,7 @@ void discord_set_on_guild_ban_add(
  * @brief Triggers when a user is unbanned from a guild
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_BANS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_ban_remove(
@@ -542,7 +507,7 @@ void discord_set_on_guild_ban_remove(
  * @note This implicitly sets
  *      @ref DISCORD_GATEWAY_GUILD_EMOJIS_AND_STICKERS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_emojis_update(
@@ -555,7 +520,7 @@ void discord_set_on_guild_emojis_update(
  * @note This implicitly sets
  *      @ref DISCORD_GATEWAY_GUILD_EMOJIS_AND_STICKERS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_stickers_update(
@@ -568,7 +533,7 @@ void discord_set_on_guild_stickers_update(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
  *      intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_integrations_update(
@@ -580,7 +545,7 @@ void discord_set_on_guild_integrations_update(
  * @brief Triggers when a guild member is added
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MEMBERS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_member_add(
@@ -592,7 +557,7 @@ void discord_set_on_guild_member_add(
  * @brief Triggers when a guild member is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MEMBERS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_member_update(
@@ -604,7 +569,7 @@ void discord_set_on_guild_member_update(
  * @brief Triggers when a guild member is removed
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MEMBERS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_member_remove(
@@ -615,7 +580,7 @@ void discord_set_on_guild_member_remove(
 /**
  * @brief Triggers in response to discord_request_guild_members()
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_members_chunk(
@@ -627,7 +592,7 @@ void discord_set_on_guild_members_chunk(
  * @brief Triggers when a guild role is created
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_role_create(
@@ -639,7 +604,7 @@ void discord_set_on_guild_role_create(
  * @brief Triggers when a guild role is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_role_update(
@@ -651,7 +616,7 @@ void discord_set_on_guild_role_update(
  * @brief Triggers when a guild role is deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_role_delete(
@@ -664,7 +629,7 @@ void discord_set_on_guild_role_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_scheduled_event_create(
@@ -677,7 +642,7 @@ void discord_set_on_guild_scheduled_event_create(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_scheduled_event_update(
@@ -690,7 +655,7 @@ void discord_set_on_guild_scheduled_event_update(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_scheduled_event_delete(
@@ -703,7 +668,7 @@ void discord_set_on_guild_scheduled_event_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_scheduled_event_user_add(
@@ -717,7 +682,7 @@ void discord_set_on_guild_scheduled_event_user_add(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_SCHEDULED_EVENTS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_guild_scheduled_event_user_remove(
@@ -731,7 +696,7 @@ void discord_set_on_guild_scheduled_event_user_remove(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_integration_create(
@@ -744,7 +709,7 @@ void discord_set_on_integration_create(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
  * intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_integration_update(
@@ -757,7 +722,7 @@ void discord_set_on_integration_update(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INTEGRATIONS
  *      intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_integration_delete(
@@ -769,7 +734,7 @@ void discord_set_on_integration_delete(
  * @brief Triggers when user has used an interaction, such as an application
  *      command
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_interaction_create(
@@ -781,7 +746,7 @@ void discord_set_on_interaction_create(
  * @brief Triggers when an invite to a channel has been created
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INVITES intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_invite_create(
@@ -793,7 +758,7 @@ void discord_set_on_invite_create(
  * @brief Triggers when an invite to a channel has been deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_INVITES intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_invite_delete(
@@ -806,7 +771,7 @@ void discord_set_on_invite_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_create(
@@ -819,7 +784,7 @@ void discord_set_on_message_create(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_update(
@@ -832,7 +797,7 @@ void discord_set_on_message_update(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGES intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_delete(
@@ -845,7 +810,7 @@ void discord_set_on_message_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGES
  *      intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_delete_bulk(
@@ -859,7 +824,7 @@ void discord_set_on_message_delete_bulk(
  *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_reaction_add(
@@ -873,7 +838,7 @@ void discord_set_on_message_reaction_add(
  *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_reaction_remove(
@@ -887,7 +852,7 @@ void discord_set_on_message_reaction_remove(
  *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_reaction_remove_all(
@@ -904,7 +869,7 @@ void discord_set_on_message_reaction_remove_all(
  *      @ref DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_message_reaction_remove_emoji(
@@ -917,7 +882,7 @@ void discord_set_on_message_reaction_remove_emoji(
  * @brief Triggers when user presence is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_PRESENCES intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_presence_update(
@@ -929,7 +894,7 @@ void discord_set_on_presence_update(
  * @brief Triggers when a stage instance is created
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_stage_instance_create(
@@ -941,7 +906,7 @@ void discord_set_on_stage_instance_create(
  * @brief Triggers when a stage instance is updated
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_stage_instance_update(
@@ -953,7 +918,7 @@ void discord_set_on_stage_instance_update(
  * @brief Triggers when a stage instance is deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILDS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_stage_instance_delete(
@@ -966,7 +931,7 @@ void discord_set_on_stage_instance_delete(
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_MESSAGE_TYPING and
  *      @ref DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING intents
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_typing_start(
@@ -977,7 +942,7 @@ void discord_set_on_typing_start(
 /**
  * @brief Triggers when properties about a user changed
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_user_update(
@@ -988,7 +953,7 @@ void discord_set_on_user_update(
 /**
  * @brief Triggers when a voice state is updated
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_voice_state_update(
@@ -999,7 +964,7 @@ void discord_set_on_voice_state_update(
 /**
  * @brief Triggers when voice server is updated
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_voice_server_update(
@@ -1011,7 +976,7 @@ void discord_set_on_voice_server_update(
  * @brief Triggers when guild channel has been created, updated or deleted
  * @note This implicitly sets @ref DISCORD_GATEWAY_GUILD_WEBHOOKS intent
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param callback the callback to be triggered on event
  */
 void discord_set_on_webhooks_update(

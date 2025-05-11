@@ -4,7 +4,6 @@
 #include <inttypes.h>
 
 #include "discord.h"
-#include "log.h"
 
 static void
 print_timer_info(struct discord_timer *timer, const char *name)
@@ -60,8 +59,8 @@ int
 main(int argc, char *argv[])
 {
     const char *config_file = argc > 1 ? argv[1] : "../config.json";
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+
+    struct discord *client = discord_from_json(config_file);
 
     for (int i = 0; i < 10; i++)
         // one shot auto deleting timer
@@ -82,5 +81,4 @@ main(int argc, char *argv[])
 
     // discord_cleanup will cancel all timers that are still active
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

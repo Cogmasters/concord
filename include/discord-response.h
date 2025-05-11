@@ -16,6 +16,11 @@ struct discord_response {
     const void *keep;
     /** request completion status @see @ref ConcordError */
     CCORDcode code;
+    /** the JSON object in case of a @ref CCORD_OK, or the JSON error
+     *      object in case of a @ref CCORD_DISCORD_JSON_CODE
+     *
+     * @see https://discord.com/developers/docs/reference#error-messages */
+    struct ccord_szbuf_readonly json;
 };
 
 /******************************************************************************

@@ -9,9 +9,6 @@ extern "C" {
 
 #include <curl/curl.h>
 
-#include "error.h" /* CCORDcode */
-#include "logconf.h" /* logging facilities */
-
 /** @brief HTTP methods */
 enum http_method {
     HTTP_INVALID = -1,
@@ -42,18 +39,65 @@ enum http_method http_method_eval(char method[]);
 /** @defgroup HttpStatusCode
  * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  *  @{ */
-#define HTTP_OK                   200
-#define HTTP_CREATED              201
-#define HTTP_NO_CONTENT           204
-#define HTTP_NOT_MODIFIED         304
-#define HTTP_BAD_REQUEST          400
-#define HTTP_UNAUTHORIZED         401
-#define HTTP_FORBIDDEN            403
-#define HTTP_NOT_FOUND            404
-#define HTTP_METHOD_NOT_ALLOWED   405
-#define HTTP_UNPROCESSABLE_ENTITY 422
-#define HTTP_TOO_MANY_REQUESTS    429
-#define HTTP_GATEWAY_UNAVAILABLE  502
+#define HTTP_OK                              200
+#define HTTP_CREATED                         201
+#define HTTP_ACCEPTED                        202
+#define HTTP_NON_AUTHORITATIVE_INFO          203
+#define HTTP_NO_CONTENT                      204
+#define HTTP_RESET_CONTENT                   205
+#define HTTP_PARTIAL_CONTENT                 206
+#define HTTP_MULTI_STATUS                    207
+#define HTTP_ALREADY_REPORTED                208
+#define HTTP_IM_USED                         226
+#define HTTP_MULTIPLE_CHOICES                300
+#define HTTP_MOVED_PERMANENTLY               301
+#define HTTP_FOUND                           302
+#define HTTP_SEE_OTHER                       303
+#define HTTP_NOT_MODIFIED                    304
+#define HTTP_USE_PROXY                       305
+#define HTTP_TEMPORARY_REDIRECT              307
+#define HTTP_PERMANENT_REDIRECT              308
+#define HTTP_BAD_REQUEST                     400
+#define HTTP_UNAUTHORIZED                    401
+#define HTTP_PAYMENT_REQUIRED                402
+#define HTTP_FORBIDDEN                       403
+#define HTTP_NOT_FOUND                       404
+#define HTTP_METHOD_NOT_ALLOWED              405
+#define HTTP_NOT_ACCEPTABLE                  406
+#define HTTP_PROXY_AUTHENTICATION            407
+#define HTTP_REQUEST_TIMEOUT                 408
+#define HTTP_CONFLICT                        409
+#define HTTP_GONE                            410
+#define HTTP_LENGTH_REQUIRED                 411
+#define HTTP_PRECONDITION_FAILED             412
+#define HTTP_PAYLOAD_TOO_LARGE               413
+#define HTTP_URI_TOO_LONG                    414
+#define HTTP_UNSUPPORTED_MEDIA_TYPE          415
+#define HTTP_RANGE_NOT_SATISFIABLE           416
+#define HTTP_EXPECTATION_FAILED              417
+#define HTTP_IM_A_TEAPOT                     418
+#define HTTP_MISDIRECTED_REQUEST             421
+#define HTTP_UNPROCESSABLE_ENTITY            422
+#define HTTP_LOCKED                          423
+#define HTTP_FAILED_DEPENDENCY               424
+#define HTTP_TOO_EARLY                       425
+#define HTTP_UPGRADE_REQUIRED                426
+#define HTTP_PRECONDITION_REQUIRED           428
+#define HTTP_TOO_MANY_REQUESTS               429
+#define HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE 431
+#define HTTP_UNAVAILABLE_FOR_LEGAL_REASONS   451
+#define HTTP_INTERNAL_SERVER_ERROR           500
+#define HTTP_NOT_IMPLEMENTED                 501
+#define HTTP_BAD_GATEWAY                     502
+#define HTTP_SERVICE_UNAVAILABLE             503
+#define HTTP_GATEWAY_TIMEOUT                 504
+#define HTTP_VERSION_NOT_SUPPORTED           505
+#define HTTP_VARIANT_ALSO_NEGOTIATES         506
+#define HTTP_INSUFFICIENT_STORAGE            507
+#define HTTP_LOOP_DETECTED                   508
+#define HTTP_NOT_EXTENDED                    510
+#define HTTP_NETWORK_AUTHENTICATION_REQUIRED 511
+#define HTTP_INVALID_HTTP_CODE               999
 /** @} */
 
 /**
@@ -80,6 +124,10 @@ const char *http_reason_print(int httpcode);
  */
 struct user_agent;
 
+/* forward declaration */
+struct logmod;
+/**/
+
 /**
  * @struct ua_conn
  * @brief Opaque connection handle
@@ -89,12 +137,6 @@ struct user_agent;
  *       ua_conn_set_mime(), ua_conn_get_easy_handle()
  */
 struct ua_conn;
-
-/** @brief User-Agent handle initialization attributes */
-struct ua_attr {
-    /** pre-initialized logging module */
-    struct logconf *conf;
-};
 
 /** @brief Read-only generic sized buffer */
 struct ua_szbuf_readonly {
@@ -164,15 +206,9 @@ struct ua_resp_body {
 
 /** @brief Informational handle received on request's completion */
 struct ua_info {
-    /** logging informational */
-    struct loginfo loginfo;
-    /** response code for latest request */
-    CCORDcode code;
     /** the HTTP response code */
     long httpcode;
-
     /** @privatesection */
-
     /** the response header */
     struct ua_resp_header header;
     /** the response body */
@@ -193,10 +229,11 @@ void ua_set_opt(struct user_agent *ua,
 /**
  * @brief Initialize User-Agent handle
  *
- * @param attr optional attributes to override defaults
+ * @param logmod optional pre-initialized logging module
+ * @param fp file pointer for writing HTTP traces to
  * @return the user agent handle
  */
-struct user_agent *ua_init(struct ua_attr *attr);
+struct user_agent *ua_init(struct logmod *logmod, FILE *fp);
 
 /**
  * @brief Cleanup User-Agent handle resources
@@ -237,26 +274,6 @@ struct ua_resp_handle {
 };
 
 /**
- * @brief Perform a blocking REST transfer
- *
- * @param ua the User-Agent handle created with ua_init()
- * @param info optional informational handle on how the request went
- * @param handle the optional response callbacks, can be NULL
- * @param attr connection attributes
- * @param body the optional request body, can be NULL
- * @param method the HTTP method of this transfer (GET, POST, ...)
- * @param endpoint the endpoint to be appended to the URL set at ua_set_url()
- * @CCORD_return
- * @note This is an easy, yet highly abstracted way of performing requests.
- *        If a higher control is necessary, users are better off using the
- *        functions of `ua_conn_xxx()` family.
- */
-CCORDcode ua_easy_run(struct user_agent *ua,
-                      struct ua_info *info,
-                      struct ua_resp_handle *handle,
-                      struct ua_conn_attr *attr);
-
-/**
  * @brief Get a connection handle and mark it as running
  *
  * @param conn the User-Agent handle created with ua_init()
@@ -265,31 +282,25 @@ CCORDcode ua_easy_run(struct user_agent *ua,
 struct ua_conn *ua_conn_start(struct user_agent *ua);
 
 /**
- * @brief Perform a blocking transfer
- *
- * @param conn the connection handle
- * @CCORD_return
- */
-CCORDcode ua_conn_easy_perform(struct ua_conn *conn);
-
-/**
  * @brief Add a field/value pair to the request header
  *
  * @param conn the connection handle
  * @param field header's field to be added
  * @param value field's value
+ * @return CURLE_OK on success, otherwise an error code
  */
-void ua_conn_add_header(struct ua_conn *conn,
-                        const char field[],
-                        const char value[]);
+CURLcode ua_conn_add_header(struct ua_conn *conn,
+                            const char field[],
+                            const char value[]);
 
 /**
  * @brief Remove a header field
  *
  * @param conn the connection handle
  * @param field header's field to be removed
+ * @return CURLE_OK on success, otherwise an error code
  */
-void ua_conn_remove_header(struct ua_conn *conn, const char field[]);
+CURLcode ua_conn_remove_header(struct ua_conn *conn, const char field[]);
 
 /**
  * @brief Fill a buffer with the request header
@@ -306,11 +317,11 @@ char *ua_conn_print_header(struct ua_conn *conn,
                            struct ua_log_filter *log_filter);
 /**
  * @brief Multipart creation callback for `conn`
+ * @see https://curl.se/libcurl/c/smtp-mime.html
  *
  * @param conn the connection handle to send multipart body
  * @param data user data to be passed along to `callback`
  * @param callback the user callback
- * @see https://curl.se/libcurl/c/smtp-mime.html
  */
 void ua_conn_set_mime(struct ua_conn *conn,
                       void *data,
@@ -337,8 +348,9 @@ void ua_conn_stop(struct ua_conn *conn);
  *
  * @param conn the connection handle
  * @param attr attributes to be set for transfer
+ * @return CURLE_OK on success, otherwise an error code
  */
-void ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr);
+CURLcode ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr);
 
 /**
  * @brief Get libcurl's easy handle assigned to `conn`
@@ -353,9 +365,8 @@ CURL *ua_conn_get_easy_handle(struct ua_conn *conn);
  *
  * @param conn the connection handle
  * @param info handle to store information on previous request
- * @CCORD_return
  */
-CCORDcode ua_info_extract(struct ua_conn *conn, struct ua_info *info);
+void ua_info_extract(struct ua_conn *conn, struct ua_info *info);
 
 /**
  * @brief Cleanup informational handle

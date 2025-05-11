@@ -148,11 +148,11 @@ cog_u64tostr(char *str, size_t len, uint64_t *p_value)
 size_t
 cog_strndup(const char src[], size_t len, char **p_dest)
 {
-    *p_dest = malloc(len + 1);
-
+    if (!p_dest || !(*p_dest = malloc(len + 1))) {
+        return 0;
+    }
     memcpy(*p_dest, src, len);
     (*p_dest)[len] = '\0';
-
     return len;
 }
 

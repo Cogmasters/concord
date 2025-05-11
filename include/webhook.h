@@ -16,7 +16,7 @@
  * @brief Create a new webhook
  * @note Requires the MANAGE_WEBHOOKS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the webhook belongs to
  * @param params request parameters
  * @CCORD_ret_obj{ret,webhook}
@@ -31,7 +31,7 @@ CCORDcode discord_create_webhook(struct discord *client,
  * @brief Get webhooks from a given channel
  * @note Requires the MANAGE_WEBHOOKS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param channel_id the channel that the webhooks belongs to
  * @CCORD_ret_obj{ret,webhooks}
  * @CCORD_return
@@ -44,7 +44,7 @@ CCORDcode discord_get_channel_webhooks(struct discord *client,
  * @brief Get webhooks from a given guild webhook objects
  * @note Requires the MANAGE_WEBHOOKS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild that the webhooks belongs to
  * @CCORD_ret_obj{ret,webhooks}
  * @CCORD_return
@@ -56,7 +56,7 @@ CCORDcode discord_get_guild_webhooks(struct discord *client,
 /**
  * @brief Get the new webhook object for the given id
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
@@ -68,7 +68,7 @@ CCORDcode discord_get_webhook(struct discord *client,
 /**
  * Same as discord_get_webhook(), except this call does not require
  *        authentication and returns no user in the webhook object
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @CCORD_ret_obj{ret,webhook}
@@ -83,7 +83,7 @@ CCORDcode discord_get_webhook_with_token(struct discord *client,
  * @brief Modify a webhook
  * @note Requires the MANAGE_WEBHOOKS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param params request parameters
  * @CCORD_ret_obj{ret,webhook}
@@ -97,7 +97,7 @@ CCORDcode discord_modify_webhook(struct discord *client,
 /**
  * Same discord_modify_webhook(), except this call does not require
  *       authentication and returns no user in the webhook object
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
@@ -113,7 +113,7 @@ CCORDcode discord_modify_webhook_with_token(
 
 /**
  * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param params request parameters
  * @CCORD_ret{ret}
@@ -127,7 +127,7 @@ CCORDcode discord_delete_webhook(struct discord *client,
 /**
  * Same discord_delete_webhook(), except this call does not require
  *       authentication
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @CCORD_ret{ret}
@@ -139,7 +139,7 @@ CCORDcode discord_delete_webhook_with_token(struct discord *client,
                                             struct discord_ret *ret);
 
 /**
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
@@ -155,7 +155,7 @@ CCORDcode discord_execute_webhook(struct discord *client,
 /**
  * @brief Get previously-sent webhook message from the same token
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
@@ -171,7 +171,7 @@ CCORDcode discord_get_webhook_message(struct discord *client,
 /**
  * @brief Edits a previously-sent webhook message from the same token
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
@@ -190,7 +190,7 @@ CCORDcode discord_edit_webhook_message(
 /**
  * @brief Deletes a message that was created by the webhook
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to

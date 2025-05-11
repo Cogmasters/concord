@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
@@ -27,50 +27,57 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Channel-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Channel-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
 log_on_channel_create(struct discord *client,
                       const struct discord_channel *event)
 {
-    log_info("Channel %s (%" PRIu64 ") created", event->name, event->id);
+    logmod_log(INFO, NULL, "Channel %s (%" PRIu64 ") created", event->name,
+               event->id);
 }
 
 void
 log_on_channel_update(struct discord *client,
                       const struct discord_channel *event)
 {
-    log_info("Channel %s (%" PRIu64 ") updated", event->name, event->id);
+    logmod_log(INFO, NULL, "Channel %s (%" PRIu64 ") updated", event->name,
+               event->id);
 }
 
 void
 log_on_channel_delete(struct discord *client,
                       const struct discord_channel *event)
 {
-    log_info("Channel %s (%" PRIu64 ") deleted", event->name, event->id);
+    logmod_log(INFO, NULL, "Channel %s (%" PRIu64 ") deleted", event->name,
+               event->id);
 }
 
 void
 log_on_thread_create(struct discord *client,
                      const struct discord_channel *event)
 {
-    log_info("Thread %s (%" PRIu64 ") created", event->name, event->id);
+    logmod_log(INFO, NULL, "Thread %s (%" PRIu64 ") created", event->name,
+               event->id);
 }
 
 void
 log_on_thread_update(struct discord *client,
                      const struct discord_channel *event)
 {
-    log_info("Thread %s (%" PRIu64 ") updated", event->name, event->id);
+    logmod_log(INFO, NULL, "Thread %s (%" PRIu64 ") updated", event->name,
+               event->id);
 }
 
 void
 log_on_thread_delete(struct discord *client,
                      const struct discord_channel *event)
 {
-    log_info("Thread %s (%" PRIu64 ") deleted", event->name, event->id);
+    logmod_log(INFO, NULL, "Thread %s (%" PRIu64 ") deleted", event->name,
+               event->id);
 }
 
 void
@@ -114,7 +121,7 @@ done_get_channel_invites(struct discord *client,
                          const struct discord_invites *invites)
 {
     if (!invites->size) {
-        log_info("No invites found!");
+        logmod_log(INFO, NULL, "No invites found!");
         return;
     }
 
@@ -129,8 +136,8 @@ done_get_channel_invites(struct discord *client,
 void
 fail_get_channel_invites(struct discord *client, struct discord_response *resp)
 {
-    log_info("Couldn't fetch invites: %s",
-             discord_strerror(resp->code, client));
+    logmod_log(INFO, NULL, "Couldn't fetch invites: %s",
+               discord_strerror(resp->code, client));
 }
 
 void
@@ -253,8 +260,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Could not initialize client");
 
     discord_set_on_ready(client, &on_ready);
@@ -279,5 +285,4 @@ main(int argc, char *argv[])
     discord_run(client);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

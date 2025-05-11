@@ -1,10 +1,10 @@
-[migrating-shield]: https://img.shields.io/badge/Gist-Migrating%20from%20v1-yellow
-[migrating-link]: https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b
-[migrating-orca-link]: https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e
+[migrating-shield]: https://img.shields.io/badge/Gist-Migrating%20from%20v2-yellow
+[migrating-link]: https://gist.github.com/lcsmuller/8a60b7ccfd9abd4a7f5d8b723f6a2857
 [discord-shield]: https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white
 [discord-invite]: https://discord.gg/Y7Xa6MA82v
 [discord-config-init]: https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb
 [discord-config-get-field]: https://cogmasters.github.io/concord/group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307
+[coglink-link]: https://github.com/PerformanC/CogLink
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord Logo">
@@ -15,12 +15,51 @@
 [ ![discord-shield][] ][discord-invite]
 [ ![migrating-shield][] ][migrating-link]
 
-## 🚨 Concord is not dead! 🚨
-Development has been happening in the dev branch. We are working on new features and improvements. To access the latest version of the library, please check out the dev branch.
-
 ## About
 
 Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
+
+| Contents                                   | Description                                  |
+|-------------------------------------------|----------------------------------------------|
+| [Build Instructions](#build-instructions) | How to build libcurl and Concord             |
+| [Environment Setup](#setting-up-your-environment) | Project setup and compilation        |
+| [Configuration](#configuring-concord)     | How to configure Concord with config.json    |
+| [Example Bot](#test-copycat-bot)          | Test Concord with a simple copycat bot       |
+| [Build Options](#configure-your-build)    | Special flags and build targets              |
+| [Installation](#installing-concord)       | Installing Concord on your system            |
+| [Contributing](#contributing)             | How to contribute to Concord                 |
+
+### Getting Started
+
+- [Documentation](https://cogmasters.github.io/concord/)
+- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
+
+#### Configuration
+
+- [Config.json Directives](docs/guides/config.json_directives.md) - Configure your bot using JSON
+- [Setup with Environment Variables](docs/guides/setup_concord_with_env.md) - Use environment variables
+
+#### Discord Features
+
+- [Embeds](docs/guides/embeds.md) - Create rich message embeds
+- [Slash Commands](docs/guides/slash-commands.md) - Implement Discord application commands
+- [Event Scheduler](docs/guides/scheduler_event.md) - Control Discord event processing
+- [SQLite3 with Concord](docs/guides/sqlite3_db_with_concord.md) - Persist data with SQLite
+- [Databases with Concord](docs/guides/databases_with_concord.md) - General database integration
+
+#### Debugging & Troubleshooting
+
+- [Debugging](docs/guides/debugging.md) - Debug your Concord applications
+
+### Other Guides
+
+Following are other standalone guides created by the community to help you get started with Concord, organized by category:
+
+- [Compiling on Windows](docs/guides/compiling_on_windows.md) - Build Concord on Windows systems
+- [Installing Concord (Termux)](docs/guides/installing_concord_termux.md) - Install on Android using Termux
+- [Msys2 and Mingw64](docs/guides/msys2_and_mingw64.md) - Setup using MSYS2 environment
+- [Cross Compiling](docs/guides/cross_compiling.md) - Compile for different target platforms
+- [Concord on Old Systems](docs/guides/concord_on_old_systems.md) - Support for legacy systems
 
 ### Examples
 
@@ -28,12 +67,11 @@ Concord is an asynchronous C99 Discord API library with minimal external depende
 
 #### Slash Commands (new method)
 
-*Note: you need to replace `GUILD_ID` with an actual guild ID, or this example won't compile!*
-You can use a macro to do this: `#define GUILD_ID 1234567898765431`
-
 ```c
 #include <string.h>
 #include <concord/discord.h>
+
+#define GUILD_ID 1234567898765431 // replace with your guild ID
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
     struct discord_create_guild_application_command params = {
@@ -61,7 +99,7 @@ void on_interaction(struct discord *client, const struct discord_interaction *ev
 }
 
 int main(void) {
-    struct discord *client = discord_init(BOT_TOKEN);
+    struct discord *client = discord_from_token(BOT_TOKEN);
     discord_set_on_ready(client, &on_ready);
     discord_set_on_interaction_create(client, &on_interaction);
     discord_run(client);
@@ -73,10 +111,10 @@ int main(void) {
 ```c
 #include <string.h>
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 
 void on_ready(struct discord *client, const struct discord_ready *event) {
-    log_info("Logged in as %s!", event->user->username);
+    logmod_log(INFO, NULL, "Logged in as %s!", event->user->username);
 }
 
 void on_message(struct discord *client, const struct discord_message *event) {
@@ -87,7 +125,7 @@ void on_message(struct discord *client, const struct discord_message *event) {
 }
 
 int main(void) {
-    struct discord *client = discord_init(BOT_TOKEN);
+    struct discord *client = discord_from_token(BOT_TOKEN);
     discord_add_intents(client, DISCORD_GATEWAY_MESSAGE_CONTENT);
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message);
@@ -108,65 +146,54 @@ int main(void) {
 
 ## Build Instructions
 
-The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
+The only dependency is `curl-8.7.1` or higher with websockets support. Since many system package managers don't provide this specific version with websockets enabled, we recommend compiling from source.
+
+> [!IMPORTANT]
+> Libcurl must be compiled with the `--enable-websockets` flag to work with Concord.
 
 ### On Windows
 
 * Install **Cygwin**
-* **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
-* You will want to check the Windows tutorial [here](docs/guides/compiling_on_windows.md)!
-* Mingw64 and Msys2 are currently NOT supported. Please see [this](docs/guides/msys2_and_mingw64.md) for more information.
-* Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.
-* Note: you will likely need to include `-L/usr/local/lib -I/usr/local/include` on your `gcc` command, or in your `CFLAGS` variable in your Makefile for your bot.
+* During Cygwin installation, select packages: `gcc`, `make`, `git`, `autoconf`, `libtool`, `pkg-config`, `openssl-devel`, `zlib-devel`
+* Follow the Windows tutorial [here](docs/guides/compiling_on_windows.md)
+* Then compile libcurl from source (instructions below)
 
-### On Linux, BSD, and Mac OS X
-
-*(note -- `#` means that you should be running as root)*
-
-#### Ubuntu and Debian
+### Compiling libcurl from source (recommended for all platforms)
 
 ```console
-# apt update && apt install -y libcurl4-openssl-dev
-```
+# Install build dependencies
+# Ubuntu/Debian:
+$ sudo apt-get update && sudo apt-get install -y build-essential autoconf libtool pkg-config libssl-dev zlib1g-dev
 
-#### Void Linux
+# Fedora/RHEL/CentOS:
+$ sudo dnf install -y gcc make autoconf libtool pkgconfig openssl-devel zlib-devel
 
-```console
-# xbps-install -S libcurl-devel
-```
+# Arch/Manjaro:
+$ sudo pacman -S --needed base-devel openssl zlib
 
-#### Alpine
+# Alpine:
+$ apk add build-base autoconf libtool pkgconfig openssl-dev zlib-dev
 
-```console
-# apk add curl-dev
-```
+# FreeBSD:
+$ pkg install autoconf libtool pkgconf openssl
 
-#### FreeBSD
+# OS X:
+$ xcode-select --install
+$ brew install autoconf libtool pkg-config openssl@3
+# or with MacPorts:
+$ port install autoconf libtool pkgconfig openssl
 
-```console
-# pkg install curl
-```
+# Download and compile libcurl
+$ curl -LO https://curl.se/download/curl-8.7.1.tar.gz
+$ tar -xzf curl-8.7.1.tar.gz
+$ cd curl-8.7.1
+$ ./configure --with-openssl --enable-websockets
+$ make
+$ sudo make install
 
-#### OS X
-* Note: you will need to install Xcode, or at a minimum, the command-line tools with `xcode-select --install`.
-```console
-$ brew install curl (Homebrew)
-$ port install curl (MacPorts)
-```
-
-#### Arch Linux / Manjaro (Arch based)
-
-```console
-git clone https://aur.archlinux.org/concord-git.git
-cd concord-git
-makepkg -Acs
-pacman -U concord-git-version-any.pkg.tar.zst
-```
-
-Alternatively, you can use an AUR helper:
-
-```console
-yay -S concord-git
+# You might need to inform the system's dynamic linker about the new library location with:
+$ echo "/usr/local/lib" > /etc/ld.so.conf.d/curl.conf
+$ sudo ldconfig
 ```
 
 ## Setting up your environment
@@ -182,6 +209,19 @@ $ git clone https://github.com/cogmasters/concord.git && cd concord
 ```console
 $ make
 ```
+
+#### Optional: speed up compilation
+
+You can speed up the compilation process by using `-j` flag with `make`:
+```console
+$ make -j$(nproc)
+```
+This will use all available CPU cores to compile Concord. You can also specify a number instead of `$(nproc)` to limit the number of jobs.
+
+### Special notes about Voice Connections
+
+Concord does not support voice connections yet. If you want to use voice connections, you can use [CogLink][coglink-link] instead.
+CogLink is a separate project that provides a LavaLink client for Concord. It is not part of the Concord library, but it is designed to work seamlessly with Concord.
 
 ### Special notes for non-Linux systems
 
@@ -207,6 +247,7 @@ $ CFLAGS="-pthread -lpthread" make
 ```
 
 ### Special note about linking Concord against another library
+
 In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared
 object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make`. 
 
@@ -217,29 +258,23 @@ object. In that case, you will need to compile Concord with `CFLAGS="-fpic" make
 The following outlines `config.json` fields:
 ```js
 {
-  "logging": { // logging directives
-    "level": "trace",        // trace, debug, info, warn, error, fatal
-    "filename": "bot.log",   // the log output file
-    "quiet": false,          // change to true to disable logs in console
-    "overwrite": true,       // overwrite file if already exists, append otherwise
-    "use_color": true,       // display color for log entries
-    "http": {
-      "enable": true,        // generate http specific logging
-      "filename": "http.log" // the HTTP log output file
-    },
-    "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
-  },
-  "discord": { // discord directives
-    "token": "YOUR-BOT-TOKEN",         // replace with your bot token
-    "default_prefix": {                 
-      "enable": false,                 // enable default command prefix
-      "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
-    }
-  },
-  ... // here you can add your custom fields *
+  "token": "YOUR-BOT-TOKEN", // replace with your bot token
+  "log": {                   // logging directives
+    "level": "TRACE",           // TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+    "trace": "bot.log",         // the log output file (null to disable)
+    "quiet": false,             // true to disable logs in console
+    "overwrite": true,          // true overwrites the file on each run
+    "color": true,              // display color on console
+    "http": "http.log",         // the HTTP log output file (null to disable)
+    "ws": "ws.log",             // the WebSockets log output file (null to disable)
+    "disable": ["WEBSOCKETS", "HTTP"] // disable logging for specific modules
+  }
+  // here you can add your custom fields *
 }
 ```
 \* *Your custom field contents can be fetched with [discord\_config\_get\_field()][discord-config-get-field]*
+
+See more information about the `config.json` file in the [config.json directives](docs/guides/config.json_directives.md) guide.
 
 ## Test Copycat-Bot
 
@@ -289,8 +324,6 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP" make
     * Produce a dynamically-linked version of Concord. This Makefile is intended for GNU-style compilers, such as `gcc` or `clang`.
 * `make shared_osx`
     * Produce a dynamically-linked version of Concord, for OS X and Darwin systems. 
-* `make voice`
-    * Enable experimental Voice Connection handling - not production ready.
 * `make debug`
     * Enable some flags useful while developing, such as `-O0` and `-g`
 
@@ -317,10 +350,10 @@ The following are `stable` and well documented dependencies that are packaged wi
 | File                                                  | Description                                        |
 |-------------------------------------------------------|----------------------------------------------------|
 | [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
-| [log.c](https://github.com/rxi/log.c)\*               | A simple C99 logging library                       |
+| [logmod](https://github.com/lcsmuller/logmod)         | A modular logging library                          |
 | [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
 | [anomap](https://github.com/Anotra/anomap)\*          | Sorted key/value storage for C99                   |
-| [chash](https://github.com/c-ware/chash)\*            | Macro-based implementation of type-safe hashtables |
+| [oa_hash](https://github.com/lcsmuller/oa-hash)       | A lightweight open-addressing hashtable            |
 | [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
 | [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |
 
@@ -329,7 +362,7 @@ The following are `stable` and well documented dependencies that are packaged wi
 Note that included headers must be `concord/` prefixed:
 ```c
 #include <concord/discord.h>
-#include <concord/log.h>
+#include <concord/logmod.h>
 ```
 
 ### Standalone executable
@@ -366,51 +399,16 @@ $ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl
 ```
 (this links against libpthread.a in `/usr/lib`)
 
-## Recommended debuggers
-
-First, make sure your executable is compiled with the `-g` flag to ensure human-readable debugger messages.
-
-### Valgrind
-
-Using valgrind to check for memory leaks:
-
-```console
-valgrind --leak-check=full ./myBot
-```
-For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
-
-### GDB
-
-Using GDB to check for runtime errors, such as segmentation faults:
-
-```console
-$ gdb ./myBot
-```
-And then execute your bot from the gdb environment:
-```console
-(gdb) run
-```
-If the program has crashed, get a backtrace of the function calls leading to it:
-```console
-(gdb) bt
-```
-
-For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us/guide/bggdb/)
-
 ## Support
 
 Problems? Check out our [Discord Server][discord-invite]
 
 ## Contributing
 
-All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
+All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check the following guides for more information on how to contribute:
 
-## Getting Started
-
-- [Documentation](https://cogmasters.github.io/concord/)
-- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
-
-## Useful links
-
-- [Migrating from V1][migrating-link]
-- [Migrating from Orca][migrating-orca-link]
+- [Contributing](docs/CONTRIBUTING.md) - How to contribute to Concord
+- [Project Outline](docs/PROJECT_OUTLINE.md) - Overview of the project structure
+- [Coding Guidelines](docs/CODING_GUIDELINES.md) - Coding style and best practices
+- [Discord API Roadmap](docs/DISCORD_ROADMAP.md) - Overview of Discord API features and their status
+- [Concord Internals](docs/INTERNALS.md) - Understand how Concord works internally

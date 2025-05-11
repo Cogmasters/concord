@@ -17,6 +17,7 @@ _discord_request_cleanup(struct discord_request *req)
     discord_attachments_cleanup(&req->attachments);
     if (req->body.start) free(req->body.start);
     if (req->reason) free(req->reason);
+    if (req->json.start) free((char *)req->json.start);
     free(req);
 }
 
@@ -24,8 +25,14 @@ static void
 _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 {
     char auth[128];
-    int len = snprintf(auth, sizeof(auth), "Bot %s", (char *)p_token);
-    ASSERT_NOT_OOB(len, sizeof(auth));
+    if ((snprintf(auth, sizeof(auth), "Bot %s", (char *)p_token)
+         >= (int)sizeof(auth)))
+    {
+        logmod_log(ERROR, NULL,
+                   "Internal error: Authorization header too long: %s",
+                   (char *)p_token);
+        return;
+    }
 
     ua_conn_add_header(conn, "Authorization", auth);
 #ifdef CCORD_DEBUG_HTTP
@@ -33,77 +40,122 @@ _discord_on_curl_setopt(struct ua_conn *conn, void *p_token)
 #endif
 }
 
-void
-discord_requestor_init(struct discord_requestor *rqtor,
-                       struct logconf *conf,
-                       const char token[])
+CCORDcode
+discord_requestor_init(struct discord_requestor *rqtor, const char token[])
 {
-    logconf_branch(&rqtor->conf, conf, "DISCORD_REQUEST");
+    struct discord *client = CLIENT(rqtor, rest.requestor);
+    CCORDcode code;
 
-    rqtor->ua = ua_init(&(struct ua_attr){ .conf = conf });
+    if (!(rqtor->logger = logmod_get_logger(&client->logmod, "REQUEST"))) {
+        logmod_log(ERROR, NULL, "Couldn't create logger for requestor");
+        return CCORD_INTERNAL_ERROR;
+    }
+    if (!(rqtor->ua = ua_init(&client->logmod, client->config.log.http))) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize User-Agent handle");
+        return CCORD_INTERNAL_ERROR;
+    }
     ua_set_url(rqtor->ua, DISCORD_API_BASE_URL);
     ua_set_opt(rqtor->ua, (char *)token, &_discord_on_curl_setopt);
 
     /* queues are malloc'd to guarantee a client cloned by
      * discord_clone() will share the same queue with the original */
-    rqtor->queues = malloc(sizeof *rqtor->queues);
+    if (!(rqtor->queues = malloc(sizeof *rqtor->queues))) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't allocate memory for requestor's queues");
+        return CCORD_OUT_OF_MEMORY;
+    }
     QUEUE_INIT(&rqtor->queues->recycling);
     QUEUE_INIT(&rqtor->queues->pending);
     QUEUE_INIT(&rqtor->queues->finished);
 
-    rqtor->qlocks = malloc(sizeof *rqtor->qlocks);
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->recycling, NULL),
-             "Couldn't initialize requestor's recycling queue mutex");
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->pending, NULL),
-             "Couldn't initialize requestor's pending queue mutex");
-    ASSERT_S(!pthread_mutex_init(&rqtor->qlocks->finished, NULL),
-             "Couldn't initialize requestor's finished queue mutex");
+    if (!(rqtor->qlocks = malloc(sizeof *rqtor->qlocks))) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't allocate memory for requestor's queue locks");
+        return CCORD_OUT_OF_MEMORY;
+    }
+    if (pthread_mutex_init(&rqtor->qlocks->recycling, NULL)) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's recycling queue mutex");
+        return CCORD_ERRNO;
+    }
+    if (pthread_mutex_init(&rqtor->qlocks->pending, NULL)) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's pending queue mutex");
+        return CCORD_ERRNO;
+    }
+    if (pthread_mutex_init(&rqtor->qlocks->finished, NULL)) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's finished queue mutex");
+        return CCORD_ERRNO;
+    }
 
-    rqtor->mhandle = curl_multi_init();
+    if (!(rqtor->mhandle = curl_multi_init())) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's multi handle");
+        return CCORD_INTERNAL_ERROR;
+    }
     rqtor->retry_limit = 3; /* FIXME: shouldn't be a hard limit */
-
-    discord_ratelimiter_init(&rqtor->ratelimiter, &rqtor->conf);
+    if ((code = discord_ratelimiter_init(&rqtor->ratelimiter)) != CCORD_OK) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't initialize requestor's ratelimiter");
+        return code;
+    }
+    return CCORD_OK;
 }
 
 void
 discord_requestor_cleanup(struct discord_requestor *rqtor)
 {
-    struct discord_rest *rest =
-        CONTAINEROF(rqtor, struct discord_rest, requestor);
-    QUEUE *const req_queues[] = { &rqtor->queues->recycling,
-                                  &rqtor->queues->pending,
-                                  &rqtor->queues->finished };
+    if (rqtor->queues) {
+        QUEUE *const req_queues[] = { &rqtor->queues->recycling,
+                                      &rqtor->queues->pending,
+                                      &rqtor->queues->finished };
+        /* cleanup ratelimiting handle */
+        discord_ratelimiter_cleanup(&rqtor->ratelimiter);
 
-    /* cleanup ratelimiting handle */
-    discord_ratelimiter_cleanup(&rqtor->ratelimiter);
+        /* cleanup queues */
+        for (size_t i = 0; i < sizeof(req_queues) / sizeof *req_queues; ++i) {
+            QUEUE(struct discord_request) queue, *qelem;
+            struct discord_request *req;
 
-    /* cleanup queues */
-    for (size_t i = 0; i < sizeof(req_queues) / sizeof *req_queues; ++i) {
-        QUEUE(struct discord_request) queue, *qelem;
-        struct discord_request *req;
+            QUEUE_MOVE(req_queues[i], &queue);
+            while (!QUEUE_EMPTY(&queue)) {
+                qelem = QUEUE_HEAD(&queue);
+                QUEUE_REMOVE(qelem);
 
-        QUEUE_MOVE(req_queues[i], &queue);
-        while (!QUEUE_EMPTY(&queue)) {
-            qelem = QUEUE_HEAD(&queue);
-            QUEUE_REMOVE(qelem);
-
-            req = QUEUE_DATA(qelem, struct discord_request, entry);
-            _discord_request_cleanup(req);
+                req = QUEUE_DATA(qelem, struct discord_request, entry);
+                _discord_request_cleanup(req);
+            }
         }
+        free(rqtor->queues);
     }
-    free(rqtor->queues);
-
-    /* cleanup queue locks */
-    pthread_mutex_destroy(&rqtor->qlocks->recycling);
-    pthread_mutex_destroy(&rqtor->qlocks->pending);
-    pthread_mutex_destroy(&rqtor->qlocks->finished);
-    free(rqtor->qlocks);
-
+    if (rqtor->qlocks) {
+        pthread_mutex_t *const qlocks[] = { &rqtor->qlocks->recycling,
+                                            &rqtor->qlocks->pending,
+                                            &rqtor->qlocks->finished };
+        for (size_t i = 0; i < sizeof(qlocks) / sizeof *qlocks; ++i) {
+            if (memcmp(qlocks[i], &(pthread_mutex_t){ 0 },
+                       sizeof(pthread_mutex_t))
+                != 0)
+            {
+                pthread_mutex_destroy(qlocks[i]);
+            }
+        }
+        free(rqtor->qlocks);
+    }
     /* cleanup curl's multi handle */
-    io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
-    curl_multi_cleanup(rqtor->mhandle);
+    if (rqtor->mhandle) {
+        const struct discord_rest *rest =
+            CONTAINEROF(rqtor, struct discord_rest, requestor);
+        io_poller_curlm_del(rest->io_poller, rqtor->mhandle);
+        curl_multi_cleanup(rqtor->mhandle);
+    }
     /* cleanup User-Agent handle */
-    ua_cleanup(rqtor->ua);
+    if (rqtor->ua) {
+        ua_cleanup(rqtor->ua);
+    }
+    memset(rqtor, 0, sizeof *rqtor);
 }
 
 static void
@@ -123,9 +175,14 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
 
     /* attachment part */
     for (int i = 0; i < req->attachments.size; ++i) {
-        int len = snprintf(name, sizeof(name), "files[%" PRIu64 "]",
-                           req->attachments.array[i].id);
-        ASSERT_NOT_OOB(len, sizeof(name));
+        if ((snprintf(name, sizeof(name), "files[%" PRIu64 "]",
+                      req->attachments.array[i].id))
+            >= (int)sizeof(name))
+        {
+            logmod_log(ERROR, NULL, "Attachment's filename is too long: %s",
+                       req->attachments.array[i].filename);
+            continue;
+        }
 
         if (req->attachments.array[i].content) {
             part = curl_mime_addpart(mime);
@@ -167,71 +224,70 @@ _discord_request_to_multipart(curl_mime *mime, void *p_req)
 static bool
 _discord_request_info_extract(struct discord_requestor *rqtor,
                               struct discord_request *req,
+                              const CURLcode ecode,
                               struct ua_info *info)
 {
-    ua_info_extract(req->conn, info);
-
-    if (info->code != CCORD_HTTP_CODE) { /* CCORD_OK or internal error */
-        req->code = info->code;
-        return false;
+    if (ecode != CURLE_OK) {
+        logmod_log(ERROR, rqtor->logger,
+                   "Couldn't extract information from request: %s",
+                   curl_easy_strerror(ecode));
+        return (req->code = CCORD_CURLE_INTERNAL), false;
     }
 
-    switch (info->httpcode) {
+    switch (ua_info_extract(req->conn, info), info->httpcode) {
+    case HTTP_OK:
+    case HTTP_CREATED:
+    case HTTP_NO_CONTENT:
+        req->json.size = cog_strndup(info->body.buf, info->body.len,
+                                     (char **)&req->json.start);
+        return (req->code = CCORD_OK), false;
     case HTTP_FORBIDDEN:
     case HTTP_NOT_FOUND:
     case HTTP_BAD_REQUEST:
-        req->code = CCORD_DISCORD_JSON_CODE;
-        return false;
+        req->json.size = cog_strndup(info->body.buf, info->body.len,
+                                     (char **)&req->json.start);
+        return (req->code = CCORD_DISCORD_JSON_CODE), false;
     case HTTP_UNAUTHORIZED:
-        logconf_fatal(
-            &rqtor->conf,
-            "UNAUTHORIZED: Please provide a valid authentication token");
-        req->code = CCORD_DISCORD_BAD_AUTH;
-        return false;
+        logmod_log(
+            ERROR, rqtor->logger,
+            "401 UNAUTHORIZED: Please provide a valid authentication token");
+        return (req->code = CCORD_DISCORD_BAD_AUTH), false;
     case HTTP_METHOD_NOT_ALLOWED:
-        logconf_fatal(&rqtor->conf,
-                      "METHOD_NOT_ALLOWED: The server couldn't recognize the "
-                      "received HTTP method");
-
-        req->code = info->code;
-        return false;
+        logmod_log(ERROR, rqtor->logger,
+                   "405 METHOD_NOT_ALLOWED: The server couldn't recognize the "
+                   "received HTTP method");
+        return (req->code = CCORD_HTTP_CODE), false;
     case HTTP_TOO_MANY_REQUESTS: {
-        struct ua_szbuf_readonly body = ua_info_get_body(info);
-        struct jsmnftok message = { 0 };
+        const struct ua_szbuf_readonly body = ua_info_get_body(info);
         u64unix_ms retry_after_ms = 1000;
+        struct jsmntok message = { 0 };
         bool is_global = false;
-        jsmn_parser parser;
-        jsmntok_t tokens[16];
+        jsmnf_table table[0x10];
+        jsmnf_loader loader;
 
-        jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, body.start, body.size, table,
+                           sizeof(table) / sizeof *table))
         {
-            jsmnf_loader loader;
-            jsmnf_pair pairs[16];
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
-            {
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, body.start, "global", 6)))
-                    is_global = ('t' == body.start[f->v.pos]);
-                if ((f = jsmnf_find(pairs, body.start, "message", 7)))
-                    message = f->v;
-                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11))) {
-                    double retry_after = strtod(body.start + f->v.pos, NULL);
-                    if (retry_after > 0)
-                        retry_after_ms = (u64unix_ms)(1000 * retry_after);
-                }
+            const jsmnf_pair *f;
+            if ((f = jsmnf_find(loader.root, "global", 6))) {
+                is_global = ('t' == body.start[f->v->start]);
+            }
+            if ((f = jsmnf_find(loader.root, "message", 7))) {
+                message = *f->v;
+            }
+            if ((f = jsmnf_find(loader.root, "retry_after", 11))) {
+                const double retry_after =
+                    strtod(body.start + f->v->start, NULL);
+                if (retry_after > 0)
+                    retry_after_ms = (u64unix_ms)(1000 * retry_after);
             }
         }
 
-        logconf_warn(&rqtor->conf,
-                     "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
-                     is_global ? "GLOBAL " : "", retry_after_ms, message.len,
-                     body.start + message.pos);
+        logmod_log(ERROR, rqtor->logger,
+                   "429 %sRATELIMITING (wait: %" PRIu64 " ms) : %.*s",
+                   is_global ? "GLOBAL " : "", retry_after_ms,
+                   message.end - message.start, body.start + message.start);
 
         if (is_global)
             discord_ratelimiter_set_global_timeout(&rqtor->ratelimiter, req->b,
@@ -239,12 +295,11 @@ _discord_request_info_extract(struct discord_requestor *rqtor,
         else
             discord_bucket_set_timeout(req->b, retry_after_ms);
 
-        req->code = info->code;
-        return true;
+        return (req->code = CCORD_DISCORD_RATELIMIT), true;
     }
     default:
-        req->code = info->code;
-        return (info->httpcode >= 500); /* retry if Server Error */
+        return (req->code = CCORD_HTTP_CODE),
+               (info->httpcode >= 500); /* retry if Server Error */
     }
 }
 
@@ -268,7 +323,13 @@ discord_request_cancel(struct discord_requestor *rqtor,
     if (req->dispatch.data) {
         discord_refcounter_decr(rc, req->dispatch.data);
     }
-
+    if (req->json.start) {
+        free((char *)req->json.start);
+        memset(&req->json, 0, sizeof req->json);
+    }
+    if (!req->body.is_static) {
+        free(req->body.start);
+    }
     req->body.size = 0;
     req->method = 0;
     *req->endpoint = '\0';
@@ -291,7 +352,8 @@ _discord_request_dispatch_response(struct discord_requestor *rqtor,
     struct discord *client = CLIENT(rqtor, rest.requestor);
     struct discord_response resp = { .data = req->dispatch.data,
                                      .keep = req->dispatch.keep,
-                                     .code = req->code };
+                                     .code = req->code,
+                                     .json = req->json };
 
     if (req->code != CCORD_OK) {
         if (req->dispatch.fail) req->dispatch.fail(client, &resp);
@@ -384,15 +446,17 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                 struct ua_szbuf_readonly body;
                 struct ua_info info;
 
-                retry = _discord_request_info_extract(rqtor, req, &info);
+                retry =
+                    _discord_request_info_extract(rqtor, req, ecode, &info);
                 body = ua_info_get_body(&info);
 
-                if (info.code != CCORD_OK) {
-                    logconf_error(&rqtor->conf, "%.*s", (int)body.size,
-                                  body.start);
+                if (req->code != CCORD_OK) {
+                    logmod_log(ERROR, rqtor->logger, "%.*s (HTTP code: %ld)",
+                               (int)body.size, body.start, info.httpcode);
                 }
                 else if (req->dispatch.has_type
-                         && req->dispatch.sync != DISCORD_SYNC_FLAG) {
+                         && req->dispatch.sync != DISCORD_SYNC_FLAG)
+                {
                     if (req->dispatch.sync) {
                         req->response.data = req->dispatch.sync;
                     }
@@ -420,8 +484,8 @@ discord_requestor_info_read(struct discord_requestor *rqtor)
                 ua_info_cleanup(&info);
             } break;
             default:
-                logconf_warn(&rqtor->conf, "%s (CURLE code: %d)",
-                             curl_easy_strerror(ecode), ecode);
+                logmod_log(WARN, rqtor->logger, "%s (CURLE code: %d)",
+                           curl_easy_strerror(ecode), ecode);
 
                 retry = (ecode == CURLE_READ_ERROR);
                 req->code = CCORD_CURLE_INTERNAL;
@@ -455,24 +519,31 @@ _discord_request_send(void *p_rqtor, struct discord_request *req)
     static struct ua_szbuf_readonly hide_headers[] = {
         { "Authorization", sizeof("Authorization") - 1 }
     };
-
     struct discord_requestor *rqtor = p_rqtor;
     CURL *ehandle;
 
     req->conn = ua_conn_start(rqtor->ua);
     ehandle = ua_conn_get_easy_handle(req->conn);
 
-    if (NOT_EMPTY_STR(req->reason))
+    if (NOT_EMPTY_STR(req->reason)) {
         ua_conn_add_header(req->conn, "X-Audit-Log-Reason", req->reason);
+        logmod_log(DEBUG, rqtor->logger, "Request reason: %s", req->reason);
+    }
 
     if (HTTP_MIMEPOST == req->method) {
         ua_conn_add_header(req->conn, "Content-Type", "multipart/form-data");
         ua_conn_set_mime(req->conn, req, &_discord_request_to_multipart);
+        logmod_log(DEBUG, rqtor->logger, "Sending multipart/form-data body");
     }
-    else if (req->body.size)
+    else if (req->body.size) {
         ua_conn_add_header(req->conn, "Content-Type", "application/json");
-    else
+        logmod_log(DEBUG, rqtor->logger, "Sending application/json body");
+    }
+    else {
         ua_conn_remove_header(req->conn, "Content-Type");
+        logmod_log(DEBUG, rqtor->logger,
+                   "Sending empty body (no Content-Type header)");
+    }
 
     ua_conn_setup(req->conn, &(struct ua_conn_attr){
                                  .method = req->method,
@@ -591,13 +662,13 @@ _discord_request_get(struct discord_requestor *rqtor)
 
 CCORDcode
 discord_request_begin(struct discord_requestor *rqtor,
-                      struct discord_attributes *attr,
-                      struct ccord_szbuf *body,
-                      enum http_method method,
-                      char endpoint[DISCORD_ENDPT_LEN],
-                      char key[DISCORD_ROUTE_LEN])
+                      const struct discord_attributes *attr,
+                      const struct ccord_szbuf *body,
+                      const enum http_method method,
+                      const char endpoint[DISCORD_ENDPT_LEN],
+                      const char key[DISCORD_ROUTE_LEN])
 {
-    struct discord_rest *rest =
+    const struct discord_rest *rest =
         CONTAINEROF(rqtor, struct discord_rest, requestor);
     struct discord *client = CLIENT(rest, rest);
 
@@ -605,27 +676,21 @@ discord_request_begin(struct discord_requestor *rqtor,
     CCORDcode code;
 
     req->method = method;
-    if (body) {
-        if (body->size > req->body.realsize) { /* buffer needs a resize */
-            void *tmp = realloc(req->body.start, body->size);
-            ASSERT_S(tmp != NULL, "Out of memory");
-
-            req->body.start = tmp;
-            req->body.realsize = body->size;
-        }
-        memcpy(req->body.start, body->start, body->size);
-        req->body.size = body->size;
-    }
+    if (body) req->body = *body;
     memcpy(req->endpoint, endpoint, sizeof(req->endpoint));
     memcpy(req->key, key, sizeof(req->key));
 
     _discord_request_attributes_copy(req, attr);
 
     if (req->dispatch.keep) {
-        code = discord_refcounter_incr(&client->refcounter,
-                                       (void *)req->dispatch.keep);
-
-        ASSERT_S(code == CCORD_OK, "'.keep' data must be a Concord resource");
+        if ((code = discord_refcounter_incr(&client->refcounter,
+                                            (void *)req->dispatch.keep))
+            < 0)
+        {
+            logmod_log(ERROR, rest->logger,
+                       "'.keep' data must point to a Concord resource");
+            return code;
+        }
     }
     if (req->dispatch.data
         && CCORD_RESOURCE_UNAVAILABLE

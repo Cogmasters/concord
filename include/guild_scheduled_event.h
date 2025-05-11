@@ -15,7 +15,7 @@
 /**
  * @brief Get a list of scheduled events for the guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to fetch the scheduled events from
  * @param params request parameters
  * @CCORD_ret_obj{ret,guild_scheduled_events}
@@ -32,7 +32,7 @@ CCORDcode discord_list_guild_scheduled_events(
  * @note A guild can have a maximum of 100 events with `SCHEDULED` or `ACTIVE`
  *      status at any time
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to create the scheduled event at
  * @param params request parameters
  * @CCORD_ret_obj{ret,guild_scheduled_event}
@@ -47,7 +47,7 @@ CCORDcode discord_create_guild_scheduled_event(
 /**
  * @brief Get a guild scheduled event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to fetch the scheduled event from
  * @param guild_scheduled_event_id the scheduled event to be fetched
  * @param params request parameters
@@ -65,7 +65,7 @@ CCORDcode discord_get_guild_scheduled_event(
  * @brief Modify a guild scheduled event
  * @note Silently discards `entity_metadata` for non-`EXTERNAL` events
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild where the scheduled event to be modified is at
  * @param guild_scheduled_event_id the scheduled event to be modified
  * @param params request parameters
@@ -82,7 +82,7 @@ CCORDcode discord_modify_guild_scheduled_event(
 /**
  * @brief Delete a guild scheduled event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild where the scheduled event to be deleted is at
  * @param guild_scheduled_event_id the scheduled event to be deleted
  * @CCORD_ret{ret}
@@ -99,7 +99,7 @@ CCORDcode discord_delete_guild_scheduled_event(
  * @note Guild member data, if it exists, is included if the
  *      `params.with_member` value is set
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild with the scheduled event belongs to
  * @param guild_scheduled_event_id the scheduled event
  * @param params request parameters
