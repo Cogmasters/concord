@@ -24,7 +24,7 @@ static const struct {
 } dispatch[] = {
     [DISCORD_EV_READY] = INIT(discord_ready),
     [DISCORD_EV_APPLICATION_COMMAND_PERMISSIONS_UPDATE] =
-        INIT(discord_application_command_permissions),
+        INIT(discord_application_command_permission),
     [DISCORD_EV_AUTO_MODERATION_RULE_CREATE] =
         INIT(discord_auto_moderation_rule),
     [DISCORD_EV_AUTO_MODERATION_RULE_UPDATE] =

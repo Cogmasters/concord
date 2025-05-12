@@ -32,7 +32,6 @@ HEADERS = $(API_DIR)/application.h           \
           $(API_DIR)/audit_log.h             \
           $(API_DIR)/auto_moderation.h       \
           $(API_DIR)/channel.h               \
-          $(API_DIR)/custom.h                \
           $(API_DIR)/emoji.h                 \
           $(API_DIR)/gateway.h               \
           $(API_DIR)/guild.h                 \

@@ -64,27 +64,27 @@ ENUM_END
 PUB_STRUCT(discord_audit_log)
   /** list of audit log entries */
   COND_WRITE(self->audit_log_entries != NULL)
-    FIELD_STRUCT_PTR(audit_log_entries, discord_audit_log_entries, *)
+    FIELD_STRUCT_PTR(audit_log_entries, discord_audit_log_entry, *)
   COND_END
   /** list of guild scheduled events found in the audit log */
   COND_WRITE(self->guild_scheduled_events != NULL)
-    FIELD_STRUCT_PTR(guild_scheduled_events, discord_guild_scheduled_events, *)
+    FIELD_STRUCT_PTR(guild_scheduled_events, discord_guild_scheduled_event, *)
   COND_END
   /** list of partial integration objects */
   COND_WRITE(self->integrations != NULL)
-    FIELD_STRUCT_PTR(integrations, discord_integrations, *)
+    FIELD_STRUCT_PTR(integrations, discord_integration, *)
   COND_END
   /** list of threads found in the audit log */
   COND_WRITE(self->threads != NULL)
-    FIELD_STRUCT_PTR(threads, discord_channels, *)
+    FIELD_STRUCT_PTR(threads, discord_channel, *)
   COND_END
   /** list of users found in the audit log */
   COND_WRITE(self->users != NULL)
-    FIELD_STRUCT_PTR(users, discord_users, *)
+    FIELD_STRUCT_PTR(users, discord_user, *)
   COND_END
   /** list of webhooks found in the audit log */
   COND_WRITE(self->webhooks != NULL)
-    FIELD_STRUCT_PTR(webhooks, discord_webhooks, *)
+    FIELD_STRUCT_PTR(webhooks, discord_webhook, *)
   COND_END
 STRUCT_END
 #endif
@@ -95,7 +95,7 @@ STRUCT(discord_audit_log_entry)
     FIELD_SNOWFLAKE(target_id)
   /** changes made to the target_id */
   COND_WRITE(self->changes != NULL)
-    FIELD_STRUCT_PTR(changes, discord_audit_log_changes, *)
+    FIELD_STRUCT_PTR(changes, discord_audit_log_change, *)
   COND_END
   /** the user who made the changes */
     FIELD_SNOWFLAKE(user_id)
@@ -107,17 +107,11 @@ STRUCT(discord_audit_log_entry)
   COND_END
   /** additional info for certain action types */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_optional_audit_entry_infos, *)
+    FIELD_STRUCT_PTR(options, discord_optional_audit_entry_info, *)
   COND_END
   /** the reason for the change (0-512) characters */
     FIELD_PTR(reason, char, *)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_audit_log_entries)
-    LISTTYPE_STRUCT(discord_audit_log_entry)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -142,12 +136,6 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_optional_audit_entry_infos)
-    LISTTYPE_STRUCT(discord_optional_audit_entry_info)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_audit_log_change)
   /** new value of the key */
     FIELD_PTR(new_value, json_char, *)
@@ -156,12 +144,6 @@ STRUCT(discord_audit_log_change)
   /** name of audit log change key */
     FIELD_PTR(key, char, *)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_audit_log_changes)
-    LISTTYPE_STRUCT(discord_audit_log_change)
-LIST_END
 #endif
 
 /*****************************************************************************

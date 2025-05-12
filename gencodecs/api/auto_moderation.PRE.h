@@ -63,13 +63,13 @@ STRUCT(discord_auto_moderation_trigger_metadata)
    * substrings which will be searched for in content
    * @note associated with @ref DISCORD_AUTO_MODERATION_KEYWORD
    */
-    FIELD_STRUCT_PTR(keyword_filter, strings, *)
+    FIELD_PTR(keyword_filter, char, *)
   /** 
    * the internally pre-defined wordsets which will be searched for in 
    *    content
    * @note associated with @ref DISCORD_AUTO_MODERATION_KEYWORD_PRESET
    */
-    FIELD_STRUCT_PTR(presets, integers, *)
+    FIELD_PTR(presets, int, *)
 STRUCT_END
 #endif
 
@@ -86,12 +86,6 @@ STRUCT(discord_auto_moderation_action)
     FIELD_STRUCT_PTR(metadata, discord_auto_moderation_action_metadata, *)
   COND_END
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_auto_moderation_actions)
-    LISTTYPE_STRUCT(discord_auto_moderation_action)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -134,23 +128,16 @@ PUB_STRUCT(discord_auto_moderation_rule)
     FIELD_ENUM(trigger_type, discord_auto_moderation_trigger_types)
   COND_END
   /** the actions which will execute when the rule is triggered */
-    FIELD_STRUCT_PTR(actions, discord_auto_moderation_actions, *)
+    FIELD_STRUCT_PTR(actions, discord_auto_moderation_action, *)
   /** the actions which will execute when the rule is triggered */
     FIELD_STRUCT_PTR(trigger_metadata, discord_auto_moderation_trigger_metadata, *)
   /** whether the rule is enabled */
     FIELD(enabled, bool, false)
   /** the role ids that should not be affected by the rule (Maximum of 20) */
-    FIELD_STRUCT_PTR(exempt_roles, snowflakes, *)
+    FIELD_PTR(exempt_roles, u64snowflake, *)
   /** the channel ids that should not be affected by the rule (Maximum of 50) */
-    FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
+    FIELD_PTR(exempt_channels, u64snowflake, *)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_auto_moderation_rules} */
-#if GENCODECS_RECIPE & (DATA | JSON_DECODER)
-PUB_LIST(discord_auto_moderation_rules)
-    LISTTYPE_STRUCT(discord_auto_moderation_rule)
-LIST_END
 #endif
 
 /*****************************************************************************
@@ -176,7 +163,7 @@ PUB_STRUCT(discord_create_auto_moderation_rule)
   COND_END
   /** the actions which will execute when the rule is triggered */
   COND_WRITE(self->actions != NULL)
-    FIELD_STRUCT_PTR(actions, discord_auto_moderation_actions, *)
+    FIELD_STRUCT_PTR(actions, discord_auto_moderation_action, *)
   COND_END
   /** the actions which will execute when the rule is triggered */
   COND_WRITE(self->trigger_metadata != NULL)
@@ -186,11 +173,11 @@ PUB_STRUCT(discord_create_auto_moderation_rule)
     FIELD(enabled, bool, false)
   /** the role ids that should not be affected by the rule (Maximum of 20) */
   COND_WRITE(self->exempt_roles != NULL)
-    FIELD_STRUCT_PTR(exempt_roles, snowflakes, *)
+    FIELD_PTR(exempt_roles, u64snowflake, *)
   COND_END
   /** the channel ids that should not be affected by the rule (Maximum of 50) */
   COND_WRITE(self->exempt_channels != NULL)
-    FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
+    FIELD_PTR(exempt_channels, u64snowflake, *)
   COND_END
 STRUCT_END
 #endif
@@ -216,17 +203,17 @@ PUB_STRUCT(discord_modify_auto_moderation_rule)
   COND_END
   /** the actions which will execute when the rule is triggered */
   COND_WRITE(self->actions != NULL)
-    FIELD_STRUCT_PTR(actions, discord_auto_moderation_actions, *)
+    FIELD_STRUCT_PTR(actions, discord_auto_moderation_action, *)
   COND_END
   /** whether the rule is enabled */
     FIELD(enabled, bool, false)
   /** the role ids that should not be affected by the rule (Maximum of 20) */
   COND_WRITE(self->exempt_roles != NULL)
-    FIELD_STRUCT_PTR(exempt_roles, snowflakes, *)
+    FIELD_PTR(exempt_roles, u64snowflake, *)
   COND_END
   /** the channel ids that should not be affected by the rule (Maximum of 50) */
   COND_WRITE(self->exempt_channels != NULL)
-    FIELD_STRUCT_PTR(exempt_channels, snowflakes, *)
+    FIELD_PTR(exempt_channels, u64snowflake, *)
   COND_END
 STRUCT_END
 #endif

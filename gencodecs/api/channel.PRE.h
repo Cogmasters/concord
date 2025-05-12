@@ -102,7 +102,7 @@ PUB_STRUCT(discord_channel)
   /** sorting position of the channel */
     FIELD(position, int, 0)
   /** explicit permission overwrites for members and roles */
-    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
+    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrite, *)
   /** the name of the channel (0-1024 characters) */
     FIELD_PTR(name, char, *)
   /** the channel topic (0-1024 characters) */
@@ -121,7 +121,7 @@ PUB_STRUCT(discord_channel)
        `MANAGE_MESSAGES` or `MANAGE_CHANNEL` are unaffected */
     FIELD(rate_limit_per_user, int, 0)
   /** array of user objects */
-    FIELD_STRUCT_PTR(recipients, discord_users, *)
+    FIELD_STRUCT_PTR(recipients, discord_user, *)
   /** icon hash of the group DM */
     FIELD_PTR(icon, char, *)
   /** id of the creator of the group DM or thread */
@@ -164,10 +164,10 @@ PUB_STRUCT(discord_channel)
   /** number of messages ever sent in a thread */
     FIELD(total_message_sent, int, 0)
   /** the set of tags that can be used in a GUILD_FORUM or a GUILD_MEDIA channel */
-    FIELD_STRUCT_PTR(available_tags, discord_thread_tags, *)
+    FIELD_STRUCT_PTR(available_tags, discord_thread_tag, *)
   /** the IDs of the set of tags that have been applied to a thread
         in a GUILD_FORUM or a GUILD_MEDIA channel */
-    FIELD_STRUCT_PTR(applied_tags, snowflakes, *)
+    FIELD_PTR(applied_tags, u64snowflake, *)
   /** the emoji to show in the add reaction button on a thread
         in a GUILD_FORUM or a GUILD_MEDIA channel */
     FIELD_STRUCT_PTR(default_reaction_emoji, discord_thread_default_reaction, *)
@@ -179,13 +179,6 @@ PUB_STRUCT(discord_channel)
   /** he default forum layout view used to display posts in GUILD_FORUM channels */
     FIELD_ENUM(default_forum_layout, discord_forum_layout_types)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_channels} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_channels)
-    LISTTYPE_STRUCT(discord_channel)
-LIST_END
 #endif
 
 
@@ -319,17 +312,17 @@ PUB_STRUCT(discord_message)
     FIELD(mention_everyone, bool, false)
   /** FIXME: expects additional member field */
   /** users specifically mentioned in the message */
-    FIELD_STRUCT_PTR(mentions, discord_users, *)
+    FIELD_STRUCT_PTR(mentions, discord_user, *)
   /** roles specifically mentioned in this message */
-    FIELD_STRUCT_PTR(mention_roles, snowflakes, *)
+    FIELD_PTR(mention_roles, u64snowflake, *)
   /** channels specifically mentioned in this message */
-    FIELD_STRUCT_PTR(mention_channels, discord_channels, *)
+    FIELD_STRUCT_PTR(mention_channels, discord_channel, *)
   /** any attached files */
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   /** any embedded content */
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   /** reactions to the message */
-    FIELD_STRUCT_PTR(reactions, discord_reactions, *)
+    FIELD_STRUCT_PTR(reactions, discord_reaction, *)
   /** used for validating a message was sent */
     FIELD_PTR(nonce, json_char, *)
   /** whether this message is pinned */
@@ -359,11 +352,11 @@ PUB_STRUCT(discord_message)
     FIELD_STRUCT_PTR(thread, discord_channel, *)
   /** sent if the message contains components like buttons, action rows, or
        other interactive components */
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   /** sent if the message contains stickers */
-    FIELD_STRUCT_PTR(sticker_items, discord_sticker_items, *)
+    FIELD_STRUCT_PTR(sticker_items, discord_sticker_item, *)
   /** @deprecated by Discord, use `sticker_items` instead */
-    FIELD_STRUCT_PTR(stickers, discord_stickers, *)
+    FIELD_STRUCT_PTR(stickers, discord_sticker, *)
   /** A generally increasing integer that represents the approximate
         position of the message in a thread */
     FIELD(position, int, 0)
@@ -374,13 +367,6 @@ PUB_STRUCT(discord_message)
         auto-populated select menus */
     FIELD_STRUCT_PTR(resolved, discord_resolved_data, *)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_messages} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_messages)
-    LISTTYPE_STRUCT(discord_message)
-LIST_END
 #endif
 
 /** @CCORD_pub_struct{discord_followed_channel} */
@@ -420,12 +406,6 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_reactions)
-    LISTTYPE_STRUCT(discord_reaction)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_overwrite)
   /** role or user id */
     FIELD_SNOWFLAKE(id)
@@ -436,12 +416,6 @@ STRUCT(discord_overwrite)
   /** @ref DiscordPermissions bit set */
     FIELD_BITMASK(deny)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_overwrites)
-    LISTTYPE_STRUCT(discord_overwrite)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -484,13 +458,6 @@ PUB_STRUCT(discord_thread_member)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_thread_members} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_thread_members)
-    LISTTYPE_STRUCT(discord_thread_member)
-LIST_END
-#endif
-
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_thread_default_reaction)
   /** 	the id of a guild's custom emoji */
@@ -515,14 +482,6 @@ STRUCT(discord_thread_tag)
     FIELD_PTR(emoji_name, char, *)
 STRUCT_END
 #endif
-
-/** @CCORD_pub_list{discord_thread_tags} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_thread_tags)
-    LISTTYPE_STRUCT(discord_thread_tag)
-LIST_END
-#endif
-
 
 /** @CCORD_pub_struct{discord_embed_thumbnail} */
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -650,13 +609,6 @@ PUB_STRUCT(discord_embed_field)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_embed_fields} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_embed_fields)
-    LISTTYPE_STRUCT(discord_embed_field)
-LIST_END
-#endif
-
 /** @CCORD_pub_struct{discord_embed} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_embed)
@@ -697,16 +649,9 @@ PUB_STRUCT(discord_embed)
     FIELD_STRUCT_PTR(author, discord_embed_author, *)
   COND_END
   COND_WRITE(self->fields != NULL)
-    FIELD_STRUCT_PTR(fields, discord_embed_fields, *)
+    FIELD_STRUCT_PTR(fields, discord_embed_field, *)
   COND_END
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_embeds} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_embeds)
-    LISTTYPE_STRUCT(discord_embed)
-LIST_END
 #endif
 
 /** @defgroup DiscordAPIChannelAttachmentFlags Attachment flags
@@ -765,13 +710,6 @@ STRUCT(discord_attachment)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_attachments} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_attachments)
-    LISTTYPE_STRUCT(discord_attachment)
-LIST_END
-#endif
-
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_channel_mention)
   /** ID of the channel */
@@ -788,11 +726,11 @@ STRUCT_END
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_allowed_mention)
   /** An array of allowed mention tpes to parse from the content */
-    FIELD_STRUCT_PTR(parse, strings, *)
+    FIELD_PTR(parse, char, *)
   /** Array of role_ids to mention (Max size of 100) */
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   /** Array of user_ids to mention (Max size of 100) */
-    FIELD_STRUCT_PTR(users, snowflakes, *)
+    FIELD_PTR(users, u64snowflake, *)
   /** For replies, whether to mention the author of the message being
        replied to (default false) */
     FIELD(replied_user, bool, false)
@@ -816,10 +754,10 @@ STRUCT_END
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_thread_response_body)
   /** the archived threads */
-    FIELD_STRUCT_PTR(threads, discord_channels, *)
+    FIELD_STRUCT_PTR(threads, discord_channel, *)
   /** a thread member object for each returned thread the current user has
        joined */
-    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+    FIELD_STRUCT_PTR(members, discord_thread_member, *)
   /** whether there are potentially additional threads that could be returned
        on a subsequent call */
     FIELD(has_more, bool, false)
@@ -876,7 +814,7 @@ PUB_STRUCT(discord_modify_channel)
   COND_END
   /** channel or category-specific permissions */
   COND_WRITE(self->permission_overwrites != 0)
-    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
+    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrite, *)
   COND_END
   /** ID of the new parent category for a channel */
   COND_WRITE(self->parent_id != 0)
@@ -951,7 +889,7 @@ PUB_STRUCT(discord_create_message)
     FIELD(tts, bool, false)
   COND_END
   /** embedded `rich` content (up to 6000 characters) */
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   /** allowed mentions for the message */
   COND_WRITE(self->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
@@ -962,15 +900,15 @@ PUB_STRUCT(discord_create_message)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** IDs of up to 3 stickers in the server to send in the message */
   COND_WRITE(self->sticker_ids != NULL)
-    FIELD_STRUCT_PTR(sticker_ids, snowflakes, *)
+    FIELD_PTR(sticker_ids, u64snowflake, *)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
        `SUPPRESS_EMBEDS` can be set) */
@@ -1004,7 +942,7 @@ PUB_STRUCT(discord_edit_message)
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
   /** embedded `rich` content (up to 6000 characters) */
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(self->flags != 0)
@@ -1016,11 +954,11 @@ PUB_STRUCT(discord_edit_message)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
 STRUCT_END
 #endif
@@ -1040,7 +978,7 @@ PUB_STRUCT(discord_bulk_delete_messages)
     FIELD_PTR(reason, char, *)
 #endif
   /** an array of message ids to delete (2-100) */
-    FIELD_STRUCT_PTR(messages, snowflakes, *)
+    FIELD_PTR(messages, u64snowflake, *)
 STRUCT_END
 #endif
 
@@ -1205,12 +1143,12 @@ STRUCT_END
 PUB_STRUCT(discord_list_active_threads)
   /** the active threads */
   COND_WRITE(self->threads != NULL)
-    FIELD_STRUCT_PTR(threads, discord_channels, *)
+    FIELD_STRUCT_PTR(threads, discord_channel, *)
   COND_END
   /** a thread member object for each returned thread the current user has
        joined */
   COND_WRITE(self->members != NULL)
-    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+    FIELD_STRUCT_PTR(members, discord_thread_member, *)
   COND_END
   /** whether there are potentially additional threads that could be returned
        on a subsequent call */

@@ -69,7 +69,7 @@ on_unpin(struct discord *client, const struct discord_message *event)
 void
 done_get_pins(struct discord *client,
               struct discord_response *resp,
-              const struct discord_messages *msgs)
+              const struct discord_message *msgs)
 {
     const struct discord_message *event = resp->keep;
     char text[2000] = "No pins on channel";
@@ -77,11 +77,11 @@ done_get_pins(struct discord *client,
     char *cur = text;
     char *end = &text[sizeof(text) - 1];
 
-    for (int i = 0; i < msgs->size; ++i) {
+    for (int i = 0; i < discord_length(msgs); ++i) {
         cur += snprintf(cur, end - cur,
                         "https://discord.com/channels/%" PRIu64 "/%" PRIu64
                         "/%" PRIu64 "\n",
-                        event->guild_id, event->channel_id, msgs->array[i].id);
+                        event->guild_id, event->channel_id, msgs[i].id);
 
         if (cur >= end) break;
     }
@@ -109,7 +109,7 @@ on_get_pins(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_ret_messages ret = {
+    struct discord_ret_message ret = {
         .done = &done_get_pins,
         .fail = &fail_get_pins,
         .keep = event,

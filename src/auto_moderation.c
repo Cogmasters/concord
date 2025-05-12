@@ -10,11 +10,11 @@ CCORDcode
 discord_list_auto_moderation_rules_for_guild(
     struct discord *client,
     u64snowflake guild_id,
-    struct discord_ret_auto_moderation_rules *ret)
+    struct discord_ret_auto_moderation_rule *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_auto_moderation_rules, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_auto_moderation_rule, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/auto-moderation/rules",
                             guild_id);

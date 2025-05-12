@@ -133,11 +133,11 @@ PUB_STRUCT(discord_guild)
   /** explicit content filter level */
     FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
   /** roles in the guilds */
-    FIELD_STRUCT_PTR(roles, discord_roles, *)
+    FIELD_STRUCT_PTR(roles, discord_role, *)
   /** custom guild emojis */
-    FIELD_STRUCT_PTR(emojis, discord_emojis, *)
+    FIELD_STRUCT_PTR(emojis, discord_emoji, *)
   /** enabled guild features */
-    FIELD_STRUCT_PTR(features, strings, *)
+    FIELD_PTR(features, char, *)
   /** required MFA level for the guild */
     FIELD_ENUM(mfa_level, discord_mfa_level)
   /** application id of the guild creator if it is bot-created */
@@ -162,25 +162,25 @@ PUB_STRUCT(discord_guild)
     FIELD(member_count, int, 0)
   /** states of members currently in voice channels; lacks `guild_id` */
   COND_WRITE(self->voice_states != NULL)
-    FIELD_STRUCT_PTR(voice_states, discord_voice_states, *)
+    FIELD_STRUCT_PTR(voice_states, discord_voice_state, *)
   COND_END
   /** users in the guild */
   COND_WRITE(self->members != NULL)
-    FIELD_STRUCT_PTR(members, discord_guild_members, *)
+    FIELD_STRUCT_PTR(members, discord_guild_member, *)
   COND_END
   /** channels in the guild */
   COND_WRITE(self->channels != NULL)
-    FIELD_STRUCT_PTR(channels, discord_channels, *)
+    FIELD_STRUCT_PTR(channels, discord_channel, *)
   COND_END
   /** all active threads in the guild that current user has permission to
        view */
   COND_WRITE(self->threads != NULL)
-    FIELD_STRUCT_PTR(threads, discord_channels, *)
+    FIELD_STRUCT_PTR(threads, discord_channel, *)
   COND_END
   /** presences of the members in the guild, will only include non-offline
        members if the size is greater than `large threshold` */
   COND_WRITE(self->presences != NULL)
-    FIELD_STRUCT_PTR(presences, discord_presence_updates, *)
+    FIELD_STRUCT_PTR(presences, discord_presence_update, *)
   COND_END
   /** the maximum number of presences for the guild (null is always
        returned, apart from the largest of guilds) */
@@ -228,26 +228,19 @@ PUB_STRUCT(discord_guild)
     FIELD_ENUM(nsfw_level, discord_guild_nsfw_level)
   /** stage instances in the guild */
   COND_WRITE(self->stage_instances != NULL)
-    FIELD_STRUCT_PTR(stage_instances, discord_stage_instances, *)
+    FIELD_STRUCT_PTR(stage_instances, discord_stage_instance, *)
   COND_END
   /** custom guild stickers */
   COND_WRITE(self->stickers != NULL)
-    FIELD_STRUCT_PTR(stickers, discord_stickers, *)
+    FIELD_STRUCT_PTR(stickers, discord_sticker, *)
   COND_END
   /** the scheduled events in the guilds */
   COND_WRITE(self->guild_scheduled_events != NULL)
-    FIELD_STRUCT_PTR(guild_scheduled_events, discord_guild_scheduled_events, *)
+    FIELD_STRUCT_PTR(guild_scheduled_events, discord_guild_scheduled_event, *)
   COND_END
   /** whether the guild has the boost progress bar enabled */
     FIELD(premium_progress_bar_enabled, bool, false)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_guilds} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_guilds)
-    LISTTYPE_STRUCT(discord_guild)
-LIST_END
 #endif
 
 /** @CCORD_pub_struct{discord_guild_preview} */
@@ -264,9 +257,9 @@ PUB_STRUCT(discord_guild_preview)
   /** discovery splash hash */
     FIELD_PTR(discovery_splash, char, *)
   /** custom guild emojis */
-    FIELD_STRUCT_PTR(emojis, discord_emojis, *)
+    FIELD_STRUCT_PTR(emojis, discord_emoji, *)
   /** enabled guild features */
-    FIELD_STRUCT_PTR(features, strings, *)
+    FIELD_PTR(features, char, *)
   /** approximate number of members in this guild */
     FIELD(approximate_member_count, int, 0)
   /** approximate number of online members in this guild */
@@ -274,7 +267,7 @@ PUB_STRUCT(discord_guild_preview)
   /** the description for the guid, if the guild is discoverable */
     FIELD_PTR(description, char, *)
   /** custom guild stickers */
-    FIELD_STRUCT_PTR(stickers, discord_stickers, *)
+    FIELD_STRUCT_PTR(stickers, discord_sticker, *)
 STRUCT_END
 #endif
 
@@ -302,9 +295,9 @@ PUB_STRUCT(discord_guild_widget)
   /** instant invite for the guilds specified widget invite channel */
     FIELD_PTR(instant_invite, char, *)
   /** voice and stage channels which are accessible by `@everyone` */
-    FIELD_STRUCT_PTR(channels, discord_channels, *)
+    FIELD_STRUCT_PTR(channels, discord_channel, *)
   /** special widget user objects that includes users presence (limit 100) */
-    FIELD_STRUCT_PTR(members, discord_users, *)
+    FIELD_STRUCT_PTR(members, discord_user, *)
   /** number of online members in this guild */
     FIELD(presence_count, int, 0)
 STRUCT_END
@@ -326,7 +319,7 @@ PUB_STRUCT(discord_guild_member)
     FIELD_PTR(avatar, char, *)
   COND_END
   /** array of role object IDs */
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   /** when the user joined the guild */
     FIELD_TIMESTAMP(joined_at)
   /** when the user started boosting the guild */
@@ -352,13 +345,6 @@ PUB_STRUCT(discord_guild_member)
   /** the guild id @note extra field for `Guild Member Add` event */
     FIELD_SNOWFLAKE(guild_id)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_guild_members} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_guild_members)
-    LISTTYPE_STRUCT(discord_guild_member)
-LIST_END
 #endif
 
 /** @CCORD_pub_struct{discord_integration} */
@@ -402,12 +388,6 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_integrations)
-    LISTTYPE_STRUCT(discord_integration)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_integration_account)
   /** id of the account */
     FIELD_PTR(id, char, *)
@@ -445,13 +425,6 @@ PUB_STRUCT(discord_ban)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_bans} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_bans)
-    LISTTYPE_STRUCT(discord_ban)
-LIST_END
-#endif
-
 /** @CCORD_pub_struct{discord_welcome_screen} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_welcome_screen)
@@ -459,7 +432,7 @@ PUB_STRUCT(discord_welcome_screen)
     FIELD_PTR(description, char, *)
   /** the channels shown in the welcome screen, up to 5 */
   COND_WRITE(self->welcome_channels != NULL)
-    FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channels, *)
+    FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channel, *)
   COND_END
 STRUCT_END
 #endif
@@ -476,12 +449,6 @@ STRUCT(discord_welcome_screen_channel)
        no emoji is set */
     FIELD_PTR(emoji_name, char, *)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_welcome_screen_channels)
-    LISTTYPE_STRUCT(discord_welcome_screen_channel)
-LIST_END
 #endif
 
 /** @CCORD_pub_struct{discord_prune_count} */
@@ -521,11 +488,11 @@ PUB_STRUCT(discord_create_guild)
     FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
   /** new guild roles */
   COND_WRITE(self->roles != NULL)
-    FIELD_STRUCT_PTR(roles, discord_roles, *)
+    FIELD_STRUCT_PTR(roles, discord_role, *)
   COND_END
   /** new guild's channels */
   COND_WRITE(self->channels != NULL)
-    FIELD_STRUCT_PTR(channels, discord_channels, *)
+    FIELD_STRUCT_PTR(channels, discord_channel, *)
   COND_END
   /** ID for afk channel */
   COND_WRITE(self->afk_channel_id != 0)
@@ -589,7 +556,7 @@ PUB_STRUCT(discord_modify_guild)
        and notices from Discord; defaults to \"en-US\" */
     FIELD_PTR(preferred_locale, char, *)
   /** enabled guild features */
-    FIELD_STRUCT_PTR(features, strings, *)
+    FIELD_PTR(features, char, *)
   /** the description for the guild, if the guild is discoverable */
     FIELD_PTR(description, char, *)
   /** whether the guild's boost progress bar should be enabled */
@@ -625,7 +592,7 @@ PUB_STRUCT(discord_create_guild_channel)
   /** sorting position of the channel */
     FIELD(position, int, 0)
   /** the channel's permission overwrites */
-    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
+    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrite, *)
   /** ID of the parent category for a channel */
   COND_WRITE(self->parent_id != 0)
     FIELD_SNOWFLAKE(parent_id)
@@ -636,7 +603,7 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_modify_guild_channel_position)
+PUB_STRUCT(discord_modify_guild_channel_positions)
   /** channel ID */
     FIELD_SNOWFLAKE(id)
   /** sorting position of the channel */
@@ -653,21 +620,14 @@ STRUCT(discord_modify_guild_channel_position)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_modify_guild_channel_positions} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_modify_guild_channel_positions)
-    LISTTYPE_STRUCT(discord_modify_guild_channel_position)
-LIST_END
-#endif
-
 /** @CCORD_pub_struct{discord_list_active_guild_threads} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_list_active_guild_threads)
   /** the active threads */
-    FIELD_STRUCT_PTR(threads, discord_channels, *)
+    FIELD_STRUCT_PTR(threads, discord_channel, *)
   /** a thread member object for each returned thread the current user has
        joined */
-    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+    FIELD_STRUCT_PTR(members, discord_thread_member, *)
 STRUCT_END
 #endif
 
@@ -698,7 +658,7 @@ PUB_STRUCT(discord_add_guild_member)
   /** value to set user's nickname to */
     FIELD_PTR(nick, char, *)
   /** array of role IDs the member is assigned */
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   /** whether the user is muted in voice channels */
     FIELD(mute, bool, false)
   /** whether the user is deafened in voice channels */
@@ -719,7 +679,7 @@ PUB_STRUCT(discord_modify_guild_member)
   COND_END
   /** array of role IDs the member is assigned */
   COND_WRITE(self->roles != NULL)
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   COND_END
   /** whether the user is muted in voice channels. will return a
        @ref CCORD_HTTP_ERROR (400) if the user is not in a voice channel */
@@ -845,8 +805,9 @@ PUB_STRUCT(discord_create_guild_role)
 STRUCT_END
 #endif
 
+/** TODO: support X-Audit-Log-Reason */
 #if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_modify_guild_role_position)
+PUB_STRUCT(discord_modify_guild_role_positions)
   /** role */
     FIELD_SNOWFLAKE(id)
   /** sorting position of the role */
@@ -854,14 +815,6 @@ STRUCT(discord_modify_guild_role_position)
     FIELD(position, int, 0)
   COND_END
 STRUCT_END
-#endif
-
-/** TODO: support X-Audit-Log-Reason */
-/** @CCORD_pub_list{discord_modify_guild_role_positions} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_modify_guild_role_positions)
-    LISTTYPE_STRUCT(discord_modify_guild_role_position)
-LIST_END
 #endif
 
 /** @CCORD_pub_struct{discord_modify_guild_role} */
@@ -903,7 +856,7 @@ STRUCT(discord_get_guild_prune_count)
     FIELD(days, int, 7)
   COND_END
   /** role(s) to include */
-    FIELD_STRUCT_PTR(include_roles, snowflakes, *)
+    FIELD_PTR(include_roles, u64snowflake, *)
 STRUCT_END
 #endif
 
@@ -921,7 +874,7 @@ PUB_STRUCT(discord_begin_guild_prune)
   /** whether 'pruned' is returned, discouraged for large guilds */
     FIELD(compute_prune_count, bool, true)
   /** role(s) to include */
-    FIELD_STRUCT_PTR(include_roles, snowflakes, *)
+    FIELD_PTR(include_roles, u64snowflake, *)
 STRUCT_END
 #endif
 
@@ -934,7 +887,7 @@ STRUCT(discord_delete_guild_integrations)
     FIELD(days, int, 7)
   COND_END
   /** role(s) to include */
-    FIELD_STRUCT_PTR(include_roles, snowflakes, *)
+    FIELD_PTR(include_roles, u64snowflake, *)
 STRUCT_END
 #endif
 
@@ -958,7 +911,7 @@ PUB_STRUCT(discord_modify_guild_welcome_screen)
   /** whether the welcome screen is enabled */
     FIELD(enabled, bool, false)
   /** channels linked in the welcome screen and their display options */
-    FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channels, *)
+    FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channel, *)
   /** the server description to show in the welcome screen */
   COND_WRITE(self->description != NULL)
     FIELD_PTR(description, char, *)

@@ -46,25 +46,6 @@
 #   define GENCODECS_STRUCT_END
 #endif
 
-#ifndef GENCODECS_PUB_LIST
-#   define GENCODECS_PUB_LIST(_type)
-#endif
-#ifndef GENCODECS_LIST
-#   define GENCODECS_LIST(_type)
-#endif
-#ifndef GENCODECS_LISTTYPE
-#   define GENCODECS_LISTTYPE(_type)
-#endif
-#ifndef GENCODECS_LISTTYPE_STRUCT
-#   define GENCODECS_LISTTYPE_STRUCT(_type)
-#endif
-#ifndef GENCODECS_LISTTYPE_PTR
-#   define GENCODECS_LISTTYPE_PTR(_type, _decor)
-#endif
-#ifndef GENCODECS_LIST_END
-#   define GENCODECS_LIST_END
-#endif
-
 #ifndef GENCODECS_ENUM
 #   define GENCODECS_ENUM(_name)
 #endif
@@ -99,13 +80,6 @@
 #undef GENCODECS_FIELD_PRINTF
 #undef GENCODECS_FIELD_ENUM
 #undef GENCODECS_STRUCT_END
-
-#undef GENCODECS_PUB_LIST
-#undef GENCODECS_LIST
-#undef GENCODECS_LISTTYPE
-#undef GENCODECS_LISTTYPE_STRUCT
-#undef GENCODECS_LISTTYPE_PTR
-#undef GENCODECS_LIST_END
 
 #undef GENCODECS_ENUM
 #undef GENCODECS_ENUM_END

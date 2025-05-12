@@ -262,7 +262,7 @@ void discord_set_on_application_command_permissions_update(
     struct discord *client,
     void (*callback)(
         struct discord *client,
-        const struct discord_application_command_permissions *event));
+        const struct discord_application_command_permission *event));
 
 /**
  * @brief Triggers when an auto moderation rule is created

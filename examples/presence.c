@@ -23,20 +23,17 @@ on_ready(struct discord *client, const struct discord_ready *event)
                "Presence-Bot succesfully connected to Discord as %s#%s!",
                event->user->username, event->user->discriminator);
 
-    struct discord_activity activities[] = {
-        {
-            .name = "with Concord",
-            .type = DISCORD_ACTIVITY_GAME,
-            .details = "Fixing some bugs",
-        },
-    };
+    struct discord_activity *activities = discord_array(
+        struct discord_activity, {
+                                     {
+                                         .name = "with Concord",
+                                         .type = DISCORD_ACTIVITY_GAME,
+                                         .details = "Fixing some bugs",
+                                     },
+                                 });
 
     struct discord_presence_update status = {
-        .activities =
-            &(struct discord_activities){
-                .size = sizeof(activities) / sizeof *activities,
-                .array = activities,
-            },
+        .activities = activities,
         .status = "idle",
         .afk = false,
         .since = discord_timestamp(client),

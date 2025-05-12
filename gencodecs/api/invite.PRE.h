@@ -59,13 +59,6 @@ PUB_STRUCT(discord_invite)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_invites} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_invites)
-    LISTTYPE_STRUCT(discord_invite)
-LIST_END
-#endif
-
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_invite_metadata)
   /** number of times this invite has been used */
@@ -87,7 +80,7 @@ STRUCT_END
 STRUCT(discord_invite_stage_instance)
   /** the members speaking in the Stage */
   COND_WRITE(self->members != NULL)
-    FIELD_STRUCT_PTR(members, discord_guild_members, *)
+    FIELD_STRUCT_PTR(members, discord_guild_member, *)
   COND_END
   /** the number of users in the Stage */
     FIELD(participant_count, int, 0)

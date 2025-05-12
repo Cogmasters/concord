@@ -80,23 +80,20 @@ Slash commands can include parameters (called "options") for users to provide in
 struct discord_create_global_application_command params = {
     .name = "echo",
     .description = "Repeat a message back to you",
-    .options = &(struct discord_application_command_options){
-        .size = 2,
-        .array = (struct discord_application_command_option[]) {
-            {
-                .type = DISCORD_APPLICATION_OPTION_STRING,
-                .name = "message",
-                .description = "The message to repeat",
-                .required = true
-            },
-            {
-                .type = DISCORD_APPLICATION_OPTION_BOOLEAN,
-                .name = "ephemeral",
-                .description = "Whether to show the message only to you",
-                .required = false
-            }
+    .options = discord_array(application_command_option, {
+        {
+            .type = DISCORD_APPLICATION_OPTION_STRING,
+            .name = "message",
+            .description = "The message to repeat",
+            .required = true
+        },
+        {
+            .type = DISCORD_APPLICATION_OPTION_BOOLEAN,
+            .name = "ephemeral",
+            .description = "Whether to show the message only to you",
+            .required = false
         }
-    }
+    })
 };
 ```
 
@@ -120,42 +117,33 @@ For more complex bots, you can organize commands into subcommands and groups:
 struct discord_create_global_application_command params = {
     .name = "moderation",
     .description = "Moderation commands",
-    .options = &(struct discord_application_command_options){
-        .size = 1,
-        .array = (struct discord_application_command_option[]) {
-            {
-                .type = DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP,
-                .name = "user",
-                .description = "User moderation commands",
-                .options = &(struct discord_application_command_options){
-                    .size = 1,
-                    .array = (struct discord_application_command_option[]) {
+    .options = discord_array(application_command_option, {
+        {
+            .type = DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP,
+            .name = "user",
+            .description = "User moderation commands",
+            .options = discord_array(application_command_option,
+                {
+                    .type = DISCORD_APPLICATION_OPTION_SUB_COMMAND,
+                    .name = "timeout",
+                    .description = "Timeout a user",
+                    .options = discord_array(application_command_option, {
                         {
-                            .type = DISCORD_APPLICATION_OPTION_SUB_COMMAND,
-                            .name = "timeout",
-                            .description = "Timeout a user",
-                            .options = &(struct discord_application_command_options){
-                                .size = 2,
-                                .array = (struct discord_application_command_option[]) {
-                                    {
-                                        .type = DISCORD_APPLICATION_OPTION_USER,
-                                        .name = "user",
-                                        .description = "The user to timeout",
-                                        .required = true
-                                    },
-                                    {
-                                        .type = DISCORD_APPLICATION_OPTION_INTEGER,
-                                        .name = "minutes",
-                                        .description = "Duration in minutes",
-                                        .required = true
-                                    }
-                                }
-                            }
+                            .type = DISCORD_APPLICATION_OPTION_USER,
+                            .name = "user",
+                            .description = "The user to timeout",
+                            .required = true
+                        },
+                        {
+                            .type = DISCORD_APPLICATION_OPTION_INTEGER,
+                            .name = "minutes",
+                            .description = "Duration in minutes",
+                            .required = true
                         }
-                    }
-                }
+                    })
+                })
             }
-        }
+        })
     }
 };
 ```
@@ -173,11 +161,11 @@ void on_interaction(struct discord *client, const struct discord_interaction *in
     if (strcmp(interaction->data->name, "ping") == 0) {
         struct discord_interaction_response params = {
             .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-            .data = &(struct discord_interaction_callback_data) {
+            .data = discord_struct(interaction_callback_data, {
                 .content = "Pong! Bot is online.",
                 // Make response visible only to the command user
                 .flags = DISCORD_MESSAGE_EPHEMERAL
-            }
+            }),
         };
         
         discord_create_interaction_response(client, 
@@ -191,9 +179,9 @@ void on_interaction(struct discord *client, const struct discord_interaction *in
         bool ephemeral = false;
         
         // Find and extract the "message" option
-        for (int i = 0; i < interaction->data->options->size; i++) {
+        for (int i = 0; i < discord_length(interaction->data->options); i++) {
             struct discord_application_command_interaction_data_option *option = 
-                &interaction->data->options->array[i];
+                &interaction->data->options[i];
                 
             if (strcmp(option->name, "message") == 0) {
                 message = option->value->string;
@@ -205,10 +193,10 @@ void on_interaction(struct discord *client, const struct discord_interaction *in
         
         struct discord_interaction_response params = {
             .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-            .data = &(struct discord_interaction_callback_data) {
+            .data = discord_struct(interaction_callback_data, {
                 .content = message ? message : "No message provided",
                 .flags = ephemeral ? DISCORD_MESSAGE_EPHEMERAL : 0
-            }
+            })
         };
         
         discord_create_interaction_response(client, 
@@ -226,19 +214,19 @@ You can retrieve existing commands to check what's currently registered:
 ```c
 void list_global_commands(struct discord *client, const struct discord_ready *bot) {
     discord_get_global_application_commands(client, bot->id, NULL,
-        &(struct discord_ret_application_commands){
+        &(struct discord_ret_application_command){
             .done = print_commands_cb
         });
 }
 
 void print_commands_cb(struct discord *client, 
-                      struct discord_application_commands *commands) {
+                      struct discord_application_command *commands) {
     (void)client;
     
-    logmod_log(INFO, NULL, "Found %d global commands:", commands->size);
+    logmod_log(INFO, NULL, "Found %d global commands:", discord_length(commands));
     
-    for (int i = 0; i < commands->size; i++) {
-        struct discord_application_command *cmd = &commands->array[i];
+    for (int i = 0; i < discord_length(commands); i++) {
+        struct discord_application_command *cmd = &commands[i];
         logmod_log(INFO, NULL, "%d. %s (%s): %s", 
                   i+1, cmd->name, cmd->id, cmd->description);
     }
@@ -252,7 +240,7 @@ void list_guild_commands(struct discord *client, const struct discord_ready *bot
     u64snowflake guild_id = 1234567898765431; // Replace with guild ID
     
     discord_get_guild_application_commands(client, bot->id, guild_id, NULL,
-        &(struct discord_ret_application_commands){
+        &(struct discord_ret_application_command){
             .done = print_commands_cb
         });
 }
@@ -299,23 +287,20 @@ void on_ready(struct discord *client, const struct discord_ready *bot) {
     struct discord_create_guild_application_command params = {
         .name = "echo",
         .description = "Echo a message back to you",
-        .options = &(struct discord_application_command_options){
-            .size = 2,
-            .array = (struct discord_application_command_option[]) {
-                {
-                    .type = DISCORD_APPLICATION_OPTION_STRING,
-                    .name = "message",
-                    .description = "The message to repeat",
-                    .required = true
-                },
-                {
-                    .type = DISCORD_APPLICATION_OPTION_BOOLEAN,
-                    .name = "ephemeral",
-                    .description = "Whether to show the message only to you",
-                    .required = false
-                }
+        .options = discord_array(application_command_option, {
+            {
+                .type = DISCORD_APPLICATION_OPTION_STRING,
+                .name = "message",
+                .description = "The message to repeat",
+                .required = true
+            },
+            {
+                .type = DISCORD_APPLICATION_OPTION_BOOLEAN,
+                .name = "ephemeral",
+                .description = "Whether to show the message only to you",
+                .required = false
             }
-        }
+        })
     };
     
     discord_create_guild_application_command(client, bot->id, test_guild_id, &params, NULL);
@@ -331,9 +316,9 @@ void on_interaction(struct discord *client, const struct discord_interaction *in
         const char* message = NULL;
         bool ephemeral = false;
         
-        for (int i = 0; i < interaction->data->options->size; i++) {
+        for (int i = 0; i < discord_length(interaction->data->options); i++) {
             struct discord_application_command_interaction_data_option *option = 
-                &interaction->data->options->array[i];
+                &interaction->data->options[i];
                 
             if (strcmp(option->name, "message") == 0) {
                 message = option->value->string;
@@ -346,10 +331,10 @@ void on_interaction(struct discord *client, const struct discord_interaction *in
         // Create response
         struct discord_interaction_response response = {
             .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-            .data = &(struct discord_interaction_callback_data) {
+            .data = discord_struct(interaction_callback_data, {
                 .content = message ? message : "No message provided",
                 .flags = ephemeral ? DISCORD_MESSAGE_EPHEMERAL : 0
-            }
+            })
         };
         
         discord_create_interaction_response(client, 

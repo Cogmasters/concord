@@ -116,10 +116,9 @@ discord_message_commands_set_prefix(struct discord_message_commands *cmds,
 }
 
 static void
-_discord_message_cleanup_v(void *p_message)
+_discord_free(void *data)
 {
-    discord_message_cleanup(p_message);
-    free(p_message);
+    discord_free(data);
 }
 
 /** return true in case user command has been triggered */
@@ -155,7 +154,7 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
         {
             /* couldn't match command to callback, get fallback if available */
             if (!cmds->prefix.size || !cmds->fallback) {
-                _discord_message_cleanup_v(event_data);
+                discord_free(event_data);
                 return false;
             }
             command.size = 0;
@@ -174,7 +173,7 @@ discord_message_commands_try_perform(struct discord_message_commands *cmds,
             == discord_refcounter_incr(&client->refcounter, event_data))
         {
             discord_refcounter_add_internal(&client->refcounter, event_data,
-                                            _discord_message_cleanup_v, false);
+                                            _discord_free, false);
         }
         callback(client, event_data);
         event_data->content = tmp; /* retrieve original ptr */

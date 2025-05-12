@@ -9,11 +9,11 @@
 CCORDcode
 discord_list_guild_emojis(struct discord *client,
                           u64snowflake guild_id,
-                          struct discord_ret_emojis *ret)
+                          struct discord_ret_emoji *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_emojis, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_emoji, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/emojis", guild_id);
 }

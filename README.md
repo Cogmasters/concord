@@ -89,9 +89,9 @@ void on_interaction(struct discord *client, const struct discord_interaction *ev
     if (strcmp(event->data->name, "ping") == 0) {
           struct discord_interaction_response params = {
                 .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-                .data = &(struct discord_interaction_callback_data){
-                      .content = "pong"
-                }
+                .data = discord_struct(interaction_callback_data, {
+                    .content = "pong"
+                }),
           };
           discord_create_interaction_response(client, event->id,
                                               event->token, &params, NULL);
@@ -351,8 +351,8 @@ The following are `stable` and well documented dependencies that are packaged wi
 |-------------------------------------------------------|----------------------------------------------------|
 | [cog-utils](https://github.com/Cogmasters/cog-utils)  | General purpose functions aimed at portability     |
 | [logmod](https://github.com/lcsmuller/logmod)         | A modular logging library                          |
-| [carray](https://github.com/c-ware/carray)\*          | Macro-based implementation of type-safe arrays     |
 | [anomap](https://github.com/Anotra/anomap)\*          | Sorted key/value storage for C99                   |
+| [MIDA](https://github.com/lcsmuller/mida)             | A lightweight metadata injection library           |
 | [oa_hash](https://github.com/lcsmuller/oa-hash)       | A lightweight open-addressing hashtable            |
 | [json-build](https://github.com/lcsmuller/json-build) | Tiny, zero-allocation JSON serializer              |
 | [jsmn-find](https://github.com/lcsmuller/jsmn-find)   | Tiny, zero-allocation JSON tokenizer               |

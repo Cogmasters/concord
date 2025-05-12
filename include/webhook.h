@@ -38,7 +38,7 @@ CCORDcode discord_create_webhook(struct discord *client,
  */
 CCORDcode discord_get_channel_webhooks(struct discord *client,
                                        u64snowflake channel_id,
-                                       struct discord_ret_webhooks *ret);
+                                       struct discord_ret_webhook *ret);
 
 /**
  * @brief Get webhooks from a given guild webhook objects
@@ -51,7 +51,7 @@ CCORDcode discord_get_channel_webhooks(struct discord *client,
  */
 CCORDcode discord_get_guild_webhooks(struct discord *client,
                                      u64snowflake guild_id,
-                                     struct discord_ret_webhooks *ret);
+                                     struct discord_ret_webhook *ret);
 
 /**
  * @brief Get the new webhook object for the given id

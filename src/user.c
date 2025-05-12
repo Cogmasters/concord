@@ -44,10 +44,10 @@ discord_modify_current_user(struct discord *client,
 
 CCORDcode
 discord_get_current_user_guilds(struct discord *client,
-                                struct discord_ret_guilds *ret)
+                                struct discord_ret_guild *ret)
 {
     struct discord_attributes attr = { 0 };
-    DISCORD_ATTR_LIST_INIT(attr, discord_guilds, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/users/@me/guilds");
 }
@@ -100,10 +100,10 @@ discord_create_group_dm(struct discord *client,
 
 CCORDcode
 discord_get_user_connections(struct discord *client,
-                             struct discord_ret_connections *ret)
+                             struct discord_ret_connection *ret)
 {
     struct discord_attributes attr = { 0 };
-    DISCORD_ATTR_LIST_INIT(attr, discord_connections, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_connection, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/users/@me/connections");
 }

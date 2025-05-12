@@ -9,7 +9,7 @@ Discord's embeds stand for **embedded content messages** that can be **used to p
 See the example below explaining all the fields of the structures:
 
 ```c
-struct discord_embed embeds[] = {
+struct discord_embed embeds[] = discord_array(embed, {
     {
         .title = "Concord",
         .description = "Discord API library",
@@ -17,24 +17,20 @@ struct discord_embed embeds[] = {
         .color = 0x3498DB,
         .timestamp = discord_timestamp(client),
         .footer =
-            &(struct discord_embed_footer){
+            discord_struct(embed_footer, {
                 .text = "github.com/Cogmasters/concord",
                 .icon_url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/concord-small.png",
-            },
+            }),
         .image =
-            &(struct discord_embed_image){
+            discord_struct(embed_image, {
                 .url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/social-preview.png",
-            }
+            })
     },
-};
+});
 
 struct discord_create_message params = {
     .content = "Cogmaster - Concord",
-    .embeds =
-        &(struct discord_embeds){
-            .size = sizeof(embeds) / sizeof *embeds,
-            .array = embeds,
-        },
+    .embeds = embeds,
 };
 discord_create_message(client, msg->channel_id, &params, NULL);
 ```
@@ -61,11 +57,11 @@ As you can see we are creating a structure with an array of embeds, which contai
 
 ```c
 .author =
-    &(struct discord_embed_author){
+    discord_struct(embed_author, {
         .name = "Concord Bot",
         .url = "https://github.com/Cogmasters/concord",
         .icon_url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/concord-small.png",
-    },
+    }),
 ```
 
 [Embed footer structure](https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure):
@@ -85,9 +81,9 @@ As you can see we are creating a structure with an array of embeds, which contai
 
 ```c
 .thumbnail =
-    &(struct discord_embed_thumbnail){
+    discord_struct(embed_thumbnail, {
         .url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/concord-small.png",
-    },
+    }),
 ```
 
 [Embed field structure](https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure):
@@ -98,21 +94,18 @@ As you can see we are creating a structure with an array of embeds, which contai
 
 ```c
 .fields =
-    &(struct discord_embed_fields){
-        .size = 2,
-        .array = (struct discord_embed_field[]) {
-            {
-                .name = "Field 1",
-                .value = "This is a regular field",
-                .is_inline = false
-            },
-            {
-                .name = "Field 2",
-                .value = "This is an inline field",
-                .is_inline = true
-            },
-        }
-    },
+    discord_array(embed_field, {
+        {
+            .name = "Field 1",
+            .value = "This is a regular field",
+            .is_inline = false
+        },
+        {
+            .name = "Field 2",
+            .value = "This is an inline field",
+            .is_inline = true
+        },
+    }),
 ```
 
 After creating the embed structure, now we will make the last structure so we can pass all the information needed to send a message.
@@ -137,7 +130,7 @@ void on_ready(struct discord *client, const struct discord_ready *bot) {
 }
 
 void on_sendembed(struct discord *client, const struct discord_message *msg) {
-    struct discord_embed embeds[] = {
+    struct discord_embed *embeds = discord_array(embed, {
         {
             .title = "Hi, this is the title",
             .description = "Interesting, a description!",
@@ -145,50 +138,43 @@ void on_sendembed(struct discord *client, const struct discord_message *msg) {
             .color = 0x3498DB,
             .timestamp = discord_timestamp(client),
             .footer =
-                &(struct discord_embed_footer){
+                discord_struct(embed_footer, {
                     .text = "Footer text, fancy!",
                     .icon_url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/concord-small.png",
-                },
+                }),
             .image =
-                &(struct discord_embed_image){
+                discord_struct(embed_image, {
                     .url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/social-preview.png",
-                },
+                }),
             .author =
-                &(struct discord_embed_author){
+                discord_struct(embed_author, {
                     .name = "Concord Bot",
                     .url = "https://github.com/Cogmasters/concord",
                     .icon_url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/concord-small.png",
-                },
+                }),
             .thumbnail =
-                &(struct discord_embed_thumbnail){
+                discord_struct(embed_thumbnail, {
                     .url = "https://raw.githubusercontent.com/Cogmasters/concord/master/docs/static/concord-small.png",
-                },
+                }),
             .fields =
-                &(struct discord_embed_fields){
-                    .size = 2,
-                    .array = (struct discord_embed_field[]) {
-                        {
-                            .name = "Field 1",
-                            .value = "This is a regular field",
-                            .is_inline = false
-                        },
-                        {
-                            .name = "Field 2",
-                            .value = "This is an inline field",
-                            .is_inline = true
-                        },
-                    }
-                },
+                discord_array(embed_field, {
+                    {
+                        .name = "Field 1",
+                        .value = "This is a regular field",
+                        .is_inline = false
+                    },
+                    {
+                        .name = "Field 2",
+                        .value = "This is an inline field",
+                        .is_inline = true
+                    },
+                }),
         },
-    };
+    });
 
     struct discord_create_message params = {
         .content = "Just the content of the embed.",
-        .embeds =
-            &(struct discord_embeds){
-                .size = sizeof(embeds) / sizeof *embeds,
-                .array = embeds,
-            },
+        .embeds = embeds,
     };
 
     discord_create_message(client, msg->channel_id, &params, NULL);

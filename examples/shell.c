@@ -56,24 +56,18 @@ on_less_like(struct discord *client, const struct discord_message *event)
         discord_create_message(client, event->channel_id, &params, NULL);
     }
     else {
-        struct discord_embed embed = { .title = event->content };
-        struct discord_attachment attachment = { .filename = event->content };
+        struct discord_embed *embed =
+            discord_struct(embed, { .title = event->content });
+        struct discord_attachment *attachment = discord_struct(
+            struct discord_attachment, { .filename = event->content });
         char text[512];
 
         snprintf(text, sizeof(text), "attachment://%s", event->content);
 
         struct discord_create_message params = {
             .content = text,
-            .embeds =
-                &(struct discord_embeds){
-                    .size = 1,
-                    .array = &embed,
-                },
-            .attachments =
-                &(struct discord_attachments){
-                    .size = 1,
-                    .array = &attachment,
-                },
+            .embeds = discord_array(embed, { embed }),
+            .attachments = discord_array(attachment, { attachment }),
         };
 
         discord_create_message(client, event->channel_id, &params, NULL);
@@ -107,17 +101,10 @@ on_fallback(struct discord *client, const struct discord_message *event)
         discord_create_message(client, event->channel_id, &params, NULL);
     }
     else {
-        struct discord_attachment attachment = {
-            .content = pathtmp,
-            .size = fsize,
-        };
-
+        struct discord_attachment *attachment = discord_struct(
+            struct discord_attachment, { .content = pathtmp, .size = fsize });
         struct discord_create_message params = {
-            .attachments =
-                &(struct discord_attachments){
-                    .size = 1,
-                    .array = &attachment,
-                }
+            .attachments = discord_array(attachment, { attachment }),
         };
         discord_create_message(client, event->channel_id, &params, NULL);
     }

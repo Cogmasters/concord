@@ -56,7 +56,7 @@ CCORDcode discord_modify_current_user(
  * @CCORD_return
  */
 CCORDcode discord_get_current_user_guilds(struct discord *client,
-                                          struct discord_ret_guilds *ret);
+                                          struct discord_ret_guild *ret);
 
 /**
  * @brief Leave a guild
@@ -108,7 +108,7 @@ CCORDcode discord_create_group_dm(struct discord *client,
  * @CCORD_return
  */
 CCORDcode discord_get_user_connections(struct discord *client,
-                                       struct discord_ret_connections *ret);
+                                       struct discord_ret_connection *ret);
 
 /** @} DiscordAPIUser */
 

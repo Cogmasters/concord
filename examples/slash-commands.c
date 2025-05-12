@@ -68,23 +68,15 @@ on_slash_command_create(struct discord *client,
             .name = "gender",
             .description = "Your gender",
             .choices =
-                &(struct discord_application_command_option_choices){
-                    .size = sizeof(gender_choices) / sizeof *gender_choices,
-                    .array = gender_choices,
-                },
+                discord_wrap(gender_choices,
+                             sizeof(gender_choices) / sizeof *gender_choices),
         },
         {
             .type = DISCORD_APPLICATION_OPTION_CHANNEL,
             .name = "favorite",
             .description = "Favorite channel",
             .channel_types =
-                &(struct integers){
-                    .size = 1,
-                    .array =
-                        (int[]){
-                            DISCORD_CHANNEL_GUILD_TEXT,
-                        },
-                },
+                discord_primitives(int, { DISCORD_CHANNEL_GUILD_TEXT }),
         },
     };
 
@@ -92,11 +84,7 @@ on_slash_command_create(struct discord *client,
         .name = "fill-form",
         .description = "A slash command example for form filling",
         .default_permission = true,
-        .options =
-            &(struct discord_application_command_options){
-                .size = sizeof(options) / sizeof *options,
-                .array = options,
-            },
+        .options = discord_wrap(options, sizeof(options) / sizeof *options),
     };
 
     /* Create slash command */
@@ -118,9 +106,9 @@ on_interaction_create(struct discord *client,
     char *gender = "blank";
     u64snowflake channel_id = 0;
 
-    for (int i = 0; i < event->data->options->size; ++i) {
-        char *name = event->data->options->array[i].name;
-        char *value = event->data->options->array[i].value;
+    for (int i = 0; i < discord_length(event->data->options); ++i) {
+        char *name = event->data->options[i].name;
+        char *value = event->data->option[i].value;
 
         if (0 == strcmp(name, "nick"))
             nick = value;
@@ -143,7 +131,7 @@ on_interaction_create(struct discord *client,
 
     struct discord_interaction_response params = {
         .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &(struct discord_interaction_callback_data){ .content = buf }
+        .data = discord_struct(interaction_callback_data, { .content = buf }),
     };
 
     discord_create_interaction_response(client, event->id, event->token,

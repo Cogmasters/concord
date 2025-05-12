@@ -39,21 +39,21 @@ on_ready(struct discord *client, const struct discord_ready *event)
 void
 done_get_users(struct discord *client,
                struct discord_response *resp,
-               const struct discord_users *users)
+               const struct discord_user *users)
 {
     const struct discord_message *event = resp->keep;
     char text[2000];
 
-    if (!users->size) {
+    if (!discord_length(users)) {
         snprintf(text, sizeof(text), "Nobody reacted with that emoji!");
     }
     else {
         char *cur = text;
         char *end = &text[sizeof(text) - 1];
 
-        for (int i = 0; i < users->size; ++i) {
+        for (int i = 0; i < discord_length(users); ++i) {
             cur += snprintf(cur, end - cur, "%s (%" PRIu64 ")\n",
-                            users->array[i].username, users->array[i].id);
+                            users[i].username, users[i].id);
 
             if (cur >= end) break;
         }
@@ -81,7 +81,7 @@ on_get_users(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot || !event->referenced_message) return;
 
-    struct discord_ret_users ret = {
+    struct discord_ret_user ret = {
         .done = &done_get_users,
         .fail = &fail_get_users,
         .keep = event,

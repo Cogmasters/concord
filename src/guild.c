@@ -77,11 +77,11 @@ discord_delete_guild(struct discord *client,
 CCORDcode
 discord_get_guild_channels(struct discord *client,
                            u64snowflake guild_id,
-                           struct discord_ret_channels *ret)
+                           struct discord_ret_channel *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_channels, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_channel, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/channels", guild_id);
 }
@@ -140,13 +140,13 @@ CCORDcode
 discord_list_guild_members(struct discord *client,
                            u64snowflake guild_id,
                            struct discord_list_guild_members *params,
-                           struct discord_ret_guild_members *ret)
+                           struct discord_ret_guild_member *ret)
 {
     struct discord_attributes attr = { 0 };
     struct queriec queriec;
     char query[1024] = "";
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_members, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_member, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
@@ -176,13 +176,13 @@ CCORDcode
 discord_search_guild_members(struct discord *client,
                              u64snowflake guild_id,
                              struct discord_search_guild_members *params,
-                             struct discord_ret_guild_members *ret)
+                             struct discord_ret_guild_member *ret)
 {
     struct discord_attributes attr = { 0 };
     struct queriec queriec;
     char query[1024] = "";
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_members, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_member, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
@@ -333,11 +333,11 @@ discord_remove_guild_member(struct discord *client,
 CCORDcode
 discord_get_guild_bans(struct discord *client,
                        u64snowflake guild_id,
-                       struct discord_ret_bans *ret)
+                       struct discord_ret_ban *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_bans, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_ban, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/bans", guild_id);
 }
@@ -399,11 +399,11 @@ discord_remove_guild_ban(struct discord *client,
 CCORDcode
 discord_get_guild_roles(struct discord *client,
                         u64snowflake guild_id,
-                        struct discord_ret_roles *ret)
+                        struct discord_ret_role *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_roles, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_role, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/roles", guild_id);
 }
@@ -429,7 +429,7 @@ discord_modify_guild_role_positions(
     struct discord *client,
     u64snowflake guild_id,
     struct discord_modify_guild_role_positions *params,
-    struct discord_ret_roles *ret)
+    struct discord_ret_role *ret)
 {
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
@@ -437,7 +437,7 @@ discord_modify_guild_role_positions(
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT_OK(client, discord_modify_guild_role_positions_to_json(
                                 &body.start, &body.size, params));
-    DISCORD_ATTR_LIST_INIT(attr, discord_roles, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_role, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/roles", guild_id);
 }
@@ -499,20 +499,20 @@ discord_get_guild_prune_count(struct discord *client,
                          CCORD_MALFORMED_PAYLOAD,
                          "Out of bounds write attempt");
         }
-        if (params->include_roles && params->include_roles->size) {
+        if (discord_length(params->include_roles)) {
             char roles[1024];
-            int i = 0, offset = 0;
-            for (; i < params->include_roles->size - 1; ++i) {
+            int offset = 0;
+            size_t i = 0;
+            for (; i < discord_length(params->include_roles) - 1; ++i) {
                 offset +=
                     snprintf(roles + offset, sizeof(roles) - (size_t)offset,
-                             "%" PRIu64 ",", params->include_roles->array[i]);
+                             "%" PRIu64 ",", params->include_roles[i]);
                 CCORD_EXPECT(client, (size_t)offset < sizeof(roles),
                              CCORD_MALFORMED_PAYLOAD,
                              "Out of bounds write attempt");
             }
-            offset +=
-                snprintf(roles + offset, sizeof(roles) - (size_t)offset,
-                         "%" PRIu64 ",", params->include_roles->array[i]);
+            offset += snprintf(roles + offset, sizeof(roles) - (size_t)offset,
+                               "%" PRIu64 ",", params->include_roles[i]);
             CCORD_EXPECT(client, (size_t)offset < sizeof(roles),
                          CCORD_MALFORMED_PAYLOAD,
                          "Out of bounds write attempt");
@@ -547,11 +547,11 @@ discord_begin_guild_prune(struct discord *client,
 CCORDcode
 discord_get_guild_voice_regions(struct discord *client,
                                 u64snowflake guild_id,
-                                struct discord_ret_voice_regions *ret)
+                                struct discord_ret_voice_region *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_voice_regions, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_voice_region, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/regions", guild_id);
 }
@@ -559,11 +559,11 @@ discord_get_guild_voice_regions(struct discord *client,
 CCORDcode
 discord_get_guild_invites(struct discord *client,
                           u64snowflake guild_id,
-                          struct discord_ret_invites *ret)
+                          struct discord_ret_invite *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_invites, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_invite, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/invites", guild_id);
 }
@@ -571,11 +571,11 @@ discord_get_guild_invites(struct discord *client,
 CCORDcode
 discord_get_guild_integrations(struct discord *client,
                                u64snowflake guild_id,
-                               struct discord_ret_integrations *ret)
+                               struct discord_ret_integration *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_integrations, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_integration, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/integrations", guild_id);
 }

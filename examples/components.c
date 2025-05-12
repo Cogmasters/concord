@@ -21,7 +21,7 @@ print_usage(void)
         "\nTYPE ANY KEY TO START BOT\n");
 }
 
-char JSON[] =
+static const char JSON[] =
     "[\n"
     "    {\n"
     "        \"type\": 1,\n"
@@ -80,18 +80,18 @@ on_dynamic(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_components components = { 0 };
-    discord_components_from_json(JSON, sizeof(JSON), &components);
+    struct discord_component *components = NULL;
+    discord_component_from_json(JSON, sizeof(JSON), &components);
 
     struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
                    "you play?",
-        .components = &components
+        .components = components
     };
     discord_create_message(client, event->channel_id, &params, NULL);
 
-    /* must cleanup 'components' afterwards */
-    discord_components_cleanup(&components);
+    /* must free 'components' afterwards */
+    discord_free(components);
 }
 
 void
@@ -99,71 +99,61 @@ on_static(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_select_option select_options[] = {
+    struct discord_select_option *select_options = discord_array(
+        struct discord_select_option,
         {
-            .label = "Rogue",
-            .value = "rogue",
-            .description = "Sneak n stab",
-            .emoji =
-                &(struct discord_emoji){
-                    .name = "rogue",
-                    .id = 625891304148303894ULL,
-                },
-        },
-        {
-            .label = "Mage",
-            .value = "mage",
-            .description = "Turn 'em into a sheep",
-            .emoji =
-                &(struct discord_emoji){
-                    .name = "mage",
-                    .id = 625891304081063986ULL,
-                },
-        },
-        {
-            .label = "Priest",
-            .value = "priest",
-            .description = "You get heals when I'm "
-                           "done doing damage",
-            .emoji =
-                &(struct discord_emoji){
-                    .name = "priest",
-                    .id = 625891303795982337ULL,
-                },
-        },
-    };
-    struct discord_component select_menu[] = {
-        {
-            .type = DISCORD_COMPONENT_SELECT_MENU,
-            .custom_id = "class_select_1",
-            .options =
-                &(struct discord_select_options){
-                    .size = sizeof(select_options) / sizeof *select_options,
-                    .array = select_options,
-                },
-            .placeholder = "Choose a class",
-            .min_values = 1,
-            .max_values = 3,
-        },
-    };
-    struct discord_component action_rows[] = {
-        {
-            .type = DISCORD_COMPONENT_ACTION_ROW,
-            .components =
-                &(struct discord_components){
-                    .size = sizeof(select_menu) / sizeof *select_menu,
-                    .array = select_menu,
-                },
-        },
-    };
+            {
+                .label = "Rogue",
+                .value = "rogue",
+                .description = "Sneak n stab",
+                .emoji = discord_struct(emoji,
+                                        {
+                                            .name = "rogue",
+                                            .id = 625891304148303894ULL,
+                                        }),
+            },
+            {
+                .label = "Mage",
+                .value = "mage",
+                .description = "Turn 'em into a sheep",
+                .emoji = discord_struct(emoji,
+                                        {
+                                            .name = "mage",
+                                            .id = 625891304081063986ULL,
+                                        }),
+            },
+            {
+                .label = "Priest",
+                .value = "priest",
+                .description = "You get heals when I'm "
+                               "done doing damage",
+                .emoji = discord_struct(emoji,
+                                        {
+                                            .name = "priest",
+                                            .id = 625891303795982337ULL,
+                                        }),
+            },
+        });
+    struct discord_component *select_menu =
+        discord_array(component, {
+                                     {
+                                         .type = DISCORD_COMPONENT_SELECT_MENU,
+                                         .custom_id = "class_select_1",
+                                         .options = select_options,
+                                         .placeholder = "Choose a class",
+                                         .min_values = 1,
+                                         .max_values = 3,
+                                     },
+                                 });
+    struct discord_component *action_rows = discord_array(
+        struct discord_compoent, {
+                                     { .type = DISCORD_COMPONENT_ACTION_ROW,
+                                       .components = select_menu },
+                                 });
     struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
                    "you play?",
-        .components =
-            &(struct discord_components){
-                .size = sizeof(action_rows) / sizeof *action_rows,
-                .array = action_rows,
-            },
+        .components = action_rows,
     };
 
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -179,7 +169,7 @@ on_interaction_create(struct discord *client,
 
     char *values = NULL;
     size_t size = 0;
-    strings_to_json(&values, &size, event->data->values);
+    discord_to_json(&values, &size, event->data->values);
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text),
              "So you have chosen:\n"
@@ -187,15 +177,15 @@ on_interaction_create(struct discord *client,
              "%s\n"
              "```",
              values);
-    free(values);
+    discord_free(values);
 
     struct discord_interaction_response params = {
         .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE, // 4
-        .data =
-            &(struct discord_interaction_callback_data){
-                .content = text,
-                .flags = DISCORD_MESSAGE_EPHEMERAL // 1 << 6
-            }
+        .data = discord_struct(interaction_callback_data,
+                               {
+                                   .content = text,
+                                   .flags = DISCORD_MESSAGE_EPHEMERAL // 1 << 6
+                               }),
     };
     discord_create_interaction_response(client, event->id, event->token,
                                         &params, NULL);

@@ -69,19 +69,19 @@ enum discord_event_scheduler scheduler(struct discord *client,
                                       enum discord_gateway_events event)
 {
     if (event == DISCORD_EV_MESSAGE_CREATE) {
-        struct discord_message message;
+        struct discord_message *message = NULL;
 
         /* Parse the JSON into a discord_message structure */
         discord_message_from_json(data, length, &message);
 
         /* Now you can access all message fields directly */
-        logmod_log(DEBUG, NULL, "Message content: %s", message.content);
+        logmod_log(DEBUG, NULL, "Message content: %s", message->content);
         logmod_log(DEBUG, NULL, "Author: %s#%s",
-                   message.author->username,
-                   message.author->discriminator);
+                   message->author->username,
+                   message->author->discriminator);
 
         /* Important: Clean up the allocated structure when done */
-        discord_message_cleanup(&message);
+        discord_free(message);
 
         return DISCORD_EVENT_IGNORE;
     }

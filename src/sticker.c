@@ -35,11 +35,11 @@ discord_list_nitro_sticker_packs(
 CCORDcode
 discord_list_guild_stickers(struct discord *client,
                             u64snowflake guild_id,
-                            struct discord_ret_stickers *ret)
+                            struct discord_ret_sticker *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_stickers, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_sticker, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/stickers", guild_id);
 }

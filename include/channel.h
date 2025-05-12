@@ -8,7 +8,7 @@
 #define DISCORD_CHANNEL_H
 
 /* forward declaration */
-struct discord_ret_users;
+struct discord_ret_user;
 /**/
 
 /** @defgroup DiscordAPIChannel Channel
@@ -85,7 +85,7 @@ CCORDcode discord_get_channel_messages(
     struct discord *client,
     u64snowflake channel_id,
     struct discord_get_channel_messages *params,
-    struct discord_ret_messages *ret);
+    struct discord_ret_message *ret);
 
 /**
  * @brief Get a specific message in the channel
@@ -209,7 +209,7 @@ CCORDcode discord_get_reactions(struct discord *client,
                                 u64snowflake emoji_id,
                                 const char emoji_name[],
                                 struct discord_get_reactions *params,
-                                struct discord_ret_users *ret);
+                                struct discord_ret_user *ret);
 
 /**
  * @brief Deletes all reactions from message
@@ -320,7 +320,7 @@ CCORDcode discord_edit_channel_permissions(
  */
 CCORDcode discord_get_channel_invites(struct discord *client,
                                       u64snowflake channel_id,
-                                      struct discord_ret_invites *ret);
+                                      struct discord_ret_invite *ret);
 
 /**
  * @brief Create a new invite for the channel
@@ -393,7 +393,7 @@ CCORDcode discord_follow_news_channel(
  */
 CCORDcode discord_get_pinned_messages(struct discord *client,
                                       u64snowflake channel_id,
-                                      struct discord_ret_messages *ret);
+                                      struct discord_ret_message *ret);
 
 /**
  * @brief Pin a message to a channel
@@ -556,12 +556,12 @@ CCORDcode discord_remove_thread_member(struct discord *client,
  *
  * @param client the client created with discord_from_token()
  * @param channel_id the thread to be joined
- * @CCORD_ret_obj{ret,thread_members}
+ * @CCORD_ret_obj{ret,thread_member}
  * @CCORD_return
  */
 CCORDcode discord_list_thread_members(struct discord *client,
                                       u64snowflake channel_id,
-                                      struct discord_ret_thread_members *ret);
+                                      struct discord_ret_thread_member *ret);
 
 /**
  * @brief Get public archived threads in a given channel
@@ -644,7 +644,7 @@ CCORDcode discord_get_channel_at_pos(struct discord *client,
  * @param allow permission bit set
  * @param deny permission bit set
  */
-void discord_overwrite_append(struct discord_overwrites *permission_overwrites,
+void discord_overwrite_append(struct discord_overwrite *permission_overwrites,
                               u64snowflake id,
                               int type,
                               u64bitmask allow,

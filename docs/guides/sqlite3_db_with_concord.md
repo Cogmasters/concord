@@ -352,13 +352,13 @@ void on_points_add(struct discord *client, const struct discord_message *msg) {
     if (!msg->guild_id) return; // Ignore DMs
     
     // Parse target user from message
-    if (!msg->mentions || !msg->mentions->size) {
+    if (!discord_length(msg->mentions)) {
         struct discord_create_message params = { .content = "Please mention a user to add points to." };
         discord_create_message(client, msg->channel_id, &params, NULL);
         return;
     }
     
-    u64snowflake target_id = msg->mentions->array[0]->id;
+    u64snowflake target_id = msg->mentions[0]->id;
     int points_to_add = 1; // Default 1 point
     
     // Parse command for custom points amount
@@ -407,8 +407,8 @@ void on_points_check(struct discord *client, const struct discord_message *msg) 
     u64snowflake target_id = msg->author->id; // Default to message author
     
     // Check if a user was mentioned
-    if (msg->mentions && msg->mentions->size) {
-        target_id = msg->mentions->array[0]->id;
+    if (discord_length(msg->mentions)) {
+        target_id = msg->mentions[0]->id;
     }
     
     sqlite3_stmt *stmt = NULL;
@@ -473,11 +473,11 @@ void on_points_leaderboard(struct discord *client, const struct discord_message 
         return;
     }
     
-    struct discord_embed embed = {
+    struct discord_embed *embed = discord_struct(embed, {
         .title = "Points Leaderboard",
         .color = 0x3498DB,
         .timestamp = discord_timestamp(client)
-    };
+    });
     
     char description[512] = "Top 5 users by points:\n\n";
     int position = 1;
@@ -501,13 +501,9 @@ void on_points_leaderboard(struct discord *client, const struct discord_message 
         strcpy(description, "No points have been awarded yet.");
     }
     
-    embed.description = description;
-    
+    embed->description = description;
     struct discord_create_message params = {
-        .embeds = &(struct discord_embeds){
-            .size = 1,
-            .array = &embed
-        }
+        .embeds = discord_array(embed, embed),
     };
     
     discord_create_message(client, msg->channel_id, &params, NULL);

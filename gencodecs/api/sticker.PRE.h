@@ -59,13 +59,6 @@ PUB_STRUCT(discord_sticker)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_stickers} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_stickers)
-    LISTTYPE_STRUCT(discord_sticker)
-LIST_END
-#endif
-
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_sticker_item)
   /** ID of the sticker */
@@ -80,18 +73,12 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_sticker_items)
-    LISTTYPE_STRUCT(discord_sticker_item)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_sticker_pack)
   /** ID of the sticker */
     FIELD_SNOWFLAKE(id)
   /** the stickers in the pack */
   COND_WRITE(self->stickers != NULL)
-    FIELD_STRUCT_PTR(stickers, discord_stickers, *)
+    FIELD_STRUCT_PTR(stickers, discord_sticker, *)
   COND_END
   /** name of the sticker pack */
     FIELD_PTR(name, char, *)
@@ -110,13 +97,6 @@ STRUCT(discord_sticker_pack)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_struct{discord_list_nitro_sticker_packs} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_sticker_packs)
-    LISTTYPE_STRUCT(discord_sticker_pack)
-LIST_END
-#endif
-
 /*****************************************************************************
  * Sticker REST parameters
  * **************************************************************************/
@@ -125,7 +105,7 @@ LIST_END
 #if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_list_nitro_sticker_packs)
   /** array of sticker pack objects */
-    FIELD_STRUCT_PTR(sticker_packs, discord_sticker_packs, *)
+    FIELD_STRUCT_PTR(sticker_packs, discord_sticker_pack, *)
 STRUCT_END
 #endif
 

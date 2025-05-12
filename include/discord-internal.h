@@ -438,7 +438,7 @@ struct discord_ret_response {
     /** information for parsing response into a datatype (if possible) */     \
     struct discord_ret_response response;                                     \
     /** if @ref HTTP_MIMEPOST provide attachments for file transfer */        \
-    struct discord_attachments attachments;                                   \
+    struct discord_attachment *attachments;                                   \
     /** indicated reason to why the action was taken @note when used at       \
      *      @ref discord_request buffer is kept and reused */                 \
     char *reason

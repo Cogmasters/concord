@@ -22,7 +22,7 @@
  */
 CCORDcode discord_list_guild_emojis(struct discord *client,
                                     u64snowflake guild_id,
-                                    struct discord_ret_emojis *ret);
+                                    struct discord_ret_emoji *ret);
 
 /**
  * @brief Get a specific emoji from a guild

@@ -97,15 +97,8 @@ PUB_STRUCT(discord_user)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_users} */
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_users)
-    LISTTYPE_STRUCT(discord_user)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_connection)
+PUB_STRUCT(discord_connection)
   /** ID of the connection account */
     FIELD_SNOWFLAKE(id)
   /** the username of the connection account */
@@ -116,7 +109,7 @@ STRUCT(discord_connection)
     FIELD(revoked, bool, false)
   /** an array of partial server integrations */
   COND_WRITE(self->integrations != NULL)
-    FIELD_STRUCT_PTR(integrations, discord_integrations, *)
+    FIELD_STRUCT_PTR(integrations, discord_integration, *)
   COND_END
   /** whether the connection is verified */
     FIELD(verified, bool, false)
@@ -128,13 +121,6 @@ STRUCT(discord_connection)
   /** visibility of this connection */
     FIELD_ENUM(visibility, discord_visibility_types)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_connections} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_connections)
-    LISTTYPE_STRUCT(discord_connection)
-LIST_END
 #endif
 
 /*****************************************************************************
@@ -188,11 +174,11 @@ STRUCT_END
 PUB_STRUCT(discord_create_group_dm)
   /** access tokens of users that have grantes your app `gdm.join` scope */
   COND_WRITE(self->access_tokens != NULL)
-    FIELD_STRUCT_PTR(access_tokens, snowflakes, *)
+    FIELD_PTR(access_tokens, u64snowflake, *)
   COND_END
   /** a dictionary of user IDs to their respective nicknames */
   COND_WRITE(self->nicks != NULL)
-    FIELD_STRUCT_PTR(nicks, strings, *)
+    FIELD_PTR(nicks, char, *)
   COND_END
 STRUCT_END
 #endif

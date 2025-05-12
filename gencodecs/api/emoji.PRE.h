@@ -11,7 +11,7 @@ PUB_STRUCT(discord_emoji)
     FIELD_PTR(name, char, *)
   /** roles allowed to use this emoji */
   COND_WRITE(self->roles != NULL)
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   COND_END
   /** user that created this emoji */
   COND_WRITE(self->user != NULL)
@@ -27,13 +27,6 @@ PUB_STRUCT(discord_emoji)
        Boosts */
     FIELD(available, bool, false)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_emojis} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_emojis)
-    LISTTYPE_STRUCT(discord_emoji)
-LIST_END
 #endif
 
 /*****************************************************************************
@@ -54,7 +47,7 @@ PUB_STRUCT(discord_create_guild_emoji)
     FIELD_PTR(image, char, *)
   /** roles allowed to use this emoji */
   COND_WRITE(self->roles != NULL)
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   COND_END
 STRUCT_END
 #endif
@@ -73,7 +66,7 @@ PUB_STRUCT(discord_modify_guild_emoji)
     FIELD_PTR(image, char, *)
   /** roles allowed to use this emoji */
   COND_WRITE(self->roles != NULL)
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   COND_END
 STRUCT_END
 #endif

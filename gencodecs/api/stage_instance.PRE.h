@@ -31,12 +31,6 @@ PUB_STRUCT(discord_stage_instance)
 STRUCT_END
 #endif
 
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_stage_instances)
-    LISTTYPE_STRUCT(discord_stage_instance)
-LIST_END
-#endif
-
 /*****************************************************************************
  * Stage Instance REST parameters
  * **************************************************************************/

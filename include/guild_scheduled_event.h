@@ -18,14 +18,14 @@
  * @param client the client created with discord_from_token()
  * @param guild_id the guild to fetch the scheduled events from
  * @param params request parameters
- * @CCORD_ret_obj{ret,guild_scheduled_events}
+ * @CCORD_ret_obj{ret,guild_scheduled_event}
  * @CCORD_return
  */
 CCORDcode discord_list_guild_scheduled_events(
     struct discord *client,
     u64snowflake guild_id,
     struct discord_list_guild_scheduled_events *params,
-    struct discord_ret_guild_scheduled_events *ret);
+    struct discord_ret_guild_scheduled_event *ret);
 
 /**
  * @brief Create a guild scheduled event
@@ -103,7 +103,7 @@ CCORDcode discord_delete_guild_scheduled_event(
  * @param guild_id the guild with the scheduled event belongs to
  * @param guild_scheduled_event_id the scheduled event
  * @param params request parameters
- * @CCORD_ret_obj{ret,guild_scheduled_event_users}
+ * @CCORD_ret_obj{ret,guild_scheduled_event_user}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_scheduled_event_users(

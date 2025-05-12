@@ -56,13 +56,14 @@ on_interaction_create(struct discord *client,
 {
     logmod_log(INFO, NULL, "Interaction %" PRIu64 " received", event->id);
 
-    struct discord_interaction_callback_data data = {
-        .content = "Hello World!",
-        .flags = DISCORD_MESSAGE_EPHEMERAL,
-    };
+    struct discord_interaction_callback_data *data = discord_struct(
+        interaction_callback_data, {
+                                       .content = "Hello World!",
+                                       .flags = DISCORD_MESSAGE_EPHEMERAL,
+                                   });
     struct discord_interaction_response params = {
         .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &data,
+        .data = data,
     };
     struct discord_ret_interaction_response ret = {
         .fail = &fail_interaction_create
@@ -97,12 +98,12 @@ read_input(void *p_client)
         if (!*cmd_action || 0 == strcasecmp(cmd_action, "HELP")) goto _help;
 
         if (0 == strcasecmp(cmd_action, "LIST")) {
-            struct discord_application_commands app_cmds = { 0 };
+            struct discord_application_command *app_cmds = NULL;
             u64snowflake guild_id = 0;
 
             sscanf(buf + bufoffset, "%" SCNu64, &guild_id);
 
-            struct discord_ret_application_commands ret = {
+            struct discord_ret_application_command ret = {
                 .sync = &app_cmds,
             };
 
@@ -113,20 +114,19 @@ read_input(void *p_client)
                 code = discord_get_global_application_commands(client,
                                                                g_app_id, &ret);
 
-            if (CCORD_OK == code && app_cmds.size) {
+            if (CCORD_OK == code && discord_length(app_cmds)) {
                 char list[4096] = ""; // should be large enough ?
                 size_t len = 0;
 
-                for (int i = 0; i < app_cmds.size; ++i) {
-                    len +=
-                        snprintf(list + len, sizeof(list) - len,
-                                 "\t%d:\t%s (%" PRIu64 ")\n", i,
-                                 app_cmds.array[i].name, app_cmds.array[i].id);
+                for (int i = 0; i < discord_length(app_cmds); ++i) {
+                    len += snprintf(list + len, sizeof(list) - len,
+                                    "\t%d:\t%s (%" PRIu64 ")\n", i,
+                                    app_cmds[i].name, app_cmds[i].id);
                 }
 
                 logmod_log(INFO, NULL, "\nCommands: \n%.*s", (int)len, list);
 
-                discord_application_commands_cleanup(&app_cmds);
+                discord_free(app_cmds);
             }
             else {
                 logmod_log(ERROR, NULL, "Couldn't list commands");
@@ -134,7 +134,7 @@ read_input(void *p_client)
         }
         else if (0 == strcasecmp(cmd_action, "CREATE")) {
             char cmd_name[32 + 1] = "", cmd_desc[100 + 1] = "";
-            struct discord_application_command app_cmd = { 0 };
+            struct discord_application_command *app_cmd = NULL;
             u64snowflake guild_id = 0;
 
             sscanf(buf + bufoffset, "%32[^[][%100[^]]] %" SCNu64, cmd_name,
@@ -169,10 +169,10 @@ read_input(void *p_client)
                     client, g_app_id, &params, &ret);
             }
 
-            if (CCORD_OK == code && app_cmd.id) {
+            if (CCORD_OK == code && app_cmd->id) {
                 logmod_log(INFO, NULL, "Created command:\t%s (%" PRIu64 ")",
-                           app_cmd.name, app_cmd.id);
-                discord_application_command_cleanup(&app_cmd);
+                           app_cmd->name, app_cmd->id);
+                discord_free(app_cmd);
             }
             else {
                 logmod_log(ERROR, NULL, "Couldn't create command '%s'",
@@ -188,7 +188,7 @@ read_input(void *p_client)
 
             if (!command_id) goto _help;
 
-            struct discord_application_command app_cmd = { 0 };
+            struct discord_application_command *app_cmd = NULL;
 
             struct discord_ret_application_command ret = {
                 .sync = &app_cmd,
@@ -215,10 +215,10 @@ read_input(void *p_client)
                     client, g_app_id, command_id, &params, &ret);
             }
 
-            if (CCORD_OK == code && app_cmd.id) {
+            if (CCORD_OK == code && app_cmd->id) {
                 logmod_log(INFO, NULL, "Edited command:\t%s (%" PRIu64 ")",
-                           app_cmd.name, app_cmd.id);
-                discord_application_command_cleanup(&app_cmd);
+                           app_cmd->name, app_cmd->id);
+                discord_free(app_cmd);
             }
             else {
                 logmod_log(ERROR, NULL, "Couldn't create command '%s'",

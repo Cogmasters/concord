@@ -30,13 +30,6 @@ PUB_STRUCT(discord_guild_template)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_guild_templates} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_guild_templates)
-    LISTTYPE_STRUCT(discord_guild_template)
-LIST_END
-#endif
-
 /*****************************************************************************
  * Guild Template REST parameters
  * **************************************************************************/

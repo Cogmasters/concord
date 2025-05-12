@@ -20,11 +20,13 @@ on_message(struct discord *client, const struct discord_message *message)
 
     if (cached_message) {
         // discord_claim(cached_message); is implicit
-        discord_create_message(client, cached_message->channel_id,
-                               &(struct discord_create_message){
-                                   .content = cached_message->content,
-                               },
-                               NULL);
+        discord_create_message(
+            client, cached_message->channel_id,
+            discord_struct(create_message,
+                           {
+                               .content = cached_message->content,
+                           }),
+            NULL);
 
         // don't forget to clean up cached message when done
         discord_unclaim(client, cached_message);

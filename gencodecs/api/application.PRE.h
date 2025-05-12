@@ -30,7 +30,7 @@ PUB_STRUCT(discord_application)
     FIELD_PTR(description, char, *)
   /** an array of rpc origin urls, if rpc is enabled */
   COND_WRITE(self->rpc_origins != NULL)
-    FIELD_STRUCT_PTR(rpc_origins, strings, *)
+    FIELD_PTR(rpc_origins, char, *)
   COND_END
   /** when false only app owner can join the app's bot to guilds */
     FIELD(bot_public, bool, false)
@@ -76,7 +76,7 @@ STRUCT_END
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_install_params)
   /** the scopes to add the application to the server with */
-    FIELD_STRUCT_PTR(scopes, strings, *)
+    FIELD_PTR(scopes, char, *)
   /** the permissions to request for the bot role */
     FIELD_BITMASK(permissions)
 STRUCT_END

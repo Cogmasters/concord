@@ -18,13 +18,13 @@
  *
  * @param client the client created with discord_from_token()
  * @param application_id the unique id of the parent application
- * @CCORD_ret_obj{ret,application_commands}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_get_global_application_commands(
     struct discord *client,
     u64snowflake application_id,
-    struct discord_ret_application_commands *ret);
+    struct discord_ret_application_command *ret);
 
 /**
  * @brief Create a new global command
@@ -99,14 +99,14 @@ CCORDcode discord_delete_global_application_command(
  * @param client the client created with discord_from_token()
  * @param application_id the unique id of the parent application
  * @param params the request parameters, a list of application commands
- * @CCORD_ret_obj{ret,application_commands}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_bulk_overwrite_global_application_commands(
     struct discord *client,
     u64snowflake application_id,
-    struct discord_application_commands *params,
-    struct discord_ret_application_commands *ret);
+    struct discord_application_command *params,
+    struct discord_ret_application_command *ret);
 
 /**
  * @brief Fetch all of the guild commands of a given guild
@@ -114,14 +114,14 @@ CCORDcode discord_bulk_overwrite_global_application_commands(
  * @param client the client created with discord_from_token()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @CCORD_ret_obj{ret,application_commands}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_application_commands(
     struct discord *client,
     u64snowflake application_id,
     u64snowflake guild_id,
-    struct discord_ret_application_commands *ret);
+    struct discord_ret_application_command *ret);
 
 /**
  * @brief Create a new guild command
@@ -204,7 +204,7 @@ CCORDcode discord_delete_guild_application_command(struct discord *client,
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of application commands
- * @CCORD_ret_obj{ret,application_commands}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_bulk_overwrite_guild_application_commands(
@@ -212,7 +212,7 @@ CCORDcode discord_bulk_overwrite_guild_application_commands(
     u64snowflake application_id,
     u64snowflake guild_id,
     struct discord_bulk_overwrite_guild_application_commands *params,
-    struct discord_ret_application_commands *ret);
+    struct discord_ret_application_command *ret);
 
 /**
  * @brief Fetches command permissions for all commands in a given guild
@@ -220,14 +220,14 @@ CCORDcode discord_bulk_overwrite_guild_application_commands(
  * @param client the client created with discord_from_token()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @CCORD_ret_obj{ret,guild_application_command_permissions}
+ * @CCORD_ret_obj{ret,guild_application_command_permission}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_application_command_permissions(
     struct discord *client,
     u64snowflake application_id,
     u64snowflake guild_id,
-    struct discord_ret_guild_application_command_permissions *ret);
+    struct discord_ret_guild_application_command_permission *ret);
 
 /**
  * @brief Fetches command permissions for a specific command in a given guild
@@ -236,7 +236,7 @@ CCORDcode discord_get_guild_application_command_permissions(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @CCORD_ret_obj{ret,application_command_permissions}
+ * @CCORD_ret_obj{ret,application_command_permission}
  * @CCORD_return
  */
 CCORDcode discord_get_application_command_permissions(

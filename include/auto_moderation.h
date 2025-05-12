@@ -18,13 +18,13 @@
  *
  * @param client the client created with discord_from_token()
  * @param guild_id the guild to fetch the rules from
- * @CCORD_ret_obj{ret,auto_moderation_rules}
+ * @CCORD_ret_obj{ret,auto_moderation_rule}
  * @CCORD_return
  */
 CCORDcode discord_list_auto_moderation_rules_for_guild(
     struct discord *client,
     u64snowflake guild_id,
-    struct discord_ret_auto_moderation_rules *ret);
+    struct discord_ret_auto_moderation_rule *ret);
 
 /**
  * @brief Get a single rule

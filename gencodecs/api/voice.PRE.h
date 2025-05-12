@@ -37,15 +37,8 @@ PUB_STRUCT(discord_voice_state)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_voice_states} */
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_voice_states)
-    LISTTYPE_STRUCT(discord_voice_state)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_voice_region)
+PUB_STRUCT(discord_voice_region)
   /** unique ID for the region */
     FIELD_PTR(id, char, *)
   /** name of the region */
@@ -57,11 +50,4 @@ STRUCT(discord_voice_region)
   /** whether this is a custom voice region (used for events/etc) */
     FIELD(custom, bool, false)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_voice_regions} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_voice_regions)
-    LISTTYPE_STRUCT(discord_voice_region)
-LIST_END
 #endif

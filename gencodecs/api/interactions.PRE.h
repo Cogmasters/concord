@@ -76,17 +76,17 @@ STRUCT(discord_interaction_data)
   /** converted users + roles + channels + attachments */
     FIELD_STRUCT_PTR(resolved, discord_resolved_data, *)
   /** the params + values from the user */
-    FIELD_STRUCT_PTR(options, discord_application_command_interaction_data_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_interaction_data_option, *)
   /** the custom_id of the component */
     FIELD_PTR(custom_id, char, *)
   /** the type of the component */
     FIELD_ENUM(component_type, discord_component_types)
   /** the values the user selected */
-    FIELD_STRUCT_PTR(values, strings, *)
+    FIELD_PTR(values, char, *)
   /** the ID of the user or messaged targetted by a user or message command */
     FIELD_SNOWFLAKE(target_id)
   /** the values submitted by the user */
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
 STRUCT_END
 #endif
 
@@ -138,7 +138,7 @@ STRUCT_END
 STRUCT(discord_interaction_callback_data)
   /** message components */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /* MESSAGES */
   /** is the response TTS */
@@ -151,7 +151,7 @@ STRUCT(discord_interaction_callback_data)
   COND_END
   /** supports up to 10 embeds */
   COND_WRITE(self->embeds != NULL)
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        @ref DISCORD_MESSAGE_SUPRESS_EMBEDS and @ref DISCORD_MESSAGE_EPHEMERAL
@@ -161,11 +161,11 @@ STRUCT(discord_interaction_callback_data)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
   /* AUTOCOMPLETE */
   /** autocomplete choices (max of 25 choices) */
-    FIELD_STRUCT_PTR(choices, discord_application_command_option_choices, *)
+    FIELD_STRUCT_PTR(choices, discord_application_command_option_choice, *)
   /* MODAL */
   /** a developer defined identifier for the component, max 100 characters */
     FIELD_PTR(custom_id, char, *)
@@ -191,7 +191,7 @@ PUB_STRUCT(discord_edit_original_interaction_response)
     FIELD_PTR(content, char, *)
   /** embedded `rich` content */
   COND_WRITE(self->embeds != NULL)
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   COND_END
   /** allowed mentions for the message */
   COND_WRITE(self->allowed_mentions != NULL)
@@ -199,11 +199,11 @@ PUB_STRUCT(discord_edit_original_interaction_response)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** attached files to keep and possible descriptions for new files */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
 STRUCT_END
 #endif
@@ -228,7 +228,7 @@ PUB_STRUCT(discord_create_followup_message)
     FIELD(tts, bool, false)
   /** embedded `rich` content */
   COND_WRITE(self->embeds != NULL)
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   COND_END
   /** allowed mentions for the message */
   COND_WRITE(self->allowed_mentions != NULL)
@@ -236,11 +236,11 @@ PUB_STRUCT(discord_create_followup_message)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
        `SUPPRESS_EMBEDS` can be set) */
@@ -263,7 +263,7 @@ PUB_STRUCT(discord_edit_followup_message)
     FIELD_PTR(content, char, *)
   /** embedded `rich` content */
   COND_WRITE(self->embeds != NULL)
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   COND_END
   /** allowed mentions for the message */
   COND_WRITE(self->allowed_mentions != NULL)
@@ -271,11 +271,11 @@ PUB_STRUCT(discord_edit_followup_message)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** attached files to keep and possible descriptions for new files */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
 STRUCT_END
 #endif

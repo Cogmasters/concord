@@ -17,7 +17,6 @@
                                const struct _type *self);                     \
     CCORDcode _type##_to_json(char *buf[], size_t *size,                      \
                               const struct _type *self);
-#define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
 
 #include "gencodecs-gen.PRE.h"
 
@@ -26,7 +25,6 @@
 #define GENCODECS_STRUCT(_type)                                               \
     static jsonbcode _type##_to_jsonb(jsonb *b, char *buf[], size_t *size,    \
                                       const struct _type *self);
-#define GENCODECS_LIST(_type) GENCODECS_STRUCT(_type)
 
 #include "gencodecs-gen.PRE.h"
 
@@ -41,52 +39,34 @@
                                const struct _type *self)                      \
     {                                                                         \
         jsonbcode code;                                                       \
-        if ((code = jsonb_object_auto(b, buf, size))) return code;            \
-        if (self != NULL) {
+        if (DISCORD_METADATA(self)->length > 1                                \
+            && 0 > (code = jsonb_array_auto(b, buf, size)))                   \
+            return code;                                                      \
+        for (size_t i = 0; i < DISCORD_METADATA(self)->length; ++i) {         \
+            if (0 > (code = jsonb_object_auto(b, buf, size))) return code;    \
+            if (self + i != NULL) {
 #define GENCODECS_STRUCT(_type) static GENCODECS_PUB_STRUCT(_type)
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
-    if ((code = jsonb_key_auto(b, buf, size, _key, sizeof(_key) - 1)))        \
+    if (0 > (code = jsonb_key_auto(b, buf, size, _key, sizeof(_key) - 1)))    \
         return code;                                                          \
-    _encoder(b, buf, size, self->_name, _type);
+    _encoder(b, buf, size, self[i]._name, _type);
 #define GENCODECS_FIELD_PRINTF(_name, _type, _printf_type, _scanf_type)       \
-    if ((code = jsonb_key_auto(b, buf, size, #_name, sizeof(#_name) - 1)))    \
+    if (0                                                                     \
+        > (code = jsonb_key_auto(b, buf, size, #_name, sizeof(#_name) - 1)))  \
         return code;                                                          \
     else {                                                                    \
         char tok[64];                                                         \
-        int toklen = sprintf(tok, _printf_type, self->_name);                 \
-        if ((code = jsonb_token_auto(b, buf, size, tok, toklen)))             \
+        int toklen = sprintf(tok, _printf_type, self[i]._name);               \
+        if (0 > (code = jsonb_token_auto(b, buf, size, tok, toklen)))         \
             return code;                                                      \
     }
 #define GENCODECS_STRUCT_END                                                  \
     }                                                                         \
-    if ((code = jsonb_object_pop_auto(b, buf, size))) return code;            \
-    return code;                                                              \
-    }
-
-#define GENCODECS_PUB_LIST(_type)                                             \
-    jsonbcode _type##_to_jsonb(jsonb *b, char *buf[], size_t *size,           \
-                               const struct _type *self)                      \
-    {                                                                         \
-        jsonbcode code;                                                       \
-        if ((code = jsonb_array_auto(b, buf, size))) return code;             \
-        if (self != NULL) {                                                   \
-            int i;
-#define GENCODECS_LIST(_type) static GENCODECS_PUB_LIST(_type)
-#define GENCODECS_LISTTYPE(_type)                                             \
-    for (i = 0; i < self->size; ++i)                                          \
-        GENCODECS_JSON_ENCODER_##_type(b, buf, size, self->array[i], _type);
-#define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
-    for (i = 0; i < self->size; ++i)                                          \
-        if ((code = _type##_to_jsonb(b, buf, size, &self->array[i])))         \
-            return code;
-#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
-    for (i = 0; i < self->size; ++i)                                          \
-        GENCODECS_JSON_ENCODER_PTR_##_type(b, buf, size, self->array[i],      \
-                                           _type);
-#define GENCODECS_LIST_END                                                    \
+    if (0 > (code = jsonb_object_pop_auto(b, buf, size))) return code;        \
     }                                                                         \
-    if ((code = jsonb_array_pop_auto(b, buf, size))) return code;             \
+    if (DISCORD_METADATA(self)->length > 1)                                   \
+        code = jsonb_array_pop_auto(b, buf, size);                            \
     return code;                                                              \
     }
 
@@ -107,7 +87,6 @@
         *size = b.pos;                                                        \
         return CCORD_OK;                                                      \
     }
-#define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
 
 #include "gencodecs-gen.PRE.h"
 

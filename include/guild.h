@@ -93,7 +93,7 @@ CCORDcode discord_delete_guild(struct discord *client,
  */
 CCORDcode discord_get_guild_channels(struct discord *client,
                                      u64snowflake guild_id,
-                                     struct discord_ret_channels *ret);
+                                     struct discord_ret_channel *ret);
 
 /**
  * @brief Create a new guild channel
@@ -158,7 +158,7 @@ CCORDcode discord_get_guild_member(struct discord *client,
 CCORDcode discord_list_guild_members(struct discord *client,
                                      u64snowflake guild_id,
                                      struct discord_list_guild_members *params,
-                                     struct discord_ret_guild_members *ret);
+                                     struct discord_ret_guild_member *ret);
 
 /**
  * @brief Get guild members whose username or nickname starts with a provided
@@ -174,7 +174,7 @@ CCORDcode discord_search_guild_members(
     struct discord *client,
     u64snowflake guild_id,
     struct discord_search_guild_members *params,
-    struct discord_ret_guild_members *ret);
+    struct discord_ret_guild_member *ret);
 
 /**
  * @brief Adds a user to the guild
@@ -303,7 +303,7 @@ CCORDcode discord_remove_guild_member(
  */
 CCORDcode discord_get_guild_bans(struct discord *client,
                                  u64snowflake guild_id,
-                                 struct discord_ret_bans *ret);
+                                 struct discord_ret_ban *ret);
 
 /**
  * @brief Fetch banned user from given guild
@@ -366,7 +366,7 @@ CCORDcode discord_remove_guild_ban(struct discord *client,
  */
 CCORDcode discord_get_guild_roles(struct discord *client,
                                   u64snowflake guild_id,
-                                  struct discord_ret_roles *ret);
+                                  struct discord_ret_role *ret);
 
 /**
  * @brief Create a new guild role
@@ -427,13 +427,13 @@ CCORDcode discord_begin_guild_prune(struct discord *client,
  *
  * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get voice regions from
- * @CCORD_ret_obj{ret,voice_regions}
+ * @CCORD_ret_obj{ret,voice_region}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_voice_regions(
     struct discord *client,
     u64snowflake guild_id,
-    struct discord_ret_voice_regions *ret);
+    struct discord_ret_voice_region *ret);
 
 /**
  * @brief Get guild invites
@@ -446,7 +446,7 @@ CCORDcode discord_get_guild_voice_regions(
  */
 CCORDcode discord_get_guild_invites(struct discord *client,
                                     u64snowflake guild_id,
-                                    struct discord_ret_invites *ret);
+                                    struct discord_ret_invite *ret);
 
 /**
  * @brief Get guild integrations
@@ -459,7 +459,7 @@ CCORDcode discord_get_guild_invites(struct discord *client,
  */
 CCORDcode discord_get_guild_integrations(struct discord *client,
                                          u64snowflake guild_id,
-                                         struct discord_ret_integrations *ret);
+                                         struct discord_ret_integration *ret);
 
 /**
  * @brief Deletes the integration for the guild. It will also delete any
@@ -635,7 +635,7 @@ CCORDcode discord_modify_guild_role_positions(
     struct discord *client,
     u64snowflake guild_id,
     struct discord_modify_guild_role_positions *params,
-    struct discord_ret_roles *ret);
+    struct discord_ret_role *ret);
 
 /**
  * @brief Modify a guild role

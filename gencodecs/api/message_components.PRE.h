@@ -125,7 +125,7 @@ PUB_STRUCT(discord_component)
     FIELD_PTR(url, char, *)
   /** the choices in the select, max 25 */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_select_options, *)
+    FIELD_STRUCT_PTR(options, discord_select_option, *)
   COND_END
   /** custom placeholder text if nothing is selected, max 100 characters */
     FIELD_PTR(placeholder, char, *)
@@ -140,7 +140,7 @@ PUB_STRUCT(discord_component)
   COND_END
   /** a list of child components */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** the minimum input length for a text input */
     FIELD(min_length, int, 0)
@@ -153,13 +153,6 @@ PUB_STRUCT(discord_component)
     FIELD_PTR(value, char, *)
   COND_END
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_components} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_components)
-    LISTTYPE_STRUCT(discord_component)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -179,13 +172,6 @@ STRUCT(discord_select_option)
                  CLEANUP_BLANK, GENCODECS_JSON_ENCODER_bool, 
                  GENCODECS_JSON_DECODER_bool, false)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_select_options} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_select_options)
-    LISTTYPE_STRUCT(discord_select_option)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -208,11 +194,4 @@ STRUCT(discord_component_item)
   /** whether the gallery item is a spoiler */
     FIELD(spoiler, bool, false)
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_component_items} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_component_items)
-    LISTTYPE_STRUCT(discord_component_item)
-LIST_END
 #endif

@@ -27,35 +27,36 @@ print_usage(void)
     "https://github.com/Cogmasters/concord/blob/master/docs/static/"          \
     "social-preview.png?raw=true"
 
-char JSON[] = "{\n"
-              "  \"title\": \"Concord\",\n"
-              "  \"description\": \"Discord API library\",\n"
-              "  \"url\": \"https://github.com/Cogmasters/concord\",\n"
-              "  \"color\": 3447003,\n"
-              "  \"footer\": {\n"
-              "    \"text\": \"github.com/Cogmasters/concord\",\n"
-              "    \"icon_url\": \"" ICON_URL "\"\n"
-              "  },\n"
-              "  \"image\": {\n"
-              "    \"url\": \"" IMAGE_URL "\"\n"
-              "  },\n"
-              "  \"author\": {\n"
-              "    \"name\": \"Cogmasters\",\n"
-              "    \"url\": \"https://github.com/Cogmasters\",\n"
-              "  },\n"
-              "  \"fields\": [\n"
-              "    {\n"
-              "      \"name\":\"Want to learn more?\", \n"
-              "      \"value\":\"Read our "
-              "[documentation](https://cogmasters.github.io/concord/)!\"\n"
-              "    },\n"
-              "    {\n"
-              "      \"name\":\"Looking for support?\", \n"
-              "      \"value\":\"Join our server "
-              "[here](https://discord.gg/Y7Xa6MA82v)!\"\n"
-              "    }\n"
-              "  ]\n"
-              "}";
+static const char JSON[] =
+    "{\n"
+    "  \"title\": \"Concord\",\n"
+    "  \"description\": \"Discord API library\",\n"
+    "  \"url\": \"https://github.com/Cogmasters/concord\",\n"
+    "  \"color\": 3447003,\n"
+    "  \"footer\": {\n"
+    "    \"text\": \"github.com/Cogmasters/concord\",\n"
+    "    \"icon_url\": \"" ICON_URL "\"\n"
+    "  },\n"
+    "  \"image\": {\n"
+    "    \"url\": \"" IMAGE_URL "\"\n"
+    "  },\n"
+    "  \"author\": {\n"
+    "    \"name\": \"Cogmasters\",\n"
+    "    \"url\": \"https://github.com/Cogmasters\",\n"
+    "  },\n"
+    "  \"fields\": [\n"
+    "    {\n"
+    "      \"name\":\"Want to learn more?\", \n"
+    "      \"value\":\"Read our "
+    "[documentation](https://cogmasters.github.io/concord/)!\"\n"
+    "    },\n"
+    "    {\n"
+    "      \"name\":\"Looking for support?\", \n"
+    "      \"value\":\"Join our server "
+    "[here](https://discord.gg/Y7Xa6MA82v)!\"\n"
+    "    }\n"
+    "  ]\n"
+    "}";
 
 void
 on_ready(struct discord *client, const struct discord_ready *event)
@@ -71,22 +72,18 @@ on_dynamic(struct discord *client, const struct discord_message *event)
     if (event->author->bot) return;
 
     /* load a embed from the json string */
-    struct discord_embed embed = { 0 };
+    struct discord_embed *embed = NULL;
     discord_embed_from_json(JSON, sizeof(JSON), &embed);
-    embed.timestamp = discord_timestamp(client); // get current timestamp
+    embed->timestamp = discord_timestamp(client); // get current timestamp
 
     struct discord_create_message params = {
         .content = "This is an embed",
-        .embeds =
-            &(struct discord_embeds){
-                .size = 1,
-                .array = &embed,
-            },
+        .embeds = discord_array({ embed }),
     };
     discord_create_message(client, event->channel_id, &params, NULL);
 
-    /* must cleanup 'embed' afterwards */
-    discord_embed_cleanup(&embed);
+    /* must free 'embed' afterwards */
+    discord_free(embed);
 }
 
 void
@@ -94,55 +91,44 @@ on_static(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_embed_field fields[] = {
+    struct discord_embed_field *fields = discord_array(
+        struct discord_embed_field,
         {
-            .name = "Want to learn more?",
-            .value = "Read our "
-                     "[documentation](https://cogmasters.github.io/"
-                     "concord/)!",
-        },
-        {
-            .name = "Looking for support?",
-            .value = "Join our server "
-                     "[here](https://discord.gg/x4hhGQYu)!",
-        },
-    };
+            {
+                .name = "Want to learn more?",
+                .value = "Read our "
+                         "[documentation](https://cogmasters.github.io/"
+                         "concord/)!",
+            },
+            {
+                .name = "Looking for support?",
+                .value = "Join our server "
+                         "[here](https://discord.gg/x4hhGQYu)!",
+            },
+        });
 
-    struct discord_embed embeds[] = {
+    struct discord_embed *embeds = discord_array(
+        struct discord_embed,
         {
-            .title = "Concord",
-            .description = "Discord API library",
-            .url = "https://github.com/Cogmasters/concord",
-            .color = 0x3498DB,
-            .timestamp = discord_timestamp(client),
-            .footer =
-                &(struct discord_embed_footer){
-                    .text = "github.com/Cogmasters/concord",
-                    .icon_url = ICON_URL,
-                },
-            .image =
-                &(struct discord_embed_image){
-                    .url = IMAGE_URL,
-                },
-            .author =
-                &(struct discord_embed_author){
-                    .name = "Cogmasters",
-                    .url = "https://github.com/Cogmasters",
-                },
-            .fields =
-                &(struct discord_embed_fields){
-                    .size = sizeof(fields) / sizeof *fields,
-                    .array = fields,
-                },
-        },
-    };
+            {
+                .title = "Concord",
+                .description = "Discord API library",
+                .url = "https://github.com/Cogmasters/concord",
+                .color = 0x3498DB,
+                .timestamp = discord_timestamp(client),
+                .footer = discord_struct(
+                    embed_footer, { .text = "github.com/Cogmasters/concord",
+                                    .icon_url = ICON_URL }),
+                .image = discord_struct(embed_image, { .url = IMAGE_URL }),
+                .author = discord_struct(
+                    embed_author, { .name = "Cogmasters",
+                                    .url = "https://github.com/Cogmasters" }),
+                .fields = discord_array(embed_field, fields),
+            },
+        });
 
     struct discord_create_message params = {
-        .embeds =
-            &(struct discord_embeds){
-                .size = sizeof(embeds) / sizeof *embeds,
-                .array = embeds,
-            },
+        .embeds = discord_array(embed, embeds),
     };
     discord_create_message(client, event->channel_id, &params, NULL);
 }

@@ -134,13 +134,6 @@ PUB_STRUCT(discord_role)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_roles} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_roles)
-    LISTTYPE_STRUCT(discord_role)
-LIST_END
-#endif
-
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_role_tag)
   /** the id of the bot this role belongs to */

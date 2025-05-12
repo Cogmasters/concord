@@ -137,7 +137,7 @@ on_role_member_remove(struct discord *client,
 void
 done_get_guild_roles(struct discord *client,
                      struct discord_response *resp,
-                     const struct discord_roles *roles)
+                     const struct discord_role *roles)
 {
     char text[DISCORD_MAX_MESSAGE_LEN];
 
@@ -145,10 +145,10 @@ done_get_guild_roles(struct discord *client,
     char *end = &text[sizeof(text) - 1];
     char *prev;
 
-    for (int i = 0; i < roles->size; ++i) {
+    for (int i = 0; i < discord_length(roles); ++i) {
         prev = cur;
         cur += snprintf(cur, end - cur, "<@&%" PRIu64 ">(%" PRIu64 ")\n",
-                        roles->array[i].id, roles->array[i].id);
+                        roles[i].id, roles[i].id);
 
         if (cur >= end) { // to make sure no role is skipped
             *prev = '\0'; // end string before truncation
@@ -175,7 +175,7 @@ on_role_list(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_ret_roles ret = {
+    struct discord_ret_role ret = {
         .done = &done_get_guild_roles,
         .fail = &fail_get_guild_roles,
     };
@@ -223,7 +223,7 @@ on_member_get(struct discord *client, const struct discord_message *event)
 void
 done_get_guild_channels(struct discord *client,
                         struct discord_response *resp,
-                        const struct discord_channels *channels)
+                        const struct discord_channel *channels)
 {
     const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
@@ -232,10 +232,9 @@ done_get_guild_channels(struct discord *client,
     char *end = &text[sizeof(text) - 1];
     char *prev;
 
-    for (int i = 0; i < channels->size; ++i) {
+    for (int i = 0; i < discord_length(channels); ++i) {
         prev = cur;
-        cur += snprintf(cur, end - cur, "<#%" PRIu64 ">\n",
-                        channels->array[i].id);
+        cur += snprintf(cur, end - cur, "<#%" PRIu64 ">\n", channels[i].id);
 
         if (cur >= end) { // to make sure no role is skipped
             *prev = '\0'; // end string before truncation
@@ -269,7 +268,7 @@ on_channels_get(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_ret_channels ret = {
+    struct discord_ret_channel ret = {
         .done = &done_get_guild_channels,
         .fail = &fail_get_guild_channels,
         .keep = event,

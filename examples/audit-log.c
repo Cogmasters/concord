@@ -67,13 +67,12 @@ done(struct discord *client,
 {
     const struct discord_message *event = resp->keep;
 
-    if (!audit_log->audit_log_entries || !audit_log->audit_log_entries->size) {
+    if (!audit_log->audit_log_entries) {
         logmod_log(WARN, NULL, "No audit log entries found!");
         return;
     }
 
-    struct discord_audit_log_entry *entry =
-        &audit_log->audit_log_entries->array[0];
+    struct discord_audit_log_entry *entry = &audit_log->audit_log_entries[0];
 
     char text[1028];
     snprintf(text, sizeof(text), "<@!%" PRIu64 "> has created <#%" PRIu64 ">!",

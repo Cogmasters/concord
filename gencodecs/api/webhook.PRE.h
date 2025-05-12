@@ -49,13 +49,6 @@ PUB_STRUCT(discord_webhook)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_webhooks} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_webhooks)
-    LISTTYPE_STRUCT(discord_webhook)
-LIST_END
-#endif
-
 /*****************************************************************************
  * Webhook REST parameters
  * **************************************************************************/
@@ -140,7 +133,7 @@ PUB_STRUCT(discord_execute_webhook)
     FIELD(tts, bool, false)
   /** embedded `rich` content */
   COND_WRITE(self->embeds != NULL)
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   COND_END
   /** allowed mentions for the message */
   COND_WRITE(self->allowed_mentions != NULL)
@@ -148,11 +141,11 @@ PUB_STRUCT(discord_execute_webhook)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
   /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        `SUPPRESS_EMBEDS` can be set) */
@@ -184,7 +177,7 @@ PUB_STRUCT(discord_edit_webhook_message)
     FIELD_PTR(content, char, *)
   /** embedded `rich` content */
   COND_WRITE(self->embeds != NULL)
-    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+    FIELD_STRUCT_PTR(embeds, discord_embed, *)
   COND_END
   /** allowed mentions for the message */
   COND_WRITE(self->allowed_mentions != NULL)
@@ -192,11 +185,11 @@ PUB_STRUCT(discord_edit_webhook_message)
   COND_END
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
+    FIELD_STRUCT_PTR(components, discord_component, *)
   COND_END
   /** attached files to keep and possible descriptions for new files */
   COND_WRITE(self->attachments != NULL)
-    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+    FIELD_STRUCT_PTR(attachments, discord_attachment, *)
   COND_END
 STRUCT_END
 #endif

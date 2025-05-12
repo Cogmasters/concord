@@ -53,7 +53,7 @@ _discord_shard_cache_cleanup(struct discord *client,
 
 EV_CB(ready, discord_ready)
 {
-    int shard = ev->shard ? ev->shard->array[0] : 0;
+    int shard = ev->shard ? ev->shard[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
     pthread_mutex_lock(&cache->lock);
@@ -64,7 +64,7 @@ EV_CB(ready, discord_ready)
 static void
 _on_shard_resumed(struct discord *client, const struct discord_identify *ev)
 {
-    int shard = ev->shard ? ev->shard->array[0] : 0;
+    int shard = ev->shard ? ev->shard[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
     pthread_mutex_lock(&cache->lock);
@@ -76,7 +76,7 @@ static void
 _on_shard_reconnected(struct discord *client,
                       const struct discord_identify *ev)
 {
-    int shard = ev->shard ? ev->shard->array[0] : 0;
+    int shard = ev->shard ? ev->shard[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
     _discord_shard_cache_cleanup(client, cache);
@@ -90,7 +90,7 @@ _on_shard_disconnected(struct discord *client,
                        const struct discord_identify *ev,
                        bool resumable)
 {
-    int shard = ev->shard ? ev->shard->array[0] : 0;
+    int shard = ev->shard ? ev->shard[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
     struct _discord_shard_cache *cache = &data->caches[shard];
     if (!resumable) _discord_shard_cache_cleanup(client, cache);

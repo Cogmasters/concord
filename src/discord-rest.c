@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "carray.h"
 #include "threadpool.h"
 
 #include "discord.h"

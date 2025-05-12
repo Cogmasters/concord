@@ -45,14 +45,11 @@ on_disconnect(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    discord_create_message(client, event->channel_id,
-                           &(struct discord_create_message){
-                               .content = "Disconnecting ...",
-                           },
-                           &(struct discord_ret_message){
-                               .done = &disconnect,
-                               .high_priority = true,
-                           });
+    discord_create_message(
+        client, event->channel_id,
+        discord_send(create_message, { .content = "Disconnecting ..." }),
+        discord_recv(ret_message,
+                     { .done = &disconnect, .high_priority = true }));
 }
 
 void

@@ -8,7 +8,7 @@ PUB_STRUCT(discord_auth_response)
   /** the current application */
     FIELD_STRUCT_PTR(application, discord_application, *)
   /** the scopes the user authorized the application for */
-    FIELD_STRUCT_PTR(scopes, strings, *)
+    FIELD_PTR(scopes, char, *)
   /** when the access token expires */
     FIELD_TIMESTAMP(expires)
   /** the user who has authorized, if the user has authorized with the 

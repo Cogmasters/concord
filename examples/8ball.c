@@ -54,18 +54,11 @@ eight_ball(struct discord *client, const struct discord_message *event)
     /* random index to phrases array */
     int answer = rand() % (sizeof(phrases) / sizeof(*phrases));
 
-    struct discord_embed embeds[] = { {
-        .title = ":8ball: 8-Ball",
-        .description = phrases[answer],
-    } };
+    struct discord_embed *embeds = discord_array(
+        struct discord_embed,
+        { { .title = ":8ball: 8-Ball", .description = phrases[answer] } });
 
-    struct discord_create_message params = {
-        .embeds =
-            &(struct discord_embeds){
-                .size = sizeof(embeds) / sizeof *embeds,
-                .array = embeds,
-            },
-    };
+    struct discord_create_message params = { .embeds = embeds };
     discord_create_message(client, event->channel_id, &params, NULL);
 }
 

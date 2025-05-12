@@ -42,16 +42,19 @@ on_message_create(struct discord *client, const struct discord_message *event)
 {
     if (event->author->bot) return;
 
-    struct discord_create_message params = { 
-                   .content = event->content,
-                   .message_reference = !event->referenced_message
-                           ? NULL
-                           : &(struct discord_message_reference){
-                               .message_id = event->referenced_message->id,
-                               .channel_id = event->channel_id,
-                               .guild_id = event->guild_id,
-                           },
-                    };
+    struct discord_create_message params = {
+        .content = event->content,
+        .message_reference =
+            !event->referenced_message
+                ? NULL
+                : discord_struct(
+                      struct discord_message_reference,
+                      {
+                          .message_id = event->referenced_message->id,
+                          .channel_id = event->channel_id,
+                          .guild_id = event->guild_id,
+                      }),
+    };
 
     discord_create_message(client, event->channel_id, &params, NULL);
 }

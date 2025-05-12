@@ -70,13 +70,13 @@ read_input(void *p_client)
             }
         }
         else { /* reset active chat */
-            struct discord_channel ret_channel = { 0 };
+            struct discord_channel *ret_channel = NULL;
             struct discord_ret_channel ret = { .sync = &ret_channel };
             struct discord_create_dm params = { .recipient_id = recipient_id };
 
             if (CCORD_OK == discord_create_dm(client, &params, &ret)) {
-                dm_channel_id = ret_channel.id;
-                discord_channel_cleanup(&ret_channel);
+                dm_channel_id = ret_channel->id;
+                discord_free(ret_channel);
             }
         }
 

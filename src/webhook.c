@@ -28,11 +28,11 @@ discord_create_webhook(struct discord *client,
 CCORDcode
 discord_get_channel_webhooks(struct discord *client,
                              u64snowflake channel_id,
-                             struct discord_ret_webhooks *ret)
+                             struct discord_ret_webhook *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_webhooks, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/webhooks", channel_id);
 }
@@ -40,11 +40,11 @@ discord_get_channel_webhooks(struct discord *client,
 CCORDcode
 discord_get_guild_webhooks(struct discord *client,
                            u64snowflake guild_id,
-                           struct discord_ret_webhooks *ret)
+                           struct discord_ret_webhook *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_webhooks, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/webhooks", guild_id);
 }
@@ -181,7 +181,7 @@ discord_execute_webhook(struct discord *client,
     if (params->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
-        attr.attachments = *params->attachments;
+        attr.attachments = params->attachments;
     }
     else {
         method = HTTP_POST;
@@ -231,7 +231,7 @@ discord_edit_webhook_message(struct discord *client,
     if (params->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
-        attr.attachments = *params->attachments;
+        attr.attachments = params->attachments;
     }
     else {
         method = HTTP_PATCH;

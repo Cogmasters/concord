@@ -14,13 +14,11 @@ TEST
 check_sync_fetch_object(void)
 {
     struct discord_ret_user ret = { 0 };
-    struct discord_user bot;
-
-    discord_user_init(&bot);
+    struct discord_user *bot = NULL;
 
     ret.sync = &bot;
     ASSERT_EQ(CCORD_OK, discord_get_current_user(CLIENT, &ret));
-    discord_user_cleanup(&bot);
+    discord_free(bot);
 
     ret.sync = DISCORD_SYNC_FLAG;
     ASSERT_EQ(CCORD_OK, discord_get_current_user(CLIENT, &ret));
@@ -31,12 +29,12 @@ check_sync_fetch_object(void)
 TEST
 check_sync_fetch_array(void)
 {
-    struct discord_ret_guilds ret = { 0 };
-    struct discord_guilds guilds = { 0 };
+    struct discord_ret_guild ret = { 0 };
+    struct discord_guild *guilds = NULL;
 
     ret.sync = &guilds;
     ASSERT_EQ(CCORD_OK, discord_get_current_user_guilds(CLIENT, &ret));
-    discord_guilds_cleanup(&guilds);
+    discord_free(guilds);
 
     ret.sync = DISCORD_SYNC_FLAG;
     ASSERT_EQ(CCORD_OK, discord_get_current_user_guilds(CLIENT, &ret));
@@ -124,10 +122,10 @@ check_async_fetch_object(void)
 TEST
 check_async_fetch_array(void)
 {
-    struct discord_ret_guilds ret = { 0 };
+    struct discord_ret_guild ret = { 0 };
     CCORDcode result = CCORD_OK;
 
-    ret.done = (DONE1_CAST(struct discord_guilds))on_done1;
+    ret.done = (DONE1_CAST(struct discord_guild))on_done1;
     ret.fail = on_done;
     ret.data = &result;
     discord_get_current_user_guilds(CLIENT, &ret);

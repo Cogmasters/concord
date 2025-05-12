@@ -74,7 +74,7 @@ PUB_STRUCT(discord_application_command)
   COND_END
   /** the parameters for the command, max 25 */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** Set of @ref DiscordPermissions represented as a bit set */
   COND_WRITE(self->default_member_permissions != 0)
@@ -100,12 +100,6 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_application_commands)
-    LISTTYPE_STRUCT(discord_application_command)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_application_command_option)
   /** value of application command option type */
     FIELD_ENUM(type, discord_application_command_option_types)
@@ -119,17 +113,17 @@ STRUCT(discord_application_command_option)
   COND_END
   /** choices for string and int types for the user to pick from */
   COND_WRITE(self->choices != NULL)
-    FIELD_STRUCT_PTR(choices, discord_application_command_option_choices, *)
+    FIELD_STRUCT_PTR(choices, discord_application_command_option_choice, *)
   COND_END
   /** if the option is a subcommand or subcommand group type, this nested
        options will be the parameters */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** if the option is a channel type, the channels shown will be restricted
        to these types */
   COND_WRITE(self->channel_types != NULL)
-    FIELD_STRUCT_PTR(channel_types, integers, *)
+    FIELD_PTR(channel_types, int, *)
   COND_END
   /** if the option is an INTEGER or NUMBER type, the minimum value permitted */
   COND_WRITE(self->min_value != NULL)
@@ -147,12 +141,6 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_application_command_options)
-    LISTTYPE_STRUCT(discord_application_command_option)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_application_command_option_choice)
   /** 1-100 character choice name */
     FIELD_PTR(name, char, *)
@@ -160,12 +148,6 @@ STRUCT(discord_application_command_option_choice)
        string the value must be enclosed with escaped commas, ex: `\"hi\"` */
     FIELD_PTR(value, json_char, *)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_application_command_option_choices)
-    LISTTYPE_STRUCT(discord_application_command_option_choice)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -181,17 +163,11 @@ STRUCT(discord_application_command_interaction_data_option)
   COND_END
   /** present if this option is a group or subcommand */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_interaction_data_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_interaction_data_option, *)
   COND_END
   /** true if this option is the currently focused option for autocomplete */
     FIELD(focused, bool, false)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_application_command_interaction_data_options)
-    LISTTYPE_STRUCT(discord_application_command_interaction_data_option)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -203,14 +179,8 @@ STRUCT(discord_guild_application_command_permission)
   /** the ID of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** the permissions for the command in the guild */
-    FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
+    FIELD_STRUCT_PTR(permissions, discord_application_command_permission, *)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_guild_application_command_permissions)
-    LISTTYPE_STRUCT(discord_guild_application_command_permission)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -222,12 +192,6 @@ PUB_STRUCT(discord_application_command_permission)
   /** `true` to allow, `false` to disallow */
     FIELD(permission, bool, false)
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_application_command_permissions)
-    LISTTYPE_STRUCT(discord_application_command_permission)
-LIST_END
 #endif
 
 /*****************************************************************************
@@ -242,7 +206,7 @@ PUB_STRUCT(discord_create_global_application_command)
     FIELD_PTR(description, char, *)
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** Set of @ref DiscordPermissions represented as a bit set */
   COND_WRITE(self->default_member_permissions != 0)
@@ -270,7 +234,7 @@ PUB_STRUCT(discord_edit_global_application_command)
     FIELD_PTR(description, char, *)
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** Set of @ref DiscordPermissions represented as a bit set */
   COND_WRITE(self->default_member_permissions != 0)
@@ -294,7 +258,7 @@ PUB_STRUCT(discord_create_guild_application_command)
     FIELD_PTR(description, char, *)
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** Set of @ref DiscordPermissions represented as a bit set */
   COND_WRITE(self->default_member_permissions != 0)
@@ -322,7 +286,7 @@ PUB_STRUCT(discord_edit_guild_application_command)
     FIELD_PTR(description, char, *)
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** Set of @ref DiscordPermissions represented as a bit set */
   COND_WRITE(self->default_member_permissions != 0)
@@ -341,15 +305,15 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_commands)
     FIELD_PTR(name, char, *)
   /** Localization dictionary for the `name` field. Values follow the same
    *    restriction as `name` */
-    FIELD_STRUCT_PTR(name_localizations, strings, *)
+    FIELD_PTR(name_localizations, char, *)
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
   /** Localization dictionary for the `description` field. Values follow the
    *    same restriction as `description` */
-    FIELD_STRUCT_PTR(description_localizations, strings, *)
+    FIELD_PTR(description_localizations, char, *)
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
-    FIELD_STRUCT_PTR(options, discord_application_command_options, *)
+    FIELD_STRUCT_PTR(options, discord_application_command_option, *)
   COND_END
   /** Set of @ref DiscordPermissions represented as a bit set */
   COND_WRITE(self->default_member_permissions != 0)

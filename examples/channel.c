@@ -118,16 +118,17 @@ on_channel_delete_this(struct discord *client,
 void
 done_get_channel_invites(struct discord *client,
                          struct discord_response *resp,
-                         const struct discord_invites *invites)
+                         const struct discord_invite *invites)
 {
-    if (!invites->size) {
+    if (!discord_length(invites)) {
         logmod_log(INFO, NULL, "No invites found!");
         return;
     }
 
     const struct discord_message *event = resp->keep;
     char text[DISCORD_MAX_MESSAGE_LEN];
-    snprintf(text, sizeof(text), "%d invite links created.", invites->size);
+    snprintf(text, sizeof(text), "%d invite links created.",
+             discord_length(invites));
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, event->channel_id, &params, NULL);
@@ -146,7 +147,7 @@ on_channel_get_invites(struct discord *client,
 {
     if (event->author->bot) return;
 
-    struct discord_ret_invites ret = {
+    struct discord_ret_invite ret = {
         .done = &done_get_channel_invites,
         .fail = &fail_get_channel_invites,
         .keep = event,

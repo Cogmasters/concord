@@ -86,61 +86,50 @@ DISCORD_RETURN(audit_log);
 /** @addtogroup DiscordAPIAutoModeration
  *  @{ */
 DISCORD_RETURN(auto_moderation_rule);
-DISCORD_RETURN(auto_moderation_rules);
 /** @} DiscordAPIAutoModeration */
 
 /** @addtogroup DiscordAPIChannel
  *  @{ */
 DISCORD_RETURN(channel);
-DISCORD_RETURN(channels);
 DISCORD_RETURN(message);
-DISCORD_RETURN(messages);
 DISCORD_RETURN(followed_channel);
-DISCORD_RETURN(thread_members);
+DISCORD_RETURN(thread_member);
 DISCORD_RETURN(thread_response_body);
 /** @} DiscordAPIChannel */
 
 /** @addtogroup DiscordAPIEmoji
  *  @{ */
 DISCORD_RETURN(emoji);
-DISCORD_RETURN(emojis);
 /** @} DiscordAPIEmoji */
 
 /** @addtogroup DiscordAPIGuild
  *  @{ */
 DISCORD_RETURN(guild);
-DISCORD_RETURN(guilds);
 DISCORD_RETURN(guild_preview);
 DISCORD_RETURN(guild_member);
-DISCORD_RETURN(guild_members);
 DISCORD_RETURN(guild_widget);
 DISCORD_RETURN(guild_widget_settings);
 DISCORD_RETURN(ban);
-DISCORD_RETURN(bans);
 DISCORD_RETURN(role);
-DISCORD_RETURN(roles);
 DISCORD_RETURN(welcome_screen);
-DISCORD_RETURN(integrations);
+DISCORD_RETURN(integration);
 DISCORD_RETURN(prune_count);
 /** @} DiscordAPIGuild */
 
 /** @addtogroup DiscordAPIGuildScheduledEvent
  *  @{ */
 DISCORD_RETURN(guild_scheduled_event);
-DISCORD_RETURN(guild_scheduled_events);
 DISCORD_RETURN(guild_scheduled_event_users);
 /** @} DiscordAPIGuildScheduledEvent */
 
 /** @addtogroup DiscordAPIGuildTemplate
  *  @{ */
 DISCORD_RETURN(guild_template);
-DISCORD_RETURN(guild_templates);
 /** @} DiscordAPIGuildTemplate */
 
 /** @addtogroup DiscordAPIInvite
  *  @{ */
 DISCORD_RETURN(invite);
-DISCORD_RETURN(invites);
 /** @} DiscordAPIInvite */
 
 /** @addtogroup DiscordAPIStageInstance
@@ -151,36 +140,31 @@ DISCORD_RETURN(stage_instance);
 /** @addtogroup DiscordAPISticker
  *  @{ */
 DISCORD_RETURN(sticker);
-DISCORD_RETURN(stickers);
 DISCORD_RETURN(list_nitro_sticker_packs);
 /** @} DiscordAPISticker */
 
 /** @addtogroup DiscordAPIUser
  *  @{ */
 DISCORD_RETURN(user);
-DISCORD_RETURN(users);
-DISCORD_RETURN(connections);
+DISCORD_RETURN(connection);
 /** @} DiscordAPIUser */
 
 /** @addtogroup DiscordAPIVoice
  *  @{ */
-DISCORD_RETURN(voice_regions);
+DISCORD_RETURN(voice_region);
 /** @} DiscordAPIVoice */
 
 /** @addtogroup DiscordAPIWebhook
  *  @{ */
 DISCORD_RETURN(webhook);
-DISCORD_RETURN(webhooks);
 /** @} DiscordAPIWebhook */
 
 /** @addtogroup DiscordAPIInteractionsApplicationCommand
  * @ingroup DiscordAPIInteractions
  *  @{ */
 DISCORD_RETURN(application_command);
-DISCORD_RETURN(application_commands);
 DISCORD_RETURN(application_command_permission);
-DISCORD_RETURN(application_command_permissions);
-DISCORD_RETURN(guild_application_command_permissions);
+DISCORD_RETURN(guild_application_command_permission);
 /** @} DiscordAPIInteractionsApplicationCommand */
 
 /** @addtogroup DiscordAPIInteractionsReact

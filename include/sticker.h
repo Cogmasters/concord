@@ -46,7 +46,7 @@ CCORDcode discord_list_nitro_sticker_packs(
  */
 CCORDcode discord_list_guild_stickers(struct discord *client,
                                       u64snowflake guild_id,
-                                      struct discord_ret_stickers *ret);
+                                      struct discord_ret_sticker *ret);
 
 /**
  * @brief Get a sticker for the given guild and sticker ID

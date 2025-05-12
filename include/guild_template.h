@@ -41,17 +41,17 @@ CCORDcode discord_create_guild_from_guild_template(
     struct discord_ret_guild *ret);
 
 /**
- * @brief Returns @ref discord_guild_templates from a guild
+ * @brief Returns @ref discord_guild_template from a guild
  * @note Requires the `MANAGE_GUILD` permission
  *
  * @param client the client created with discord_from_token()
  * @param guild_id the guild to fetch the templates from
- * @CCORD_ret_obj{ret,guild_templates}
+ * @CCORD_ret_obj{ret,guild_template}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_templates(struct discord *client,
                                       u64snowflake guild_id,
-                                      struct discord_ret_guild_templates *ret);
+                                      struct discord_ret_guild_template *ret);
 
 /**
  * @brief Creates a template for the guild

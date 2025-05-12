@@ -39,6 +39,7 @@ extern "C" {
 struct discord;
 /**/
 
+#include "discord-metadata.h"
 #include "discord_codecs.h"
 #include "discord-response.h"
 

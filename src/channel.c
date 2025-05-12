@@ -22,14 +22,15 @@ struct _discord_get_channel_at_pos {
 static void
 _done_get_channels(struct discord *client,
                    struct discord_response *resp,
-                   const struct discord_channels *chs)
+                   const struct discord_channel *chs)
 {
     struct _discord_get_channel_at_pos *cxt = resp->data;
     const struct discord_channel *found_ch = NULL;
+    int pos = 0;
 
-    for (int i = 0, pos = 0; i < chs->size; ++i) {
-        if (cxt->type == chs->array[i].type && pos++ == cxt->position) {
-            found_ch = &chs->array[i];
+    for (size_t i = 0; i < discord_length(chs); ++i) {
+        if (cxt->type == chs[i].type && pos++ == cxt->position) {
+            found_ch = &chs[i];
             break;
         }
     }
@@ -59,7 +60,7 @@ discord_get_channel_at_pos(struct discord *client,
                            struct discord_ret_channel *ret)
 {
     struct _discord_get_channel_at_pos *cxt;
-    struct discord_ret_channels channels_ret = { 0 };
+    struct discord_ret_channel channels_ret = { 0 };
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
@@ -146,7 +147,7 @@ CCORDcode
 discord_get_channel_messages(struct discord *client,
                              u64snowflake channel_id,
                              struct discord_get_channel_messages *params,
-                             struct discord_ret_messages *ret)
+                             struct discord_ret_message *ret)
 {
     struct discord_attributes attr = { 0 };
     struct queriec queriec;
@@ -189,7 +190,7 @@ discord_get_channel_messages(struct discord *client,
                          "Out of bounds write attempt");
         }
     }
-    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/messages%s", channel_id,
                             query);
@@ -227,7 +228,7 @@ discord_create_message(struct discord *client,
     if (params->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
-        attr.attachments = *params->attachments;
+        attr.attachments = params->attachments;
     }
     else {
         method = HTTP_POST;
@@ -351,7 +352,7 @@ discord_get_reactions(struct discord *client,
                       u64snowflake emoji_id,
                       const char emoji_name[],
                       struct discord_get_reactions *params,
-                      struct discord_ret_users *ret)
+                      struct discord_ret_user *ret)
 {
     struct discord_attributes attr = { 0 };
     char emoji_endpoint[256];
@@ -361,7 +362,7 @@ discord_get_reactions(struct discord *client,
     CCORDcode code;
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_users, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_user, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
@@ -492,14 +493,14 @@ discord_bulk_delete_messages(struct discord *client,
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->messages != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client,
-                 params->messages->size >= 2 && params->messages->size <= 100,
+                 discord_length(params->messages) >= 2
+                     && discord_length(params->messages) <= 100,
                  CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT_OK(client, discord_bulk_delete_messages_to_json(
                                 &body.start, &body.size, params));
     DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);
-    for (int i = 0; i < params->messages->size; ++i) {
-        const u64unix_ms tstamp =
-            (params->messages->array[i] >> 22) + 1420070400000;
+    for (size_t i = 0; i < discord_length(params->messages); ++i) {
+        const u64unix_ms tstamp = (params->messages[i] >> 22) + 1420070400000;
         CCORD_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
                      CCORD_BAD_PARAMETER,
                      "Messages should not be older than 2 weeks.");
@@ -533,11 +534,11 @@ discord_edit_channel_permissions(
 CCORDcode
 discord_get_channel_invites(struct discord *client,
                             u64snowflake channel_id,
-                            struct discord_ret_invites *ret)
+                            struct discord_ret_invite *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_invites, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_invite, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/invites", channel_id);
 }
@@ -610,11 +611,11 @@ discord_trigger_typing_indicator(struct discord *client,
 CCORDcode
 discord_get_pinned_messages(struct discord *client,
                             u64snowflake channel_id,
-                            struct discord_ret_messages *ret)
+                            struct discord_ret_message *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/pins", channel_id);
 }
@@ -785,11 +786,11 @@ discord_remove_thread_member(struct discord *client,
 CCORDcode
 discord_list_thread_members(struct discord *client,
                             u64snowflake channel_id,
-                            struct discord_ret_thread_members *ret)
+                            struct discord_ret_thread_member *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_thread_members, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_thread_member, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/thread-members",
                             channel_id);

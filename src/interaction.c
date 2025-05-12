@@ -28,7 +28,7 @@ discord_create_interaction_response(
     if (params->data && params->data->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->data->attachments);
-        attr.attachments = *params->data->attachments;
+        attr.attachments = params->data->attachments;
     }
     else {
         method = HTTP_POST;
@@ -76,7 +76,7 @@ discord_edit_original_interaction_response(
     if (params->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
-        attr.attachments = *params->attachments;
+        attr.attachments = params->attachments;
     }
     else {
         method = HTTP_PATCH;
@@ -133,7 +133,7 @@ discord_create_followup_message(struct discord *client,
     if (params->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
-        attr.attachments = *params->attachments;
+        attr.attachments = params->attachments;
     }
     else {
         method = HTTP_POST;
@@ -183,7 +183,7 @@ discord_edit_followup_message(struct discord *client,
     if (params->attachments) {
         method = HTTP_MIMEPOST;
         DISCORD_ATTACHMENTS_IDS_INIT(params->attachments);
-        attr.attachments = *params->attachments;
+        attr.attachments = params->attachments;
     }
     else {
         method = HTTP_PATCH;

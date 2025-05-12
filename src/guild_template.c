@@ -40,11 +40,11 @@ discord_create_guild_from_guild_template(
 CCORDcode
 discord_get_guild_templates(struct discord *client,
                             u64snowflake guild_id,
-                            struct discord_ret_guild_templates *ret)
+                            struct discord_ret_guild_template *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_templates, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_template, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/templates", guild_id);
 }

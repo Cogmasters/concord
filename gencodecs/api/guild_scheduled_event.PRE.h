@@ -85,15 +85,8 @@ STRUCT(discord_guild_scheduled_event_entity_metadata)
 STRUCT_END
 #endif
 
-/** @CCORD_pub_list{discord_guild_scheduled_events} */
 #if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_guild_scheduled_events)
-    LISTTYPE_STRUCT(discord_guild_scheduled_event)
-LIST_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_guild_scheduled_event_user)
+PUB_STRUCT(discord_guild_scheduled_event_users)
   /** the scheduled event ID which the user subscribed to */
     FIELD_SNOWFLAKE(guild_scheduled_event_id)
   /** user which subscribed to an event */
@@ -106,13 +99,6 @@ STRUCT(discord_guild_scheduled_event_user)
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   COND_END
 STRUCT_END
-#endif
-
-/** @CCORD_pub_list{discord_guild_scheduled_event_users} */
-#if GENCODECS_RECIPE & (DATA | JSON)
-PUB_LIST(discord_guild_scheduled_event_users)
-    LISTTYPE_STRUCT(discord_guild_scheduled_event_user)
-LIST_END
 #endif
 
 /*****************************************************************************
@@ -222,7 +208,7 @@ STRUCT_END
 #endif
 
 #if GENCODECS_RECIPE == DATA
-STRUCT(discord_get_guild_scheduled_event_users)
+PUB_STRUCT(discord_get_guild_scheduled_event_users)
   /** number of users to return (up to maximum of 100) */
     FIELD(limit, int, 0)
   /** include guild member data if exists */

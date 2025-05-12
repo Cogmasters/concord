@@ -28,12 +28,12 @@ on_ready(struct discord *client, const struct discord_ready *event)
 void
 done_list_guild_emojis(struct discord *client,
                        struct discord_response *resp,
-                       const struct discord_emojis *emojis)
+                       const struct discord_emoji *emojis)
 {
     const struct discord_message *event = resp->keep;
     char text[2000] = "";
 
-    if (!emojis->size) {
+    if (!emojis) {
         logmod_log(INFO, NULL, "No emojis in guild");
         return;
     }
@@ -42,13 +42,12 @@ done_list_guild_emojis(struct discord *client,
     char *end = &text[sizeof(text) - 1];
     char *prev;
 
-    for (int i = 0; i < emojis->size; ++i) {
+    for (int i = 0; i < discord_length(emojis); ++i) {
         prev = cur;
 
         cur += snprintf(cur, end - cur, "<%s:%s:%" PRIu64 ">(%" PRIu64 ")\n",
-                        emojis->array[i].animated ? "a" : "",
-                        emojis->array[i].name, emojis->array[i].id,
-                        emojis->array[i].id);
+                        emojis[i].animated ? "a" : "", emojis[i].name,
+                        emojis[i].id, emojis[i].id);
 
         if (cur >= end) { // to make sure no emoji is skipped
             *prev = '\0'; // end string before truncation
@@ -87,7 +86,7 @@ on_list_guild_emojis(struct discord *client,
 {
     if (event->author->bot) return;
 
-    struct discord_ret_emojis ret = {
+    struct discord_ret_emoji ret = {
         .done = &done_list_guild_emojis,
         .fail = &fail_list_guild_emojis,
         .keep = event,

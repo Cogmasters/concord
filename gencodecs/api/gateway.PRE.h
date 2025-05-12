@@ -151,15 +151,9 @@ STRUCT(discord_activity)
     FIELD_BITMASK(flags)
   /** the custom buttons shown in the Rich Presence (max 2) */
   COND_WRITE(self->buttons != NULL)
-    FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
+    FIELD_STRUCT_PTR(buttons, discord_activity_button, *)
   COND_END
 STRUCT_END
-#endif
-
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_activities)
-    LISTTYPE_STRUCT(discord_activity)
-LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
@@ -188,7 +182,7 @@ STRUCT(discord_activity_party)
     FIELD_PTR(id, char, *)
   /** used to show the party's current and maximum size @note array of two
        integers (current_size, max_size) */
-    FIELD_STRUCT_PTR(size, integers, *)
+    FIELD_PTR(size, int, *)
 STRUCT_END
 #endif
 
@@ -225,12 +219,6 @@ STRUCT(discord_activity_button)
 STRUCT_END
 #endif
 
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_activity_buttons)
-    LISTTYPE_STRUCT(discord_activity_button)
-LIST_END
-#endif
-
 /** @CCORD_pub_struct{discord_presence_update} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_presence_update)
@@ -252,7 +240,7 @@ PUB_STRUCT(discord_presence_update)
   COND_END
   /** user's current activities */
   COND_WRITE(self->activities != NULL)
-    FIELD_STRUCT_PTR(activities, discord_activities, *)
+    FIELD_STRUCT_PTR(activities, discord_activity, *)
   COND_END
   /** unix time (in milliseconds) of when the client went idle, or null if
        the client is not idle */
@@ -278,12 +266,6 @@ STRUCT(discord_client_status)
 STRUCT_END
 #endif
 
-#if GENCODECS_RECIPE & (DATA | JSON)
-LIST(discord_presence_updates)
-    LISTTYPE_STRUCT(discord_presence_update)
-LIST_END
-#endif
-
 /* GATEWAY COMMAND PAYLOADS ONLY NEED TO BE ENCODED INTO JSON */
 
 /** @CCORD_pub_struct{discord_identify} */
@@ -300,7 +282,7 @@ PUB_STRUCT(discord_identify)
     FIELD(large_threshold, int, 50)
   /** array of two integers (shard_id, num_shards) */
   COND_WRITE(self->shard != NULL)
-    FIELD_STRUCT_PTR(shard, integers, *)
+    FIELD_PTR(shard, int, *)
   COND_END
   /** presence structure for initial presence information */
   COND_WRITE(self->presence != NULL)
@@ -350,7 +332,7 @@ PUB_STRUCT(discord_request_guild_members)
     FIELD(presences, bool, false)
   /** used to specify which users you wish to fetch */
   COND_WRITE(self->user_ids != NULL)
-    FIELD_STRUCT_PTR(user_ids, snowflakes, *)
+    FIELD_PTR(user_ids, u64snowflake, *)
   COND_END
   /** nonce to identify the `Guild Members Chunk` response */
   COND_WRITE(self->nonce != NULL)
@@ -383,12 +365,12 @@ PUB_STRUCT(discord_ready)
   /** information about the user including email */
     FIELD_STRUCT_PTR(user, discord_user, *)
   /** the guilds the user is in */
-    FIELD_STRUCT_PTR(guilds, discord_guilds, *)
+    FIELD_STRUCT_PTR(guilds, discord_guild, *)
   /** used for resuming connections */
     FIELD_PTR(session_id, char, *)
   /** the shard information associated with this session, if sent when
    *        identifying*/
-    FIELD_STRUCT_PTR(shard, integers, *)
+    FIELD_PTR(shard, int, *)
   /** contains `id` and `flags` */
     FIELD_STRUCT_PTR(application, discord_application, *)
 STRUCT_END
@@ -434,12 +416,12 @@ PUB_STRUCT(discord_thread_list_sync)
    *        channel_ids that have no active threads as well, so you know to
    *        clear data
    */
-    FIELD_STRUCT_PTR(channel_ids, snowflakes, *)
+    FIELD_PTR(channel_ids, u64snowflake, *)
   /** all active threads in the given channels that the current user can access */
-    FIELD_STRUCT_PTR(threads, discord_channels, *)
+    FIELD_STRUCT_PTR(threads, discord_channel, *)
   /** all thread member objects from the synced threads for the current user,
    *    indicating which threads the current user has been added to */
-    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+    FIELD_STRUCT_PTR(members, discord_thread_member, *)
 STRUCT_END
 #endif
 
@@ -456,9 +438,9 @@ PUB_STRUCT(discord_thread_members_update)
   /** the approximate number of members in the thread, capped at 50 */
     FIELD(member_count, int, 0)
   /** the users who were added to the thread */
-    FIELD_STRUCT_PTR(added_members, discord_thread_members, *)
+    FIELD_STRUCT_PTR(added_members, discord_thread_member, *)
   /** the id of the users who were removed from the thread */
-    FIELD_STRUCT_PTR(removed_member_ids, snowflakes, *)
+    FIELD_PTR(removed_member_ids, u64snowflake, *)
 STRUCT_END
 #endif
 
@@ -500,7 +482,7 @@ PUB_STRUCT(discord_guild_emojis_update)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** array of emojis */
-    FIELD_STRUCT_PTR(emojis, discord_emojis, *)
+    FIELD_STRUCT_PTR(emojis, discord_emoji, *)
 STRUCT_END
 #endif
 
@@ -510,7 +492,7 @@ PUB_STRUCT(discord_guild_stickers_update)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** array of stickers */
-    FIELD_STRUCT_PTR(stickers, discord_stickers, *)
+    FIELD_STRUCT_PTR(stickers, discord_sticker, *)
 STRUCT_END
 #endif
 
@@ -538,7 +520,7 @@ PUB_STRUCT(discord_guild_member_update)
   /** id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** user role ids */
-    FIELD_STRUCT_PTR(roles, snowflakes, *)
+    FIELD_PTR(roles, u64snowflake, *)
   /** the user */
     FIELD_STRUCT_PTR(user, discord_user, *)
   /** nickname of the user in the guild */
@@ -570,7 +552,7 @@ PUB_STRUCT(discord_guild_members_chunk)
   /** the id of the guild */
     FIELD_SNOWFLAKE(guild_id)
   /** set of guild members */
-    FIELD_STRUCT_PTR(members, discord_guild_members, *)
+    FIELD_STRUCT_PTR(members, discord_guild_member, *)
   /** the chunk index in the expected chunks for this response
    *  @note `0 <= chunk_index < chunk_count` */
     FIELD(chunk_index, int, 0)
@@ -578,10 +560,10 @@ PUB_STRUCT(discord_guild_members_chunk)
     FIELD(chunk_count, int, 0)
   /** if passing an invalid id to `REQUEST_GUILD_MEMBERS`, it will be returned
    *    here */
-    FIELD_STRUCT_PTR(not_found, snowflakes, *)
+    FIELD_PTR(not_found, u64snowflake, *)
   /** if passing true to `REQUEST_GUILD_MEMBERS`, presences of the returned
    *    members will be here */
-    FIELD_STRUCT_PTR(presences, discord_presence_updates, *)
+    FIELD_STRUCT_PTR(presences, discord_presence_update, *)
   /** the nonce used in the `Guild Members Request` */
     FIELD_PTR(nonce, char, *)
 STRUCT_END
@@ -713,7 +695,7 @@ STRUCT_END
 #if GENCODECS_RECIPE & (DATA | JSON_DECODER)
 PUB_STRUCT(discord_message_delete_bulk)
   /** the ids of the messages */
-    FIELD_STRUCT_PTR(ids, snowflakes, *)
+    FIELD_PTR(ids, u64snowflake, *)
   /** the id of the channel */
     FIELD_SNOWFLAKE(channel_id)
   /** the id of the guild */

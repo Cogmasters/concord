@@ -12,13 +12,13 @@ discord_list_guild_scheduled_events(
     struct discord *client,
     u64snowflake guild_id,
     struct discord_list_guild_scheduled_events *params,
-    struct discord_ret_guild_scheduled_events *ret)
+    struct discord_ret_guild_scheduled_event *ret)
 {
     struct discord_attributes attr = { 0 };
     const char *query =
         (params && params->with_user_count) ? "?with_user_count=1" : "";
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_events, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/scheduled-events%s", guild_id,
                             query);
@@ -121,8 +121,7 @@ discord_get_guild_scheduled_event_users(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_event_users, ret,
-                           NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event_users, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
