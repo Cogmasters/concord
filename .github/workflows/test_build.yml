@@ -32,6 +32,12 @@ jobs:
           echo "Building tests"
           make test
 
+      - name: Build shared library
+        run: |
+          echo "Building shared library"
+          make clean
+          make shared
+
       - name: Run Makefile with parallelism
         run: |
           echo "Building with parallelism"
@@ -40,3 +46,5 @@ jobs:
           make clean && make examples -j$(nproc)
           echo "Building tests with parallelism"
           make clean && make test -j$(nproc)
+          echo "Building shared library with parallelism"
+          make clean && make shared -j$(nproc)
