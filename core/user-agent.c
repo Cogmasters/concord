@@ -11,6 +11,10 @@
 #include "cog-utils.h"
 #include "queue.h"
 
+#ifndef CURLE_TOO_LARGE
+#define CURLE_TOO_LARGE CURLE_FILESIZE_EXCEEDED
+#endif
+
 #define LOGMOD_APPLICATION_ID "CORE"
 #define LOGMOD_CONTEXT_ID     "USER_AGENT"
 #define LOGMOD_STATIC
