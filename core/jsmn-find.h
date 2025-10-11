@@ -9,9 +9,7 @@ extern "C" {
 #error "jsmn-find.h should be included after jsmn.h"
 #else
 
-#ifdef JSMN_HEADER
 #define OA_HASH_HEADER
-#endif /* JSMN_HEADER */
 #include "oa_hash.h"
 #undef OA_HASH_HEADER
 
