@@ -32,7 +32,8 @@ extern "C" {
 #endif
 
 #define DISCORD_API_BASE_URL       "https://discord.com/api/v" DISCORD_VERSION
-#define DISCORD_GATEWAY_URL_SUFFIX "?v=" DISCORD_VERSION "&encoding=json"
+#define DISCORD_GATEWAY_URL_SUFFIX                                        \
+    "?v=" DISCORD_VERSION "&encoding=json&compress=zlib-stream"
 
 /* forward declaration */
 struct discord;

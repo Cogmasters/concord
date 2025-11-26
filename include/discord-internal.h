@@ -807,6 +807,23 @@ struct discord_gateway {
 };
 
 /**
+ * @brief Inflate a zlib-compressed Discord Gateway payload
+ *
+ * This is primarily used internally by the gateway to handle compressed
+ * WebSocket payloads, but is exposed here so it can be unit-tested.
+ *
+ * @param compressed pointer to compressed buffer
+ * @param compressed_len length of compressed buffer in bytes
+ * @param[out] out newly allocated buffer with decompressed data
+ * @param[out] out_len length of decompressed buffer in bytes
+ * @return true if decompression succeeded, false otherwise
+ */
+bool discord_gateway_zlib_inflate(const void *compressed,
+                                  size_t compressed_len,
+                                  char **out,
+                                  size_t *out_len);
+
+/**
  * @brief Initialize a Gateway handle
  *
  * Structure used for interfacing with the Discord's Gateway API

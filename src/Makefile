@@ -82,9 +82,9 @@ shared_osx:
 $(ARLIB): deps
 	$(AR) $(ARFLAGS) $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
 $(SOLIB): deps
-	$(CC) -shared -lcurl -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
+	$(CC) -shared -lcurl -lz -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
 $(DYLIB): deps
-	$(CC) -dynamiclib $(DYFLAGS) -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
+	$(CC) -dynamiclib $(DYFLAGS) -lcurl -lz -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
 
 deps:
 	@ $(MAKE) -C $(CORE_DIR)

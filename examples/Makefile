@@ -37,7 +37,7 @@ BOTS += $(STD_BOTS)
 CFLAGS  += -O0 -g -pthread -Wall \
            -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR)
 LDFLAGS  = -L$(TOP)/lib
-LDLIBS   = -ldiscord -lcurl
+LDLIBS   = -ldiscord -lcurl -lz
 
 all: $(BOTS)
 

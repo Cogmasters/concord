@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <zlib.h>
+
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-worker.h"
@@ -325,6 +327,74 @@ _discord_on_heartbeat_ack(struct discord_gateway *gw)
     logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
 }
 
+static bool
+_discord_gateway_on_message(struct discord_gateway *gw,
+                            struct ws_info *info,
+                            const char text[],
+                            size_t len);
+
+bool
+discord_gateway_zlib_inflate(const void *compressed,
+                             size_t compressed_len,
+                             char **out,
+                             size_t *out_len)
+{
+    z_stream strm;
+    memset(&strm, 0, sizeof(strm));
+
+    strm.next_in = (Bytef *)compressed;
+    strm.avail_in = (uInt)compressed_len;
+
+    if (Z_OK != inflateInit(&strm)) {
+        return false;
+    }
+
+    size_t bufsize = 4 * 1024;
+    char *buffer = malloc(bufsize + 1);
+    if (!buffer) {
+        inflateEnd(&strm);
+        return false;
+    }
+
+    size_t total = 0;
+    int ret;
+
+    do {
+        if (total == bufsize) {
+            size_t newsize = bufsize * 2;
+            char *tmp = realloc(buffer, newsize + 1);
+            if (!tmp) {
+                free(buffer);
+                inflateEnd(&strm);
+                return false;
+            }
+            buffer = tmp;
+            bufsize = newsize;
+        }
+
+        strm.next_out = (Bytef *)buffer + total;
+        strm.avail_out = (uInt)(bufsize - total);
+
+        ret = inflate(&strm, Z_NO_FLUSH);
+        if (ret == Z_STREAM_ERROR || ret == Z_DATA_ERROR
+            || ret == Z_MEM_ERROR)
+        {
+            free(buffer);
+            inflateEnd(&strm);
+            return false;
+        }
+
+        total = bufsize - strm.avail_out;
+    } while (ret != Z_STREAM_END && strm.avail_in > 0);
+
+    inflateEnd(&strm);
+
+    buffer[total] = '\0';
+    *out = buffer;
+    *out_len = total;
+    return true;
+}
+
 static void
 _ws_on_connect(void *p_gw,
                struct websockets *ws,
@@ -415,6 +485,30 @@ _ws_on_close(void *p_gw,
             gw->session->status & DISCORD_SESSION_RESUMABLE);
 }
 
+static void
+_ws_on_binary(void *p_gw,
+              struct websockets *ws,
+              struct ws_info *info,
+              const void *mem,
+              size_t len)
+{
+    (void)ws;
+    struct discord_gateway *gw = p_gw;
+    char *text = NULL;
+    size_t text_len = 0;
+
+    if (!discord_gateway_zlib_inflate(mem, len, &text, &text_len)) {
+        logconf_fatal(&gw->conf,
+                      "Failed to decompress zlib WebSocket payload (%zu bytes)",
+                      len);
+        return;
+    }
+
+    (void)_discord_gateway_on_message(gw, info, text, text_len);
+
+    free(text);
+}
+
 static bool
 _discord_gateway_payload_from_json(struct discord_gateway_payload *payload,
                                    const char text[],
@@ -459,19 +553,15 @@ _discord_gateway_payload_from_json(struct discord_gateway_payload *payload,
     return true;
 }
 
-static void
-_ws_on_text(void *p_gw,
-            struct websockets *ws,
-            struct ws_info *info,
-            const char *text,
-            size_t len)
+static bool
+_discord_gateway_on_message(struct discord_gateway *gw,
+                            struct ws_info *info,
+                            const char text[],
+                            size_t len)
 {
-    (void)ws;
-    struct discord_gateway *gw = p_gw;
-
     if (!_discord_gateway_payload_from_json(&gw->payload, text, len)) {
         logconf_fatal(&gw->conf, "Couldn't parse Gateway Payload");
-        return;
+        return false;
     }
 
     logconf_trace(
@@ -485,25 +575,38 @@ _ws_on_text(void *p_gw,
     switch (gw->payload.opcode) {
     case DISCORD_GATEWAY_DISPATCH:
         _discord_on_dispatch(gw);
-        break;
+        return true;
     case DISCORD_GATEWAY_INVALID_SESSION:
         _discord_on_invalid_session(gw);
-        break;
+        return true;
     case DISCORD_GATEWAY_RECONNECT:
         _discord_on_reconnect(gw);
-        break;
+        return true;
     case DISCORD_GATEWAY_HELLO:
         _discord_on_hello(gw);
-        break;
+        return true;
     case DISCORD_GATEWAY_HEARTBEAT_ACK:
         _discord_on_heartbeat_ack(gw);
-        break;
+        return true;
     default:
         logconf_error(&gw->conf,
                       "Not yet implemented Gateway Event (code: %d)",
                       gw->payload.opcode);
-        break;
+        return false;
     }
+}
+
+static void
+_ws_on_text(void *p_gw,
+            struct websockets *ws,
+            struct ws_info *info,
+            const char *text,
+            size_t len)
+{
+    (void)ws;
+    struct discord_gateway *gw = p_gw;
+
+    (void)_discord_gateway_on_message(gw, info, text, len);
 }
 
 static discord_event_scheduler_t
@@ -537,6 +640,7 @@ discord_gateway_init(struct discord_gateway *gw,
     struct ws_callbacks cbs = { .data = gw,
                                 .on_connect = &_ws_on_connect,
                                 .on_text = &_ws_on_text,
+                                .on_binary = &_ws_on_binary,
                                 .on_close = &_ws_on_close };
     /* Web-Sockets custom attributes */
     struct ws_attr attr = { .conf = conf };
