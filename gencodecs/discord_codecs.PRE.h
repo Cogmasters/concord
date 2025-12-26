@@ -38,12 +38,20 @@ PP_INCLUDE("concord-error.h")
         if (0 > (code = jsonb_string_auto(b, buf, size, tok, toklen)))        \
             return code;                                                      \
     }
+#define GENCODECS_JSON_ENCODER_discord_dictionary_entry(                      \
+                                                b, buf, size, _var, _type)    \
+    if (0 > (code = jsonb_key_auto(b, buf, size, _var.key,                    \
+                                  _var.key ? strlen(_var.key) : 0)))         \
+        return code;                                                         \
+    if (0 > (code = jsonb_string_auto(b, buf, size, _var.value,               \
+                                     _var.value ? strlen(_var.value) : 0)))  \
+        return code
 
 /* Custom JSON decoding macros */
 #define GENCODECS_JSON_DECODER_PTR_json_char(_f, _js, _var, _type)            \
     if (_f) {                                                                 \
-        _var = _gc_strndup(js + _f->v->start, _f->v->end - _f->v->start);                        \
-        ret += _f->v->end - _f->v->start;                                                     \
+        _var = _gc_strndup(js + _f->v->start, _f->v->end - _f->v->start);     \
+        ret += _f->v->end - _f->v->start;                                     \
     }
 #define GENCODECS_JSON_DECODER_size_t(_f, _js, _var, _type)                   \
     if (_f && _f->v->type == JSMN_PRIMITIVE)                                  \
@@ -55,6 +63,31 @@ PP_INCLUDE("concord-error.h")
 #define GENCODECS_JSON_DECODER_u64unix_ms(_f, _js, _var, _type)               \
     if (_f && _f->v->type == JSMN_STRING)                                     \
     cog_iso8601_to_unix_ms(_js + _f->v->start, _f->v->end - _f->v->start, &_var)
+#define GENCODECS_JSON_DECODER_discord_dictionary_entry(_f, _js, _var, _type) \
+    if (_f) {                                                                \
+        _var.key = NULL;                                                     \
+        _var.value = NULL;                                                   \
+        if (_f->k && _f->k->type == JSMN_STRING) {                            \
+            long _ret;                                                       \
+            size_t _len = _f->k->end - _f->k->start;                          \
+            if (!(_var.key = calloc(1, _len + 1)))                           \
+                return JSMN_ERROR_NOMEM;                                     \
+            if (0 > (_ret = jsmnf_unescape(_var.key, _len,                    \
+                                           _js + _f->k->start, _len)))       \
+                return free(_var.key), _ret;                                 \
+            ret += _ret;                                                     \
+        }                                                                    \
+        if (_f->v && _f->v->type == JSMN_STRING) {                            \
+            long _ret;                                                       \
+            size_t _len = _f->v->end - _f->v->start;                          \
+            if (!(_var.value = calloc(1, _len + 1)))                         \
+                return free(_var.key), JSMN_ERROR_NOMEM;                     \
+            if (0 > (_ret = jsmnf_unescape(_var.value, _len,                  \
+                                           _js + _f->v->start, _len)))       \
+                return free(_var.value), free(_var.key), _ret;               \
+            ret += _ret;                                                     \
+        }                                                                    \
+    }
 
 /* Custom field macros */
 #define FIELD_SNOWFLAKE(_name)                                                \
