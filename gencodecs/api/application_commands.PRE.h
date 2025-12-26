@@ -469,16 +469,14 @@ PUB_STRUCT(discord_bulk_overwrite_guild_application_command)
     FIELD_PTR(name, char, *)
   /** Localization dictionary for the `name` field. Values follow the same
    *    restriction as `name` */
-  COND_WRITE(self->name_localizations != NULL)
-    FIELD_STRUCT_PTR(name_localizations, strings, *)
-  COND_END
+
+    FIELD_STRUCT_PTR(name_localizations, discord_dictionary, *)
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
   /** Localization dictionary for the `description` field. Values follow the
    *    same restriction as `description` */
-  COND_WRITE(self->description_localizations != NULL)
-    FIELD_STRUCT_PTR(description_localizations, strings, *)
-  COND_END
+
+    FIELD_STRUCT_PTR(description_localizations, discord_dictionary, *)
   /** the parameters for the command */
   COND_WRITE(self->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
