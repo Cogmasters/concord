@@ -180,8 +180,19 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_interaction_response} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_interaction_response)
+  /** unique ID of the response */
+    FIELD_SNOWFLAKE(id)
   /** interaction callback type */
     FIELD_ENUM(type, discord_interaction_callback_types)
+  /** the response message id (if available) */
+    FIELD_SNOWFLAKE(response_message_id)
+  /** whether the response will show a loading state */
+    FIELD(response_message_loading, bool, false)
+  /** whether the response is ephemeral */
+    FIELD(response_message_ephemeral, bool, false)
+  /** associated channel and guild IDs */
+    FIELD_SNOWFLAKE(channel_id)
+    FIELD_SNOWFLAKE(guild_id)
   /** an optional response message */
   COND_WRITE(self->data != NULL)
     FIELD_STRUCT_PTR(data, discord_interaction_callback_data, *)

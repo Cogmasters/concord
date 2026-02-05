@@ -75,6 +75,8 @@ PUB_STRUCT(discord_application_command)
   COND_END
   /** name of the command, 1-32 characters */
     FIELD_PTR(name, char, *)
+  /** localized name for the current user locale */
+    FIELD_PTR(name_localized, char, *)
   /** localization dictionary for the `name` field. Values follow the same
        restriction as `name` */
   COND_WRITE(self->name_localizations != NULL)
@@ -82,6 +84,8 @@ PUB_STRUCT(discord_application_command)
   COND_END
   /** 1-100 character description */
     FIELD_PTR(description, char, *)
+  /** localized description for the current user locale */
+    FIELD_PTR(description_localized, char, *)
   /** localization dictionary for the `description` field. Values follow the
        same restriction as `description` */
   COND_WRITE(self->description_localizations != NULL)
