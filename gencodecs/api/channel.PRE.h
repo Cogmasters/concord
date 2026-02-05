@@ -131,6 +131,18 @@ PUB_STRUCT(discord_channel)
   /** for group DM channels: whether the channel is managed by an application
         via the gdm.join OAuth2 scope */
     FIELD(managed, bool, false)
+  /** ID of the buyer for HD streaming, if purchased */
+  COND_WRITE(self->hd_streaming_buyer_id != 0)
+    FIELD_SNOWFLAKE(hd_streaming_buyer_id)
+  COND_END
+  /** when HD streaming access expires */
+  COND_WRITE(self->hd_streaming_until != 0)
+    FIELD_TIMESTAMP(hd_streaming_until)
+  COND_END
+  /** default tag setting for the thread search (string) */
+  COND_WRITE(self->default_tag_setting != NULL)
+    FIELD_PTR(default_tag_setting, char, *)
+  COND_END
   /** for guild channels: ID of the parent category for a channel (each
        parent category can contain up to 50 channels), for threads: id of
        the text channel this thread was created */
@@ -354,6 +366,20 @@ PUB_STRUCT(discord_message)
     FIELD_STRUCT_PTR(referenced_message, discord_message, *)
   /** sent if the message is a response to an interaction */
     FIELD_STRUCT_PTR(interaction, discord_message_interaction, *)
+  /** Call data if this message references a call */
+    FIELD_PTR(call, json_char, *)
+  /** purchase notification metadata */
+    FIELD_PTR(purchase_notification, json_char, *)
+  /** poll attached to this message */
+    FIELD_STRUCT_PTR(poll, discord_poll, *)
+  /** shared client theme associated with this message */
+    FIELD_PTR(shared_client_theme, json_char, *)
+  /** interaction metadata (various types) */
+    FIELD_PTR(interaction_metadata, json_char, *)
+  /** message snapshots, if present */
+  COND_WRITE(self->message_snapshots != NULL)
+    FIELD_PTR(message_snapshots, json_char, *)
+  COND_END
   /** the thread that was started from this message, includes
        @ref discord_thread_member */
     FIELD_STRUCT_PTR(thread, discord_channel, *)

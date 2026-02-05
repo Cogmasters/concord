@@ -529,6 +529,8 @@ PUB_STRUCT(discord_thread_create)
     FIELD_PTR(rtc_region, char, *)
   /** the camera video quality mode of the voice channel, 1 when not present */
     FIELD(voice_quality_mode, int, 0)
+  /** the camera video quality mode of the thread for video, 1 when not present */
+    FIELD(video_quality_mode, int, 0)
   /** an approximate count of messages in a thread, stops counting at 50 */
     FIELD(message_count, int, 0)
   /** an approximate count of users in a thread, stops counting at 50 */
