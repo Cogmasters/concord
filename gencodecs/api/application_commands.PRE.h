@@ -205,6 +205,31 @@ STRUCT_END
 LIST(discord_application_command_options)
     LISTTYPE_STRUCT(discord_application_command_option)
 LIST_END
+
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_application_command_attachment_option)
+  /** value of application command option type */
+    FIELD_ENUM(type, discord_application_command_option_types)
+  /** name of the option */
+    FIELD_PTR(name, char, *)
+  /** localization dictionary for the `name` field. Values follow the same
+       restriction as `name` */
+  COND_WRITE(self->name_localizations != NULL)
+    FIELD_STRUCT_PTR(name_localizations, strings, *)
+  COND_END
+  /** 1-100 character description */
+    FIELD_PTR(description, char, *)
+  /** localization dictionary for the `description` field. Values follow the
+       same restriction as `description` */
+  COND_WRITE(self->description_localizations != NULL)
+    FIELD_STRUCT_PTR(description_localizations, strings, *)
+  COND_END
+  /** if this attachment option is required */
+  COND_WRITE(self->required != false)
+    FIELD(required, bool, false)
+  COND_END
+STRUCT_END
+#endif
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
