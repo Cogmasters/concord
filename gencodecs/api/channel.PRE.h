@@ -153,7 +153,9 @@ PUB_STRUCT(discord_channel)
   /** voice region ID for the voice channel, automatic when set to null */
     FIELD_PTR(rtc_region, char, *)
   /** the camera video quality mode of the voice channel, 1 when not present */
-    FIELD(voice_quality_mode, int, 0)
+  COND_WRITE(self->video_quality_mode != 0)
+    FIELD(video_quality_mode, int, 0)
+  COND_END
   /** an approximate count of messages in a thread, stops counting at 50 */
     FIELD(message_count, int, 0)
   /** an approximate count of users in a thread, stops counting at 50 */
