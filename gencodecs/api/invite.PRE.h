@@ -14,6 +14,22 @@ ENUM_END
 PUB_STRUCT(discord_invite)
   /** the invite code (unique ID) */
     FIELD_PTR(code, char, *)
+  /** top-level invite id */
+  COND_WRITE(self->id != 0)
+    FIELD_SNOWFLAKE(id)
+  COND_END
+  /** type of the invite channel */
+  COND_WRITE(self->type != 0)
+    FIELD(type, int, 0)
+  COND_END
+  /** the name displayed on the invite */
+  COND_WRITE(self->name != NULL)
+    FIELD_PTR(name, char, *)
+  COND_END
+  /** the icon displayed on the invite */
+  COND_WRITE(self->icon != NULL)
+    FIELD_PTR(icon, char, *)
+  COND_END
   /** the guild this invite is for */
   COND_WRITE(self->guild != NULL)
     FIELD_STRUCT_PTR(guild, discord_guild, *)
@@ -23,6 +39,10 @@ PUB_STRUCT(discord_invite)
   /** the user who created the invite */
   COND_WRITE(self->inviter != NULL)
     FIELD_STRUCT_PTR(inviter, discord_user, *)
+  COND_END
+  /** recipients for group invites */
+  COND_WRITE(self->recipients != NULL)
+    FIELD_STRUCT_PTR(recipients, discord_users, *)
   COND_END
   /** the type of target for this voice channel invite */
   COND_WRITE(self->target_type != 0)

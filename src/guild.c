@@ -373,6 +373,10 @@ discord_create_guild_ban(struct discord *client,
                  params->delete_message_days >= 0
                      && params->delete_message_days <= 7,
                  CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client,
+                 params->delete_message_seconds >= 0
+                     && params->delete_message_seconds <= 604800,
+                 CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT_OK(client, discord_create_guild_ban_to_json(
                                 &body.start, &body.size, params));
     DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);

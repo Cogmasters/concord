@@ -26,6 +26,18 @@ ENUM(discord_entitlement_types)
 ENUM_END
 #endif
 
+#if GENCODECS_RECIPE == DATA
+ENUM(discord_entitlement_tenant_fulfillment_status_response)
+    ENUMERATOR(DISCORD_ENTITLEMENT_FULFILLMENT_UNKNOWN, = 0)
+    ENUMERATOR(DISCORD_ENTITLEMENT_FULFILLMENT_NOT_NEEDED, = 1)
+    ENUMERATOR(DISCORD_ENTITLEMENT_FULFILLMENT_NEEDED, = 2)
+    ENUMERATOR(DISCORD_ENTITLEMENT_FULFILLED, = 3)
+    ENUMERATOR(DISCORD_ENTITLEMENT_FULFILLMENT_FAILED, = 4)
+    ENUMERATOR(DISCORD_ENTITLEMENT_UNFULFILLMENT_NEEDED, = 5)
+    ENUMERATOR_LAST(DISCORD_ENTITLEMENT_UNFULFILLED, = 6)
+ENUM_END
+#endif
+
 /** @CCORD_pub_struct{discord_entitlement} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_entitlement)
@@ -44,13 +56,35 @@ PUB_STRUCT(discord_entitlement)
   FIELD_ENUM(type, discord_entitlement_types)
   /** if the entitlement was deleted */
   FIELD(deleted, bool, false)
-  /** start date at which the entitlement is valid */
+  /** start date at which the entitlement is valid (old name: start_date) */
   COND_WRITE(self->start_date != 0)
     FIELD_TIMESTAMP(start_date)
   COND_END
-  /** date at which the entitlement is no longer valid */
+  /** new standardized field: starts_at */
+  COND_WRITE(self->starts_at != 0)
+    FIELD_TIMESTAMP(starts_at)
+  COND_END
+  /** date at which the entitlement is no longer valid (old name: end_date) */
   COND_WRITE(self->end_date != 0)
     FIELD_TIMESTAMP(end_date)
+  COND_END
+  /** new standardized field: ends_at */
+  COND_WRITE(self->ends_at != 0)
+    FIELD_TIMESTAMP(ends_at)
+  COND_END
+  /** when the entitlement was fulfilled */
+  COND_WRITE(self->fulfilled_at != 0)
+    FIELD_TIMESTAMP(fulfilled_at)
+  COND_END
+  /** tenant level fulfillment status */
+    FIELD_ENUM(fulfillment_status, discord_entitlement_tenant_fulfillment_status_response)
+  /** ID of the user who gifted this entitlement */
+  COND_WRITE(self->gifter_user_id != 0)
+    FIELD_SNOWFLAKE(gifter_user_id)
+  COND_END
+  /** ID of the parent entitlement (if any) */
+  COND_WRITE(self->parent_id != 0)
+    FIELD_SNOWFLAKE(parent_id)
   COND_END
   /** ID of the guild that is granted access to the entitlement's sku */
   COND_WRITE(self->guild_id != 0)
