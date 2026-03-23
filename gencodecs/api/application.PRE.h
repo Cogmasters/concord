@@ -33,6 +33,13 @@ ENUM(discord_application_event_webhook_status)
 ENUM_END
 #endif
 
+#if GENCODECS_RECIPE == DATA
+ENUM(discord_application_types)
+  /** guild role subscriptions */
+    ENUMERATOR(DISCORD_APPLICATION_GUILD_ROLE_SUBSCRIPTIONS, = 4)
+ENUM_END
+#endif
+
 /** indicates if an app uses the Auto Moderation API */
 PP_DEFINE(DISCORD_APPLICATION_APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE 1 << 6)
 /**	intent required for bots in 100 or more servers to
@@ -125,8 +132,16 @@ PUB_STRUCT(discord_application)
     FIELD_PTR(slug, char, *)
   /** the application's default rich presence invite cover image hash */
     FIELD_PTR(cover_image, char, *)
+  /** the type of the application (nullable) */
+  COND_WRITE(self->type != 0)
+    FIELD_ENUM(type, discord_application_types)
+  COND_END
   /** the application's public flags @see DiscordApplicationFlags */
     FIELD_BITMASK(flags)
+  /** max participants for the application, if applicable */
+  COND_WRITE(self->max_participants != 0)
+    FIELD(max_participants, int, 0)
+  COND_END
   /** the approximate count of guilds the app has been added to */
     FIELD(applicatimate_guild_count, size_t, 0)
   /** the approximate count of users that have installed the app */
@@ -156,7 +171,10 @@ PUB_STRUCT(discord_application)
   COND_WRITE(self->install_params != NULL)
     FIELD_STRUCT_PTR(install_params, discord_application_install_params, *)
   COND_END
-  /* TODO: integration_types_config */
+  /** configuration per-integration type (map keyed by integration type) */
+  COND_WRITE(self->integration_types_config != NULL)
+    FIELD_STRUCT_PTR(integration_types_config, discord_dictionary, *)
+  COND_END
   /** default custom authorization URL for the app, if enabled */
     FIELD_PTR(custom_install_url, char, *)
 STRUCT_END
