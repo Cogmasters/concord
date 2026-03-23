@@ -49,8 +49,8 @@ log_on_channel_update(struct discord *client,
 }
 
 void
-log_on_channel_delete(struct discord *client,
-                      const struct discord_channel *event)
+log_on_thread_create(struct discord *client,
+                     const struct discord_thread_create *event)
 {
     logmod_log(INFO, NULL, "Channel %s (%" PRIu64 ") deleted", event->name,
                event->id);
