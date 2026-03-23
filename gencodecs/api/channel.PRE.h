@@ -87,6 +87,19 @@ ENUM(discord_forum_layout_types)
 ENUM_END
 #endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_update_default_reaction_emoji_request)
+  /** optional emoji id */
+  COND_WRITE(self->emoji_id != 0)
+    FIELD_SNOWFLAKE(emoji_id)
+  COND_END
+  /** optional emoji name */
+  COND_WRITE(self->emoji_name != NULL)
+    FIELD_PTR(emoji_name, char, *)
+  COND_END
+STRUCT_END
+#endif
+
 /** @CCORD_pub_struct{discord_channel} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_channel)
@@ -454,7 +467,7 @@ LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_overwrite)
+PUB_STRUCT(discord_overwrite)
   /** role or user id */
     FIELD_SNOWFLAKE(id)
   /** either 0 (role) or 1 (member) */
@@ -905,6 +918,16 @@ PUB_STRUCT(discord_modify_channel)
   /** channel or category-specific permissions */
   COND_WRITE(self->permission_overwrites != 0)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
+  COND_END
+  /** convenience single overwrite fields (optional, mirrors individual overwrite object) */
+  COND_WRITE(self->id != 0)
+    FIELD_SNOWFLAKE(id)
+  COND_END
+  COND_WRITE(self->allow != 0)
+    FIELD_BITMASK(allow)
+  COND_END
+  COND_WRITE(self->deny != 0)
+    FIELD_BITMASK(deny)
   COND_END
   /** ID of the new parent category for a channel */
   COND_WRITE(self->parent_id != 0)

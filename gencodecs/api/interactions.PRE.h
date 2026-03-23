@@ -97,6 +97,14 @@ PUB_STRUCT(discord_interaction)
   /* TODO: Add "authorizing_integration_owners" -- What do they mean with dictionary? */
   /** context where the interaction was triggered from */
   FIELD_ENUM(context, discord_interaction_context_type)
+  /** optional response fields (may be present in response shapes) */
+  COND_WRITE(self->response_message_id != 0)
+    FIELD_SNOWFLAKE(response_message_id)
+  COND_END
+  /** whether the response will show a loading state */
+  FIELD(response_message_loading, bool, false)
+  /** whether the response is ephemeral */
+  FIELD(response_message_ephemeral, bool, false)
 STRUCT_END
 #endif
 

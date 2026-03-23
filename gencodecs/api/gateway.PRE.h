@@ -776,9 +776,18 @@ PUB_STRUCT(discord_invite_create)
   /** the embedded application to open for this voice channel embedded 
    *    application invite*/
     FIELD_STRUCT_PTR(target_application, discord_application, *)
+  /** optional ids for target user / application when present */
+  COND_WRITE(self->target_user_id != 0)
+    FIELD_SNOWFLAKE(target_user_id)
+  COND_END
+  COND_WRITE(self->target_application_id != 0)
+    FIELD_SNOWFLAKE(target_application_id)
+  COND_END
   /** whether or not the invite is temporary (invited users will be kicked
    *    on disconnect unless they're assigned a role) */
     FIELD(temporary, bool, false)
+  /** whether invite was created with unique=true */
+    FIELD(unique, bool, false)
   /** how many times the invite has been used (always 0) */
     FIELD(uses, int, 0)
 STRUCT_END
