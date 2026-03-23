@@ -142,6 +142,8 @@ PUB_STRUCT(discord_guild)
     FIELD_ENUM(mfa_level, discord_mfa_level)
   /** application id of the guild creator if it is bot-created */
     FIELD_SNOWFLAKE(application_id)
+  /** the guild's region (deprecated for creation endpoints, present in responses) */
+    FIELD_PTR(region, char, *)
   /** the id of the channel where guild notices such as welcome messages and
        boost events are posted */
     FIELD_SNOWFLAKE(system_channel_id)
@@ -195,6 +197,8 @@ PUB_STRUCT(discord_guild)
     FIELD_PTR(vanity_url_code, char, *)
   /** the description of a Community guild */
     FIELD_PTR(description, char, *)
+  /** base64 encoded home header image (optional) */
+    FIELD_PTR(home_header, char, *)
   /** banner hash */
     FIELD_PTR(banner, char, *)
   /** premium tier (Server Boost level) */
@@ -207,6 +211,12 @@ PUB_STRUCT(discord_guild)
   /** the id of the channel where admins and moderators of Community guilds
        receive notices from Discord */
     FIELD_SNOWFLAKE(public_updates_channel_id)
+  /** the id of the channel where safety alerts (e.g., community safety) are posted */
+    FIELD_SNOWFLAKE(safety_alerts_channel_id)
+  /** the maximum amount of users in a stage video channel */
+  COND_WRITE(self->max_stage_video_channel_users != 0)
+    FIELD(max_stage_video_channel_users, int, 0)
+  COND_END
   /** the maximum amount of users in a video channel */
   COND_WRITE(self->max_video_channel_users != 0)
     FIELD(max_video_channel_users, int, 0)
@@ -224,6 +234,8 @@ PUB_STRUCT(discord_guild)
   COND_WRITE(self->welcome_screen != NULL)
     FIELD_STRUCT_PTR(welcome_screen, discord_welcome_screen, *)
   COND_END
+  /** whether the guild is NSFW */
+    FIELD(nsfw, bool, false)
   /** guild NSFW level */
     FIELD_ENUM(nsfw_level, discord_guild_nsfw_level)
   /** stage instances in the guild */
@@ -240,6 +252,10 @@ PUB_STRUCT(discord_guild)
   COND_END
   /** whether the guild has the boost progress bar enabled */
     FIELD(premium_progress_bar_enabled, bool, false)
+  /** when a user last updated their premium progress bar enabled state */
+  COND_WRITE(self->premium_progress_bar_enabled_user_updated_at != 0)
+    FIELD_TIMESTAMP(premium_progress_bar_enabled_user_updated_at)
+  COND_END
 STRUCT_END
 #endif
 
@@ -273,6 +289,8 @@ PUB_STRUCT(discord_guild_preview)
     FIELD(approximate_presence_count, int, 0)
   /** the description for the guid, if the guild is discoverable */
     FIELD_PTR(description, char, *)
+  /** base64 encoded home header image (optional) */
+    FIELD_PTR(home_header, char, *)
   /** custom guild stickers */
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
 STRUCT_END
@@ -325,6 +343,20 @@ PUB_STRUCT(discord_guild_member)
   COND_WRITE(self->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
+  /** avatar decoration data (nullable) */
+  COND_WRITE(self->avatar_decoration_data != NULL)
+    FIELD_STRUCT_PTR(avatar_decoration_data, discord_user_avatar_decoration, *)
+  COND_END
+  /** banner hash (nullable) */
+  COND_WRITE(self->banner != NULL)
+    FIELD_PTR(banner, char, *)
+  COND_END
+  /** user collectibles */
+  COND_WRITE(self->collectibles != NULL)
+    FIELD_STRUCT_PTR(collectibles, discord_user_collectibles, *)
+  COND_END
+  /** user flags */
+    FIELD(flags, int, 0)
   /** array of role object IDs */
     FIELD_STRUCT_PTR(roles, snowflakes, *)
   /** when the user joined the guild */
@@ -359,6 +391,42 @@ STRUCT_END
 PUB_LIST(discord_guild_members)
     LISTTYPE_STRUCT(discord_guild_member)
 LIST_END
+#endif
+
+/** @CCORD_pub_struct{discord_user_avatar_decoration} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_user_avatar_decoration)
+  /** asset id */
+    FIELD_PTR(asset, char, *)
+  /** sku id (nullable) */
+  COND_WRITE(self->sku_id != 0)
+    FIELD_SNOWFLAKE(sku_id)
+  COND_END
+STRUCT_END
+#endif
+
+/** @CCORD_pub_struct{discord_user_nameplate} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_user_nameplate)
+  /** sku id */
+  COND_WRITE(self->sku_id != 0)
+    FIELD_SNOWFLAKE(sku_id)
+  COND_END
+  /** asset path */
+    FIELD_PTR(asset, char, *)
+  /** label */
+    FIELD_PTR(label, char, *)
+  /** palette */
+    FIELD_STRUCT_PTR(palette, strings, *)
+STRUCT_END
+#endif
+
+/** @CCORD_pub_struct{discord_user_collectibles} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_user_collectibles)
+  /** nameplate */
+    FIELD_STRUCT_PTR(nameplate, discord_user_nameplate, *)
+STRUCT_END
 #endif
 
 /** @CCORD_pub_struct{discord_integration} */
@@ -592,6 +660,12 @@ PUB_STRUCT(discord_modify_guild)
     FIELD_STRUCT_PTR(features, strings, *)
   /** the description for the guild, if the guild is discoverable */
     FIELD_PTR(description, char, *)
+  /** base64 encoded home header image to set for the guild */
+    FIELD_PTR(home_header, char, *)
+  /** the guild region (deprecated) */
+    FIELD_PTR(region, char, *)
+  /** the id of the channel where community safety alerts are posted */
+    FIELD_SNOWFLAKE(safety_alerts_channel_id)
   /** whether the guild's boost progress bar should be enabled */
     FIELD(premium_progress_bar_enabled, bool, false)
 STRUCT_END
@@ -613,6 +687,25 @@ PUB_STRUCT(discord_create_guild_channel)
   /** the bitrate (in bits) of the voice channel (voice only) */
   COND_WRITE(self->bitrate != 0)
     FIELD(bitrate, int, 0)
+  COND_END
+  /** thread/forum related defaults */
+  COND_WRITE(self->available_tags != NULL)
+    FIELD_STRUCT_PTR(available_tags, discord_thread_tags, *)
+  COND_END
+  COND_WRITE(self->default_auto_archive_duration != 0)
+    FIELD(default_auto_archive_duration, int, 0)
+  COND_END
+  COND_WRITE(self->default_forum_layout != 0)
+    FIELD_ENUM(default_forum_layout, discord_forum_layout_types)
+  COND_END
+  COND_WRITE(self->default_reaction_emoji != NULL)
+    FIELD_STRUCT_PTR(default_reaction_emoji, discord_update_default_reaction_emoji_request, *)
+  COND_END
+  COND_WRITE(self->default_sort_order != 0)
+    FIELD_ENUM(default_sort_order, discord_sort_order_types)
+  COND_END
+  COND_WRITE(self->default_tag_setting != NULL)
+    FIELD_PTR(default_tag_setting, char, *)
   COND_END
   /** the user limit of the voice channel (voice only) */
   COND_WRITE(self->user_limit != 0)
@@ -809,6 +902,10 @@ PUB_STRUCT(discord_create_guild_ban)
   /** number of days to delete messages for (0-7) */
   COND_WRITE(self->delete_message_days >= 0 && self->delete_message_days <= 7)
     FIELD(delete_message_days, int, 0)
+  COND_END
+  /** number of seconds to delete messages for (0-604800) */
+  COND_WRITE(self->delete_message_seconds >= 0 && self->delete_message_seconds <= 604800)
+    FIELD(delete_message_seconds, int, 0)
   COND_END
 STRUCT_END
 #endif
