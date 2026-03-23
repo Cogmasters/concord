@@ -1046,6 +1046,10 @@ PUB_STRUCT(discord_edit_message)
   COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
+  /** IDs of up to 3 stickers in the server to send in the message */
+  COND_WRITE(self->sticker_ids != NULL)
+    FIELD_STRUCT_PTR(sticker_ids, snowflakes, *)
+  COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
