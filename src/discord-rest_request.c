@@ -329,6 +329,7 @@ discord_request_cancel(struct discord_requestor *rqtor,
     }
     if (!req->body.is_static) {
         free(req->body.start);
+		req->body.start = NULL;
     }
     req->body.size = 0;
     req->method = 0;
