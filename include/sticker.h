@@ -89,12 +89,14 @@ CCORDcode discord_modify_guild_sticker(
  * @param client the client created with discord_from_token()
  * @param guild_id the guild where the sticker belongs to
  * @param sticker_id the sticker to be deleted
+ * @param params the request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_delete_guild_sticker(struct discord *client,
                                        u64snowflake guild_id,
                                        u64snowflake sticker_id,
+                                       struct discord_delete_guild_sticker *params,
                                        struct discord_ret *ret);
 
 /** @} DiscordAPISticker */
