@@ -61,11 +61,13 @@ CCORDcode discord_modify_stage_instance(
  *
  * @param client the client created with discord_from_token()
  * @param channel_id the stage channel to be deleted
+ * @param params the request parameters
  * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_delete_stage_instance(struct discord *client,
                                         u64snowflake channel_id,
+                                        struct discord_delete_stage_instance *params,
                                         struct discord_ret *ret);
 
 /** @} DiscordAPIStageInstance */
