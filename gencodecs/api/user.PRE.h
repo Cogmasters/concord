@@ -66,6 +66,9 @@ PUB_STRUCT(discord_user)
     FIELD_PTR(username, char, *)
   /** the user's 4-digit discord tag */
     FIELD_PTR(discriminator, char, *)
+  /** the user's display name, if it is set. For bots, this is the
+       application name */
+    FIELD_PTR(global_name, char, *)
   /** the user's avatar hash */
     FIELD_PTR(avatar, char, *)
   /** whether the user belong to an OAuth2 application */

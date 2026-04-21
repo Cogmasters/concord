@@ -87,6 +87,19 @@ ENUM(discord_forum_layout_types)
 ENUM_END
 #endif
 
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_update_default_reaction_emoji_request)
+  /** optional emoji id */
+  COND_WRITE(self->emoji_id != 0)
+    FIELD_SNOWFLAKE(emoji_id)
+  COND_END
+  /** optional emoji name */
+  COND_WRITE(self->emoji_name != NULL)
+    FIELD_PTR(emoji_name, char, *)
+  COND_END
+STRUCT_END
+#endif
+
 /** @CCORD_pub_struct{discord_channel} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_STRUCT(discord_channel)
@@ -131,6 +144,18 @@ PUB_STRUCT(discord_channel)
   /** for group DM channels: whether the channel is managed by an application
         via the gdm.join OAuth2 scope */
     FIELD(managed, bool, false)
+  /** ID of the buyer for HD streaming, if purchased */
+  COND_WRITE(self->hd_streaming_buyer_id != 0)
+    FIELD_SNOWFLAKE(hd_streaming_buyer_id)
+  COND_END
+  /** when HD streaming access expires */
+  COND_WRITE(self->hd_streaming_until != 0)
+    FIELD_TIMESTAMP(hd_streaming_until)
+  COND_END
+  /** default tag setting for the thread search (string) */
+  COND_WRITE(self->default_tag_setting != NULL)
+    FIELD_PTR(default_tag_setting, char, *)
+  COND_END
   /** for guild channels: ID of the parent category for a channel (each
        parent category can contain up to 50 channels), for threads: id of
        the text channel this thread was created */
@@ -141,7 +166,9 @@ PUB_STRUCT(discord_channel)
   /** voice region ID for the voice channel, automatic when set to null */
     FIELD_PTR(rtc_region, char, *)
   /** the camera video quality mode of the voice channel, 1 when not present */
-    FIELD(voice_quality_mode, int, 0)
+  COND_WRITE(self->video_quality_mode != 0)
+    FIELD(video_quality_mode, int, 0)
+  COND_END
   /** an approximate count of messages in a thread, stops counting at 50 */
     FIELD(message_count, int, 0)
   /** an approximate count of users in a thread, stops counting at 50 */
@@ -354,6 +381,20 @@ PUB_STRUCT(discord_message)
     FIELD_STRUCT_PTR(referenced_message, discord_message, *)
   /** sent if the message is a response to an interaction */
     FIELD_STRUCT_PTR(interaction, discord_message_interaction, *)
+  /** Call data if this message references a call */
+    FIELD_PTR(call, json_char, *)
+  /** purchase notification metadata */
+    FIELD_PTR(purchase_notification, json_char, *)
+  /** poll attached to this message */
+    FIELD_STRUCT_PTR(poll, discord_poll, *)
+  /** shared client theme associated with this message */
+    FIELD_PTR(shared_client_theme, json_char, *)
+  /** interaction metadata (various types) */
+    FIELD_PTR(interaction_metadata, json_char, *)
+  /** message snapshots, if present */
+  COND_WRITE(self->message_snapshots != NULL)
+    FIELD_PTR(message_snapshots, json_char, *)
+  COND_END
   /** the thread that was started from this message, includes
        @ref discord_thread_member */
     FIELD_STRUCT_PTR(thread, discord_channel, *)
@@ -426,7 +467,7 @@ LIST_END
 #endif
 
 #if GENCODECS_RECIPE & (DATA | JSON)
-STRUCT(discord_overwrite)
+PUB_STRUCT(discord_overwrite)
   /** role or user id */
     FIELD_SNOWFLAKE(id)
   /** either 0 (role) or 1 (member) */
@@ -878,6 +919,16 @@ PUB_STRUCT(discord_modify_channel)
   COND_WRITE(self->permission_overwrites != 0)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   COND_END
+  /** convenience single overwrite fields (optional, mirrors individual overwrite object) */
+  COND_WRITE(self->id != 0)
+    FIELD_SNOWFLAKE(id)
+  COND_END
+  COND_WRITE(self->allow != 0)
+    FIELD_BITMASK(allow)
+  COND_END
+  COND_WRITE(self->deny != 0)
+    FIELD_BITMASK(deny)
+  COND_END
   /** ID of the new parent category for a channel */
   COND_WRITE(self->parent_id != 0)
     FIELD_SNOWFLAKE(parent_id)
@@ -1017,6 +1068,10 @@ PUB_STRUCT(discord_edit_message)
   /** the components to include with the message */
   COND_WRITE(self->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
+  COND_END
+  /** IDs of up to 3 stickers in the server to send in the message */
+  COND_WRITE(self->sticker_ids != NULL)
+    FIELD_STRUCT_PTR(sticker_ids, snowflakes, *)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(self->attachments != NULL)

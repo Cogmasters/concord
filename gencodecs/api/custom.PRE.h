@@ -1,3 +1,20 @@
+/** @CCORD_pub_struct{discord_dictionary_entry} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_STRUCT(discord_dictionary_entry)
+  /** key of the entry */
+    FIELD_PTR(key, char, *)
+  /** value of the entry */
+    FIELD_PTR(value, char, *)
+STRUCT_END
+#endif
+
+/** @CCORD_pub_list{discord_dictionary} */
+#if GENCODECS_RECIPE & (DATA | JSON)
+PUB_LIST(discord_dictionary)
+    LISTTYPE_STRUCT(discord_dictionary_entry)
+LIST_END
+#endif
+
 /** @CCORD_pub_list{strings} */
 #if GENCODECS_RECIPE & (DATA | JSON)
 PUB_LIST(strings)
