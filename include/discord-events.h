@@ -199,7 +199,7 @@ void discord_set_prefix(struct discord *client, const char prefix[]);
  */
 void discord_set_on_command(
     struct discord *client,
-    char *command,
+    const char *command,
     void (*callback)(struct discord *client,
                      const struct discord_message *event));
 
@@ -217,7 +217,7 @@ void discord_set_on_command(
  */
 void discord_set_on_commands(
     struct discord *client,
-    char *const commands[],
+    const char *commands[],
     int amount,
     void (*callback)(struct discord *client,
                      const struct discord_message *event));
