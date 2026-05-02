@@ -91,7 +91,7 @@ discord_set_event_scheduler(struct discord *client, discord_ev_scheduler cb)
 
 void
 discord_set_on_command(struct discord *client,
-                       char command[],
+                       const char command[],
                        void (*cb)(struct discord *client,
                                   const struct discord_message *event))
 {
@@ -105,7 +105,7 @@ discord_set_on_command(struct discord *client,
 
 void
 discord_set_on_commands(struct discord *client,
-                        char *const commands[],
+                        const char *commands[],
                         int amount,
                         void (*cb)(struct discord *client,
                                    const struct discord_message *event))
