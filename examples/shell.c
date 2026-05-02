@@ -143,7 +143,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, NULL, &on_fallback);
     discord_set_on_command(client, "cd", &on_cd);
 
-    char *cmds[] = { "less", "cat", "hexdump" };
+    const char *cmds[] = { "less", "cat", "hexdump" };
     discord_set_on_commands(client, cmds, sizeof(cmds) / sizeof *cmds,
                             &on_less_like);
 
