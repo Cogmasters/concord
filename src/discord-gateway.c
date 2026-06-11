@@ -496,6 +496,12 @@ _ws_on_text(void *p_gw, struct websockets *ws, const char *text, size_t len)
     case DISCORD_GATEWAY_HELLO:
         _discord_on_hello(gw);
         break;
+    case DISCORD_GATEWAY_HEARTBEAT:
+        /* server requested an immediate heartbeat; reply unconditionally
+         * (the request itself is proof the connection is alive, so the
+         * periodic zombie check doesn't apply) */
+        discord_gateway_send_heartbeat(gw, gw->payload.seq);
+        break;
     case DISCORD_GATEWAY_HEARTBEAT_ACK:
         _discord_on_heartbeat_ack(gw);
         break;

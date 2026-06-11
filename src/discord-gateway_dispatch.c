@@ -230,7 +230,19 @@ _discord_on_heartbeat_timeout(struct discord *client,
         && ~gw->session->status & DISCORD_SESSION_SHUTDOWN
         && gw->session->is_ready)
     {
-        discord_gateway_send_heartbeat(gw, gw->payload.seq);
+        /* zombie detection belongs to the periodic path only: a missed
+         * ACK since the previous pulse means the connection is dead */
+        if (!gw->timer->hbeat_acknowledged) {
+            logmod_log(WARN, gw->logger,
+                       "Heartbeat ACK not received, marked as zombie");
+
+            gw->timer->hbeat_acknowledged = true;
+
+            discord_gateway_reconnect(gw, false);
+        }
+        else {
+            discord_gateway_send_heartbeat(gw, gw->payload.seq);
+        }
     }
     const u64unix_ms next_hb =
         gw->timer->hbeat_last + (u64unix_ms)gw->timer->hbeat_interval;
@@ -256,17 +268,6 @@ discord_gateway_send_heartbeat(struct discord_gateway *gw, int seq)
         jsonb_key(&b, buf, sizeof(buf), "d", 1);
         jsonb_number(&b, buf, sizeof(buf), seq);
         jsonb_object_pop(&b, buf, sizeof(buf));
-    }
-
-    if (!gw->timer->hbeat_acknowledged) {
-        logmod_log(WARN, gw->logger,
-                   "Heartbeat ACK not received, marked as zombie");
-
-        gw->timer->hbeat_acknowledged = true;
-
-        discord_gateway_reconnect(gw, false);
-
-        return;
     }
 
     if (ws_send_text(gw->ws, buf, b.pos)) {
