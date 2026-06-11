@@ -1,0 +1,17 @@
+{
+  "guild_id": "1000000000000000010",
+  "roles": ["1000000000000000030"],
+  "user": {
+    "id": "1000000000000000005",
+    "username": "newcomer",
+    "discriminator": "0915",
+    "avatar": null
+  },
+  "nick": "promoted-nick",
+  "avatar": null,
+  "joined_at": "2021-05-31T19:25:24.166000+00:00",
+  "premium_since": null,
+  "deaf": false,
+  "mute": false,
+  "pending": false
+}

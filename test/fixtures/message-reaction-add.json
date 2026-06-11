@@ -1,0 +1,22 @@
+{
+  "user_id": "1000000000000000003",
+  "channel_id": "1000000000000000020",
+  "message_id": "1000000000000000100",
+  "guild_id": "1000000000000000010",
+  "member": {
+    "user": {
+      "id": "1000000000000000003",
+      "username": "memberperson",
+      "discriminator": "0420",
+      "avatar": null
+    },
+    "roles": [],
+    "joined_at": "2021-05-31T19:25:24.166000+00:00",
+    "deaf": false,
+    "mute": false
+  },
+  "emoji": {
+    "id": null,
+    "name": "🔥"
+  }
+}

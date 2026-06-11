@@ -16,7 +16,8 @@ TESTS_HERMETIC = queriec \
                  unit-threadpool unit-fixtures-smoke unit-codec-decode \
                  unit-codec-encode unit-ratelimit unit-fixture-server \
                  unit-base-url rest-integration ratelimit-integration \
-                 unit-mockws unit-gateway-lifecycle unit-gateway-resume
+                 unit-mockws unit-gateway-lifecycle unit-gateway-resume \
+                 unit-gateway-dispatch
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 
@@ -43,7 +44,8 @@ $(TESTS_FIXTURE_SERVER): %: %.c fixture-server.c fixture-server.h \
 # resolves to the mock and the archive member is never pulled in
 TESTS_MOCK_WS = unit-mockws
 # gateway suites additionally boot a real client via the fixture server
-TESTS_GATEWAY = unit-gateway-lifecycle unit-gateway-resume
+TESTS_GATEWAY = unit-gateway-lifecycle unit-gateway-resume \
+                unit-gateway-dispatch
 
 mock-websockets.o: mock-websockets.c mock-websockets.h
 	$(CC) $(CFLAGS) -c -o $@ $<

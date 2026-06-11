@@ -28,6 +28,8 @@ and all tokens/hashes replaced with fake data.
 | `emoji-*` | <https://discord.com/developers/docs/resources/emoji#emoji-object> |
 | `interaction-*` | <https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object> |
 | `gateway-*` | <https://discord.com/developers/docs/events/gateway-events> |
+| `guild-member-add/update/remove` | <https://discord.com/developers/docs/events/gateway-events#guild-member-add> |
+| `message-reaction-add` | <https://discord.com/developers/docs/events/gateway-events#message-reaction-add> |
 | `modify-guild-sticker-params` | <https://discord.com/developers/docs/resources/sticker#modify-guild-sticker> |
 
 Fixtures target the schema concord's gencodecs model (API v9/v10 era): they
