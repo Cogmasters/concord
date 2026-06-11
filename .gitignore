@@ -28,3 +28,5 @@
 !config.json
 !.github/**
 !concord.pc
+# Local-only planning material (will become a submodule)
+docs/roadmap/
