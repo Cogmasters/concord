@@ -12,3 +12,4 @@
 !fixtures/*.json
 !fixtures/README.md
 !fixture-server.h
+!test-client.h
