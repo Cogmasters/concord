@@ -35,6 +35,7 @@ _queriec_add(struct queriec *queriec,
     while (i < value_sz) {
         query[queriec->offset++] = value[i++];
     }
+    query[queriec->offset] = '\0'; /* null-terminate without advancing offset */
 }
 
 int
@@ -105,7 +106,7 @@ queriec_add(struct queriec *queriec,
         abort();
     }
 
-    _queriec_add(queriec, query, c, key, keySize, value, valueSize);
+    _queriec_add(queriec, query, c, key, keySize, value, valueSize - 1);
 
     return QUERIEC_OK;
 }
