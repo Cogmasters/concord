@@ -9,7 +9,7 @@ non-loopback network access. These gate development via `make check`.
 
 **Live** (`TESTS_LIVE`) — require a real Discord bot token in `test_config.json` and access to a
 live Discord server (or, for `websockets`, a running `wstest` server). Never run implicitly;
-build them with `make test` and invoke manually.
+they are pre-release smoke checks, run manually — see "Live smoke suites" below.
 
 The contract for hermetic tests: **do not read `test_config.json`, do not open sockets to
 addresses outside `127.0.0.1`/`::1`.**
@@ -20,12 +20,55 @@ addresses outside `127.0.0.1`/`::1`.**
 # Build the library and run all hermetic suites (CI entrypoint):
 make check
 
+# Same, but compiled with AddressSanitizer/UndefinedBehaviorSanitizer.
+# Always rebuilds from clean; run `make clean` before going back to
+# normal builds so no sanitized objects linger:
+make check-san
+
+# Live smoke run against real Discord (needs credentials, see below):
+make check-live
+
 # Build everything including live suites (no execution):
 make test
 
 # Run a single hermetic binary after make check:
 ./test/unit-anomap
 ```
+
+`make check-san` accepts an alternate sanitizer via
+`make check-san SANFLAGS="-fsanitize=thread"`. CI runs `make check` on
+Linux/macOS and `make check-san` on Linux for every push and pull request.
+
+## Live smoke suites
+
+Hermetic tests verify concord against its understanding of Discord; the live
+suites verify that understanding against the real service (API changes,
+undocumented behavior). They are deliberately **human-run** — before releases
+and after Discord API version bumps — and are never part of the development
+gate or CI.
+
+Requirements: a bot token in `test_config.json` (`discord.token`) and a text
+channel the bot can read and send messages in (`test.channel_id`). With
+placeholder values still in place, `make check-live` refuses to run before
+building anything.
+
+`make check-live` runs `rest` — sync/async REST smoke checks
+(current-user fetch, guild listing, message create/delete) that exit on
+their own. The remaining live suites need a human in the loop and are run
+directly from `test/`:
+
+- `racecond` — gateway/threadpool stress bot. Start it, then drive it by
+  typing `!racecond spam_threads` (and the other `!racecond` commands listed
+  in its source) in the test channel; type `!racecond disconnect` to exit.
+- `timeout` — timer/wakeup behavior. Observe the cycle/wakeup/idle output
+  alternating as documented in `main()`; stop with Ctrl-C.
+- `websockets` — autobahn-testsuite compliance client for the `ws_*`
+  transport. Needs a local `wstest -m fuzzingserver` (no Discord
+  credentials); run it with `-u ws://localhost:9001 -s 1 -e 260`.
+
+`rest.c` and `timeout.c` keep more depth than a smoke layer needs; they will
+be slimmed once the hermetic REST integration suites (roadmap scope C04)
+fully replace their assertions.
 
 ## Adding a new hermetic suite
 

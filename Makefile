@@ -99,6 +99,13 @@ check-san:
 	@ $(MAKE) clean
 	@ CFLAGS="$(DEBUG_FLAGS) $(SANFLAGS)" $(MAKE)
 	@ CFLAGS="$(DEBUG_FLAGS) $(SANFLAGS)" $(MAKE) -C $(TEST_DIR) check
+# Live smoke suites against real Discord; requires credentials in
+# test/test_config.json (see test/README.md). Preflight runs before any
+# build so a placeholder config is refused immediately.
+check-live:
+	@ $(MAKE) -C $(TEST_DIR) check-live-preflight
+	@ $(MAKE) test
+	@ $(MAKE) -C $(TEST_DIR) check-live
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
@@ -120,4 +127,4 @@ $(GIT_BRANCHES):
 	git pull
 	$(MAKE)
 
-.PHONY: test check check-san examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
+.PHONY: test check check-san check-live examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)

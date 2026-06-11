@@ -68,6 +68,20 @@ check: $(TESTS_HERMETIC)
 		./$$t || exit 1; \
 	done
 
+# Refuses before building anything so a placeholder config fails immediately
+check-live-preflight:
+	@ if ! [ -f test_config.json ]; then \
+		echo 'error: test/test_config.json not found'; exit 1; fi
+	@ if grep -qE 'YOUR-BOT-TOKEN|TEST-CHANNEL-ID' test_config.json; then \
+		echo 'error: test_config.json still contains placeholder credentials.'; \
+		echo 'Set discord.token and test.channel_id to real values for a live smoke run.'; \
+		exit 1; fi
+
+# Live smoke runner: only `rest` self-terminates; racecond/timeout/websockets
+# are interactive harnesses — see README.md
+check-live: check-live-preflight $(TESTS_LIVE)
+	@ printf '  RUN  %s\n' rest; ./rest
+
 echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'TESTS: $(TESTS)\n'
@@ -75,4 +89,4 @@ echo:
 clean:
 	@ rm -f $(TESTS) mock-websockets.o
 
-.PHONY: all check echo clean
+.PHONY: all check check-live check-live-preflight echo clean
