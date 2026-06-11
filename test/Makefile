@@ -23,7 +23,9 @@ TESTS_LIVE     = racecond rest timeout websockets
 
 TESTS = $(TESTS_HERMETIC) $(TESTS_LIVE)
 
-CFLAGS  = -O0 -g -pthread -Wall \
+# += so sanitizer flags passed via the environment (top-level check-san)
+# reach test compilation and linking too
+CFLAGS += -O0 -g -pthread -Wall \
           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR)
 LDFLAGS = -L$(TOP)/lib
 LDLIBS  = -ldiscord -lcurl

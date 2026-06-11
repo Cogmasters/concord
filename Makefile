@@ -30,13 +30,19 @@ GIT_TARGETS   = latest latest-dev
 INSTALL       = install
 # INSTALL       = /usr/ucb/install
 
-CFLAGS = -O2
+# ?= so flags passed via the environment (debug/check-san recipes, distro
+# packagers) are honored instead of silently overridden
+CFLAGS ?= -O2
+
+# Sanitizer flags: -fno-sanitize-recover so UBSan findings fail the exit status
+SANFLAGS = -fsanitize=address,undefined -fno-sanitize-recover=undefined \
+           -fno-omit-frame-pointer
 
 all: static
 
 static:
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(CORE_DIR)
-	@ $(MAKE) -C $(GENCODECS_DIR)
+	@ $(MAKE) -C $(GENCODECS_DIR) # CFLAGS reaches it via make's env auto-export
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 shared:
 	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
@@ -87,6 +93,12 @@ test: debug
 	@ $(MAKE) -C $(TEST_DIR)
 check: debug
 	@ $(MAKE) -C $(TEST_DIR) check
+# Hermetic suites under ASan/UBSan. Cleans first: make doesn't track flag
+# changes, and stale unsanitized objects would silently weaken the run.
+check-san:
+	@ $(MAKE) clean
+	@ CFLAGS="$(DEBUG_FLAGS) $(SANFLAGS)" $(MAKE)
+	@ CFLAGS="$(DEBUG_FLAGS) $(SANFLAGS)" $(MAKE) -C $(TEST_DIR) check
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
@@ -108,4 +120,4 @@ $(GIT_BRANCHES):
 	git pull
 	$(MAKE)
 
-.PHONY: test check examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
+.PHONY: test check check-san examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
