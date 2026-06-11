@@ -56,6 +56,20 @@ make test
 
 3. Verify with `make check`.
 
+Single-source suites build via the implicit `%: %.c` rule. Suites that
+link extra objects belong in one of the explicit Makefile groups:
+
+- `TESTS_FIXTURE_SERVER` — REST suites linking `fixture-server.c` (an
+  in-process loopback HTTP server) and booting a real client against it
+  via `test-client.h`.
+- `TESTS_MOCK_WS` / `TESTS_GATEWAY` — gateway suites linking
+  `mock-websockets.o` *before* `-ldiscord`, which substitutes every
+  `ws_*` symbol so the real `core/websockets.o` is never pulled from
+  the archive. `TESTS_GATEWAY` suites additionally link the fixture
+  server and boot through `gateway-harness.h` (full client, mock
+  transport, `discord_gateway_start()` bypassed); the mock's control
+  API lives in `mock-websockets.h`.
+
 ## Shared test helpers (`test-utils.h`)
 
 | Helper | Purpose |
