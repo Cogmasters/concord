@@ -629,7 +629,7 @@ struct user_agent *
 ua_init(struct logmod *logmod, FILE *fp)
 {
     struct user_agent *new_ua = calloc(1, sizeof *new_ua);
-    if (!(new_ua = calloc(1, sizeof *new_ua))) {
+    if (!new_ua) {
         logmod_log(FATAL, NULL, "Couldn't allocate memory for user agent");
         return NULL;
     }
