@@ -18,6 +18,9 @@ INPUT_NO_EXT = discord_codecs
 
 # Input file to be preprocessed
 INPUT = $(INPUT_NO_EXT).PRE.h
+# Every spec the input pulls in; editing any of these must regenerate
+SPECS = $(INPUT) gencodecs.h gencodecs-process.PRE.h all.PRE.h \
+        $(wildcard $(API_DIR)/*.PRE.h)
 # Resulting single-file amalgamations after preprocessing input file
 OUT_C = $(INPUT_NO_EXT).c
 OUT_H = $(INPUT_NO_EXT).h
@@ -65,14 +68,14 @@ gencodecs-pp: gencodecs-pp.c
 
 $(OUT_O): $(OUT_C) $(OUT_H)
 	$(CC) -c $(CFLAGS) $(LOCAL_CFLAGS) $< -o $@
-$(OUT_H): $(INPUT) gencodecs-pp
+$(OUT_H): $(SPECS) gencodecs-pp
 	@ echo "Generating header"
 	@ echo "#ifndef $(HEADER_TAG)" > $@
 	@ echo "#define $(HEADER_TAG)" >> $@
 	$(CPP) $(CFLAGS) $(LOCAL_CFLAGS) -DGENCODECS_HEADER -DGENCODECS_DATA $(LOCAL_CPPFLAGS) $(INPUT) | ./gencodecs-pp >> $@
 	$(CPP) $(CFLAGS) $(LOCAL_CFLAGS) $(LOCAL_DFLAGS) -DGENCODECS_HEADER $(LOCAL_CPPFLAGS) $(INPUT) | ./gencodecs-pp >> $@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
-$(OUT_C): $(INPUT) gencodecs-pp
+$(OUT_C): $(SPECS) gencodecs-pp
 	@ echo "Generating forward definitions"
 	@ echo "#include \"$(OUT_H)\"" > $(OUT_C)
 	$(CPP) $(CFLAGS) $(LOCAL_CFLAGS) $(LOCAL_DFLAGS) -DGENCODECS_FORWARD -DGENCODECS_DATA $(LOCAL_CPPFLAGS) $(INPUT) | ./gencodecs-pp >> $(OUT_C)

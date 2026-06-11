@@ -28,6 +28,7 @@ and all tokens/hashes replaced with fake data.
 | `emoji-*` | <https://discord.com/developers/docs/resources/emoji#emoji-object> |
 | `interaction-*` | <https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object> |
 | `gateway-*` | <https://discord.com/developers/docs/events/gateway-events> |
+| `modify-guild-sticker-params` | <https://discord.com/developers/docs/resources/sticker#modify-guild-sticker> |
 
 Fixtures target the schema concord's gencodecs model (API v9/v10 era): they
 keep `discriminator` and the legacy type-1/type-2 message components, and use
@@ -46,8 +47,7 @@ missing from a request body)? Make it a fixture before making it a fix:
    `unit-codec-encode.c` (encode bugs) and watch it go red.
 3. Fix the spec in `gencodecs/api/*.PRE.h` — **never** the generated
    `gencodecs/discord_codecs.c`/`.h` — and regenerate with
-   `make -C gencodecs` (touch `gencodecs/discord_codecs.PRE.h` first if
-   make considers the outputs up to date).
+   `make -C gencodecs`.
 4. `make check` goes green; commit the spec fix and the test separately
    (`fix(gencodecs): ...` then `feat(test): ...`).
 
