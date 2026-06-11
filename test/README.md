@@ -52,10 +52,10 @@ channel the bot can read and send messages in (`test.channel_id`). With
 placeholder values still in place, `make check-live` refuses to run before
 building anything.
 
-`make check-live` runs `rest` — sync/async REST smoke checks
-(current-user fetch, guild listing, message create/delete) that exit on
-their own. The remaining live suites need a human in the loop and are run
-directly from `test/`:
+`make check-live` runs `rest` — sync and async REST smoke checks
+(current-user fetch, guild listing, error paths on bogus requests) that
+exit on their own. The remaining live suites need a human in the loop and
+are run directly from `test/`:
 
 - `racecond` — gateway/threadpool stress bot. Start it, then drive it by
   typing `!racecond spam_threads` (and the other `!racecond` commands listed

@@ -6,12 +6,14 @@ Concord is a Discord API wrapper library written in C, built with plain Makefile
 
 ```sh
 make            # build static library (lib/libdiscord.a)
+make check      # build + run the hermetic test suites (the development gate)
+make check-san  # same, rebuilt from clean under ASan/UBSan; SANFLAGS overridable
 make test       # BUILD test binaries only — it does not run them
 make clean
 ```
 
-- Tests live in `test/` and use the vendored `greatest.h`. The suites `rest`, `racecond`, and `timeout` are LIVE tests: they need a real bot token in `test/test_config.json` and hit the real Discord API. Never run them unattended; do not treat them as a development gate.
-- CI (`.github/workflows/test_build.yml`) builds everything on Linux/macOS but does not execute tests yet.
+- Tests live in `test/` and use the vendored `greatest.h`; see `test/README.md` for the hermetic/live split and conventions. The suites `rest`, `racecond`, and `timeout` are LIVE tests: they need a real bot token in `test/test_config.json` and hit the real Discord API (`make check-live` runs the automatable subset after a credential preflight). Never run them unattended; do not treat them as a development gate.
+- CI (`.github/workflows/test_build.yml`) runs `make check` on Linux/macOS plus ASan/UBSan and TSan jobs (`make check-san`) on every push and pull request.
 
 ## Layout
 
