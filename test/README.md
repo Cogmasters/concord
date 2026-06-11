@@ -61,6 +61,12 @@ make test
 | Helper | Purpose |
 |---|---|
 | `test_load_fixture(path, &buf, &len)` | Load a file into a malloc'd buffer; fails the test if the file is missing |
-| `ASSERT_JSON_STR(json, len, "key", "value")` | Assert a top-level JSON string field equals an expected value |
+| `ASSERT_JSON_STR(json, len, "key", "value")` | Assert a top-level JSON string field equals an expected value (small JSON only, ~64 tokens) |
+| `test_json_load/_unload(&tj, js, len)` | Heap-parse a JSON document of any size for path lookups |
+| `test_json_get(&tj, "a.b.0.c")` | Dotted-path lookup; array elements by decimal index; NULL if absent |
+| `ASSERT_JSON_HAS/ABSENT(&tj, path)` | Assert a path exists / does not exist |
+| `ASSERT_JSON_PATH_STR(&tj, path, expected)` | Assert the raw token text at a path (quotes stripped) |
+| `ASSERT_JSON_SAME(&exp, &got, path)` | Assert a path's token text is identical in two documents |
 
-Fixture files live in `test/fixtures/` (created by scope B01).
+Fixture files live in `test/fixtures/` — see `test/fixtures/README.md` for
+naming, provenance, and the codec regression workflow.

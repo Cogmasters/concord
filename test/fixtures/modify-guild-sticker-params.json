@@ -1,0 +1,5 @@
+{
+  "name": "fake_sticker",
+  "description": "A sticker used by the codec regression suite",
+  "tags": "wave"
+}

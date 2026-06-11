@@ -35,3 +35,27 @@ post-2023 keys such as `global_name` only as *unknown-key* hazards. When a
 docs example diverges from what the deployed API actually sends, the docs
 shape stays the default and the observed divergence is recorded as a new
 named variant (e.g. `user-api-divergence-<reason>.json`).
+
+## Codec regression workflow
+
+Found a codec bug (field decodes empty, wrong key on the wire, field
+missing from a request body)? Make it a fixture before making it a fix:
+
+1. Add a fixture variant here reproducing the payload that misbehaves.
+2. Add the failing assertion to `unit-codec-decode.c` (decode bugs) or
+   `unit-codec-encode.c` (encode bugs) and watch it go red.
+3. Fix the spec in `gencodecs/api/*.PRE.h` — **never** the generated
+   `gencodecs/discord_codecs.c`/`.h` — and regenerate with
+   `make -C gencodecs` (touch `gencodecs/discord_codecs.PRE.h` first if
+   make considers the outputs up to date).
+4. `make check` goes green; commit the spec fix and the test separately
+   (`fix(gencodecs): ...` then `feat(test): ...`).
+
+Worked example: `discord_modify_guild_sticker.reason` (commit 7eec9aef)
+is the audit-log *header* param, so it lives on the params struct but
+must never appear in the JSON body —
+`modify-guild-sticker-params.json` plus the
+`regression_modify_guild_sticker` suite in `unit-codec-encode.c` pin
+that behavior. Likewise the guild member voice-mute flag arrives under
+the `"mute"` key (not `"muted"`), pinned by `member_basic` in
+`unit-codec-decode.c`.
