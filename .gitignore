@@ -30,5 +30,8 @@
 !reflect-c
 !src/api
 !src/api/*.recipe.h
+!scripts
+!scripts/check_openapi_sync.py
+!scripts/openapi_sync_allowlist.txt
 # Local-only planning material (will become a submodule)
 docs/roadmap/

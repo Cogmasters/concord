@@ -1,0 +1,27 @@
+name: OpenAPI sync
+
+# Validates that every serialized field name in src/api/*.recipe.h exists
+# in Discord's published OpenAPI spec — catching typos, missing aliases
+# (the muted/"mute" class of bug) and fields Discord has dropped.
+# Exceptions live in scripts/openapi_sync_allowlist.txt.
+
+on:
+  pull_request:
+    paths:
+      - 'src/api/**'
+      - 'scripts/check_openapi_sync.py'
+      - 'scripts/openapi_sync_allowlist.txt'
+      - '.github/workflows/openapi_sync.yml'
+  schedule:
+    # weekly: surface spec-side changes (new/renamed/dropped fields)
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check recipes against Discord's OpenAPI spec
+        run: python3 scripts/check_openapi_sync.py --coverage

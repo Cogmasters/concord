@@ -1,0 +1,81 @@
+# Recipe field names legitimately absent from Discord's OpenAPI spec.
+# Reviewed 2026-06-11. One qualified struct.name per line;
+# bare names match any struct. '#' starts a comment.
+
+# ── Gateway WebSocket protocol (the OpenAPI spec covers REST only) ──
+discord_activity.timestamps
+discord_activity.details
+discord_activity.party
+discord_activity.assets
+discord_activity.secrets
+discord_activity.instance
+discord_activity.buttons
+discord_activity_assets.large_image
+discord_activity_assets.large_text
+discord_activity_assets.small_image
+discord_activity_assets.small_text
+discord_activity_secrets.join
+discord_activity_secrets.spectate
+discord_activity_secrets.match
+discord_presence_update.client_status
+discord_presence_update.activities
+discord_presence_update.since
+discord_presence_update.afk
+discord_client_status.desktop
+discord_client_status.mobile
+discord_client_status.web
+discord_identify.properties
+discord_identify.compress
+discord_identify.large_threshold
+discord_identify.shard
+discord_identify.presence
+discord_identify.intents
+discord_identify_connection.os
+discord_identify_connection.browser
+discord_identify_connection.device
+discord_resume.seq
+discord_request_guild_members.presences
+discord_ready.v
+discord_ready.guilds
+discord_ready.shard
+discord_auto_moderation_action_execution.rule_trigger_type
+discord_auto_moderation_action_execution.alert_system_message_id
+discord_auto_moderation_action_execution.matched_keyword
+discord_auto_moderation_action_execution.matched_content
+discord_thread_members_update.added_members
+discord_thread_members_update.removed_member_ids
+discord_guild_members_chunk.chunk_index
+discord_guild_members_chunk.chunk_count
+discord_guild_members_chunk.not_found
+discord_guild_members_chunk.presences
+discord_message_delete_bulk.ids
+discord_voice_server_update.endpoint
+
+# ── GUILD_CREATE gateway extras on discord_guild ──
+discord_guild.icon_hash
+discord_guild.large
+discord_guild.unavailable
+discord_guild.voice_states
+discord_guild.presences
+discord_guild.welcome_screen
+discord_guild.stage_instances
+
+# ── Documented fields the OpenAPI spec does not (yet) model ──
+discord_application_command_interaction_data_option.focused
+discord_optional_audit_entry_info.delete_member_days
+discord_optional_audit_entry_info.members_removed
+discord_optional_audit_entry_info.role_name
+discord_interaction.guild_locale
+discord_interaction_data.component_type
+discord_invite.stage_instance
+discord_invite_stage_instance.participant_count
+discord_invite_stage_instance.speaker_count
+
+# ── Deprecated by Discord, kept for backward compatibility ──
+discord_application_command.default_permission
+discord_create_global_application_command.default_permission
+discord_create_guild_application_command.default_permission
+discord_edit_global_application_command.default_permission
+discord_edit_guild_application_command.default_permission
+discord_get_invite.with_expiration
+discord_modify_guild_channel_position.lock_category
