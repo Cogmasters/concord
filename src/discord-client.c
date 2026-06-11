@@ -72,35 +72,6 @@ _discord_on_shutdown(struct io_poller *io,
     discord_shutdown(data);
 }
 
-CCORDcode
-discord_check_curl_compatibility(void)
-{
-    const curl_version_info_data *curl_info =
-        curl_version_info(CURLVERSION_NOW);
-
-    // check version 8.7.1 for websockets support
-    if (curl_info->version_num < 0x080701) {
-        logmod_log(FATAL, NULL,
-                   "libcurl version 8.7.1 or higher required (found %s)",
-                   curl_info->version);
-        return CCORD_CURL_OUTDATED_VERSION;
-    }
-
-    _Bool wss_enabled = 0;
-    for (const char *const *proto = curl_info->protocols; *proto; ++proto) {
-        if (0 == strncmp(*proto, "wss", 3)) wss_enabled = 1;
-    }
-    if (!wss_enabled) {
-        logmod_log(FATAL, NULL,
-                   "libcurl must be compiled with websockets support");
-        logmod_log(
-            FATAL, NULL,
-            "Please recompile libcurl with the --enable-websockets flag");
-        return CCORD_CURL_WEBSOCKETS_MISSING;
-    }
-    return CCORD_OK;
-}
-
 static void
 _discord_notifier_close(void)
 {
