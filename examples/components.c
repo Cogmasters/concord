@@ -81,7 +81,9 @@ on_dynamic(struct discord *client, const struct discord_message *event)
     if (event->author->bot) return;
 
     struct discord_components components = { 0 };
-    discord_components_from_json(JSON, sizeof(JSON), &components);
+
+    discord_data_from_json(struct discord_components, client, JSON,
+                           sizeof(JSON), &components);
 
     struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
@@ -90,8 +92,7 @@ on_dynamic(struct discord *client, const struct discord_message *event)
     };
     discord_create_message(client, event->channel_id, &params, NULL);
 
-    /* must cleanup 'components' afterwards */
-    discord_components_cleanup(&components);
+    discord_data_cleanup(client, &components);
 }
 
 void
@@ -179,7 +180,10 @@ on_interaction_create(struct discord *client,
 
     char *values = NULL;
     size_t size = 0;
-    strings_to_json(&values, &size, event->data->values);
+
+    discord_data_to_json(struct strings, client, event->data->values, &values,
+                         &size);
+
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text),
              "So you have chosen:\n"
@@ -199,6 +203,8 @@ on_interaction_create(struct discord *client,
     };
     discord_create_interaction_response(client, event->id, event->token,
                                         &params, NULL);
+
+    discord_data_cleanup(client, event->data->values);
 }
 
 int

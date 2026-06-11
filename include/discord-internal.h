@@ -31,59 +31,75 @@ extern "C" {
 #include "priority_queue.h"
 #include "attributes.h"
 
-/** @brief Return 1 if string isn't considered empty */
-#define NOT_EMPTY_STR(str) ((str) && *(str))
 /**
- * @brief Get container `type` from a field `ptr`
+ * @brief return 1 if string isn't empty
  *
- * @param[in] ptr the field contained in `type`
- * @param[in] type the container datatype
- * @param[in] path the path to the field from the container POV
+ * @param[in] _str the string to check
  */
-#define CONTAINEROF(ptr, type, path)                                          \
-    ((type *)((char *)(ptr) - offsetof(type, path)))
+#define NOT_EMPTY_STR(_str) ((_str) && *(_str))
+/**
+ * @brief get container `type` from a field `ptr`
+ *
+ * @param[in] _ptr the field contained in `type`
+ * @param[in] _type the container datatype
+ * @param[in] _path the path to the field from the container POV
+ */
+#define CONTAINEROF(_ptr, _type, _path)                                       \
+    ((_type *)((char *)(_ptr) - offsetof(_type, _path)))
 
 /** @defgroup DiscordInternal Internal implementation details
  * @brief Documentation useful when developing or debugging Concord itself
  *  @{ */
 
-/** @brief cet client from its nested field */
-#define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
+/**
+ * @brief get client from its nested field
+ *
+ * @param[in] _ptr the nested field pointer
+ * @param[in] _path the path to the discord client from the nested field POV
+ */
+#define CLIENT(_ptr, _path) CONTAINEROF(_ptr, struct discord, _path)
 
 /**
  * @brief log and return `code` if `expect` condition is false
  *
- * @param[in] client the Discord client
- * @param[in] expect the expected outcome
- * @param[in] code return CCORDcode error code
- * @param[in] reason for return
+ * @param[in] _client the Discord client
+ * @param[in] _expect the expected outcome
+ * @param[in] _code return CCORDcode error code
+ * @param[in] _reason for return
  * @return the provided @ref CCORDcode `code` parameter
  */
-#define CCORD_EXPECT(client, expect, code, reason)                            \
+#define CCORD_EXPECT(_client, _expect, _code, _reason)                        \
     do {                                                                      \
-        if (!(expect)) {                                                      \
-            logmod_log(ERROR, (client)->logger,                               \
-                       "Expected: " #expect " | %s (%s)",                     \
-                       discord_strerror(code, client),                        \
-                       discord_code_as_string(code));                         \
-            return code;                                                      \
+        if (!(_expect)) {                                                     \
+            logmod_log(ERROR, (_client)->logger,                              \
+                       "Expected: " #_expect " | %s (%s)",                    \
+                       discord_strerror(_code, _client),                      \
+                       discord_code_as_string(_code));                        \
+            return _code;                                                     \
         }                                                                     \
     } while (0)
 
 /**
  * @brief log and return `code` if function call doesn't returns @ref CCORD_OK
  *
- * @param[in] client the Discord client
- * @param[in] fn the function call that returns CCORDcode
+ * @param[in] _client the Discord client
+ * @param[in] _type the datatype to be converted to JSON
+ * @param[out] _body the JSON body buffer
+ * @param[in] _params the parameters to be converted to JSON
  * @return the returned @ref CCORDcode `code` parameter
  */
-#define CCORD_EXPECT_OK(client, fn)                                           \
+#define CCORD_DATA_TO_JSON(_client, _type, _body, _params)                    \
     do {                                                                      \
-        const CCORDcode code = (fn);                                          \
+        struct reflectc_wrap *w_params =                                      \
+            reflectc_from_##_type((_client)->registry, _params, NULL);        \
+        CCORDcode code = discord_data_wrap_to_json(w_params, &(_body)->start, \
+                                                   &(_body)->size);           \
+        reflectc_cleanup((_client)->registry, w_params);                      \
         if (code != CCORD_OK) {                                               \
-            logmod_log(ERROR, (client)->logger,                               \
-                       "Expected: CCORD_OK == " #fn " | %s (%s)",             \
-                       discord_strerror(code, client),                        \
+            logmod_log(ERROR, (_client)->logger,                              \
+                       "Expected: CCORD_OK == discord_data_wrap_to_json | "   \
+                       "%s (%s)",                                             \
+                       discord_strerror(code, _client),                       \
                        discord_code_as_string(code));                         \
             return code;                                                      \
         }                                                                     \
@@ -421,11 +437,9 @@ struct discord_ret_response {
     /** size of datatype in bytes */
     size_t size;
     /** initializer function for datatype fields */
-    void (*init)(void *data);
-    /** populate datatype with JSON values */
-    size_t (*from_json)(const char *json, size_t len, void *data);
-    /** cleanup function for datatype */
-    void (*cleanup)(void *data);
+    struct reflectc_wrap *(*init)(struct reflectc *registry,
+                                  void *data,
+                                  struct reflectc_wrap *root);
 };
 
 /**
@@ -1191,6 +1205,12 @@ struct discord_cache {
  * @see discord_init(), discord_config_init(), discord_cleanup()
  */
 struct discord {
+    /**
+     * the registry for all wrapped discord data types
+     * @note keep as first member for casting to `struct reflectc`
+     * @see DiscordDataWrap
+     */
+    struct reflectc *registry;
     /** `DISCORD` logging module */
     struct logmod_logger *logger;
     /** LogMod loggers table */

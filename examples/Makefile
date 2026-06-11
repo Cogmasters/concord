@@ -4,7 +4,7 @@ CC = cc
 
 CORE_DIR      = $(TOP)/core
 INCLUDE_DIR   = $(TOP)/include
-GENCODECS_DIR = $(TOP)/gencodecs
+GENERATED_DIR = $(TOP)/generated
 
 EXES = 8ball \
        audit-log \
@@ -34,7 +34,8 @@ EXES = 8ball \
 BOTS += $(EXES)
 
 CFLAGS  += -O0 -g -pthread -Wall \
-           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR)
+           -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENERATED_DIR) \
+           -I$(TOP)/reflect-c
 LDFLAGS  = -L$(TOP)/lib
 LDLIBS   = -ldiscord -lcurl
 

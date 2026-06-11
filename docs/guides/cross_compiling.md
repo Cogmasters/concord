@@ -17,7 +17,8 @@ might take a fair bit of work to get working perfectly. If you do use one of
 these, ensure that `$PATH` gets updated to include the compiler's bin directory,
 or you won't be able to invoke the compiler.
 
-## Step 2: cross-compiling Concord
+## Step 2: cross-compiling Concord (WIP)
+<!--
 For this example, we will assume that your host system is a standard x86_64
 PC, and uses the target triplet `x86_64-pc-linux-gnu`. We will be
 cross-compiling to a 64-bit Raspberry Pi 4, with the target triplet
@@ -26,7 +27,7 @@ executables for the compiler are prefixed with the target tripet. This means
 that our actual C compiler command is `aarch64-linux-gnu-gcc`. This will be
 our `CC` value.
 
-The gencodecs system that Concord uses requires that the system C compiler is
+The Reflect-C system that Concord uses requires that the system C compiler is
 available. This means we have to set `HOSTCC` when we compile. Since our
 target triplet is `x86_64-pc-linux-gnu`, this means that our host C compiler
 is named `x86_64-pc-linux-gnu-gcc`. However, since this is the primary C
@@ -40,16 +41,13 @@ path for `make install` is `/mnt/usr/local`.
 Okay, we can now run the commands to actually compile.
 
 ```console
-cd gencodecs
-make HOSTCC=gcc CC=aarch64-linux-gnu-gcc
-cd ..
+make reflectc-gen HOSTCC=gcc
 make CC=aarch64-linux-gnu-gcc
 make install PREFIX=/mnt/usr/local
 ```
 
 Easy as that! Granted, you can perform a compilation with fewer typed commands
 if you `export` those three variables beforehand, but, this guide was written
-with maximum learning in mind (and demonstrating why gencodecs needs the
+with maximum learning in mind (and demonstrating why Reflect-C needs the
 split compilation procedure). 
-
-
+-->

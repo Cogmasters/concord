@@ -9,22 +9,29 @@ DESTLIBDIR       = $(PREFIX)/lib
 # If you have a nonstandard pkg_config directory, specify it here:
 PKGCONFIGDIR     = $(SHAREDIR)/pkgconfig
 
-SRC_DIR       = src
-INCLUDE_DIR   = include
-LIBDIR        = lib
-DOCS_DIR      = docs
-GENCODECS_DIR = gencodecs
-CORE_DIR      = core
-EXAMPLES_DIR  = examples
-TEST_DIR      = test
+SRC_DIR        = src
+INCLUDE_DIR    = include
+LIBDIR         = lib
+DOCS_DIR       = docs
+API_DIR    = $(SRC_DIR)/api
+CORE_DIR       = core
+EXAMPLES_DIR   = examples
+TEST_DIR       = test
 # Flags for compiling the shared version of Concord:
 SOFLAGS       = -fPIC
 DYFLAGS       = -fPIC 
 # C compiler debug options:
 DEBUG_FLAGS   = -O0 -g
 
-GIT_BRANCHES  = master dev
-GIT_TARGETS   = latest latest-dev
+# Directories for generated files and reflect-c outputs
+REFLECTC_DIR  = reflect-c
+REFLECTC_OUT  = $(GENERATED_DIR)/discord_codecs
+REFLECTC_CFLAGS = -I. -Wall -Wextra -Wpedantic -std=c89
+GENERATED_DIR = generated
+GENERATED_FILES = $(REFLECTC_OUT).c $(REFLECTC_OUT).h
+
+GIT_BRANCHES = master dev
+GIT_TARGETS  = latest latest-dev
 
 # If you are using Solaris, comment out the second line.
 INSTALL       = install
@@ -40,21 +47,21 @@ SANFLAGS = -fsanitize=address,undefined -fno-sanitize-recover=undefined \
 
 all: static
 
-static:
+$(REFLECTC_OUT).c: $(REFLECTC_OUT).h
+
+$(REFLECTC_OUT).h: reflectc-gen
+
+static: $(GENERATED_FILES)
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(CORE_DIR)
-	@ $(MAKE) -C $(GENCODECS_DIR) # CFLAGS reaches it via make's env auto-export
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
-shared:
+shared: $(GENERATED_FILES)
 	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
-	@ CFLAGS="$(SOFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
-shared_nosoname:
+shared_nosoname: $(GENERATED_FILES)
 	@ CFLAGS="$(SOFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
-	@ CFLAGS="$(SOFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
-shared_osx:
+shared_osx: $(GENERATED_FILES)
 	@ CFLAGS="$(DYFLAGS) $(CFLAGS)" $(MAKE) -C $(CORE_DIR)
-	@ CFLAGS="$(DYFLAGS)" $(MAKE) -C $(GENCODECS_DIR)
 	@ CFLAGS="$(CFLAGS)" $(MAKE) -C $(SRC_DIR) $@
 
 install:
@@ -66,8 +73,9 @@ install:
 	done
 	cp -P $(LIBDIR)/* $(DESTLIBDIR)
 	$(INSTALL) -d $(DESTINCLUDE_DIR)
-	$(INSTALL) -m 644 $(INCLUDE_DIR)/*.h $(CORE_DIR)/*.h $(GENCODECS_DIR)/*.h \
+	$(INSTALL) -m 644 $(INCLUDE_DIR)/*.h $(CORE_DIR)/*.h $(GENERATED_DIR)/*.h \
 	               $(DESTINCLUDE_DIR)
+	$(INSTALL) -m 644 $(REFLECTC_DIR)/reflect-c.h $(DESTINCLUDE_DIR)
 	$(INSTALL) -d $(PKGCONFIGDIR)
 	$(INSTALL) -m 644 concord.pc $(PKGCONFIGDIR)/concord.pc
 
@@ -78,8 +86,19 @@ uninstall:
 	rm -rf $(PREFIX)/lib/libdiscord.dylib
 	rm -f $(PKGCONFIGDIR)/concord.pc
 
-docs:
-	@ $(MAKE) -C $(GENCODECS_DIR) headers
+docs: $(REFLECTC_OUT).h
+
+reflectc-update:
+	git submodule update --init --remote $(REFLECTC_DIR)
+reflectc-submodule:
+	@ git submodule update --init --recursive $(REFLECTC_DIR)
+reflectc-gen: reflectc-submodule
+	@ mkdir -p $(GENERATED_DIR) # untracked: absent on a fresh clone
+	@ $(MAKE) -C $(REFLECTC_DIR) CFLAGS="$(REFLECTC_CFLAGS) $(CFLAGS)" REFLECTC_TUPLE_MAX=64 tuples
+	@ $(MAKE) -C $(REFLECTC_DIR) CFLAGS="$(REFLECTC_CFLAGS) $(CFLAGS)" API_DIR=../$(API_DIR) OUT=../$(REFLECTC_OUT) gen
+reflectc-headers: reflectc-submodule
+	@ $(MAKE) -C $(REFLECTC_DIR) CFLAGS="$(REFLECTC_CFLAGS) $(CFLAGS)" REFLECTC_TUPLE_MAX=64 tuples
+	@ $(MAKE) -C $(REFLECTC_DIR) CFLAGS="$(REFLECTC_CFLAGS) $(CFLAGS)" API_DIR=../$(API_DIR) OUT=../$(REFLECTC_OUT) headers
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
@@ -109,12 +128,15 @@ check-live:
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-clean: 
+clean:
 	@ $(MAKE) -C $(SRC_DIR) $@
 	@ $(MAKE) -C $(TEST_DIR) $@
 	@ $(MAKE) -C $(EXAMPLES_DIR) $@
-	@ $(MAKE) -C $(GENCODECS_DIR) $@
-
+	@ # tolerate an uninitialized submodule (fresh clone/CI cleans first)
+	@ if [ -f $(REFLECTC_DIR)/Makefile ]; then \
+	      $(MAKE) -C $(REFLECTC_DIR) $@; \
+	  fi
+	@ rm -f $(REFLECTC_OUT).c $(REFLECTC_OUT).h $(REFLECTC_OUT).o
 purge: clean
 	@ $(MAKE) -C $(SRC_DIR) $@
 
@@ -127,4 +149,6 @@ $(GIT_BRANCHES):
 	git pull
 	$(MAKE)
 
-.PHONY: test check check-san check-live examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
+.PHONY: test check check-san check-live examples uninstall install echo clean purge docs static shared shared_osx \
+	reflectc-update reflectc-submodule reflectc-gen reflectc-headers \
+	$(GIT_BRANCHES) $(GIT_TARGETS)

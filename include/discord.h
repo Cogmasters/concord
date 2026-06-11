@@ -37,7 +37,16 @@ extern "C" {
 
 /* forward declaration */
 struct discord;
+struct reflectc;
 /**/
+
+/**
+ * @brief Get the reflectc registry from a Discord client
+ *
+ * @param client the client created with discord_from_json() or discord_from_token()
+ * @return the reflectc registry used by the client
+ */
+struct reflectc *discord_get_registry(struct discord *client);
 
 #include "discord_codecs.h"
 #include "discord-response.h"
@@ -441,6 +450,197 @@ struct logmod *discord_get_logmod(struct discord *client);
  * @return struct io_poller*
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
+
+/** @addtogroup DiscordDataWrap Data Wrap
+ * @brief Helpers for wrapping Discord data types for easier management
+ *  @{ */
+
+#define __CAT(_a, _b) _a##_b
+#define _CAT(_a, _b)  __CAT(_a, _b)
+#define _EXPECT_CONTAINER__struct
+#define _EXPECT_CONTAINER__union
+#define _DISCORD_SYMBOL_WITHOUT_CONTAINER(_symbol)                            \
+    _CAT(_EXPECT_CONTAINER__, _symbol)
+
+/**
+ * @brief The Discord data wrap structure
+ *
+ * This struct is used to wrap Discord data types for easier management
+ */
+#define discord_data_wrap reflectc_wrap
+
+/**
+ * @brief Wrap a Discord data type into a reflectc_wrap structure
+ *
+ * @param _symbol the Discord data type symbol (with struct or union)
+ * @param _client the client created with discord_from_token()
+ * @param _data the Discord data type to be wrapped
+ * @return the @ref discord_data_wrap Discord data type
+ */
+#define discord_data_wrap_from(_symbol, _client, _data)                       \
+    _CAT(reflectc_from_, _DISCORD_SYMBOL_WITHOUT_CONTAINER(_symbol))(         \
+        discord_get_registry((_client)), _data, NULL)
+
+/**
+ * @brief Cleanup a Discord data type wrapped into a reflectc_wrap structure
+ *
+ * Releases everything discord_data_from_json() allocated for `_data` —
+ * strings, nested objects, list arrays — plus the reflect-c wrap and its
+ * registry entry. Every non-NULL pointer member is treated as owned: do
+ * not call this on hand-built structs pointing at literals or stack
+ * objects.
+ *
+ * @param _client the client created with discord_from_token()
+ * @param _data the Discord data type to be cleaned up
+ */
+#define discord_data_cleanup(_client, _data)                                  \
+    discord_data_free(discord_get_registry((_client)), (_data))
+
+/** Function backing @ref discord_data_cleanup; see its contract */
+void discord_data_free(struct reflectc *registry, void *data);
+
+/**
+ * @brief Drop the wrap cached for `_data` without touching its contents
+ *
+ * discord_data_to_json() caches a reflect-c wrap keyed by `_data`'s
+ * address; release it with this once done encoding a caller-owned
+ * struct (e.g. stack-built params). Without it the stale registry entry
+ * would be wrongly reused by a future object at the same address.
+ * Decoded structs don't need this — discord_data_cleanup() releases
+ * both the data and the wrap.
+ *
+ * @param _client the client created with discord_from_token()
+ * @param _data the encoded Discord data type to drop the wrap for
+ */
+#define discord_data_unwrap(_client, _data)                                   \
+    discord_data_release(discord_get_registry((_client)), (_data))
+
+/** Function backing @ref discord_data_unwrap */
+void discord_data_release(struct reflectc *registry, void *data);
+
+/** @addtogroup DiscordDataWrapJSON JSON Conversion
+ * @brief Helpers for converting Discord data types to/from JSON
+ *  @{ */
+
+/* forward declaration */
+struct jsmnf_pair;
+struct jsonb;
+
+/**
+ * @brief Transform a wrapped Discord data type into a JSON string
+ *
+ * @param member the wrapped Discord data type
+ * @param p_buf pointer to the JSON buffer
+ * @param p_bufsize pointer to the JSON buffer size
+ * @CCORD_return
+ */
+CCORDcode discord_data_wrap_to_json(const struct discord_data_wrap *member,
+                                    char *p_buf[],
+                                    size_t *p_bufsize);
+
+/**
+ * @brief Transform a Discord data type into a JSON string
+ *
+ * @param _symbol the Discord data type symbol (with struct or union)
+ * @param _client the client created with discord_from_token()
+ * @param _data the Discord data type to be transformed
+ * @param _p_buf pointer to the JSON buffer
+ * @param _p_bufsize pointer to the JSON buffer size
+ * @CCORD_return
+ */
+#define discord_data_to_json(_symbol, _client, _data, _p_buf, _p_bufsize)     \
+    discord_data_wrap_to_json(                                                \
+        discord_data_wrap_from(_symbol, _client, _data), _p_buf, _p_bufsize)
+
+/**
+ * @brief Transform a wrapped Discord data type into a jsonb handle
+ *
+ * @param jb the jsonb handle
+ * @param member the wrapped Discord data type
+ * @param p_buf pointer to the JSON buffer
+ * @param p_bufsize pointer to the JSON buffer size
+ * @CCORD_return
+ */
+CCORDcode discord_data_wrap_to_jsonb(struct jsonb *jb,
+                                     const struct discord_data_wrap *member,
+                                     char *p_buf[],
+                                     size_t *p_bufsize);
+
+/**
+ * @brief Transform a Discord data type into a jsonb handle
+ *
+ * @param _symbol the Discord data type symbol (with struct or union)
+ * @param _client the client created with discord_from_token()
+ * @param _jb the jsonb handle
+ * @param _data the Discord data type to be transformed
+ * @param _p_buf pointer to the JSON buffer
+ * @param _p_bufsize pointer to the JSON buffer size
+ * @CCORD_return
+ */
+#define discord_data_to_jsonb(_symbol, _client, _jb, _data, _p_buf,           \
+                              _p_bufsize)                                     \
+    discord_data_wrap_to_jsonb(                                               \
+        _jb, discord_data_wrap_from(_symbol, _client, _data), _p_buf,         \
+        _p_bufsize)
+
+/**
+ * @brief Parse a JSON string and fill a wrapped Discord data type
+ *
+ * @param json the JSON string
+ * @param len length of @ref json
+ * @param root the root wrapped Discord data type
+ * @CCORD_return
+ */
+CCORDcode discord_data_wrap_from_json(const char *json,
+                                      size_t len,
+                                      struct discord_data_wrap *root);
+
+/**
+ * @brief Parse a JSON string and fill a Discord data type
+ *
+ * @param _symbol the Discord data type symbol (with struct or union)
+ * @param _client the client created with discord_from_token()
+ * @param _json the JSON string
+ * @param _len length of @ref json
+ * @param _data the Discord data type to be filled
+ * @CCORD_return
+ */
+#define discord_data_from_json(_symbol, _client, _json, _len, _data)          \
+    discord_data_wrap_from_json(                                              \
+        _json, _len, discord_data_wrap_from(_symbol, _client, _data))
+
+/**
+ * @brief Parse a jsmnf_pair and fill a wrapped Discord data type
+ *
+ * @param p the jsmnf_pair
+ * @param json the JSON string
+ * @param length length of @ref json
+ * @param member the wrapped Discord data type
+ * @CCORD_return
+ */
+CCORDcode discord_data_wrap_from_jsmnf(const struct jsmnf_pair *p,
+                                       const char *json,
+                                       size_t length,
+                                       const struct discord_data_wrap *member);
+
+/**
+ * @brief Parse a jsmnf_pair and fill a Discord data type
+ *
+ * @param _client the client created with discord_from_token()
+ * @param _p the jsmnf_pair
+ * @param _json the JSON string
+ * @param _length length of @ref json
+ * @param _type the Discord data type symbol (without struct/union)
+ * @param _data the Discord data type to be filled
+ * @CCORD_return
+ */
+#define discord_data_from_jsmnf(_client, _p, _json, _length, _type, _data)    \
+    discord_data_wrap_from_jsmnf(                                             \
+        _p, _json, _length, discord_data_wrap_from(_type, _client, _data))
+
+/** @} DiscordDataWrapJSON */
+
+/** @} DiscordDataWrap */
 
 /** @addtogroup DiscordTimer Timer
  * @brief Schedule callbacks to be called in the future

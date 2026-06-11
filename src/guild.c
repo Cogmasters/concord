@@ -15,8 +15,7 @@ discord_create_guild(struct discord *client,
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(
-        client, discord_create_guild_to_json(&body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild, &body, params);
     DISCORD_ATTR_INIT(attr, discord_guild, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST, "/guilds");
 }
@@ -55,8 +54,7 @@ discord_modify_guild(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(
-        client, discord_modify_guild_to_json(&body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild, &body, params);
     DISCORD_ATTR_INIT(attr, discord_guild, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64, guild_id);
@@ -81,7 +79,7 @@ discord_get_guild_channels(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_channels, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_channels, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/channels", guild_id);
 }
@@ -96,8 +94,7 @@ discord_create_guild_channel(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_guild_channel_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild_channel, &body, params);
     DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/guilds/%" PRIu64 "/channels", guild_id);
@@ -114,8 +111,8 @@ discord_modify_guild_channel_positions(
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_channel_positions_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_channel_positions, &body,
+                       params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/channels", guild_id);
@@ -146,7 +143,7 @@ discord_list_guild_members(struct discord *client,
     struct queriec queriec;
     char query[1024] = "";
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_members, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_members, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
@@ -182,7 +179,7 @@ discord_search_guild_members(struct discord *client,
     struct queriec queriec;
     char query[1024] = "";
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_members, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_members, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
@@ -229,8 +226,7 @@ discord_add_guild_member(struct discord *client,
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->access_token != NULL, CCORD_BAD_PARAMETER,
                  "");
-    CCORD_EXPECT_OK(client, discord_add_guild_member_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_add_guild_member, &body, params);
     DISCORD_ATTR_INIT(attr, discord_guild_member, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
@@ -249,8 +245,7 @@ discord_modify_guild_member(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_member_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_member, &body, params);
     DISCORD_ATTR_INIT(attr, discord_guild_member, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
@@ -268,8 +263,7 @@ discord_modify_current_member(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->nick != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_current_member_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_current_member, &body, params);
     DISCORD_ATTR_INIT(attr, discord_guild_member, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/members/@me", guild_id);
@@ -337,7 +331,7 @@ discord_get_guild_bans(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_bans, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_bans, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/bans", guild_id);
 }
@@ -373,8 +367,7 @@ discord_create_guild_ban(struct discord *client,
                  params->delete_message_days >= 0
                      && params->delete_message_days <= 7,
                  CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_guild_ban_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild_ban, &body, params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
@@ -403,7 +396,7 @@ discord_get_guild_roles(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_roles, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_roles, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/roles", guild_id);
 }
@@ -417,8 +410,7 @@ discord_create_guild_role(struct discord *client,
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_guild_role_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild_role, &body, params);
     DISCORD_ATTR_INIT(attr, discord_role, ret, params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/guilds/%" PRIu64 "/roles", guild_id);
@@ -435,9 +427,9 @@ discord_modify_guild_role_positions(
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_role_positions_to_json(
-                                &body.start, &body.size, params));
-    DISCORD_ATTR_LIST_INIT(attr, discord_roles, ret, NULL);
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_role_positions, &body,
+                       params);
+    DISCORD_ATTR_INIT(attr, discord_roles, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/roles", guild_id);
 }
@@ -453,8 +445,7 @@ discord_modify_guild_role(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, role_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_role_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_role, &body, params);
     DISCORD_ATTR_INIT(attr, discord_role, ret, params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
@@ -537,8 +528,7 @@ discord_begin_guild_prune(struct discord *client,
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_begin_guild_prune_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_begin_guild_prune, &body, params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/guilds/%" PRIu64 "/prune", guild_id);
@@ -551,7 +541,7 @@ discord_get_guild_voice_regions(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_voice_regions, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_voice_regions, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/regions", guild_id);
 }
@@ -563,7 +553,7 @@ discord_get_guild_invites(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_invites, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_invites, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/invites", guild_id);
 }
@@ -575,7 +565,7 @@ discord_get_guild_integrations(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_integrations, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_integrations, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/integrations", guild_id);
 }
@@ -620,8 +610,7 @@ discord_modify_guild_widget(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_guild_widget_settings_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_guild_widget_settings, &body, params);
     DISCORD_ATTR_INIT(attr, discord_guild_widget_settings, ret,
                       params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
@@ -674,8 +663,8 @@ discord_modify_guild_welcome_screen(
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_welcome_screen_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_welcome_screen, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_welcome_screen, ret,
                       params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
@@ -692,8 +681,8 @@ discord_modify_current_user_voice_state(
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_current_user_voice_state_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_current_user_voice_state, &body,
+                       params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/voice-states/@me", guild_id);
@@ -709,8 +698,7 @@ discord_modify_user_voice_state(struct discord *client,
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_user_voice_state_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_user_voice_state, &body, params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/voice-states/%" PRIu64,

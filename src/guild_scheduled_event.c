@@ -18,7 +18,7 @@ discord_list_guild_scheduled_events(
     const char *query =
         (params && params->with_user_count) ? "?with_user_count=1" : "";
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_events, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_events, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/scheduled-events%s", guild_id,
                             query);
@@ -40,8 +40,8 @@ discord_create_guild_scheduled_event(
     CCORD_EXPECT(client, params->scheduled_start_time != 0,
                  CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->entity_type != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_guild_scheduled_event_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild_scheduled_event, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret,
                       params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
@@ -82,8 +82,8 @@ discord_modify_guild_scheduled_event(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_scheduled_event_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_scheduled_event, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event, ret,
                       params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
@@ -121,8 +121,7 @@ discord_get_guild_scheduled_event_users(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_scheduled_event_id != 0, CCORD_BAD_PARAMETER,
                  "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_guild_scheduled_event_users, ret,
-                           NULL);
+    DISCORD_ATTR_INIT(attr, discord_guild_scheduled_event_users, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;

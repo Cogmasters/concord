@@ -41,7 +41,7 @@ char JSON[] = "{\n"
               "  },\n"
               "  \"author\": {\n"
               "    \"name\": \"Cogmasters\",\n"
-              "    \"url\": \"https://github.com/Cogmasters\",\n"
+              "    \"url\": \"https://github.com/Cogmasters\"\n"
               "  },\n"
               "  \"fields\": [\n"
               "    {\n"
@@ -72,7 +72,9 @@ on_dynamic(struct discord *client, const struct discord_message *event)
 
     /* load a embed from the json string */
     struct discord_embed embed = { 0 };
-    discord_embed_from_json(JSON, sizeof(JSON), &embed);
+
+    discord_data_from_json(struct discord_embed, client, JSON, sizeof(JSON),
+                           &embed);
     embed.timestamp = discord_timestamp(client); // get current timestamp
 
     struct discord_create_message params = {
@@ -85,8 +87,7 @@ on_dynamic(struct discord *client, const struct discord_message *event)
     };
     discord_create_message(client, event->channel_id, &params, NULL);
 
-    /* must cleanup 'embed' afterwards */
-    discord_embed_cleanup(&embed);
+    discord_data_cleanup(client, &embed);
 }
 
 void

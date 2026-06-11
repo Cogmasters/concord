@@ -34,7 +34,7 @@ have made the edits to that Makefile, simply run `make` and verify that everythi
 ### Caveats and problems you might have
 
 While Concord can compile under old Solaris systems using Sun Studio's compiler, you might need to make some adjustments to the 
-source to get it to compile perfectly. The `gencodecs` system will be, for sure, the biggest source of trouble. While it can be
+source to get it to compile perfectly. The `reflect-c` system will be, for sure, the biggest source of trouble. While it can be
 preprocessed right on Solaris, you might need to use the GNU C preprocessor. `cc -E` might not work (depending on your compiler
 version), so, substitute in `cpp` for `cc -E` and try that too. **You are probably going to run into SSL problems.** Welcome to
 old versions of OpenSSL; you might want to try the newest version you can. If all else fails, point it at a Fosscord instance, and

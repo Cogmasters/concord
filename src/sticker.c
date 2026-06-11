@@ -39,7 +39,7 @@ discord_list_guild_stickers(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_stickers, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_stickers, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/stickers", guild_id);
 }
@@ -70,8 +70,7 @@ discord_modify_guild_sticker(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, sticker_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_sticker_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_sticker, &body, params);
     DISCORD_ATTR_INIT(attr, discord_sticker, ret,
                       params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,

@@ -27,7 +27,7 @@ It is recommended that you do use the MIPSpro compiler. You will need to add `-c
 libcurl and openssl are more difficult to compile on here than Concord. You can acquire pre-made packages of these from the HP-UX Porting and Archive Centre website. If you have HP aCC, it can compile Concord. However, it is recommended that you just use GNU C in lieu of aCC, as it has somewhat lackluster C99 support.
 
 #### Solaris
-Sun Studio can be made to compiler Concord. Sun Studio 11 (from 2008) was the tested compiler, but you will encounter some issues with gencodecs. Of course, use `c99` for your `$CC`. 
+Sun Studio can be made to compiler Concord. Sun Studio 11 (from 2008) was the tested compiler, but you will encounter some issues with reflect-c. Of course, use `c99` for your `$CC`. 
 
 #### Tru64 (OSF/1)
 The default compiler is NOT C99 capable, but GCC 4.4.7 can be compiled on OSF/1. Once you install that, libcurl, openssl, and Concord can be built. 

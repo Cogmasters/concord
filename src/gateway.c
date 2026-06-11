@@ -41,11 +41,12 @@ discord_disconnect_guild_member(struct discord *client,
  * REST functions
  ******************************************************************************/
 
-static size_t
-_ccord_szbuf_from_json(const char str[], size_t len, void *p_buf)
+static void
+_ccord_szbuf_from_json(struct discord *client, struct discord_response *resp)
 {
-    struct ccord_szbuf *buf = p_buf;
-    return buf->size = cog_strndup(str, len, &buf->start);
+    (void)client;
+    struct ccord_szbuf *buf = resp->data;
+    buf->size = cog_strndup(resp->json.start, resp->json.size, &buf->start);
 }
 
 CCORDcode
@@ -53,9 +54,9 @@ discord_get_gateway(struct discord *client, struct ccord_szbuf *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
-    attr.response.from_json = &_ccord_szbuf_from_json;
-    attr.dispatch.has_type = true;
-    attr.dispatch.sync = ret;
+    attr.dispatch.data = ret;
+    attr.dispatch.sync = DISCORD_SYNC_FLAG;
+    attr.dispatch.done.typeless = &_ccord_szbuf_from_json;
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET, "/gateway");
 }
 
@@ -64,9 +65,9 @@ discord_get_gateway_bot(struct discord *client, struct ccord_szbuf *ret)
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
-    attr.response.from_json = &_ccord_szbuf_from_json;
-    attr.dispatch.has_type = true;
-    attr.dispatch.sync = ret;
+    attr.dispatch.data = ret;
+    attr.dispatch.sync = DISCORD_SYNC_FLAG;
+    attr.dispatch.done.typeless = &_ccord_szbuf_from_json;
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/gateway/bot");
 }

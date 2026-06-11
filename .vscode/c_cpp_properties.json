@@ -3,12 +3,15 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}",
                 "${workspaceFolder}/core",
-                "${workspaceFolder}/gencodecs",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/generated",
+                "${workspaceFolder}/reflect-c"
             ],
             "defines": [],
+            "forcedInclude": [
+                "${workspaceFolder}/reflect-c/reflect-c_intellisense.h"
+            ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c99",
             "cppStandard": "c++03"

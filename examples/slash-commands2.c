@@ -126,7 +126,7 @@ read_input(void *p_client)
 
                 logmod_log(INFO, NULL, "\nCommands: \n%.*s", (int)len, list);
 
-                discord_application_commands_cleanup(&app_cmds);
+                discord_data_cleanup(client, &app_cmds);
             }
             else {
                 logmod_log(ERROR, NULL, "Couldn't list commands");
@@ -172,7 +172,7 @@ read_input(void *p_client)
             if (CCORD_OK == code && app_cmd.id) {
                 logmod_log(INFO, NULL, "Created command:\t%s (%" PRIu64 ")",
                            app_cmd.name, app_cmd.id);
-                discord_application_command_cleanup(&app_cmd);
+                discord_data_cleanup(client, &app_cmd);
             }
             else {
                 logmod_log(ERROR, NULL, "Couldn't create command '%s'",
@@ -218,7 +218,7 @@ read_input(void *p_client)
             if (CCORD_OK == code && app_cmd.id) {
                 logmod_log(INFO, NULL, "Edited command:\t%s (%" PRIu64 ")",
                            app_cmd.name, app_cmd.id);
-                discord_application_command_cleanup(&app_cmd);
+                discord_data_cleanup(client, &app_cmd);
             }
             else {
                 logmod_log(ERROR, NULL, "Couldn't create command '%s'",

@@ -14,13 +14,11 @@ TEST
 check_sync_fetch_object(void)
 {
     struct discord_ret_user ret = { 0 };
-    struct discord_user bot;
-
-    discord_user_init(&bot);
+    struct discord_user bot = { 0 };
 
     ret.sync = &bot;
     ASSERT_EQ(CCORD_OK, discord_get_current_user(CLIENT, &ret));
-    discord_user_cleanup(&bot);
+    discord_data_cleanup(CLIENT, &bot);
 
     ret.sync = DISCORD_SYNC_FLAG;
     ASSERT_EQ(CCORD_OK, discord_get_current_user(CLIENT, &ret));
@@ -36,7 +34,7 @@ check_sync_fetch_array(void)
 
     ret.sync = &guilds;
     ASSERT_EQ(CCORD_OK, discord_get_current_user_guilds(CLIENT, &ret));
-    discord_guilds_cleanup(&guilds);
+    discord_data_cleanup(CLIENT, &guilds);
 
     ret.sync = DISCORD_SYNC_FLAG;
     ASSERT_EQ(CCORD_OK, discord_get_current_user_guilds(CLIENT, &ret));

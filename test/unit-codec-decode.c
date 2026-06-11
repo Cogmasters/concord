@@ -1,14 +1,11 @@
-#include "discord_codecs.h"
 #include "test-utils.h"
+#include "codec-harness.h"
 
-/* Field-by-field decode checks for the generated codecs, driven by the
- * fixtures under test/fixtures/.  Every test pairs the decode with the
- * generated _cleanup so the suite stays clean under leak checking.
- *
- * NOTE: discord_T_from_json() accumulates its return value from string
- * and nested-object fields only, so payloads made of scalars alone
- * (e.g. an unavailable-guild stub) report JSMN_ERROR_INVAL despite
- * decoding fine; those tests assert decoded fields instead. */
+/* Field-by-field decode checks for the reflect-c data codecs, driven by
+ * the fixtures under test/fixtures/.  Every test pairs the decode with
+ * discord_data_cleanup() so the suite stays clean under leak checking. */
+
+static struct discord *g_client;
 
 /* ── user ─────────────────────────────────────────────────────────── */
 
@@ -19,7 +16,8 @@ TEST user_basic(void)
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_user_from_json(js, len, &u), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_user, g_client, js, len, &u));
     ASSERT_EQ(1000000000000000001ULL, u.id);
     ASSERT_STR_EQ("wumpus", u.username);
     ASSERT_STR_EQ("0001", u.discriminator);
@@ -37,7 +35,7 @@ TEST user_basic(void)
     ASSERT_EQ(1, u.premium_type);
     ASSERT_EQ(64ULL, u.public_flags);
 
-    discord_user_cleanup(&u);
+    discord_data_cleanup(g_client, &u);
     free(js);
     PASS();
 }
@@ -49,13 +47,14 @@ TEST user_bot(void)
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_user_from_json(js, len, &u), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_user, g_client, js, len, &u));
     ASSERT_EQ(true, u.bot);
     ASSERT_STR_EQ("helperbot", u.username);
     ASSERT_EQ(NULL, u.avatar);
     ASSERT_EQ(65536ULL, u.public_flags);
 
-    discord_user_cleanup(&u);
+    discord_data_cleanup(g_client, &u);
     free(js);
     PASS();
 }
@@ -67,7 +66,8 @@ TEST user_missing_optionals_default(void)
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_user_from_json(js, len, &u), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_user, g_client, js, len, &u));
     ASSERT_EQ(1000000000000000001ULL, u.id);
     ASSERT_EQ(NULL, u.avatar);
     ASSERT_EQ(NULL, u.banner);
@@ -79,7 +79,7 @@ TEST user_missing_optionals_default(void)
     ASSERT_EQ(0ULL, u.flags);
     ASSERT_EQ(0, u.premium_type);
 
-    discord_user_cleanup(&u);
+    discord_data_cleanup(g_client, &u);
     free(js);
     PASS();
 }
@@ -91,7 +91,8 @@ TEST user_explicit_nulls(void)
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_user_from_json(js, len, &u), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_user, g_client, js, len, &u));
     ASSERT_STR_EQ("wumpus", u.username);
     ASSERT_EQ(NULL, u.avatar);
     ASSERT_EQ(NULL, u.banner);
@@ -99,7 +100,7 @@ TEST user_explicit_nulls(void)
     ASSERT_EQ(NULL, u.email);
     ASSERT_EQ(0, u.accent_color);
 
-    discord_user_cleanup(&u);
+    discord_data_cleanup(g_client, &u);
     free(js);
     PASS();
 }
@@ -111,12 +112,13 @@ TEST user_unknown_keys_ignored(void)
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_user_from_json(js, len, &u), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_user, g_client, js, len, &u));
     ASSERT_EQ(1000000000000000001ULL, u.id);
     ASSERT_STR_EQ("wumpus", u.username);
     ASSERT_STR_EQ("33ecab261d4681afa4d85a04691c4a01", u.avatar);
 
-    discord_user_cleanup(&u);
+    discord_data_cleanup(g_client, &u);
     free(js);
     PASS();
 }
@@ -139,7 +141,8 @@ TEST guild_basic(void)
     struct discord_guild g = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_guild_from_json(js, len, &g), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild, g_client, js, len, &g));
     ASSERT_EQ(1000000000000000010ULL, g.id);
     ASSERT_STR_EQ("Concord Test Guild", g.name);
     ASSERT_STR_EQ("8342729096ea3675442027381ff50dfe", g.icon);
@@ -170,7 +173,7 @@ TEST guild_basic(void)
     ASSERT_EQ(425, g.approximate_member_count);
     ASSERT_EQ(true, g.premium_progress_bar_enabled);
 
-    discord_guild_cleanup(&g);
+    discord_data_cleanup(g_client, &g);
     free(js);
     PASS();
 }
@@ -182,14 +185,14 @@ TEST guild_unavailable_stub(void)
     struct discord_guild g = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    /* all-scalar payload: return value unreliable, see file comment */
-    discord_guild_from_json(js, len, &g);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild, g_client, js, len, &g));
     ASSERT_EQ(1000000000000000011ULL, g.id);
     ASSERT_EQ(true, g.unavailable);
     ASSERT_EQ(NULL, g.name);
     ASSERT_EQ(NULL, g.roles);
 
-    discord_guild_cleanup(&g);
+    discord_data_cleanup(g_client, &g);
     free(js);
     PASS();
 }
@@ -201,7 +204,8 @@ TEST guild_hazards(void)
     struct discord_guild g = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_guild_from_json(js, len, &g), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild, g_client, js, len, &g));
     ASSERT_STR_EQ("Concord Test Guild", g.name);
     ASSERT_EQ(NULL, g.icon);
     ASSERT_EQ(0ULL, g.afk_channel_id);
@@ -214,7 +218,7 @@ TEST guild_hazards(void)
     ASSERT_NEQ(NULL, g.features);
     ASSERT_EQ(0, g.features->size);
 
-    discord_guild_cleanup(&g);
+    discord_data_cleanup(g_client, &g);
     free(js);
     PASS();
 }
@@ -235,7 +239,8 @@ TEST member_basic(void)
     struct discord_guild_member m = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_guild_member_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild_member, g_client, js, len, &m));
     ASSERT_NEQ(NULL, m.user);
     ASSERT_EQ(1000000000000000003ULL, m.user->id);
     ASSERT_STR_EQ("memberperson", m.user->username);
@@ -250,7 +255,7 @@ TEST member_basic(void)
     ASSERT_EQ(true, m.muted);
     ASSERT_EQ(false, m.pending);
 
-    discord_guild_member_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -262,12 +267,13 @@ TEST member_without_user(void)
     struct discord_guild_member m = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_guild_member_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild_member, g_client, js, len, &m));
     ASSERT_EQ(NULL, m.user);
     ASSERT_EQ(NULL, m.nick);
     ASSERT(m.joined_at != 0);
 
-    discord_guild_member_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -279,13 +285,14 @@ TEST member_hazards(void)
     struct discord_guild_member m = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_guild_member_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild_member, g_client, js, len, &m));
     ASSERT_NEQ(NULL, m.roles);
     ASSERT_EQ(0, m.roles->size);
     ASSERT_EQ(0ULL, m.premium_since);
     ASSERT_EQ(false, m.muted);
 
-    discord_guild_member_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -306,7 +313,8 @@ TEST channel_text(void)
     struct discord_channel c = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_channel_from_json(js, len, &c), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_channel, g_client, js, len, &c));
     ASSERT_EQ(1000000000000000020ULL, c.id);
     ASSERT_EQ(DISCORD_CHANNEL_GUILD_TEXT, c.type);
     ASSERT_EQ(1000000000000000010ULL, c.guild_id);
@@ -323,7 +331,7 @@ TEST channel_text(void)
     ASSERT_EQ(2048ULL, c.permission_overwrites->array[0].allow);
     ASSERT_EQ(8192ULL, c.permission_overwrites->array[0].deny);
 
-    discord_channel_cleanup(&c);
+    discord_data_cleanup(g_client, &c);
     free(js);
     PASS();
 }
@@ -335,7 +343,8 @@ TEST channel_hazards(void)
     struct discord_channel c = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_channel_from_json(js, len, &c), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_channel, g_client, js, len, &c));
     ASSERT_STR_EQ("empty-channel", c.name);
     ASSERT_EQ(NULL, c.topic);
     ASSERT_EQ(0ULL, c.last_message_id);
@@ -343,7 +352,7 @@ TEST channel_hazards(void)
     ASSERT_NEQ(NULL, c.permission_overwrites);
     ASSERT_EQ(0, c.permission_overwrites->size);
 
-    discord_channel_cleanup(&c);
+    discord_data_cleanup(g_client, &c);
     free(js);
     PASS();
 }
@@ -363,7 +372,8 @@ TEST message_plain(void)
     struct discord_message m = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_message_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, js, len, &m));
     ASSERT_EQ(1000000000000000100ULL, m.id);
     ASSERT_EQ(1000000000000000020ULL, m.channel_id);
     ASSERT_NEQ(NULL, m.author);
@@ -377,7 +387,7 @@ TEST message_plain(void)
     ASSERT_EQ(false, m.pinned);
     ASSERT_EQ(DISCORD_MESSAGE_DEFAULT, m.type);
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -390,7 +400,8 @@ TEST message_with_embeds(void)
     struct discord_embed *e;
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_message_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, js, len, &m));
     ASSERT_NEQ(NULL, m.embeds);
     ASSERT_EQ(2, m.embeds->size);
     e = &m.embeds->array[0];
@@ -415,7 +426,7 @@ TEST message_with_embeds(void)
     ASSERT_EQ(false, e->fields->array[1].Inline);
     ASSERT_STR_EQ("Second embed", m.embeds->array[1].title);
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -428,7 +439,8 @@ TEST message_with_attachments(void)
     struct discord_attachment *a;
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_message_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, js, len, &m));
     ASSERT_NEQ(NULL, m.attachments);
     ASSERT_EQ(2, m.attachments->size);
     a = &m.attachments->array[0];
@@ -442,7 +454,7 @@ TEST message_with_attachments(void)
     ASSERT_STR_EQ("notes.txt", a->filename);
     ASSERT_EQ(0, a->height);
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -455,7 +467,8 @@ TEST message_with_components(void)
     struct discord_component *row, *btn;
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_message_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, js, len, &m));
     ASSERT_NEQ(NULL, m.components);
     ASSERT_EQ(1, m.components->size);
     row = &m.components->array[0];
@@ -472,7 +485,7 @@ TEST message_with_components(void)
     ASSERT_STR_EQ("https://example.invalid/docs", btn->url);
     ASSERT_EQ(NULL, btn->custom_id);
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -484,13 +497,14 @@ TEST message_hazards(void)
     struct discord_message m = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_message_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, js, len, &m));
     ASSERT_EQ(0ULL, m.edited_timestamp);
     ASSERT_NEQ(NULL, m.mentions);
     ASSERT_EQ(0, m.mentions->size);
     ASSERT_STR_EQ("abc123nonce", m.nonce);
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -502,7 +516,8 @@ TEST message_long_content(void)
     struct discord_message m = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_message_from_json(js, len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, js, len, &m));
     ASSERT_NEQ(NULL, m.content);
     ASSERT_EQ(2000, (int)strlen(m.content));
     ASSERT_NEQ(NULL, m.embeds);
@@ -510,7 +525,7 @@ TEST message_long_content(void)
     ASSERT_NEQ(NULL, m.embeds->array[0].description);
     ASSERT_EQ(4096, (int)strlen(m.embeds->array[0].description));
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(js);
     PASS();
 }
@@ -534,7 +549,8 @@ TEST role_basic(void)
     struct discord_role r = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_role_from_json(js, len, &r), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_role, g_client, js, len, &r));
     ASSERT_EQ(1000000000000000030ULL, r.id);
     ASSERT_STR_EQ("moderator", r.name);
     ASSERT_EQ(3447003, r.color);
@@ -546,7 +562,7 @@ TEST role_basic(void)
     ASSERT_EQ(false, r.managed);
     ASSERT_EQ(true, r.mentionable);
 
-    discord_role_cleanup(&r);
+    discord_data_cleanup(g_client, &r);
     free(js);
     PASS();
 }
@@ -558,13 +574,14 @@ TEST role_hazards(void)
     struct discord_role r = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_role_from_json(js, len, &r), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_role, g_client, js, len, &r));
     ASSERT_STR_EQ("minimal-role", r.name);
     ASSERT_EQ(0ULL, r.permissions);
     ASSERT_EQ(NULL, r.unicode_emoji);
     ASSERT_EQ(NULL, r.tags);
 
-    discord_role_cleanup(&r);
+    discord_data_cleanup(g_client, &r);
     free(js);
     PASS();
 }
@@ -584,7 +601,8 @@ TEST emoji_custom(void)
     struct discord_emoji e = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_emoji_from_json(js, len, &e), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_emoji, g_client, js, len, &e));
     ASSERT_EQ(1000000000000000040ULL, e.id);
     ASSERT_STR_EQ("concord", e.name);
     ASSERT_NEQ(NULL, e.roles);
@@ -595,7 +613,7 @@ TEST emoji_custom(void)
     ASSERT_EQ(false, e.animated);
     ASSERT_EQ(true, e.available);
 
-    discord_emoji_cleanup(&e);
+    discord_data_cleanup(g_client, &e);
     free(js);
     PASS();
 }
@@ -607,12 +625,13 @@ TEST emoji_standard(void)
     struct discord_emoji e = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_emoji_from_json(js, len, &e), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_emoji, g_client, js, len, &e));
     ASSERT_EQ(0ULL, e.id); /* "id": null */
     ASSERT_STR_EQ("\xF0\x9F\x94\xA5", e.name);
     ASSERT_EQ(NULL, e.user);
 
-    discord_emoji_cleanup(&e);
+    discord_data_cleanup(g_client, &e);
     free(js);
     PASS();
 }
@@ -624,13 +643,14 @@ TEST emoji_hazards(void)
     struct discord_emoji e = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_emoji_from_json(js, len, &e), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_emoji, g_client, js, len, &e));
     ASSERT_STR_EQ("minimal", e.name);
     ASSERT_EQ(true, e.animated);
     ASSERT_EQ(NULL, e.roles);
     ASSERT_EQ(false, e.require_colons);
 
-    discord_emoji_cleanup(&e);
+    discord_data_cleanup(g_client, &e);
     free(js);
     PASS();
 }
@@ -651,7 +671,8 @@ TEST interaction_slash_command(void)
     struct discord_interaction i = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_interaction_from_json(js, len, &i), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_interaction, g_client, js, len, &i));
     ASSERT_EQ(1000000000000000200ULL, i.id);
     ASSERT_EQ(1000000000000000201ULL, i.application_id);
     ASSERT_EQ(DISCORD_INTERACTION_APPLICATION_COMMAND, i.type);
@@ -670,7 +691,7 @@ TEST interaction_slash_command(void)
     ASSERT_EQ(1, i.version);
     ASSERT_STR_EQ("en-US", i.locale);
 
-    discord_interaction_cleanup(&i);
+    discord_data_cleanup(g_client, &i);
     free(js);
     PASS();
 }
@@ -682,7 +703,8 @@ TEST interaction_message_component(void)
     struct discord_interaction i = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_interaction_from_json(js, len, &i), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_interaction, g_client, js, len, &i));
     ASSERT_EQ(DISCORD_INTERACTION_MESSAGE_COMPONENT, i.type);
     ASSERT_NEQ(NULL, i.data);
     ASSERT_STR_EQ("btn_click", i.data->custom_id);
@@ -691,7 +713,7 @@ TEST interaction_message_component(void)
     ASSERT_EQ(1000000000000000103ULL, i.message->id);
     ASSERT_STR_EQ("pick an action", i.message->content);
 
-    discord_interaction_cleanup(&i);
+    discord_data_cleanup(g_client, &i);
     free(js);
     PASS();
 }
@@ -703,14 +725,15 @@ TEST interaction_dm_shaped(void)
     struct discord_interaction i = { 0 };
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_interaction_from_json(js, len, &i), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_interaction, g_client, js, len, &i));
     ASSERT_EQ(NULL, i.member);
     ASSERT_NEQ(NULL, i.user);
     ASSERT_STR_EQ("dmuser", i.user->username);
     ASSERT_EQ(0ULL, i.guild_id);
     ASSERT_EQ(NULL, i.guild_locale);
 
-    discord_interaction_cleanup(&i);
+    discord_data_cleanup(g_client, &i);
     free(js);
     PASS();
 }
@@ -756,7 +779,8 @@ TEST gateway_ready_payload(void)
 
     ASSERT_EQ(0, envelope_payload("gateway-ready.json", &js, &len,
                                   &d, &d_len, &table));
-    ASSERT_GT(discord_ready_from_json(d, d_len, &r), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_ready, g_client, d, d_len, &r));
     ASSERT_EQ(10, r.v);
     ASSERT_NEQ(NULL, r.user);
     ASSERT_STR_EQ("helperbot", r.user->username);
@@ -769,7 +793,7 @@ TEST gateway_ready_payload(void)
     ASSERT_EQ(0, r.shard->array[0]);
     ASSERT_EQ(1, r.shard->array[1]);
 
-    discord_ready_cleanup(&r);
+    discord_data_cleanup(g_client, &r);
     free(table);
     free(js);
     PASS();
@@ -785,7 +809,8 @@ TEST gateway_message_create_payload(void)
 
     ASSERT_EQ(0, envelope_payload("gateway-message-create.json", &js, &len,
                                   &d, &d_len, &table));
-    ASSERT_GT(discord_message_from_json(d, d_len, &m), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_message, g_client, d, d_len, &m));
     ASSERT_EQ(1000000000000000105ULL, m.id);
     ASSERT_EQ(1000000000000000010ULL, m.guild_id);
     ASSERT_STR_EQ("gateway event message", m.content);
@@ -793,7 +818,7 @@ TEST gateway_message_create_payload(void)
     ASSERT_STR_EQ("NOT API SUPPORT", m.member->nick);
     ASSERT_EQ(NULL, m.member->user); /* MESSAGE_CREATE member omits user */
 
-    discord_message_cleanup(&m);
+    discord_data_cleanup(g_client, &m);
     free(table);
     free(js);
     PASS();
@@ -809,7 +834,8 @@ TEST gateway_guild_create_payload(void)
 
     ASSERT_EQ(0, envelope_payload("gateway-guild-create.json", &js, &len,
                                   &d, &d_len, &table));
-    ASSERT_GT(discord_guild_from_json(d, d_len, &g), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_guild, g_client, d, d_len, &g));
     ASSERT_EQ(1000000000000000010ULL, g.id);
     ASSERT(g.joined_at != 0);
     ASSERT_EQ(2, g.member_count);
@@ -821,7 +847,7 @@ TEST gateway_guild_create_payload(void)
     ASSERT_EQ(1, g.channels->size);
     ASSERT_STR_EQ("general", g.channels->array[0].name);
 
-    discord_guild_cleanup(&g);
+    discord_data_cleanup(g_client, &g);
     free(table);
     free(js);
     PASS();
@@ -840,6 +866,10 @@ int
 main(int argc, char *argv[])
 {
     GREATEST_MAIN_BEGIN();
+    if (!(g_client = codec_harness_init())) {
+        fprintf(stderr, "codec harness init failed\n");
+        return EXIT_FAILURE;
+    }
     RUN_SUITE(user_decode);
     RUN_SUITE(guild_decode);
     RUN_SUITE(member_decode);
@@ -849,5 +879,6 @@ main(int argc, char *argv[])
     RUN_SUITE(emoji_decode);
     RUN_SUITE(interaction_decode);
     RUN_SUITE(gateway_payload_decode);
+    codec_harness_cleanup();
     GREATEST_MAIN_END();
 }

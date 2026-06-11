@@ -44,7 +44,7 @@ select_guild(struct discord *client)
         if (num > 0 && num <= i) {
             u64snowflake guild_id = guilds.array[num - 1].id;
 
-            discord_guilds_cleanup(&guilds);
+            discord_data_cleanup(client, &guilds);
 
             return guild_id;
         }
@@ -75,8 +75,8 @@ select_member(struct discord *client, u64snowflake guild_id)
     while (i < members.size) {
         printf("\n%d. %s", i + 1, members.array[i].user->username);
 
-        if (members.array[i].nick && *members.array[i].nick)
-        { // prints nick if available
+        if (members.array[i].nick
+            && *members.array[i].nick) { // prints nick if available
             printf(" (%s)", members.array[i].nick);
         }
         ++i;
@@ -92,7 +92,7 @@ select_member(struct discord *client, u64snowflake guild_id)
         if (num > 0 && num <= i) {
             u64snowflake user_id = members.array[num - 1].user->id;
 
-            discord_guild_members_cleanup(&members);
+            discord_data_cleanup(client, &members);
 
             return user_id;
         }
@@ -136,11 +136,11 @@ fetch_member_msgs(struct discord *client,
 
             if (n_msg) params.before = msgs.array[n_msg - 1].id;
 
-            discord_messages_cleanup(&msgs);
+            discord_data_cleanup(client, &msgs);
         }
     }
 
-    discord_channels_cleanup(&channels);
+    discord_data_cleanup(client, &channels);
 }
 
 int

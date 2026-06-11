@@ -19,7 +19,7 @@ make clean
 
 - `core/` — transport and utility layer: `user-agent.c` (REST/curl-easy), `websockets.c` (curl WS), `io_poller.c`, containers, JSON (`jsmn-find.h`, `json-build.h`). libcurl usage is confined to `core/` plus `src/discord-rest_request.c` and `src/discord-gateway.c`.
 - `src/` — Discord client: REST scheduler (`discord-rest*.c`), gateway (`discord-gateway*.c`), per-resource endpoint files (`channel.c`, `guild.c`, ...).
-- `gencodecs/api/*.PRE.h` — macro specs that generate all JSON codecs and params structs. **Codec bugs are fixed here, never in generated output** (`generated/`, or headers produced at build time). The top-level `make` regenerates.
+- `src/api/*.recipe.h` — reflect-c recipes that generate all reflection metadata, structs and JSON codecs (via the `reflect-c` submodule into `generated/`, untracked). **Codec bugs are fixed in the recipes, never in generated output.** The top-level `make` regenerates; `src/discord-data-wrap.c` holds the JSON encode/decode walkers.
 - `include/` — public headers. `docs/CODING_GUIDELINES.md` covers style; `.clang-format` exists.
 - `test/`, `examples/`, `docs/`.
 

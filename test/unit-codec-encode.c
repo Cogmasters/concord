@@ -1,8 +1,8 @@
-#include "discord_codecs.h"
 #include "test-utils.h"
+#include "codec-harness.h"
 
-/* Encode verification for the generated codecs: params types are built
- * in C and their _to_json output asserted by path (key names, presence,
+/* Encode verification for the reflect-c data codecs: params types are built
+ * in C and their discord_data_to_json() output asserted by path (key names, presence,
  * values — never whole-buffer string equality); resource types decoded
  * from a B01 fixture are re-encoded and compared path-by-path against
  * the fixture.
@@ -11,6 +11,8 @@
  * the encoders emit every struct field (defaults included), so a full
  * document diff cannot hold in either direction.  One-way fields are
  * excluded per type with a comment each. */
+
+static struct discord *g_client;
 
 /* ── params encode ────────────────────────────────────────────────── */
 
@@ -57,7 +59,8 @@ TEST encode_create_message(void)
     size_t size = 0;
     test_json out;
 
-    ASSERT_EQ(CCORD_OK, discord_create_message_to_json(&buf, &size, &params));
+    ASSERT_EQ(CCORD_OK, discord_data_to_json(struct discord_create_message, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "content", "hello from concord");
     ASSERT_JSON_PATH_STR(&out, "embeds.0.title", "embed title");
@@ -72,6 +75,8 @@ TEST encode_create_message(void)
     ASSERT_JSON_ABSENT(&out, "sticker_ids");
     ASSERT_JSON_ABSENT(&out, "attachments");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -87,11 +92,14 @@ TEST encode_edit_message(void)
     size_t size = 0;
     test_json out;
 
-    ASSERT_EQ(CCORD_OK, discord_edit_message_to_json(&buf, &size, &params));
+    ASSERT_EQ(CCORD_OK, discord_data_to_json(struct discord_edit_message, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "content", "edited content");
     ASSERT_JSON_PATH_STR(&out, "flags", "4");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -112,11 +120,14 @@ TEST encode_interaction_response(void)
     test_json out;
 
     ASSERT_EQ(CCORD_OK,
-              discord_interaction_response_to_json(&buf, &size, &params));
+              discord_data_to_json(struct discord_interaction_response, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "type", "4");
     ASSERT_JSON_PATH_STR(&out, "data.content", "pong");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -134,7 +145,8 @@ TEST encode_modify_guild(void)
     size_t size = 0;
     test_json out;
 
-    ASSERT_EQ(CCORD_OK, discord_modify_guild_to_json(&buf, &size, &params));
+    ASSERT_EQ(CCORD_OK, discord_data_to_json(struct discord_modify_guild, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "name", "Renamed Guild");
     ASSERT_JSON_PATH_STR(&out, "description", "new description");
@@ -142,6 +154,8 @@ TEST encode_modify_guild(void)
     /* reason is the X-Audit-Log-Reason header, never the JSON body */
     ASSERT_JSON_ABSENT(&out, "reason");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -160,7 +174,8 @@ TEST encode_modify_channel(void)
     size_t size = 0;
     test_json out;
 
-    ASSERT_EQ(CCORD_OK, discord_modify_channel_to_json(&buf, &size, &params));
+    ASSERT_EQ(CCORD_OK, discord_data_to_json(struct discord_modify_channel, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "name", "renamed-channel");
     ASSERT_JSON_PATH_STR(&out, "topic", "new topic");
@@ -168,6 +183,8 @@ TEST encode_modify_channel(void)
     ASSERT_JSON_PATH_STR(&out, "parent_id", "1000000000000000024");
     ASSERT_JSON_ABSENT(&out, "reason");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -187,7 +204,8 @@ TEST encode_create_guild_role(void)
     test_json out;
 
     ASSERT_EQ(CCORD_OK,
-              discord_create_guild_role_to_json(&buf, &size, &params));
+              discord_data_to_json(struct discord_create_guild_role, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "name", "new-role");
     ASSERT_JSON_PATH_STR(&out, "permissions", "2048");
@@ -195,6 +213,8 @@ TEST encode_create_guild_role(void)
     ASSERT_JSON_PATH_STR(&out, "hoist", "true");
     ASSERT_JSON_PATH_STR(&out, "mentionable", "true");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -212,12 +232,15 @@ TEST encode_modify_guild_role(void)
     test_json out;
 
     ASSERT_EQ(CCORD_OK,
-              discord_modify_guild_role_to_json(&buf, &size, &params));
+              discord_data_to_json(struct discord_modify_guild_role, g_client,
+                                  &params, &buf, &size));
     ASSERT_EQ(0, test_json_load(&out, buf, size));
     ASSERT_JSON_PATH_STR(&out, "name", "renamed-role");
     ASSERT_JSON_PATH_STR(&out, "color", "3066993");
     ASSERT_JSON_ABSENT(&out, "reason");
 
+    /* drop the wrap cached for the stack-built params */
+    discord_data_unwrap(g_client, &params);
     test_json_unload(&out);
     free(buf);
     PASS();
@@ -251,7 +274,7 @@ assert_same_paths(const test_json *fix, const test_json *out,
 
 /* Decode FIXTURE into a struct TYPE, re-encode it, and assert every
  * path in PATHS is textually identical in fixture and output. */
-#define DEFINE_ROUNDTRIP_TEST(tname, type, prefix, fixture, paths)         \
+#define DEFINE_ROUNDTRIP_TEST(tname, type, fixture, paths)                 \
     TEST tname(void)                                                       \
     {                                                                      \
         size_t len, out_len = 0;                                           \
@@ -261,15 +284,17 @@ assert_same_paths(const test_json *fix, const test_json *out,
                                                                            \
         ASSERT_NEQ(NULL, js);                                              \
         memset(&obj, 0, sizeof(obj));                                      \
-        ASSERT_GT(prefix##_from_json(js, len, &obj), 0);                   \
-        ASSERT_EQ(CCORD_OK, prefix##_to_json(&out_buf, &out_len, &obj));   \
+        ASSERT_EQ(CCORD_OK, discord_data_from_json(struct type, g_client, \
+                                                   js, len, &obj));        \
+        ASSERT_EQ(CCORD_OK, discord_data_to_json(struct type, g_client,    \
+                                                 &obj, &out_buf, &out_len)); \
         ASSERT_EQ(0, test_json_load(&fix, js, len));                       \
         ASSERT_EQ(0, test_json_load(&out, out_buf, out_len));              \
         CHECK_CALL(assert_same_paths(&fix, &out, (paths),                  \
                                      PATHS_LEN(paths)));                   \
         test_json_unload(&out);                                            \
         test_json_unload(&fix);                                            \
-        prefix##_cleanup(&obj);                                            \
+        discord_data_cleanup(g_client, &obj);                              \
         free(out_buf);                                                     \
         free(js);                                                          \
         PASS();                                                            \
@@ -280,7 +305,7 @@ static const char *const user_rt_paths[] = {
     "mfa_enabled", "banner", "accent_color", "locale", "verified", "email",
     "flags", "premium_type", "public_flags",
 };
-DEFINE_ROUNDTRIP_TEST(roundtrip_user, discord_user, discord_user,
+DEFINE_ROUNDTRIP_TEST(roundtrip_user, discord_user,
                       "user-basic.json", user_rt_paths)
 
 static const char *const guild_rt_paths[] = {
@@ -296,7 +321,7 @@ static const char *const guild_rt_paths[] = {
  *    textually different from the docs' microsecond/offset form.
  *  - "discovery_splash", "afk_channel_id", "application_id": null in
  *    the fixture; null-valued scalars re-encode as ""/"0". */
-DEFINE_ROUNDTRIP_TEST(roundtrip_guild, discord_guild, discord_guild,
+DEFINE_ROUNDTRIP_TEST(roundtrip_guild, discord_guild,
                       "guild-basic.json", guild_rt_paths)
 
 static const char *const member_rt_paths[] = {
@@ -306,8 +331,7 @@ static const char *const member_rt_paths[] = {
 /* Excluded: "joined_at"/"premium_since" (timestamp form, see guild);
  * "avatar"/"communication_disabled_until" (null in the fixture). */
 DEFINE_ROUNDTRIP_TEST(roundtrip_member, discord_guild_member,
-                      discord_guild_member, "guild-member-basic.json",
-                      member_rt_paths)
+                      "guild-member-basic.json", member_rt_paths)
 
 static const char *const channel_rt_paths[] = {
     "id", "type", "guild_id", "position", "name", "topic", "nsfw",
@@ -316,7 +340,7 @@ static const char *const channel_rt_paths[] = {
     "permission_overwrites.0.type", "permission_overwrites.0.allow",
     "permission_overwrites.0.deny",
 };
-DEFINE_ROUNDTRIP_TEST(roundtrip_channel, discord_channel, discord_channel,
+DEFINE_ROUNDTRIP_TEST(roundtrip_channel, discord_channel,
                       "channel-text.json", channel_rt_paths)
 
 static const char *const message_rt_paths[] = {
@@ -330,7 +354,7 @@ static const char *const message_rt_paths[] = {
 };
 /* Excluded: "timestamp"/"edited_timestamp"/"embeds.0.timestamp"
  * (timestamp form, see guild). */
-DEFINE_ROUNDTRIP_TEST(roundtrip_message, discord_message, discord_message,
+DEFINE_ROUNDTRIP_TEST(roundtrip_message, discord_message,
                       "message-with-embeds.json", message_rt_paths)
 
 static const char *const role_rt_paths[] = {
@@ -338,14 +362,14 @@ static const char *const role_rt_paths[] = {
     "mentionable",
 };
 /* Excluded: "icon"/"unicode_emoji" (null in the fixture). */
-DEFINE_ROUNDTRIP_TEST(roundtrip_role, discord_role, discord_role,
+DEFINE_ROUNDTRIP_TEST(roundtrip_role, discord_role,
                       "role-basic.json", role_rt_paths)
 
 static const char *const emoji_rt_paths[] = {
     "id", "name", "roles.0", "user.id", "user.username", "require_colons",
     "managed", "animated", "available",
 };
-DEFINE_ROUNDTRIP_TEST(roundtrip_emoji, discord_emoji, discord_emoji,
+DEFINE_ROUNDTRIP_TEST(roundtrip_emoji, discord_emoji,
                       "emoji-custom.json", emoji_rt_paths)
 
 static const char *const interaction_rt_paths[] = {
@@ -362,9 +386,7 @@ static const char *const interaction_rt_paths[] = {
  * Excluded paths: "member.joined_at"/"message.timestamp" (timestamp
  * form, see guild). */
 DEFINE_ROUNDTRIP_TEST(roundtrip_interaction, discord_interaction,
-                      discord_interaction,
-                      "interaction-message-component.json",
-                      interaction_rt_paths)
+                      "interaction-message-component.json", interaction_rt_paths)
 
 SUITE(roundtrip)
 {
@@ -380,10 +402,9 @@ SUITE(roundtrip)
 
 /* ── seeded regression: discord_modify_guild_sticker.reason ──────── */
 
-/* Pins commit 7eec9aef: the reason field exists on the params struct
- * (GENCODECS_RECIPE == DATA guard in gencodecs/api/sticker.PRE.h) but
- * is the X-Audit-Log-Reason header param and must never reach the
- * JSON body. */
+/* The reason field exists on the params struct (CONCORD_NO_JSON attr in
+ * src/api/sticker.recipe.h) but is the X-Audit-Log-Reason header param
+ * and must never reach the JSON body. */
 TEST modify_guild_sticker_reason_not_encoded(void)
 {
     size_t len, out_len = 0;
@@ -393,12 +414,14 @@ TEST modify_guild_sticker_reason_not_encoded(void)
     test_json out;
 
     ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_modify_guild_sticker_from_json(js, len, &params), 0);
+    ASSERT_EQ(CCORD_OK,
+              discord_data_from_json(struct discord_modify_guild_sticker,
+                                     g_client, js, len, &params));
     params.reason = "audit log reason";
 
     ASSERT_EQ(CCORD_OK,
-              discord_modify_guild_sticker_to_json(&out_buf, &out_len,
-                                                   &params));
+              discord_data_to_json(struct discord_modify_guild_sticker, g_client,
+                                  &params, &out_buf, &out_len));
     ASSERT_EQ(0, test_json_load(&out, out_buf, out_len));
     ASSERT_JSON_PATH_STR(&out, "name", "fake_sticker");
     ASSERT_JSON_PATH_STR(&out, "description",
@@ -408,7 +431,7 @@ TEST modify_guild_sticker_reason_not_encoded(void)
 
     test_json_unload(&out);
     params.reason = NULL; /* not owned; _cleanup must not free it */
-    discord_modify_guild_sticker_cleanup(&params);
+    discord_data_cleanup(g_client, &params);
     free(out_buf);
     free(js);
     PASS();
@@ -425,8 +448,13 @@ int
 main(int argc, char *argv[])
 {
     GREATEST_MAIN_BEGIN();
+    if (!(g_client = codec_harness_init())) {
+        fprintf(stderr, "codec harness init failed\n");
+        return EXIT_FAILURE;
+    }
     RUN_SUITE(params_encode);
     RUN_SUITE(roundtrip);
     RUN_SUITE(regression_modify_guild_sticker);
+    codec_harness_cleanup();
     GREATEST_MAIN_END();
 }

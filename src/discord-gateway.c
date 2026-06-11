@@ -788,8 +788,13 @@ _discord_gateway_session_from_json(struct discord_gateway_session *session,
     }
     if ((f = jsmnf_find(loader.root, "shards", 6)))
         session->shards = (int)strtol(text + f->v->start, NULL, 10);
-    if ((f = jsmnf_find(loader.root, "session_start_limit", 19)))
-        discord_session_start_limit_from_jsmnf(f, text, &session->start_limit);
+    if ((f = jsmnf_find(loader.root, "session_start_limit", 19))) {
+        struct reflectc_wrap *w_session_start_limit =
+            reflectc_from_discord_session_start_limit(
+                NULL, &session->start_limit, NULL);
+        discord_data_wrap_from_jsmnf(f, text, len, w_session_start_limit);
+        reflectc_cleanup(NULL, w_session_start_limit);
+    }
     return true;
 }
 

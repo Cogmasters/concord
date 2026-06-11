@@ -14,7 +14,7 @@ discord_get_global_application_commands(
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_application_commands, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_application_commands, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/applications/%" PRIu64 "/commands",
                             application_id);
@@ -34,8 +34,8 @@ discord_create_global_application_command(
     CCORD_EXPECT(client, NOT_EMPTY_STR(params->name), CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(params->description),
                  CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_global_application_command_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_global_application_command,
+                       &body, params);
     DISCORD_ATTR_INIT(attr, discord_application_command, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/applications/%" PRIu64 "/commands",
@@ -70,8 +70,8 @@ discord_edit_global_application_command(
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_edit_global_application_command_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_edit_global_application_command, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_application_command, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/applications/%" PRIu64 "/commands/%" PRIu64,
@@ -104,9 +104,8 @@ discord_bulk_overwrite_global_application_commands(
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_application_commands_to_json(
-                                &body.start, &body.size, params));
-    DISCORD_ATTR_LIST_INIT(attr, discord_application_commands, ret, NULL);
+    CCORD_DATA_TO_JSON(client, discord_application_commands, &body, params);
+    DISCORD_ATTR_INIT(attr, discord_application_commands, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/applications/%" PRIu64 "/commands",
                             application_id);
@@ -122,7 +121,7 @@ discord_get_guild_application_commands(
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_application_commands, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_application_commands, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
                             "/commands",
@@ -145,8 +144,8 @@ discord_create_guild_application_command(
     CCORD_EXPECT(client, NOT_EMPTY_STR(params->name), CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(params->description),
                  CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_guild_application_command_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild_application_command, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_application_command, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -187,8 +186,8 @@ discord_edit_guild_application_command(
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_edit_guild_application_command_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_edit_guild_application_command, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_application_command, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -227,10 +226,10 @@ discord_bulk_overwrite_guild_application_commands(
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client,
-                    discord_bulk_overwrite_guild_application_commands_to_json(
-                        &body.start, &body.size, params));
-    DISCORD_ATTR_LIST_INIT(attr, discord_application_commands, ret, NULL);
+    CCORD_DATA_TO_JSON(client,
+                       discord_bulk_overwrite_guild_application_commands,
+                       &body, params);
+    DISCORD_ATTR_INIT(attr, discord_application_commands, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
                             "/commands",
@@ -247,8 +246,8 @@ discord_get_guild_application_command_permissions(
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_application_command_permissions, ret,
-                           NULL);
+    DISCORD_ATTR_INIT(attr, discord_application_command_permissions, ret,
+                      NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/applications/%" PRIu64 "/guilds/%" PRIu64
                             "/commands/permissions",

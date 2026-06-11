@@ -13,7 +13,7 @@ discord_list_guild_emojis(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_emojis, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_emojis, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/guilds/%" PRIu64 "/emojis", guild_id);
 }
@@ -43,8 +43,7 @@ discord_create_guild_emoji(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_guild_emoji_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_guild_emoji, &body, params);
     DISCORD_ATTR_INIT(attr, discord_emoji, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/guilds/%" PRIu64 "/emojis", guild_id);
@@ -62,8 +61,7 @@ discord_modify_guild_emoji(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, emoji_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_guild_emoji_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_guild_emoji, &body, params);
     DISCORD_ATTR_INIT(attr, discord_emoji, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,

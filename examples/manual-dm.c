@@ -76,7 +76,7 @@ read_input(void *p_client)
 
             if (CCORD_OK == discord_create_dm(client, &params, &ret)) {
                 dm_channel_id = ret_channel.id;
-                discord_channel_cleanup(&ret_channel);
+                discord_data_cleanup(client, &ret_channel);
             }
         }
 

@@ -30,7 +30,7 @@ concord/
 ├── discord/        # Discord API public header files
 ├── docs/           # Documentation, guides, and roadmaps
 ├── examples/       # Example bots demonstrating various features
-├── gencodecs/      # Code generation for API objects
+├── reflect-c/      # Code generation for API objects
 ├── include/        # Public API headers
 ├── licenses/       # License files
 ├── src/            # Discord API implementation
@@ -39,20 +39,20 @@ concord/
 
 ## Core Components
 
-### Gencodecs
+### Reflect-C
 
 Wrapping an API object in C can quickly get overwhelming and repetitive, considering 
 one has to address many things modern languages take for granted, such as encoding 
 or decoding an object with JSON. For this purpose, we created our own tool
 for wrapping and generating API objects.
 
-- `gencodecs/`: This folder contains definitions for code-generation, with 
-  gencodecs macros that are fed to `gencodecs/Makefile`. The generated
-  code will be located at `gencodecs/discord-codecs.h` and `gencodecs/discord-codecs.c`.
+- `src/api/`: This folder contains definitions for code-generation, with
+macros that are fed to Reflect-C. The generated code will be located
+at `generated/`.
 
 When implementing a new API endpoint, you'll typically need to:
 
-1. Define the request/response structures in gencodecs
+1. Define the request/response structures in `src/api/`
 2. Generate the code with the Makefile
 3. Use the generated structures in your implementation
 
@@ -102,7 +102,7 @@ provide the foundation for all Discord interactions.
 When implementing a new Discord API endpoint, follow these general steps:
 
 1. **Research**: Understand the endpoint from Discord's API documentation
-2. **Structure Definition**: Define request/response structures in gencodecs
+2. **Structure Definition**: Define request/response structures in `src/api/`
 3. **Implementation**: Write the function in the appropriate source file
 4. **Documentation**: Add Doxygen comments for your function
 5. **Testing**: Create or update examples to test your implementation

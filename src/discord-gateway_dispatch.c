@@ -5,22 +5,18 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-#define INIT(type)                                                            \
+#define INIT(_type)                                                           \
     {                                                                         \
-        sizeof(struct type),                                                  \
-            (long (*)(const jsmnf_pair *, const char *,                       \
-                      void *))type##_from_jsmnf,                              \
-            (void (*)(void *))type##_cleanup                                  \
+        sizeof(struct _type),                                                 \
+        (reflectc_from_cb)reflectc_from_##_type,                              \
     }
 
 /** @brief Information for deserializing a Discord event */
 static const struct {
     /** size of event's datatype */
     size_t size;
-    /** event's payload deserializer */
-    long (*from_jsmnf)(const jsmnf_pair *, const char *, void *);
-    /** event's cleanup */
-    void (*cleanup)(void *);
+    /** event's wrapper initializer */
+    reflectc_from_cb from_cb;
 } dispatch[] = {
     [DISCORD_EV_READY] = INIT(discord_ready),
     [DISCORD_EV_APPLICATION_COMMAND_PERMISSIONS_UPDATE] =
@@ -97,6 +93,22 @@ static const struct {
     [DISCORD_EV_WEBHOOKS_UPDATE] = INIT(discord_webhooks_update),
 };
 
+struct _discord_gateway_dispatch_context {
+    struct discord *client;
+    char data[];
+};
+
+static void
+_discord_gateway_dispatch_context_cleanup(char *p_data)
+{
+    struct _discord_gateway_dispatch_context *ctx =
+        CONTAINEROF(p_data, struct _discord_gateway_dispatch_context, data);
+    /* releases the decoded event payload (strings, nested objects,
+     * lists), its wrap and registry entry */
+    discord_data_free(ctx->client->registry, ctx->data);
+    free(ctx);
+}
+
 void
 discord_gateway_dispatch(struct discord_gateway *gw)
 {
@@ -105,29 +117,53 @@ discord_gateway_dispatch(struct discord_gateway *gw)
 
     switch (event) {
     case DISCORD_EV_MESSAGE_CREATE:
+        logmod_log(TRACE, gw->logger, "Dispatch MESSAGE_CREATE: try commands");
         if (discord_message_commands_try_perform(&client->commands,
                                                  &gw->payload))
         {
+            logmod_log(TRACE, gw->logger,
+                       "Dispatch MESSAGE_CREATE: command handled");
             return;
         }
+        logmod_log(TRACE, gw->logger,
+                   "Dispatch MESSAGE_CREATE: no command handled");
     /* fall-through */
     default:
         if (gw->cbs[0][event] || gw->cbs[1][event]) {
-            void *event_data = calloc(1, dispatch[event].size);
+            struct _discord_gateway_dispatch_context *ctx =
+                calloc(1, sizeof *ctx + dispatch[event].size);
+            struct reflectc_wrap *w_data =
+                dispatch[event].from_cb(client->registry, ctx->data, NULL);
+            ctx->client = client;
 
-            dispatch[event].from_jsmnf(gw->payload.data,
-                                       gw->payload.json.start, event_data);
+            if (discord_data_wrap_from_jsmnf(gw->payload.data,
+                                             gw->payload.json.start,
+                                             gw->payload.json.size, w_data)
+                != CCORD_OK)
+            {
+                logmod_log(
+                    ERROR, gw->logger,
+                    "Failed to decode GATEWAY_DISPATCH event (code: %d)",
+                    event);
+                /* partial decode may have allocated; deep-free it all */
+                discord_data_free(client->registry, ctx->data);
+                free(ctx);
+                return;
+            }
 
             if (CCORD_RESOURCE_UNAVAILABLE
-                == discord_refcounter_incr(&client->refcounter, event_data))
+                == discord_refcounter_incr(&client->refcounter,
+                                           (void *)ctx->data))
             {
-                discord_refcounter_add_internal(&client->refcounter,
-                                                event_data,
-                                                dispatch[event].cleanup, true);
+                discord_refcounter_add_internal(
+                    &client->refcounter, ctx->data,
+                    (void (*)(
+                        void *))_discord_gateway_dispatch_context_cleanup,
+                    false);
             }
-            if (gw->cbs[0][event]) gw->cbs[0][event](client, event_data);
-            if (gw->cbs[1][event]) gw->cbs[1][event](client, event_data);
-            discord_refcounter_decr(&client->refcounter, event_data);
+            if (gw->cbs[0][event]) gw->cbs[0][event](client, ctx->data);
+            if (gw->cbs[1][event]) gw->cbs[1][event](client, ctx->data);
+            discord_refcounter_decr(&client->refcounter, ctx->data);
         }
         break;
     case DISCORD_EV_NONE:
@@ -142,6 +178,7 @@ void
 discord_gateway_send_identify(struct discord_gateway *gw,
                               struct discord_identify *identify)
 {
+    struct discord *client = CLIENT(gw, gw);
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -163,11 +200,16 @@ discord_gateway_send_identify(struct discord_gateway *gw,
     jsonb_init(&b);
     jsonb_object_auto(&b, &body.start, &body.size);
     {
+        struct reflectc_wrap *w_identify =
+            reflectc_from_discord_identify(client->registry, identify, NULL);
+
         jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
         jsonb_number_auto(&b, &body.start, &body.size, 2);
         jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
-        discord_identify_to_jsonb(&b, &body.start, &body.size, identify);
+        discord_data_wrap_to_jsonb(&b, w_identify, &body.start, &body.size);
         jsonb_object_pop_auto(&b, &body.start, &body.size);
+
+        reflectc_cleanup(client->registry, w_identify);
     }
 
     if (ws_send_text(gw->ws, body.start, b.pos)) {
@@ -190,6 +232,7 @@ void
 discord_gateway_send_resume(struct discord_gateway *gw,
                             struct discord_resume *event)
 {
+    struct discord *client = CLIENT(gw, gw);
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -199,11 +242,16 @@ discord_gateway_send_resume(struct discord_gateway *gw,
     jsonb_init(&b);
     jsonb_object_auto(&b, &body.start, &body.size);
     {
+        struct reflectc_wrap *w_resume =
+            reflectc_from_discord_resume(client->registry, event, NULL);
+
         jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
         jsonb_number_auto(&b, &body.start, &body.size, 6);
         jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
-        discord_resume_to_jsonb(&b, &body.start, &body.size, event);
+        discord_data_wrap_to_jsonb(&b, w_resume, &body.start, &body.size);
         jsonb_object_pop_auto(&b, &body.start, &body.size);
+
+        reflectc_cleanup(client->registry, w_resume);
     }
 
     if (ws_send_text(gw->ws, body.start, b.pos)) {
@@ -295,18 +343,25 @@ void
 discord_gateway_send_request_guild_members(
     struct discord_gateway *gw, struct discord_request_guild_members *event)
 {
+    struct discord *client = CLIENT(gw, gw);
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
     jsonb_init(&b);
     jsonb_object_auto(&b, &body.start, &body.size);
     {
+        struct reflectc_wrap *w_request_guild_members =
+            reflectc_from_discord_request_guild_members(client->registry,
+                                                        event, NULL);
+
         jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
         jsonb_number_auto(&b, &body.start, &body.size, 8);
         jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
-        discord_request_guild_members_to_jsonb(&b, &body.start, &body.size,
-                                               event);
+        discord_data_wrap_to_jsonb(&b, w_request_guild_members, &body.start,
+                                   &body.size);
         jsonb_object_pop_auto(&b, &body.start, &body.size);
+
+        reflectc_cleanup(client->registry, w_request_guild_members);
     }
 
     if (ws_send_text(gw->ws, body.start, b.pos)) {
@@ -326,18 +381,25 @@ void
 discord_gateway_send_update_voice_state(
     struct discord_gateway *gw, struct discord_update_voice_state *event)
 {
+    struct discord *client = CLIENT(gw, gw);
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
     jsonb_init(&b);
     jsonb_object_auto(&b, &body.start, &body.size);
     {
+        struct reflectc_wrap *w_update_voice_state =
+            reflectc_from_discord_update_voice_state(client->registry, event,
+                                                     NULL);
+
         jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
         jsonb_number_auto(&b, &body.start, &body.size, 4);
         jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
-        discord_update_voice_state_to_jsonb(&b, &body.start, &body.size,
-                                            event);
+        discord_data_wrap_to_jsonb(&b, w_update_voice_state, &body.start,
+                                   &body.size);
         jsonb_object_pop_auto(&b, &body.start, &body.size);
+
+        reflectc_cleanup(client->registry, w_update_voice_state);
     }
 
     if (ws_send_text(gw->ws, body.start, b.pos)) {
@@ -360,6 +422,7 @@ void
 discord_gateway_send_presence_update(struct discord_gateway *gw,
                                      struct discord_presence_update *presence)
 {
+    struct discord *client = CLIENT(gw, gw);
     struct ccord_szbuf body = { 0 };
     jsonb b;
 
@@ -368,12 +431,17 @@ discord_gateway_send_presence_update(struct discord_gateway *gw,
     jsonb_init(&b);
     jsonb_object_auto(&b, &body.start, &body.size);
     {
+        struct reflectc_wrap *w_presence =
+            reflectc_from_discord_presence_update(client->registry, presence,
+                                                  NULL);
+
         jsonb_key_auto(&b, &body.start, &body.size, "op", 2);
         jsonb_number_auto(&b, &body.start, &body.size, 3);
         jsonb_key_auto(&b, &body.start, &body.size, "d", 1);
-        discord_presence_update_to_jsonb(&b, &body.start, &body.size,
-                                         presence);
+        discord_data_wrap_to_jsonb(&b, w_presence, &body.start, &body.size);
         jsonb_object_pop_auto(&b, &body.start, &body.size);
+
+        reflectc_cleanup(client->registry, w_presence);
     }
 
     if (ws_send_text(gw->ws, body.start, b.pos)) {

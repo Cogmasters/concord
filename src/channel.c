@@ -121,8 +121,7 @@ discord_modify_channel(struct discord *client,
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_modify_channel_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_modify_channel, &body, params);
     DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/channels/%" PRIu64, channel_id);
@@ -189,7 +188,7 @@ discord_get_channel_messages(struct discord *client,
                          "Out of bounds write attempt");
         }
     }
-    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_messages, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/messages%s", channel_id,
                             query);
@@ -221,8 +220,7 @@ discord_create_message(struct discord *client,
     enum http_method method;
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_message_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_message, &body, params);
     DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
     if (params->attachments) {
         method = HTTP_MIMEPOST;
@@ -361,7 +359,7 @@ discord_get_reactions(struct discord *client,
     CCORDcode code;
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_users, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_users, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params) {
         int res;
@@ -455,8 +453,7 @@ discord_edit_message(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(
-        client, discord_edit_message_to_json(&body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_edit_message, &body, params);
     DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PATCH,
                             "/channels/%" PRIu64 "/messages/%" PRIu64,
@@ -494,8 +491,7 @@ discord_bulk_delete_messages(struct discord *client,
     CCORD_EXPECT(client,
                  params->messages->size >= 2 && params->messages->size <= 100,
                  CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_bulk_delete_messages_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_bulk_delete_messages, &body, params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);
     for (int i = 0; i < params->messages->size; ++i) {
         const u64unix_ms tstamp =
@@ -522,8 +518,8 @@ discord_edit_channel_permissions(
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, overwrite_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_edit_channel_permissions_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_edit_channel_permissions, &body,
+                       params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/channels/%" PRIu64 "/permissions/%" PRIu64,
@@ -537,7 +533,7 @@ discord_get_channel_invites(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_invites, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_invites, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/invites", channel_id);
 }
@@ -551,8 +547,7 @@ discord_create_channel_invite(struct discord *client,
     struct discord_attributes attr = { 0 };
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_channel_invite_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_channel_invite, &body, params);
     DISCORD_ATTR_INIT(attr, discord_invite, ret,
                       params ? params->reason : NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
@@ -588,8 +583,7 @@ discord_follow_news_channel(struct discord *client,
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params->webhook_channel_id != 0, CCORD_BAD_PARAMETER,
                  "");
-    CCORD_EXPECT_OK(client, discord_follow_news_channel_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_follow_news_channel, &body, params);
     DISCORD_ATTR_INIT(attr, discord_channel, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/followers", channel_id);
@@ -614,7 +608,7 @@ discord_get_pinned_messages(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_messages, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_messages, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/pins", channel_id);
 }
@@ -663,8 +657,7 @@ discord_group_dm_add_recipient(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_group_dm_add_recipient_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_group_dm_add_recipient, &body, params);
     DISCORD_ATTR_BLANK_INIT(attr, ret, NULL);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_PUT,
                             "/channels/%" PRIu64 "/recipients/%" PRIu64,
@@ -699,8 +692,8 @@ discord_start_thread_with_message(
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_start_thread_with_message_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_start_thread_with_message, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -719,8 +712,8 @@ discord_start_thread_without_message(
     struct ccord_szbuf body = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_start_thread_without_message_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_start_thread_without_message, &body,
+                       params);
     DISCORD_ATTR_INIT(attr, discord_channel, ret, params->reason);
     return discord_rest_run(&client->rest, &attr, &body, HTTP_POST,
                             "/channels/%" PRIu64 "/threads", channel_id);
@@ -789,7 +782,7 @@ discord_list_thread_members(struct discord *client,
 {
     struct discord_attributes attr = { 0 };
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    DISCORD_ATTR_LIST_INIT(attr, discord_thread_members, ret, NULL);
+    DISCORD_ATTR_INIT(attr, discord_thread_members, ret, NULL);
     return discord_rest_run(&client->rest, &attr, NULL, HTTP_GET,
                             "/channels/%" PRIu64 "/thread-members",
                             channel_id);

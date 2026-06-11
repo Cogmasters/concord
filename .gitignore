@@ -10,7 +10,6 @@
 !docs/*
 !doxygen-awesome-css
 !examples
-!gencodecs
 !include
 !include/*.h
 !lib
@@ -28,5 +27,8 @@
 !config.json
 !.github/**
 !concord.pc
+!reflect-c
+!src/api
+!src/api/*.recipe.h
 # Local-only planning material (will become a submodule)
 docs/roadmap/

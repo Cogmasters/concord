@@ -97,7 +97,7 @@ sync_fetch_object(void)
     ASSERT_EQ(CCORD_OK, discord_get_current_user(CLIENT, &ret));
     ASSERT_EQ(1000000000000000001ULL, user.id);
     ASSERT_STR_EQ("wumpus", user.username);
-    discord_user_cleanup(&user);
+    discord_data_cleanup(CLIENT, &user);
     PASS();
 }
 
@@ -328,7 +328,7 @@ json_post_body_encoded(void)
     /* decoded response */
     ASSERT_EQ(1000000000000000100ULL, msg.id);
     ASSERT_STR_EQ("Hello, concord!", msg.content);
-    discord_message_cleanup(&msg);
+    discord_data_cleanup(CLIENT, &msg);
 
     /* request-side: params encoder output observed on the wire (the
      * loop-closer with the B03 codec suites) */
@@ -450,7 +450,7 @@ malformed_json_yields_zeroed_object(void)
      * surfaces as CCORD_OK with an untouched output object */
     ASSERT_EQ(CCORD_OK, discord_get_channel(CLIENT, 611ULL, &ret));
     ASSERT_EQ(0ULL, channel.id);
-    discord_channel_cleanup(&channel);
+    discord_data_cleanup(CLIENT, &channel);
     PASS();
 }
 

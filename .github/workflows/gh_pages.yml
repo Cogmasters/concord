@@ -30,7 +30,7 @@ jobs:
 
       - name: Doxygen Action
         run: |
-          echo "Preparing gencodecs files for documentation"
+          echo "Preparing reflect-c files for documentation"
           make docs
           echo "Generating HTML output"
           ./doxygen

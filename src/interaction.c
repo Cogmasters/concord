@@ -22,8 +22,7 @@ discord_create_interaction_response(
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_interaction_response_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_interaction_response, &body, params);
     DISCORD_ATTR_INIT(attr, discord_interaction_response, ret, NULL);
     if (params->data && params->data->attachments) {
         method = HTTP_MIMEPOST;
@@ -70,8 +69,8 @@ discord_edit_original_interaction_response(
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_edit_original_interaction_response_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_edit_original_interaction_response,
+                       &body, params);
     DISCORD_ATTR_INIT(attr, discord_interaction_response, ret, NULL);
     if (params->attachments) {
         method = HTTP_MIMEPOST;
@@ -119,8 +118,7 @@ discord_create_followup_message(struct discord *client,
     CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_create_followup_message_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_create_followup_message, &body, params);
     DISCORD_ATTR_INIT(attr, discord_webhook, ret, NULL);
     queriec_init(&queriec, sizeof(query));
     if (params->thread_id) {
@@ -177,8 +175,7 @@ discord_edit_followup_message(struct discord *client,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT_OK(client, discord_edit_followup_message_to_json(
-                                &body.start, &body.size, params));
+    CCORD_DATA_TO_JSON(client, discord_edit_followup_message, &body, params);
     DISCORD_ATTR_INIT(attr, discord_message, ret, NULL);
     if (params->attachments) {
         method = HTTP_MIMEPOST;

@@ -32,7 +32,7 @@ and all tokens/hashes replaced with fake data.
 | `message-reaction-add` | <https://discord.com/developers/docs/events/gateway-events#message-reaction-add> |
 | `modify-guild-sticker-params` | <https://discord.com/developers/docs/resources/sticker#modify-guild-sticker> |
 
-Fixtures target the schema concord's gencodecs model (API v9/v10 era): they
+Fixtures target the schema concord's recipes model (API v9/v10 era): they
 keep `discriminator` and the legacy type-1/type-2 message components, and use
 post-2023 keys such as `global_name` only as *unknown-key* hazards. When a
 docs example diverges from what the deployed API actually sends, the docs
@@ -47,11 +47,11 @@ missing from a request body)? Make it a fixture before making it a fix:
 1. Add a fixture variant here reproducing the payload that misbehaves.
 2. Add the failing assertion to `unit-codec-decode.c` (decode bugs) or
    `unit-codec-encode.c` (encode bugs) and watch it go red.
-3. Fix the spec in `gencodecs/api/*.PRE.h` — **never** the generated
-   `gencodecs/discord_codecs.c`/`.h` — and regenerate with
-   `make -C gencodecs`.
-4. `make check` goes green; commit the spec fix and the test separately
-   (`fix(gencodecs): ...` then `feat(test): ...`).
+3. Fix the recipe in `src/api/*.recipe.h` — **never** the generated
+   `generated/discord_codecs.c`/`.h` — and regenerate with
+   `make reflectc-gen`.
+4. `make check` goes green; commit the recipe fix and the test separately
+   (`fix(recipes): ...` then `feat(test): ...`).
 
 Worked example: `discord_modify_guild_sticker.reason` (commit 7eec9aef)
 is the audit-log *header* param, so it lives on the params struct but

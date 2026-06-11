@@ -7,7 +7,8 @@ TOP = ..
 
 CORE_DIR      = $(TOP)/core
 INCLUDE_DIR   = $(TOP)/include
-GENCODECS_DIR = $(TOP)/gencodecs
+GENERATED_DIR = $(TOP)/generated
+REFLECTC_DIR  = $(TOP)/reflect-c
 
 # Hermetic: no credentials, no non-loopback sockets — always runnable
 TESTS_HERMETIC = queriec \
@@ -17,7 +18,7 @@ TESTS_HERMETIC = queriec \
                  unit-codec-encode unit-ratelimit unit-fixture-server \
                  unit-base-url rest-integration ratelimit-integration \
                  unit-mockws unit-gateway-lifecycle unit-gateway-resume \
-                 unit-gateway-dispatch
+                 unit-gateway-dispatch discord-data-wrap
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 
@@ -26,7 +27,7 @@ TESTS = $(TESTS_HERMETIC) $(TESTS_LIVE)
 # += so sanitizer flags passed via the environment (top-level check-san)
 # reach test compilation and linking too
 CFLAGS += -O0 -g -pthread -Wall \
-          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR)
+          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENERATED_DIR) -I$(REFLECTC_DIR)
 LDFLAGS = -L$(TOP)/lib
 LDLIBS  = -ldiscord -lcurl
 
@@ -40,6 +41,14 @@ TESTS_FIXTURE_SERVER = unit-fixture-server unit-base-url \
 $(TESTS_FIXTURE_SERVER): %: %.c fixture-server.c fixture-server.h \
                          test-client.h test-utils.h $(TOP)/lib/libdiscord.a
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
+
+# codec suites depend on the codec harness header (make has no header
+# dependency tracking; the implicit rule would miss edits to it)
+TESTS_CODEC = unit-codec-decode unit-codec-encode
+
+$(TESTS_CODEC): %: %.c codec-harness.h test-utils.h \
+                $(TOP)/lib/libdiscord.a
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LDLIBS)
 
 # gateway suites substitute core/websockets.o with the mock transport;
 # mock-websockets.o is linked before -ldiscord so every ws_* symbol

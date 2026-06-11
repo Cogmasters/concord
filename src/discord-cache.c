@@ -5,7 +5,7 @@
 #include "discord-internal.h"
 #include "anomap.h"
 
-#define DISCORD_EPOCH 1420070400000
+#define DISCORD_EPOCH 1420070400000ULL
 
 ANOMAP_DECLARE_COMPARE_FUNCTION(_cmp_sf, u64snowflake)
 
@@ -40,18 +40,16 @@ _discord_shard_cache_cleanup(struct discord *client,
     pthread_mutex_unlock(&cache->lock);
 }
 
-#define EV_CB(name, data)                                                     \
-    static void _on_##name(struct discord *client, const struct data *ev)
+#define CACHE_BEGIN(_data, _cache, _shard, _guild_id)                         \
+    struct _discord_cache_data *const _data = client->cache.data;             \
+    const int _shard = _calculate_shard(_guild_id, _data->total_shards);      \
+    struct _discord_shard_cache *const cache = &data->caches[_shard];         \
+    pthread_mutex_lock(&_cache->lock)
 
-#define CACHE_BEGIN(DATA, CACHE, SHARD, GUILD_ID)                             \
-    struct _discord_cache_data *const DATA = client->cache.data;              \
-    const int SHARD = _calculate_shard(GUILD_ID, DATA->total_shards);         \
-    struct _discord_shard_cache *const cache = &data->caches[SHARD];          \
-    pthread_mutex_lock(&CACHE->lock)
+#define CACHE_END(_cache) pthread_mutex_unlock(&_cache->lock)
 
-#define CACHE_END(CACHE) pthread_mutex_unlock(&CACHE->lock)
-
-EV_CB(ready, discord_ready)
+static void
+_on_ready(struct discord *client, const struct discord_ready *ev)
 {
     int shard = ev->shard ? ev->shard->array[0] : 0;
     struct _discord_cache_data *data = client->cache.data;
@@ -99,45 +97,76 @@ _on_shard_disconnected(struct discord *client,
     pthread_mutex_unlock(&cache->lock);
 }
 
-#define GUILD_BEGIN(guild)                                                    \
-    struct discord_guild *guild = calloc(1, sizeof *guild);                   \
-    memcpy(guild, ev, sizeof *guild);                                         \
-    guild->channels = NULL;                                                   \
-    guild->members = NULL;                                                    \
-    guild->roles = NULL;                                                      \
+struct _discord_guild_cache_context {
+    /* MUST stay the first member: the refcounter entry is keyed (and,
+     * with should_free, free()d) by &ctx->guild, which must therefore
+     * equal the ctx allocation's base address */
+    struct discord_guild guild;
+    struct discord *client;
+};
+
+static void
+_discord_guild_cache_context_cleanup(struct _discord_guild_cache_context *ctx)
+{
+    /* releases the deep-copied guild (strings, lists), its wrap and
+     * registry entry; the refcounter then free()s ctx itself */
+    discord_data_free(ctx->client->registry, &ctx->guild);
+}
+
+/* deep-copies the event's guild via a JSON round-trip so the cache owns
+ * an object that outlives the dispatch-scoped event payload; `guild`
+ * names the copy for the map insertion */
+#define GUILD_BEGIN(_client, _guild)                                          \
+    struct _discord_guild_cache_context *ctx = calloc(1, sizeof *ctx);        \
+    struct discord_guild *guild = &ctx->guild;                                \
+    ctx->client = _client;                                                    \
+    memcpy(&ctx->guild, _guild, sizeof ctx->guild);                           \
+    ctx->guild.channels = NULL;                                               \
+    ctx->guild.members = NULL;                                                \
+    ctx->guild.roles = NULL;                                                  \
     do {                                                                      \
+        struct reflectc_wrap(struct discord_guild) *w_guild =                 \
+            reflectc_from_discord_guild((_client)->registry, &ctx->guild,     \
+                                        NULL);                                \
         char *buf = NULL;                                                     \
         size_t size = 0;                                                      \
-        if (discord_guild_to_json(&buf, &size, guild) == CCORD_OK) {          \
-            memset(guild, 0, sizeof *guild);                                  \
-            discord_guild_from_json(buf, size, guild);                        \
+        if (discord_data_wrap_to_json(w_guild, &buf, &size) == CCORD_OK) {    \
+            memset(&ctx->guild, 0, sizeof ctx->guild);                        \
+            discord_data_wrap_from_json(buf, size, w_guild);                  \
             free(buf);                                                        \
         }                                                                     \
+        else {                                                                \
+            /* deep-copy failed: drop the shallow-copied event pointers */   \
+            memset(&ctx->guild, 0, sizeof ctx->guild);                        \
+        }                                                                     \
         discord_refcounter_add_internal(                                      \
-            &client->refcounter, guild,                                       \
-            (void (*)(void *))discord_guild_cleanup, true);                   \
+            &(_client)->refcounter, &ctx->guild,                              \
+            (void (*)(void *))_discord_guild_cache_context_cleanup, true);    \
     } while (0)
 
-EV_CB(guild_create, discord_guild)
+static void
+_on_guild_create(struct discord *client, const struct discord_guild *ev)
 {
     CACHE_BEGIN(data, cache, shard, ev->id);
-    GUILD_BEGIN(guild);
+    GUILD_BEGIN(client, ev);
     enum anomap_operation op = anomap_insert;
     anomap_do(cache->guild_map, op, (u64snowflake *)&ev->id, &guild);
     CACHE_END(cache);
 }
 
-EV_CB(guild_update, discord_guild)
+static void
+_on_guild_update(struct discord *client, const struct discord_guild *ev)
 {
     CACHE_BEGIN(data, cache, shard, ev->id);
-    GUILD_BEGIN(guild);
+    GUILD_BEGIN(client, ev);
     struct anomap *map = cache->guild_map;
     enum anomap_operation op = anomap_upsert;
     anomap_do(map, op, (u64snowflake *)&ev->id, &guild);
     CACHE_END(cache);
 }
 
-EV_CB(guild_delete, discord_guild)
+static void
+_on_guild_delete(struct discord *client, const struct discord_guild *ev)
 {
     CACHE_BEGIN(data, cache, shard, ev->id);
     struct discord_guild *guild = NULL;
@@ -147,29 +176,24 @@ EV_CB(guild_delete, discord_guild)
     CACHE_END(cache);
 }
 
-// EV_CB(channel_create, discord_channel) {}
-// EV_CB(channel_update, discord_channel) {}
-// EV_CB(channel_delete, discord_channel) {}
-
-// EV_CB(guild_role_create, discord_guild_role_create) {}
-// EV_CB(guild_role_update, discord_guild_role_update) {}
-// EV_CB(guild_role_delete, discord_guild_role_delete) {}
-
-EV_CB(message_create, discord_message)
+static void
+_on_message_create(struct discord *client, const struct discord_message *ev)
 {
     CACHE_BEGIN(data, cache, shard, ev->guild_id);
     anomap_do(cache->msg_map, anomap_insert, (u64snowflake *)&ev->id, &ev);
     CACHE_END(cache);
 }
 
-EV_CB(message_update, discord_message)
+static void
+_on_message_update(struct discord *client, const struct discord_message *ev)
 {
     CACHE_BEGIN(data, cache, shard, ev->guild_id);
     anomap_do(cache->msg_map, anomap_upsert, (u64snowflake *)&ev->id, &ev);
     CACHE_END(cache);
 }
 
-EV_CB(message_delete, discord_message_delete)
+static void
+_on_message_delete(struct discord *client, const struct discord_message *ev)
 {
     CACHE_BEGIN(data, cache, shard, ev->guild_id);
     anomap_do(cache->msg_map, anomap_delete, (u64snowflake *)&ev->id, NULL);
@@ -276,13 +300,9 @@ discord_cache_enable(struct discord *client,
         ASSIGN_CB(DISCORD_EV_GUILD_UPDATE, guild_update);
         ASSIGN_CB(DISCORD_EV_GUILD_DELETE, guild_delete);
 
-        // ASSIGN_CB(DISCORD_EV_CHANNEL_CREATE, channel_create);
-        // ASSIGN_CB(DISCORD_EV_CHANNEL_UPDATE, channel_update);
-        // ASSIGN_CB(DISCORD_EV_CHANNEL_DELETE, channel_delete);
-
-        // ASSIGN_CB(DISCORD_EV_GUILD_ROLE_CREATE, guild_role_create);
-        // ASSIGN_CB(DISCORD_EV_GUILD_ROLE_UPDATE, guild_role_update);
-        // ASSIGN_CB(DISCORD_EV_GUILD_ROLE_DELETE, guild_role_delete);
+        // TODO: add channels caching support
+        // TODO: add members caching support
+        // TODO: add roles caching support
     }
 
     if (options & DISCORD_CACHE_MESSAGES) {

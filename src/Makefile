@@ -4,7 +4,8 @@ PREFIX = /usr/local
 
 INCLUDE_DIR   = $(TOP)/include
 LIBDIR        = $(TOP)/lib
-GENCODECS_DIR = $(TOP)/gencodecs
+GENERATED_DIR = $(TOP)/generated
+REFLECTC_DIR  = $(TOP)/reflect-c
 CORE_DIR      = $(TOP)/core
 
 VERSION_MAJOR = 3.0
@@ -25,13 +26,15 @@ CORE_OBJS     = $(CORE_DIR)/cog-utils.o          \
                 $(CORE_DIR)/anomap.o             \
                 $(CORE_DIR)/threadpool.o         \
                 $(CORE_DIR)/queriec.o
-GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
+GENERATED_OBJ = $(GENERATED_DIR)/discord_codecs.o
+REFLECTC_OBJS = $(REFLECTC_DIR)/reflect-c.o
 
 OBJS += discord-refcount.o         \
         discord-rest.o             \
         discord-rest_request.o     \
         discord-rest_ratelimit.o   \
         discord-client.o           \
+        discord-data-wrap.o        \
         discord-events.o           \
         discord-cache.o            \
         discord-loop.o             \
@@ -61,7 +64,8 @@ OBJS += discord-refcount.o         \
 
 WFLAGS  = -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
 CFLAGS += -std=c99 -pthread -D_XOPEN_SOURCE=600 \
-          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENCODECS_DIR) -I$(PREFIX)/include
+          -I$(INCLUDE_DIR) -I$(CORE_DIR) -I$(GENERATED_DIR) -I$(REFLECTC_DIR) \
+          -I$(PREFIX)/include
 
 LIBNAME = libdiscord
 
@@ -95,32 +99,30 @@ shared_osx:
 	@ CFLAGS="$(DYFLAGS)" $(MAKE) $(DYLIB)
 
 $(ARLIB): deps
-	$(AR) $(ARFLAGS) $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS)
+	$(AR) $(ARFLAGS) $@ $(OBJS) $(GENERATED_OBJ) $(CORE_OBJS) $(REFLECTC_OBJS)
 $(SOLIB): deps
-	$(CC) -shared -Wl,-soname,$(SOLIB_SONAME) $(LDFLAGS) -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS) -lcurl
+	$(CC) -shared -Wl,-soname,$(SOLIB_SONAME) $(LDFLAGS) -lcurl -o $@ $(OBJS) $(GENERATED_OBJ) $(CORE_OBJS) $(REFLECTC_OBJS)
 $(SOLIBNOSONAME): deps
-	$(CC) -shared $(LDFLAGS) -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS) -lcurl
+	$(CC) -shared $(LDFLAGS) -lcurl -o $@ $(OBJS) $(GENERATED_OBJ) $(CORE_OBJS) $(REFLECTC_OBJS)
 $(DYLIB): deps
-	$(CC) -dynamiclib $(DYFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(GENCODECS_OBJ) $(CORE_OBJS) -lcurl
+	$(CC) -dynamiclib $(DYFLAGS) $(LDFLAGS) -lcurl -o $@ $(OBJS) $(GENERATED_OBJ) $(CORE_OBJS) $(REFLECTC_OBJS)
 
 deps:
 	@ $(MAKE) -C $(CORE_DIR)
-	@ $(MAKE) -C $(GENCODECS_DIR)
-	@ $(MAKE) $(OBJS)
+	@ $(MAKE) $(OBJS) $(GENERATED_OBJ) $(REFLECTC_OBJS)
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
-	@ echo -e 'GENCODECS_OBJ: $(GENCODECS_OBJ)\n'
+	@ echo -e 'GENERATED_OBJ: $(GENERATED_OBJ)\n'
 	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 
 clean: 
 	@ rm -rf $(LIBDIR)/*
-	@ rm -f $(OBJS)
+	@ rm -f $(OBJS) $(REFLECTC_OBJS)
 	@ $(MAKE) -C $(CORE_DIR) clean
 purge: clean
-	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: test examples install echo clean purge docs deps static shared shared_osx
