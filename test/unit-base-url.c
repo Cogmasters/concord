@@ -5,6 +5,7 @@
 #include "discord-internal.h"
 
 #include "fixture-server.h"
+#include "test-client.h" /* TEST_DUMMY_TOKEN; boot is done by hand here */
 #include "test-utils.h"
 
 /* Hermetic test for the discord_config.base_url override: a client built
@@ -14,13 +15,8 @@
  * Booting with a token implies a synchronous GET /users/@me during
  * _discord_init(), so the fixture server must be running and scripted
  * before the client is constructed — which doubles as the end-to-end
- * proof that the override is honored. */
-
-/* format-valid per _discord_token_is_valid() (len 50-80, exactly 2 dots,
- * part lengths 24/6/40) and free of '$' (would trigger env expansion) */
-#define DUMMY_TOKEN                                                           \
-    "MTAwMDAwMDAwMDAwMDAwMDAx.G4bZ9X."                                        \
-    "c29tZS1mYWtlLXRva2VuLXNlY3JldC1wYWRkaW5n"
+ * proof that the override is honored. This suite deliberately does not
+ * use test_client_boot(): it asserts the boot mechanics themselves. */
 
 TEST
 base_url_override(void)
@@ -52,7 +48,7 @@ base_url_override(void)
         /* discord_from_config() copies the struct by value and
          * discord_cleanup() frees config.token, so it must be heap'd;
          * base_url is borrowed and copied by ua_set_url() */
-        .token = strdup(DUMMY_TOKEN),
+        .token = strdup(TEST_DUMMY_TOKEN),
         .base_url = url,
         .log = { .quiet = true },
     });
@@ -71,7 +67,7 @@ base_url_override(void)
     ASSERT_STR_EQ("/users/@me", req->path);
     auth = fs_request_header(req, "Authorization", &auth_len);
     ASSERT_NEQ(NULL, auth);
-    snprintf(expect_auth, sizeof expect_auth, "Bot %s", DUMMY_TOKEN);
+    snprintf(expect_auth, sizeof expect_auth, "Bot %s", TEST_DUMMY_TOKEN);
     ASSERT_EQ(strlen(expect_auth), auth_len);
     ASSERT_EQ(0, strncmp(expect_auth, auth, auth_len));
 

@@ -65,32 +65,6 @@ on_channel_done(struct discord *client,
     res->code = resp->code;
 }
 
-/* journal timestamp of the Nth request on `path` (0-indexed); 0 if absent */
-static uint64_t
-nth_hit_ms(const char *path, size_t nth)
-{
-    const size_t total = fixture_server_request_count(FS);
-    size_t i, n = 0;
-
-    for (i = 0; i < total; ++i) {
-        const struct fs_request *r = fixture_server_request(FS, i);
-
-        if (0 == strcmp(r->path, path) && n++ == nth) return r->recv_ms;
-    }
-    return 0;
-}
-
-static size_t
-count_path(const char *path)
-{
-    const size_t total = fixture_server_request_count(FS);
-    size_t i, n = 0;
-
-    for (i = 0; i < total; ++i)
-        if (0 == strcmp(fixture_server_request(FS, i)->path, path)) ++n;
-    return n;
-}
-
 TEST
 retry_429_then_succeed(void)
 {
@@ -150,9 +124,9 @@ retry_429_then_succeed(void)
     /* the 429'd request is retried transparently: same sync call, three
      * requests on the wire, and the retry waited out retry_after */
     ASSERT_EQ(CCORD_OK, discord_get_channel(CLIENT, 111ULL, &ret));
-    ASSERT_EQ((size_t)3, count_path("/channels/111"));
-    t1 = nth_hit_ms("/channels/111", 1); /* the 429 */
-    t2 = nth_hit_ms("/channels/111", 2); /* the retry */
+    ASSERT_EQ((size_t)3, fixture_server_count_path(FS, "/channels/111"));
+    t1 = fixture_server_nth_recv_ms(FS, "/channels/111", 1); /* the 429 */
+    t2 = fixture_server_nth_recv_ms(FS, "/channels/111", 2); /* the retry */
     ASSERT(t2 - t1 >= 550);
     ASSERT(t2 - t1 <= 2600);
     PASS();
@@ -227,9 +201,9 @@ per_bucket_pacing(void)
     ASSERT_EQ(1, res.done_count);
     ASSERT_EQ(0, res.fail_count);
 
-    t_222_first = nth_hit_ms("/channels/222", 0);
-    t_222_second = nth_hit_ms("/channels/222", 1);
-    t_333 = nth_hit_ms("/channels/333", 0);
+    t_222_first = fixture_server_nth_recv_ms(FS, "/channels/222", 0);
+    t_222_second = fixture_server_nth_recv_ms(FS, "/channels/222", 1);
+    t_333 = fixture_server_nth_recv_ms(FS, "/channels/333", 0);
     ASSERT(t_333 - t_222_first < 500);
     ASSERT(t_222_second - t_222_first >= 750);
     ASSERT(t_222_second - t_222_first <= 2800);
@@ -317,10 +291,10 @@ global_limit_pauses_buckets(void)
     ASSERT(test_client_await(CLIENT, &res.settled, 6000));
     ASSERT_EQ(1, res.done_count);
 
-    t_444_first = nth_hit_ms("/channels/444", 0);
-    t_444_second = nth_hit_ms("/channels/444", 1);
-    t_555_first = nth_hit_ms("/channels/555", 0);
-    t_555_retry = nth_hit_ms("/channels/555", 1);
+    t_444_first = fixture_server_nth_recv_ms(FS, "/channels/444", 0);
+    t_444_second = fixture_server_nth_recv_ms(FS, "/channels/444", 1);
+    t_555_first = fixture_server_nth_recv_ms(FS, "/channels/555", 0);
+    t_555_retry = fixture_server_nth_recv_ms(FS, "/channels/555", 1);
     /* both the locked bucket and the 429'd route waited out the global
      * window (>= 1.5s from the 429, minus margins) */
     ASSERT(t_444_second - t_444_first >= 1350);
@@ -375,8 +349,8 @@ shared_bucket_hash_current_behavior(void)
     /* CURRENT behavior: buckets are keyed by route key only — the shared
      * hash is not used for matching, so /pins gets an independent bucket
      * and is NOT throttled together with /777 */
-    t_chan = nth_hit_ms("/channels/777", 0);
-    t_pins = nth_hit_ms("/channels/777/pins", 0);
+    t_chan = fixture_server_nth_recv_ms(FS, "/channels/777", 0);
+    t_pins = fixture_server_nth_recv_ms(FS, "/channels/777/pins", 0);
     ASSERT(t_pins - t_chan < 500);
     PASS();
 }
@@ -418,7 +392,7 @@ exhausted_429_retries_give_up(void)
 
     ASSERT_EQ(CCORD_DISCORD_RATELIMIT,
               discord_get_channel(CLIENT, 888ULL, &ret));
-    ASSERT_EQ((size_t)4, count_path("/channels/888"));
+    ASSERT_EQ((size_t)4, fixture_server_count_path(FS, "/channels/888"));
     PASS();
 }
 

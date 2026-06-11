@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <poll.h>
 #include <pthread.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +49,9 @@ struct fixture_server {
     struct _fs_script *scripts;
     size_t n_scripts, cap_scripts;
 
-    struct fs_request *journal;
+    /* entries are individually allocated so pointers handed out by
+     * fixture_server_request() survive journal growth */
+    struct fs_request **journal;
     size_t n_journal, cap_journal;
 
     size_t n_conns_accepted;
@@ -249,8 +252,9 @@ _fs_journal_free(struct fixture_server *fs)
     size_t i;
 
     for (i = 0; i < fs->n_journal; ++i) {
-        free(fs->journal[i].headers_raw);
-        free(fs->journal[i].body);
+        free(fs->journal[i]->headers_raw);
+        free(fs->journal[i]->body);
+        free(fs->journal[i]);
     }
     free(fs->journal);
     fs->journal = NULL;
@@ -284,9 +288,40 @@ fixture_server_request(struct fixture_server *fs, size_t n)
     const struct fs_request *r = NULL;
 
     pthread_mutex_lock(&fs->lock);
-    if (n < fs->n_journal) r = &fs->journal[n];
+    if (n < fs->n_journal) r = fs->journal[n];
     pthread_mutex_unlock(&fs->lock);
     return r;
+}
+
+size_t
+fixture_server_count_path(struct fixture_server *fs, const char *path)
+{
+    size_t i, n = 0;
+
+    pthread_mutex_lock(&fs->lock);
+    for (i = 0; i < fs->n_journal; ++i)
+        if (0 == strcmp(fs->journal[i]->path, path)) ++n;
+    pthread_mutex_unlock(&fs->lock);
+    return n;
+}
+
+uint64_t
+fixture_server_nth_recv_ms(struct fixture_server *fs,
+                           const char *path,
+                           size_t nth)
+{
+    uint64_t recv_ms = 0;
+    size_t i, n = 0;
+
+    pthread_mutex_lock(&fs->lock);
+    for (i = 0; i < fs->n_journal; ++i) {
+        if (0 == strcmp(fs->journal[i]->path, path) && n++ == nth) {
+            recv_ms = fs->journal[i]->recv_ms;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&fs->lock);
+    return recv_ms;
 }
 
 size_t
@@ -300,13 +335,12 @@ fixture_server_connection_count(struct fixture_server *fs)
     return n;
 }
 
-const char *
-fs_request_header(const struct fs_request *r,
-                  const char *name,
-                  size_t *value_len)
+/* case-insensitive header lookup in a NUL-terminated raw header block */
+static const char *
+_fs_find_header(const char *block, const char *name, size_t *value_len)
 {
     const size_t name_len = strlen(name);
-    const char *line = r->headers_raw;
+    const char *line = block;
 
     while (line && *line) {
         const char *eol = strstr(line, "\r\n");
@@ -327,6 +361,14 @@ fs_request_header(const struct fs_request *r,
     }
     if (value_len) *value_len = 0;
     return NULL;
+}
+
+const char *
+fs_request_header(const struct fs_request *r,
+                  const char *name,
+                  size_t *value_len)
+{
+    return _fs_find_header(r->headers_raw, name, value_len);
 }
 
 /* ---- IO thread ---------------------------------------------------- */
@@ -382,15 +424,14 @@ _fs_journal_add(struct fixture_server *fs,
                 const char *body,
                 size_t body_len)
 {
-    struct fs_request *r;
+    struct fs_request *r = calloc(1, sizeof *r);
 
     if (fs->n_journal == fs->cap_journal) {
         fs->cap_journal = fs->cap_journal ? fs->cap_journal * 2 : 16;
         fs->journal =
             realloc(fs->journal, fs->cap_journal * sizeof *fs->journal);
     }
-    r = &fs->journal[fs->n_journal++];
-    memset(r, 0, sizeof *r);
+    fs->journal[fs->n_journal++] = r;
     snprintf(r->method, sizeof r->method, "%s", method);
     snprintf(r->path, sizeof r->path, "%s", path);
     r->headers_raw = malloc(headers_len + 1);
@@ -419,31 +460,41 @@ _fs_serve(struct fixture_server *fs,
 {
     const struct _fs_script *script;
     char head[2048];
-    int head_len, status;
-    const char *resp_body;
-    const struct fs_header *resp_headers = NULL;
-    size_t resp_body_len, n_resp_headers = 0, i;
+    int head_len, status, ret = -1;
+    bool matched;
+    char *resp_body = NULL;
+    struct fs_header *resp_headers = NULL;
+    size_t resp_body_len = 0, n_resp_headers = 0, i;
     long delay_ms;
     enum fs_drop drop;
 
-    /* snapshot the matched script's fields under the lock: the scripts
-     * array may be realloc'd by a concurrent registration, but the
-     * pointed-to body/header allocations are stable until reset/stop */
+    /* deep-copy the matched script's response under the lock: a
+     * concurrent fixture_server_reset() may free the script's
+     * allocations while this thread is still writing them out */
     pthread_mutex_lock(&fs->lock);
     _fs_journal_add(fs, method, path, headers, headers_len, body, body_len);
     script = _fs_match(fs, method, path);
+    matched = script != NULL;
     if (script) {
         status = script->status;
-        resp_body = script->body ? script->body : "";
         resp_body_len = script->body_len;
-        resp_headers = script->headers;
-        n_resp_headers = script->n_headers;
+        resp_body = malloc(resp_body_len + 1);
+        memcpy(resp_body, script->body ? script->body : "", resp_body_len);
+        resp_body[resp_body_len] = '\0';
+        if (script->n_headers) {
+            resp_headers = calloc(script->n_headers, sizeof *resp_headers);
+            for (i = 0; i < script->n_headers; ++i) {
+                resp_headers[i].name = strdup(script->headers[i].name);
+                resp_headers[i].value = strdup(script->headers[i].value);
+            }
+            n_resp_headers = script->n_headers;
+        }
         delay_ms = script->delay_ms;
         drop = script->drop;
     }
     else {
         status = 404;
-        resp_body = FS_DEFAULT_BODY;
+        resp_body = strdup(FS_DEFAULT_BODY);
         resp_body_len = strlen(FS_DEFAULT_BODY);
         delay_ms = 0;
         drop = FS_DROP_NONE;
@@ -451,11 +502,11 @@ _fs_serve(struct fixture_server *fs,
     pthread_mutex_unlock(&fs->lock);
 
     if (delay_ms > 0) _fs_sleep_ms(delay_ms);
-    if (drop == FS_DROP_BEFORE_RESPONSE) return -1;
+    if (drop == FS_DROP_BEFORE_RESPONSE) goto cleanup;
 
     head_len = snprintf(head, sizeof head, "HTTP/1.1 %d %s\r\n", status,
                         _fs_status_reason(status));
-    if (script) {
+    if (matched) {
         for (i = 0; i < n_resp_headers; ++i)
             head_len +=
                 snprintf(head + head_len, sizeof head - (size_t)head_len,
@@ -471,16 +522,25 @@ _fs_serve(struct fixture_server *fs,
                          "Content-Length: %zu\r\n\r\n", resp_body_len);
     if (head_len >= (int)sizeof head) {
         fprintf(stderr, "fixture-server: response header overflow\n");
-        return -1;
+        goto cleanup;
     }
 
-    if (_fs_write_all(conn->fd, head, (size_t)head_len) == -1) return -1;
+    if (_fs_write_all(conn->fd, head, (size_t)head_len) == -1) goto cleanup;
     if (drop == FS_DROP_MID_BODY) {
         _fs_write_all(conn->fd, resp_body, resp_body_len / 2);
-        return -1;
+        goto cleanup;
     }
-    if (_fs_write_all(conn->fd, resp_body, resp_body_len) == -1) return -1;
-    return 0;
+    if (_fs_write_all(conn->fd, resp_body, resp_body_len) == -1) goto cleanup;
+    ret = 0;
+
+cleanup:
+    for (i = 0; i < n_resp_headers; ++i) {
+        free((char *)resp_headers[i].name);
+        free((char *)resp_headers[i].value);
+    }
+    free(resp_headers);
+    free(resp_body);
+    return ret;
 }
 
 /* parse and serve as many complete requests as the buffer holds;
@@ -509,29 +569,34 @@ _fs_conn_process(struct fixture_server *fs, struct _fs_conn *conn)
 
         /* only Content-Length framing is supported; fail loudly on
          * anything else (libcurl won't send chunked requests here) */
-        if (strncasecmp(conn->buf, "GET", 3) != 0) {
-            char tmp_hdrs[8192];
-            struct fs_request probe = { .headers_raw = tmp_hdrs };
+        if (strcmp(method, "GET") != 0) {
+            /* bound the lookup to the header block by NUL-terminating it
+             * in place for the probe's duration */
+            char *const block_end = conn->buf + (headers_end - conn->buf);
+            int expect;
             size_t v_len;
 
-            if (headers_len >= sizeof tmp_hdrs) return -1;
-            memcpy(tmp_hdrs, headers_start, headers_len);
-            tmp_hdrs[headers_len] = '\0';
-            if (fs_request_header(&probe, "Transfer-Encoding", &v_len)) {
+            *block_end = '\0';
+            if (_fs_find_header(headers_start, "Transfer-Encoding", &v_len))
+            {
                 fprintf(stderr,
                         "fixture-server: unsupported Transfer-Encoding\n");
                 return -1;
             }
-            if ((cl = fs_request_header(&probe, "Content-Length", &v_len)))
+            if ((cl = _fs_find_header(headers_start, "Content-Length",
+                                      &v_len)))
                 content_length = (size_t)strtoul(cl, NULL, 10);
-            if (fs_request_header(&probe, "Expect", &v_len)) {
-                /* libcurl awaits the interim response before sending the
-                 * body on large uploads */
-                if (_fs_write_all(conn->fd, "HTTP/1.1 100 Continue\r\n\r\n",
-                                  25)
-                    == -1)
-                    return -1;
-            }
+            expect =
+                _fs_find_header(headers_start, "Expect", &v_len) != NULL;
+            *block_end = '\r';
+
+            /* libcurl awaits the interim response before sending the
+             * body on large uploads */
+            if (expect
+                && _fs_write_all(conn->fd, "HTTP/1.1 100 Continue\r\n\r\n",
+                                 25)
+                       == -1)
+                return -1;
         }
 
         body = headers_end + 4;

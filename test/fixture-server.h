@@ -91,6 +91,13 @@ size_t fixture_server_request_count(struct fixture_server *fs);
 /* the Nth journaled request, or NULL; pointer stable until reset/stop */
 const struct fs_request *fixture_server_request(struct fixture_server *fs,
                                                 size_t n);
+/* journal hits on an exact path */
+size_t fixture_server_count_path(struct fixture_server *fs,
+                                 const char *path);
+/* recv_ms of the Nth (0-indexed) journaled request on `path`; 0 if absent */
+uint64_t fixture_server_nth_recv_ms(struct fixture_server *fs,
+                                    const char *path,
+                                    size_t nth);
 /* number of TCP connections accepted so far */
 size_t fixture_server_connection_count(struct fixture_server *fs);
 

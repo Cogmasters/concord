@@ -67,18 +67,6 @@ on_channel_done(struct discord *client,
     res->obj_id = channel->id;
 }
 
-/* journal hits for a given path (tests share one server instance) */
-static size_t
-count_path(const char *path)
-{
-    const size_t total = fixture_server_request_count(FS);
-    size_t i, n = 0;
-
-    for (i = 0; i < total; ++i)
-        if (0 == strcmp(fixture_server_request(FS, i)->path, path)) ++n;
-    return n;
-}
-
 TEST
 boot_request_journaled(void)
 {
@@ -135,7 +123,7 @@ sync_no_content(void)
 
     ASSERT_EQ(CCORD_OK,
               discord_trigger_typing_indicator(CLIENT, 600ULL, &ret));
-    ASSERT_EQ((size_t)1, count_path("/channels/600/typing"));
+    ASSERT_EQ((size_t)1, fixture_server_count_path(FS, "/channels/600/typing"));
     PASS();
 }
 
@@ -300,7 +288,7 @@ error_500_retried_then_http_code(void)
               fetch_status(607ULL, 500,
                            "{\"message\": \"Internal Server Error\"}",
                            &res));
-    ASSERT_EQ((size_t)4, count_path("/channels/607"));
+    ASSERT_EQ((size_t)4, fixture_server_count_path(FS, "/channels/607"));
     PASS();
 }
 

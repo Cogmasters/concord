@@ -28,17 +28,13 @@ LDLIBS  = -ldiscord -lcurl
 
 all: $(TESTS)
 
-# multi-file binaries (implicit rules only handle single-source tests)
-unit-fixture-server: unit-fixture-server.c fixture-server.c fixture-server.h test-utils.h $(TOP)/lib/libdiscord.a
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
+# suites linking the fixture server (implicit rules only handle
+# single-source tests)
+TESTS_FIXTURE_SERVER = unit-fixture-server unit-base-url \
+                       rest-integration ratelimit-integration
 
-unit-base-url: unit-base-url.c fixture-server.c fixture-server.h test-utils.h $(TOP)/lib/libdiscord.a
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
-
-rest-integration: rest-integration.c fixture-server.c fixture-server.h test-client.h test-utils.h $(TOP)/lib/libdiscord.a
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
-
-ratelimit-integration: ratelimit-integration.c fixture-server.c fixture-server.h test-client.h test-utils.h $(TOP)/lib/libdiscord.a
+$(TESTS_FIXTURE_SERVER): %: %.c fixture-server.c fixture-server.h \
+                         test-client.h test-utils.h $(TOP)/lib/libdiscord.a
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
 
 check: $(TESTS_HERMETIC)

@@ -205,6 +205,31 @@ drop_mid_body(void)
 }
 
 TEST
+drop_before_response(void)
+{
+    struct fixture_server *fs = fixture_server_start();
+    CURL *curl = curl_easy_init();
+    struct resp_buf out;
+
+    fixture_server_script(fs, &(struct fs_script){
+                                  .path = "/mute",
+                                  .status = 200,
+                                  .body = "{}",
+                                  .drop = FS_DROP_BEFORE_RESPONSE,
+                              });
+
+    /* on a fresh (non-reused) connection the close is a hard failure;
+     * the request is still journaled */
+    ASSERT_EQ(CURLE_GOT_NOTHING, fetch(curl, fixture_server_port(fs), "GET",
+                                       "/mute", NULL, NULL, &out));
+    ASSERT_EQ((size_t)1, fixture_server_request_count(fs));
+
+    curl_easy_cleanup(curl);
+    fixture_server_stop(fs);
+    PASS();
+}
+
+TEST
 two_instances_isolated(void)
 {
     struct fixture_server *fs1 = fixture_server_start();
@@ -338,6 +363,7 @@ SUITE(fixture_server)
     RUN_TEST(default_404_for_unscripted);
     RUN_TEST(delay_holds_response);
     RUN_TEST(drop_mid_body);
+    RUN_TEST(drop_before_response);
     RUN_TEST(two_instances_isolated);
     RUN_TEST(keepalive_reuses_connection);
     RUN_TEST(times_consumes_script);
