@@ -113,10 +113,10 @@
         jsmnf_loader loader;                                                  \
         jsmnf_table *table = NULL;                                            \
         jsmnf_init(&loader);                                                  \
-        if (jsmnf_load_auto(&loader, buf, size, &table, &table_len) > 0) {    \
+        if (jsmnf_load_auto(&loader, buf, size, &table, &table_len) > 0)      \
             retval = _type##_from_jsmnf(loader.root, buf, self);              \
-            free(table);                                                      \
-        }                                                                     \
+        /* jsmnf_load_auto() allocates the table even on parse failure */     \
+        free(table);                                                          \
         return retval > 0 ? retval : JSMN_ERROR_INVAL;                        \
     }
 #define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)

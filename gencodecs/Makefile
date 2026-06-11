@@ -20,7 +20,7 @@ INPUT_NO_EXT = discord_codecs
 INPUT = $(INPUT_NO_EXT).PRE.h
 # Every spec the input pulls in; editing any of these must regenerate
 SPECS = $(INPUT) gencodecs.h gencodecs-process.PRE.h all.PRE.h \
-        $(wildcard $(API_DIR)/*.PRE.h)
+        $(wildcard $(API_DIR)/*.PRE.h) $(wildcard recipes/*.h)
 # Resulting single-file amalgamations after preprocessing input file
 OUT_C = $(INPUT_NO_EXT).c
 OUT_H = $(INPUT_NO_EXT).h
