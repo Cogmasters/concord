@@ -686,11 +686,12 @@ ua_cleanup(struct user_agent *ua)
                 _ua_conn_cleanup(conn);
             }
         }
+        /* a zeroed lock means ua_init() failed before initializing the
+         * mutex; only destroy it when it holds live state */
         if (memcmp(&ua->connq->lock, &(pthread_mutex_t){},
                    sizeof(pthread_mutex_t))
             != 0)
         {
-            abort();
             pthread_mutex_destroy(&ua->connq->lock);
         }
         free(ua->connq);
