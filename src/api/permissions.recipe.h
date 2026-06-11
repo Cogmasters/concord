@@ -69,6 +69,6 @@ PUBLIC(struct, discord_roles, 3, (
 PRIVATE(struct, discord_role_tag, 3, (
         (_, _, u64snowflake, _, bot_id, _, _, CONCORD_OPTIONAL),
         (_, _, u64snowflake, _, integration_id, _, _, CONCORD_OPTIONAL),
-        (_, _, bool, _, premium_subscribe, _, _, 0ul)
+        (_, _, bool, _, premium_subscribe, premium_subscriber, _, 0ul)
     )
 )

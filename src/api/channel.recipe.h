@@ -122,7 +122,7 @@ PUBLIC(struct, discord_channel, 35, (
         (_, _, u64snowflake, _, parent_id, _, _, 0ul),
         (_, _, u64unix_ms, _, last_pin_timestamp, _, _, 0ul),
         (_, _, char, *, rtc_region, _, _, 0ul),
-        (_, _, int, _, voice_quality_mode, _, _, 0ul),
+        (_, _, int, _, voice_quality_mode, video_quality_mode, _, 0ul),
         (_, _, int, _, message_count, _, _, 0ul),
         (_, _, int, _, member_count, _, _, 0ul),
         (_, struct, discord_thread_metadata, *, thread_metadata, _, _, 0ul),
