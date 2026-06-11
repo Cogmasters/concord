@@ -46,6 +46,20 @@ test_load_fixture(const char *path, char **out, size_t *out_len)
     return 0;
 }
 
+/* Load the fixture NAME from test/fixtures/ (tests run with cwd
+ * test/).  Returns a malloc'd NUL-terminated buffer, or NULL on
+ * failure; caller must free() it. */
+static inline char *
+test_load_json_fixture(const char *name, size_t *len)
+{
+    char path[512];
+    char *buf = NULL;
+
+    snprintf(path, sizeof(path), "fixtures/%s", name);
+    if (0 != test_load_fixture(path, &buf, len)) return NULL;
+    return buf;
+}
+
 /* ── Parsed JSON document ─────────────────────────────────────────── */
 /* Heap-parsed JSON document for repeated path lookups on JSON of any
  * size (unlike ASSERT_JSON_STR below, which is stack-limited). */
@@ -53,7 +67,6 @@ typedef struct test_json {
     jsmnf_loader loader;
     jsmnf_table *table; /* heap; freed by test_json_unload() */
     const char *js;
-    size_t len;
 } test_json;
 
 /* Parse JS into TJ.  Returns 0 on success, -1 on parse failure.  On
@@ -65,7 +78,6 @@ test_json_load(test_json *tj, const char *js, size_t len)
 
     tj->table = NULL;
     tj->js = js;
-    tj->len = len;
     jsmnf_init(&tj->loader);
     return jsmnf_load_auto(&tj->loader, js, len, &tj->table, &table_len) >= 1
                ? 0
@@ -147,41 +159,6 @@ test_json_raw(const test_json *tj, const char *path, char *out, size_t outsz)
                     test_json_raw((tj_got), (path), _tj_got,               \
                                   sizeof(_tj_got)));                       \
         ASSERT_STR_EQm((path), _tj_exp, _tj_got);                          \
-    } while (0)
-
-/* ── JSON field assertion ─────────────────────────────────────────── */
-/* ASSERT_JSON_STR(json, json_len, key, expected)
- *
- * Fails the current test if the top-level string field KEY is absent
- * or its value differs from EXPECTED.  KEY must be a string literal
- * (it is used in diagnostic messages via token pasting).
- *
- * Uses stack-allocated token/pair buffers sized for 64 tokens; do not
- * use with JSON that has more than ~64 tokens. */
-#define ASSERT_JSON_STR(json, json_len, key, expected)                     \
-    do {                                                                   \
-        jsmn_parser       _jsmn_p;                                         \
-        jsmntok_t         _jsmn_t[64];                                     \
-        jsmnf_loader      _jsmn_l;                                         \
-        jsmnf_table       _jsmn_tb[64];                                    \
-        const jsmnf_pair *_jsmn_f;                                         \
-        int _jsmn_n, _jsmn_vl;                                             \
-        jsmn_init(&_jsmn_p);                                               \
-        _jsmn_n = jsmn_parse(&_jsmn_p, (json), (json_len),                \
-                             _jsmn_t, 64);                                 \
-        ASSERT_GTE(_jsmn_n, 1);                                            \
-        jsmnf_init(&_jsmn_l);                                              \
-        ASSERT_GTE(jsmnf_load(&_jsmn_l, (json), (json_len),               \
-                              _jsmn_tb, 64), 1L);                          \
-        _jsmn_f = jsmnf_find(_jsmn_l.root, (key), strlen(key));           \
-        ASSERT_NEQm("key '" key "' not found",                             \
-                    (const jsmnf_pair *)NULL, _jsmn_f);                    \
-        _jsmn_vl = _jsmn_f->v->end - _jsmn_f->v->start;                   \
-        ASSERT_EQm("JSON field '" key "' length",                          \
-                   (int)strlen(expected), _jsmn_vl);                       \
-        ASSERT_EQm("JSON field '" key "' value", 0,                        \
-                   strncmp((expected), (json) + _jsmn_f->v->start,         \
-                           (size_t)_jsmn_vl));                             \
     } while (0)
 
 #endif /* TEST_UTILS_H */

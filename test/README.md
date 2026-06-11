@@ -60,8 +60,8 @@ make test
 
 | Helper | Purpose |
 |---|---|
-| `test_load_fixture(path, &buf, &len)` | Load a file into a malloc'd buffer; fails the test if the file is missing |
-| `ASSERT_JSON_STR(json, len, "key", "value")` | Assert a top-level JSON string field equals an expected value (small JSON only, ~64 tokens) |
+| `test_load_fixture(path, &buf, &len)` | Load a file into a malloc'd buffer |
+| `test_load_json_fixture(name, &len)` | Load `test/fixtures/<name>` into a returned malloc'd buffer |
 | `test_json_load/_unload(&tj, js, len)` | Heap-parse a JSON document of any size for path lookups |
 | `test_json_get(&tj, "a.b.0.c")` | Dotted-path lookup; array elements by decimal index; NULL if absent |
 | `ASSERT_JSON_HAS/ABSENT(&tj, path)` | Assert a path exists / does not exist |

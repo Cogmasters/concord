@@ -2,8 +2,8 @@
 
 #include "test-utils.h"
 
-/* The corpus currently holds 30 fixtures; a lower bound guards against the
- * whitelist .gitignore silently dropping the directory on a fresh clone. */
+/* Lower bound (well under the corpus size) guarding against the whitelist
+ * .gitignore silently dropping the directory on a fresh clone. */
 #define FIXTURES_MIN_COUNT 25
 
 TEST all_fixtures_parse(void)
@@ -14,7 +14,6 @@ TEST all_fixtures_parse(void)
 
     ASSERT_NEQm("cannot open test/fixtures", NULL, dir);
     while ((ent = readdir(dir)) != NULL) {
-        char path[512];
         char *buf = NULL;
         size_t len = 0;
         jsmn_parser parser;
@@ -25,8 +24,7 @@ TEST all_fixtures_parse(void)
         const char *dot = strrchr(ent->d_name, '.');
         if (!dot || 0 != strcmp(dot, ".json")) continue;
 
-        snprintf(path, sizeof(path), "fixtures/%s", ent->d_name);
-        if (0 != test_load_fixture(path, &buf, &len)) {
+        if (!(buf = test_load_json_fixture(ent->d_name, &len))) {
             closedir(dir);
             FAILm("fixture unreadable");
         }
@@ -35,7 +33,7 @@ TEST all_fixtures_parse(void)
         free(tokens);
         free(buf);
         if (ntokens < 1) {
-            fprintf(stderr, "malformed JSON: %s\n", path);
+            fprintf(stderr, "malformed JSON: fixtures/%s\n", ent->d_name);
             closedir(dir);
             FAILm("fixture is not valid JSON");
         }
@@ -56,7 +54,7 @@ TEST hello_envelope_lookup(void)
     size_t table_len = 0;
     const jsmnf_pair *op, *interval;
 
-    ASSERT_EQ(0, test_load_fixture("fixtures/gateway-hello.json", &buf, &len));
+    ASSERT_NEQ(NULL, buf = test_load_json_fixture("gateway-hello.json", &len));
     jsmnf_init(&loader);
     ASSERT_GTE(jsmnf_load_auto(&loader, buf, len, &table, &table_len), 1L);
 

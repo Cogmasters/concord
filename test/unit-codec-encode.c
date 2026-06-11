@@ -12,17 +12,6 @@
  * document diff cannot hold in either direction.  One-way fields are
  * excluded per type with a comment each. */
 
-static char *
-load(const char *name, size_t *len)
-{
-    char path[512];
-    char *buf = NULL;
-
-    snprintf(path, sizeof(path), "fixtures/%s", name);
-    if (0 != test_load_fixture(path, &buf, len)) return NULL;
-    return buf;
-}
-
 /* ── params encode ────────────────────────────────────────────────── */
 
 TEST encode_create_message(void)
@@ -266,7 +255,7 @@ assert_same_paths(const test_json *fix, const test_json *out,
     TEST tname(void)                                                       \
     {                                                                      \
         size_t len, out_len = 0;                                           \
-        char *js = load((fixture), &len), *out_buf = NULL;                 \
+        char *js = test_load_json_fixture((fixture), &len), *out_buf = NULL;                 \
         struct type obj;                                                   \
         test_json fix, out;                                                \
                                                                            \
@@ -398,7 +387,7 @@ SUITE(roundtrip)
 TEST modify_guild_sticker_reason_not_encoded(void)
 {
     size_t len, out_len = 0;
-    char *js = load("modify-guild-sticker-params.json", &len);
+    char *js = test_load_json_fixture("modify-guild-sticker-params.json", &len);
     char *out_buf = NULL;
     struct discord_modify_guild_sticker params = { 0 };
     test_json out;

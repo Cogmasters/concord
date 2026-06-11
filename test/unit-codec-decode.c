@@ -10,23 +10,12 @@
  * (e.g. an unavailable-guild stub) report JSMN_ERROR_INVAL despite
  * decoding fine; those tests assert decoded fields instead. */
 
-static char *
-load(const char *name, size_t *len)
-{
-    char path[512];
-    char *buf = NULL;
-
-    snprintf(path, sizeof(path), "fixtures/%s", name);
-    if (0 != test_load_fixture(path, &buf, len)) return NULL;
-    return buf;
-}
-
 /* ── user ─────────────────────────────────────────────────────────── */
 
 TEST user_basic(void)
 {
     size_t len;
-    char *js = load("user-basic.json", &len);
+    char *js = test_load_json_fixture("user-basic.json", &len);
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -56,7 +45,7 @@ TEST user_basic(void)
 TEST user_bot(void)
 {
     size_t len;
-    char *js = load("user-bot.json", &len);
+    char *js = test_load_json_fixture("user-bot.json", &len);
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -74,7 +63,7 @@ TEST user_bot(void)
 TEST user_missing_optionals_default(void)
 {
     size_t len;
-    char *js = load("user-missing-optionals.json", &len);
+    char *js = test_load_json_fixture("user-missing-optionals.json", &len);
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -98,7 +87,7 @@ TEST user_missing_optionals_default(void)
 TEST user_explicit_nulls(void)
 {
     size_t len;
-    char *js = load("user-nulls.json", &len);
+    char *js = test_load_json_fixture("user-nulls.json", &len);
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -118,7 +107,7 @@ TEST user_explicit_nulls(void)
 TEST user_unknown_keys_ignored(void)
 {
     size_t len;
-    char *js = load("user-extra-keys.json", &len);
+    char *js = test_load_json_fixture("user-extra-keys.json", &len);
     struct discord_user u = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -146,7 +135,7 @@ SUITE(user_decode)
 TEST guild_basic(void)
 {
     size_t len;
-    char *js = load("guild-basic.json", &len);
+    char *js = test_load_json_fixture("guild-basic.json", &len);
     struct discord_guild g = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -189,7 +178,7 @@ TEST guild_basic(void)
 TEST guild_unavailable_stub(void)
 {
     size_t len;
-    char *js = load("guild-unavailable.json", &len);
+    char *js = test_load_json_fixture("guild-unavailable.json", &len);
     struct discord_guild g = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -208,7 +197,7 @@ TEST guild_unavailable_stub(void)
 TEST guild_hazards(void)
 {
     size_t len;
-    char *js = load("guild-hazards.json", &len);
+    char *js = test_load_json_fixture("guild-hazards.json", &len);
     struct discord_guild g = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -222,20 +211,6 @@ TEST guild_hazards(void)
     ASSERT_EQ(0, g.roles->size);
     ASSERT_NEQ(NULL, g.emojis);
     ASSERT_EQ(0, g.emojis->size);
-
-    discord_guild_cleanup(&g);
-    free(js);
-    PASS();
-}
-
-TEST guild_empty_features(void)
-{
-    size_t len;
-    char *js = load("guild-hazards.json", &len);
-    struct discord_guild g = { 0 };
-
-    ASSERT_NEQ(NULL, js);
-    ASSERT_GT(discord_guild_from_json(js, len, &g), 0);
     ASSERT_NEQ(NULL, g.features);
     ASSERT_EQ(0, g.features->size);
 
@@ -249,7 +224,6 @@ SUITE(guild_decode)
     RUN_TEST(guild_basic);
     RUN_TEST(guild_unavailable_stub);
     RUN_TEST(guild_hazards);
-    RUN_TEST(guild_empty_features);
 }
 
 /* ── guild member ─────────────────────────────────────────────────── */
@@ -257,7 +231,7 @@ SUITE(guild_decode)
 TEST member_basic(void)
 {
     size_t len;
-    char *js = load("guild-member-basic.json", &len);
+    char *js = test_load_json_fixture("guild-member-basic.json", &len);
     struct discord_guild_member m = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -284,7 +258,7 @@ TEST member_basic(void)
 TEST member_without_user(void)
 {
     size_t len;
-    char *js = load("guild-member-hazards.json", &len);
+    char *js = test_load_json_fixture("guild-member-hazards.json", &len);
     struct discord_guild_member m = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -301,7 +275,7 @@ TEST member_without_user(void)
 TEST member_hazards(void)
 {
     size_t len;
-    char *js = load("guild-member-hazards.json", &len);
+    char *js = test_load_json_fixture("guild-member-hazards.json", &len);
     struct discord_guild_member m = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -328,7 +302,7 @@ SUITE(member_decode)
 TEST channel_text(void)
 {
     size_t len;
-    char *js = load("channel-text.json", &len);
+    char *js = test_load_json_fixture("channel-text.json", &len);
     struct discord_channel c = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -357,7 +331,7 @@ TEST channel_text(void)
 TEST channel_hazards(void)
 {
     size_t len;
-    char *js = load("channel-hazards.json", &len);
+    char *js = test_load_json_fixture("channel-hazards.json", &len);
     struct discord_channel c = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -385,7 +359,7 @@ SUITE(channel_decode)
 TEST message_plain(void)
 {
     size_t len;
-    char *js = load("message-plain.json", &len);
+    char *js = test_load_json_fixture("message-plain.json", &len);
     struct discord_message m = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -411,7 +385,7 @@ TEST message_plain(void)
 TEST message_with_embeds(void)
 {
     size_t len;
-    char *js = load("message-with-embeds.json", &len);
+    char *js = test_load_json_fixture("message-with-embeds.json", &len);
     struct discord_message m = { 0 };
     struct discord_embed *e;
 
@@ -449,7 +423,7 @@ TEST message_with_embeds(void)
 TEST message_with_attachments(void)
 {
     size_t len;
-    char *js = load("message-with-attachments.json", &len);
+    char *js = test_load_json_fixture("message-with-attachments.json", &len);
     struct discord_message m = { 0 };
     struct discord_attachment *a;
 
@@ -476,7 +450,7 @@ TEST message_with_attachments(void)
 TEST message_with_components(void)
 {
     size_t len;
-    char *js = load("message-with-components.json", &len);
+    char *js = test_load_json_fixture("message-with-components.json", &len);
     struct discord_message m = { 0 };
     struct discord_component *row, *btn;
 
@@ -506,7 +480,7 @@ TEST message_with_components(void)
 TEST message_hazards(void)
 {
     size_t len;
-    char *js = load("message-hazards.json", &len);
+    char *js = test_load_json_fixture("message-hazards.json", &len);
     struct discord_message m = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -524,7 +498,7 @@ TEST message_hazards(void)
 TEST message_long_content(void)
 {
     size_t len;
-    char *js = load("message-long-content.json", &len);
+    char *js = test_load_json_fixture("message-long-content.json", &len);
     struct discord_message m = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -556,7 +530,7 @@ SUITE(message_decode)
 TEST role_basic(void)
 {
     size_t len;
-    char *js = load("role-basic.json", &len);
+    char *js = test_load_json_fixture("role-basic.json", &len);
     struct discord_role r = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -580,7 +554,7 @@ TEST role_basic(void)
 TEST role_hazards(void)
 {
     size_t len;
-    char *js = load("role-hazards.json", &len);
+    char *js = test_load_json_fixture("role-hazards.json", &len);
     struct discord_role r = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -606,7 +580,7 @@ SUITE(role_decode)
 TEST emoji_custom(void)
 {
     size_t len;
-    char *js = load("emoji-custom.json", &len);
+    char *js = test_load_json_fixture("emoji-custom.json", &len);
     struct discord_emoji e = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -629,7 +603,7 @@ TEST emoji_custom(void)
 TEST emoji_standard(void)
 {
     size_t len;
-    char *js = load("emoji-standard.json", &len);
+    char *js = test_load_json_fixture("emoji-standard.json", &len);
     struct discord_emoji e = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -646,7 +620,7 @@ TEST emoji_standard(void)
 TEST emoji_hazards(void)
 {
     size_t len;
-    char *js = load("emoji-hazards.json", &len);
+    char *js = test_load_json_fixture("emoji-hazards.json", &len);
     struct discord_emoji e = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -673,7 +647,7 @@ SUITE(emoji_decode)
 TEST interaction_slash_command(void)
 {
     size_t len;
-    char *js = load("interaction-slash-command.json", &len);
+    char *js = test_load_json_fixture("interaction-slash-command.json", &len);
     struct discord_interaction i = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -704,7 +678,7 @@ TEST interaction_slash_command(void)
 TEST interaction_message_component(void)
 {
     size_t len;
-    char *js = load("interaction-message-component.json", &len);
+    char *js = test_load_json_fixture("interaction-message-component.json", &len);
     struct discord_interaction i = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -725,7 +699,7 @@ TEST interaction_message_component(void)
 TEST interaction_dm_shaped(void)
 {
     size_t len;
-    char *js = load("interaction-hazards.json", &len);
+    char *js = test_load_json_fixture("interaction-hazards.json", &len);
     struct discord_interaction i = { 0 };
 
     ASSERT_NEQ(NULL, js);
@@ -762,7 +736,7 @@ envelope_payload(const char *fixture, char **p_js, size_t *p_len,
     const jsmnf_pair *d;
 
     *p_table = NULL;
-    if (!(*p_js = load(fixture, p_len))) return -1;
+    if (!(*p_js = test_load_json_fixture(fixture, p_len))) return -1;
     jsmnf_init(&loader);
     if (jsmnf_load_auto(&loader, *p_js, *p_len, p_table, &table_len) < 1)
         return -1;
