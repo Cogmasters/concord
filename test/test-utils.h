@@ -81,8 +81,4 @@ test_load_fixture(const char *path, char **out, size_t *out_len)
                            (size_t)_jsmn_vl));                             \
     } while (0)
 
-/* ── Suite runner shorthand ───────────────────────────────────────── */
-
-#define RUN_SUITE(s) GREATEST_RUN_SUITE(s)
-
 #endif /* TEST_UTILS_H */

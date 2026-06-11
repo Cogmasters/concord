@@ -10,7 +10,10 @@ INCLUDE_DIR   = $(TOP)/include
 GENCODECS_DIR = $(TOP)/gencodecs
 
 # Hermetic: no credentials, no non-loopback sockets — always runnable
-TESTS_HERMETIC = queriec
+TESTS_HERMETIC = queriec \
+                 unit-cog-utils unit-json-build unit-jsmn-find \
+                 unit-anomap unit-oa_hash unit-priority_queue \
+                 unit-threadpool
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 
