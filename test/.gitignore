@@ -2,7 +2,9 @@
 *
 # But these
 !greatest.h
+!test-utils.h
 !test_config.json
 !.gitignore
 !*.c
 !Makefile
+!README.md
