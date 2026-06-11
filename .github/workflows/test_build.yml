@@ -31,6 +31,8 @@ jobs:
           make examples
           echo "Building tests"
           make test
+          echo "Running hermetic test suites"
+          make check
 
       - name: Build shared library
         run: |
@@ -85,6 +87,8 @@ jobs:
           make examples
           echo "Building tests (macOS)"
           make test
+          echo "Running hermetic test suites (macOS)"
+          make check
 
       - name: Build shared library for macOS
         env:
