@@ -412,10 +412,18 @@ static bool
 _discord_request_retry(struct discord_requestor *rqtor,
                        struct discord_request *req)
 {
+    struct discord_bucket *b = req->b;
+
     if (req->retry_attempt++ >= rqtor->retry_limit) return false;
 
+    /* on the 5xx/read-error retry path the bucket still holds this request
+     * as busy (the 429 path clears it via discord_bucket_set_timeout());
+     * release it or the selector will skip the bucket forever */
+    if (b->busy_req == req)
+        discord_bucket_request_unselect(&rqtor->ratelimiter, b, req);
+
     ua_conn_reset(req->conn);
-    discord_bucket_insert(&rqtor->ratelimiter, req->b, req, true);
+    discord_bucket_insert(&rqtor->ratelimiter, b, req, true);
 
     return true;
 }
