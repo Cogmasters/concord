@@ -63,8 +63,10 @@ DOXYGEN_DESC = "/**\n @file $@\n @author Cogmasters\n @brief Generated code\n*/"
 
 all: $(OUT_O)
 
+# Host codegen tool: target CFLAGS (sanitizers, -fPIC, cross flags) must
+# not leak into a binary that only runs at build time
 gencodecs-pp: gencodecs-pp.c
-	$(HOSTCC) $(CFLAGS) $(LOCAL_CFLAGS) gencodecs-pp.c -o gencodecs-pp
+	$(HOSTCC) $(LOCAL_CFLAGS) gencodecs-pp.c -o gencodecs-pp
 
 $(OUT_O): $(OUT_C) $(OUT_H)
 	$(CC) -c $(CFLAGS) $(LOCAL_CFLAGS) $< -o $@
