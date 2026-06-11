@@ -383,12 +383,22 @@ _ws_on_close(void *p_gw,
     gw->session->status |= DISCORD_SESSION_SHUTDOWN;
 
     switch (opcode) {
-    default: /* websocket/clouflare opcodes */
-        if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
+    default: /* websocket/cloudflare transport opcodes */
+        if ((int)opcode < WS_CLOSE_REASON_PRIVATE_START
+            && WS_CLOSE_REASON_NORMAL != (enum ws_close_reason)opcode
+            && WS_CLOSE_REASON_GOING_AWAY != (enum ws_close_reason)opcode)
+        {
+            /* abnormal transport closes (e.g. 1006) leave the session
+             * valid: resume it */
+            logmod_log(WARN, gw->logger,
+                       "Gateway will attempt to reconnect and resume "
+                       "current session");
             gw->session->status |= DISCORD_SESSION_RESUMABLE;
             gw->session->retry.enable = true;
             break;
         }
+        /* close codes 1000/1001 invalidate the session; unknown 4xxx
+         * codes conservatively get a fresh session too */
         /* fall-through */
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
     case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
