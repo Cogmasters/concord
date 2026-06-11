@@ -15,7 +15,8 @@ TESTS_HERMETIC = queriec \
                  unit-anomap unit-oa_hash unit-priority_queue \
                  unit-threadpool unit-fixtures-smoke unit-codec-decode \
                  unit-codec-encode unit-ratelimit unit-fixture-server \
-                 unit-base-url rest-integration ratelimit-integration
+                 unit-base-url rest-integration ratelimit-integration \
+                 unit-mockws
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 
@@ -37,6 +38,18 @@ $(TESTS_FIXTURE_SERVER): %: %.c fixture-server.c fixture-server.h \
                          test-client.h test-utils.h $(TOP)/lib/libdiscord.a
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
 
+# gateway suites substitute core/websockets.o with the mock transport;
+# mock-websockets.o is linked before -ldiscord so every ws_* symbol
+# resolves to the mock and the archive member is never pulled in
+TESTS_MOCK_WS = unit-mockws
+
+mock-websockets.o: mock-websockets.c mock-websockets.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(TESTS_MOCK_WS): %: %.c mock-websockets.o test-utils.h \
+                  $(TOP)/lib/libdiscord.a
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< mock-websockets.o $(LDLIBS)
+
 check: $(TESTS_HERMETIC)
 	@for t in $(TESTS_HERMETIC); do \
 		printf '  RUN  %s\n' $$t; \
@@ -48,6 +61,6 @@ echo:
 	@ echo -e 'TESTS: $(TESTS)\n'
 
 clean:
-	@ rm -f $(TESTS)
+	@ rm -f $(TESTS) mock-websockets.o
 
 .PHONY: all check echo clean

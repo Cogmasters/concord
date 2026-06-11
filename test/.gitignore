@@ -13,3 +13,5 @@
 !fixtures/README.md
 !fixture-server.h
 !test-client.h
+!mock-websockets.h
+!gateway-harness.h
