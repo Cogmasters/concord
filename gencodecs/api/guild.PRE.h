@@ -336,7 +336,9 @@ PUB_STRUCT(discord_guild_member)
   /** whether the user is deafened in voice channels */
     FIELD(deaf, bool, false)
   /** whether the user is muted in voice channels */
-    FIELD(muted, bool, false)
+    FIELD_CUSTOM(muted, "mute", bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
+                 GENCODECS_JSON_ENCODER_bool, GENCODECS_JSON_DECODER_bool,
+                 false)
   /** whether the user has not yet passed the guild's Membership Screening
        requirements */
     FIELD(pending, bool, false)
