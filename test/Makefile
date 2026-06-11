@@ -14,7 +14,8 @@ TESTS_HERMETIC = queriec \
                  unit-cog-utils unit-json-build unit-jsmn-find \
                  unit-anomap unit-oa_hash unit-priority_queue \
                  unit-threadpool unit-fixtures-smoke unit-codec-decode \
-                 unit-codec-encode unit-ratelimit unit-fixture-server
+                 unit-codec-encode unit-ratelimit unit-fixture-server \
+                 unit-base-url
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 
@@ -28,7 +29,10 @@ LDLIBS  = -ldiscord -lcurl
 all: $(TESTS)
 
 # multi-file binaries (implicit rules only handle single-source tests)
-unit-fixture-server: unit-fixture-server.c fixture-server.c fixture-server.h test-utils.h
+unit-fixture-server: unit-fixture-server.c fixture-server.c fixture-server.h test-utils.h $(TOP)/lib/libdiscord.a
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
+
+unit-base-url: unit-base-url.c fixture-server.c fixture-server.h test-utils.h $(TOP)/lib/libdiscord.a
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c $(LDLIBS)
 
 check: $(TESTS_HERMETIC)

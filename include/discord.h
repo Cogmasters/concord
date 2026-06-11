@@ -241,6 +241,15 @@ struct discord *discord_from_json(const char config_file[]);
 struct discord_config {
     /** the bot token */
     char *token;
+    /**
+     * optional override for the REST API base URL
+     *      (e.g. `"http://127.0.0.1:8080"` for a local test server)
+     * @note when `NULL` (the default) @ref DISCORD_API_BASE_URL is used
+     * @note only read during client initialization and copied by the
+     *      User-Agent layer; the client does not take ownership and will
+     *      never free this pointer
+     */
+    char *base_url;
     struct {
         /** minimum logging level */
         enum logmod_levels level;

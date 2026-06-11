@@ -830,6 +830,17 @@ CCORDcode discord_gateway_init(struct discord_gateway *gw, const char token[]);
 void discord_gateway_cleanup(struct discord_gateway *gw);
 
 /**
+ * @brief Check that the linked libcurl can drive the Gateway's WebSocket
+ *      connection (version >= 8.7.1, built with websockets support)
+ *
+ * Called at discord_gateway_start(): REST-only clients (and hermetic
+ * tests) work with older libcurl builds, which lack only the `wss`
+ * protocol
+ * @CCORD_return
+ */
+CCORDcode discord_check_curl_compatibility(void);
+
+/**
  * @brief Initialize handle with the new session primitives
  *
  * @param gw the handle initialized with discord_gateway_init()

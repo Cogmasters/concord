@@ -781,6 +781,14 @@ CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
 {
     struct ccord_szbuf json = { 0 };
+    CCORDcode code;
+
+    if ((code = discord_check_curl_compatibility()) != CCORD_OK) {
+        logmod_log(FATAL, gw->logger,
+                   "libcurl compatibility check failed: %s (code %d)",
+                   ccord_strerror(code), code);
+        return code;
+    }
 
     if (gw->session->retry.attempt == gw->session->retry.limit) {
         logmod_log(FATAL, gw->logger,

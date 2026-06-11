@@ -72,8 +72,8 @@ _discord_on_shutdown(struct io_poller *io,
     discord_shutdown(data);
 }
 
-static CCORDcode
-_discord_check_curl_compatibility(void)
+CCORDcode
+discord_check_curl_compatibility(void)
 {
     const curl_version_info_data *curl_info =
         curl_version_info(CURLVERSION_NOW);
@@ -161,12 +161,6 @@ _discord_global_init()
         return CCORD_OK;
     }
 
-    if ((code = _discord_check_curl_compatibility()) != CCORD_OK) {
-        logmod_log(ERROR, NULL,
-                   "libcurl compatibility check failed: %s (code %d)",
-                   ccord_strerror(code), code);
-        return code;
-    }
     if ((code = ccord_once_set_callback((ccord_once_cb)&curl_global_init,
                                         CURL_GLOBAL_ALL))
         != CCORD_OK)

@@ -55,7 +55,8 @@ discord_requestor_init(struct discord_requestor *rqtor, const char token[])
                    "Couldn't initialize User-Agent handle");
         return CCORD_INTERNAL_ERROR;
     }
-    ua_set_url(rqtor->ua, DISCORD_API_BASE_URL);
+    ua_set_url(rqtor->ua, client->config.base_url ? client->config.base_url
+                                                  : DISCORD_API_BASE_URL);
     ua_set_opt(rqtor->ua, (char *)token, &_discord_on_curl_setopt);
 
     /* queues are malloc'd to guarantee a client cloned by
