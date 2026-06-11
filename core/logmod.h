@@ -689,8 +689,10 @@ logmod_init(struct logmod *logmod,
 LOGMOD_API logmod_err
 logmod_cleanup(struct logmod *logmod)
 {
-    memset((void *)logmod->loggers, 0,
-           logmod->real_length * sizeof *logmod->loggers);
+    LOGMOD_EXPECT(logmod != NULL, LOGMOD_BAD_PARAMETER);
+    if (logmod->loggers)
+        memset((void *)logmod->loggers, 0,
+               logmod->real_length * sizeof *logmod->loggers);
     memset(logmod, 0, sizeof *logmod);
     return LOGMOD_OK;
 }
