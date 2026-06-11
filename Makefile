@@ -85,6 +85,8 @@ debug:
 
 test: debug
 	@ $(MAKE) -C $(TEST_DIR)
+check: debug
+	@ $(MAKE) -C $(TEST_DIR) check
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
@@ -106,4 +108,4 @@ $(GIT_BRANCHES):
 	git pull
 	$(MAKE)
 
-.PHONY: test examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
+.PHONY: test check examples uninstall install echo clean purge docs static shared shared_osx $(GIT_BRANCHES) $(GIT_TARGETS)
