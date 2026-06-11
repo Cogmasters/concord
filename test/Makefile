@@ -13,7 +13,7 @@ GENCODECS_DIR = $(TOP)/gencodecs
 TESTS_HERMETIC = queriec \
                  unit-cog-utils unit-json-build unit-jsmn-find \
                  unit-anomap unit-oa_hash unit-priority_queue \
-                 unit-threadpool
+                 unit-threadpool unit-fixtures-smoke
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 

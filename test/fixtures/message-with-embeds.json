@@ -1,0 +1,53 @@
+{
+  "id": "1000000000000000101",
+  "channel_id": "1000000000000000020",
+  "author": {
+    "id": "1000000000000000002",
+    "username": "helperbot",
+    "discriminator": "0000",
+    "avatar": null,
+    "bot": true
+  },
+  "content": "",
+  "timestamp": "2021-05-31T19:25:24.166000+00:00",
+  "edited_timestamp": null,
+  "tts": false,
+  "mention_everyone": false,
+  "mentions": [],
+  "mention_roles": [],
+  "attachments": [],
+  "embeds": [
+    {
+      "title": "Concord",
+      "type": "rich",
+      "description": "Discord API library written in C",
+      "url": "https://github.com/Cogmasters/concord",
+      "timestamp": "2021-05-31T19:25:24.166000+00:00",
+      "color": 3447003,
+      "footer": {
+        "text": "concord footer",
+        "icon_url": "https://example.invalid/footer.png"
+      },
+      "image": {
+        "url": "https://example.invalid/image.png",
+        "height": 480,
+        "width": 640
+      },
+      "author": {
+        "name": "Cogmasters",
+        "url": "https://github.com/Cogmasters"
+      },
+      "fields": [
+        { "name": "Language", "value": "C", "inline": true },
+        { "name": "License", "value": "MIT", "inline": false }
+      ]
+    },
+    {
+      "title": "Second embed",
+      "type": "rich",
+      "description": "Minimal trailing embed"
+    }
+  ],
+  "pinned": false,
+  "type": 0
+}

@@ -1,0 +1,41 @@
+{
+  "id": "1000000000000000103",
+  "channel_id": "1000000000000000020",
+  "author": {
+    "id": "1000000000000000002",
+    "username": "helperbot",
+    "discriminator": "0000",
+    "avatar": null,
+    "bot": true
+  },
+  "content": "pick an action",
+  "timestamp": "2021-05-31T19:25:24.166000+00:00",
+  "edited_timestamp": null,
+  "tts": false,
+  "mention_everyone": false,
+  "mentions": [],
+  "mention_roles": [],
+  "attachments": [],
+  "embeds": [],
+  "components": [
+    {
+      "type": 1,
+      "components": [
+        {
+          "type": 2,
+          "style": 1,
+          "label": "Click me",
+          "custom_id": "btn_click"
+        },
+        {
+          "type": 2,
+          "style": 5,
+          "label": "Docs",
+          "url": "https://example.invalid/docs"
+        }
+      ]
+    }
+  ],
+  "pinned": false,
+  "type": 0
+}

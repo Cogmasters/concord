@@ -1,0 +1,44 @@
+{
+  "id": "1000000000000000203",
+  "application_id": "1000000000000000201",
+  "type": 3,
+  "data": {
+    "custom_id": "btn_click",
+    "component_type": 2
+  },
+  "guild_id": "1000000000000000010",
+  "channel_id": "1000000000000000020",
+  "member": {
+    "user": {
+      "id": "1000000000000000003",
+      "username": "memberperson",
+      "discriminator": "0420",
+      "avatar": null
+    },
+    "roles": [],
+    "joined_at": "2021-05-31T19:25:24.166000+00:00",
+    "deaf": false,
+    "mute": false
+  },
+  "message": {
+    "id": "1000000000000000103",
+    "channel_id": "1000000000000000020",
+    "author": {
+      "id": "1000000000000000002",
+      "username": "helperbot",
+      "discriminator": "0000",
+      "avatar": null,
+      "bot": true
+    },
+    "content": "pick an action",
+    "timestamp": "2021-05-31T19:25:24.166000+00:00",
+    "edited_timestamp": null,
+    "tts": false,
+    "mention_everyone": false,
+    "pinned": false,
+    "type": 0
+  },
+  "token": "faketoken_Y29tcG9uZW50",
+  "version": 1,
+  "locale": "en-US"
+}

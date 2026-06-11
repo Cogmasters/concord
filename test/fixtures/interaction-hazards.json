@@ -1,0 +1,24 @@
+{
+  "id": "1000000000000000204",
+  "application_id": "1000000000000000201",
+  "type": 2,
+  "data": {
+    "id": "1000000000000000202",
+    "name": "ping",
+    "type": 1
+  },
+  "channel_id": "1000000000000000026",
+  "user": {
+    "id": "1000000000000000004",
+    "username": "dmuser",
+    "discriminator": "0007",
+    "avatar": null
+  },
+  "token": "faketoken_ZG1pbnRlcmFjdGlvbg",
+  "version": 1,
+  "locale": "en-US",
+  "guild_locale": null,
+  "entitlements": [],
+  "app_permissions": "562949953601536",
+  "authorizing_integration_owners": {}
+}

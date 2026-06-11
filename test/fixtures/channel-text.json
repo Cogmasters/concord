@@ -1,0 +1,21 @@
+{
+  "id": "1000000000000000020",
+  "type": 0,
+  "guild_id": "1000000000000000010",
+  "position": 6,
+  "permission_overwrites": [
+    {
+      "id": "1000000000000000030",
+      "type": 0,
+      "allow": "2048",
+      "deny": "8192"
+    }
+  ],
+  "name": "general",
+  "topic": "Concord development chat",
+  "nsfw": false,
+  "last_message_id": "1000000000000000100",
+  "rate_limit_per_user": 2,
+  "parent_id": "1000000000000000024",
+  "default_auto_archive_duration": 60
+}

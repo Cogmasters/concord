@@ -1,0 +1,26 @@
+{
+  "t": "READY",
+  "s": 1,
+  "op": 0,
+  "d": {
+    "v": 10,
+    "user": {
+      "id": "1000000000000000002",
+      "username": "helperbot",
+      "discriminator": "0000",
+      "avatar": null,
+      "bot": true
+    },
+    "guilds": [
+      { "id": "1000000000000000010", "unavailable": true },
+      { "id": "1000000000000000011", "unavailable": true }
+    ],
+    "session_id": "fake_session_33ecab261d4681af",
+    "resume_gateway_url": "wss://gateway.example.invalid",
+    "shard": [0, 1],
+    "application": {
+      "id": "1000000000000000201",
+      "flags": 565248
+    }
+  }
+}

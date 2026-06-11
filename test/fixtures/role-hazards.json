@@ -1,0 +1,13 @@
+{
+  "id": "1000000000000000031",
+  "name": "minimal-role",
+  "color": 0,
+  "hoist": false,
+  "position": 2,
+  "permissions": "0",
+  "managed": false,
+  "mentionable": false,
+  "unicode_emoji": null,
+  "flags": 0,
+  "version": 1700000000000
+}

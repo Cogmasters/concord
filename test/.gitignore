@@ -8,3 +8,6 @@
 !*.c
 !Makefile
 !README.md
+!fixtures
+!fixtures/*.json
+!fixtures/README.md

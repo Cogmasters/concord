@@ -1,0 +1,31 @@
+{
+  "id": "1000000000000000200",
+  "application_id": "1000000000000000201",
+  "type": 2,
+  "data": {
+    "id": "1000000000000000202",
+    "name": "ping",
+    "type": 1,
+    "options": [
+      { "name": "target", "type": 3, "value": "wumpus" }
+    ]
+  },
+  "guild_id": "1000000000000000010",
+  "channel_id": "1000000000000000020",
+  "member": {
+    "user": {
+      "id": "1000000000000000003",
+      "username": "memberperson",
+      "discriminator": "0420",
+      "avatar": null
+    },
+    "roles": ["1000000000000000030"],
+    "joined_at": "2021-05-31T19:25:24.166000+00:00",
+    "deaf": false,
+    "mute": false
+  },
+  "token": "faketoken_aW50ZXJhY3Rpb24",
+  "version": 1,
+  "locale": "en-US",
+  "guild_locale": "en-US"
+}

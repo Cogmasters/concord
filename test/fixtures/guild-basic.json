@@ -1,0 +1,66 @@
+{
+  "id": "1000000000000000010",
+  "name": "Concord Test Guild",
+  "icon": "8342729096ea3675442027381ff50dfe",
+  "splash": "5a3b4c2d1e0f9a8b7c6d5e4f3a2b1c0d",
+  "discovery_splash": null,
+  "owner_id": "1000000000000000001",
+  "afk_channel_id": null,
+  "afk_timeout": 300,
+  "widget_enabled": true,
+  "widget_channel_id": "1000000000000000020",
+  "verification_level": 2,
+  "default_message_notifications": 1,
+  "explicit_content_filter": 2,
+  "roles": [
+    {
+      "id": "1000000000000000010",
+      "name": "@everyone",
+      "color": 0,
+      "hoist": false,
+      "position": 0,
+      "permissions": "104324673",
+      "managed": false,
+      "mentionable": false
+    },
+    {
+      "id": "1000000000000000030",
+      "name": "moderator",
+      "color": 3447003,
+      "hoist": true,
+      "position": 1,
+      "permissions": "66321471",
+      "managed": false,
+      "mentionable": true
+    }
+  ],
+  "emojis": [
+    {
+      "id": "1000000000000000040",
+      "name": "concord",
+      "roles": [],
+      "require_colons": true,
+      "managed": false,
+      "animated": false,
+      "available": true
+    }
+  ],
+  "features": ["COMMUNITY", "NEWS"],
+  "mfa_level": 1,
+  "application_id": null,
+  "system_channel_id": "1000000000000000021",
+  "system_channel_flags": 0,
+  "rules_channel_id": "1000000000000000022",
+  "vanity_url_code": "concord",
+  "description": "A guild for exercising concord codecs",
+  "banner": "9b2a1c8d7e6f5a4b3c2d1e0f9a8b7c6d",
+  "premium_tier": 2,
+  "premium_subscription_count": 14,
+  "preferred_locale": "en-US",
+  "public_updates_channel_id": "1000000000000000023",
+  "max_video_channel_users": 25,
+  "approximate_member_count": 425,
+  "approximate_presence_count": 100,
+  "nsfw_level": 0,
+  "premium_progress_bar_enabled": true
+}

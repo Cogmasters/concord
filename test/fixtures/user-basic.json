@@ -1,0 +1,17 @@
+{
+  "id": "1000000000000000001",
+  "username": "wumpus",
+  "discriminator": "0001",
+  "avatar": "33ecab261d4681afa4d85a04691c4a01",
+  "bot": false,
+  "system": false,
+  "mfa_enabled": true,
+  "banner": "06c16474723fe537c283b8efa61a30c8",
+  "accent_color": 16711680,
+  "locale": "en-US",
+  "verified": true,
+  "email": "wumpus@example.com",
+  "flags": 64,
+  "premium_type": 1,
+  "public_flags": 64
+}

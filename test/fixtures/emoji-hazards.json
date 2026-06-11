@@ -1,0 +1,6 @@
+{
+  "id": "1000000000000000041",
+  "name": "minimal",
+  "animated": true,
+  "future_emoji_field": { "nested": [1, 2, 3] }
+}

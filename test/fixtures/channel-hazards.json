@@ -1,0 +1,16 @@
+{
+  "id": "1000000000000000025",
+  "type": 0,
+  "guild_id": "1000000000000000010",
+  "position": 0,
+  "permission_overwrites": [],
+  "name": "empty-channel",
+  "topic": null,
+  "nsfw": false,
+  "last_message_id": null,
+  "rate_limit_per_user": 0,
+  "parent_id": null,
+  "icon_emoji": null,
+  "theme_color": null,
+  "status": "channel status unknown key"
+}

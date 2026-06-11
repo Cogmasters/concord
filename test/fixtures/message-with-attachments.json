@@ -1,0 +1,43 @@
+{
+  "id": "1000000000000000102",
+  "channel_id": "1000000000000000020",
+  "author": {
+    "id": "1000000000000000001",
+    "username": "wumpus",
+    "discriminator": "0001",
+    "avatar": "33ecab261d4681afa4d85a04691c4a01"
+  },
+  "content": "two files attached",
+  "timestamp": "2021-05-31T19:25:24.166000+00:00",
+  "edited_timestamp": null,
+  "tts": false,
+  "mention_everyone": false,
+  "mentions": [],
+  "mention_roles": [],
+  "attachments": [
+    {
+      "id": "1000000000000000110",
+      "filename": "screenshot.png",
+      "description": "A screenshot",
+      "content_type": "image/png",
+      "size": 102400,
+      "url": "https://example.invalid/attachments/screenshot.png",
+      "proxy_url": "https://example.invalid/proxy/screenshot.png",
+      "height": 480,
+      "width": 640
+    },
+    {
+      "id": "1000000000000000111",
+      "filename": "notes.txt",
+      "content_type": "text/plain",
+      "size": 256,
+      "url": "https://example.invalid/attachments/notes.txt",
+      "proxy_url": "https://example.invalid/proxy/notes.txt",
+      "height": null,
+      "width": null
+    }
+  ],
+  "embeds": [],
+  "pinned": false,
+  "type": 0
+}

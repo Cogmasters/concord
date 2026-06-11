@@ -1,0 +1,9 @@
+{
+  "id": "1000000000000000002",
+  "username": "helperbot",
+  "discriminator": "0000",
+  "avatar": null,
+  "bot": true,
+  "system": false,
+  "public_flags": 65536
+}

@@ -1,0 +1,21 @@
+{
+  "id": "1000000000000000100",
+  "channel_id": "1000000000000000020",
+  "author": {
+    "id": "1000000000000000001",
+    "username": "wumpus",
+    "discriminator": "0001",
+    "avatar": "33ecab261d4681afa4d85a04691c4a01"
+  },
+  "content": "Hello, concord!",
+  "timestamp": "2021-05-31T19:25:24.166000+00:00",
+  "edited_timestamp": null,
+  "tts": false,
+  "mention_everyone": false,
+  "mentions": [],
+  "mention_roles": [],
+  "attachments": [],
+  "embeds": [],
+  "pinned": false,
+  "type": 0
+}
