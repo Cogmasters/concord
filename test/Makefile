@@ -16,7 +16,7 @@ TESTS_HERMETIC = queriec \
                  unit-threadpool unit-fixtures-smoke unit-codec-decode \
                  unit-codec-encode unit-ratelimit unit-fixture-server \
                  unit-base-url rest-integration ratelimit-integration \
-                 unit-mockws
+                 unit-mockws unit-gateway-lifecycle
 # Live: require Discord token in test_config.json
 TESTS_LIVE     = racecond rest timeout websockets
 
@@ -42,6 +42,8 @@ $(TESTS_FIXTURE_SERVER): %: %.c fixture-server.c fixture-server.h \
 # mock-websockets.o is linked before -ldiscord so every ws_* symbol
 # resolves to the mock and the archive member is never pulled in
 TESTS_MOCK_WS = unit-mockws
+# gateway suites additionally boot a real client via the fixture server
+TESTS_GATEWAY = unit-gateway-lifecycle
 
 mock-websockets.o: mock-websockets.c mock-websockets.h
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -49,6 +51,12 @@ mock-websockets.o: mock-websockets.c mock-websockets.h
 $(TESTS_MOCK_WS): %: %.c mock-websockets.o test-utils.h \
                   $(TOP)/lib/libdiscord.a
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< mock-websockets.o $(LDLIBS)
+
+$(TESTS_GATEWAY): %: %.c mock-websockets.o gateway-harness.h \
+                  fixture-server.c fixture-server.h test-client.h \
+                  test-utils.h $(TOP)/lib/libdiscord.a
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< fixture-server.c \
+	    mock-websockets.o $(LDLIBS)
 
 check: $(TESTS_HERMETIC)
 	@for t in $(TESTS_HERMETIC); do \
