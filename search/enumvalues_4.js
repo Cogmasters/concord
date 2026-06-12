@@ -16,10 +16,11 @@ var searchData=
   ['jsonb_5ferror_13',['JSONB_ERROR',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927',1,'json-build.h']]],
   ['jsonb_5ferror_5finput_14',['JSONB_ERROR_INPUT',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9',1,'json-build.h']]],
   ['jsonb_5ferror_5fnomem_15',['JSONB_ERROR_NOMEM',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054fab08bfa3fb8ac53e08e689b4e31f2d032',1,'json-build.h']]],
-  ['jsonb_5ferror_5fstack_16',['JSONB_ERROR_STACK',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03',1,'json-build.h']]],
-  ['jsonb_5finit_17',['JSONB_INIT',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a1c9ffb7e1aa4d2a5dcb5ba05af13ea8e',1,'json-build.h']]],
-  ['jsonb_5fobject_5fkey_5for_5fclose_18',['JSONB_OBJECT_KEY_OR_CLOSE',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e',1,'json-build.h']]],
-  ['jsonb_5fobject_5fnext_5fkey_5for_5fclose_19',['JSONB_OBJECT_NEXT_KEY_OR_CLOSE',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f',1,'json-build.h']]],
-  ['jsonb_5fobject_5fvalue_20',['JSONB_OBJECT_VALUE',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342',1,'json-build.h']]],
-  ['jsonb_5fok_21',['JSONB_OK',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691',1,'json-build.h']]]
+  ['jsonb_5ferror_5foverflow_16',['JSONB_ERROR_OVERFLOW',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582',1,'json-build.h']]],
+  ['jsonb_5ferror_5fstack_17',['JSONB_ERROR_STACK',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03',1,'json-build.h']]],
+  ['jsonb_5finit_18',['JSONB_INIT',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a1c9ffb7e1aa4d2a5dcb5ba05af13ea8e',1,'json-build.h']]],
+  ['jsonb_5fobject_5fkey_5for_5fclose_19',['JSONB_OBJECT_KEY_OR_CLOSE',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e',1,'json-build.h']]],
+  ['jsonb_5fobject_5fnext_5fkey_5for_5fclose_20',['JSONB_OBJECT_NEXT_KEY_OR_CLOSE',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f',1,'json-build.h']]],
+  ['jsonb_5fobject_5fvalue_21',['JSONB_OBJECT_VALUE',['../json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342',1,'json-build.h']]],
+  ['jsonb_5fok_22',['JSONB_OK',['../json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691',1,'json-build.h']]]
 ];

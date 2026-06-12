@@ -97,12 +97,6 @@ $(document).ready(function(){initNavTree('structdiscord__ret__messages.html','')
  <a href="structdiscord__ret__messages.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for discord_ret_messages:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__messages__coll__graph.svg" width="178" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -116,14 +110,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a23a7f9fb2630a6a35d9824a33634f9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab83c5f91e66332c4751dcf0c5c390dc1"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__messages.html#ab83c5f91e66332c4751dcf0c5c390dc1">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:ab83c5f91e66332c4751dcf0c5c390dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae454dba39f78ea0aa306b486f497d7f3"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__messages.html#ae454dba39f78ea0aa306b486f497d7f3">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__messages.html">discord_messages</a> *ret)</td></tr>
+<tr class="memitem:ae454dba39f78ea0aa306b486f497d7f3"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__messages.html#ae454dba39f78ea0aa306b486f497d7f3">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_messages *ret)</td></tr>
 <tr class="separator:ae454dba39f78ea0aa306b486f497d7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c297661a5f90367e8882603514d39b1"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__messages.html">discord_messages</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__messages.html#a2c297661a5f90367e8882603514d39b1">sync</a></td></tr>
+<tr class="memitem:a2c297661a5f90367e8882603514d39b1"><td class="memItemLeft" align="right" valign="top">struct discord_messages *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__messages.html#a2c297661a5f90367e8882603514d39b1">sync</a></td></tr>
 <tr class="separator:a2c297661a5f90367e8882603514d39b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a32">fetch-messages.c</a>, and <a class="el" href="pin_8c-example.html#_a28">pin.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a12">fetch-messages.c</a>, and <a class="el" href="pin_8c-example.html#_a7">pin.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="ad1f26dd4dc74808c7f704da636adb012" name="ad1f26dd4dc74808c7f704da636adb012"></a>
@@ -208,12 +202,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_messages::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__messages.html">discord_messages</a> *ret)</td>
+          <td class="memname">void(* discord_ret_messages::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_messages *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >optional callback to be executed on a successful request </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="pin_8c-example.html#a29">pin.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="pin_8c-example.html#a8">pin.c</a>.</dd>
 </dl>
 
 </div>
@@ -225,7 +219,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__messages.html">discord_messages</a>* discord_ret_messages::sync</td>
+          <td class="memname">struct discord_messages* discord_ret_messages::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

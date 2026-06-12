@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structdiscord__request.html',''); init
 <div class="dynheader">
 Collaboration diagram for discord_request:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__request__coll__graph.svg" width="664" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__request__coll__graph.svg" width="642" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -110,14 +110,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a17b87e65a2a2ab8c8c88ce7b8230e8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adac9ad4793c3a54c40c8978c72ae3191"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__ret__response.html">discord_ret_response</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#adac9ad4793c3a54c40c8978c72ae3191">response</a></td></tr>
 <tr class="separator:adac9ad4793c3a54c40c8978c72ae3191"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23ff7b77bceecdf17b422c808fbfdb20"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a23ff7b77bceecdf17b422c808fbfdb20">attachments</a></td></tr>
+<tr class="memitem:a23ff7b77bceecdf17b422c808fbfdb20"><td class="memItemLeft" align="right" valign="top">struct discord_attachments&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a23ff7b77bceecdf17b422c808fbfdb20">attachments</a></td></tr>
 <tr class="separator:a23ff7b77bceecdf17b422c808fbfdb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00203fee36834e976c258976fc26b2ff"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a00203fee36834e976c258976fc26b2ff">reason</a></td></tr>
 <tr class="separator:a00203fee36834e976c258976fc26b2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6762b7187f58f7591e4a36f9da8e13a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#ab6762b7187f58f7591e4a36f9da8e13a">b</a></td></tr>
 <tr class="separator:ab6762b7187f58f7591e4a36f9da8e13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f2cdbfe773ff7c378a0f647ec59c764"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structccord__szbuf__reusable.html">ccord_szbuf_reusable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a1f2cdbfe773ff7c378a0f647ec59c764">body</a></td></tr>
-<tr class="separator:a1f2cdbfe773ff7c378a0f647ec59c764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ad81fecb4ed55541e08549dc716d0b6"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a5ad81fecb4ed55541e08549dc716d0b6">body</a></td></tr>
+<tr class="separator:a5ad81fecb4ed55541e08549dc716d0b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f520f489e4996116c22569618fe78b2"><td class="memItemLeft" align="right" valign="top">enum http_method&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a9f520f489e4996116c22569618fe78b2">method</a></td></tr>
 <tr class="separator:a9f520f489e4996116c22569618fe78b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa08f6806647a9906226c247a5e79e78c"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#aa08f6806647a9906226c247a5e79e78c">endpoint</a> [512]</td></tr>
@@ -126,13 +126,15 @@ Data Fields</h2></td></tr>
 <tr class="separator:ab54b99fa5005580bd7b876291b8b280e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae531c4a10ac70cae3ce093012f06bc7e"><td class="memItemLeft" align="right" valign="top">struct ua_conn *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#ae531c4a10ac70cae3ce093012f06bc7e">conn</a></td></tr>
 <tr class="separator:ae531c4a10ac70cae3ce093012f06bc7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addca26013b49921db7ebb2dde9046771"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#addca26013b49921db7ebb2dde9046771">code</a></td></tr>
+<tr class="memitem:addca26013b49921db7ebb2dde9046771"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#addca26013b49921db7ebb2dde9046771">code</a></td></tr>
 <tr class="separator:addca26013b49921db7ebb2dde9046771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2fa51b439c9cbbe2493ff91e561bcfa"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#af2fa51b439c9cbbe2493ff91e561bcfa">json</a></td></tr>
+<tr class="separator:af2fa51b439c9cbbe2493ff91e561bcfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa455cda252215cbfcad4e1261e0a8005"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#aa455cda252215cbfcad4e1261e0a8005">retry_attempt</a></td></tr>
 <tr class="separator:aa455cda252215cbfcad4e1261e0a8005"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d8db1a4f5f850b00a22eae786d28ddb"><td class="memItemLeft" align="right" valign="top">pthread_cond_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a9d8db1a4f5f850b00a22eae786d28ddb">cond</a></td></tr>
 <tr class="separator:a9d8db1a4f5f850b00a22eae786d28ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a256e09b791b90669041f617439ec79e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a256e09b791b90669041f617439ec79e0">entry</a></td></tr>
+<tr class="memitem:a256e09b791b90669041f617439ec79e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__request.html#a256e09b791b90669041f617439ec79e0">entry</a></td></tr>
 <tr class="separator:a256e09b791b90669041f617439ec79e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -178,7 +180,7 @@ its fields are aligned with <a class="el" href="structdiscord__attributes.html">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__attachments.html">discord_attachments</a> discord_request::attachments</td>
+          <td class="memname">struct discord_attachments discord_request::attachments</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -216,18 +218,18 @@ its fields are aligned with <a class="el" href="structdiscord__attributes.html">
 
 </div>
 </div>
-<a id="a1f2cdbfe773ff7c378a0f647ec59c764" name="a1f2cdbfe773ff7c378a0f647ec59c764"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f2cdbfe773ff7c378a0f647ec59c764">&#9670;&nbsp;</a></span>body</h2>
+<a id="a5ad81fecb4ed55541e08549dc716d0b6" name="a5ad81fecb4ed55541e08549dc716d0b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ad81fecb4ed55541e08549dc716d0b6">&#9670;&nbsp;</a></span>body</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structccord__szbuf__reusable.html">ccord_szbuf_reusable</a> discord_request::body</td>
+          <td class="memname">struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> discord_request::body</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >request body handle </p><dl class="section note"><dt>Note</dt><dd>buffer is kept and reused </dd></dl>
+<p >request body handle </p>
 
 </div>
 </div>
@@ -298,11 +300,26 @@ its fields are aligned with <a class="el" href="structdiscord__attributes.html">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_request::code</td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_request::code</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >request's status code </p>
+
+</div>
+</div>
+<a id="af2fa51b439c9cbbe2493ff91e561bcfa" name="af2fa51b439c9cbbe2493ff91e561bcfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2fa51b439c9cbbe2493ff91e561bcfa">&#9670;&nbsp;</a></span>json</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a> discord_request::json</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >response payload </p>
 
 </div>
 </div>
@@ -343,7 +360,7 @@ its fields are aligned with <a class="el" href="structdiscord__attributes.html">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> discord_request::entry</td>
+          <td class="memname"><a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> discord_request::entry</td>
         </tr>
       </table>
 </div><div class="memdoc">

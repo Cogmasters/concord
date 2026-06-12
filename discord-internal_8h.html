@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('discord-internal_8h.html',''); initRes
 <code>#include &quot;<a class="el" href="json-build_8h_source.html">json-build.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="jsmn_8h_source.html">jsmn.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="jsmn-find_8h_source.html">jsmn-find.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="logconf_8h_source.html">logconf.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logmod_8h_source.html">logmod.h</a>&quot;</code><br />
 <code>#include &quot;user-agent.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="websockets_8h_source.html">websockets.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cog-utils_8h_source.html">cog-utils.h</a>&quot;</code><br />
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('discord-internal_8h.html',''); initRes
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for discord-internal.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="discord-internal_8h__incl.svg" width="1211" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="discord-internal_8h__incl.svg" width="1355" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -177,21 +177,23 @@ Macros</h2></td></tr>
 <tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html#aeef9c3539ffb9ed912a2976b67b43d68">JSMN_HEADER</a></td></tr>
 <tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6b4b8efb1b2769e6868edcf22b2d818"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html#aa6b4b8efb1b2769e6868edcf22b2d818">NOT_EMPTY_STR</a>(str)&#160;&#160;&#160;((str) &amp;&amp; *(str))</td></tr>
-<tr class="memdesc:aa6b4b8efb1b2769e6868edcf22b2d818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return 1 if string isn't considered empty.  <a href="discord-internal_8h.html#aa6b4b8efb1b2769e6868edcf22b2d818">More...</a><br /></td></tr>
-<tr class="separator:aa6b4b8efb1b2769e6868edcf22b2d818"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3487a7238142eb3990c8afeece102d7f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f">CONTAINEROF</a>(ptr,  type,  path)&#160;&#160;&#160;    ((type *)((char *)(ptr)-offsetof(type, path)))</td></tr>
-<tr class="memdesc:a3487a7238142eb3990c8afeece102d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get container <code>type</code> from a field <code>ptr</code>  <a href="discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f">More...</a><br /></td></tr>
-<tr class="separator:a3487a7238142eb3990c8afeece102d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b7716aa8750442be45120d1467c8926"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926">CLIENT</a>(ptr,  path)&#160;&#160;&#160;<a class="el" href="discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f">CONTAINEROF</a>(ptr, struct <a class="el" href="structdiscord.html">discord</a>, path)</td></tr>
-<tr class="memdesc:ga6b7716aa8750442be45120d1467c8926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get client from its nested field.  <a href="group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926">More...</a><br /></td></tr>
-<tr class="separator:ga6b7716aa8750442be45120d1467c8926"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad26258eaeb38eaff2fc8367705ff357b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">CCORD_EXPECT</a>(client,  expect,  code,  reason)</td></tr>
-<tr class="memdesc:gad26258eaeb38eaff2fc8367705ff357b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log and return <code>code</code> if <code>expect</code> condition is false  <a href="group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">More...</a><br /></td></tr>
-<tr class="separator:gad26258eaeb38eaff2fc8367705ff357b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69f4288287a2a9df3630d10e3e208f09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">ASSERT_NOT_OOB</a>(nbytes,  destsz)&#160;&#160;&#160;    <a class="el" href="logconf_8h.html#ac19efa0f65c104796b5d41170cee731c">ASSERT_S</a>((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td></tr>
-<tr class="memdesc:ga69f4288287a2a9df3630d10e3e208f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut for checking OOB-write attempts.  <a href="group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">More...</a><br /></td></tr>
-<tr class="separator:ga69f4288287a2a9df3630d10e3e208f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50041f26a83c16e374870f50b5284833"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html#a50041f26a83c16e374870f50b5284833">LOGMOD_HEADER</a></td></tr>
+<tr class="separator:a50041f26a83c16e374870f50b5284833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48967c46b4db659678019181f8bdbfb7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html#a48967c46b4db659678019181f8bdbfb7">NOT_EMPTY_STR</a>(_str)&#160;&#160;&#160;((_str) &amp;&amp; *(_str))</td></tr>
+<tr class="memdesc:a48967c46b4db659678019181f8bdbfb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">return 1 if string isn't empty  <a href="discord-internal_8h.html#a48967c46b4db659678019181f8bdbfb7">More...</a><br /></td></tr>
+<tr class="separator:a48967c46b4db659678019181f8bdbfb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8efeae9af91e1b6a919a75be7ce6bc2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="discord-internal_8h.html#aa8efeae9af91e1b6a919a75be7ce6bc2">CONTAINEROF</a>(_ptr,  _type,  _path)&#160;&#160;&#160;    ((_type *)((char *)(_ptr) - offsetof(_type, _path)))</td></tr>
+<tr class="memdesc:aa8efeae9af91e1b6a919a75be7ce6bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">get container <code>type</code> from a field <code>ptr</code>  <a href="discord-internal_8h.html#aa8efeae9af91e1b6a919a75be7ce6bc2">More...</a><br /></td></tr>
+<tr class="separator:aa8efeae9af91e1b6a919a75be7ce6bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f66030ef79e6ca49bfdb063b3c94d8f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga6f66030ef79e6ca49bfdb063b3c94d8f">CLIENT</a>(_ptr,  _path)&#160;&#160;&#160;<a class="el" href="discord-internal_8h.html#aa8efeae9af91e1b6a919a75be7ce6bc2">CONTAINEROF</a>(_ptr, struct <a class="el" href="structdiscord.html">discord</a>, _path)</td></tr>
+<tr class="memdesc:ga6f66030ef79e6ca49bfdb063b3c94d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">get client from its nested field  <a href="group__DiscordInternal.html#ga6f66030ef79e6ca49bfdb063b3c94d8f">More...</a><br /></td></tr>
+<tr class="separator:ga6f66030ef79e6ca49bfdb063b3c94d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04d43d9f444d5ba1a7eba1910deb617b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga04d43d9f444d5ba1a7eba1910deb617b">CCORD_EXPECT</a>(_client,  _expect,  _code,  _reason)</td></tr>
+<tr class="memdesc:ga04d43d9f444d5ba1a7eba1910deb617b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log and return <code>code</code> if <code>expect</code> condition is false  <a href="group__DiscordInternal.html#ga04d43d9f444d5ba1a7eba1910deb617b">More...</a><br /></td></tr>
+<tr class="separator:ga04d43d9f444d5ba1a7eba1910deb617b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga860d7fde7dd48afa8f62a4289ed7d995"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga860d7fde7dd48afa8f62a4289ed7d995">CCORD_DATA_TO_JSON</a>(_client,  _type,  _body,  _params)</td></tr>
+<tr class="memdesc:ga860d7fde7dd48afa8f62a4289ed7d995"><td class="mdescLeft">&#160;</td><td class="mdescRight">log and return <code>code</code> if function call doesn't returns <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a>  <a href="group__DiscordInternal.html#ga860d7fde7dd48afa8f62a4289ed7d995">More...</a><br /></td></tr>
+<tr class="separator:ga860d7fde7dd48afa8f62a4289ed7d995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga6f54459e4a3ef7fae49a92fd6dee7103">DISCORD_ENDPT_LEN</a>&#160;&#160;&#160;512</td></tr>
 <tr class="separator:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#ga576294a6f05bf60dbf54a275d3c61f8b">DISCORD_ROUTE_LEN</a>&#160;&#160;&#160;256</td></tr>
@@ -213,17 +215,14 @@ Macros</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gae38e6a4c2e9bbb2ac711ecdcea8995a6"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gae38e6a4c2e9bbb2ac711ecdcea8995a6">discord_ev_event</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *event)</td></tr>
 <tr class="separator:gae38e6a4c2e9bbb2ac711ecdcea8995a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2953803314aee1dbfc9c4d65140a6ae2"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2">discord_ev_message</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__message.html">discord_message</a> *event)</td></tr>
+<tr class="memitem:ga2953803314aee1dbfc9c4d65140a6ae2"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2">discord_ev_message</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_message *event)</td></tr>
 <tr class="separator:ga2953803314aee1dbfc9c4d65140a6ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac9004b30fbb685ccd11a3daa66217c5e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e">discord_dup_shutdown_fd</a> (void)</td></tr>
-<tr class="memdesc:gac9004b30fbb685ccd11a3daa66217c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">dup shutdown fd to listen for <a class="el" href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb" title="Asynchronously shutdown all client(s) from their on-going sessions.">ccord_shutdown_async()</a>  <a href="group__DiscordInternal.html#gac9004b30fbb685ccd11a3daa66217c5e">More...</a><br /></td></tr>
-<tr class="separator:gac9004b30fbb685ccd11a3daa66217c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4bada3f1f856829605c2021e7d3ca27c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga4bada3f1f856829605c2021e7d3ca27c">discord_timers_init</a> (struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers, struct io_poller *io)</td></tr>
-<tr class="memdesc:ga4bada3f1f856829605c2021e7d3ca27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare timers for usage.  <a href="group__DiscordInternalTimer.html#ga4bada3f1f856829605c2021e7d3ca27c">More...</a><br /></td></tr>
-<tr class="separator:ga4bada3f1f856829605c2021e7d3ca27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae18b11871c3af48e4d53329e876306e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gae18b11871c3af48e4d53329e876306e3">discord_timers_init</a> (struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers, struct io_poller *io)</td></tr>
+<tr class="memdesc:gae18b11871c3af48e4d53329e876306e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare timers for usage.  <a href="group__DiscordInternalTimer.html#gae18b11871c3af48e4d53329e876306e3">More...</a><br /></td></tr>
+<tr class="separator:gae18b11871c3af48e4d53329e876306e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6bf3ef6a2ccc045f060ca2e9d342403a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga6bf3ef6a2ccc045f060ca2e9d342403a">discord_timers_cleanup</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers)</td></tr>
 <tr class="memdesc:ga6bf3ef6a2ccc045f060ca2e9d342403a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup timers and call cancel any running ones.  <a href="group__DiscordInternalTimer.html#ga6bf3ef6a2ccc045f060ca2e9d342403a">More...</a><br /></td></tr>
 <tr class="separator:ga6bf3ef6a2ccc045f060ca2e9d342403a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -242,9 +241,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae559bbb353472dc1bb3263e8316072d2"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gae559bbb353472dc1bb3263e8316072d2">discord_internal_timer</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> on_tick_cb, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> on_status_changed_cb, void *data, int64_t delay)</td></tr>
 <tr class="memdesc:gae559bbb353472dc1bb3263e8316072d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a one shot timer that automatically deletes itself upon completion.  <a href="group__DiscordInternalTimer.html#gae559bbb353472dc1bb3263e8316072d2">More...</a><br /></td></tr>
 <tr class="separator:gae559bbb353472dc1bb3263e8316072d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga242842023d4d62e819a8edab0bc886ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">discord_ratelimiter_init</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
-<tr class="memdesc:ga242842023d4d62e819a8edab0bc886ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ratelimiter handle.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">More...</a><br /></td></tr>
-<tr class="separator:ga242842023d4d62e819a8edab0bc886ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2091b7531c12ac2b1d1c0dfd0dd616b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b">discord_ratelimiter_init</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
+<tr class="memdesc:gab2091b7531c12ac2b1d1c0dfd0dd616b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ratelimiter handle.  <a href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b">More...</a><br /></td></tr>
+<tr class="separator:gab2091b7531c12ac2b1d1c0dfd0dd616b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">discord_ratelimiter_cleanup</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
 <tr class="memdesc:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all buckets that have been discovered.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">More...</a><br /></td></tr>
 <tr class="separator:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,16 +271,16 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4aa6a408e0eef73f3b3f951d31e3d274"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga4aa6a408e0eef73f3b3f951d31e3d274">discord_bucket_request_unselect</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structdiscord__bucket.html">discord_bucket</a> *b, struct <a class="el" href="structdiscord__request.html">discord_request</a> *req)</td></tr>
 <tr class="memdesc:ga4aa6a408e0eef73f3b3f951d31e3d274"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unselect a request provided at discord_ratelimiter_request_selector()  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga4aa6a408e0eef73f3b3f951d31e3d274">More...</a><br /></td></tr>
 <tr class="separator:ga4aa6a408e0eef73f3b3f951d31e3d274"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae8899578830f516661d06747eb882d37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#gae8899578830f516661d06747eb882d37">discord_requestor_init</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor, struct <a class="el" href="structlogconf.html">logconf</a> *conf, const char token[])</td></tr>
-<tr class="memdesc:gae8899578830f516661d06747eb882d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the request handler.  <a href="group__DiscordInternalRESTRequest.html#gae8899578830f516661d06747eb882d37">More...</a><br /></td></tr>
-<tr class="separator:gae8899578830f516661d06747eb882d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02aec8e16c60bb7745e1fbb5c46cbcd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga02aec8e16c60bb7745e1fbb5c46cbcd8">discord_requestor_init</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor, const char token[])</td></tr>
+<tr class="memdesc:ga02aec8e16c60bb7745e1fbb5c46cbcd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the request handler.  <a href="group__DiscordInternalRESTRequest.html#ga02aec8e16c60bb7745e1fbb5c46cbcd8">More...</a><br /></td></tr>
+<tr class="separator:ga02aec8e16c60bb7745e1fbb5c46cbcd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad499fb7255093dcb21181e520ea721bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#gad499fb7255093dcb21181e520ea721bf">discord_requestor_cleanup</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor)</td></tr>
 <tr class="memdesc:gad499fb7255093dcb21181e520ea721bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free the request handler.  <a href="group__DiscordInternalRESTRequest.html#gad499fb7255093dcb21181e520ea721bf">More...</a><br /></td></tr>
 <tr class="separator:gad499fb7255093dcb21181e520ea721bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga041ebb6f071971055e8b33537909869b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga041ebb6f071971055e8b33537909869b">discord_requestor_start_pending</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor)</td></tr>
+<tr class="memitem:ga041ebb6f071971055e8b33537909869b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga041ebb6f071971055e8b33537909869b">discord_requestor_start_pending</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor)</td></tr>
 <tr class="memdesc:ga041ebb6f071971055e8b33537909869b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for and start pending bucket's requests.  <a href="group__DiscordInternalRESTRequest.html#ga041ebb6f071971055e8b33537909869b">More...</a><br /></td></tr>
 <tr class="separator:ga041ebb6f071971055e8b33537909869b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga734dcd2a8a0d41d94add84246964afcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga734dcd2a8a0d41d94add84246964afcd">discord_requestor_info_read</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor)</td></tr>
+<tr class="memitem:ga734dcd2a8a0d41d94add84246964afcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga734dcd2a8a0d41d94add84246964afcd">discord_requestor_info_read</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor)</td></tr>
 <tr class="memdesc:ga734dcd2a8a0d41d94add84246964afcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poll for request's completion.  <a href="group__DiscordInternalRESTRequest.html#ga734dcd2a8a0d41d94add84246964afcd">More...</a><br /></td></tr>
 <tr class="separator:ga734dcd2a8a0d41d94add84246964afcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga035db3e06f1367afb70295cae37c025b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga035db3e06f1367afb70295cae37c025b">discord_requestor_dispatch_responses</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor)</td></tr>
@@ -290,34 +289,34 @@ Functions</h2></td></tr>
 <tr class="memitem:gacc8e868a79d81a7e54afa61e20a29db2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#gacc8e868a79d81a7e54afa61e20a29db2">discord_request_cancel</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor, struct <a class="el" href="structdiscord__request.html">discord_request</a> *req)</td></tr>
 <tr class="memdesc:gacc8e868a79d81a7e54afa61e20a29db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark request as canceled and move it to the recycling queue.  <a href="group__DiscordInternalRESTRequest.html#gacc8e868a79d81a7e54afa61e20a29db2">More...</a><br /></td></tr>
 <tr class="separator:gacc8e868a79d81a7e54afa61e20a29db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad5627fc5a615a736e54e20e56e2ea233"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#gad5627fc5a615a736e54e20e56e2ea233">discord_request_begin</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor, struct <a class="el" href="structdiscord__attributes.html">discord_attributes</a> *req, struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> *body, enum http_method method, char endpoint[512], char key[256])</td></tr>
-<tr class="memdesc:gad5627fc5a615a736e54e20e56e2ea233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin a new request.  <a href="group__DiscordInternalRESTRequest.html#gad5627fc5a615a736e54e20e56e2ea233">More...</a><br /></td></tr>
-<tr class="separator:gad5627fc5a615a736e54e20e56e2ea233"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9233add18e0b10b89c291fbc3cb512a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gaf9233add18e0b10b89c291fbc3cb512a">discord_rest_init</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest, struct <a class="el" href="structlogconf.html">logconf</a> *conf, const char token[])</td></tr>
-<tr class="memdesc:gaf9233add18e0b10b89c291fbc3cb512a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an REST handle.  <a href="group__DiscordInternalREST.html#gaf9233add18e0b10b89c291fbc3cb512a">More...</a><br /></td></tr>
-<tr class="separator:gaf9233add18e0b10b89c291fbc3cb512a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga86e94ffa1fe5df07e41d5522ad750234"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequest.html#ga86e94ffa1fe5df07e41d5522ad750234">discord_request_begin</a> (struct <a class="el" href="structdiscord__requestor.html">discord_requestor</a> *rqtor, const struct <a class="el" href="structdiscord__attributes.html">discord_attributes</a> *req, const struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> *body, const enum http_method method, const char endpoint[512], const char key[256])</td></tr>
+<tr class="memdesc:ga86e94ffa1fe5df07e41d5522ad750234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin a new request.  <a href="group__DiscordInternalRESTRequest.html#ga86e94ffa1fe5df07e41d5522ad750234">More...</a><br /></td></tr>
+<tr class="separator:ga86e94ffa1fe5df07e41d5522ad750234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f601819890784d25431c6ca72000749"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#ga0f601819890784d25431c6ca72000749">discord_rest_init</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest, const char token[])</td></tr>
+<tr class="memdesc:ga0f601819890784d25431c6ca72000749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an REST handle.  <a href="group__DiscordInternalREST.html#ga0f601819890784d25431c6ca72000749">More...</a><br /></td></tr>
+<tr class="separator:ga0f601819890784d25431c6ca72000749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad39e9acc2665562f84864b5b0d7f08b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gad39e9acc2665562f84864b5b0d7f08b4">discord_rest_cleanup</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest)</td></tr>
 <tr class="memdesc:gad39e9acc2665562f84864b5b0d7f08b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free an REST handle.  <a href="group__DiscordInternalREST.html#gad39e9acc2665562f84864b5b0d7f08b4">More...</a><br /></td></tr>
 <tr class="separator:gad39e9acc2665562f84864b5b0d7f08b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac345ed911d54c52b384ae56d4c82de6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gaac345ed911d54c52b384ae56d4c82de6">discord_rest_run</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest, struct <a class="el" href="structdiscord__attributes.html">discord_attributes</a> *req, struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> *body, enum http_method method, char endpoint_fmt[],...) <a class="el" href="attributes_8h.html#ad8efd9b6cb6f1b4d20cf5c8475f0bdf3">PRINTF_LIKE</a>(5</td></tr>
-<tr class="memdesc:gaac345ed911d54c52b384ae56d4c82de6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a request to Discord.  <a href="group__DiscordInternalREST.html#gaac345ed911d54c52b384ae56d4c82de6">More...</a><br /></td></tr>
-<tr class="separator:gaac345ed911d54c52b384ae56d4c82de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gaf7ef65d63f8f22a1bec58e04b5c93cbf">discord_rest_stop_buckets</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest)</td></tr>
+<tr class="memitem:gad871e2f08461823a5ed5e667226cd0be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gad871e2f08461823a5ed5e667226cd0be">discord_rest_run</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest, const struct <a class="el" href="structdiscord__attributes.html">discord_attributes</a> *req, const struct <a class="el" href="structccord__szbuf.html">ccord_szbuf</a> *body, const enum http_method method, const char endpoint_fmt[],...) <a class="el" href="attributes_8h.html#ad8efd9b6cb6f1b4d20cf5c8475f0bdf3">PRINTF_LIKE</a>(5</td></tr>
+<tr class="memdesc:gad871e2f08461823a5ed5e667226cd0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a request to Discord.  <a href="group__DiscordInternalREST.html#gad871e2f08461823a5ed5e667226cd0be">More...</a><br /></td></tr>
+<tr class="separator:gad871e2f08461823a5ed5e667226cd0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalREST.html#gaf7ef65d63f8f22a1bec58e04b5c93cbf">discord_rest_stop_buckets</a> (struct <a class="el" href="structdiscord__rest.html">discord_rest</a> *rest)</td></tr>
 <tr class="memdesc:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop all bucket's on-going, pending and timed-out requests.  <a href="group__DiscordInternalREST.html#gaf7ef65d63f8f22a1bec58e04b5c93cbf">More...</a><br /></td></tr>
 <tr class="separator:gaf7ef65d63f8f22a1bec58e04b5c93cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce">discord_gateway_init</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structlogconf.html">logconf</a> *conf, const char token[])</td></tr>
-<tr class="memdesc:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gateway handle.  <a href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce">More...</a><br /></td></tr>
-<tr class="separator:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4d7844efeb499366594c95b08e2cf98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98">discord_gateway_init</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, const char token[])</td></tr>
+<tr class="memdesc:gac4d7844efeb499366594c95b08e2cf98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gateway handle.  <a href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98">More...</a><br /></td></tr>
+<tr class="separator:gac4d7844efeb499366594c95b08e2cf98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab66259b9988312a38de984c9c54e49f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gab66259b9988312a38de984c9c54e49f0">discord_gateway_cleanup</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:gab66259b9988312a38de984c9c54e49f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a Gateway handle.  <a href="group__DiscordInternalGateway.html#gab66259b9988312a38de984c9c54e49f0">More...</a><br /></td></tr>
 <tr class="separator:gab66259b9988312a38de984c9c54e49f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga511de59de4ece10cc7ff0e06c21b8345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345">discord_gateway_start</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
+<tr class="memitem:ga511de59de4ece10cc7ff0e06c21b8345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345">discord_gateway_start</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga511de59de4ece10cc7ff0e06c21b8345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize handle with the new session primitives.  <a href="group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345">More...</a><br /></td></tr>
 <tr class="separator:ga511de59de4ece10cc7ff0e06c21b8345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7825d44b7eacfb4566229e1c4009bd24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga7825d44b7eacfb4566229e1c4009bd24">discord_gateway_end</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga7825d44b7eacfb4566229e1c4009bd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup and reset <code>gw</code> session primitives.  <a href="group__DiscordInternalGateway.html#ga7825d44b7eacfb4566229e1c4009bd24">More...</a><br /></td></tr>
 <tr class="separator:ga7825d44b7eacfb4566229e1c4009bd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb">discord_gateway_perform</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
+<tr class="memitem:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb">discord_gateway_perform</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check and manage on-going Gateway session.  <a href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb">More...</a><br /></td></tr>
 <tr class="separator:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga820b8262c06ee3bba05d1284d4bc6910"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga820b8262c06ee3bba05d1284d4bc6910">discord_gateway_shutdown</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
@@ -326,30 +325,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga44ee2f95d91bd642a68e074782ad4f13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga44ee2f95d91bd642a68e074782ad4f13">discord_gateway_reconnect</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, bool resume)</td></tr>
 <tr class="memdesc:ga44ee2f95d91bd642a68e074782ad4f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gracefully reconnect a ongoing Discord connection over WebSockets.  <a href="group__DiscordInternalGateway.html#ga44ee2f95d91bd642a68e074782ad4f13">More...</a><br /></td></tr>
 <tr class="separator:ga44ee2f95d91bd642a68e074782ad4f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb">discord_gateway_send_identify</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *event)</td></tr>
+<tr class="memitem:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb">discord_gateway_send_identify</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct discord_identify *event)</td></tr>
 <tr class="memdesc:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger the initial handshake with the gateway.  <a href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb">More...</a><br /></td></tr>
 <tr class="separator:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa18bf43dd096c9048c01b6575593de22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa18bf43dd096c9048c01b6575593de22">discord_gateway_send_resume</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__resume.html">discord_resume</a> *event)</td></tr>
+<tr class="memitem:gaa18bf43dd096c9048c01b6575593de22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa18bf43dd096c9048c01b6575593de22">discord_gateway_send_resume</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct discord_resume *event)</td></tr>
 <tr class="memdesc:gaa18bf43dd096c9048c01b6575593de22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replay missed events when a disconnected client resumes.  <a href="group__DiscordInternalGateway.html#gaa18bf43dd096c9048c01b6575593de22">More...</a><br /></td></tr>
 <tr class="separator:gaa18bf43dd096c9048c01b6575593de22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb7be34927409b0656a9678c83e7798d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gadb7be34927409b0656a9678c83e7798d">discord_gateway_send_heartbeat</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, int seq)</td></tr>
 <tr class="memdesc:gadb7be34927409b0656a9678c83e7798d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maintain an active gateway connection.  <a href="group__DiscordInternalGateway.html#gadb7be34927409b0656a9678c83e7798d">More...</a><br /></td></tr>
 <tr class="separator:gadb7be34927409b0656a9678c83e7798d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa821fdd1acf23892ff11437d667522e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa821fdd1acf23892ff11437d667522e7">discord_gateway_send_request_guild_members</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *event)</td></tr>
+<tr class="memitem:gaa821fdd1acf23892ff11437d667522e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa821fdd1acf23892ff11437d667522e7">discord_gateway_send_request_guild_members</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="group__DiscordCommands.html#gad633301a38218a7f70c29ea6af5eb993">discord_request_guild_members</a> *event)</td></tr>
 <tr class="memdesc:gaa821fdd1acf23892ff11437d667522e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request all members for a guild or a list of guilds.  <a href="group__DiscordInternalGateway.html#gaa821fdd1acf23892ff11437d667522e7">More...</a><br /></td></tr>
 <tr class="separator:gaa821fdd1acf23892ff11437d667522e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga4f994d82b69b211a6ee8a5b69a0b4f67">discord_gateway_send_update_voice_state</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *event)</td></tr>
+<tr class="memitem:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga4f994d82b69b211a6ee8a5b69a0b4f67">discord_gateway_send_update_voice_state</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="group__DiscordCommands.html#gacb174879d5c775b529d1cae1088db98f">discord_update_voice_state</a> *event)</td></tr>
 <tr class="memdesc:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent when a client wants to join, move or disconnect from a voice channel.  <a href="group__DiscordInternalGateway.html#ga4f994d82b69b211a6ee8a5b69a0b4f67">More...</a><br /></td></tr>
 <tr class="separator:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gab98b0a22befb0df9a1e5e10541b8bc60">discord_gateway_send_presence_update</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *event)</td></tr>
+<tr class="memitem:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gab98b0a22befb0df9a1e5e10541b8bc60">discord_gateway_send_presence_update</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct discord_presence_update *event)</td></tr>
 <tr class="memdesc:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send client's presence status update payload.  <a href="group__DiscordInternalGateway.html#gab98b0a22befb0df9a1e5e10541b8bc60">More...</a><br /></td></tr>
 <tr class="separator:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d6e71dc948ec38bfeedf11b16214f45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga6d6e71dc948ec38bfeedf11b16214f45">discord_gateway_dispatch</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga6d6e71dc948ec38bfeedf11b16214f45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatch user callback matched to event.  <a href="group__DiscordInternalGateway.html#ga6d6e71dc948ec38bfeedf11b16214f45">More...</a><br /></td></tr>
 <tr class="separator:ga6d6e71dc948ec38bfeedf11b16214f45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga6ecf64820ff5d749d1b5f91e8ae8abff">discord_refcounter_init</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
-<tr class="memdesc:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize reference counter handle.  <a href="group__DiscordInternalRefcount.html#ga6ecf64820ff5d749d1b5f91e8ae8abff">More...</a><br /></td></tr>
-<tr class="separator:ga6ecf64820ff5d749d1b5f91e8ae8abff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga76bf1e01bfcaa6c1568571fe343d0a9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga76bf1e01bfcaa6c1568571fe343d0a9b">discord_refcounter_init</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc)</td></tr>
+<tr class="memdesc:ga76bf1e01bfcaa6c1568571fe343d0a9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize reference counter handle.  <a href="group__DiscordInternalRefcount.html#ga76bf1e01bfcaa6c1568571fe343d0a9b">More...</a><br /></td></tr>
+<tr class="separator:ga76bf1e01bfcaa6c1568571fe343d0a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4955c9f4f029ab989e0a8c3d8008ed84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga4955c9f4f029ab989e0a8c3d8008ed84">discord_refcounter_add_internal</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data, void(*cleanup)(void *data), bool should_free)</td></tr>
 <tr class="memdesc:ga4955c9f4f029ab989e0a8c3d8008ed84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new internal reference to the reference counter.  <a href="group__DiscordInternalRefcount.html#ga4955c9f4f029ab989e0a8c3d8008ed84">More...</a><br /></td></tr>
 <tr class="separator:ga4955c9f4f029ab989e0a8c3d8008ed84"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,21 +358,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3ee67c07bd64f1ec7aebf7a2a9afd06e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga3ee67c07bd64f1ec7aebf7a2a9afd06e">discord_refcounter_cleanup</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc)</td></tr>
 <tr class="memdesc:ga3ee67c07bd64f1ec7aebf7a2a9afd06e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup refcounter and all user data currently held.  <a href="group__DiscordInternalRefcount.html#ga3ee67c07bd64f1ec7aebf7a2a9afd06e">More...</a><br /></td></tr>
 <tr class="separator:ga3ee67c07bd64f1ec7aebf7a2a9afd06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e4ce2823166287b4d486355fc06b431"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga3e4ce2823166287b4d486355fc06b431">discord_refcounter_claim</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, const void *data)</td></tr>
+<tr class="memitem:ga3e4ce2823166287b4d486355fc06b431"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga3e4ce2823166287b4d486355fc06b431">discord_refcounter_claim</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, const void *data)</td></tr>
 <tr class="memdesc:ga3e4ce2823166287b4d486355fc06b431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim ownership of <code>data</code>  <a href="group__DiscordInternalRefcount.html#ga3e4ce2823166287b4d486355fc06b431">More...</a><br /></td></tr>
 <tr class="separator:ga3e4ce2823166287b4d486355fc06b431"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12915beddf469dd7e04608eaf7c4a679"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga12915beddf469dd7e04608eaf7c4a679">discord_refcounter_unclaim</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data)</td></tr>
+<tr class="memitem:ga12915beddf469dd7e04608eaf7c4a679"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga12915beddf469dd7e04608eaf7c4a679">discord_refcounter_unclaim</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data)</td></tr>
 <tr class="memdesc:ga12915beddf469dd7e04608eaf7c4a679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unclaim ownership of <code>data</code>  <a href="group__DiscordInternalRefcount.html#ga12915beddf469dd7e04608eaf7c4a679">More...</a><br /></td></tr>
 <tr class="separator:ga12915beddf469dd7e04608eaf7c4a679"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga48ee4a144665197b3cba3eef93716c38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga48ee4a144665197b3cba3eef93716c38">discord_refcounter_incr</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data)</td></tr>
+<tr class="memitem:ga48ee4a144665197b3cba3eef93716c38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga48ee4a144665197b3cba3eef93716c38">discord_refcounter_incr</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data)</td></tr>
 <tr class="memdesc:ga48ee4a144665197b3cba3eef93716c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the reference counter for <code>ret-&gt;data</code>  <a href="group__DiscordInternalRefcount.html#ga48ee4a144665197b3cba3eef93716c38">More...</a><br /></td></tr>
 <tr class="separator:ga48ee4a144665197b3cba3eef93716c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga645a8f63c5d9c01e4268257ee52c7128"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga645a8f63c5d9c01e4268257ee52c7128">discord_refcounter_decr</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data)</td></tr>
+<tr class="memitem:ga645a8f63c5d9c01e4268257ee52c7128"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRefcount.html#ga645a8f63c5d9c01e4268257ee52c7128">discord_refcounter_decr</a> (struct <a class="el" href="structdiscord__refcounter.html">discord_refcounter</a> *rc, void *data)</td></tr>
 <tr class="memdesc:ga645a8f63c5d9c01e4268257ee52c7128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement the reference counter for <code>data</code>  <a href="group__DiscordInternalRefcount.html#ga645a8f63c5d9c01e4268257ee52c7128">More...</a><br /></td></tr>
 <tr class="separator:ga645a8f63c5d9c01e4268257ee52c7128"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga913baf962d6d1be5fb5379bfecb7c700"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700">discord_message_commands_init</a> (struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *cmds, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
-<tr class="memdesc:ga913baf962d6d1be5fb5379bfecb7c700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Message Commands handle.  <a href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700">More...</a><br /></td></tr>
-<tr class="separator:ga913baf962d6d1be5fb5379bfecb7c700"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga28f641213d5274a91c573d2315674dc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7">discord_message_commands_init</a> (struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *cmds)</td></tr>
+<tr class="memdesc:ga28f641213d5274a91c573d2315674dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Message Commands handle.  <a href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7">More...</a><br /></td></tr>
+<tr class="separator:ga28f641213d5274a91c573d2315674dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf8e3eb1ed19c4d408e3ebfdc9bcfa675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html#gaf8e3eb1ed19c4d408e3ebfdc9bcfa675">discord_message_commands_cleanup</a> (struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *cmds)</td></tr>
 <tr class="memdesc:gaf8e3eb1ed19c4d408e3ebfdc9bcfa675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a Message Commands handle.  <a href="group__DiscordInternalMessageCommands.html#gaf8e3eb1ed19c4d408e3ebfdc9bcfa675">More...</a><br /></td></tr>
 <tr class="separator:gaf8e3eb1ed19c4d408e3ebfdc9bcfa675"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -436,8 +435,22 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa6b4b8efb1b2769e6868edcf22b2d818" name="aa6b4b8efb1b2769e6868edcf22b2d818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6b4b8efb1b2769e6868edcf22b2d818">&#9670;&nbsp;</a></span>NOT_EMPTY_STR</h2>
+<a id="a50041f26a83c16e374870f50b5284833" name="a50041f26a83c16e374870f50b5284833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50041f26a83c16e374870f50b5284833">&#9670;&nbsp;</a></span>LOGMOD_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LOGMOD_HEADER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a48967c46b4db659678019181f8bdbfb7" name="a48967c46b4db659678019181f8bdbfb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48967c46b4db659678019181f8bdbfb7">&#9670;&nbsp;</a></span>NOT_EMPTY_STR</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -446,18 +459,24 @@ Functions</h2></td></tr>
           <td class="memname">#define NOT_EMPTY_STR</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">str</td><td>)</td>
-          <td>&#160;&#160;&#160;((str) &amp;&amp; *(str))</td>
+          <td class="paramname">_str</td><td>)</td>
+          <td>&#160;&#160;&#160;((_str) &amp;&amp; *(_str))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return 1 if string isn't considered empty. </p>
+<p>return 1 if string isn't empty </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_str</td><td>the string to check </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="a3487a7238142eb3990c8afeece102d7f" name="a3487a7238142eb3990c8afeece102d7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3487a7238142eb3990c8afeece102d7f">&#9670;&nbsp;</a></span>CONTAINEROF</h2>
+<a id="aa8efeae9af91e1b6a919a75be7ce6bc2" name="aa8efeae9af91e1b6a919a75be7ce6bc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8efeae9af91e1b6a919a75be7ce6bc2">&#9670;&nbsp;</a></span>CONTAINEROF</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -466,34 +485,34 @@ Functions</h2></td></tr>
           <td class="memname">#define CONTAINEROF</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">ptr, </td>
+          <td class="paramname">_ptr, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">type, </td>
+          <td class="paramname">_type, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">path&#160;</td>
+          <td class="paramname">_path&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    ((type *)((char *)(ptr)-offsetof(type, path)))</td>
+          <td></td><td>&#160;&#160;&#160;    ((_type *)((char *)(_ptr) - offsetof(_type, _path)))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get container <code>type</code> from a field <code>ptr</code> </p>
+<p>get container <code>type</code> from a field <code>ptr</code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>the field contained in <code>type</code> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>the container datatype </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>the path to the field from the container POV </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_ptr</td><td>the field contained in <code>type</code> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_type</td><td>the container datatype </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_path</td><td>the path to the field from the container POV </td></tr>
   </table>
   </dd>
 </dl>

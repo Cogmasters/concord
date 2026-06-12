@@ -1,6 +1,5 @@
 var group__DiscordAPIUser =
 [
-    [ "User flags", "group__DiscordAPIUserFlags.html", "group__DiscordAPIUserFlags" ],
     [ "discord_ret_user", "structdiscord__ret__user.html", [
       [ "data", "structdiscord__ret__user.html#a21a8f6a3505750f6c295a5b767625132", null ],
       [ "cleanup", "structdiscord__ret__user.html#a2323d5ffc4f96b5715d96cde14818d2d", null ],

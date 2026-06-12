@@ -7,11 +7,11 @@ var group__DiscordInternalTimer =
       [ "thread", "structdiscord__timers.html#ad24cf6142a16fd551e58ff939f998038", null ],
       [ "timer", "structdiscord__timers.html#ac2d41f35b81e365df72cdf5c1b6569cd", null ],
       [ "skip_update_phase", "structdiscord__timers.html#a53ce9dbe4acbc8749b751661a1652e83", null ],
-      [ "active", "structdiscord__timers.html#aa77f4bf0e05d1ec3f3d04eadf473ba8b", null ],
+      [ "active", "structdiscord__timers.html#a81a295e31c9fe7083cd06e83a8c1fb2b", null ],
       [ "lock", "structdiscord__timers.html#a2bae230b22aa978a5e109fadad1b1e06", null ],
       [ "cond", "structdiscord__timers.html#abf926edb5929771c31ef5b516e0cde6b", null ]
     ] ],
-    [ "discord_timers_init", "group__DiscordInternalTimer.html#ga4bada3f1f856829605c2021e7d3ca27c", null ],
+    [ "discord_timers_init", "group__DiscordInternalTimer.html#gae18b11871c3af48e4d53329e876306e3", null ],
     [ "discord_timers_cleanup", "group__DiscordInternalTimer.html#ga6bf3ef6a2ccc045f060ca2e9d342403a", null ],
     [ "discord_timers_get_next_trigger", "group__DiscordInternalTimer.html#ga238902133893ba4c7e7f52680c242ec7", null ],
     [ "discord_timers_run", "group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc", null ],

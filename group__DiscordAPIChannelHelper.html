@@ -104,10 +104,10 @@ Collaboration diagram for Helper functions:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gafcaba506479b9464e1cef44a8fa825f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIChannelHelper.html#gafcaba506479b9464e1cef44a8fa825f2">discord_get_channel_at_pos</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, enum <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fe">discord_channel_types</a> type, int position, struct <a class="el" href="structdiscord__ret__channel.html">discord_ret_channel</a> *ret)</td></tr>
+<tr class="memitem:gafcaba506479b9464e1cef44a8fa825f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIChannelHelper.html#gafcaba506479b9464e1cef44a8fa825f2">discord_get_channel_at_pos</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id, enum discord_channel_types type, int position, struct <a class="el" href="structdiscord__ret__channel.html">discord_ret_channel</a> *ret)</td></tr>
 <tr class="memdesc:gafcaba506479b9464e1cef44a8fa825f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a guild's channel from its given numerical position.  <a href="group__DiscordAPIChannelHelper.html#gafcaba506479b9464e1cef44a8fa825f2">More...</a><br /></td></tr>
 <tr class="separator:gafcaba506479b9464e1cef44a8fa825f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4f4863d6d7fe2fbbedd7655d7571d203"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIChannelHelper.html#ga4f4863d6d7fe2fbbedd7655d7571d203">discord_overwrite_append</a> (struct <a class="el" href="structdiscord__overwrites.html">discord_overwrites</a> *permission_overwrites, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> id, int type, <a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> allow, <a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> deny)</td></tr>
+<tr class="memitem:ga4f4863d6d7fe2fbbedd7655d7571d203"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordAPIChannelHelper.html#ga4f4863d6d7fe2fbbedd7655d7571d203">discord_overwrite_append</a> (struct discord_overwrites *permission_overwrites, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> id, int type, <a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> allow, <a class="el" href="group__ConcordTypes.html#ga78ce04e3844e38ab698736df12c0350f">u64bitmask</a> deny)</td></tr>
 <tr class="memdesc:ga4f4863d6d7fe2fbbedd7655d7571d203"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append to an overwrite list.  <a href="group__DiscordAPIChannelHelper.html#ga4f4863d6d7fe2fbbedd7655d7571d203">More...</a><br /></td></tr>
 <tr class="separator:ga4f4863d6d7fe2fbbedd7655d7571d203"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -121,7 +121,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_get_channel_at_pos </td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_get_channel_at_pos </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em>, </td>
@@ -135,7 +135,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">enum <a class="el" href="docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fe">discord_channel_types</a>&#160;</td>
+          <td class="paramtype">enum discord_channel_types&#160;</td>
           <td class="paramname"><em>type</em>, </td>
         </tr>
         <tr>
@@ -161,15 +161,15 @@ Functions</h2></td></tr>
 <p>Get a guild's channel from its given numerical position. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>guild the channel belongs to </td></tr>
     <tr><td class="paramname">type</td><td>the channel type where to take position reference from </td></tr>
-    <tr><td class="paramname">ret</td><td>return context of the request. if successful a <a class="el" href="structdiscord__channel.html">discord_channel</a> will be sent over to its assigned <code>done</code> callback </td></tr>
+    <tr><td class="paramname">ret</td><td>return context of the request. if successful a discord_channel will be sent over to its assigned <code>done</code> callback </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structdiscord__ret__channel.html">discord_ret_channel</a> for more options </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259">CCORDcode</a> value for how the operation went, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
 </div>
@@ -182,7 +182,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void discord_overwrite_append </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord__overwrites.html">discord_overwrites</a> *&#160;</td>
+          <td class="paramtype">struct discord_overwrites *&#160;</td>
           <td class="paramname"><em>permission_overwrites</em>, </td>
         </tr>
         <tr>

@@ -97,12 +97,6 @@ $(document).ready(function(){initNavTree('structdiscord__ret__emoji.html',''); i
  <a href="structdiscord__ret__emoji.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for discord_ret_emoji:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__emoji__coll__graph.svg" width="150" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -116,14 +110,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a9161e3905e24e3433434986c841d2758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65b6bc082402cf735a646c925867208e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__emoji.html#a65b6bc082402cf735a646c925867208e">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:a65b6bc082402cf735a646c925867208e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a483f00b8a0436fac6f4106a5a942d77d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__emoji.html#a483f00b8a0436fac6f4106a5a942d77d">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *ret)</td></tr>
+<tr class="memitem:a483f00b8a0436fac6f4106a5a942d77d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__emoji.html#a483f00b8a0436fac6f4106a5a942d77d">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_emoji *ret)</td></tr>
 <tr class="separator:a483f00b8a0436fac6f4106a5a942d77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30f36adcbe580f87b1b55a132088aeaf"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__emoji.html#a30f36adcbe580f87b1b55a132088aeaf">sync</a></td></tr>
+<tr class="memitem:a30f36adcbe580f87b1b55a132088aeaf"><td class="memItemLeft" align="right" valign="top">struct discord_emoji *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__emoji.html#a30f36adcbe580f87b1b55a132088aeaf">sync</a></td></tr>
 <tr class="separator:a30f36adcbe580f87b1b55a132088aeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#_a30">emoji.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#_a11">emoji.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a937a01db9fa42397a75599616431d9ac" name="a937a01db9fa42397a75599616431d9ac"></a>
@@ -208,12 +202,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_emoji::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a> *ret)</td>
+          <td class="memname">void(* discord_ret_emoji::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_emoji *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >optional callback to be executed on a successful request </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#a31">emoji.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="emoji_8c-example.html#a12">emoji.c</a>.</dd>
 </dl>
 
 </div>
@@ -225,7 +219,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__emoji.html">discord_emoji</a>* discord_ret_emoji::sync</td>
+          <td class="memname">struct discord_emoji* discord_ret_emoji::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

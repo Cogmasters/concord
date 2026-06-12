@@ -100,26 +100,26 @@ $(document).ready(function(){initNavTree('structws__callbacks.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ad70d4c2f2693cc48219fcf8838d42df7"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#ad70d4c2f2693cc48219fcf8838d42df7">on_connect</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *protocols)</td></tr>
-<tr class="memdesc:ad70d4c2f2693cc48219fcf8838d42df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called upon connection.  <a href="structws__callbacks.html#ad70d4c2f2693cc48219fcf8838d42df7">More...</a><br /></td></tr>
-<tr class="separator:ad70d4c2f2693cc48219fcf8838d42df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa34b447d6d50815d1836a703daa6a908"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#aa34b447d6d50815d1836a703daa6a908">on_text</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *text, size_t len)</td></tr>
-<tr class="memdesc:aa34b447d6d50815d1836a703daa6a908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports UTF-8 text messages.  <a href="structws__callbacks.html#aa34b447d6d50815d1836a703daa6a908">More...</a><br /></td></tr>
-<tr class="separator:aa34b447d6d50815d1836a703daa6a908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb1ab79ea01d8c6471d04075f982d07e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#acb1ab79ea01d8c6471d04075f982d07e">on_binary</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const void *mem, size_t len)</td></tr>
-<tr class="memdesc:acb1ab79ea01d8c6471d04075f982d07e"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports binary data. <br  />
-  <a href="structws__callbacks.html#acb1ab79ea01d8c6471d04075f982d07e">More...</a><br /></td></tr>
-<tr class="separator:acb1ab79ea01d8c6471d04075f982d07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae57a9a9d2b8a55cf3313af6b428d51c4"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#ae57a9a9d2b8a55cf3313af6b428d51c4">on_ping</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *reason, size_t len)</td></tr>
-<tr class="memdesc:ae57a9a9d2b8a55cf3313af6b428d51c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports PING.  <a href="structws__callbacks.html#ae57a9a9d2b8a55cf3313af6b428d51c4">More...</a><br /></td></tr>
-<tr class="separator:ae57a9a9d2b8a55cf3313af6b428d51c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ea0359da5a0e051cd315a8637ea9107"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a7ea0359da5a0e051cd315a8637ea9107">on_pong</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *reason, size_t len)</td></tr>
-<tr class="memdesc:a7ea0359da5a0e051cd315a8637ea9107"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports PONG. <br  />
-  <a href="structws__callbacks.html#a7ea0359da5a0e051cd315a8637ea9107">More...</a><br /></td></tr>
-<tr class="separator:a7ea0359da5a0e051cd315a8637ea9107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01d9ba22f708696c3cf35bed2dad5cd4"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a01d9ba22f708696c3cf35bed2dad5cd4">on_close</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, enum <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08d">ws_close_reason</a> wscode, const char *reason, size_t len)</td></tr>
-<tr class="memdesc:a01d9ba22f708696c3cf35bed2dad5cd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports server closed the connection with the given reason.  <a href="structws__callbacks.html#a01d9ba22f708696c3cf35bed2dad5cd4">More...</a><br /></td></tr>
-<tr class="separator:a01d9ba22f708696c3cf35bed2dad5cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65bb1d6e7086982f556fd5f2c6fdf0f4"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a65bb1d6e7086982f556fd5f2c6fdf0f4">on_connect</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws)</td></tr>
+<tr class="memdesc:a65bb1d6e7086982f556fd5f2c6fdf0f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called upon connection.  <a href="structws__callbacks.html#a65bb1d6e7086982f556fd5f2c6fdf0f4">More...</a><br /></td></tr>
+<tr class="separator:a65bb1d6e7086982f556fd5f2c6fdf0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54166b7aec9564e18c3e67b4eb03ea85"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a54166b7aec9564e18c3e67b4eb03ea85">on_text</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char *text, size_t len)</td></tr>
+<tr class="memdesc:a54166b7aec9564e18c3e67b4eb03ea85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reports UTF-8 text messages.  <a href="structws__callbacks.html#a54166b7aec9564e18c3e67b4eb03ea85">More...</a><br /></td></tr>
+<tr class="separator:a54166b7aec9564e18c3e67b4eb03ea85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29975ee59a4c647be42ab3dccb2c31b3"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a29975ee59a4c647be42ab3dccb2c31b3">on_binary</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const void *mem, size_t len)</td></tr>
+<tr class="memdesc:a29975ee59a4c647be42ab3dccb2c31b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports binary data. <br  />
+  <a href="structws__callbacks.html#a29975ee59a4c647be42ab3dccb2c31b3">More...</a><br /></td></tr>
+<tr class="separator:a29975ee59a4c647be42ab3dccb2c31b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a839385867ea7134ce826e3776496d762"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a839385867ea7134ce826e3776496d762">on_ping</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char *reason, size_t len)</td></tr>
+<tr class="memdesc:a839385867ea7134ce826e3776496d762"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports PING.  <a href="structws__callbacks.html#a839385867ea7134ce826e3776496d762">More...</a><br /></td></tr>
+<tr class="separator:a839385867ea7134ce826e3776496d762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8468f65846e8af7652521a1e0f54926a"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a8468f65846e8af7652521a1e0f54926a">on_pong</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char *reason, size_t len)</td></tr>
+<tr class="memdesc:a8468f65846e8af7652521a1e0f54926a"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports PONG. <br  />
+  <a href="structws__callbacks.html#a8468f65846e8af7652521a1e0f54926a">More...</a><br /></td></tr>
+<tr class="separator:a8468f65846e8af7652521a1e0f54926a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80faf9141ed5bd5af9dcaec4c19a27ab"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a80faf9141ed5bd5af9dcaec4c19a27ab">on_close</a> )(void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, enum <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08d">ws_close_reason</a> wscode, const char *reason, size_t len)</td></tr>
+<tr class="memdesc:a80faf9141ed5bd5af9dcaec4c19a27ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">reports server closed the connection with the given reason.  <a href="structws__callbacks.html#a80faf9141ed5bd5af9dcaec4c19a27ab">More...</a><br /></td></tr>
+<tr class="separator:a80faf9141ed5bd5af9dcaec4c19a27ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f24a596e673c6ed86ae31c22703e512"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a></td></tr>
 <tr class="memdesc:a3f24a596e673c6ed86ae31c22703e512"><td class="mdescLeft">&#160;</td><td class="mdescRight">user arbitrary data to be passed around callbacks  <a href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">More...</a><br /></td></tr>
 <tr class="separator:a3f24a596e673c6ed86ae31c22703e512"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,31 +127,30 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >WebSockets callbacks. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="ad70d4c2f2693cc48219fcf8838d42df7" name="ad70d4c2f2693cc48219fcf8838d42df7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad70d4c2f2693cc48219fcf8838d42df7">&#9670;&nbsp;</a></span>on_connect</h2>
+<a id="a65bb1d6e7086982f556fd5f2c6fdf0f4" name="a65bb1d6e7086982f556fd5f2c6fdf0f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65bb1d6e7086982f556fd5f2c6fdf0f4">&#9670;&nbsp;</a></span>on_connect</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* ws_callbacks::on_connect) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *protocols)</td>
+          <td class="memname">void(* ws_callbacks::on_connect) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Called upon connection. </p>
-<dl class="section note"><dt>Note</dt><dd>It is not validated if matches the proposed protocols. </dd></dl>
 
 </div>
 </div>
-<a id="aa34b447d6d50815d1836a703daa6a908" name="aa34b447d6d50815d1836a703daa6a908"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa34b447d6d50815d1836a703daa6a908">&#9670;&nbsp;</a></span>on_text</h2>
+<a id="a54166b7aec9564e18c3e67b4eb03ea85" name="a54166b7aec9564e18c3e67b4eb03ea85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54166b7aec9564e18c3e67b4eb03ea85">&#9670;&nbsp;</a></span>on_text</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* ws_callbacks::on_text) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *text, size_t len)</td>
+          <td class="memname">void(* ws_callbacks::on_text) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char *text, size_t len)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -161,14 +160,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="acb1ab79ea01d8c6471d04075f982d07e" name="acb1ab79ea01d8c6471d04075f982d07e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb1ab79ea01d8c6471d04075f982d07e">&#9670;&nbsp;</a></span>on_binary</h2>
+<a id="a29975ee59a4c647be42ab3dccb2c31b3" name="a29975ee59a4c647be42ab3dccb2c31b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29975ee59a4c647be42ab3dccb2c31b3">&#9670;&nbsp;</a></span>on_binary</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* ws_callbacks::on_binary) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const void *mem, size_t len)</td>
+          <td class="memname">void(* ws_callbacks::on_binary) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const void *mem, size_t len)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -178,31 +177,31 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="ae57a9a9d2b8a55cf3313af6b428d51c4" name="ae57a9a9d2b8a55cf3313af6b428d51c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae57a9a9d2b8a55cf3313af6b428d51c4">&#9670;&nbsp;</a></span>on_ping</h2>
+<a id="a839385867ea7134ce826e3776496d762" name="a839385867ea7134ce826e3776496d762"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a839385867ea7134ce826e3776496d762">&#9670;&nbsp;</a></span>on_ping</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* ws_callbacks::on_ping) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *reason, size_t len)</td>
+          <td class="memname">void(* ws_callbacks::on_ping) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char *reason, size_t len)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>reports PING. </p>
-<dl class="section note"><dt>Note</dt><dd>if provided you should reply with <a class="el" href="websockets_8h.html#a56df312506b866285a9d3b4638580484" title="Send a PONG (opcode 0xA) frame with reason as payload.">ws_pong()</a>. If not provided, pong is sent with the same message payload. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>if provided you should reply with <a class="el" href="websockets_8h.html#a406917e4f8d50cabfe850d5dfa13670c" title="Send a PONG (opcode 0xA) frame with reason as payload.">ws_pong()</a>. If not provided, pong is sent with the same message payload. </dd></dl>
 
 </div>
 </div>
-<a id="a7ea0359da5a0e051cd315a8637ea9107" name="a7ea0359da5a0e051cd315a8637ea9107"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ea0359da5a0e051cd315a8637ea9107">&#9670;&nbsp;</a></span>on_pong</h2>
+<a id="a8468f65846e8af7652521a1e0f54926a" name="a8468f65846e8af7652521a1e0f54926a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8468f65846e8af7652521a1e0f54926a">&#9670;&nbsp;</a></span>on_pong</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* ws_callbacks::on_pong) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char *reason, size_t len)</td>
+          <td class="memname">void(* ws_callbacks::on_pong) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char *reason, size_t len)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -212,14 +211,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a01d9ba22f708696c3cf35bed2dad5cd4" name="a01d9ba22f708696c3cf35bed2dad5cd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01d9ba22f708696c3cf35bed2dad5cd4">&#9670;&nbsp;</a></span>on_close</h2>
+<a id="a80faf9141ed5bd5af9dcaec4c19a27ab" name="a80faf9141ed5bd5af9dcaec4c19a27ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80faf9141ed5bd5af9dcaec4c19a27ab">&#9670;&nbsp;</a></span>on_close</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* ws_callbacks::on_close) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, enum <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08d">ws_close_reason</a> wscode, const char *reason, size_t len)</td>
+          <td class="memname">void(* ws_callbacks::on_close) (void *<a class="el" href="structws__callbacks.html#a3f24a596e673c6ed86ae31c22703e512">data</a>, struct <a class="el" href="structwebsockets.html">websockets</a> *ws, enum <a class="el" href="websockets_8h.html#a92591a76da29adffd6f3a95bb12db08d">ws_close_reason</a> wscode, const char *reason, size_t len)</td>
         </tr>
       </table>
 </div><div class="memdoc">

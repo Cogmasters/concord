@@ -1,6 +1,6 @@
 var structdiscord__message__commands =
 [
-    [ "conf", "structdiscord__message__commands.html#ac3949dea42e7f01b0abdd4544aa64f76", null ],
+    [ "logger", "structdiscord__message__commands.html#a05a860bb9bc2f274b6ce71f744f2536b", null ],
     [ "prefix", "structdiscord__message__commands.html#ada7a42c61affa1373fd417dc9ced50bc", null ],
     [ "fallback", "structdiscord__message__commands.html#a174cf8bc561dc1cc702912274dcd628b", null ],
     [ "length", "structdiscord__message__commands.html#a6d534debdcbe205d2b00a0a45b976614", null ],

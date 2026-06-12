@@ -6,5 +6,6 @@ var searchData=
   ['client_3',['Client',['../group__DiscordClient.html',1,'']]],
   ['client_27s_20session_20status_4',['Client&apos;s session status',['../group__DiscordInternalGatewaySessionStatus.html',1,'']]],
   ['commands_5',['Commands',['../group__DiscordCommands.html',1,'']]],
-  ['constants_6',['Constants',['../group__DiscordConstants.html',1,'']]]
+  ['constants_6',['Constants',['../group__DiscordConstants.html',1,'']]],
+  ['core_20error_20codes_7',['Core error codes',['../group__CoreError.html',1,'']]]
 ];

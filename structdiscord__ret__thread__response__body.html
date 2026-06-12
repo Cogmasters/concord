@@ -97,12 +97,6 @@ $(document).ready(function(){initNavTree('structdiscord__ret__thread__response__
  <a href="structdiscord__ret__thread__response__body.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for discord_ret_thread_response_body:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__thread__response__body__coll__graph.svg" width="234" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -116,9 +110,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:a870ee24ba62b63ba07b5cb6db5f45da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66469d76691c4d632a4705b6e9279648"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__thread__response__body.html#a66469d76691c4d632a4705b6e9279648">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:a66469d76691c4d632a4705b6e9279648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad47e4e74e78d39bc7819effd9a8d691b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__thread__response__body.html#ad47e4e74e78d39bc7819effd9a8d691b">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a> *ret)</td></tr>
+<tr class="memitem:ad47e4e74e78d39bc7819effd9a8d691b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__thread__response__body.html#ad47e4e74e78d39bc7819effd9a8d691b">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_thread_response_body *ret)</td></tr>
 <tr class="separator:ad47e4e74e78d39bc7819effd9a8d691b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5c9b8ea021eb515854ebe0e3c9594cb"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__thread__response__body.html#ab5c9b8ea021eb515854ebe0e3c9594cb">sync</a></td></tr>
+<tr class="memitem:ab5c9b8ea021eb515854ebe0e3c9594cb"><td class="memItemLeft" align="right" valign="top">struct discord_thread_response_body *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__thread__response__body.html#ab5c9b8ea021eb515854ebe0e3c9594cb">sync</a></td></tr>
 <tr class="separator:ab5c9b8ea021eb515854ebe0e3c9594cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -206,7 +200,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_thread_response_body::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a> *ret)</td>
+          <td class="memname">void(* discord_ret_thread_response_body::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_thread_response_body *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -221,7 +215,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__thread__response__body.html">discord_thread_response_body</a>* discord_ret_thread_response_body::sync</td>
+          <td class="memname">struct discord_thread_response_body* discord_ret_thread_response_body::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

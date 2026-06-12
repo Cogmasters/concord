@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['log_5flockfn_0',['log_LockFn',['../group__Log__C__Datatypes.html#gae6ec444e134355c817f769d2484fce61',1,'log.h']]],
-  ['log_5flogfn_1',['log_LogFn',['../group__Log__C__Datatypes.html#ga22962ef66fd59db9fc6fe746cd43802f',1,'log.h']]]
+  ['logmod_5fcallback_0',['logmod_callback',['../logmod_8h.html#a641a9a788dcc00377a1269588cd54d9f',1,'logmod.h']]],
+  ['logmod_5flock_1',['logmod_lock',['../logmod_8h.html#a1714a9647746f5d583cdddadd185f0cf',1,'logmod.h']]]
 ];

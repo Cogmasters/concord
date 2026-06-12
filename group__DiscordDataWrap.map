@@ -1,0 +1,5 @@
+<map id="Data Wrap" name="Data Wrap">
+<area shape="rect" id="node1" href="$group__DiscordClient.html" title="Client functions and datatypes." alt="" coords="5,5,65,31"/>
+<area shape="rect" id="node2" title="Helpers for wrapping Discord data types for easier management." alt="" coords="113,5,204,31"/>
+<area shape="rect" id="node3" href="$group__DiscordDataWrapJSON.html" title="Helpers for converting Discord data types to/from JSON." alt="" coords="252,5,383,31"/>
+</map>

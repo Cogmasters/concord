@@ -97,12 +97,6 @@ $(document).ready(function(){initNavTree('structdiscord__ret__auto__moderation__
  <a href="structdiscord__ret__auto__moderation__rule.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for discord_ret_auto_moderation_rule:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__auto__moderation__rule__coll__graph.svg" width="255" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -116,9 +110,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:af8ee8486e2fa6065728bf0cd4e5c7b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcff2c642c1e4dee5507cf8060f782ea"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__auto__moderation__rule.html#adcff2c642c1e4dee5507cf8060f782ea">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:adcff2c642c1e4dee5507cf8060f782ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaeb20d4028349fa07559917f9d4038e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__auto__moderation__rule.html#adaeb20d4028349fa07559917f9d4038e">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__auto__moderation__rule.html">discord_auto_moderation_rule</a> *ret)</td></tr>
+<tr class="memitem:adaeb20d4028349fa07559917f9d4038e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__auto__moderation__rule.html#adaeb20d4028349fa07559917f9d4038e">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_auto_moderation_rule *ret)</td></tr>
 <tr class="separator:adaeb20d4028349fa07559917f9d4038e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5a3687f05adf99d70bb0fe9ee1ed4e5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__auto__moderation__rule.html">discord_auto_moderation_rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__auto__moderation__rule.html#ab5a3687f05adf99d70bb0fe9ee1ed4e5">sync</a></td></tr>
+<tr class="memitem:ab5a3687f05adf99d70bb0fe9ee1ed4e5"><td class="memItemLeft" align="right" valign="top">struct discord_auto_moderation_rule *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__auto__moderation__rule.html#ab5a3687f05adf99d70bb0fe9ee1ed4e5">sync</a></td></tr>
 <tr class="separator:ab5a3687f05adf99d70bb0fe9ee1ed4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -206,7 +200,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_auto_moderation_rule::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__auto__moderation__rule.html">discord_auto_moderation_rule</a> *ret)</td>
+          <td class="memname">void(* discord_ret_auto_moderation_rule::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_auto_moderation_rule *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -221,7 +215,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__auto__moderation__rule.html">discord_auto_moderation_rule</a>* discord_ret_auto_moderation_rule::sync</td>
+          <td class="memname">struct discord_auto_moderation_rule* discord_ret_auto_moderation_rule::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

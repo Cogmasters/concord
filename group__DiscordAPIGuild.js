@@ -1,6 +1,5 @@
 var group__DiscordAPIGuild =
 [
-    [ "System channel flags", "group__DiscordAPIGuildSystemChannelFlags.html", "group__DiscordAPIGuildSystemChannelFlags" ],
     [ "discord_ret_guild", "structdiscord__ret__guild.html", [
       [ "data", "structdiscord__ret__guild.html#ad75b20a398d6b7817b18b2a7457234c9", null ],
       [ "cleanup", "structdiscord__ret__guild.html#a6637f66eb608872948558608385005d2", null ],
@@ -141,7 +140,6 @@ var group__DiscordAPIGuild =
     [ "discord_add_guild_member", "group__DiscordAPIGuild.html#ga6077919516cc581eefe89b1ad0350566", null ],
     [ "discord_modify_guild_member", "group__DiscordAPIGuild.html#gad3df23cdac55d8390ab271232eb98498", null ],
     [ "discord_modify_current_member", "group__DiscordAPIGuild.html#ga0cbfb35c503c499ae1fa83377ef4ce4f", null ],
-    [ "discord_modify_current_user_nick", "group__DiscordAPIGuild.html#gad59df50bcb939673708b4935f2b17a76", null ],
     [ "discord_add_guild_member_role", "group__DiscordAPIGuild.html#gae491474df254f98fbcf7a942aef3ff5e", null ],
     [ "discord_remove_guild_member_role", "group__DiscordAPIGuild.html#gaf3ff7fae43cdf6c036f583e9971ff93c", null ],
     [ "discord_remove_guild_member", "group__DiscordAPIGuild.html#gab10318e87406cfd70a98aee68205eddd", null ],

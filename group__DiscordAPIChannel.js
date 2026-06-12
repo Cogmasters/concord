@@ -1,10 +1,6 @@
 var group__DiscordAPIChannel =
 [
-    [ "Embed builder", "group__DiscordAPIChannelEmbed.html", "group__DiscordAPIChannelEmbed" ],
     [ "Helper functions", "group__DiscordAPIChannelHelper.html", "group__DiscordAPIChannelHelper" ],
-    [ "Message flags", "group__DiscordAPIChannelFlags.html", "group__DiscordAPIChannelFlags" ],
-    [ "Message flags", "group__DiscordAPIChannelMessageFlags.html", "group__DiscordAPIChannelMessageFlags" ],
-    [ "Attachment flags", "group__DiscordAPIChannelAttachmentFlags.html", "group__DiscordAPIChannelAttachmentFlags" ],
     [ "discord_ret_channel", "structdiscord__ret__channel.html", [
       [ "data", "structdiscord__ret__channel.html#a0d6b4df0e2dc6950ed4a6cc3f1922bcb", null ],
       [ "cleanup", "structdiscord__ret__channel.html#a404da6422e1a9f54ee3c2efedec484f3", null ],
@@ -102,7 +98,6 @@ var group__DiscordAPIChannel =
     [ "discord_leave_thread", "group__DiscordAPIChannel.html#ga9026c759b51d81e7e6f03a041f3c7cf3", null ],
     [ "discord_remove_thread_member", "group__DiscordAPIChannel.html#ga3c2aa4fd9f1e50ed74a983842976fc71", null ],
     [ "discord_list_thread_members", "group__DiscordAPIChannel.html#ga9afa8fb20fd1cb03493895d2c462f411", null ],
-    [ "discord_list_active_threads", "group__DiscordAPIChannel.html#ga9902ac4e90e8f2b011115c11ed277959", null ],
     [ "discord_list_public_archived_threads", "group__DiscordAPIChannel.html#ga4c400e5f4af644e732fa5bc73b979331", null ],
     [ "discord_list_private_archived_threads", "group__DiscordAPIChannel.html#gad4081bf0021b8637b62b0a09af8778db", null ],
     [ "discord_list_joined_private_archived_threads", "group__DiscordAPIChannel.html#ga9421825d5dd925189f2cbb2bf8c6975f", null ]

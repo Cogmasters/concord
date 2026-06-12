@@ -248,7 +248,7 @@ Functions</h2></td></tr>
 <p>modifies or creates a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">timer</td><td>the timer that should be modified </td></tr>
   </table>
   </dd>
@@ -304,7 +304,7 @@ Functions</h2></td></tr>
 <p>creates a one shot timer that automatically deletes itself upon completion </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">on_tick_cb</td><td>(nullable) the callback that should be called when timer triggers </td></tr>
     <tr><td class="paramname">on_status_changed_cb</td><td>(nullable) the callback for status updates timer-&gt;flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE </td></tr>
     <tr><td class="paramname">data</td><td>user data </td></tr>
@@ -313,7 +313,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the id of the timer </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a13">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a12">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -377,7 +377,7 @@ Functions</h2></td></tr>
 <p>creates a repeating timer that automatically deletes itself upon completion </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">on_tick_cb</td><td>(nullable) the callback that should be called when timer triggers </td></tr>
     <tr><td class="paramname">on_status_changed_cb</td><td>(nullable) the callback for status updates timer-&gt;flags will have: DISCORD_TIMER_CANCELED, and DISCORD_TIMER_DELETE </td></tr>
     <tr><td class="paramname">data</td><td>user data </td></tr>
@@ -388,7 +388,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the id of the timer </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a14">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a13">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -428,7 +428,7 @@ Functions</h2></td></tr>
 <p>get the data associated with the timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
     <tr><td class="paramname">timer</td><td>where to copy the timer data to </td></tr>
   </table>
@@ -467,7 +467,7 @@ Functions</h2></td></tr>
 <p>starts a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -505,7 +505,7 @@ Functions</h2></td></tr>
 <p>stops a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -543,13 +543,13 @@ Functions</h2></td></tr>
 <p>cancels a timer, this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a15">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="timers_8c-example.html#a14">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -583,7 +583,7 @@ Functions</h2></td></tr>
 <p>deletes a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>
@@ -621,7 +621,7 @@ Functions</h2></td></tr>
 <p>cancels, and deletes a timer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
     <tr><td class="paramname">id</td><td>id of the timer </td></tr>
   </table>
   </dd>

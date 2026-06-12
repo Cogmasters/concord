@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['log_5fc_5fdatatypes_0',['Log_C_Datatypes',['../group__Log__C__Datatypes.html',1,'']]]
+  ['json_20conversion_0',['JSON Conversion',['../group__DiscordDataWrapJSON.html',1,'']]]
 ];

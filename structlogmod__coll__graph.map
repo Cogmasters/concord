@@ -1,0 +1,5 @@
+<map id="logmod" name="logmod">
+<area shape="rect" id="node1" title="Main logging context structure." alt="" coords="69,199,140,225"/>
+<area shape="rect" id="node2" href="$structlogmod__logger.html" title="Immutable logger structure." alt="" coords="177,95,296,121"/>
+<area shape="rect" id="node3" href="$structlogmod__options.html" title="Configuration options for a logger." alt="" coords="5,5,132,32"/>
+</map>

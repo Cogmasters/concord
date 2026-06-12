@@ -1,0 +1,26 @@
+var concord_error_8h =
+[
+    [ "CCORD_INTERNAL_ERROR", "group__CoreError.html#ga7744f24f0799bedd8aa8a66726244c43", null ],
+    [ "CCORD_BAD_ENCODE", "group__CoreError.html#ga5b187684d1e6a95e75a46b7851f940e3", null ],
+    [ "CCORD_BAD_DECODE", "group__CoreError.html#ga6864c68285992b9c7a1856a660b1107e", null ],
+    [ "CCORD_OUT_OF_MEMORY", "group__CoreError.html#ga857b010755ba2f1ecf33d1e5158ffe59", null ],
+    [ "CCORD_ERRNO", "group__CoreError.html#gaa7e9ba3657a9f013747971ae100db789", null ],
+    [ "CCORD_CURL_WEBSOCKETS_MISSING", "group__CoreError.html#gad3f25cecaf748ac2dd641cdc26de3839", null ],
+    [ "CCORD_CURL_OUTDATED_VERSION", "group__CoreError.html#ga7f94922e9176491bca8fe0ea0c265d89", null ],
+    [ "CCORD_MALFORMED_PAYLOAD", "group__CoreError.html#gaeaf2e8ff2380f33a6afe58a4287f4992", null ],
+    [ "CCORD_FULL_WORKER", "group__CoreError.html#ga1035fd7db58d16cf1464ed32d30f141a", null ],
+    [ "CCORD_RESOURCE_UNAVAILABLE", "group__CoreError.html#gad104bb15a86c1305b2a93008627c391c", null ],
+    [ "CCORD_RESOURCE_OWNERSHIP", "group__CoreError.html#ga21b8a1802d48c1b8a6188002b7e1d73a", null ],
+    [ "CCORD_GLOBAL_INIT", "group__CoreError.html#ga705fdccbf1e575d3311f2d971af77b62", null ],
+    [ "CCORD_CURLM_INTERNAL", "group__CoreError.html#ga00c6ee3ff0da117a32837d8e2e5eb90c", null ],
+    [ "CCORD_CURLE_INTERNAL", "group__CoreError.html#ga593a9fcdc49e58c0dcd1b29bb8458008", null ],
+    [ "CCORD_BAD_JSON", "group__CoreError.html#ga80f3eaee3c522218fa1f2915ef61d6ca", null ],
+    [ "CCORD_BAD_PARAMETER", "group__CoreError.html#ga267a3333a5850c98e3a0b29c47607761", null ],
+    [ "CCORD_UNUSUAL_HTTP_CODE", "group__CoreError.html#gaa7b553c5e26c59b50b1c941fb60ec1b3", null ],
+    [ "CCORD_CURL_NO_RESPONSE", "group__CoreError.html#ga5e097b1aeeb3bff6adf8ed069430801f", null ],
+    [ "CCORD_HTTP_CODE", "group__CoreError.html#ga44466d265a280155ce063d2c69b5710b", null ],
+    [ "CCORD_OK", "group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f", null ],
+    [ "CCORDcode", "group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587", null ],
+    [ "ccord_code_as_string", "group__CoreError.html#ga318d6208d41944808834bfd43867d4d9", null ],
+    [ "ccord_strerror", "group__CoreError.html#ga702bf7098240a0caf678b73b2a254721", null ]
+];

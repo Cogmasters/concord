@@ -97,12 +97,6 @@ $(document).ready(function(){initNavTree('structdiscord__ret__connections.html',
  <a href="structdiscord__ret__connections.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for discord_ret_connections:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__connections__coll__graph.svg" width="190" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -116,9 +110,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:a3c48aaacd6a6d5378369e71ec94ce2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a917f46590ec5688568afdc94d6d9083e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__connections.html#a917f46590ec5688568afdc94d6d9083e">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:a917f46590ec5688568afdc94d6d9083e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac744f0492cbc077f4bcd444739c6910"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__connections.html#aac744f0492cbc077f4bcd444739c6910">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__connections.html">discord_connections</a> *ret)</td></tr>
+<tr class="memitem:aac744f0492cbc077f4bcd444739c6910"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__connections.html#aac744f0492cbc077f4bcd444739c6910">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_connections *ret)</td></tr>
 <tr class="separator:aac744f0492cbc077f4bcd444739c6910"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad83afcca5187a6a22bc61c72c75eb3b0"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__connections.html">discord_connections</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__connections.html#ad83afcca5187a6a22bc61c72c75eb3b0">sync</a></td></tr>
+<tr class="memitem:ad83afcca5187a6a22bc61c72c75eb3b0"><td class="memItemLeft" align="right" valign="top">struct discord_connections *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__connections.html#ad83afcca5187a6a22bc61c72c75eb3b0">sync</a></td></tr>
 <tr class="separator:ad83afcca5187a6a22bc61c72c75eb3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -206,7 +200,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_connections::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__connections.html">discord_connections</a> *ret)</td>
+          <td class="memname">void(* discord_ret_connections::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_connections *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -221,7 +215,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__connections.html">discord_connections</a>* discord_ret_connections::sync</td>
+          <td class="memname">struct discord_connections* discord_ret_connections::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

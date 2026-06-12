@@ -1,0 +1,6 @@
+<map id="core/logmod.h" name="core/logmod.h">
+<area shape="rect" id="node1" title=" " alt="" coords="153,6,267,33"/>
+<area shape="rect" id="node2" href="$log_8h.html" title="Maintain support for log.c deprecated functions using logmod.h as a wrapper." alt="" coords="5,81,92,108"/>
+<area shape="rect" id="node3" href="$discord-internal_8h.html" title="Internal functions and datatypes." alt="" coords="117,81,303,108"/>
+<area shape="rect" id="node4" href="$discord_8h.html" title="Public functions and datatypes." alt="" coords="328,81,460,108"/>
+</map>

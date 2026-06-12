@@ -12,5 +12,5 @@ var structdiscord__gateway__session =
     [ "enable", "structdiscord__gateway__session.html#acded8d964351ce3b8f838109749f311d", null ],
     [ "attempt", "structdiscord__gateway__session.html#a67d3e736be03f6e31b07e898d5f52cb6", null ],
     [ "limit", "structdiscord__gateway__session.html#a1d6164fd9ee758db4f0d5edb9ed09ac8", null ],
-    [ "retry", "structdiscord__gateway__session.html#a8e031760d0c75a0e5fa5a1e3e438a1fc", null ]
+    [ "retry", "structdiscord__gateway__session.html#ab4dbf81a7553d9a051d0f3dd447eb214", null ]
 ];

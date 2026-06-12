@@ -1,8 +1,6 @@
 var websockets_8h =
 [
-    [ "ws_info", "structws__info.html", "structws__info" ],
     [ "ws_callbacks", "structws__callbacks.html", "structws__callbacks" ],
-    [ "ws_attr", "structws__attr.html", "structws__attr" ],
     [ "ws_is_alive", "websockets_8h.html#ad051813d376e9b2eae4018af09b36608", null ],
     [ "ws_is_functional", "websockets_8h.html#a684b8995274735a5e21602b065a4aa0e", null ],
     [ "ws_status", "websockets_8h.html#a2c98aa4435bf623cdba0e8bab4303b26", [
@@ -28,13 +26,13 @@ var websockets_8h =
       [ "WS_CLOSE_REASON_PRIVATE_START", "websockets_8h.html#a92591a76da29adffd6f3a95bb12db08da37d152d001a7b6513077dfc126349d95", null ],
       [ "WS_CLOSE_REASON_PRIVATE_END", "websockets_8h.html#a92591a76da29adffd6f3a95bb12db08dab3a0ee03638d537a30fd9db837afdc86", null ]
     ] ],
-    [ "ws_init", "websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6", null ],
+    [ "ws_init", "websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346", null ],
     [ "ws_cleanup", "websockets_8h.html#ad45b500790fffec540211cda5d1dbd0f", null ],
-    [ "ws_set_url", "websockets_8h.html#ac709a5d97d06af442ec647d3ff275cbf", null ],
-    [ "ws_send_binary", "websockets_8h.html#aa765041b1f3bbc8d1706289fd0f7f81c", null ],
-    [ "ws_send_text", "websockets_8h.html#a21afc90e4fac706f08089d21ac29219f", null ],
-    [ "ws_ping", "websockets_8h.html#a68b39b4037a097677244a42b642e6dd8", null ],
-    [ "ws_pong", "websockets_8h.html#a56df312506b866285a9d3b4638580484", null ],
+    [ "ws_set_url", "websockets_8h.html#a00c5f44de4c404f0239728768951d60a", null ],
+    [ "ws_send_binary", "websockets_8h.html#a6a4191771cfb0d5fc5edae4a4ef88456", null ],
+    [ "ws_send_text", "websockets_8h.html#a852baa0848796919a5f18c3b4c697d83", null ],
+    [ "ws_ping", "websockets_8h.html#a5b629b6c158e04fe3161b97016d900f5", null ],
+    [ "ws_pong", "websockets_8h.html#a406917e4f8d50cabfe850d5dfa13670c", null ],
     [ "ws_start", "websockets_8h.html#a7c3acbf05e1430abb8096fd65ef74c32", null ],
     [ "ws_end", "websockets_8h.html#ade9e87cf4848a4937e663104b58c17dc", null ],
     [ "ws_easy_run", "websockets_8h.html#a8350bc868ff0ce805df4b57835d26029", null ],

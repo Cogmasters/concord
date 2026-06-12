@@ -121,9 +121,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga242842023d4d62e819a8edab0bc886ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">discord_ratelimiter_init</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
-<tr class="memdesc:ga242842023d4d62e819a8edab0bc886ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ratelimiter handle.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad">More...</a><br /></td></tr>
-<tr class="separator:ga242842023d4d62e819a8edab0bc886ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2091b7531c12ac2b1d1c0dfd0dd616b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b">discord_ratelimiter_init</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
+<tr class="memdesc:gab2091b7531c12ac2b1d1c0dfd0dd616b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize ratelimiter handle.  <a href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b">More...</a><br /></td></tr>
+<tr class="separator:gab2091b7531c12ac2b1d1c0dfd0dd616b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">discord_ratelimiter_cleanup</a> (struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *rl)</td></tr>
 <tr class="memdesc:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup all buckets that have been discovered.  <a href="group__DiscordInternalRESTRequestRatelimit.html#ga89ceb5153dd3e0f0323254c0213aa91f">More...</a><br /></td></tr>
 <tr class="separator:ga89ceb5153dd3e0f0323254c0213aa91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,28 +172,18 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga242842023d4d62e819a8edab0bc886ad" name="ga242842023d4d62e819a8edab0bc886ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga242842023d4d62e819a8edab0bc886ad">&#9670;&nbsp;</a></span>discord_ratelimiter_init()</h2>
+<a id="gab2091b7531c12ac2b1d1c0dfd0dd616b" name="gab2091b7531c12ac2b1d1c0dfd0dd616b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2091b7531c12ac2b1d1c0dfd0dd616b">&#9670;&nbsp;</a></span>discord_ratelimiter_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void discord_ratelimiter_init </td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_ratelimiter_init </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__ratelimiter.html">discord_ratelimiter</a> *&#160;</td>
-          <td class="paramname"><em>rl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>rl</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structlogconf.html">logconf</a> *&#160;</td>
-          <td class="paramname"><em>conf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -202,10 +192,10 @@ Functions</h2></td></tr>
 <p >A hashtable shall be used for storage and retrieval of discovered buckets </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rl</td><td>the ratelimiter handle to be initialized </td></tr>
-    <tr><td class="paramname">conf</td><td>pointer to <a class="el" href="structdiscord__rest.html">discord_rest</a> logging module </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
 </div>
@@ -229,7 +219,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>pending requests will be moved to <code>rest.queues-&gt;recycling</code> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -329,7 +319,7 @@ Functions</h2></td></tr>
 <p>Update the bucket with response header data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">bucket</td><td>NULL when bucket is first discovered </td></tr>
     <tr><td class="paramname">key</td><td>obtained from <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga49ec800dbd53a216de0a860a2d9238d7" title="Build unique key formed from the HTTP method and endpoint.">discord_ratelimiter_build_key()</a> </td></tr>
     <tr><td class="paramname">info</td><td>informational struct containing details on the current transfer </td></tr>
@@ -373,10 +363,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Update global ratelimiting value. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>check if all pending buckets must be unset</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>check if all pending buckets must be unset</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">bucket</td><td>bucket that received the global ratelimiting notice </td></tr>
     <tr><td class="paramname">wait_ms</td><td>the amount of time that all buckets should wait for </td></tr>
   </table>
@@ -451,7 +441,7 @@ Functions</h2></td></tr>
 <p>Get a <code>struct <a class="el" href="structdiscord__bucket.html" title="The Discord bucket for handling per-group ratelimits.">discord_bucket</a></code> assigned to <code>key</code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">key</td><td>obtained from <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga49ec800dbd53a216de0a860a2d9238d7" title="Build unique key formed from the HTTP method and endpoint.">discord_ratelimiter_build_key()</a> </td></tr>
   </table>
   </dd>
@@ -501,7 +491,7 @@ Functions</h2></td></tr>
 <p>Insert into bucket's next requests queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">b</td><td>the bucket to insert the request to </td></tr>
     <tr><td class="paramname">req</td><td>the request to be inserted to bucket </td></tr>
     <tr><td class="paramname">high_priority</td><td>if high priority then request shall be prioritized over already enqueued requests </td></tr>
@@ -547,7 +537,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>discord_bucket_unselect() must be called once bucket's current request is done and its next one should be selected</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">data</td><td>user arbitrary data </td></tr>
     <tr><td class="paramname">iter</td><td>the user callback to be called per bucket </td></tr>
   </table>
@@ -592,7 +582,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>counterpart to discord_ratelimiter_request_selector()</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#ga242842023d4d62e819a8edab0bc886ad" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
+    <tr><td class="paramname">rl</td><td>the handle initialized with <a class="el" href="group__DiscordInternalRESTRequestRatelimit.html#gab2091b7531c12ac2b1d1c0dfd0dd616b" title="Initialize ratelimiter handle.">discord_ratelimiter_init()</a> </td></tr>
     <tr><td class="paramname">b</td><td>the request's bucket </td></tr>
     <tr><td class="paramname">req</td><td>the request to unslect </td></tr>
   </table>

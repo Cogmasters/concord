@@ -1,7 +1,7 @@
 var concord_once_8h =
 [
-    [ "ccord_shutdown_async", "concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb", null ],
-    [ "ccord_shutting_down", "concord-once_8h.html#a0824a6473f84923cd3a4f7062f3d9ef5", null ],
-    [ "ccord_global_init", "concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727", null ],
-    [ "ccord_global_cleanup", "concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a", null ]
+    [ "ccord_once_cb", "concord-once_8h.html#a90f7b8e3100607181dcb1732c2cf0887", null ],
+    [ "ccord_once_set_callback", "concord-once_8h.html#a566923c534892285cbba76034efe9af5", null ],
+    [ "ccord_once", "concord-once_8h.html#ac54921f718cb39cc27a9e70fec02b968", null ],
+    [ "ccord_once_cleanup", "concord-once_8h.html#accb93cf44a462e1f85ffa3283ec39bd9", null ]
 ];

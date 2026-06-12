@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['cast_5fcleanup_0',['cast_cleanup',['../discord-request_8h.html#ad0d6e6b891be9f0e6ca67ceac78e493b',1,'discord-request.h']]],
-  ['cast_5fdone_5ftyped_1',['cast_done_typed',['../discord-request_8h.html#aa8c80343ae4d706e145ea5fca8cd5b5a',1,'discord-request.h']]],
-  ['cast_5ffrom_5fjson_2',['cast_from_json',['../discord-request_8h.html#a32d0b0a2a5579d93f67f0f883fec5184',1,'discord-request.h']]],
-  ['cast_5finit_3',['cast_init',['../discord-request_8h.html#a98302af62c528a87515ba01bbd587134',1,'discord-request.h']]],
-  ['ccordcode_4',['CCORDcode',['../group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259',1,'error.h']]]
+  ['cast_5fdone_5ftyped_0',['cast_done_typed',['../discord-request_8h.html#aa8c80343ae4d706e145ea5fca8cd5b5a',1,'discord-request.h']]],
+  ['cast_5finit_1',['cast_init',['../discord-request_8h.html#a885d4dbe7090e1f2974d9d8e2aa93fe1',1,'discord-request.h']]],
+  ['ccord_5fonce_5fcb_2',['ccord_once_cb',['../concord-once_8h.html#a90f7b8e3100607181dcb1732c2cf0887',1,'concord-once.h']]],
+  ['ccordcode_3',['CCORDcode',['../group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587',1,'concord-error.h']]]
 ];

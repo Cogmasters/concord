@@ -88,218 +88,52 @@ $(document).ready(function(){initNavTree('group__ConcordError.html',''); initRes
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#groups">Modules</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">Error handling</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>Concord error codes and meaning.  
 <a href="#details">More...</a></p>
+<div class="dynheader">
+Collaboration diagram for Error handling:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__ConcordError.svg" width="320" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:group__DiscordError"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordError.html">Discord error codes</a></td></tr>
+<tr class="memdesc:group__DiscordError"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes triggered from Discord. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__CoreError"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CoreError.html">Core error codes</a></td></tr>
+<tr class="memdesc:group__CoreError"><td class="mdescLeft">&#160;</td><td class="mdescRight">These codes are used by the core library and should be used by all modules . <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga78a20c062e3ec52d6b521fd92ae88259"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259">CCORDcode</a></td></tr>
-<tr class="separator:ga78a20c062e3ec52d6b521fd92ae88259"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ga73d04d4ecf8e63dd1ee4ded3045d1d31"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> { <br />
-&#160;&#160;<a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a231696362bb607687a6a0a041621452e">CCORD_MALFORMED_PAYLOAD</a> = -12
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a60bc736ec55f07ce325805e3d4b0c338">CCORD_FULL_WORKER</a> = -11
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aeea8743159d234edeb3566c691d3cd64">CCORD_RESOURCE_UNAVAILABLE</a> = -10
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a6f539629079e6626d67ff48783db18a1">CCORD_UNAVAILABLE</a> = CCORD_RESOURCE_UNAVAILABLE
-, <br />
-&#160;&#160;<a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ad818dfe44285a4a52cd96be62bcc8736">CCORD_RESOURCE_OWNERSHIP</a> = -9
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a92366cdfe51909cabf8139d7c6919096">CCORD_OWNERSHIP</a> = CCORD_RESOURCE_OWNERSHIP
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ab9bd5476c9185cc1fd7a32536c964156">CCORD_GLOBAL_INIT</a> = -8
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aa991e50351e2361d20c52ab882a0d120">CCORD_CURLM_INTERNAL</a> = -7
-, <br />
-&#160;&#160;<a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ad2868f9f6f6d2d618b27e5c5a75ac7da">CCORD_CURLE_INTERNAL</a> = -6
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a789c2d49726b2c006681abde4a29754d">CCORD_BAD_JSON</a> = -5
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31aa23a9475b87b4812d8daf24c5826e0bf">CCORD_BAD_PARAMETER</a> = -4
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a698480af12b7a7047edef76fbdbe0b52">CCORD_UNUSUAL_HTTP_CODE</a> = -3
-, <br />
-&#160;&#160;<a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a7e45fc2aba3e1c82aaaed93adb1376b3">CCORD_CURL_NO_RESPONSE</a> = -2
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a39465d00c68c85856e7beb71fdcf7599">CCORD_HTTP_CODE</a> = -1
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9">CCORD_OK</a> = 0
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a44d35541b370621611b1bd910755bfca">CCORD_PENDING</a>
-, <br />
-&#160;&#160;<a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31ad28fda9344f985c25a8ab619535488f0">CCORD_DISCORD_JSON_CODE</a> = 100
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a848d05868186c580f46bd0131783ef84">CCORD_DISCORD_BAD_AUTH</a>
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a930fee2363a23f2a08c471c1d0903361">CCORD_DISCORD_RATELIMIT</a>
-, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a2cbca63f50ea98438bfce32cf596c207">CCORD_DISCORD_CONNECTION</a>
-<br />
- }</td></tr>
-<tr class="separator:ga73d04d4ecf8e63dd1ee4ded3045d1d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gac88742928a867d61346e9f2e3e5d778d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#gac88742928a867d61346e9f2e3e5d778d">discord_return_error</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, const char error[], <a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> code)</td></tr>
-<tr class="memdesc:gac88742928a867d61346e9f2e3e5d778d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a Concord's error.  <a href="group__ConcordError.html#gac88742928a867d61346e9f2e3e5d778d">More...</a><br /></td></tr>
-<tr class="separator:gac88742928a867d61346e9f2e3e5d778d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gada62832835a3d70782b791e0cb607cd2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#gada62832835a3d70782b791e0cb607cd2">discord_strerror</a> (<a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> code, struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
-<tr class="memdesc:gada62832835a3d70782b791e0cb607cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the meaning of CCORDcode.  <a href="group__ConcordError.html#gada62832835a3d70782b791e0cb607cd2">More...</a><br /></td></tr>
-<tr class="separator:gada62832835a3d70782b791e0cb607cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ca5a90a1068552190074f603f68b587"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a></td></tr>
+<tr class="memdesc:ga4ca5a90a1068552190074f603f68b587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concord error codes.  <a href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">More...</a><br /></td></tr>
+<tr class="separator:ga4ca5a90a1068552190074f603f68b587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Concord error codes and meaning. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga78a20c062e3ec52d6b521fd92ae88259" name="ga78a20c062e3ec52d6b521fd92ae88259"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga78a20c062e3ec52d6b521fd92ae88259">&#9670;&nbsp;</a></span>CCORDcode</h2>
+<a id="ga4ca5a90a1068552190074f603f68b587" name="ga4ca5a90a1068552190074f603f68b587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4ca5a90a1068552190074f603f68b587">&#9670;&nbsp;</a></span>CCORDcode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef enum <a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> <a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a></td>
+          <td class="memname">typedef int <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga73d04d4ecf8e63dd1ee4ded3045d1d31" name="ga73d04d4ecf8e63dd1ee4ded3045d1d31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga73d04d4ecf8e63dd1ee4ded3045d1d31">&#9670;&nbsp;</a></span>CCORDcode</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a231696362bb607687a6a0a041621452e" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a231696362bb607687a6a0a041621452e"></a>CCORD_MALFORMED_PAYLOAD&#160;</td><td class="fielddoc"><p >failure when creating request's payload </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a60bc736ec55f07ce325805e3d4b0c338" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a60bc736ec55f07ce325805e3d4b0c338"></a>CCORD_FULL_WORKER&#160;</td><td class="fielddoc"><p >couldn't enqueue worker thread (queue is full) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31aeea8743159d234edeb3566c691d3cd64" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31aeea8743159d234edeb3566c691d3cd64"></a>CCORD_RESOURCE_UNAVAILABLE&#160;</td><td class="fielddoc"><p >couldn't perform action because resource is unavailable </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a6f539629079e6626d67ff48783db18a1" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a6f539629079e6626d67ff48783db18a1"></a>CCORD_UNAVAILABLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31ad818dfe44285a4a52cd96be62bcc8736" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31ad818dfe44285a4a52cd96be62bcc8736"></a>CCORD_RESOURCE_OWNERSHIP&#160;</td><td class="fielddoc"><p >couldn't cleanup resource automatically due to being claimed </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a92366cdfe51909cabf8139d7c6919096" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a92366cdfe51909cabf8139d7c6919096"></a>CCORD_OWNERSHIP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31ab9bd5476c9185cc1fd7a32536c964156" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31ab9bd5476c9185cc1fd7a32536c964156"></a>CCORD_GLOBAL_INIT&#160;</td><td class="fielddoc"><p >attempt to initialize globals more than once </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31aa991e50351e2361d20c52ab882a0d120" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31aa991e50351e2361d20c52ab882a0d120"></a>CCORD_CURLM_INTERNAL&#160;</td><td class="fielddoc"><p >curl's multi handle internal error </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31ad2868f9f6f6d2d618b27e5c5a75ac7da" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31ad2868f9f6f6d2d618b27e5c5a75ac7da"></a>CCORD_CURLE_INTERNAL&#160;</td><td class="fielddoc"><p >curl's easy handle internal error </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a789c2d49726b2c006681abde4a29754d" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a789c2d49726b2c006681abde4a29754d"></a>CCORD_BAD_JSON&#160;</td><td class="fielddoc"><p >internal failure when encoding or decoding JSON </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31aa23a9475b87b4812d8daf24c5826e0bf" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31aa23a9475b87b4812d8daf24c5826e0bf"></a>CCORD_BAD_PARAMETER&#160;</td><td class="fielddoc"><p >bad value for parameter </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a698480af12b7a7047edef76fbdbe0b52" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a698480af12b7a7047edef76fbdbe0b52"></a>CCORD_UNUSUAL_HTTP_CODE&#160;</td><td class="fielddoc"><p >received a non-standard http code </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a7e45fc2aba3e1c82aaaed93adb1376b3" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a7e45fc2aba3e1c82aaaed93adb1376b3"></a>CCORD_CURL_NO_RESPONSE&#160;</td><td class="fielddoc"><p >no response came through from curl </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a39465d00c68c85856e7beb71fdcf7599" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a39465d00c68c85856e7beb71fdcf7599"></a>CCORD_HTTP_CODE&#160;</td><td class="fielddoc"><p >request wasn't succesful </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9"></a>CCORD_OK&#160;</td><td class="fielddoc"><p >action was a success </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a44d35541b370621611b1bd910755bfca" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a44d35541b370621611b1bd910755bfca"></a>CCORD_PENDING&#160;</td><td class="fielddoc"><p >action is pending (ex: request has been enqueued and will be performed later) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31ad28fda9344f985c25a8ab619535488f0" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31ad28fda9344f985c25a8ab619535488f0"></a>CCORD_DISCORD_JSON_CODE&#160;</td><td class="fielddoc"><p >received a JSON error message </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a848d05868186c580f46bd0131783ef84" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a848d05868186c580f46bd0131783ef84"></a>CCORD_DISCORD_BAD_AUTH&#160;</td><td class="fielddoc"><p >bad authentication token </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a930fee2363a23f2a08c471c1d0903361" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a930fee2363a23f2a08c471c1d0903361"></a>CCORD_DISCORD_RATELIMIT&#160;</td><td class="fielddoc"><p >being ratelimited </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga73d04d4ecf8e63dd1ee4ded3045d1d31a2cbca63f50ea98438bfce32cf596c207" name="gga73d04d4ecf8e63dd1ee4ded3045d1d31a2cbca63f50ea98438bfce32cf596c207"></a>CCORD_DISCORD_CONNECTION&#160;</td><td class="fielddoc"><p >couldn't establish connection to Discord </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="gac88742928a867d61346e9f2e3e5d778d" name="gac88742928a867d61346e9f2e3e5d778d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac88742928a867d61346e9f2e3e5d778d">&#9670;&nbsp;</a></span>discord_return_error()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_return_error </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
-          <td class="paramname"><em>client</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>error</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td>
-          <td class="paramname"><em>code</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return a Concord's error. </p>
-<dl class="section note"><dt>Note</dt><dd>used to log and return an error</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a>, NULL for generic error </td></tr>
-    <tr><td class="paramname">error</td><td>the error string to be logged </td></tr>
-    <tr><td class="paramname">code</td><td>the error code </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the error code </dd></dl>
-
-</div>
-</div>
-<a id="gada62832835a3d70782b791e0cb607cd2" name="gada62832835a3d70782b791e0cb607cd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gada62832835a3d70782b791e0cb607cd2">&#9670;&nbsp;</a></span>discord_strerror()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char * discord_strerror </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td>
-          <td class="paramname"><em>code</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
-          <td class="paramname"><em>client</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Return the meaning of CCORDcode. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">code</td><td>the CCORDcode value </td></tr>
-    <tr><td class="paramname">client</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>unused parameter </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>a string containing the code meaning </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a31">audit-log.c</a>, <a class="el" href="channel_8c-example.html#a31">channel.c</a>, <a class="el" href="emoji_8c-example.html#a18">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a14">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a37">guild.c</a>, <a class="el" href="reaction_8c-example.html#a16">reaction.c</a>, and <a class="el" href="slash-commands2_8c-example.html#a8">slash-commands2.c</a>.</dd>
-</dl>
+<p>Concord error codes. </p>
 
 </div>
 </div>

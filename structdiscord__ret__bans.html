@@ -97,12 +97,6 @@ $(document).ready(function(){initNavTree('structdiscord__ret__bans.html',''); in
  <a href="structdiscord__ret__bans.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for discord_ret_bans:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__bans__coll__graph.svg" width="143" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -116,9 +110,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:a0d77684f1dceda7e0fa94afe2d12f977"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ed7dde632a9bda78534a38f66dda2d9"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__bans.html#a8ed7dde632a9bda78534a38f66dda2d9">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:a8ed7dde632a9bda78534a38f66dda2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec4d131c3e5e51e0b3a5093328eabf9b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__bans.html#aec4d131c3e5e51e0b3a5093328eabf9b">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__bans.html">discord_bans</a> *ret)</td></tr>
+<tr class="memitem:aec4d131c3e5e51e0b3a5093328eabf9b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__bans.html#aec4d131c3e5e51e0b3a5093328eabf9b">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_bans *ret)</td></tr>
 <tr class="separator:aec4d131c3e5e51e0b3a5093328eabf9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b0949bcaa1e938acb15b239f22f83a5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__bans.html">discord_bans</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__bans.html#a6b0949bcaa1e938acb15b239f22f83a5">sync</a></td></tr>
+<tr class="memitem:a6b0949bcaa1e938acb15b239f22f83a5"><td class="memItemLeft" align="right" valign="top">struct discord_bans *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__bans.html#a6b0949bcaa1e938acb15b239f22f83a5">sync</a></td></tr>
 <tr class="separator:a6b0949bcaa1e938acb15b239f22f83a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -206,7 +200,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_bans::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__bans.html">discord_bans</a> *ret)</td>
+          <td class="memname">void(* discord_ret_bans::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_bans *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -221,7 +215,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord__bans.html">discord_bans</a>* discord_ret_bans::sync</td>
+          <td class="memname">struct discord_bans* discord_ret_bans::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

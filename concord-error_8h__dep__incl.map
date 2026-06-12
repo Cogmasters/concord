@@ -1,0 +1,7 @@
+<map id="core/concord&#45;error.h" name="core/concord&#45;error.h">
+<area shape="rect" id="node1" title=" " alt="" coords="291,5,443,32"/>
+<area shape="rect" id="node2" href="$concord-notifier_8h.html" title="Notifier fds listening to pipe, this can be used to propagate events." alt="" coords="5,80,172,107"/>
+<area shape="rect" id="node3" href="$concord-once_8h.html" title="Initialized once." alt="" coords="196,80,349,107"/>
+<area shape="rect" id="node4" href="$discord-worker_8h.html" title="Global threadpool." alt="" coords="373,80,553,107"/>
+<area shape="rect" id="node5" href="$discord_8h.html" title="Public functions and datatypes." alt="" coords="577,80,709,107"/>
+</map>

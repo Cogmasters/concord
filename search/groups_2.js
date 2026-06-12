@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['discord_20permissions_0',['Discord permissions',['../group__DiscordPermissions.html',1,'']]]
+  ['data_20wrap_0',['Data Wrap',['../group__DiscordDataWrap.html',1,'']]],
+  ['discord_20error_20codes_1',['Discord error codes',['../group__DiscordError.html',1,'']]]
 ];
