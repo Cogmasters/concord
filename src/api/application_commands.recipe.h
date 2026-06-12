@@ -169,7 +169,7 @@ PUBLIC(struct, discord_edit_guild_application_command, 5, (
     )
 )
 
-PUBLIC(struct, discord_bulk_overwrite_guild_application_commands, 9, (
+PUBLIC(struct, discord_bulk_overwrite_guild_application_command, 9, (
         (_, _, u64snowflake, _, id, _, _, 0ul),
         (_, _, char, *, name, _, _, 0ul),
         (_, struct, strings, *, name_localizations, _, _, 0ul),
@@ -179,5 +179,12 @@ PUBLIC(struct, discord_bulk_overwrite_guild_application_commands, 9, (
         (_, _, u64bitmask, _, default_member_permissions, _, _, CONCORD_OPTIONAL),
         (_, _, bool, _, dm_permission, _, _, 0ul),
         (_, enum, discord_application_command_types, _, type, _, _, CONCORD_OPTIONAL)
+    )
+)
+
+PUBLIC(struct, discord_bulk_overwrite_guild_application_commands, 3, (
+        (_, _, int, _, size, _, _, 0ul),
+        (_, struct, discord_bulk_overwrite_guild_application_command, *, array, _, _, 0ul),
+        (_, _, int, _, realsize, _, _, 0ul)
     )
 )
