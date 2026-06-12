@@ -71,6 +71,21 @@ discord_invite.stage_instance
 discord_invite_stage_instance.participant_count
 discord_invite_stage_instance.speaker_count
 
+# ── Type-check exceptions ('type:' prefix; see check_openapi_sync.py) ──
+
+# name collisions: the field's own schema is absent from the spec, so the
+# name only matches unrelated properties with other types
+type:discord_optional_audit_entry_info.count   # wire sends stringified numbers (docs: string)
+type:discord_activity_party.size               # gateway-only: [current, max] int pair
+type:discord_interaction.version               # literal integer 1 (docs)
+
+# real modeling gaps, kept until fixed — remove the entry with the fix:
+type:discord_bulk_overwrite_guild_application_command.name_localizations        # {locale: string} map modeled as string list
+type:discord_bulk_overwrite_guild_application_command.description_localizations # {locale: string} map modeled as string list
+type:discord_create_group_dm.nicks             # {user_id: nick} map modeled as string list
+type:discord_reaction.burst_colors             # array of hex color strings modeled as char*
+type:discord_attachment.duration_secs          # float seconds modeled as int
+
 # ── Deprecated by Discord, kept for backward compatibility ──
 discord_application_command.default_permission
 discord_create_global_application_command.default_permission

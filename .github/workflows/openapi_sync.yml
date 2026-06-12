@@ -2,7 +2,9 @@ name: OpenAPI sync
 
 # Validates that every serialized field name in src/api/*.recipe.h exists
 # in Discord's published OpenAPI spec — catching typos, missing aliases
-# (the muted/"mute" class of bug) and fields Discord has dropped.
+# (the muted/"mute" class of bug) and fields Discord has dropped — and
+# that each field's JSON type is declared for that property somewhere in
+# the spec (the object-vs-array class of bug, e.g. issue #190).
 # Exceptions live in scripts/openapi_sync_allowlist.txt.
 
 on:
