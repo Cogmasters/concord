@@ -190,18 +190,25 @@ _discord_init(struct discord *client)
 {
     CCORDcode code;
 
-    if (logmod_set_options(&client->logmod,
-                           (struct logmod_options){
-                               .logfile = client->config.log.trace,
-                               .quiet = client->config.log.quiet,
-                               .color = client->config.log.color,
-                               .hide_context_id = 0,
-                               .show_application_id = 1,
-                               .level = client->config.log.level,
-                           })
-        < 0)
-    {
+    const struct logmod_options log_options = {
+        .logfile = client->config.log.trace,
+        .quiet = client->config.log.quiet,
+        .color = client->config.log.color,
+        .hide_context_id = 0,
+        .show_application_id = 1,
+        .level = client->config.log.level,
+    };
+
+    if (logmod_set_options(&client->logmod, log_options) < 0) {
         logmod_log(ERROR, client->logger, "Couldn't set logger options");
+    }
+    /* logmod_set_options() only applies to loggers created afterwards;
+     * client->logger predates it, so apply the config explicitly or it
+     * runs with zeroed options forever (issue #227: log.quiet and
+     * log.trace ignored for CLIENT-context messages) */
+    if (logmod_logger_set_options(client->logger, log_options) != LOGMOD_OK) {
+        logmod_log(ERROR, client->logger,
+                   "Couldn't set client logger options");
     }
     if ((code = _discord_global_init()) != CCORD_OK) {
         logmod_log(FATAL, client->logger,

@@ -16,7 +16,8 @@ TESTS_HERMETIC = queriec \
                  unit-anomap unit-oa_hash unit-priority_queue \
                  unit-threadpool unit-fixtures-smoke unit-codec-decode \
                  unit-codec-encode unit-ratelimit unit-fixture-server \
-                 unit-base-url rest-integration ratelimit-integration \
+                 unit-base-url unit-client-log rest-integration \
+                 ratelimit-integration \
                  unit-mockws unit-gateway-lifecycle unit-gateway-resume \
                  unit-gateway-dispatch discord-data-wrap
 # Live: require Discord token in test_config.json
@@ -35,7 +36,7 @@ all: $(TESTS)
 
 # suites linking the fixture server (implicit rules only handle
 # single-source tests)
-TESTS_FIXTURE_SERVER = unit-fixture-server unit-base-url \
+TESTS_FIXTURE_SERVER = unit-fixture-server unit-base-url unit-client-log \
                        rest-integration ratelimit-integration
 
 $(TESTS_FIXTURE_SERVER): %: %.c fixture-server.c fixture-server.h \
