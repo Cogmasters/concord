@@ -58,6 +58,8 @@ struct websockets {
     CURL *ehandle;
     /** timestamp updated every ws_timestamp_update() call */
     uint64_t now_tstamp;
+    /** timestamp pointer updated before each user callback dispatch */
+    uint64_t *cb_tstamp;
     /** WebSockets connection URL @see ws_set_url() */
     char base_url[512 + 1];
     /** WebSockets callbacks */
@@ -216,6 +218,7 @@ static void
 ws_on_connect_cb(void *p_ws)
 {
     struct websockets *ws = p_ws;
+    if (ws->cb_tstamp) *ws->cb_tstamp = cog_timestamp_ms();
 
     _ws_set_status(ws, WS_CONNECTED);
 
@@ -236,6 +239,8 @@ ws_on_close_cb(void *p_ws,
                size_t len)
 {
     struct websockets *ws = p_ws;
+    if (ws->cb_tstamp) *ws->cb_tstamp = cog_timestamp_ms();
+
     (void)ehandle;
 
     _ws_set_status(ws, WS_DISCONNECTING);
@@ -261,6 +266,8 @@ static void
 ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
     struct websockets *ws = p_ws;
+    if (ws->cb_tstamp) *ws->cb_tstamp = cog_timestamp_ms();
+
     (void)ehandle;
 
     logmod_log(INFO, ws->loggers.raw, "WS_RCV_TEXT [%s] - %s\n%.*s",
@@ -277,6 +284,8 @@ static void
 ws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
     struct websockets *ws = p_ws;
+    if (ws->cb_tstamp) *ws->cb_tstamp = cog_timestamp_ms();
+
     (void)ehandle;
 
     logmod_log(INFO, ws->loggers.raw, "WS_RCV_BINARY [%s] - %s",
@@ -293,6 +302,8 @@ static void
 ws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
+    if (ws->cb_tstamp) *ws->cb_tstamp = cog_timestamp_ms();
+
     (void)ehandle;
 
     logmod_log(DEBUG, ws->loggers.raw, "WS_RCV_PING [%s] - %s\n%.*s",
@@ -309,6 +320,8 @@ static void
 ws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
     struct websockets *ws = p_ws;
+    if (ws->cb_tstamp) *ws->cb_tstamp = cog_timestamp_ms();
+
     (void)ehandle;
 
     logmod_log(DEBUG, ws->loggers.raw, "WS_RCV_PONG [%s] - %s\n%.*s",
@@ -959,17 +972,12 @@ ws_easy_run(struct websockets *ws, uint64_t wait_ms, uint64_t *tstamp)
 bool
 ws_multi_socket_run(struct websockets *ws, uint64_t *tstamp)
 {
-    int is_running = 0;
-    CURLMcode mcode;
-
     /** update WebSockets concept of "now" */
+    ws->cb_tstamp = tstamp;
     *tstamp = ws_timestamp_update(ws);
 
-    mcode = curl_multi_socket_all(ws->mhandle, &is_running);
-
-    if (mcode != CURLM_OK) CURLM_LOG(ws, mcode);
-
-    return is_running != 0;
+    return ws_get_status(ws) == WS_CONNECTING
+        || ws_get_status(ws) == WS_CONNECTED;
 }
 
 uint64_t
