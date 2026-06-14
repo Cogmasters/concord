@@ -250,7 +250,7 @@ _Bool ws_easy_run(struct websockets *ws, uint64_t wait_ms, uint64_t *tstamp);
 
 /**
  * @brief Reads/Write available data from WebSockets
- * @note Helper over curl_multi_socket_all()
+ * @note I/O is driven by io_poller per-socket-event via curl_multi_socket_action()
  *
  * @param ws the WebSockets handle created with ws_init()
  * @param tstamp get current timestamp for this iteration
