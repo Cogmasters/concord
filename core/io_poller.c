@@ -121,6 +121,10 @@ io_poller_poll(struct io_poller *io, int milliseconds)
     return poll(io->pollfds, io->cnt, milliseconds);
 }
 
+static void io_curl_cb(struct io_poller *io,
+                         enum io_poller_events events,
+                         void *user_data);
+
 int
 io_poller_perform(struct io_poller *io)
 {
@@ -132,7 +136,16 @@ io_poller_perform(struct io_poller *io)
             if (io->pollfds[i].revents & POLLOUT) events |= IO_POLLER_OUT;
             io->pollfds[i].revents = 0;
             struct io_poller_element *element = &io->elements[i];
-            element->cb(io, events, element->user_data);
+            if (element->cb == io_curl_cb) {
+                int cevents = 0;
+                if (events & IO_POLLER_IN) cevents |= CURL_CSELECT_IN;
+                if (events & IO_POLLER_OUT) cevents |= CURL_CSELECT_OUT;
+                struct io_curlm *curlm = element->user_data;
+                curl_multi_socket_action(curlm->multi, io->pollfds[i].fd,
+                                         cevents, &curlm->running);
+                curlm->should_perform = true;
+            } else
+                element->cb(io, events, element->user_data);
         }
     }
     for (int i = 0; i < io->curlm_cnt; i++) {
@@ -140,11 +153,13 @@ io_poller_perform(struct io_poller *io)
         if (curlm->should_perform
             || (-1 != curlm->timeout && now >= curlm->timeout)) {
             curlm->should_perform = false;
+            if (-1 != curlm->timeout && now >= curlm->timeout)
+                curl_multi_socket_action(curlm->multi, CURL_SOCKET_TIMEOUT,
+                                         0, &curlm->running);
             int result =
                 curlm->cb
                     ? curlm->cb(io, curlm->multi, curlm->user_data)
-                    : curl_multi_socket_all(curlm->multi, &curlm->running);
-
+                    : 0;
             if (result != 0) return result;
         }
     }
