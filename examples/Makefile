@@ -8,6 +8,7 @@ GENCODECS_DIR = $(TOP)/gencodecs
 
 EXES = 8ball \
        audit-log \
+       autocomplete \
        ban \
        cache \
        channel \
