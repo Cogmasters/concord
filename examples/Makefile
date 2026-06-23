@@ -8,6 +8,7 @@ GENERATED_DIR = $(TOP)/generated
 
 EXES = 8ball \
        audit-log \
+       autocomplete \
        ban \
        cache \
        channel \

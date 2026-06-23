@@ -16,7 +16,7 @@ This document outlines the Discord API currently supported by Concord.
 - [x] [Application Command Interaction Data Option](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure)
 - [x] [Application Command Permissions Structure](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object)
 - [x] [Application Command Permission Type](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type)
-- [ ] [Autocomplete](https://discord.com/developers/docs/interactions/application-commands#autocomplete)
+- [x] [Autocomplete](https://discord.com/developers/docs/interactions/application-commands#autocomplete)
 - [ ] [Localization](https://discord.com/developers/docs/interactions/application-commands#localization)
 - [x] [Get Global Application Commands](https://discord.com/developers/docs/interactions/application-commands#get-global-application-commands)
 - [x] [Create Global Application Command](https://discord.com/developers/docs/interactions/application-commands#create-global-application-command)
