@@ -759,7 +759,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reads/Write available data from WebSockets. </p>
-<dl class="section note"><dt>Note</dt><dd>Helper over curl_multi_socket_all()</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>I/O is driven by io_poller per-socket-event via curl_multi_socket_action()</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
