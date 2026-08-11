@@ -90,18 +90,11 @@ $(document).ready(function(){initNavTree('attributes_8h_source.html',''); initRe
   <div class="headertitle"><div class="title">attributes.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="attributes_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef ATTRIBUTES_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define ATTRIBUTES_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#if defined(__MINGW32__)                                                      \</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">    || (defined(__GNUC__) &amp;&amp; __GNUC__ &gt; 4 ? true : __GNUC_PATCHLEVEL__ &gt;= 4)  \</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">    || defined(__USE_MINGW_ANSI_STDIO)</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define PRINTF_LIKE(a, b) __attribute__((format(gnu_printf, a, b)))</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="attributes_8h.html#ad8efd9b6cb6f1b4d20cf5c8475f0bdf3">    9</a></span><span class="preprocessor">#define PRINTF_LIKE(a, b)</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#endif </span><span class="comment">/* ATTRIBUTES_H */</span><span class="preprocessor"></span></div>
+<a href="attributes_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#if defined(__MINGW32__) || (defined (__GNUC__) &amp;&amp; __GNUC__ &gt; 4 ? true : __GNUC_PATCHLEVEL__ &gt;= 4) || defined(__USE_MINGW_ANSI_STDIO)</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#  define PRINTF_LIKE(a, b) __attribute__((format(gnu_printf, a, b)))</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="attributes_8h.html#ad8efd9b6cb6f1b4d20cf5c8475f0bdf3">    4</a></span><span class="preprocessor">#  define PRINTF_LIKE(a, b)</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

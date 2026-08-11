@@ -113,9 +113,9 @@ This graph shows which files directly or indirectly include this file:</div>
 Macros</h2></td></tr>
 <tr class="memitem:aad80898f92f591ab2549b0e75b504380"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#aad80898f92f591ab2549b0e75b504380">QUEUE</a>(type)&#160;&#160;&#160;QUEUE</td></tr>
 <tr class="separator:aad80898f92f591ab2549b0e75b504380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a750755ae7415605f70938690fe588fbb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q)&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> **) &amp;((*(q))[0]))</td></tr>
+<tr class="memitem:a750755ae7415605f70938690fe588fbb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q)&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> **) &amp;((*(q))[0]))</td></tr>
 <tr class="separator:a750755ae7415605f70938690fe588fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72c339457f6dc68000b23fca06b24030"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a72c339457f6dc68000b23fca06b24030">QUEUE_PREV</a>(q)&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> **) &amp;((*(q))[1]))</td></tr>
+<tr class="memitem:a72c339457f6dc68000b23fca06b24030"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a72c339457f6dc68000b23fca06b24030">QUEUE_PREV</a>(q)&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> **) &amp;((*(q))[1]))</td></tr>
 <tr class="separator:a72c339457f6dc68000b23fca06b24030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af36e5f7e780fb7f22ce61a1aca5924a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#af36e5f7e780fb7f22ce61a1aca5924a1">QUEUE_PREV_NEXT</a>(q)&#160;&#160;&#160;(<a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(<a class="el" href="queue_8h.html#a72c339457f6dc68000b23fca06b24030">QUEUE_PREV</a>(q)))</td></tr>
 <tr class="separator:af36e5f7e780fb7f22ce61a1aca5924a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,7 +125,7 @@ Macros</h2></td></tr>
 <tr class="separator:a6595f7e72c9ef969af4b209307b0cee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a009b5826b736095648b3607ef90c812a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a009b5826b736095648b3607ef90c812a">QUEUE_FOREACH</a>(q,  h)&#160;&#160;&#160;  for ((q) = <a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(h); (q) != (h); (q) = <a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q))</td></tr>
 <tr class="separator:a009b5826b736095648b3607ef90c812a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6750e0691001d4318e2e71ef514515c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a6750e0691001d4318e2e71ef514515c1">QUEUE_EMPTY</a>(q)&#160;&#160;&#160;  ((const <a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> *) (q) == (const <a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> *) <a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q))</td></tr>
+<tr class="memitem:a6750e0691001d4318e2e71ef514515c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a6750e0691001d4318e2e71ef514515c1">QUEUE_EMPTY</a>(q)&#160;&#160;&#160;  ((const <a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> *) (q) == (const <a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> *) <a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q))</td></tr>
 <tr class="separator:a6750e0691001d4318e2e71ef514515c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75d3b57c21ba724fae0ca0b279ed90ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a75d3b57c21ba724fae0ca0b279ed90ac">QUEUE_HEAD</a>(q)&#160;&#160;&#160;  (<a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q))</td></tr>
 <tr class="separator:a75d3b57c21ba724fae0ca0b279ed90ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,8 +146,8 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a487be649aa6d0b7726b0a259f5218729"><td class="memItemLeft" align="right" valign="top">typedef void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a>[2]</td></tr>
-<tr class="separator:a487be649aa6d0b7726b0a259f5218729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc99bd592a75c94fa19277650252e282"><td class="memItemLeft" align="right" valign="top">typedef void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a>[2]</td></tr>
+<tr class="separator:acc99bd592a75c94fa19277650252e282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aad80898f92f591ab2549b0e75b504380" name="aad80898f92f591ab2549b0e75b504380"></a>
@@ -179,7 +179,7 @@ Typedefs</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">q</td><td>)</td>
-          <td>&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> **) &amp;((*(q))[0]))</td>
+          <td>&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> **) &amp;((*(q))[0]))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -197,7 +197,7 @@ Typedefs</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">q</td><td>)</td>
-          <td>&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> **) &amp;((*(q))[1]))</td>
+          <td>&#160;&#160;&#160;(*(<a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> **) &amp;((*(q))[1]))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -313,7 +313,7 @@ Typedefs</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">q</td><td>)</td>
-          <td>&#160;&#160;&#160;  ((const <a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> *) (q) == (const <a class="el" href="queue_8h.html#a487be649aa6d0b7726b0a259f5218729">QUEUE</a> *) <a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q))</td>
+          <td>&#160;&#160;&#160;  ((const <a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> *) (q) == (const <a class="el" href="queue_8h.html#acc99bd592a75c94fa19277650252e282">QUEUE</a> *) <a class="el" href="queue_8h.html#a750755ae7415605f70938690fe588fbb">QUEUE_NEXT</a>(q))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -574,8 +574,8 @@ Typedefs</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a487be649aa6d0b7726b0a259f5218729" name="a487be649aa6d0b7726b0a259f5218729"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a487be649aa6d0b7726b0a259f5218729">&#9670;&nbsp;</a></span></h2>
+<a id="acc99bd592a75c94fa19277650252e282" name="acc99bd592a75c94fa19277650252e282"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc99bd592a75c94fa19277650252e282">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

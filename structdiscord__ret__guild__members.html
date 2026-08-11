@@ -97,6 +97,12 @@ $(document).ready(function(){initNavTree('structdiscord__ret__guild__members.htm
  <a href="structdiscord__ret__guild__members.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for discord_ret_guild_members:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__guild__members__coll__graph.svg" width="214" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -110,14 +116,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a445ed5753e14236239d2f1b1e4616e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6994ac1960df7d55950f5f59268903ee"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__members.html#a6994ac1960df7d55950f5f59268903ee">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:a6994ac1960df7d55950f5f59268903ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15194a621381d00b1f3434373ea453a2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__members.html#a15194a621381d00b1f3434373ea453a2">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_guild_members *ret)</td></tr>
+<tr class="memitem:a15194a621381d00b1f3434373ea453a2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__members.html#a15194a621381d00b1f3434373ea453a2">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__guild__members.html">discord_guild_members</a> *ret)</td></tr>
 <tr class="separator:a15194a621381d00b1f3434373ea453a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad37abd93b71e9894bcce168b0e343559"><td class="memItemLeft" align="right" valign="top">struct discord_guild_members *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__members.html#ad37abd93b71e9894bcce168b0e343559">sync</a></td></tr>
+<tr class="memitem:ad37abd93b71e9894bcce168b0e343559"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__guild__members.html">discord_guild_members</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__guild__members.html#ad37abd93b71e9894bcce168b0e343559">sync</a></td></tr>
 <tr class="separator:ad37abd93b71e9894bcce168b0e343559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a6">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a12">fetch-messages.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="ac9f33a6ad2b86101d64f1b59869cf3ae" name="ac9f33a6ad2b86101d64f1b59869cf3ae"></a>
@@ -202,7 +208,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_guild_members::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_guild_members *ret)</td>
+          <td class="memname">void(* discord_ret_guild_members::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__guild__members.html">discord_guild_members</a> *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -217,12 +223,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct discord_guild_members* discord_ret_guild_members::sync</td>
+          <td class="memname">struct <a class="el" href="structdiscord__guild__members.html">discord_guild_members</a>* discord_ret_guild_members::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-response_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a9">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a25">fetch-messages.c</a>.</dd>
 </dl>
 
 </div>

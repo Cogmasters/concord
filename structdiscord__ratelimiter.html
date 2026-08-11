@@ -100,14 +100,14 @@ $(document).ready(function(){initNavTree('structdiscord__ratelimiter.html',''); 
 <div class="dynheader">
 Collaboration diagram for discord_ratelimiter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ratelimiter__coll__graph.svg" width="272" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ratelimiter__coll__graph.svg" width="224" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a4bb4fc0b1e3f033e50342bf566283fda"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structlogmod__logger.html">logmod_logger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#a4bb4fc0b1e3f033e50342bf566283fda">logger</a></td></tr>
-<tr class="separator:a4bb4fc0b1e3f033e50342bf566283fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41e1147f4fa523744c639363fc82a49"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structlogconf.html">logconf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#aa41e1147f4fa523744c639363fc82a49">conf</a></td></tr>
+<tr class="separator:aa41e1147f4fa523744c639363fc82a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a543175e6442081a833ebdb2045d2db49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#a543175e6442081a833ebdb2045d2db49">length</a></td></tr>
 <tr class="separator:a543175e6442081a833ebdb2045d2db49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9627e4df091f75a792d2bbef5b791d91"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#a9627e4df091f75a792d2bbef5b791d91">capacity</a></td></tr>
@@ -120,22 +120,22 @@ Data Fields</h2></td></tr>
 <tr class="separator:a851e023093acc161d03b26f1c1d56727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a446a24c48f3d443d2a6431ef1ee05b20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordTypes.html#ga8df876efcd9f4b764d1f4daa740fdecd">u64unix_ms</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#a446a24c48f3d443d2a6431ef1ee05b20">global_wait_tstamp</a></td></tr>
 <tr class="separator:a446a24c48f3d443d2a6431ef1ee05b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a299a2b8f09d900932b15783c6de0a955"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a299a2b8f09d900932b15783c6de0a955"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#a299a2b8f09d900932b15783c6de0a955">queues</a></td></tr>
-<tr class="separator:a299a2b8f09d900932b15783c6de0a955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621319557605c11bc7c79f99db464497"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a621319557605c11bc7c79f99db464497"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ratelimiter.html#a621319557605c11bc7c79f99db464497">queues</a></td></tr>
+<tr class="separator:a621319557605c11bc7c79f99db464497"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The ratelimiter struct for handling ratelimiting. </p>
 <dl class="section note"><dt>Note</dt><dd>this struct <b>SHOULD</b> only be handled from the <code>REST</code> manager thread </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a4bb4fc0b1e3f033e50342bf566283fda" name="a4bb4fc0b1e3f033e50342bf566283fda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bb4fc0b1e3f033e50342bf566283fda">&#9670;&nbsp;</a></span>logger</h2>
+<a id="aa41e1147f4fa523744c639363fc82a49" name="aa41e1147f4fa523744c639363fc82a49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa41e1147f4fa523744c639363fc82a49">&#9670;&nbsp;</a></span>conf</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structlogmod__logger.html">logmod_logger</a>* discord_ratelimiter::logger</td>
+          <td class="memname">struct <a class="el" href="structlogconf.html">logconf</a> discord_ratelimiter::conf</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -232,8 +232,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a299a2b8f09d900932b15783c6de0a955" name="a299a2b8f09d900932b15783c6de0a955"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a299a2b8f09d900932b15783c6de0a955">&#9670;&nbsp;</a></span></h2>
+<a id="a621319557605c11bc7c79f99db464497" name="a621319557605c11bc7c79f99db464497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a621319557605c11bc7c79f99db464497">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

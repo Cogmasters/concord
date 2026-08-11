@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('group__DiscordClient.html',''); initRe
 <div class="dynheader">
 Collaboration diagram for Client:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordClient.svg" width="347" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordClient.svg" width="347" height="250"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
@@ -116,18 +116,12 @@ Modules</h2></td></tr>
 <tr class="memitem:group__DiscordEvents"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordEvents.html">Events</a></td></tr>
 <tr class="memdesc:group__DiscordEvents"><td class="mdescLeft">&#160;</td><td class="mdescRight">Events sent over the Gateway socket to the client. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__DiscordDataWrap"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordDataWrap.html">Data Wrap</a></td></tr>
-<tr class="memdesc:group__DiscordDataWrap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helpers for wrapping Discord data types for easier management. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__DiscordTimer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html">Timer</a></td></tr>
 <tr class="memdesc:group__DiscordTimer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule callbacks to be called in the future. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__config.html">discord_config</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord configuration handler.  <a href="structdiscord__config.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html">discord</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord client handler.  <a href="structdiscord.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,19 +131,6 @@ Macros</h2></td></tr>
 <tr class="memitem:gaa1716c3144212db97c8330987edd94b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7">discord_claim</a>(client,  data)&#160;&#160;&#160;(<a class="el" href="group__DiscordClient.html#gaff572a95f2f1b2c03c0796111d579086">__discord_claim</a>(client, data), data)</td></tr>
 <tr class="memdesc:gaa1716c3144212db97c8330987edd94b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim ownership of a resource provided by Concord.  <a href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7">More...</a><br /></td></tr>
 <tr class="separator:gaa1716c3144212db97c8330987edd94b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabd3e92777ece762289ffa5d65032dec1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gabd3e92777ece762289ffa5d65032dec1">ccord_global_init</a>()</td></tr>
-<tr class="separator:gabd3e92777ece762289ffa5d65032dec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9166e5be19d94e8604e428a2dc516f67"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga9166e5be19d94e8604e428a2dc516f67">ccord_global_cleanup</a>()</td></tr>
-<tr class="separator:ga9166e5be19d94e8604e428a2dc516f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab7e685e6cb01ee0a2646018263a21a98"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gab7e685e6cb01ee0a2646018263a21a98">ccord_shutdown_async</a>()&#160;&#160;&#160;<a class="el" href="group__DiscordClient.html#ga3caaa79127871df3ab83f02258ef9a8d">discord_shutdown_all</a>()</td></tr>
-<tr class="memdesc:gab7e685e6cb01ee0a2646018263a21a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backwards compatible alias for <a class="el" href="group__DiscordClient.html#ga3caaa79127871df3ab83f02258ef9a8d" title="Gracefully notify all Discord connections for shutting down.">discord_shutdown_all()</a>  <a href="group__DiscordClient.html#gab7e685e6cb01ee0a2646018263a21a98">More...</a><br /></td></tr>
-<tr class="separator:gab7e685e6cb01ee0a2646018263a21a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8ae5c6db5fe5f361d67d7f6c00325339"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga8ae5c6db5fe5f361d67d7f6c00325339">discord_init</a>&#160;&#160;&#160;<a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">discord_from_token</a></td></tr>
-<tr class="memdesc:ga8ae5c6db5fe5f361d67d7f6c00325339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backwards compatible alias for <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a>  <a href="group__DiscordClient.html#ga8ae5c6db5fe5f361d67d7f6c00325339">More...</a><br /></td></tr>
-<tr class="separator:ga8ae5c6db5fe5f361d67d7f6c00325339"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga319204389ffa15addb3d20c1d4d94b40"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga319204389ffa15addb3d20c1d4d94b40">discord_config_init</a>&#160;&#160;&#160;<a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc">discord_from_json</a></td></tr>
-<tr class="memdesc:ga319204389ffa15addb3d20c1d4d94b40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backwards compatible alias for <a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc" title="Creates a Discord Client handle from a config.json file.">discord_from_json()</a>  <a href="group__DiscordClient.html#ga319204389ffa15addb3d20c1d4d94b40">More...</a><br /></td></tr>
-<tr class="separator:ga319204389ffa15addb3d20c1d4d94b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -158,21 +139,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4">discord_unclaim</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *data)</td></tr>
 <tr class="memdesc:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unclaim ownership of a resource provided by Concord.  <a href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4">More...</a><br /></td></tr>
 <tr class="separator:ga1f34f5e41cb03767910e9ba3f90207d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3caaa79127871df3ab83f02258ef9a8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga3caaa79127871df3ab83f02258ef9a8d">discord_shutdown_all</a> (void)</td></tr>
-<tr class="memdesc:ga3caaa79127871df3ab83f02258ef9a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gracefully notify all Discord connections for shutting down.  <a href="group__DiscordClient.html#ga3caaa79127871df3ab83f02258ef9a8d">More...</a><br /></td></tr>
-<tr class="separator:ga3caaa79127871df3ab83f02258ef9a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga05e2e0abab62dfa9aa4cf7313a167f73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga05e2e0abab62dfa9aa4cf7313a167f73">discord_shutdown_all_ongoing</a> (void)</td></tr>
-<tr class="memdesc:ga05e2e0abab62dfa9aa4cf7313a167f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if all Discord connections shutting down is in progress.  <a href="group__DiscordClient.html#ga05e2e0abab62dfa9aa4cf7313a167f73">More...</a><br /></td></tr>
-<tr class="separator:ga05e2e0abab62dfa9aa4cf7313a167f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga38eee8c070cf3cda20838b5cfe0fe39f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">discord_from_token</a> (const char token[])</td></tr>
-<tr class="memdesc:ga38eee8c070cf3cda20838b5cfe0fe39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a Discord Client handle from a token.  <a href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">More...</a><br /></td></tr>
-<tr class="separator:ga38eee8c070cf3cda20838b5cfe0fe39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga90edef66f741ea7b56f547e49fa3effc"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc">discord_from_json</a> (const char config_file[])</td></tr>
-<tr class="memdesc:ga90edef66f741ea7b56f547e49fa3effc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a Discord Client handle from a <code>config.json</code> file.  <a href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc">More...</a><br /></td></tr>
-<tr class="separator:ga90edef66f741ea7b56f547e49fa3effc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8bcbcac37e2ea9016cd3fcfbddb72052"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga8bcbcac37e2ea9016cd3fcfbddb72052">discord_from_config</a> (const struct <a class="el" href="structdiscord__config.html">discord_config</a> *config)</td></tr>
-<tr class="memdesc:ga8bcbcac37e2ea9016cd3fcfbddb72052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a Discord Client handle from a <a class="el" href="structdiscord__config.html">discord_config</a> structure.  <a href="group__DiscordClient.html#ga8bcbcac37e2ea9016cd3fcfbddb72052">More...</a><br /></td></tr>
-<tr class="separator:ga8bcbcac37e2ea9016cd3fcfbddb72052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a> (const char token[])</td></tr>
+<tr class="memdesc:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by its token.  <a href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">More...</a><br /></td></tr>
+<tr class="separator:gacd52a9fc58a1fcb9b4719a5cedd70f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a> (const char config_file[])</td></tr>
+<tr class="memdesc:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Discord Client handle by a <code>config.json</code> file.  <a href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">More...</a><br /></td></tr>
+<tr class="separator:ga75bbe1d3eb9e6d03953b6313e5543afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac4486003ffab83de397c0bebb74b3307"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307">discord_config_get_field</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, char *const path[], unsigned depth)</td></tr>
 <tr class="memdesc:gac4486003ffab83de397c0bebb74b3307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the contents from the config file field.  <a href="group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307">More...</a><br /></td></tr>
 <tr class="separator:gac4486003ffab83de397c0bebb74b3307"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,10 +154,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga009d0e352a30c00f8b4765712fcfa5a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">discord_cleanup</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga009d0e352a30c00f8b4765712fcfa5a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a Discord Client handle.  <a href="group__DiscordClient.html#ga009d0e352a30c00f8b4765712fcfa5a9">More...</a><br /></td></tr>
 <tr class="separator:ga009d0e352a30c00f8b4765712fcfa5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga164add107d145df966be36cef1b9b4a9"><td class="memItemLeft" align="right" valign="top">const struct discord_user *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memitem:ga164add107d145df966be36cef1b9b4a9"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structdiscord__user.html">discord_user</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga164add107d145df966be36cef1b9b4a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the client's cached user.  <a href="group__DiscordClient.html#ga164add107d145df966be36cef1b9b4a9">More...</a><br /></td></tr>
 <tr class="separator:ga164add107d145df966be36cef1b9b4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga10b7d422776acf4fb67877f8f1d28af4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memitem:ga10b7d422776acf4fb67877f8f1d28af4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga10b7d422776acf4fb67877f8f1d28af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a connection to the Discord Gateway.  <a href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">More...</a><br /></td></tr>
 <tr class="separator:ga10b7d422776acf4fb67877f8f1d28af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3e522caa529dd26e03d75a6482e7aaa1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga3e522caa529dd26e03d75a6482e7aaa1">discord_shutdown</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
@@ -209,9 +181,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gab751b38fe43b55b59592560798b01c07"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gab751b38fe43b55b59592560798b01c07">discord_timestamp_us</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:gab751b38fe43b55b59592560798b01c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current timestamp (in microseconds)  <a href="group__DiscordClient.html#gab751b38fe43b55b59592560798b01c07">More...</a><br /></td></tr>
 <tr class="separator:gab751b38fe43b55b59592560798b01c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3903cea30ff8d8e27bbffe8c175be208"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structlogmod.html">logmod</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga3903cea30ff8d8e27bbffe8c175be208">discord_get_logmod</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
-<tr class="memdesc:ga3903cea30ff8d8e27bbffe8c175be208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve client's logging module for configuration purposes.  <a href="group__DiscordClient.html#ga3903cea30ff8d8e27bbffe8c175be208">More...</a><br /></td></tr>
-<tr class="separator:ga3903cea30ff8d8e27bbffe8c175be208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structlogconf.html">logconf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#ga5ecca42ef5a99f9bfba9940b926068b3">discord_get_logconf</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memdesc:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve client's logging module for configuration purposes.  <a href="group__DiscordClient.html#ga5ecca42ef5a99f9bfba9940b926068b3">More...</a><br /></td></tr>
+<tr class="separator:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="memItemLeft" align="right" valign="top">struct io_poller *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClient.html#gab53f8fde50dc0fa5311a9ffc9751b655">discord_get_io_poller</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the io_poller used by the discord client  <a href="group__DiscordClient.html#gab53f8fde50dc0fa5311a9ffc9751b655">More...</a><br /></td></tr>
 <tr class="separator:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,102 +221,12 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4" title="Unclaim ownership of a resource provided by Concord.">discord_unclaim()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">data</td><td>a resource provided by Concord </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to <code>data</code> (for one-liners) </dd></dl>
-
-</div>
-</div>
-<a id="gabd3e92777ece762289ffa5d65032dec1" name="gabd3e92777ece762289ffa5d65032dec1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabd3e92777ece762289ffa5d65032dec1">&#9670;&nbsp;</a></span>ccord_global_init</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ccord_global_init</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>since v3.0.0, keep backwards compatibility </dd></dl>
-
-</div>
-</div>
-<a id="ga9166e5be19d94e8604e428a2dc516f67" name="ga9166e5be19d94e8604e428a2dc516f67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9166e5be19d94e8604e428a2dc516f67">&#9670;&nbsp;</a></span>ccord_global_cleanup</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ccord_global_cleanup</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>since v3.0.0, keep backwards compatibility </dd></dl>
-
-</div>
-</div>
-<a id="gab7e685e6cb01ee0a2646018263a21a98" name="gab7e685e6cb01ee0a2646018263a21a98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab7e685e6cb01ee0a2646018263a21a98">&#9670;&nbsp;</a></span>ccord_shutdown_async</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ccord_shutdown_async</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="group__DiscordClient.html#ga3caaa79127871df3ab83f02258ef9a8d">discord_shutdown_all</a>()</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Backwards compatible alias for <a class="el" href="group__DiscordClient.html#ga3caaa79127871df3ab83f02258ef9a8d" title="Gracefully notify all Discord connections for shutting down.">discord_shutdown_all()</a> </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>since v3.0.0 </dd></dl>
-
-</div>
-</div>
-<a id="ga8ae5c6db5fe5f361d67d7f6c00325339" name="ga8ae5c6db5fe5f361d67d7f6c00325339"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8ae5c6db5fe5f361d67d7f6c00325339">&#9670;&nbsp;</a></span>discord_init</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define discord_init&#160;&#160;&#160;<a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">discord_from_token</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Backwards compatible alias for <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>since v3.0.0 </dd></dl>
-
-</div>
-</div>
-<a id="ga319204389ffa15addb3d20c1d4d94b40" name="ga319204389ffa15addb3d20c1d4d94b40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga319204389ffa15addb3d20c1d4d94b40">&#9670;&nbsp;</a></span>discord_config_init</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define discord_config_init&#160;&#160;&#160;<a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc">discord_from_json</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Backwards compatible alias for <a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc" title="Creates a Discord Client handle from a config.json file.">discord_from_json()</a> </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>since v3.0.0 </dd></dl>
 
 </div>
 </div>
@@ -408,66 +290,24 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7" title="Claim ownership of a resource provided by Concord.">discord_claim()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">data</td><td>a resource provided by Concord, that has been previously claimed with <a class="el" href="group__DiscordClient.html#gaa1716c3144212db97c8330987edd94b7" title="Claim ownership of a resource provided by Concord.">discord_claim()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a2">cache.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a8">cache.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="ga3caaa79127871df3ab83f02258ef9a8d" name="ga3caaa79127871df3ab83f02258ef9a8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3caaa79127871df3ab83f02258ef9a8d">&#9670;&nbsp;</a></span>discord_shutdown_all()</h2>
+<a id="gacd52a9fc58a1fcb9b4719a5cedd70f5d" name="gacd52a9fc58a1fcb9b4719a5cedd70f5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd52a9fc58a1fcb9b4719a5cedd70f5d">&#9670;&nbsp;</a></span>discord_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void discord_shutdown_all </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gracefully notify all Discord connections for shutting down. </p>
-<dl class="section note"><dt>Note</dt><dd>this function will not wait before returning, and will return immediately. The shutdown process will be handled in the background. </dd></dl>
-
-</div>
-</div>
-<a id="ga05e2e0abab62dfa9aa4cf7313a167f73" name="ga05e2e0abab62dfa9aa4cf7313a167f73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga05e2e0abab62dfa9aa4cf7313a167f73">&#9670;&nbsp;</a></span>discord_shutdown_all_ongoing()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool discord_shutdown_all_ongoing </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check if all Discord connections shutting down is in progress. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if all shutdown is in progress, false otherwise </dd></dl>
-
-</div>
-</div>
-<a id="ga38eee8c070cf3cda20838b5cfe0fe39f" name="ga38eee8c070cf3cda20838b5cfe0fe39f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga38eee8c070cf3cda20838b5cfe0fe39f">&#9670;&nbsp;</a></span>discord_from_token()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structdiscord.html">discord</a> * discord_from_token </td>
+          <td class="memname">struct <a class="el" href="structdiscord.html">discord</a> * discord_init </td>
           <td>(</td>
           <td class="paramtype">const char&#160;</td>
           <td class="paramname"><em>token</em>[]</td><td>)</td>
@@ -476,8 +316,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a Discord Client handle from a token. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga3903cea30ff8d8e27bbffe8c175be208" title="Retrieve client&#39;s logging module for configuration purposes.">discord_get_logmod()</a> to configure logging behavior</dd></dl>
+<p>Create a Discord Client handle by its token. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga5ecca42ef5a99f9bfba9940b926068b3" title="Retrieve client&#39;s logging module for configuration purposes.">discord_get_logconf()</a> to configure logging behavior</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">token</td><td>the bot token </td></tr>
@@ -485,19 +325,19 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the newly created Discord Client handle </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#a1">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#a2">webhook.c</a>.</dd>
 </dl>
 
 </div>
 </div>
-<a id="ga90edef66f741ea7b56f547e49fa3effc" name="ga90edef66f741ea7b56f547e49fa3effc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga90edef66f741ea7b56f547e49fa3effc">&#9670;&nbsp;</a></span>discord_from_json()</h2>
+<a id="ga75bbe1d3eb9e6d03953b6313e5543afb" name="ga75bbe1d3eb9e6d03953b6313e5543afb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga75bbe1d3eb9e6d03953b6313e5543afb">&#9670;&nbsp;</a></span>discord_config_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structdiscord.html">discord</a> * discord_from_json </td>
+          <td class="memname">struct <a class="el" href="structdiscord.html">discord</a> * discord_config_init </td>
           <td>(</td>
           <td class="paramtype">const char&#160;</td>
           <td class="paramname"><em>config_file</em>[]</td><td>)</td>
@@ -506,8 +346,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a Discord Client handle from a <code>config.json</code> file. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga3903cea30ff8d8e27bbffe8c175be208" title="Retrieve client&#39;s logging module for configuration purposes.">discord_get_logmod()</a> to configure logging behavior</dd></dl>
+<p>Create a Discord Client handle by a <code>config.json</code> file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config_file</td><td>the <code>config.json</code> file name </td></tr>
@@ -515,36 +354,8 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the newly created Discord Client handle </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a11">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a10">ban.c</a>, <a class="el" href="cache_8c-example.html#a5">cache.c</a>, <a class="el" href="channel_8c-example.html#a21">channel.c</a>, <a class="el" href="components_8c-example.html#a8">components.c</a>, <a class="el" href="embed_8c-example.html#a6">embed.c</a>, <a class="el" href="emoji_8c-example.html#a14">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a14">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a14">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a21">guild.c</a>, <a class="el" href="invite_8c-example.html#a10">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a11">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a10">pin.c</a>, <a class="el" href="reaction_8c-example.html#a15">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a5">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a24">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a11">timers.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a44">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a33">ban.c</a>, <a class="el" href="cache_8c-example.html#a15">cache.c</a>, <a class="el" href="channel_8c-example.html#a54">channel.c</a>, <a class="el" href="components_8c-example.html#a41">components.c</a>, <a class="el" href="embed_8c-example.html#a39">embed.c</a>, <a class="el" href="emoji_8c-example.html#a34">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a45">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a27">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a61">guild.c</a>, <a class="el" href="invite_8c-example.html#a27">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a25">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a32">pin.c</a>, <a class="el" href="reaction_8c-example.html#a35">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a43">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a56">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a12">timers.c</a>.</dd>
 </dl>
-
-</div>
-</div>
-<a id="ga8bcbcac37e2ea9016cd3fcfbddb72052" name="ga8bcbcac37e2ea9016cd3fcfbddb72052"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8bcbcac37e2ea9016cd3fcfbddb72052">&#9670;&nbsp;</a></span>discord_from_config()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structdiscord.html">discord</a> * discord_from_config </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structdiscord__config.html">discord_config</a> *&#160;</td>
-          <td class="paramname"><em>config</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a Discord Client handle from a <a class="el" href="structdiscord__config.html">discord_config</a> structure. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordClient.html#ga3903cea30ff8d8e27bbffe8c175be208" title="Retrieve client&#39;s logging module for configuration purposes.">discord_get_logmod()</a> to configure logging behavior</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">config</td><td>the <a class="el" href="structdiscord__config.html">discord_config</a> structure </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the newly created Discord Client handle </dd></dl>
 
 </div>
 </div>
@@ -581,7 +392,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the contents from the config file field. </p>
-<dl class="section note"><dt>Note</dt><dd>your bot <b>MUST</b> have been initialized with <a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc" title="Creates a Discord Client handle from a config.json file.">discord_from_json()</a></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>your bot <b>MUST</b> have been initialized with <a class="el" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb" title="Create a Discord Client handle by a config.json file.">discord_config_init()</a></dd></dl>
 <div class="fragment"><div class="line"><span class="comment">// Assume the following custom config.json field to be extracted</span></div>
 <div class="line"><span class="comment">// &quot;field&quot;: { &quot;foo&quot;: &quot;a string&quot;, &quot;bar&quot;: 1234 }</span></div>
 <div class="line"> </div>
@@ -599,12 +410,12 @@ Functions</h2></td></tr>
 <div class="line"> </div>
 <div class="line">printf(<span class="stringliteral">&quot;%s %ld&quot;</span>, foo, bar); <span class="comment">// &quot;a string&quot; 1234</span></div>
 <div class="ttc" id="agroup__DiscordClient_html_gac4486003ffab83de397c0bebb74b3307"><div class="ttname"><a href="group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307">discord_config_get_field</a></div><div class="ttdeci">struct ccord_szbuf_readonly discord_config_get_field(struct discord *client, char *const path[], unsigned depth)</div><div class="ttdoc">Get the contents from the config file field.</div></div>
-<div class="ttc" id="astructccord__szbuf__readonly_html"><div class="ttname"><a href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a></div><div class="ttdoc">Read-only generic sized buffer.</div><div class="ttdef"><b>Definition:</b> types.h:57</div></div>
-<div class="ttc" id="astructccord__szbuf__readonly_html_a5435058482481e98187540c2a4a317b0"><div class="ttname"><a href="structccord__szbuf__readonly.html#a5435058482481e98187540c2a4a317b0">ccord_szbuf_readonly::size</a></div><div class="ttdeci">size_t size</div><div class="ttdef"><b>Definition:</b> types.h:61</div></div>
-<div class="ttc" id="astructccord__szbuf__readonly_html_ad62474a4a590866e356b8de80ee8b74a"><div class="ttname"><a href="structccord__szbuf__readonly.html#ad62474a4a590866e356b8de80ee8b74a">ccord_szbuf_readonly::start</a></div><div class="ttdeci">const char * start</div><div class="ttdef"><b>Definition:</b> types.h:59</div></div>
+<div class="ttc" id="astructccord__szbuf__readonly_html"><div class="ttname"><a href="structccord__szbuf__readonly.html">ccord_szbuf_readonly</a></div><div class="ttdoc">Read-only generic sized buffer.</div><div class="ttdef"><b>Definition:</b> types.h:55</div></div>
+<div class="ttc" id="astructccord__szbuf__readonly_html_a5435058482481e98187540c2a4a317b0"><div class="ttname"><a href="structccord__szbuf__readonly.html#a5435058482481e98187540c2a4a317b0">ccord_szbuf_readonly::size</a></div><div class="ttdeci">size_t size</div><div class="ttdef"><b>Definition:</b> types.h:59</div></div>
+<div class="ttc" id="astructccord__szbuf__readonly_html_ad62474a4a590866e356b8de80ee8b74a"><div class="ttname"><a href="structccord__szbuf__readonly.html#ad62474a4a590866e356b8de80ee8b74a">ccord_szbuf_readonly::start</a></div><div class="ttdeci">const char * start</div><div class="ttdef"><b>Definition:</b> types.h:57</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga90edef66f741ea7b56f547e49fa3effc" title="Creates a Discord Client handle from a config.json file.">discord_from_json()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb" title="Create a Discord Client handle by a config.json file.">discord_config_init()</a> </td></tr>
     <tr><td class="paramname">path</td><td>the JSON key path </td></tr>
     <tr><td class="paramname">depth</td><td>the path depth </td></tr>
   </table>
@@ -633,7 +444,7 @@ Functions</h2></td></tr>
 <p>Clone a discord client. </p>
 <p >Should be called before entering a thread, to ensure each thread has its own client instance with unique buffers, url and headers </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">orig</td><td>the original client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">orig</td><td>the original client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -660,11 +471,11 @@ Functions</h2></td></tr>
 <p>Free a Discord Client handle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a19">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a16">ban.c</a>, <a class="el" href="cache_8c-example.html#a12">cache.c</a>, <a class="el" href="channel_8c-example.html#a32">channel.c</a>, <a class="el" href="components_8c-example.html#a14">components.c</a>, <a class="el" href="embed_8c-example.html#a11">embed.c</a>, <a class="el" href="emoji_8c-example.html#a19">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a15">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a19">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a29">guild.c</a>, <a class="el" href="invite_8c-example.html#a15">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a17">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a15">pin.c</a>, <a class="el" href="reaction_8c-example.html#a20">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a10">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a28">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a16">timers.c</a>, and <a class="el" href="webhook_8c-example.html#a9">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a52">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a39">ban.c</a>, <a class="el" href="cache_8c-example.html#a23">cache.c</a>, <a class="el" href="channel_8c-example.html#a65">channel.c</a>, <a class="el" href="components_8c-example.html#a47">components.c</a>, <a class="el" href="embed_8c-example.html#a44">embed.c</a>, <a class="el" href="emoji_8c-example.html#a39">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a46">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a32">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a69">guild.c</a>, <a class="el" href="invite_8c-example.html#a32">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a33">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a37">pin.c</a>, <a class="el" href="reaction_8c-example.html#a40">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a48">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a60">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#a17">timers.c</a>, and <a class="el" href="webhook_8c-example.html#a12">webhook.c</a>.</dd>
 </dl>
 
 </div>
@@ -676,7 +487,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const struct discord_user * discord_get_self </td>
+          <td class="memname">const struct <a class="el" href="structdiscord__user.html">discord_user</a> * discord_get_self </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em></td><td>)</td>
@@ -688,7 +499,7 @@ Functions</h2></td></tr>
 <p>Get the client's cached user. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -703,7 +514,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_run </td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_run </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em></td><td>)</td>
@@ -715,12 +526,12 @@ Functions</h2></td></tr>
 <p>Start a connection to the Discord Gateway. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a18">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a15">ban.c</a>, <a class="el" href="cache_8c-example.html#a11">cache.c</a>, <a class="el" href="channel_8c-example.html#a31">channel.c</a>, <a class="el" href="components_8c-example.html#a13">components.c</a>, <a class="el" href="embed_8c-example.html#a10">embed.c</a>, <a class="el" href="emoji_8c-example.html#a18">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a18">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a28">guild.c</a>, <a class="el" href="invite_8c-example.html#a14">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a16">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a14">pin.c</a>, <a class="el" href="reaction_8c-example.html#a19">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a9">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a27">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a15">timers.c</a>.</dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259">CCORDcode</a> value for how the operation went, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a51">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a38">ban.c</a>, <a class="el" href="cache_8c-example.html#a22">cache.c</a>, <a class="el" href="channel_8c-example.html#a64">channel.c</a>, <a class="el" href="components_8c-example.html#a46">components.c</a>, <a class="el" href="embed_8c-example.html#a43">embed.c</a>, <a class="el" href="emoji_8c-example.html#a38">emoji.c</a>, <a class="el" href="guild-template_8c-example.html#a31">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a68">guild.c</a>, <a class="el" href="invite_8c-example.html#a31">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a32">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a36">pin.c</a>, <a class="el" href="reaction_8c-example.html#a39">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a47">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a59">slash-commands2.c</a>, and <a class="el" href="timers_8c-example.html#a16">timers.c</a>.</dd>
 </dl>
 
 </div>
@@ -744,7 +555,7 @@ Functions</h2></td></tr>
 <p>Gracefully shutdown an ongoing Discord connection. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -780,7 +591,7 @@ Functions</h2></td></tr>
 <p>Gracefully reconnects an ongoing Discord connection. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">resume</td><td>true to attempt to resume to previous session, false restart a fresh session </td></tr>
   </table>
   </dd>
@@ -817,7 +628,7 @@ Functions</h2></td></tr>
 <p>Store user arbitrary data that can be retrieved by <a class="el" href="group__DiscordClient.html#ga74e4cd8487be005d63e8b62eba477ca4" title="Receive user arbitrary data stored with discord_set_data()">discord_get_data()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">data</td><td>user arbitrary data </td></tr>
   </table>
   </dd>
@@ -846,7 +657,7 @@ Functions</h2></td></tr>
 <p>Receive user arbitrary data stored with <a class="el" href="group__DiscordClient.html#gab4be84906e3794c24a69b781b2271656" title="Store user arbitrary data that can be retrieved by discord_get_data()">discord_set_data()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -875,7 +686,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Only works after a connection has been established via <a class="el" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4" title="Start a connection to the Discord Gateway.">discord_run()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -902,12 +713,12 @@ Functions</h2></td></tr>
 <p>Get the current timestamp (in milliseconds) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the timestamp in milliseconds </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#a3">embed.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="embed_8c-example.html#a12">embed.c</a>.</dd>
 </dl>
 
 </div>
@@ -931,7 +742,7 @@ Functions</h2></td></tr>
 <p>Get the current timestamp (in microseconds) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -939,14 +750,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga3903cea30ff8d8e27bbffe8c175be208" name="ga3903cea30ff8d8e27bbffe8c175be208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3903cea30ff8d8e27bbffe8c175be208">&#9670;&nbsp;</a></span>discord_get_logmod()</h2>
+<a id="ga5ecca42ef5a99f9bfba9940b926068b3" name="ga5ecca42ef5a99f9bfba9940b926068b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5ecca42ef5a99f9bfba9940b926068b3">&#9670;&nbsp;</a></span>discord_get_logconf()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structlogmod.html">logmod</a> * discord_get_logmod </td>
+          <td class="memname">struct <a class="el" href="structlogconf.html">logconf</a> * discord_get_logconf </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em></td><td>)</td>
@@ -956,14 +767,14 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieve client's logging module for configuration purposes. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="logmod_8h.html">logmod.h</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="logconf_8h.html#a0feef146d10b65c732aa71ecdcffcd2e" title="Initialize a struct logconf module from a config file.">logconf_setup()</a>, <a class="el" href="logconf_8h.html#a180ba1db8d03fd5bc68e0deac50b7a74" title="Toggle quiet mode.">logconf_set_quiet()</a>, <a class="el" href="logconf_8h.html#a24980d1378aaf18a1075e15f4a590f5e" title="Set the current logging level.">logconf_set_level()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the client's logging manager </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the client's logging module </dd></dl>
 
 </div>
 </div>
@@ -986,7 +797,7 @@ Functions</h2></td></tr>
 <p>get the io_poller used by the discord client </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
   </table>
   </dd>
 </dl>

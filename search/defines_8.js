@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['not_5fempty_5fstr_0',['NOT_EMPTY_STR',['../discord-internal_8h.html#a48967c46b4db659678019181f8bdbfb7',1,'discord-internal.h']]]
+  ['max_5fqueue_0',['MAX_QUEUE',['../threadpool_8h.html#ab94814559b67e4a2a564087f821145ea',1,'threadpool.h']]],
+  ['max_5fthreads_1',['MAX_THREADS',['../threadpool_8h.html#a8b5173357adb02a86c027316e0acdfa0',1,'threadpool.h']]]
 ];

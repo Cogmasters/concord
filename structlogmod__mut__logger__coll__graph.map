@@ -1,6 +1,0 @@
-<map id="logmod_mut_logger" name="logmod_mut_logger">
-<area shape="rect" id="node1" title="Mutable version of the logger structure." alt="" coords="109,184,261,211"/>
-<area shape="rect" id="node2" href="$structlogmod__options.html" title="Configuration options for a logger." alt="" coords="5,5,132,32"/>
-<area shape="rect" id="node3" href="$structlogmod__logger.html" title="Immutable logger structure." alt="" coords="125,95,244,121"/>
-<area shape="rect" id="node4" href="$structlogmod__label.html" title="Label properties for a log level." alt="" coords="197,5,308,32"/>
-</map>

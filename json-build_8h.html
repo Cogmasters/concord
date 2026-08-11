@@ -98,17 +98,16 @@ $(document).ready(function(){initNavTree('json-build_8h.html',''); initResizable
 <div class="contents">
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &lt;stdlib.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for json-build.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="json-build_8h__incl.svg" width="272" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="json-build_8h__incl.svg" width="176" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="json-build_8h__dep__incl.svg" width="198" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="json-build_8h__dep__incl.svg" width="4398" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -126,9 +125,6 @@ Macros</h2></td></tr>
 <tr class="separator:af25f6b2ec28c3b90b3905a12d61b83b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21f076c8e4e3683b05b7d83e16228184"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a21f076c8e4e3683b05b7d83e16228184">JSONB_MAX_DEPTH</a>&#160;&#160;&#160;128</td></tr>
 <tr class="separator:a21f076c8e4e3683b05b7d83e16228184"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e747d6677c499a01e5a349247a9d787"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a6e747d6677c499a01e5a349247a9d787">jsonb_reset</a>(builder)&#160;&#160;&#160;((builder)-&gt;pos = 0)</td></tr>
-<tr class="memdesc:a6e747d6677c499a01e5a349247a9d787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset a jsonb handle buffer's position tracker (for streaming purposes)  <a href="json-build_8h.html#a6e747d6677c499a01e5a349247a9d787">More...</a><br /></td></tr>
-<tr class="separator:a6e747d6677c499a01e5a349247a9d787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb5bfdd72388ce075bb0bdd79f985cf6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#afb5bfdd72388ce075bb0bdd79f985cf6">TRACE</a>(prev,  next)&#160;&#160;&#160;next</td></tr>
 <tr class="separator:afb5bfdd72388ce075bb0bdd79f985cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eba4767996435a213ce56771ae0c379"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a3eba4767996435a213ce56771ae0c379">DECORATOR</a>(a)</td></tr>
@@ -139,28 +135,10 @@ Macros</h2></td></tr>
 <tr class="separator:a5235228d0e51d2fae34fb839b128a5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac92dde8ec2f26af654f69a316e8e0083"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#ac92dde8ec2f26af654f69a316e8e0083">STACK_POP</a>(b)&#160;&#160;&#160;<a class="el" href="json-build_8h.html#afb5bfdd72388ce075bb0bdd79f985cf6">TRACE</a>(*(b)-&gt;top, <a class="el" href="json-build_8h.html#a3eba4767996435a213ce56771ae0c379">DECORATOR</a>(*)--(b)-&gt;top)</td></tr>
 <tr class="separator:ac92dde8ec2f26af654f69a316e8e0083"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfa59cba64aee0b790af82044c0d0f63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#acfa59cba64aee0b790af82044c0d0f63">BUFFER_COPY_CHAR_STATIC</a>(b,  c,  _pos,  buf,  bufsize)</td></tr>
-<tr class="separator:acfa59cba64aee0b790af82044c0d0f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d78fe285fbfb45eb1d75a4318ad17ea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a3d78fe285fbfb45eb1d75a4318ad17ea">BUFFER_COPY_STATIC</a>(b,  value,  len,  _pos,  buf,  bufsize)</td></tr>
-<tr class="separator:a3d78fe285fbfb45eb1d75a4318ad17ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a487ac06070df2a8b6d6e38eb1fcb958b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a487ac06070df2a8b6d6e38eb1fcb958b">BUFFER_COPY_CHAR_REALLOC</a>(b,  c,  _pos,  p_buf,  p_bufsize)</td></tr>
-<tr class="separator:a487ac06070df2a8b6d6e38eb1fcb958b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a430c6eda03400fd7c1bcfa880caccf1a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a430c6eda03400fd7c1bcfa880caccf1a">BUFFER_COPY_REALLOC</a>(b,  value,  len,  _pos,  p_buf,  p_bufsize)</td></tr>
-<tr class="separator:a430c6eda03400fd7c1bcfa880caccf1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a833340bc2889d6afcc40bef6b7500eaa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a833340bc2889d6afcc40bef6b7500eaa">JSONB_OBJECT_EXEC</a>(_type,  buf,  bufsize)</td></tr>
-<tr class="separator:a833340bc2889d6afcc40bef6b7500eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af508d4d5853e3b15b290340c7d736912"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#af508d4d5853e3b15b290340c7d736912">JSONB_OBJECT_POP_EXEC</a>(_type,  buf,  bufsize)</td></tr>
-<tr class="separator:af508d4d5853e3b15b290340c7d736912"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69079090c7db09ac979b00f715f5798e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a69079090c7db09ac979b00f715f5798e">JSONB_KEY_EXEC</a>(_type,  buf,  bufsize,  key,  len)</td></tr>
-<tr class="separator:a69079090c7db09ac979b00f715f5798e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2d35313a7452a6d98d501669fc6c0b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#ae2d35313a7452a6d98d501669fc6c0b7">JSONB_ARRAY_EXEC</a>(_type,  buf,  bufsize)</td></tr>
-<tr class="separator:ae2d35313a7452a6d98d501669fc6c0b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4519c78091e29555622d1fae57fabf46"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a4519c78091e29555622d1fae57fabf46">JSONB_ARRAY_POP_EXEC</a>(_type,  buf,  bufsize)</td></tr>
-<tr class="separator:a4519c78091e29555622d1fae57fabf46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a745904112ad3d7237838deaa37d29b88"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a745904112ad3d7237838deaa37d29b88">JSONB_TOKEN_EXEC</a>(_type,  buf,  bufsize,  token,  len)</td></tr>
-<tr class="separator:a745904112ad3d7237838deaa37d29b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e19442f1871a11e9f17623b5f0f9c74"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a4e19442f1871a11e9f17623b5f0f9c74">JSONB_STRING_EXEC</a>(_type,  buf,  bufsize,  str,  len)</td></tr>
-<tr class="separator:a4e19442f1871a11e9f17623b5f0f9c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3094210bc76317552ccc2a20c88b1356"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a3094210bc76317552ccc2a20c88b1356">BUFFER_COPY_CHAR</a>(b,  c,  _pos,  buf,  bufsize)</td></tr>
+<tr class="separator:a3094210bc76317552ccc2a20c88b1356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b1bf49721de244eca1cc90331333f49"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a7b1bf49721de244eca1cc90331333f49">BUFFER_COPY</a>(b,  value,  len,  _pos,  buf,  bufsize)</td></tr>
+<tr class="separator:a7b1bf49721de244eca1cc90331333f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -180,7 +158,6 @@ Enumerations</h2></td></tr>
 , <a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a> = -2
 , <br />
 &#160;&#160;<a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03">JSONB_ERROR_STACK</a> = -3
-, <a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582">JSONB_ERROR_OVERFLOW</a> = -4
 <br />
  }</td></tr>
 <tr class="memdesc:ae1efcc993b3a9f985ff921653658054f"><td class="mdescLeft">&#160;</td><td class="mdescRight">json-builder return codes  <a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">More...</a><br /></td></tr>
@@ -210,63 +187,33 @@ Functions</h2></td></tr>
 <tr class="memitem:a522e99763a936ddf197880e3a3208ece"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a522e99763a936ddf197880e3a3208ece">jsonb_object</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize)</td></tr>
 <tr class="memdesc:a522e99763a936ddf197880e3a3208ece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push an object to the builder.  <a href="json-build_8h.html#a522e99763a936ddf197880e3a3208ece">More...</a><br /></td></tr>
 <tr class="separator:a522e99763a936ddf197880e3a3208ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abae809e2656821c412f0abec2f9b5fe7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#abae809e2656821c412f0abec2f9b5fe7">jsonb_object_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize)</td></tr>
-<tr class="memdesc:abae809e2656821c412f0abec2f9b5fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a522e99763a936ddf197880e3a3208ece">jsonb_object()</a> with dynamic buffer  <a href="json-build_8h.html#abae809e2656821c412f0abec2f9b5fe7">More...</a><br /></td></tr>
-<tr class="separator:abae809e2656821c412f0abec2f9b5fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af020522a3c74b39010d5b6c0b4a8c95b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#af020522a3c74b39010d5b6c0b4a8c95b">jsonb_object_pop</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize)</td></tr>
 <tr class="memdesc:af020522a3c74b39010d5b6c0b4a8c95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pop an object from the builder.  <a href="json-build_8h.html#af020522a3c74b39010d5b6c0b4a8c95b">More...</a><br /></td></tr>
 <tr class="separator:af020522a3c74b39010d5b6c0b4a8c95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65577ddc6845faf6cc66ce48e07cb374"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a65577ddc6845faf6cc66ce48e07cb374">jsonb_object_pop_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize)</td></tr>
-<tr class="memdesc:a65577ddc6845faf6cc66ce48e07cb374"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#af020522a3c74b39010d5b6c0b4a8c95b">jsonb_object_pop()</a> with dynamic buffer  <a href="json-build_8h.html#a65577ddc6845faf6cc66ce48e07cb374">More...</a><br /></td></tr>
-<tr class="separator:a65577ddc6845faf6cc66ce48e07cb374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2481a5e4b71cf1b0e1eb9280f0f4121b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a2481a5e4b71cf1b0e1eb9280f0f4121b">jsonb_key</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize, const char key[], size_t len)</td></tr>
 <tr class="memdesc:a2481a5e4b71cf1b0e1eb9280f0f4121b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a key to the builder.  <a href="json-build_8h.html#a2481a5e4b71cf1b0e1eb9280f0f4121b">More...</a><br /></td></tr>
 <tr class="separator:a2481a5e4b71cf1b0e1eb9280f0f4121b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1149933a5a46f56c4149373418bb8c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#af1149933a5a46f56c4149373418bb8c2">jsonb_key_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize, const char key[], size_t len)</td></tr>
-<tr class="memdesc:af1149933a5a46f56c4149373418bb8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a2481a5e4b71cf1b0e1eb9280f0f4121b">jsonb_key()</a> with dynamic buffer  <a href="json-build_8h.html#af1149933a5a46f56c4149373418bb8c2">More...</a><br /></td></tr>
-<tr class="separator:af1149933a5a46f56c4149373418bb8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04a8c1e02ab09c5cc84e678880999740"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a04a8c1e02ab09c5cc84e678880999740">jsonb_array</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize)</td></tr>
 <tr class="memdesc:a04a8c1e02ab09c5cc84e678880999740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push an array to the builder.  <a href="json-build_8h.html#a04a8c1e02ab09c5cc84e678880999740">More...</a><br /></td></tr>
 <tr class="separator:a04a8c1e02ab09c5cc84e678880999740"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad69c09eb64d679ce269b79ad5c3015e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#ad69c09eb64d679ce269b79ad5c3015e2">jsonb_array_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize)</td></tr>
-<tr class="memdesc:ad69c09eb64d679ce269b79ad5c3015e2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a04a8c1e02ab09c5cc84e678880999740">jsonb_array()</a> with dynamic buffer  <a href="json-build_8h.html#ad69c09eb64d679ce269b79ad5c3015e2">More...</a><br /></td></tr>
-<tr class="separator:ad69c09eb64d679ce269b79ad5c3015e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ec46697a02eacc7e1b5c474f5e884da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a6ec46697a02eacc7e1b5c474f5e884da">jsonb_array_pop</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize)</td></tr>
 <tr class="memdesc:a6ec46697a02eacc7e1b5c474f5e884da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pop an array from the builder.  <a href="json-build_8h.html#a6ec46697a02eacc7e1b5c474f5e884da">More...</a><br /></td></tr>
 <tr class="separator:a6ec46697a02eacc7e1b5c474f5e884da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60d1ebfcb3c72f5b745d5bb00b96f672"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a60d1ebfcb3c72f5b745d5bb00b96f672">jsonb_array_pop_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize)</td></tr>
-<tr class="memdesc:a60d1ebfcb3c72f5b745d5bb00b96f672"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a6ec46697a02eacc7e1b5c474f5e884da">jsonb_array_pop()</a> with dynamic buffer  <a href="json-build_8h.html#a60d1ebfcb3c72f5b745d5bb00b96f672">More...</a><br /></td></tr>
-<tr class="separator:a60d1ebfcb3c72f5b745d5bb00b96f672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37736f86ef94368b911284cd76b0fe53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a37736f86ef94368b911284cd76b0fe53">jsonb_token</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize, const char token[], size_t len)</td></tr>
 <tr class="memdesc:a37736f86ef94368b911284cd76b0fe53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a raw JSON token to the builder.  <a href="json-build_8h.html#a37736f86ef94368b911284cd76b0fe53">More...</a><br /></td></tr>
 <tr class="separator:a37736f86ef94368b911284cd76b0fe53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62948f87f7058689a584e8392624e985"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a62948f87f7058689a584e8392624e985">jsonb_token_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize, const char token[], size_t len)</td></tr>
-<tr class="memdesc:a62948f87f7058689a584e8392624e985"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a37736f86ef94368b911284cd76b0fe53">jsonb_token()</a> with dynamic buffer  <a href="json-build_8h.html#a62948f87f7058689a584e8392624e985">More...</a><br /></td></tr>
-<tr class="separator:a62948f87f7058689a584e8392624e985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cb424450ebfef8f7e5e2b9099c15b5d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a6cb424450ebfef8f7e5e2b9099c15b5d">jsonb_bool</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize, int boolean)</td></tr>
 <tr class="memdesc:a6cb424450ebfef8f7e5e2b9099c15b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a boolean token to the builder.  <a href="json-build_8h.html#a6cb424450ebfef8f7e5e2b9099c15b5d">More...</a><br /></td></tr>
 <tr class="separator:a6cb424450ebfef8f7e5e2b9099c15b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2404df6626d638bda6bd202603f4abfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a2404df6626d638bda6bd202603f4abfc">jsonb_bool_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize, int boolean)</td></tr>
-<tr class="memdesc:a2404df6626d638bda6bd202603f4abfc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a6cb424450ebfef8f7e5e2b9099c15b5d">jsonb_bool()</a> with dynamic buffer  <a href="json-build_8h.html#a2404df6626d638bda6bd202603f4abfc">More...</a><br /></td></tr>
-<tr class="separator:a2404df6626d638bda6bd202603f4abfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ac70577dc75650a1d6f6dd884a79368"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a9ac70577dc75650a1d6f6dd884a79368">jsonb_null</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize)</td></tr>
 <tr class="memdesc:a9ac70577dc75650a1d6f6dd884a79368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a null token to the builder.  <a href="json-build_8h.html#a9ac70577dc75650a1d6f6dd884a79368">More...</a><br /></td></tr>
 <tr class="separator:a9ac70577dc75650a1d6f6dd884a79368"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cb1c736267c57e1bd9e5ac4f61c40a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a8cb1c736267c57e1bd9e5ac4f61c40a1">jsonb_null_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize)</td></tr>
-<tr class="memdesc:a8cb1c736267c57e1bd9e5ac4f61c40a1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a9ac70577dc75650a1d6f6dd884a79368">jsonb_null()</a> with dynamic buffer  <a href="json-build_8h.html#a8cb1c736267c57e1bd9e5ac4f61c40a1">More...</a><br /></td></tr>
-<tr class="separator:a8cb1c736267c57e1bd9e5ac4f61c40a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f23fec8d70900e46026f9b64af77c71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a3f23fec8d70900e46026f9b64af77c71">jsonb_string</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize, const char str[], size_t len)</td></tr>
 <tr class="memdesc:a3f23fec8d70900e46026f9b64af77c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a string token to the builder.  <a href="json-build_8h.html#a3f23fec8d70900e46026f9b64af77c71">More...</a><br /></td></tr>
 <tr class="separator:a3f23fec8d70900e46026f9b64af77c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50e810701601f41852e0736099378c3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#a50e810701601f41852e0736099378c3d">jsonb_string_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize, const char str[], size_t len)</td></tr>
-<tr class="memdesc:a50e810701601f41852e0736099378c3d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#a3f23fec8d70900e46026f9b64af77c71">jsonb_string()</a> with dynamic buffer  <a href="json-build_8h.html#a50e810701601f41852e0736099378c3d">More...</a><br /></td></tr>
-<tr class="separator:a50e810701601f41852e0736099378c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa33ede5f2f938a17da95f0cf3a98be70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#aa33ede5f2f938a17da95f0cf3a98be70">jsonb_number</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char buf[], size_t bufsize, double number)</td></tr>
 <tr class="memdesc:aa33ede5f2f938a17da95f0cf3a98be70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a number token to the builder.  <a href="json-build_8h.html#aa33ede5f2f938a17da95f0cf3a98be70">More...</a><br /></td></tr>
 <tr class="separator:aa33ede5f2f938a17da95f0cf3a98be70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad67bf0079d4c6ee03432f5152e24d5fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="json-build_8h.html#ad67bf0079d4c6ee03432f5152e24d5fb">jsonb_number_auto</a> (<a class="el" href="structjsonb.html">jsonb</a> *builder, char *p_buf[], size_t *p_bufsize, double number)</td></tr>
-<tr class="memdesc:ad67bf0079d4c6ee03432f5152e24d5fb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="json-build_8h.html#aa33ede5f2f938a17da95f0cf3a98be70">jsonb_number()</a> with dynamic buffer  <a href="json-build_8h.html#ad67bf0079d4c6ee03432f5152e24d5fb">More...</a><br /></td></tr>
-<tr class="separator:ad67bf0079d4c6ee03432f5152e24d5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="af25f6b2ec28c3b90b3905a12d61b83b0" name="af25f6b2ec28c3b90b3905a12d61b83b0"></a>
@@ -296,33 +243,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >Maximum JSON nesting depth, if default value is unwanted then it should be defined before <a class="el" href="json-build_8h.html">json-build.h</a> is included:</p>
 <p >#define JSONB_MAX_DEPTH 256 #include "json-build.h" </p>
-
-</div>
-</div>
-<a id="a6e747d6677c499a01e5a349247a9d787" name="a6e747d6677c499a01e5a349247a9d787"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e747d6677c499a01e5a349247a9d787">&#9670;&nbsp;</a></span>jsonb_reset</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define jsonb_reset</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">builder</td><td>)</td>
-          <td>&#160;&#160;&#160;((builder)-&gt;pos = 0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reset a jsonb handle buffer's position tracker (for streaming purposes) </p>
-<dl class="section note"><dt>Note</dt><dd>Should be used in conjunction with <a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fab08bfa3fb8ac53e08e689b4e31f2d032">JSONB_ERROR_NOMEM</a> if the buffer is meant to be used as a stream</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>pointer to the <a class="el" href="structjsonb.html">jsonb</a> handle </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -446,14 +366,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acfa59cba64aee0b790af82044c0d0f63" name="acfa59cba64aee0b790af82044c0d0f63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfa59cba64aee0b790af82044c0d0f63">&#9670;&nbsp;</a></span>BUFFER_COPY_CHAR_STATIC</h2>
+<a id="a3094210bc76317552ccc2a20c88b1356" name="a3094210bc76317552ccc2a20c88b1356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3094210bc76317552ccc2a20c88b1356">&#9670;&nbsp;</a></span>BUFFER_COPY_CHAR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BUFFER_COPY_CHAR_STATIC</td>
+          <td class="memname">#define BUFFER_COPY_CHAR</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">b, </td>
@@ -491,7 +411,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
 <div class="line">        if ((b)-&gt;pos + (_pos) + 1 + 1 &gt; (bufsize)) {                          \</div>
-<div class="line">            (buf)[(b)-&gt;pos] = <span class="charliteral">&#39;\0&#39;</span>;                                           \</div>
 <div class="line">            return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fab08bfa3fb8ac53e08e689b4e31f2d032">JSONB_ERROR_NOMEM</a>;                                         \</div>
 <div class="line">        }                                                                     \</div>
 <div class="line">        (buf)[(b)-&gt;pos + (_pos)++] = (c);                                     \</div>
@@ -501,14 +420,14 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a3d78fe285fbfb45eb1d75a4318ad17ea" name="a3d78fe285fbfb45eb1d75a4318ad17ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d78fe285fbfb45eb1d75a4318ad17ea">&#9670;&nbsp;</a></span>BUFFER_COPY_STATIC</h2>
+<a id="a7b1bf49721de244eca1cc90331333f49" name="a7b1bf49721de244eca1cc90331333f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b1bf49721de244eca1cc90331333f49">&#9670;&nbsp;</a></span>BUFFER_COPY</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BUFFER_COPY_STATIC</td>
+          <td class="memname">#define BUFFER_COPY</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">b, </td>
@@ -553,7 +472,6 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
 <div class="line">        size_t i;                                                             \</div>
 <div class="line">        if ((b)-&gt;pos + (_pos) + (len) + 1 &gt; (bufsize)) {                      \</div>
-<div class="line">            (buf)[(b)-&gt;pos] = <span class="charliteral">&#39;\0&#39;</span>;                                           \</div>
 <div class="line">            return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fab08bfa3fb8ac53e08e689b4e31f2d032">JSONB_ERROR_NOMEM</a>;                                         \</div>
 <div class="line">        }                                                                     \</div>
 <div class="line">        for (i = 0; i &lt; (len); ++i)                                           \</div>
@@ -562,570 +480,6 @@ Functions</h2></td></tr>
 <div class="line">        (buf)[(b)-&gt;pos + (_pos)] = <span class="charliteral">&#39;\0&#39;</span>;                                      \</div>
 <div class="line">    } <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="a487ac06070df2a8b6d6e38eb1fcb958b" name="a487ac06070df2a8b6d6e38eb1fcb958b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a487ac06070df2a8b6d6e38eb1fcb958b">&#9670;&nbsp;</a></span>BUFFER_COPY_CHAR_REALLOC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define BUFFER_COPY_CHAR_REALLOC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">b, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">c, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_pos, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p_buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p_bufsize&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
-<div class="line">        if ((b)-&gt;pos + (_pos) + 1 + 1 &gt; *p_bufsize) {                         \</div>
-<div class="line">            char *new_buf = NULL;                                             \</div>
-<div class="line">            const <span class="keywordtype">size_t</span> needed = (b)-&gt;pos + (_pos) + 1 + 1;                  \</div>
-<div class="line">            size_t new_size = *p_bufsize + (*p_bufsize &gt;&gt; 1); <span class="comment">/* 1.5x */</span>      \</div>
-<div class="line">            if (new_size &lt; needed) new_size = needed;                         \</div>
-<div class="line">            if (new_size &lt; *p_bufsize) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582">JSONB_ERROR_OVERFLOW</a>;           \</div>
-<div class="line">            new_buf = realloc(*p_buf, new_size);                              \</div>
-<div class="line">            if (!new_buf) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fab08bfa3fb8ac53e08e689b4e31f2d032">JSONB_ERROR_NOMEM</a>;                           \</div>
-<div class="line">            *p_buf = new_buf;                                                 \</div>
-<div class="line">            *p_bufsize = new_size;                                            \</div>
-<div class="line">        }                                                                     \</div>
-<div class="line">        (*p_buf)[(b)-&gt;pos + (_pos)++] = (c);                                  \</div>
-<div class="line">        (*p_buf)[(b)-&gt;pos + (_pos)] = <span class="charliteral">&#39;\0&#39;</span>;                                   \</div>
-<div class="line">    } <span class="keywordflow">while</span> (0)</div>
-<div class="ttc" id="ajson-build_8h_html_ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582"><div class="ttname"><a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582">JSONB_ERROR_OVERFLOW</a></div><div class="ttdeci">@ JSONB_ERROR_OVERFLOW</div><div class="ttdef"><b>Definition:</b> json-build.h:46</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a430c6eda03400fd7c1bcfa880caccf1a" name="a430c6eda03400fd7c1bcfa880caccf1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a430c6eda03400fd7c1bcfa880caccf1a">&#9670;&nbsp;</a></span>BUFFER_COPY_REALLOC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define BUFFER_COPY_REALLOC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">b, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">value, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">len, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_pos, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p_buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p_bufsize&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                      \</div>
-<div class="line">        size_t i;                                                             \</div>
-<div class="line">        if ((b)-&gt;pos + (_pos) + (len) + 1 &gt; *p_bufsize) {                     \</div>
-<div class="line">            char *new_buf = NULL;                                             \</div>
-<div class="line">            const <span class="keywordtype">size_t</span> needed = (b)-&gt;pos + (_pos) + (len) + 1;              \</div>
-<div class="line">            size_t new_size = *p_bufsize + (*p_bufsize &gt;&gt; 1); <span class="comment">/* 1.5x */</span>      \</div>
-<div class="line">            if (new_size &lt; needed) new_size = needed;                         \</div>
-<div class="line">            if (new_size &lt; *p_bufsize) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582">JSONB_ERROR_OVERFLOW</a>;           \</div>
-<div class="line">            new_buf = realloc(*p_buf, new_size);                              \</div>
-<div class="line">            if (!new_buf) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fab08bfa3fb8ac53e08e689b4e31f2d032">JSONB_ERROR_NOMEM</a>;                           \</div>
-<div class="line">            *p_buf = new_buf;                                                 \</div>
-<div class="line">            *p_bufsize = new_size;                                            \</div>
-<div class="line">        }                                                                     \</div>
-<div class="line">        for (i = 0; i &lt; (len); ++i)                                           \</div>
-<div class="line">            (*p_buf)[(b)-&gt;pos + (_pos) + i] = (value)[i];                     \</div>
-<div class="line">        (_pos) += (len);                                                      \</div>
-<div class="line">        (*p_buf)[(b)-&gt;pos + (_pos)] = <span class="charliteral">&#39;\0&#39;</span>;                                   \</div>
-<div class="line">    } <span class="keywordflow">while</span> (0)</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a833340bc2889d6afcc40bef6b7500eaa" name="a833340bc2889d6afcc40bef6b7500eaa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a833340bc2889d6afcc40bef6b7500eaa">&#9670;&nbsp;</a></span>JSONB_OBJECT_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_OBJECT_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">enum</span> <a class="code hl_enumeration" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851">jsonbstate</a> new_state;                                                \</div>
-<div class="line">    size_t pos = 0;                                                           \</div>
-<div class="line">    if (b-&gt;top - b-&gt;stack &gt;= <a class="code hl_define" href="json-build_8h.html#a21f076c8e4e3683b05b7d83e16228184">JSONB_MAX_DEPTH</a>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03">JSONB_ERROR_STACK</a>;       \</div>
-<div class="line">    switch (*b-&gt;top) {                                                        \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>:                                     \</div>
-<div class="line">        BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;,&#39;</span>, pos, buf, bufsize);                  \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b">JSONB_ARRAY_VALUE_OR_CLOSE</a>:                                          \</div>
-<div class="line">        new_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>;                          \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342">JSONB_OBJECT_VALUE</a>:                                                  \</div>
-<div class="line">        new_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f">JSONB_OBJECT_NEXT_KEY_OR_CLOSE</a>;                           \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851abc8933ce446db36ab56049fb807b1978">JSONB_ARRAY_OR_OBJECT_OR_VALUE</a>:                                      \</div>
-<div class="line">        new_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>;                                               \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    default:                                                                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>);                                           \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>:                                                          \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>:                                                         \</div>
-<div class="line">        return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a>;                                             \</div>
-<div class="line">    }                                                                         \</div>
-<div class="line">    BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;{&#39;</span>, pos, buf, bufsize);                      \</div>
-<div class="line">    STACK_HEAD(b, new_state);                                                 \</div>
-<div class="line">    STACK_PUSH(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e">JSONB_OBJECT_KEY_OR_CLOSE</a>);                                 \</div>
-<div class="line">    b-&gt;pos += pos;                                                            \</div>
-<div class="line">    return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851">jsonbstate</a></div><div class="ttdeci">jsonbstate</div><div class="ttdoc">json-builder serializing state</div><div class="ttdef"><b>Definition:</b> json-build.h:50</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342">JSONB_OBJECT_VALUE</a></div><div class="ttdeci">@ JSONB_OBJECT_VALUE</div><div class="ttdef"><b>Definition:</b> json-build.h:54</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b">JSONB_ARRAY_VALUE_OR_CLOSE</a></div><div class="ttdeci">@ JSONB_ARRAY_VALUE_OR_CLOSE</div><div class="ttdef"><b>Definition:</b> json-build.h:56</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f">JSONB_OBJECT_NEXT_KEY_OR_CLOSE</a></div><div class="ttdeci">@ JSONB_OBJECT_NEXT_KEY_OR_CLOSE</div><div class="ttdef"><b>Definition:</b> json-build.h:55</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a></div><div class="ttdeci">@ JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</div><div class="ttdef"><b>Definition:</b> json-build.h:57</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a></div><div class="ttdeci">@ JSONB_ERROR</div><div class="ttdef"><b>Definition:</b> json-build.h:58</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a></div><div class="ttdeci">@ JSONB_DONE</div><div class="ttdef"><b>Definition:</b> json-build.h:59</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e">JSONB_OBJECT_KEY_OR_CLOSE</a></div><div class="ttdeci">@ JSONB_OBJECT_KEY_OR_CLOSE</div><div class="ttdef"><b>Definition:</b> json-build.h:53</div></div>
-<div class="ttc" id="ajson-build_8h_html_a137d152289df279b6bc24285fd4b5851abc8933ce446db36ab56049fb807b1978"><div class="ttname"><a href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851abc8933ce446db36ab56049fb807b1978">JSONB_ARRAY_OR_OBJECT_OR_VALUE</a></div><div class="ttdeci">@ JSONB_ARRAY_OR_OBJECT_OR_VALUE</div><div class="ttdef"><b>Definition:</b> json-build.h:52</div></div>
-<div class="ttc" id="ajson-build_8h_html_a21f076c8e4e3683b05b7d83e16228184"><div class="ttname"><a href="json-build_8h.html#a21f076c8e4e3683b05b7d83e16228184">JSONB_MAX_DEPTH</a></div><div class="ttdeci">#define JSONB_MAX_DEPTH</div><div class="ttdef"><b>Definition:</b> json-build.h:30</div></div>
-<div class="ttc" id="ajson-build_8h_html_ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9"><div class="ttname"><a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a></div><div class="ttdeci">@ JSONB_ERROR_INPUT</div><div class="ttdef"><b>Definition:</b> json-build.h:42</div></div>
-<div class="ttc" id="ajson-build_8h_html_ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03"><div class="ttname"><a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03">JSONB_ERROR_STACK</a></div><div class="ttdeci">@ JSONB_ERROR_STACK</div><div class="ttdef"><b>Definition:</b> json-build.h:44</div></div>
-<div class="ttc" id="ajson-build_8h_html_ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691"><div class="ttname"><a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a></div><div class="ttdeci">@ JSONB_OK</div><div class="ttdef"><b>Definition:</b> json-build.h:36</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="af508d4d5853e3b15b290340c7d736912" name="af508d4d5853e3b15b290340c7d736912"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af508d4d5853e3b15b290340c7d736912">&#9670;&nbsp;</a></span>JSONB_OBJECT_POP_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_OBJECT_POP_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">enum</span> <a class="code hl_enumeration" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> code;                                                      \</div>
-<div class="line">    size_t pos = 0;                                                           \</div>
-<div class="line">    switch (*b-&gt;top) {                                                        \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e">JSONB_OBJECT_KEY_OR_CLOSE</a>:                                           \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f">JSONB_OBJECT_NEXT_KEY_OR_CLOSE</a>:                                      \</div>
-<div class="line">        code = b-&gt;stack == b-&gt;top - 1 ? <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa4ee0175e527beaa577360f1a1b5eb3da">JSONB_END</a> : <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a>;                 \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    default:                                                                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>);                                           \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>:                                                          \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>:                                                         \</div>
-<div class="line">        return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a>;                                             \</div>
-<div class="line">    }                                                                         \</div>
-<div class="line">    BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;}&#39;</span>, pos, buf, bufsize);                      \</div>
-<div class="line">    STACK_POP(b);                                                             \</div>
-<div class="line">    b-&gt;pos += pos;                                                            \</div>
-<div class="line">    return code</div>
-<div class="ttc" id="ajson-build_8h_html_ae1efcc993b3a9f985ff921653658054f"><div class="ttname"><a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a></div><div class="ttdeci">jsonbcode</div><div class="ttdoc">json-builder return codes</div><div class="ttdef"><b>Definition:</b> json-build.h:34</div></div>
-<div class="ttc" id="ajson-build_8h_html_ae1efcc993b3a9f985ff921653658054fa4ee0175e527beaa577360f1a1b5eb3da"><div class="ttname"><a href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa4ee0175e527beaa577360f1a1b5eb3da">JSONB_END</a></div><div class="ttdeci">@ JSONB_END</div><div class="ttdef"><b>Definition:</b> json-build.h:38</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a69079090c7db09ac979b00f715f5798e" name="a69079090c7db09ac979b00f715f5798e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69079090c7db09ac979b00f715f5798e">&#9670;&nbsp;</a></span>JSONB_KEY_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_KEY_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">key, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">len&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">size_t</span> pos = 0;                                                           \</div>
-<div class="line">    switch (*b-&gt;top) {                                                        \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f">JSONB_OBJECT_NEXT_KEY_OR_CLOSE</a>:                                      \</div>
-<div class="line">        BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;,&#39;</span>, pos, buf, bufsize);                  \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851ab3ba42ebcbfde83ae3fe98d2608af50e">JSONB_OBJECT_KEY_OR_CLOSE</a>: {                                         \</div>
-<div class="line">        enum <a class="code hl_enumeration" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> ret;                                                   \</div>
-<div class="line">        BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;&quot;&#39;</span>, pos, buf, bufsize);                  \</div>
-<div class="line">        ret = _jsonb_escape_##_type(&amp;pos, buf, bufsize, b-&gt;pos, key, len);    \</div>
-<div class="line">        if (ret != <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a>) <span class="keywordflow">return</span> ret;                                      \</div>
-<div class="line">        BUFFER_COPY_##_type(b, <span class="stringliteral">&quot;\&quot;:&quot;</span>, 2, pos, buf, bufsize);                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342">JSONB_OBJECT_VALUE</a>);                                    \</div>
-<div class="line">    } <span class="keywordflow">break</span>;                                                                  \</div>
-<div class="line">    default:                                                                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>);                                           \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>:                                                          \</div>
-<div class="line">        return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a>;                                             \</div>
-<div class="line">    }                                                                         \</div>
-<div class="line">    b-&gt;pos += pos;                                                            \</div>
-<div class="line">    return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ae2d35313a7452a6d98d501669fc6c0b7" name="ae2d35313a7452a6d98d501669fc6c0b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2d35313a7452a6d98d501669fc6c0b7">&#9670;&nbsp;</a></span>JSONB_ARRAY_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_ARRAY_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">enum</span> <a class="code hl_enumeration" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851">jsonbstate</a> new_state;                                                \</div>
-<div class="line">    size_t pos = 0;                                                           \</div>
-<div class="line">    if (b-&gt;top - b-&gt;stack &gt;= <a class="code hl_define" href="json-build_8h.html#a21f076c8e4e3683b05b7d83e16228184">JSONB_MAX_DEPTH</a>) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03">JSONB_ERROR_STACK</a>;       \</div>
-<div class="line">    switch (*b-&gt;top) {                                                        \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>:                                     \</div>
-<div class="line">        BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;,&#39;</span>, pos, buf, bufsize);                  \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b">JSONB_ARRAY_VALUE_OR_CLOSE</a>:                                          \</div>
-<div class="line">        new_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>;                          \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342">JSONB_OBJECT_VALUE</a>:                                                  \</div>
-<div class="line">        new_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f">JSONB_OBJECT_NEXT_KEY_OR_CLOSE</a>;                           \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851abc8933ce446db36ab56049fb807b1978">JSONB_ARRAY_OR_OBJECT_OR_VALUE</a>:                                      \</div>
-<div class="line">        new_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>;                                               \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    default:                                                                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>);                                           \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>:                                                          \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>:                                                         \</div>
-<div class="line">        return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a>;                                             \</div>
-<div class="line">    }                                                                         \</div>
-<div class="line">    BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;[&#39;</span>, pos, buf, bufsize);                      \</div>
-<div class="line">    STACK_HEAD(b, new_state);                                                 \</div>
-<div class="line">    STACK_PUSH(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b">JSONB_ARRAY_VALUE_OR_CLOSE</a>);                                \</div>
-<div class="line">    b-&gt;pos += pos;                                                            \</div>
-<div class="line">    return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a4519c78091e29555622d1fae57fabf46" name="a4519c78091e29555622d1fae57fabf46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4519c78091e29555622d1fae57fabf46">&#9670;&nbsp;</a></span>JSONB_ARRAY_POP_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_ARRAY_POP_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">enum</span> <a class="code hl_enumeration" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> code;                                                      \</div>
-<div class="line">    size_t pos = 0;                                                           \</div>
-<div class="line">    switch (*b-&gt;top) {                                                        \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b">JSONB_ARRAY_VALUE_OR_CLOSE</a>:                                          \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>:                                     \</div>
-<div class="line">        code = b-&gt;stack == b-&gt;top - 1 ? <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa4ee0175e527beaa577360f1a1b5eb3da">JSONB_END</a> : <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a>;                 \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    default:                                                                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>);                                           \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>:                                                          \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>:                                                         \</div>
-<div class="line">        return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a>;                                             \</div>
-<div class="line">    }                                                                         \</div>
-<div class="line">    BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;]&#39;</span>, pos, buf, bufsize);                      \</div>
-<div class="line">    STACK_POP(b);                                                             \</div>
-<div class="line">    b-&gt;pos += pos;                                                            \</div>
-<div class="line">    return code</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a745904112ad3d7237838deaa37d29b88" name="a745904112ad3d7237838deaa37d29b88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a745904112ad3d7237838deaa37d29b88">&#9670;&nbsp;</a></span>JSONB_TOKEN_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_TOKEN_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">token, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">len&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">enum</span> <a class="code hl_enumeration" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851">jsonbstate</a> next_state;                                               \</div>
-<div class="line">    enum <a class="code hl_enumeration" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> code;                                                      \</div>
-<div class="line">    size_t pos = 0;                                                           \</div>
-<div class="line">    switch (*b-&gt;top) {                                                        \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851abc8933ce446db36ab56049fb807b1978">JSONB_ARRAY_OR_OBJECT_OR_VALUE</a>:                                      \</div>
-<div class="line">        next_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>;                                              \</div>
-<div class="line">        code = <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa4ee0175e527beaa577360f1a1b5eb3da">JSONB_END</a>;                                                     \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>:                                     \</div>
-<div class="line">        BUFFER_COPY_CHAR_##_type(b, <span class="charliteral">&#39;,&#39;</span>, pos, buf, bufsize);                  \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a583b54ca07cf8910175325dc0e3f379b">JSONB_ARRAY_VALUE_OR_CLOSE</a>:                                          \</div>
-<div class="line">        next_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a82f0971d63a1ce3aa82446a62636bb67">JSONB_ARRAY_NEXT_VALUE_OR_CLOSE</a>;                         \</div>
-<div class="line">        code = <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a>;                                                      \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a0e75a7687a7d1ad2d1c45dc8988bc342">JSONB_OBJECT_VALUE</a>:                                                  \</div>
-<div class="line">        next_state = <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a606bda175f259d2fb500722e22d06f4f">JSONB_OBJECT_NEXT_KEY_OR_CLOSE</a>;                          \</div>
-<div class="line">        code = <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054faefa713524c37a30c13f82858ddbbe691">JSONB_OK</a>;                                                      \</div>
-<div class="line">        break;                                                                \</div>
-<div class="line">    default:                                                                  \</div>
-<div class="line">        STACK_HEAD(b, <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>);                                           \</div>
-<div class="line">        <span class="comment">/* fall-through */</span>                                                    \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a859581af2f6ec5a0b361a6ddb8fc57b4">JSONB_DONE</a>:                                                          \</div>
-<div class="line">    case <a class="code hl_enumvalue" href="json-build_8h.html#a137d152289df279b6bc24285fd4b5851a83175397649118c051d8d44ae97fa927">JSONB_ERROR</a>:                                                         \</div>
-<div class="line">        return <a class="code hl_enumvalue" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9">JSONB_ERROR_INPUT</a>;                                             \</div>
-<div class="line">    }                                                                         \</div>
-<div class="line">    BUFFER_COPY_##_type(b, token, len, pos, buf, bufsize);                    \</div>
-<div class="line">    STACK_HEAD(b, next_state);                                                \</div>
-<div class="line">    b-&gt;pos += pos;                                                            \</div>
-<div class="line">    return code</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a4e19442f1871a11e9f17623b5f0f9c74" name="a4e19442f1871a11e9f17623b5f0f9c74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e19442f1871a11e9f17623b5f0f9c74">&#9670;&nbsp;</a></span>JSONB_STRING_EXEC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define JSONB_STRING_EXEC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">buf, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">bufsize, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">str, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">len&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -1185,8 +539,6 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9" name="ae1efcc993b3a9f985ff921653658054fa5a415590c7651302a34467b24d8c71c9"></a>JSONB_ERROR_INPUT&#160;</td><td class="fielddoc"><p >token doesn't match expected value </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03" name="ae1efcc993b3a9f985ff921653658054fa9d863631597cd20c5ac09e8f92cd2b03"></a>JSONB_ERROR_STACK&#160;</td><td class="fielddoc"><p >operation would lead to out of boundaries access </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582" name="ae1efcc993b3a9f985ff921653658054fa24277de11d957c850650c00fc2870582"></a>JSONB_ERROR_OVERFLOW&#160;</td><td class="fielddoc"><p >buffer overflow </p>
 </td></tr>
 </table>
 
@@ -1291,51 +643,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abae809e2656821c412f0abec2f9b5fe7" name="abae809e2656821c412f0abec2f9b5fe7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abae809e2656821c412f0abec2f9b5fe7">&#9670;&nbsp;</a></span>jsonb_object_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_object_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a522e99763a936ddf197880e3a3208ece">jsonb_object()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer the JSON buffer size </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
 <a id="af020522a3c74b39010d5b6c0b4a8c95b" name="af020522a3c74b39010d5b6c0b4a8c95b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af020522a3c74b39010d5b6c0b4a8c95b">&#9670;&nbsp;</a></span>jsonb_object_pop()</h2>
 
@@ -1374,51 +681,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
     <tr><td class="paramname">buf</td><td>the JSON buffer </td></tr>
     <tr><td class="paramname">bufsize</td><td>the JSON buffer size </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
-<a id="a65577ddc6845faf6cc66ce48e07cb374" name="a65577ddc6845faf6cc66ce48e07cb374"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65577ddc6845faf6cc66ce48e07cb374">&#9670;&nbsp;</a></span>jsonb_object_pop_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_object_pop_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#af020522a3c74b39010d5b6c0b4a8c95b">jsonb_object_pop()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer the JSON buffer size </td></tr>
   </table>
   </dd>
 </dl>
@@ -1485,65 +747,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af1149933a5a46f56c4149373418bb8c2" name="af1149933a5a46f56c4149373418bb8c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1149933a5a46f56c4149373418bb8c2">&#9670;&nbsp;</a></span>jsonb_key_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_key_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>key</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a2481a5e4b71cf1b0e1eb9280f0f4121b">jsonb_key()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
-    <tr><td class="paramname">key</td><td>the key to be inserted </td></tr>
-    <tr><td class="paramname">len</td><td>the key length </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
 <a id="a04a8c1e02ab09c5cc84e678880999740" name="a04a8c1e02ab09c5cc84e678880999740"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a04a8c1e02ab09c5cc84e678880999740">&#9670;&nbsp;</a></span>jsonb_array()</h2>
 
@@ -1589,51 +792,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad69c09eb64d679ce269b79ad5c3015e2" name="ad69c09eb64d679ce269b79ad5c3015e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad69c09eb64d679ce269b79ad5c3015e2">&#9670;&nbsp;</a></span>jsonb_array_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_array_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a04a8c1e02ab09c5cc84e678880999740">jsonb_array()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
 <a id="a6ec46697a02eacc7e1b5c474f5e884da" name="a6ec46697a02eacc7e1b5c474f5e884da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ec46697a02eacc7e1b5c474f5e884da">&#9670;&nbsp;</a></span>jsonb_array_pop()</h2>
 
@@ -1672,51 +830,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
     <tr><td class="paramname">buf</td><td>the JSON buffer </td></tr>
     <tr><td class="paramname">bufsize</td><td>the JSON buffer size </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
-<a id="a60d1ebfcb3c72f5b745d5bb00b96f672" name="a60d1ebfcb3c72f5b745d5bb00b96f672"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60d1ebfcb3c72f5b745d5bb00b96f672">&#9670;&nbsp;</a></span>jsonb_array_pop_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_array_pop_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a6ec46697a02eacc7e1b5c474f5e884da">jsonb_array_pop()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
   </table>
   </dd>
 </dl>
@@ -1783,65 +896,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a62948f87f7058689a584e8392624e985" name="a62948f87f7058689a584e8392624e985"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62948f87f7058689a584e8392624e985">&#9670;&nbsp;</a></span>jsonb_token_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_token_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>token</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a37736f86ef94368b911284cd76b0fe53">jsonb_token()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
-    <tr><td class="paramname">token</td><td>the token to be inserted </td></tr>
-    <tr><td class="paramname">len</td><td>the token length </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
 <a id="a6cb424450ebfef8f7e5e2b9099c15b5d" name="a6cb424450ebfef8f7e5e2b9099c15b5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cb424450ebfef8f7e5e2b9099c15b5d">&#9670;&nbsp;</a></span>jsonb_bool()</h2>
 
@@ -1894,58 +948,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2404df6626d638bda6bd202603f4abfc" name="a2404df6626d638bda6bd202603f4abfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2404df6626d638bda6bd202603f4abfc">&#9670;&nbsp;</a></span>jsonb_bool_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_bool_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>boolean</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a6cb424450ebfef8f7e5e2b9099c15b5d">jsonb_bool()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
-    <tr><td class="paramname">boolean</td><td>the boolean to be inserted </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
 <a id="a9ac70577dc75650a1d6f6dd884a79368" name="a9ac70577dc75650a1d6f6dd884a79368"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ac70577dc75650a1d6f6dd884a79368">&#9670;&nbsp;</a></span>jsonb_null()</h2>
 
@@ -1984,51 +986,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
     <tr><td class="paramname">buf</td><td>the JSON buffer </td></tr>
     <tr><td class="paramname">bufsize</td><td>the JSON buffer size </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
-<a id="a8cb1c736267c57e1bd9e5ac4f61c40a1" name="a8cb1c736267c57e1bd9e5ac4f61c40a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cb1c736267c57e1bd9e5ac4f61c40a1">&#9670;&nbsp;</a></span>jsonb_null_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_null_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a9ac70577dc75650a1d6f6dd884a79368">jsonb_null()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
   </table>
   </dd>
 </dl>
@@ -2095,65 +1052,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a50e810701601f41852e0736099378c3d" name="a50e810701601f41852e0736099378c3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50e810701601f41852e0736099378c3d">&#9670;&nbsp;</a></span>jsonb_string_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_string_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>str</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#a3f23fec8d70900e46026f9b64af77c71">jsonb_string()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
-    <tr><td class="paramname">str</td><td>the string to be inserted </td></tr>
-    <tr><td class="paramname">len</td><td>the string length </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
 <a id="aa33ede5f2f938a17da95f0cf3a98be70" name="aa33ede5f2f938a17da95f0cf3a98be70"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa33ede5f2f938a17da95f0cf3a98be70">&#9670;&nbsp;</a></span>jsonb_number()</h2>
 
@@ -2198,58 +1096,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
     <tr><td class="paramname">buf</td><td>the JSON buffer </td></tr>
     <tr><td class="paramname">bufsize</td><td>the JSON buffer size </td></tr>
-    <tr><td class="paramname">number</td><td>the number to be inserted </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="json-build_8h.html#a30db8a33a37dae38f1816a11cdb9f809">jsonbcode</a> value </dd></dl>
-
-</div>
-</div>
-<a id="ad67bf0079d4c6ee03432f5152e24d5fb" name="ad67bf0079d4c6ee03432f5152e24d5fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad67bf0079d4c6ee03432f5152e24d5fb">&#9670;&nbsp;</a></span>jsonb_number_auto()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="json-build_8h.html#ae1efcc993b3a9f985ff921653658054f">jsonbcode</a> jsonb_number_auto </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structjsonb.html">jsonb</a> *&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>p_buf</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>p_bufsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>number</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="json-build_8h.html#aa33ede5f2f938a17da95f0cf3a98be70">jsonb_number()</a> with dynamic buffer </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">builder</td><td>the builder initialized with <a class="el" href="json-build_8h.html#ab5e9deca77831e97bc9eebb843b6727f" title="Initialize a jsonb handle.">jsonb_init()</a> </td></tr>
-    <tr><td class="paramname">p_buf</td><td>pointer to the JSON buffer </td></tr>
-    <tr><td class="paramname">p_bufsize</td><td>pointer to the JSON buffer size </td></tr>
     <tr><td class="paramname">number</td><td>the number to be inserted </td></tr>
   </table>
   </dd>

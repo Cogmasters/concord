@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['threadpool_5fdestroy_5fflags_5ft_0',['threadpool_destroy_flags_t',['../threadpool_8h.html#a251d951c146fc30ef7d50fdd07e5592f',1,'threadpool.h']]],
-  ['threadpool_5ferror_5ft_1',['threadpool_error_t',['../threadpool_8h.html#a8a6eee42eb9ec77ec476dd5003fa8a15',1,'threadpool.h']]]
+  ['priority_5fqueue_5fflags_0',['priority_queue_flags',['../priority__queue_8h.html#a8a3d4a933cdac92866ede9a1e3b41225',1,'priority_queue.h']]],
+  ['psnipclocktype_1',['PsnipClockType',['../clock_8h.html#afee753045f3b209603b31e159a7c59cb',1,'clock.h']]]
 ];

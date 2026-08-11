@@ -97,6 +97,12 @@ $(document).ready(function(){initNavTree('structdiscord__ret__webhook.html','');
  <a href="structdiscord__ret__webhook.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for discord_ret_webhook:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__webhook__coll__graph.svg" width="171" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -110,14 +116,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a1aefa9473deb7214e2ecfeed8e5f55e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe87240245cebc249f5d13b30374e83d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#abe87240245cebc249f5d13b30374e83d">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:abe87240245cebc249f5d13b30374e83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b5746a50bda9f97bca971cb4b481641"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a1b5746a50bda9f97bca971cb4b481641">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_webhook *ret)</td></tr>
+<tr class="memitem:a1b5746a50bda9f97bca971cb4b481641"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#a1b5746a50bda9f97bca971cb4b481641">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *ret)</td></tr>
 <tr class="separator:a1b5746a50bda9f97bca971cb4b481641"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3f5d51d7b09163adca988373419da19"><td class="memItemLeft" align="right" valign="top">struct discord_webhook *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#ab3f5d51d7b09163adca988373419da19">sync</a></td></tr>
+<tr class="memitem:ab3f5d51d7b09163adca988373419da19"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__webhook.html#ab3f5d51d7b09163adca988373419da19">sync</a></td></tr>
 <tr class="separator:ab3f5d51d7b09163adca988373419da19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#_a2">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#_a3">webhook.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="aa27653d68a90d788d976fe777529ff9a" name="aa27653d68a90d788d976fe777529ff9a"></a>
@@ -202,7 +208,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_webhook::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_webhook *ret)</td>
+          <td class="memname">void(* discord_ret_webhook::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a> *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -217,12 +223,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct discord_webhook* discord_ret_webhook::sync</td>
+          <td class="memname">struct <a class="el" href="structdiscord__webhook.html">discord_webhook</a>* discord_ret_webhook::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-response_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#a3">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="webhook_8c-example.html#a4">webhook.c</a>.</dd>
 </dl>
 
 </div>

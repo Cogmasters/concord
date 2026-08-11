@@ -95,12 +95,13 @@ $(document).ready(function(){initNavTree('websockets_8h.html',''); initResizable
   <div class="headertitle"><div class="title">websockets.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &lt;curl/curl.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;curl/curl.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="error_8h_source.html">error.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logconf_8h_source.html">logconf.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for websockets.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="websockets_8h__incl.svg" width="192" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="websockets_8h__incl.svg" width="292" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -114,8 +115,14 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__info.html">ws_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores info on the latest transfer performed via websockets.  <a href="structws__info.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__callbacks.html">ws_callbacks</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebSockets callbacks.  <a href="structws__callbacks.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structws__attr.html">ws_attr</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebSockets handle initialization attributes.  <a href="structws__attr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -162,27 +169,27 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7f4acddb4bd87dfa94f037a97ce83346"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structwebsockets.html">websockets</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346">ws_init</a> (struct <a class="el" href="structws__callbacks.html">ws_callbacks</a> *cbs, CURLM *mhandle, struct <a class="el" href="structlogmod.html">logmod</a> *<a class="el" href="structlogmod.html">logmod</a>, FILE *fp)</td></tr>
-<tr class="memdesc:a7f4acddb4bd87dfa94f037a97ce83346"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new (CURL-based) WebSockets handle.  <a href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346">More...</a><br /></td></tr>
-<tr class="separator:a7f4acddb4bd87dfa94f037a97ce83346"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30fce74ddf4ab1ded1f6582ccb2b4e6"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structwebsockets.html">websockets</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6">ws_init</a> (struct <a class="el" href="structws__callbacks.html">ws_callbacks</a> *cbs, CURLM *mhandle, struct <a class="el" href="structws__attr.html">ws_attr</a> *attr)</td></tr>
+<tr class="memdesc:af30fce74ddf4ab1ded1f6582ccb2b4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new (CURL-based) WebSockets handle.  <a href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6">More...</a><br /></td></tr>
+<tr class="separator:af30fce74ddf4ab1ded1f6582ccb2b4e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad45b500790fffec540211cda5d1dbd0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#ad45b500790fffec540211cda5d1dbd0f">ws_cleanup</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws)</td></tr>
-<tr class="memdesc:ad45b500790fffec540211cda5d1dbd0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a>  <a href="websockets_8h.html#ad45b500790fffec540211cda5d1dbd0f">More...</a><br /></td></tr>
+<tr class="memdesc:ad45b500790fffec540211cda5d1dbd0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a>  <a href="websockets_8h.html#ad45b500790fffec540211cda5d1dbd0f">More...</a><br /></td></tr>
 <tr class="separator:ad45b500790fffec540211cda5d1dbd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00c5f44de4c404f0239728768951d60a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a00c5f44de4c404f0239728768951d60a">ws_set_url</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char base_url[])</td></tr>
-<tr class="memdesc:a00c5f44de4c404f0239728768951d60a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the URL for the WebSockets handle to connect.  <a href="websockets_8h.html#a00c5f44de4c404f0239728768951d60a">More...</a><br /></td></tr>
-<tr class="separator:a00c5f44de4c404f0239728768951d60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a4191771cfb0d5fc5edae4a4ef88456"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a6a4191771cfb0d5fc5edae4a4ef88456">ws_send_binary</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char msg[], size_t msglen)</td></tr>
-<tr class="memdesc:a6a4191771cfb0d5fc5edae4a4ef88456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a binary message of given size.  <a href="websockets_8h.html#a6a4191771cfb0d5fc5edae4a4ef88456">More...</a><br /></td></tr>
-<tr class="separator:a6a4191771cfb0d5fc5edae4a4ef88456"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a852baa0848796919a5f18c3b4c697d83"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a852baa0848796919a5f18c3b4c697d83">ws_send_text</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char text[], size_t len)</td></tr>
-<tr class="memdesc:a852baa0848796919a5f18c3b4c697d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a text message of given size.  <a href="websockets_8h.html#a852baa0848796919a5f18c3b4c697d83">More...</a><br /></td></tr>
-<tr class="separator:a852baa0848796919a5f18c3b4c697d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b629b6c158e04fe3161b97016d900f5"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a5b629b6c158e04fe3161b97016d900f5">ws_ping</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char reason[], size_t len)</td></tr>
-<tr class="memdesc:a5b629b6c158e04fe3161b97016d900f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a PING (opcode 0x9) frame with <em>reason</em> as payload.  <a href="websockets_8h.html#a5b629b6c158e04fe3161b97016d900f5">More...</a><br /></td></tr>
-<tr class="separator:a5b629b6c158e04fe3161b97016d900f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a406917e4f8d50cabfe850d5dfa13670c"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a406917e4f8d50cabfe850d5dfa13670c">ws_pong</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char reason[], size_t len)</td></tr>
-<tr class="memdesc:a406917e4f8d50cabfe850d5dfa13670c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a PONG (opcode 0xA) frame with <em>reason</em> as payload.  <a href="websockets_8h.html#a406917e4f8d50cabfe850d5dfa13670c">More...</a><br /></td></tr>
-<tr class="separator:a406917e4f8d50cabfe850d5dfa13670c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac709a5d97d06af442ec647d3ff275cbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#ac709a5d97d06af442ec647d3ff275cbf">ws_set_url</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, const char base_url[], const char ws_protocols[])</td></tr>
+<tr class="memdesc:ac709a5d97d06af442ec647d3ff275cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the URL for the WebSockets handle to connect.  <a href="websockets_8h.html#ac709a5d97d06af442ec647d3ff275cbf">More...</a><br /></td></tr>
+<tr class="separator:ac709a5d97d06af442ec647d3ff275cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa765041b1f3bbc8d1706289fd0f7f81c"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#aa765041b1f3bbc8d1706289fd0f7f81c">ws_send_binary</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char msg[], size_t msglen)</td></tr>
+<tr class="memdesc:aa765041b1f3bbc8d1706289fd0f7f81c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a binary message of given size.  <a href="websockets_8h.html#aa765041b1f3bbc8d1706289fd0f7f81c">More...</a><br /></td></tr>
+<tr class="separator:aa765041b1f3bbc8d1706289fd0f7f81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21afc90e4fac706f08089d21ac29219f"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a21afc90e4fac706f08089d21ac29219f">ws_send_text</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char text[], size_t len)</td></tr>
+<tr class="memdesc:a21afc90e4fac706f08089d21ac29219f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a text message of given size.  <a href="websockets_8h.html#a21afc90e4fac706f08089d21ac29219f">More...</a><br /></td></tr>
+<tr class="separator:a21afc90e4fac706f08089d21ac29219f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b39b4037a097677244a42b642e6dd8"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a68b39b4037a097677244a42b642e6dd8">ws_ping</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char reason[], size_t len)</td></tr>
+<tr class="memdesc:a68b39b4037a097677244a42b642e6dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a PING (opcode 0x9) frame with <em>reason</em> as payload.  <a href="websockets_8h.html#a68b39b4037a097677244a42b642e6dd8">More...</a><br /></td></tr>
+<tr class="separator:a68b39b4037a097677244a42b642e6dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56df312506b866285a9d3b4638580484"><td class="memItemLeft" align="right" valign="top">_Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a56df312506b866285a9d3b4638580484">ws_pong</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws, struct <a class="el" href="structws__info.html">ws_info</a> *info, const char reason[], size_t len)</td></tr>
+<tr class="memdesc:a56df312506b866285a9d3b4638580484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a PONG (opcode 0xA) frame with <em>reason</em> as payload.  <a href="websockets_8h.html#a56df312506b866285a9d3b4638580484">More...</a><br /></td></tr>
+<tr class="separator:a56df312506b866285a9d3b4638580484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c3acbf05e1430abb8096fd65ef74c32"><td class="memItemLeft" align="right" valign="top">CURL *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="websockets_8h.html#a7c3acbf05e1430abb8096fd65ef74c32">ws_start</a> (struct <a class="el" href="structwebsockets.html">websockets</a> *ws)</td></tr>
 <tr class="memdesc:a7c3acbf05e1430abb8096fd65ef74c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signals connecting state before entering the WebSockets event loop.  <a href="websockets_8h.html#a7c3acbf05e1430abb8096fd65ef74c32">More...</a><br /></td></tr>
 <tr class="separator:a7c3acbf05e1430abb8096fd65ef74c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,7 +241,7 @@ Functions</h2></td></tr>
 <p>Check if a WebSockets connection is alive. </p>
 <p >This will only return true if the connection status is different than WS_DISCONNECTED </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -261,7 +268,7 @@ Functions</h2></td></tr>
 <p>Check if WebSockets connection is functional. </p>
 <p >This will only return true if the connection status is WS_CONNECTED </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -334,8 +341,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a7f4acddb4bd87dfa94f037a97ce83346" name="a7f4acddb4bd87dfa94f037a97ce83346"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f4acddb4bd87dfa94f037a97ce83346">&#9670;&nbsp;</a></span>ws_init()</h2>
+<a id="af30fce74ddf4ab1ded1f6582ccb2b4e6" name="af30fce74ddf4ab1ded1f6582ccb2b4e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af30fce74ddf4ab1ded1f6582ccb2b4e6">&#9670;&nbsp;</a></span>ws_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -355,14 +362,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structlogmod.html">logmod</a> *&#160;</td>
-          <td class="paramname"><em>logmod</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>fp</em>&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structws__attr.html">ws_attr</a> *&#160;</td>
+          <td class="paramname"><em>attr</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -377,8 +378,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">cbs</td><td>set of functions to call back when server report events. </td></tr>
     <tr><td class="paramname">mhandle</td><td>user-owned curl_multi handle for performing non-blocking transfers </td></tr>
-    <tr><td class="paramname">logmod</td><td>optional pre-initialized logging handler </td></tr>
-    <tr><td class="paramname">fp</td><td>file pointer for writing WebSockets traces to </td></tr>
+    <tr><td class="paramname">attr</td><td>optional attributes to override defaults </td></tr>
   </table>
   </dd>
 </dl>
@@ -402,18 +402,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Free a WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </p>
+<p>Free a WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a00c5f44de4c404f0239728768951d60a" name="a00c5f44de4c404f0239728768951d60a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00c5f44de4c404f0239728768951d60a">&#9670;&nbsp;</a></span>ws_set_url()</h2>
+<a id="ac709a5d97d06af442ec647d3ff275cbf" name="ac709a5d97d06af442ec647d3ff275cbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac709a5d97d06af442ec647d3ff275cbf">&#9670;&nbsp;</a></span>ws_set_url()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,7 +428,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>base_url</em>[]&#160;</td>
+          <td class="paramname"><em>base_url</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>ws_protocols</em>[]&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -441,16 +447,17 @@ Functions</h2></td></tr>
 <p>Set the URL for the WebSockets handle to connect. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
     <tr><td class="paramname">base_url</td><td>the URL to connect, such as ws://echo.websockets.org </td></tr>
+    <tr><td class="paramname">ws_protocols</td><td>NULL or something like "chat", "superchat",... </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a6a4191771cfb0d5fc5edae4a4ef88456" name="a6a4191771cfb0d5fc5edae4a4ef88456"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a4191771cfb0d5fc5edae4a4ef88456">&#9670;&nbsp;</a></span>ws_send_binary()</h2>
+<a id="aa765041b1f3bbc8d1706289fd0f7f81c" name="aa765041b1f3bbc8d1706289fd0f7f81c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa765041b1f3bbc8d1706289fd0f7f81c">&#9670;&nbsp;</a></span>ws_send_binary()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -460,6 +467,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structwebsockets.html">websockets</a> *&#160;</td>
           <td class="paramname"><em>ws</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structws__info.html">ws_info</a> *&#160;</td>
+          <td class="paramname"><em>info</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -485,7 +498,8 @@ Functions</h2></td></tr>
 <p >Binary messages do not need to include the null terminator (\0), they will be read up to <em>msglen</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">info</td><td>get information on how this transfer went </td></tr>
     <tr><td class="paramname">msg</td><td>the pointer to memory (linear) to send. </td></tr>
     <tr><td class="paramname">msglen</td><td>the length in bytes of <em>msg</em>. </td></tr>
   </table>
@@ -495,8 +509,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a852baa0848796919a5f18c3b4c697d83" name="a852baa0848796919a5f18c3b4c697d83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a852baa0848796919a5f18c3b4c697d83">&#9670;&nbsp;</a></span>ws_send_text()</h2>
+<a id="a21afc90e4fac706f08089d21ac29219f" name="a21afc90e4fac706f08089d21ac29219f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21afc90e4fac706f08089d21ac29219f">&#9670;&nbsp;</a></span>ws_send_text()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,6 +520,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structwebsockets.html">websockets</a> *&#160;</td>
           <td class="paramname"><em>ws</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structws__info.html">ws_info</a> *&#160;</td>
+          <td class="paramname"><em>info</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -531,7 +551,8 @@ Functions</h2></td></tr>
 <p >Text messages do not need to include the null terminator (\0), they will be read up to <em>len</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">info</td><td>get information on how this transfer went </td></tr>
     <tr><td class="paramname">text</td><td>the pointer to memory (linear) to send. </td></tr>
     <tr><td class="paramname">len</td><td>the length in bytes of <em>text</em>. </td></tr>
   </table>
@@ -541,8 +562,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5b629b6c158e04fe3161b97016d900f5" name="a5b629b6c158e04fe3161b97016d900f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b629b6c158e04fe3161b97016d900f5">&#9670;&nbsp;</a></span>ws_ping()</h2>
+<a id="a68b39b4037a097677244a42b642e6dd8" name="a68b39b4037a097677244a42b642e6dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68b39b4037a097677244a42b642e6dd8">&#9670;&nbsp;</a></span>ws_ping()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -552,6 +573,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structwebsockets.html">websockets</a> *&#160;</td>
           <td class="paramname"><em>ws</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structws__info.html">ws_info</a> *&#160;</td>
+          <td class="paramname"><em>info</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -576,7 +603,8 @@ Functions</h2></td></tr>
 <p>Send a PING (opcode 0x9) frame with <em>reason</em> as payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">info</td><td>get information on how this transfer went </td></tr>
     <tr><td class="paramname">reason</td><td>NULL or some UTF-8 string null ('\0') terminated. </td></tr>
     <tr><td class="paramname">len</td><td>the length of <em>reason</em> in bytes. If SIZE_MAX, uses strlen() on <em>reason</em> if it's not NULL. </td></tr>
   </table>
@@ -586,8 +614,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a406917e4f8d50cabfe850d5dfa13670c" name="a406917e4f8d50cabfe850d5dfa13670c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a406917e4f8d50cabfe850d5dfa13670c">&#9670;&nbsp;</a></span>ws_pong()</h2>
+<a id="a56df312506b866285a9d3b4638580484" name="a56df312506b866285a9d3b4638580484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56df312506b866285a9d3b4638580484">&#9670;&nbsp;</a></span>ws_pong()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -597,6 +625,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structwebsockets.html">websockets</a> *&#160;</td>
           <td class="paramname"><em>ws</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structws__info.html">ws_info</a> *&#160;</td>
+          <td class="paramname"><em>info</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -622,7 +656,8 @@ Functions</h2></td></tr>
 <p >Note that pong is sent automatically if no "on_ping" callback is defined. If one is defined you must send pong manually.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">info</td><td>get information on how this transfer went </td></tr>
     <tr><td class="paramname">reason</td><td>NULL or some UTF-8 string null ('\0') terminated. </td></tr>
     <tr><td class="paramname">len</td><td>the length of <em>reason</em> in bytes. If SIZE_MAX, uses strlen() on <em>reason</em> if it's not NULL. </td></tr>
   </table>
@@ -651,7 +686,7 @@ Functions</h2></td></tr>
 <p>Signals connecting state before entering the WebSockets event loop. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -678,7 +713,7 @@ Functions</h2></td></tr>
 <p>Cleanup and reset <code>ws</code> connection resources. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -721,7 +756,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Helper over curl_multi_wait()</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
     <tr><td class="paramname">wait_ms</td><td>limit amount in milliseconds to wait for until activity </td></tr>
     <tr><td class="paramname">tstamp</td><td>get current timestamp for this iteration </td></tr>
   </table>
@@ -759,10 +794,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reads/Write available data from WebSockets. </p>
-<dl class="section note"><dt>Note</dt><dd>I/O is driven by io_poller per-socket-event via curl_multi_socket_action()</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Helper over curl_multi_socket_all()</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
     <tr><td class="paramname">tstamp</td><td>get current timestamp for this iteration </td></tr>
   </table>
   </dd>
@@ -790,7 +825,7 @@ Functions</h2></td></tr>
 <p>Returns the WebSockets handle connection status. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -844,7 +879,7 @@ Functions</h2></td></tr>
 <p>The WebSockets event-loop concept of "now". </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -872,7 +907,7 @@ Functions</h2></td></tr>
 <p>Update the WebSockets event-loop concept of "now". </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -922,7 +957,7 @@ Functions</h2></td></tr>
 <p >This will activate a internal WS_USER_CMD_EXIT flag that will force disconnect when the next iteration begins. </p><dl class="section note"><dt>Note</dt><dd>it will create a copy of the reason string </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
     <tr><td class="paramname">code</td><td>the WebSockets CLOSE opcode </td></tr>
     <tr><td class="paramname">reason</td><td>the close reason </td></tr>
     <tr><td class="paramname">len</td><td>the reason length </td></tr>
@@ -967,7 +1002,7 @@ Functions</h2></td></tr>
 <p>Add a header field/value pair. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
     <tr><td class="paramname">field</td><td>the header field </td></tr>
     <tr><td class="paramname">value</td><td>the header value </td></tr>
   </table>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queriec_0',['queriec',['../structqueriec.html',1,'']]]
+  ['psnipclocktimespec_0',['PsnipClockTimespec',['../structPsnipClockTimespec.html',1,'']]]
 ];

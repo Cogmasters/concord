@@ -104,15 +104,18 @@ Collaboration diagram for Commands:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gad633301a38218a7f70c29ea6af5eb993"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gad633301a38218a7f70c29ea6af5eb993">discord_request_guild_members</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct discord_request_guild_members *request)</td></tr>
+<tr class="memitem:gad633301a38218a7f70c29ea6af5eb993"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gad633301a38218a7f70c29ea6af5eb993">discord_request_guild_members</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *request)</td></tr>
 <tr class="memdesc:gad633301a38218a7f70c29ea6af5eb993"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request all members for a guild or a list of guilds.  <a href="group__DiscordCommands.html#gad633301a38218a7f70c29ea6af5eb993">More...</a><br /></td></tr>
 <tr class="separator:gad633301a38218a7f70c29ea6af5eb993"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacb174879d5c775b529d1cae1088db98f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gacb174879d5c775b529d1cae1088db98f">discord_update_voice_state</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct discord_update_voice_state *update)</td></tr>
+<tr class="memitem:gacb174879d5c775b529d1cae1088db98f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gacb174879d5c775b529d1cae1088db98f">discord_update_voice_state</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *update)</td></tr>
 <tr class="memdesc:gacb174879d5c775b529d1cae1088db98f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent when a client wants to join, move or disconnect from a voice channel.  <a href="group__DiscordCommands.html#gacb174879d5c775b529d1cae1088db98f">More...</a><br /></td></tr>
 <tr class="separator:gacb174879d5c775b529d1cae1088db98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gaf38ef8861fa17efd95a5b374da6ef67f">discord_update_presence</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct discord_presence_update *presence)</td></tr>
+<tr class="memitem:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gaf38ef8861fa17efd95a5b374da6ef67f">discord_update_presence</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *presence)</td></tr>
 <tr class="memdesc:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the client presence status.  <a href="group__DiscordCommands.html#gaf38ef8861fa17efd95a5b374da6ef67f">More...</a><br /></td></tr>
 <tr class="separator:gaf38ef8861fa17efd95a5b374da6ef67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaed8749c82a27a024a0deae053aac67c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordCommands.html#gaed8749c82a27a024a0deae053aac67c8">discord_set_presence</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *presence)</td></tr>
+<tr class="memdesc:gaed8749c82a27a024a0deae053aac67c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the client presence status.  <a href="group__DiscordCommands.html#gaed8749c82a27a024a0deae053aac67c8">More...</a><br /></td></tr>
+<tr class="separator:gaed8749c82a27a024a0deae053aac67c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Requests made by the client to the Gateway socket. </p>
@@ -124,7 +127,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void discord_request_guild_members </td>
+          <td class="memname">void <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em>, </td>
@@ -132,7 +135,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct discord_request_guild_members *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *&#160;</td>
           <td class="paramname"><em>request</em>&#160;</td>
         </tr>
         <tr>
@@ -147,7 +150,7 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a href="https://discord.com/developers/docs/topics/gateway#request-guild-members">https://discord.com/developers/docs/topics/gateway#request-guild-members</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">request</td><td>request guild members information </td></tr>
   </table>
   </dd>
@@ -162,7 +165,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void discord_update_voice_state </td>
+          <td class="memname">void <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em>, </td>
@@ -170,7 +173,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct discord_update_voice_state *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *&#160;</td>
           <td class="paramname"><em>update</em>&#160;</td>
         </tr>
         <tr>
@@ -184,7 +187,7 @@ Functions</h2></td></tr>
 <p>Sent when a client wants to join, move or disconnect from a voice channel. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">update</td><td>request guild members information </td></tr>
   </table>
   </dd>
@@ -207,7 +210,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct discord_presence_update *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *&#160;</td>
           <td class="paramname"><em>presence</em>&#160;</td>
         </tr>
         <tr>
@@ -222,7 +225,46 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordAPIGatewayHelper.html#gad324d4ad01181ed785b092b261d6b726" title="Helper function to add presence activities.">discord_presence_add_activity()</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+    <tr><td class="paramname">presence</td><td>status to update the client's to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaed8749c82a27a024a0deae053aac67c8" name="gaed8749c82a27a024a0deae053aac67c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaed8749c82a27a024a0deae053aac67c8">&#9670;&nbsp;</a></span>discord_set_presence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void discord_set_presence </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *&#160;</td>
+          <td class="paramname"><em>presence</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the client presence status. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>since v2.0.0, use <a class="el" href="group__DiscordCommands.html#gaf38ef8861fa17efd95a5b374da6ef67f" title="Update the client presence status.">discord_update_presence()</a> instead </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordAPIGatewayHelper.html#gad324d4ad01181ed785b092b261d6b726" title="Helper function to add presence activities.">discord_presence_add_activity()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">presence</td><td>status to update the client's to </td></tr>
   </table>
   </dd>

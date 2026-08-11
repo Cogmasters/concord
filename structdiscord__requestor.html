@@ -100,14 +100,14 @@ $(document).ready(function(){initNavTree('structdiscord__requestor.html',''); in
 <div class="dynheader">
 Collaboration diagram for discord_requestor:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__requestor__coll__graph.svg" width="275" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__requestor__coll__graph.svg" width="263" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a7caf96c4b5afb0555038a69a9db85c24"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structlogmod__logger.html">logmod_logger</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#a7caf96c4b5afb0555038a69a9db85c24">logger</a></td></tr>
-<tr class="separator:a7caf96c4b5afb0555038a69a9db85c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4ede57068e886e0a1f04e6466f4319a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structlogconf.html">logconf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#ad4ede57068e886e0a1f04e6466f4319a">conf</a></td></tr>
+<tr class="separator:ad4ede57068e886e0a1f04e6466f4319a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9465b7ca0f1f3a65bc8bb3e8160b078"><td class="memItemLeft" align="right" valign="top">struct user_agent *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#ac9465b7ca0f1f3a65bc8bb3e8160b078">ua</a></td></tr>
 <tr class="separator:ac9465b7ca0f1f3a65bc8bb3e8160b078"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43040045641ce04e2cc90e9c832273cd"><td class="memItemLeft" align="right" valign="top">CURLM *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#a43040045641ce04e2cc90e9c832273cd">mhandle</a></td></tr>
@@ -116,30 +116,30 @@ Data Fields</h2></td></tr>
 <tr class="separator:adac6562e3d20fada2b35ddc9f3efd59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac87dd85e5b4d7ee49d940ab1aeb18f60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#ac87dd85e5b4d7ee49d940ab1aeb18f60">retry_limit</a></td></tr>
 <tr class="separator:ac87dd85e5b4d7ee49d940ab1aeb18f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea28101a4fb03f32a861f856a4df0d01"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:aea28101a4fb03f32a861f856a4df0d01"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#aea28101a4fb03f32a861f856a4df0d01">queues</a></td></tr>
-<tr class="separator:aea28101a4fb03f32a861f856a4df0d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a564c502743cc32b18d4192c1eb1596fe"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:afcccd90bdb9558670ff50e794a2a4619"><td class="memItemLeft" >&#160;&#160;&#160;pthread_mutex_t&#160;&#160;&#160;<a class="el" href="structdiscord__requestor.html#a02a3e03d05a4991bf726fa442a72c927">recycling</a></td></tr>
-<tr class="separator:afcccd90bdb9558670ff50e794a2a4619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa66e50154d4c9fcfb3c8c2b5512cb85c"><td class="memItemLeft" >&#160;&#160;&#160;pthread_mutex_t&#160;&#160;&#160;<a class="el" href="structdiscord__requestor.html#ab99acbf1e4d00b6bfd6ded70c6a7a92d">pending</a></td></tr>
-<tr class="separator:aa66e50154d4c9fcfb3c8c2b5512cb85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b4d851d983f99b3137d318ec43e2124"><td class="memItemLeft" >&#160;&#160;&#160;pthread_mutex_t&#160;&#160;&#160;<a class="el" href="structdiscord__requestor.html#ab987eb73ac725664ebb74461ae80b56e">finished</a></td></tr>
-<tr class="separator:a8b4d851d983f99b3137d318ec43e2124"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a564c502743cc32b18d4192c1eb1596fe"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#a564c502743cc32b18d4192c1eb1596fe">qlocks</a></td></tr>
-<tr class="separator:a564c502743cc32b18d4192c1eb1596fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeafdbd969b074a0a2fc7861adc3f6a45"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:aeafdbd969b074a0a2fc7861adc3f6a45"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#aeafdbd969b074a0a2fc7861adc3f6a45">queues</a></td></tr>
+<tr class="separator:aeafdbd969b074a0a2fc7861adc3f6a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78d0cc7bbf8ae2441a6305d64ff53bfc"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:ab5b878626f42ee2bd4cf09412c2b6de8"><td class="memItemLeft" >&#160;&#160;&#160;pthread_mutex_t&#160;&#160;&#160;<a class="el" href="structdiscord__requestor.html#a02a3e03d05a4991bf726fa442a72c927">recycling</a></td></tr>
+<tr class="separator:ab5b878626f42ee2bd4cf09412c2b6de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae39fbe4e24f71227692639b54bf637be"><td class="memItemLeft" >&#160;&#160;&#160;pthread_mutex_t&#160;&#160;&#160;<a class="el" href="structdiscord__requestor.html#ab99acbf1e4d00b6bfd6ded70c6a7a92d">pending</a></td></tr>
+<tr class="separator:ae39fbe4e24f71227692639b54bf637be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cb6add9bb097681d099eb175ddf339a"><td class="memItemLeft" >&#160;&#160;&#160;pthread_mutex_t&#160;&#160;&#160;<a class="el" href="structdiscord__requestor.html#ab987eb73ac725664ebb74461ae80b56e">finished</a></td></tr>
+<tr class="separator:a3cb6add9bb097681d099eb175ddf339a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78d0cc7bbf8ae2441a6305d64ff53bfc"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__requestor.html#a78d0cc7bbf8ae2441a6305d64ff53bfc">qlocks</a></td></tr>
+<tr class="separator:a78d0cc7bbf8ae2441a6305d64ff53bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The handle used for handling asynchronous requests. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a7caf96c4b5afb0555038a69a9db85c24" name="a7caf96c4b5afb0555038a69a9db85c24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7caf96c4b5afb0555038a69a9db85c24">&#9670;&nbsp;</a></span>logger</h2>
+<a id="ad4ede57068e886e0a1f04e6466f4319a" name="ad4ede57068e886e0a1f04e6466f4319a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4ede57068e886e0a1f04e6466f4319a">&#9670;&nbsp;</a></span>conf</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structlogmod__logger.html">logmod_logger</a>* discord_requestor::logger</td>
+          <td class="memname">struct <a class="el" href="structlogconf.html">logconf</a> discord_requestor::conf</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -207,8 +207,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="aea28101a4fb03f32a861f856a4df0d01" name="aea28101a4fb03f32a861f856a4df0d01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea28101a4fb03f32a861f856a4df0d01">&#9670;&nbsp;</a></span></h2>
+<a id="aeafdbd969b074a0a2fc7861adc3f6a45" name="aeafdbd969b074a0a2fc7861adc3f6a45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeafdbd969b074a0a2fc7861adc3f6a45">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,8 +267,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a564c502743cc32b18d4192c1eb1596fe" name="a564c502743cc32b18d4192c1eb1596fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a564c502743cc32b18d4192c1eb1596fe">&#9670;&nbsp;</a></span></h2>
+<a id="a78d0cc7bbf8ae2441a6305d64ff53bfc" name="a78d0cc7bbf8ae2441a6305d64ff53bfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78d0cc7bbf8ae2441a6305d64ff53bfc">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

@@ -93,101 +93,50 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="textblock"><p ><a class="anchor" id="md_README"></a></p>
 <div align="center"> <img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" alt="Concord Logo" style="pointer-events: none;" width="250" class="inline"/> </div><h1><a class="anchor" id="autotoc_md0"></a>
 Concord - C Discord API library</h1>
-<p ><a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&amp;logo=discord&amp;logoColor=white" alt="discord-shield" class="inline"/></a> <a href="https://gist.github.com/lcsmuller/8a60b7ccfd9abd4a7f5d8b723f6a2857"><img src="https://img.shields.io/badge/Gist-Migrating%20from%20v2-yellow" alt="migrating-shield" class="inline"/></a></p>
+<p ><a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&amp;logo=discord&amp;logoColor=white" alt="discord-shield" class="inline"/></a> <a href="https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b"><img src="https://img.shields.io/badge/Gist-Migrating%20from%20v1-yellow" alt="migrating-shield" class="inline"/></a></p>
 <h2><a class="anchor" id="autotoc_md1"></a>
+🚨 Concord is not dead! 🚨</h2>
+<p >Development has been happening in the dev branch. We are working on new features and improvements. To access the latest version of the library, please check out the dev branch.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
 About</h2>
 <p >Concord is an asynchronous C99 Discord API library with minimal external dependencies, and a low-level translation of the Discord official documentation to C code.</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Contents   </th><th class="markdownTableHeadNone">Description    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Build Instructions   </td><td class="markdownTableBodyNone">How to build libcurl and Concord    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Environment Setup   </td><td class="markdownTableBodyNone">Project setup and compilation    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Configuration   </td><td class="markdownTableBodyNone">How to configure Concord with config.json    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Example Bot   </td><td class="markdownTableBodyNone">Test Concord with a simple copycat bot    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Build Options   </td><td class="markdownTableBodyNone">Special flags and build targets    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Installation   </td><td class="markdownTableBodyNone">Installing Concord on your system    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Contributing   </td><td class="markdownTableBodyNone">How to contribute to Concord   </td></tr>
-</table>
-<h3><a class="anchor" id="autotoc_md2"></a>
-Getting Started</h3>
-<ul>
-<li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
-<li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
-</ul>
-<h4><a class="anchor" id="autotoc_md3"></a>
-Configuration</h4>
-<ul>
-<li>Config.json Directives - Configure your bot using JSON</li>
-<li>Setup with Environment Variables - Use environment variables</li>
-</ul>
-<h4><a class="anchor" id="autotoc_md4"></a>
-Discord Features</h4>
-<ul>
-<li>Embeds - Create rich message embeds</li>
-<li>Slash Commands - Implement Discord application commands</li>
-<li>Event Scheduler - Control Discord event processing</li>
-<li>SQLite3 with Concord - Persist data with SQLite</li>
-<li>Databases with Concord - General database integration</li>
-</ul>
-<h4><a class="anchor" id="autotoc_md5"></a>
-Debugging &amp; Troubleshooting</h4>
-<ul>
-<li>Debugging - Debug your Concord applications</li>
-</ul>
-<h3><a class="anchor" id="autotoc_md6"></a>
-Other Guides</h3>
-<p >Following are other standalone guides created by the community to help you get started with Concord, organized by category:</p>
-<ul>
-<li>Compiling on Windows - Build Concord on Windows systems</li>
-<li>Installing Concord (Termux) - Install on Android using Termux</li>
-<li>Msys2 and Mingw64 - Setup using MSYS2 environment</li>
-<li>Cross Compiling - Compile for different target platforms</li>
-<li>Concord on Old Systems - Support for legacy systems</li>
-</ul>
-<h3><a class="anchor" id="autotoc_md7"></a>
+<h3><a class="anchor" id="autotoc_md3"></a>
 Examples</h3>
-<p >*The following are minimalistic examples, refer to <a href="examples/"><code>examples/</code></a> for a better overview.*</p>
-<h4><a class="anchor" id="autotoc_md8"></a>
+<p ><em>The following are minimalistic examples, refer to <a href="examples/"><code>examples/</code></a> for a better overview.*</em></p>
+<p ><em></em></p>
+<h4><a class="anchor" id="autotoc_md4"></a>
 Slash Commands (new method)</h4>
+<p ><em> *Note: you need to replace <code>GUILD_ID</code> with an actual guild ID, or this example won't compile!</em> You can use a macro to do this: <code>#define GUILD_ID 1234567898765431</code></p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#define GUILD_ID 1234567898765431 </span><span class="comment">// replace with your guild ID</span></div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> discord_ready *event) {</div>
-<div class="line">    <span class="keyword">struct </span><a class="code hl_function" href="group__DiscordAPIInteractionsApplicationCommand.html#ga91d095c82d65a07b4feca615311e095d">discord_create_guild_application_command</a> params = {</div>
-<div class="line">        .name = <span class="stringliteral">&quot;ping&quot;</span>,</div>
+<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__ready.html">discord_ready</a> *event) {</div>
+<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a> params = {</div>
+<div class="line">        .<a class="code hl_variable" href="structdiscord__create__guild__application__command.html#a27fb5e8a69d4d72f7c6853e06f881a9f">name</a> = <span class="stringliteral">&quot;ping&quot;</span>,</div>
 <div class="line">        .description = <span class="stringliteral">&quot;Ping command!&quot;</span></div>
 <div class="line">    };</div>
-<div class="line">    <a class="code hl_function" href="group__DiscordAPIInteractionsApplicationCommand.html#ga91d095c82d65a07b4feca615311e095d">discord_create_guild_application_command</a>(client, event-&gt;application-&gt;id,</div>
+<div class="line">    <a class="code hl_function" href="group__DiscordAPIInteractionsApplicationCommand.html#ga91d095c82d65a07b4feca615311e095d">discord_create_guild_application_command</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__ready.html#a50ac4274a6b0d46abaa1af5cc10b4397">application</a>-&gt;<a class="code hl_variable" href="structdiscord__application.html#a6eb2278fffac7a78310c0cae49dc5c97">id</a>,</div>
 <div class="line">                                             GUILD_ID, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_interaction(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> discord_interaction *event) {</div>
-<div class="line">    <span class="keywordflow">if</span> (event-&gt;type != DISCORD_INTERACTION_APPLICATION_COMMAND)</div>
+<div class="line"><span class="keywordtype">void</span> on_interaction(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__interaction.html">discord_interaction</a> *event) {</div>
+<div class="line">    <span class="keywordflow">if</span> (event-&gt;<a class="code hl_variable" href="structdiscord__interaction.html#aad9b8b77631a49efb85e7d9b3776fa72">type</a> != <a class="code hl_enumvalue" href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372">DISCORD_INTERACTION_APPLICATION_COMMAND</a>)</div>
 <div class="line">        <span class="keywordflow">return</span>; <span class="comment">/* return if interaction isn&#39;t a slash command */</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (strcmp(event-&gt;data-&gt;name, <span class="stringliteral">&quot;ping&quot;</span>) == 0) {</div>
-<div class="line">          <span class="keyword">struct </span>discord_interaction_response params = {</div>
-<div class="line">                .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,</div>
-<div class="line">                .data = &amp;(<span class="keyword">struct </span>discord_interaction_callback_data){</div>
+<div class="line">    <span class="keywordflow">if</span> (strcmp(event-&gt;<a class="code hl_variable" href="structdiscord__interaction.html#aa51ca032313f3d65f2c6d641e569b0db">data</a>-&gt;<a class="code hl_variable" href="structdiscord__interaction__data.html#a306f118a55417b9029d1ef70e4366f5b">name</a>, <span class="stringliteral">&quot;ping&quot;</span>) == 0) {</div>
+<div class="line">          <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__interaction__response.html">discord_interaction_response</a> params = {</div>
+<div class="line">                .<a class="code hl_variable" href="structdiscord__interaction__response.html#a5f8a72eedbc0d2e5d99d7f31f99dae6e">type</a> = <a class="code hl_enumvalue" href="interactions_8h.html#af7a2bdc22799b9d1ac556a6ba7206c83a3409efaf45118256f4a33d4b15d76240">DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE</a>,</div>
+<div class="line">                .data = &amp;(<span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__interaction__callback__data.html">discord_interaction_callback_data</a>){</div>
 <div class="line">                      .content = <span class="stringliteral">&quot;pong&quot;</span></div>
 <div class="line">                }</div>
 <div class="line">          };</div>
-<div class="line">          <a class="code hl_function" href="group__DiscordAPIInteractionsReact.html#ga4e69da7bd7fd2472e7cbe60b0ce292ad">discord_create_interaction_response</a>(client, event-&gt;id,</div>
-<div class="line">                                              event-&gt;token, &amp;params, NULL);</div>
+<div class="line">          <a class="code hl_function" href="group__DiscordAPIInteractionsReact.html#ga4e69da7bd7fd2472e7cbe60b0ce292ad">discord_create_interaction_response</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__interaction.html#a3a97e61aa2066f54c57f68175c9434f3">id</a>,</div>
+<div class="line">                                              event-&gt;<a class="code hl_variable" href="structdiscord__interaction.html#ac1e97e032eec047868dce94121a7d234">token</a>, &amp;params, NULL);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
-<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a class="code hl_function" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">discord_from_token</a>(BOT_TOKEN);</div>
+<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a class="code hl_function" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a>(BOT_TOKEN);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#gaddabbe9b0e4ffd41e25a3870bb6c1676">discord_set_on_ready</a>(client, &amp;on_ready);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#ga6bcef3a29e7450e57c049dabc8072190">discord_set_on_interaction_create</a>(client, &amp;on_interaction);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
@@ -195,30 +144,46 @@ Slash Commands (new method)</h4>
 <div class="ttc" id="agroup__DiscordAPIInteractionsApplicationCommand_html_ga91d095c82d65a07b4feca615311e095d"><div class="ttname"><a href="group__DiscordAPIInteractionsApplicationCommand.html#ga91d095c82d65a07b4feca615311e095d">discord_create_guild_application_command</a></div><div class="ttdeci">CCORDcode discord_create_guild_application_command(struct discord *client, u64snowflake application_id, u64snowflake guild_id, struct discord_create_guild_application_command *params, struct discord_ret_application_command *ret)</div><div class="ttdoc">Create a new guild command.</div></div>
 <div class="ttc" id="agroup__DiscordAPIInteractionsReact_html_ga4e69da7bd7fd2472e7cbe60b0ce292ad"><div class="ttname"><a href="group__DiscordAPIInteractionsReact.html#ga4e69da7bd7fd2472e7cbe60b0ce292ad">discord_create_interaction_response</a></div><div class="ttdeci">CCORDcode discord_create_interaction_response(struct discord *client, u64snowflake interaction_id, const char interaction_token[], struct discord_interaction_response *params, struct discord_ret_interaction_response *ret)</div><div class="ttdoc">Create a response to an Interaction from the gateway.</div></div>
 <div class="ttc" id="agroup__DiscordClient_html_ga10b7d422776acf4fb67877f8f1d28af4"><div class="ttname"><a href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a></div><div class="ttdeci">CCORDcode discord_run(struct discord *client)</div><div class="ttdoc">Start a connection to the Discord Gateway.</div></div>
-<div class="ttc" id="agroup__DiscordClient_html_ga38eee8c070cf3cda20838b5cfe0fe39f"><div class="ttname"><a href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">discord_from_token</a></div><div class="ttdeci">struct discord * discord_from_token(const char token[])</div><div class="ttdoc">Creates a Discord Client handle from a token.</div></div>
+<div class="ttc" id="agroup__DiscordClient_html_gacd52a9fc58a1fcb9b4719a5cedd70f5d"><div class="ttname"><a href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a></div><div class="ttdeci">struct discord * discord_init(const char token[])</div><div class="ttdoc">Create a Discord Client handle by its token.</div></div>
 <div class="ttc" id="agroup__DiscordEvents_html_ga6bcef3a29e7450e57c049dabc8072190"><div class="ttname"><a href="group__DiscordEvents.html#ga6bcef3a29e7450e57c049dabc8072190">discord_set_on_interaction_create</a></div><div class="ttdeci">void discord_set_on_interaction_create(struct discord *client, void(*callback)(struct discord *client, const struct discord_interaction *event))</div><div class="ttdoc">Triggers when user has used an interaction, such as an application command.</div></div>
 <div class="ttc" id="agroup__DiscordEvents_html_gaddabbe9b0e4ffd41e25a3870bb6c1676"><div class="ttname"><a href="group__DiscordEvents.html#gaddabbe9b0e4ffd41e25a3870bb6c1676">discord_set_on_ready</a></div><div class="ttdeci">void discord_set_on_ready(struct discord *client, void(*callback)(struct discord *client, const struct discord_ready *event))</div><div class="ttdoc">Triggers when the client session is ready.</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1206</div></div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md9"></a>
+<div class="ttc" id="ainteractions_8h_html_acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372"><div class="ttname"><a href="interactions_8h.html#acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372">DISCORD_INTERACTION_APPLICATION_COMMAND</a></div><div class="ttdeci">@ DISCORD_INTERACTION_APPLICATION_COMMAND</div><div class="ttdef"><b>Definition:</b> interactions.h:24</div></div>
+<div class="ttc" id="ainteractions_8h_html_af7a2bdc22799b9d1ac556a6ba7206c83a3409efaf45118256f4a33d4b15d76240"><div class="ttname"><a href="interactions_8h.html#af7a2bdc22799b9d1ac556a6ba7206c83a3409efaf45118256f4a33d4b15d76240">DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE</a></div><div class="ttdeci">@ DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE</div><div class="ttdef"><b>Definition:</b> interactions.h:33</div></div>
+<div class="ttc" id="astructdiscord__application_html_a6eb2278fffac7a78310c0cae49dc5c97"><div class="ttname"><a href="structdiscord__application.html#a6eb2278fffac7a78310c0cae49dc5c97">discord_application::id</a></div><div class="ttdeci">u64snowflake id</div><div class="ttdef"><b>Definition:</b> application.h:37</div></div>
+<div class="ttc" id="astructdiscord__create__guild__application__command_html"><div class="ttname"><a href="structdiscord__create__guild__application__command.html">discord_create_guild_application_command</a></div><div class="ttdef"><b>Definition:</b> application_commands.h:254</div></div>
+<div class="ttc" id="astructdiscord__create__guild__application__command_html_a27fb5e8a69d4d72f7c6853e06f881a9f"><div class="ttname"><a href="structdiscord__create__guild__application__command.html#a27fb5e8a69d4d72f7c6853e06f881a9f">discord_create_guild_application_command::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> application_commands.h:256</div></div>
+<div class="ttc" id="astructdiscord__interaction__callback__data_html"><div class="ttname"><a href="structdiscord__interaction__callback__data.html">discord_interaction_callback_data</a></div><div class="ttdef"><b>Definition:</b> interactions.h:133</div></div>
+<div class="ttc" id="astructdiscord__interaction__data_html_a306f118a55417b9029d1ef70e4366f5b"><div class="ttname"><a href="structdiscord__interaction__data.html#a306f118a55417b9029d1ef70e4366f5b">discord_interaction_data::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> interactions.h:80</div></div>
+<div class="ttc" id="astructdiscord__interaction__response_html"><div class="ttname"><a href="structdiscord__interaction__response.html">discord_interaction_response</a></div><div class="ttdef"><b>Definition:</b> interactions.h:125</div></div>
+<div class="ttc" id="astructdiscord__interaction__response_html_a5f8a72eedbc0d2e5d99d7f31f99dae6e"><div class="ttname"><a href="structdiscord__interaction__response.html#a5f8a72eedbc0d2e5d99d7f31f99dae6e">discord_interaction_response::type</a></div><div class="ttdeci">enum discord_interaction_callback_types type</div><div class="ttdef"><b>Definition:</b> interactions.h:127</div></div>
+<div class="ttc" id="astructdiscord__interaction_html"><div class="ttname"><a href="structdiscord__interaction.html">discord_interaction</a></div><div class="ttdef"><b>Definition:</b> interactions.h:48</div></div>
+<div class="ttc" id="astructdiscord__interaction_html_a3a97e61aa2066f54c57f68175c9434f3"><div class="ttname"><a href="structdiscord__interaction.html#a3a97e61aa2066f54c57f68175c9434f3">discord_interaction::id</a></div><div class="ttdeci">u64snowflake id</div><div class="ttdef"><b>Definition:</b> interactions.h:50</div></div>
+<div class="ttc" id="astructdiscord__interaction_html_aa51ca032313f3d65f2c6d641e569b0db"><div class="ttname"><a href="structdiscord__interaction.html#aa51ca032313f3d65f2c6d641e569b0db">discord_interaction::data</a></div><div class="ttdeci">struct discord_interaction_data * data</div><div class="ttdef"><b>Definition:</b> interactions.h:56</div></div>
+<div class="ttc" id="astructdiscord__interaction_html_aad9b8b77631a49efb85e7d9b3776fa72"><div class="ttname"><a href="structdiscord__interaction.html#aad9b8b77631a49efb85e7d9b3776fa72">discord_interaction::type</a></div><div class="ttdeci">enum discord_interaction_types type</div><div class="ttdef"><b>Definition:</b> interactions.h:54</div></div>
+<div class="ttc" id="astructdiscord__interaction_html_ac1e97e032eec047868dce94121a7d234"><div class="ttname"><a href="structdiscord__interaction.html#ac1e97e032eec047868dce94121a7d234">discord_interaction::token</a></div><div class="ttdeci">char * token</div><div class="ttdef"><b>Definition:</b> interactions.h:66</div></div>
+<div class="ttc" id="astructdiscord__ready_html"><div class="ttname"><a href="structdiscord__ready.html">discord_ready</a></div><div class="ttdef"><b>Definition:</b> gateway.h:332</div></div>
+<div class="ttc" id="astructdiscord__ready_html_a50ac4274a6b0d46abaa1af5cc10b4397"><div class="ttname"><a href="structdiscord__ready.html#a50ac4274a6b0d46abaa1af5cc10b4397">discord_ready::application</a></div><div class="ttdeci">struct discord_application * application</div><div class="ttdef"><b>Definition:</b> gateway.h:345</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:1190</div></div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md5"></a>
 Message Commands (old method)</h4>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;concord/logmod.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;concord/log.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> discord_ready *event) {</div>
-<div class="line">    <a class="code hl_define" href="logmod_8h.html#a985701f046dcbb85c9a52bd9b0320774">logmod_log</a>(INFO, NULL, <span class="stringliteral">&quot;Logged in as %s!&quot;</span>, event-&gt;user-&gt;username);</div>
+<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__ready.html">discord_ready</a> *event) {</div>
+<div class="line">    <a class="code hl_define" href="log_8h.html#aa1cfe5444875c8eca0ea6f6993977d6d">log_info</a>(<span class="stringliteral">&quot;Logged in as %s!&quot;</span>, event-&gt;<a class="code hl_variable" href="structdiscord__ready.html#aeb3c2e1971d7ee5d2049cc0fb53366b6">user</a>-&gt;<a class="code hl_variable" href="structdiscord__user.html#aa778953d6508e4ed8019be82689ae861">username</a>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_message(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> discord_message *event) {</div>
-<div class="line">    <span class="keywordflow">if</span> (strcmp(event-&gt;content, <span class="stringliteral">&quot;ping&quot;</span>) == 0) {</div>
-<div class="line">        <span class="keyword">struct </span><a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a> params = { .content = <span class="stringliteral">&quot;pong&quot;</span> };</div>
-<div class="line">        <a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, event-&gt;channel_id, &amp;params, NULL);</div>
+<div class="line"><span class="keywordtype">void</span> on_message(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__message.html">discord_message</a> *event) {</div>
+<div class="line">    <span class="keywordflow">if</span> (strcmp(event-&gt;<a class="code hl_variable" href="structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">content</a>, <span class="stringliteral">&quot;ping&quot;</span>) == 0) {</div>
+<div class="line">        <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__create__message.html">discord_create_message</a> params = { .<a class="code hl_variable" href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = <span class="stringliteral">&quot;pong&quot;</span> };</div>
+<div class="line">        <a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, event-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
-<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a class="code hl_function" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f">discord_from_token</a>(BOT_TOKEN);</div>
-<div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#ga329b97b24bf9a0f4a6a4477ee91c804a">discord_add_intents</a>(client, DISCORD_GATEWAY_MESSAGE_CONTENT);</div>
+<div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a class="code hl_function" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a>(BOT_TOKEN);</div>
+<div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#ga329b97b24bf9a0f4a6a4477ee91c804a">discord_add_intents</a>(client, <a class="code hl_define" href="group__DiscordInternalGatewayIntents.html#ga06c22696ba8f99e7ed1c6d4f88de2e5f">DISCORD_GATEWAY_MESSAGE_CONTENT</a>);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#gaddabbe9b0e4ffd41e25a3870bb6c1676">discord_set_on_ready</a>(client, &amp;on_ready);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordEvents.html#ga4681ad4a8b3ec7c1c777a62b201aec8f">discord_set_on_message_create</a>(client, &amp;on_message);</div>
 <div class="line">    <a class="code hl_function" href="group__DiscordClient.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
@@ -226,8 +191,16 @@ Message Commands (old method)</h4>
 <div class="ttc" id="agroup__DiscordAPIChannel_html_ga07df37c9962d0debf713c7438a5b55b5"><div class="ttname"><a href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a></div><div class="ttdeci">CCORDcode discord_create_message(struct discord *client, u64snowflake channel_id, struct discord_create_message *params, struct discord_ret_message *ret)</div><div class="ttdoc">Post a message to a guild text or DM channel.</div></div>
 <div class="ttc" id="agroup__DiscordEvents_html_ga329b97b24bf9a0f4a6a4477ee91c804a"><div class="ttname"><a href="group__DiscordEvents.html#ga329b97b24bf9a0f4a6a4477ee91c804a">discord_add_intents</a></div><div class="ttdeci">void discord_add_intents(struct discord *client, uint64_t code)</div><div class="ttdoc">Subscribe to Discord Events.</div></div>
 <div class="ttc" id="agroup__DiscordEvents_html_ga4681ad4a8b3ec7c1c777a62b201aec8f"><div class="ttname"><a href="group__DiscordEvents.html#ga4681ad4a8b3ec7c1c777a62b201aec8f">discord_set_on_message_create</a></div><div class="ttdeci">void discord_set_on_message_create(struct discord *client, void(*callback)(struct discord *client, const struct discord_message *event))</div><div class="ttdoc">Triggers when a message is created.</div></div>
-<div class="ttc" id="alogmod_8h_html_a985701f046dcbb85c9a52bd9b0320774"><div class="ttname"><a href="logmod_8h.html#a985701f046dcbb85c9a52bd9b0320774">logmod_log</a></div><div class="ttdeci">#define logmod_log</div><div class="ttdoc">Alias to logmod_nlog for C89 compatibility.</div><div class="ttdef"><b>Definition:</b> logmod.h:487</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+<div class="ttc" id="agroup__DiscordInternalGatewayIntents_html_ga06c22696ba8f99e7ed1c6d4f88de2e5f"><div class="ttname"><a href="group__DiscordInternalGatewayIntents.html#ga06c22696ba8f99e7ed1c6d4f88de2e5f">DISCORD_GATEWAY_MESSAGE_CONTENT</a></div><div class="ttdeci">#define DISCORD_GATEWAY_MESSAGE_CONTENT</div><div class="ttdef"><b>Definition:</b> gateway.h:41</div></div>
+<div class="ttc" id="alog_8h_html_aa1cfe5444875c8eca0ea6f6993977d6d"><div class="ttname"><a href="log_8h.html#aa1cfe5444875c8eca0ea6f6993977d6d">log_info</a></div><div class="ttdeci">#define log_info(...)</div><div class="ttdef"><b>Definition:</b> log.h:52</div></div>
+<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:811</div></div>
+<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:813</div></div>
+<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:276</div></div>
+<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:288</div></div>
+<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:280</div></div>
+<div class="ttc" id="astructdiscord__ready_html_aeb3c2e1971d7ee5d2049cc0fb53366b6"><div class="ttname"><a href="structdiscord__ready.html#aeb3c2e1971d7ee5d2049cc0fb53366b6">discord_ready::user</a></div><div class="ttdeci">struct discord_user * user</div><div class="ttdef"><b>Definition:</b> gateway.h:336</div></div>
+<div class="ttc" id="astructdiscord__user_html_aa778953d6508e4ed8019be82689ae861"><div class="ttname"><a href="structdiscord__user.html#aa778953d6508e4ed8019be82689ae861">discord_user::username</a></div><div class="ttdeci">char * username</div><div class="ttdef"><b>Definition:</b> user.h:73</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
 Supported operating systems (minimum requirements)</h2>
 <ul>
 <li>GNU/Linux 4.x</li>
@@ -238,71 +211,58 @@ Supported operating systems (minimum requirements)</h2>
 <li>Mac OS X 10.9</li>
 </ul>
 <p ><em>Note: big-endian processors running certain OSes like SPARC Solaris, PowerPC AIX, System Z z/OS or Linux, or MIPS IRIX are NOT supported. There are currently a few issues that prevent some of the logic from correctly on big-endian systems. This will be fixed soon.</em></p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 Build Instructions</h2>
-<p >The only dependency is <code>curl-8.7.1</code> or higher with websockets support. Since many system package managers don't provide this specific version with websockets enabled, we recommend compiling from source.</p>
-<blockquote class="doxtable">
-<p >&zwj;[!IMPORTANT] Libcurl must be compiled with the <code>--enable-websockets</code> flag to work with Concord. </p>
-</blockquote>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<p >The only dependency is <code>curl-7.56.1</code> or higher. If you are compiling libcurl from source, you will need to build it with SSL support.</p>
+<h3><a class="anchor" id="autotoc_md8"></a>
 On Windows</h3>
 <ul>
 <li>Install <b>Cygwin</b></li>
-<li>During Cygwin installation, select packages: <code>gcc</code>, <code>make</code>, <code>git</code>, <code>autoconf</code>, <code>libtool</code>, <code>pkg-config</code>, <code>openssl-devel</code>, <code>zlib-devel</code></li>
-<li>Follow the Windows tutorial here</li>
-<li>Then compile libcurl from source (instructions below)</li>
+<li><b>Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!</b></li>
+<li>You will want to check the Windows tutorial here!</li>
+<li>Mingw64 and Msys2 are currently NOT supported. Please see this for more information.</li>
+<li>Once installed, compile it normally like you would on UNIX/Linux/OS X/BSD.</li>
+<li>Note: you will likely need to include <code>-L/usr/local/lib -I/usr/local/include</code> on your <code>gcc</code> command, or in your <code>CFLAGS</code> variable in your Makefile for your bot.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md13"></a>
-Compiling libcurl from source (recommended for all platforms)</h3>
-<div class="fragment"><div class="line"># Install build dependencies</div>
-<div class="line"># Ubuntu/Debian:</div>
-<div class="line">$ sudo apt-get update &amp;&amp; sudo apt-get install -y build-essential autoconf libtool pkg-config libssl-dev zlib1g-dev</div>
-<div class="line"> </div>
-<div class="line"># Fedora/RHEL/CentOS:</div>
-<div class="line">$ sudo dnf install -y gcc make autoconf libtool pkgconfig openssl-devel zlib-devel</div>
-<div class="line"> </div>
-<div class="line"># Arch/Manjaro:</div>
-<div class="line">$ sudo pacman -S --needed base-devel openssl zlib</div>
-<div class="line"> </div>
-<div class="line"># Alpine:</div>
-<div class="line">$ apk add build-base autoconf libtool pkgconfig openssl-dev zlib-dev</div>
-<div class="line"> </div>
-<div class="line"># FreeBSD:</div>
-<div class="line">$ pkg install autoconf libtool pkgconf openssl</div>
-<div class="line"> </div>
-<div class="line"># OS X:</div>
-<div class="line">$ xcode-select --install</div>
-<div class="line">$ brew install autoconf libtool pkg-config openssl@3</div>
-<div class="line"># or with MacPorts:</div>
-<div class="line">$ port install autoconf libtool pkgconfig openssl</div>
-<div class="line"> </div>
-<div class="line"># Download and compile libcurl</div>
-<div class="line">$ curl -LO https://curl.se/download/curl-8.7.1.tar.gz</div>
-<div class="line">$ tar -xzf curl-8.7.1.tar.gz</div>
-<div class="line">$ cd curl-8.7.1</div>
-<div class="line">$ ./configure --with-openssl --enable-websockets</div>
-<div class="line">$ make</div>
-<div class="line">$ sudo make install</div>
-<div class="line"> </div>
-<div class="line"># You might need to inform the system&#39;s dynamic linker about the new library location with:</div>
-<div class="line">$ echo &quot;/usr/local/lib&quot; &gt; /etc/ld.so.conf.d/curl.conf</div>
-<div class="line">$ sudo ldconfig</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md9"></a>
+On Linux, BSD, and Mac OS X</h3>
+<p >*(note &ndash; <code>#</code> means that you should be running as root)*</p>
+<h4><a class="anchor" id="autotoc_md10"></a>
+Ubuntu and Debian</h4>
+<div class="fragment"><div class="line"># apt update &amp;&amp; apt install -y libcurl4-openssl-dev</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md11"></a>
+Void Linux</h4>
+<div class="fragment"><div class="line"># xbps-install -S libcurl-devel</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md12"></a>
+Alpine</h4>
+<div class="fragment"><div class="line"># apk add curl-dev</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md13"></a>
+FreeBSD</h4>
+<div class="fragment"><div class="line"># pkg install curl</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md14"></a>
+OS X</h4>
+<ul>
+<li>Note: you will need to install Xcode, or at a minimum, the command-line tools with <code>xcode-select --install</code>. <div class="fragment"><div class="line">$ brew install curl (Homebrew)</div>
+<div class="line">$ port install curl (MacPorts)</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md15"></a>
+Arch Linux / Manjaro (Arch based)</h4>
+<div class="fragment"><div class="line">git clone https://aur.archlinux.org/concord-git.git</div>
+<div class="line">cd concord-git</div>
+<div class="line">makepkg -Acs</div>
+<div class="line">pacman -U concord-git-version-any.pkg.tar.zst</div>
+</div><!-- fragment --><p >Alternatively, you can use an AUR helper:</p>
+<div class="fragment"><div class="line">yay -S concord-git</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
 Setting up your environment</h2>
-<h3><a class="anchor" id="autotoc_md15"></a>
+<h3><a class="anchor" id="autotoc_md17"></a>
 Clone Concord into your workspace</h3>
 <div class="fragment"><div class="line">$ git clone https://github.com/cogmasters/concord.git &amp;&amp; cd concord</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md18"></a>
 Compile Concord</h3>
 <div class="fragment"><div class="line">$ make</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md17"></a>
-Optional: speed up compilation</h4>
-<p >You can speed up the compilation process by using <code>-j</code> flag with <code>make</code>: </p><div class="fragment"><div class="line">$ make -j$(nproc)</div>
-</div><!-- fragment --><p> This will use all available CPU cores to compile Concord. You can also specify a number instead of <code></code> to limit the number of jobs.</p>
-<h3><a class="anchor" id="autotoc_md18"></a>
-Special notes about Voice Connections</h3>
-<p >Concord does not support voice connections yet. If you want to use voice connections, you can use <a href="https://github.com/PerformanC/CogLink">CogLink</a> instead. CogLink is a separate project that provides a LavaLink client for Concord. It is not part of the Concord library, but it is designed to work seamlessly with Concord.</p>
-<h3><a class="anchor" id="autotoc_md19"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md19"></a>
 Special notes for non-Linux systems</h3>
 <p >You might run into trouble with the compiler and linker not finding your Libcurl headers. You can do something like this: </p><div class="fragment"><div class="line">$ CFLAGS=-I&lt;some_path&gt; LDFLAGS=-L&lt;some_path&gt; make</div>
 </div><!-- fragment --><p> For instance, on a FreeBSD system: </p><div class="fragment"><div class="line">$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make</div>
@@ -312,31 +272,35 @@ Special notes for non-Linux systems</h3>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md20"></a>
 Special note about linking Concord against another library</h3>
 <p >In some cases, you might want to link Concord into a shared object, or link it as a shared object into another shared object. In that case, you will need to compile Concord with <code>CFLAGS="-fpic" make</code>.</p>
-<h3><a class="anchor" id="autotoc_md21"></a>
-Special notes about compiling Concord with C compilers besides GCC or Clang</h3>
-<p >Concord <b>will</b> compile with compilers that aren't GCC or Clang, but you may need to do some work. For instance, support exists for Sun Studio C (specifically, Oracle Developer Studio 12.6), but you will need to change options in the Makefiles (look for CFLAGS and WFLAGS) to prevent errors about unknown compiler option flags.</p>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Configuring Concord</h2>
 <p ><a href="https://cogmasters.github.io/concord/group__DiscordClient.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init()</a> is the initialization method that allows configuring your bot without recompiling.</p>
 <p >The following outlines <code>config.json</code> fields: </p><div class="fragment"><div class="line">{</div>
-<div class="line">  &quot;token&quot;: &quot;YOUR-BOT-TOKEN&quot;, // replace with your bot token</div>
-<div class="line">  &quot;log&quot;: {                   // logging directives</div>
-<div class="line">    &quot;level&quot;: &quot;TRACE&quot;,           // TRACE, DEBUG, INFO, WARN, ERROR, FATAL</div>
-<div class="line">    &quot;trace&quot;: &quot;bot.log&quot;,         // the log output file (null to disable)</div>
-<div class="line">    &quot;quiet&quot;: false,             // true to disable logs in console</div>
-<div class="line">    &quot;overwrite&quot;: true,          // true overwrites the file on each run</div>
-<div class="line">    &quot;color&quot;: true,              // display color on console</div>
-<div class="line">    &quot;http&quot;: &quot;http.log&quot;,         // the HTTP log output file (null to disable)</div>
-<div class="line">    &quot;ws&quot;: &quot;ws.log&quot;,             // the WebSockets log output file (null to disable)</div>
-<div class="line">    &quot;disable&quot;: [&quot;WEBSOCKETS&quot;, &quot;HTTP&quot;] // disable logging for specific modules</div>
-<div class="line">  }</div>
-<div class="line">  // here you can add your custom fields *</div>
+<div class="line">  &quot;logging&quot;: { // logging directives</div>
+<div class="line">    &quot;level&quot;: &quot;trace&quot;,        // trace, debug, info, warn, error, fatal</div>
+<div class="line">    &quot;filename&quot;: &quot;bot.log&quot;,   // the log output file</div>
+<div class="line">    &quot;quiet&quot;: false,          // change to true to disable logs in console</div>
+<div class="line">    &quot;overwrite&quot;: true,       // overwrite file if already exists, append otherwise</div>
+<div class="line">    &quot;use_color&quot;: true,       // display color for log entries</div>
+<div class="line">    &quot;http&quot;: {</div>
+<div class="line">      &quot;enable&quot;: true,        // generate http specific logging</div>
+<div class="line">      &quot;filename&quot;: &quot;http.log&quot; // the HTTP log output file</div>
+<div class="line">    },</div>
+<div class="line">    &quot;disable_modules&quot;: [&quot;WEBSOCKETS&quot;, &quot;USER_AGENT&quot;] // disable logging for these modules</div>
+<div class="line">  },</div>
+<div class="line">  &quot;discord&quot;: { // discord directives</div>
+<div class="line">    &quot;token&quot;: &quot;YOUR-BOT-TOKEN&quot;,         // replace with your bot token</div>
+<div class="line">    &quot;default_prefix&quot;: {                 </div>
+<div class="line">      &quot;enable&quot;: false,                 // enable default command prefix</div>
+<div class="line">      &quot;prefix&quot;: &quot;YOUR-COMMANDS-PREFIX&quot; // replace with your prefix</div>
+<div class="line">    }</div>
+<div class="line">  },</div>
+<div class="line">  ... // here you can add your custom fields *</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
 <li><em>Your custom field contents can be fetched with <a href="https://cogmasters.github.io/concord/group__DiscordClient.html#gac4486003ffab83de397c0bebb74b3307">discord_config_get_field()</a></em></li>
 </ul>
-<p >See more information about the <code>config.json</code> file in the config.json directives guide.</p>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Test Copycat-Bot</h2>
 <ol type="1">
 <li>Get your bot token and add it to <code>config.json</code>, by assigning it to discord's "token" field. There are well written instructions from <a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">discord-irc</a> explaining how to get your bot token and adding it to a server.</li>
@@ -345,16 +309,16 @@ Test Copycat-Bot</h2>
 <li>Run Copycat-Bot: <div class="fragment"><div class="line">$ cd examples &amp;&amp; ./copycat</div>
 </div><!-- fragment --></li>
 </ol>
-<h3><a class="anchor" id="autotoc_md24"></a>
+<h3><a class="anchor" id="autotoc_md23"></a>
 Get Copycat-Bot Response</h3>
 <p >Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.</p>
-<h3><a class="anchor" id="autotoc_md25"></a>
+<h3><a class="anchor" id="autotoc_md24"></a>
 Terminate Copycat-Bot</h3>
 <p >With <code>Ctrl</code>+<code>c</code> or with <code>Ctrl</code>+<code>|</code></p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Configure your build</h2>
 <p >The following outlines special flags and targets to override the default Makefile build with additional functionalities.</p>
-<h3><a class="anchor" id="autotoc_md27"></a>
+<h3><a class="anchor" id="autotoc_md26"></a>
 Special compilation flags</h3>
 <ul>
 <li><code>-DCCORD_SIGINTCATCH</code><ul>
@@ -371,7 +335,7 @@ Special compilation flags</h3>
 </li>
 </ul>
 <p ><em>Example:</em> </p><div class="fragment"><div class="line">$ CFLAGS=&quot;-DCCORD_SIGINTCATCH -DCCORD_DEBUG_HTTP&quot; make</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md28"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md27"></a>
 Special targets</h3>
 <ul>
 <li><code>make shared</code><ul>
@@ -382,20 +346,24 @@ Special targets</h3>
 <li>Produce a dynamically-linked version of Concord, for OS X and Darwin systems.</li>
 </ul>
 </li>
+<li><code>make voice</code><ul>
+<li>Enable experimental Voice Connection handling - not production ready.</li>
+</ul>
+</li>
 <li><code>make debug</code><ul>
 <li>Enable some flags useful while developing, such as <code>-O0</code> and <code>-g</code></li>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Installing Concord</h2>
 <p >*(note &ndash; <code>#</code> means that you should be running as root)*</p>
 <div class="fragment"><div class="line"># make install</div>
 </div><!-- fragment --><p >This will install the headers and library files into $PREFIX. You can override this as such: </p><div class="fragment"><div class="line"># PREFIX=/opt/concord make install</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md30"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md29"></a>
 Cross-compiling Concord</h3>
 <p >To cross-compile Concord, see the manual here.</p>
-<h3><a class="anchor" id="autotoc_md31"></a>
+<h3><a class="anchor" id="autotoc_md30"></a>
 Included dependencies</h3>
 <p >The following are <code>stable</code> and well documented dependencies that are packaged with Concord and can be included to your projects:</p>
 <table class="markdownTable">
@@ -404,13 +372,13 @@ Included dependencies</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><a href="https://github.com/Cogmasters/cog-utils">cog-utils</a>   </td><td class="markdownTableBodyNone">General purpose functions aimed at portability    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><a href="https://github.com/lcsmuller/logmod">logmod</a>   </td><td class="markdownTableBodyNone">A modular logging library    </td></tr>
+<td class="markdownTableBodyNone"><a href="https://github.com/rxi/log.c">log.c</a>*   </td><td class="markdownTableBodyNone">A simple C99 logging library    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><a href="https://github.com/c-ware/carray">carray</a>*   </td><td class="markdownTableBodyNone">Macro-based implementation of type-safe arrays    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a href="https://github.com/Anotra/anomap">anomap</a>*   </td><td class="markdownTableBodyNone">Sorted key/value storage for C99    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><a href="https://github.com/lcsmuller/oa-hash">oa_hash</a>   </td><td class="markdownTableBodyNone">A lightweight open-addressing hashtable    </td></tr>
+<td class="markdownTableBodyNone"><a href="https://github.com/c-ware/chash">chash</a>*   </td><td class="markdownTableBodyNone">Macro-based implementation of type-safe hashtables    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a href="https://github.com/lcsmuller/json-build">json-build</a>   </td><td class="markdownTableBodyNone">Tiny, zero-allocation JSON serializer    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -420,18 +388,18 @@ Included dependencies</h3>
 <li><em>Concord uses its own modified version that may be not up to date with the original</em></li>
 </ul>
 <p >Note that included headers must be <code>concord/</code> prefixed: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;concord/logmod.h&gt;</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md32"></a>
+<div class="line"><span class="preprocessor">#include &lt;concord/log.h&gt;</span></div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md31"></a>
 Standalone executable</h3>
-<h4><a class="anchor" id="autotoc_md33"></a>
+<h4><a class="anchor" id="autotoc_md32"></a>
 GCC</h4>
 <div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md34"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md33"></a>
 Clang</h4>
 <div class="fragment"><div class="line">$ clang myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md35"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md34"></a>
 UNIX C compilers</h4>
-<p ><a class="anchor" id="autotoc_md36"></a> </p><h5>This includes the following compilers:</h5>
+<p ><a class="anchor" id="autotoc_md35"></a> </p><h5>This includes the following compilers:</h5>
 <ul>
 <li>IBM XL C/C++ (AIX, z/OS, IBM i)</li>
 <li>Sun/Oracle Studio (Solaris)</li>
@@ -442,18 +410,38 @@ UNIX C compilers</h4>
 <div class="fragment"><div class="line">$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread</div>
 </div><!-- fragment --><p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
 </div><!-- fragment --><p> (this links against libpthread.a in <code>/usr/lib</code>)</p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
+Recommended debuggers</h2>
+<p >First, make sure your executable is compiled with the <code>-g</code> flag to ensure human-readable debugger messages.</p>
+<h3><a class="anchor" id="autotoc_md37"></a>
+Valgrind</h3>
+<p >Using valgrind to check for memory leaks:</p>
+<div class="fragment"><div class="line">valgrind --leak-check=full ./myBot</div>
+</div><!-- fragment --><p> For a more comprehensive guide check <a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind's Quick Start</a>.</p>
+<h3><a class="anchor" id="autotoc_md38"></a>
+GDB</h3>
+<p >Using GDB to check for runtime errors, such as segmentation faults:</p>
+<div class="fragment"><div class="line">$ gdb ./myBot</div>
+</div><!-- fragment --><p> And then execute your bot from the gdb environment: </p><div class="fragment"><div class="line">(gdb) run</div>
+</div><!-- fragment --><p> If the program has crashed, get a backtrace of the function calls leading to it: </p><div class="fragment"><div class="line">(gdb) bt</div>
+</div><!-- fragment --><p >For a more comprehensive guide check <a href="https://beej.us/guide/bggdb/">Beej's Quick Guide to GDB</a></p>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Support</h2>
 <p >Problems? Check out our <a href="https://discord.gg/Y7Xa6MA82v">Discord Server</a></p>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Contributing</h2>
-<p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check the following guides for more information on how to contribute:</p>
+<p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
+<h2><a class="anchor" id="autotoc_md41"></a>
+Getting Started</h2>
 <ul>
-<li>Contributing - How to contribute to Concord</li>
-<li>Project Outline - Overview of the project structure</li>
-<li>Coding Guidelines - Coding style and best practices</li>
-<li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> - Overview of Discord API features and their status</li>
-<li>Concord Internals - Understand how Concord works internally </li>
+<li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
+<li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md42"></a>
+Useful links</h2>
+<ul>
+<li><a href="https://gist.github.com/lcsmuller/d6aee306bac229a7873f5c243bf7858b">Migrating from V1</a></li>
+<li><a href="https://gist.github.com/lcsmuller/b5137e66d534a57e0075f9d838c9170e">Migrating from Orca</a> </li>
 </ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

@@ -1,6 +1,7 @@
 var group__DiscordInternalGateway =
 [
     [ "Client's session status", "group__DiscordInternalGatewaySessionStatus.html", "group__DiscordInternalGatewaySessionStatus" ],
+    [ "Gateway intents", "group__DiscordInternalGatewayIntents.html", "group__DiscordInternalGatewayIntents" ],
     [ "discord_gateway_session", "structdiscord__gateway__session.html", [
       [ "is_ready", "structdiscord__gateway__session.html#ad9f0b3eb611b6e6c4bab071cb228da2a", null ],
       [ "id", "structdiscord__gateway__session.html#a6cf65d6d57f075a6aaf7528404bd994a", null ],
@@ -14,22 +15,24 @@ var group__DiscordInternalGateway =
       [ "enable", "structdiscord__gateway__session.html#acded8d964351ce3b8f838109749f311d", null ],
       [ "attempt", "structdiscord__gateway__session.html#a67d3e736be03f6e31b07e898d5f52cb6", null ],
       [ "limit", "structdiscord__gateway__session.html#a1d6164fd9ee758db4f0d5edb9ed09ac8", null ],
-      [ "retry", "structdiscord__gateway__session.html#ab4dbf81a7553d9a051d0f3dd447eb214", null ]
+      [ "retry", "structdiscord__gateway__session.html#a8e031760d0c75a0e5fa5a1e3e438a1fc", null ]
     ] ],
     [ "discord_gateway_payload", "structdiscord__gateway__payload.html", [
       [ "start", "structdiscord__gateway__payload.html#a835575be7ca589f8b33d5f7756c99487", null ],
       [ "size", "structdiscord__gateway__payload.html#a63b1481ab3cade4d89194a6970a278f7", null ],
-      [ "table", "structdiscord__gateway__payload.html#a4cb295f211c46a3e87fd359f2c2b9f10", null ],
-      [ "ntable", "structdiscord__gateway__payload.html#a41675435f51ac20f9b4a46e976b50ddd", null ],
-      [ "json", "structdiscord__gateway__payload.html#a42f6ec957d417d0e2fbe517a3c7705dd", null ],
+      [ "tokens", "structdiscord__gateway__payload.html#a8818167e8dee941016b63f304177bb2d", null ],
+      [ "ntokens", "structdiscord__gateway__payload.html#a4ac4a70b2722971bccb5c4eb029948e4", null ],
+      [ "pairs", "structdiscord__gateway__payload.html#a0cc43b2b68b246287c253abae216ebcc", null ],
+      [ "npairs", "structdiscord__gateway__payload.html#afe57074bd85f472e2be00ed7a373c6e6", null ],
+      [ "json", "structdiscord__gateway__payload.html#a6924a68f4ab869f2dd8978fb801dc715", null ],
       [ "opcode", "structdiscord__gateway__payload.html#af97d3f1408dce80bc31889ebc3dcfe27", null ],
       [ "seq", "structdiscord__gateway__payload.html#a770604931dd8dbcb7d857065cfc7ac5d", null ],
       [ "name", "structdiscord__gateway__payload.html#ad399957fb675ea7c381619fe16e16394", null ],
       [ "event", "structdiscord__gateway__payload.html#a8f2192aad45916a953178c4057d0adf5", null ],
-      [ "data", "structdiscord__gateway__payload.html#a113de5cfde5193e3a89d0a5b89fa1e58", null ]
+      [ "data", "structdiscord__gateway__payload.html#a7cac853e7bb48e183851e6de784a8499", null ]
     ] ],
     [ "discord_gateway", "structdiscord__gateway.html", [
-      [ "logger", "structdiscord__gateway.html#ac5dbf81d673e3c1dcac92a472de992ff", null ],
+      [ "conf", "structdiscord__gateway.html#a8e220d0205d4f7e8c8dab44f73b2725c", null ],
       [ "ws", "structdiscord__gateway.html#a14f4f4117925f91a02e3b9a47cb50475", null ],
       [ "mhandle", "structdiscord__gateway.html#adaaced2674818e71a975c2995d708175", null ],
       [ "hbeat_interval", "structdiscord__gateway.html#a7498626264e15e0965ab77d66c700137", null ],
@@ -41,7 +44,7 @@ var group__DiscordInternalGateway =
       [ "hbeat_timer", "structdiscord__gateway.html#a4c281b0af2bd6a0672d543d6deacae6f", null ],
       [ "ping_ms", "structdiscord__gateway.html#aa69001076c00c9267f759d6d69eec050", null ],
       [ "rwlock", "structdiscord__gateway.html#a86a693dff385bbf55e34f7c254463fd7", null ],
-      [ "timer", "structdiscord__gateway.html#a9560e8c1649fca98c142fb322fb6302c", null ],
+      [ "timer", "structdiscord__gateway.html#acc5bb05c24b00d69d13e03e349b86c83", null ],
       [ "id", "structdiscord__gateway.html#add6cd3f50c50094ad169844597e123ab", null ],
       [ "session", "structdiscord__gateway.html#a5c5b90fc646ef6c047bf09ed99dedab5", null ],
       [ "payload", "structdiscord__gateway.html#a27bc7f5da52b61b8285c19cc54333a32", null ],
@@ -50,7 +53,7 @@ var group__DiscordInternalGateway =
     ] ],
     [ "discord_ev_event", "group__DiscordInternalGateway.html#gae38e6a4c2e9bbb2ac711ecdcea8995a6", null ],
     [ "discord_ev_message", "group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2", null ],
-    [ "discord_gateway_init", "group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98", null ],
+    [ "discord_gateway_init", "group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce", null ],
     [ "discord_gateway_cleanup", "group__DiscordInternalGateway.html#gab66259b9988312a38de984c9c54e49f0", null ],
     [ "discord_gateway_start", "group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345", null ],
     [ "discord_gateway_end", "group__DiscordInternalGateway.html#ga7825d44b7eacfb4566229e1c4009bd24", null ],

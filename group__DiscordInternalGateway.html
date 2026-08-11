@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('group__DiscordInternalGateway.html',''
 <div class="dynheader">
 Collaboration diagram for WebSockets API:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordInternalGateway.svg" width="580" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__DiscordInternalGateway.svg" width="580" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
@@ -109,6 +109,9 @@ Collaboration diagram for WebSockets API:</div>
 Modules</h2></td></tr>
 <tr class="memitem:group__DiscordInternalGatewaySessionStatus"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGatewaySessionStatus.html">Client's session status</a></td></tr>
 <tr class="memdesc:group__DiscordInternalGatewaySessionStatus"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client's session status. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__DiscordInternalGatewayIntents"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGatewayIntents.html">Gateway intents</a></td></tr>
+<tr class="memdesc:group__DiscordInternalGatewayIntents"><td class="mdescLeft">&#160;</td><td class="mdescRight">Events user is interested on listening to. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -127,24 +130,24 @@ Data Structures</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:gae38e6a4c2e9bbb2ac711ecdcea8995a6"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gae38e6a4c2e9bbb2ac711ecdcea8995a6">discord_ev_event</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, const void *event)</td></tr>
 <tr class="separator:gae38e6a4c2e9bbb2ac711ecdcea8995a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2953803314aee1dbfc9c4d65140a6ae2"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2">discord_ev_message</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_message *event)</td></tr>
+<tr class="memitem:ga2953803314aee1dbfc9c4d65140a6ae2"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga2953803314aee1dbfc9c4d65140a6ae2">discord_ev_message</a>) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__message.html">discord_message</a> *event)</td></tr>
 <tr class="separator:ga2953803314aee1dbfc9c4d65140a6ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac4d7844efeb499366594c95b08e2cf98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98">discord_gateway_init</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, const char token[])</td></tr>
-<tr class="memdesc:gac4d7844efeb499366594c95b08e2cf98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gateway handle.  <a href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98">More...</a><br /></td></tr>
-<tr class="separator:gac4d7844efeb499366594c95b08e2cf98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce">discord_gateway_init</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structlogconf.html">logconf</a> *conf, const char token[])</td></tr>
+<tr class="memdesc:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gateway handle.  <a href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce">More...</a><br /></td></tr>
+<tr class="separator:ga81bf0b6f95c142a58c834051d9c5f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab66259b9988312a38de984c9c54e49f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gab66259b9988312a38de984c9c54e49f0">discord_gateway_cleanup</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:gab66259b9988312a38de984c9c54e49f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a Gateway handle.  <a href="group__DiscordInternalGateway.html#gab66259b9988312a38de984c9c54e49f0">More...</a><br /></td></tr>
 <tr class="separator:gab66259b9988312a38de984c9c54e49f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga511de59de4ece10cc7ff0e06c21b8345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345">discord_gateway_start</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
+<tr class="memitem:ga511de59de4ece10cc7ff0e06c21b8345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345">discord_gateway_start</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga511de59de4ece10cc7ff0e06c21b8345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize handle with the new session primitives.  <a href="group__DiscordInternalGateway.html#ga511de59de4ece10cc7ff0e06c21b8345">More...</a><br /></td></tr>
 <tr class="separator:ga511de59de4ece10cc7ff0e06c21b8345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7825d44b7eacfb4566229e1c4009bd24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga7825d44b7eacfb4566229e1c4009bd24">discord_gateway_end</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga7825d44b7eacfb4566229e1c4009bd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup and reset <code>gw</code> session primitives.  <a href="group__DiscordInternalGateway.html#ga7825d44b7eacfb4566229e1c4009bd24">More...</a><br /></td></tr>
 <tr class="separator:ga7825d44b7eacfb4566229e1c4009bd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb">discord_gateway_perform</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
+<tr class="memitem:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb">discord_gateway_perform</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check and manage on-going Gateway session.  <a href="group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb">More...</a><br /></td></tr>
 <tr class="separator:ga8f3a46d9cc6ec42ca159766f6ffae8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga820b8262c06ee3bba05d1284d4bc6910"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga820b8262c06ee3bba05d1284d4bc6910">discord_gateway_shutdown</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
@@ -153,22 +156,22 @@ Functions</h2></td></tr>
 <tr class="memitem:ga44ee2f95d91bd642a68e074782ad4f13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga44ee2f95d91bd642a68e074782ad4f13">discord_gateway_reconnect</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, bool resume)</td></tr>
 <tr class="memdesc:ga44ee2f95d91bd642a68e074782ad4f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gracefully reconnect a ongoing Discord connection over WebSockets.  <a href="group__DiscordInternalGateway.html#ga44ee2f95d91bd642a68e074782ad4f13">More...</a><br /></td></tr>
 <tr class="separator:ga44ee2f95d91bd642a68e074782ad4f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb">discord_gateway_send_identify</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct discord_identify *event)</td></tr>
+<tr class="memitem:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb">discord_gateway_send_identify</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *event)</td></tr>
 <tr class="memdesc:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger the initial handshake with the gateway.  <a href="group__DiscordInternalGateway.html#gadd38e6fc5c4b935846bf0b075f45e3fb">More...</a><br /></td></tr>
 <tr class="separator:gadd38e6fc5c4b935846bf0b075f45e3fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa18bf43dd096c9048c01b6575593de22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa18bf43dd096c9048c01b6575593de22">discord_gateway_send_resume</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct discord_resume *event)</td></tr>
+<tr class="memitem:gaa18bf43dd096c9048c01b6575593de22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa18bf43dd096c9048c01b6575593de22">discord_gateway_send_resume</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__resume.html">discord_resume</a> *event)</td></tr>
 <tr class="memdesc:gaa18bf43dd096c9048c01b6575593de22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replay missed events when a disconnected client resumes.  <a href="group__DiscordInternalGateway.html#gaa18bf43dd096c9048c01b6575593de22">More...</a><br /></td></tr>
 <tr class="separator:gaa18bf43dd096c9048c01b6575593de22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb7be34927409b0656a9678c83e7798d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gadb7be34927409b0656a9678c83e7798d">discord_gateway_send_heartbeat</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, int seq)</td></tr>
 <tr class="memdesc:gadb7be34927409b0656a9678c83e7798d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maintain an active gateway connection.  <a href="group__DiscordInternalGateway.html#gadb7be34927409b0656a9678c83e7798d">More...</a><br /></td></tr>
 <tr class="separator:gadb7be34927409b0656a9678c83e7798d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa821fdd1acf23892ff11437d667522e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa821fdd1acf23892ff11437d667522e7">discord_gateway_send_request_guild_members</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="group__DiscordCommands.html#gad633301a38218a7f70c29ea6af5eb993">discord_request_guild_members</a> *event)</td></tr>
+<tr class="memitem:gaa821fdd1acf23892ff11437d667522e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gaa821fdd1acf23892ff11437d667522e7">discord_gateway_send_request_guild_members</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *event)</td></tr>
 <tr class="memdesc:gaa821fdd1acf23892ff11437d667522e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request all members for a guild or a list of guilds.  <a href="group__DiscordInternalGateway.html#gaa821fdd1acf23892ff11437d667522e7">More...</a><br /></td></tr>
 <tr class="separator:gaa821fdd1acf23892ff11437d667522e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga4f994d82b69b211a6ee8a5b69a0b4f67">discord_gateway_send_update_voice_state</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="group__DiscordCommands.html#gacb174879d5c775b529d1cae1088db98f">discord_update_voice_state</a> *event)</td></tr>
+<tr class="memitem:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga4f994d82b69b211a6ee8a5b69a0b4f67">discord_gateway_send_update_voice_state</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *event)</td></tr>
 <tr class="memdesc:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent when a client wants to join, move or disconnect from a voice channel.  <a href="group__DiscordInternalGateway.html#ga4f994d82b69b211a6ee8a5b69a0b4f67">More...</a><br /></td></tr>
 <tr class="separator:ga4f994d82b69b211a6ee8a5b69a0b4f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gab98b0a22befb0df9a1e5e10541b8bc60">discord_gateway_send_presence_update</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct discord_presence_update *event)</td></tr>
+<tr class="memitem:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#gab98b0a22befb0df9a1e5e10541b8bc60">discord_gateway_send_presence_update</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw, struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *event)</td></tr>
 <tr class="memdesc:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send client's presence status update payload.  <a href="group__DiscordInternalGateway.html#gab98b0a22befb0df9a1e5e10541b8bc60">More...</a><br /></td></tr>
 <tr class="separator:gab98b0a22befb0df9a1e5e10541b8bc60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d6e71dc948ec38bfeedf11b16214f45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga6d6e71dc948ec38bfeedf11b16214f45">discord_gateway_dispatch</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
@@ -200,7 +203,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* discord_ev_message) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_message *event)</td>
+          <td class="memname">typedef void(* discord_ev_message) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__message.html">discord_message</a> *event)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -209,17 +212,23 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gac4d7844efeb499366594c95b08e2cf98" name="gac4d7844efeb499366594c95b08e2cf98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac4d7844efeb499366594c95b08e2cf98">&#9670;&nbsp;</a></span>discord_gateway_init()</h2>
+<a id="ga81bf0b6f95c142a58c834051d9c5f5ce" name="ga81bf0b6f95c142a58c834051d9c5f5ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga81bf0b6f95c142a58c834051d9c5f5ce">&#9670;&nbsp;</a></span>discord_gateway_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_gateway_init </td>
+          <td class="memname">void discord_gateway_init </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *&#160;</td>
           <td class="paramname"><em>gw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structlogconf.html">logconf</a> *&#160;</td>
+          <td class="paramname"><em>conf</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -239,11 +248,11 @@ Functions</h2></td></tr>
 <p >Structure used for interfacing with the Discord's Gateway API </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gw</td><td>the gateway handle to be initialized </td></tr>
+    <tr><td class="paramname">conf</td><td>pointer to <a class="el" href="structdiscord.html">discord</a> logging module </td></tr>
     <tr><td class="paramname">token</td><td>the bot token </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
 </div>
@@ -266,7 +275,7 @@ Functions</h2></td></tr>
 <p>Free a Gateway handle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -280,7 +289,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_gateway_start </td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_gateway_start </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *&#160;</td>
           <td class="paramname"><em>gw</em></td><td>)</td>
@@ -292,11 +301,11 @@ Functions</h2></td></tr>
 <p>Initialize handle with the new session primitives. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259">CCORDcode</a> value for how the operation went, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
 </div>
@@ -319,7 +328,7 @@ Functions</h2></td></tr>
 <p>Cleanup and reset <code>gw</code> session primitives. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#a7f4acddb4bd87dfa94f037a97ce83346" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
+    <tr><td class="paramname">ws</td><td>the WebSockets handle created with <a class="el" href="websockets_8h.html#af30fce74ddf4ab1ded1f6582ccb2b4e6" title="Create a new (CURL-based) WebSockets handle.">ws_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -334,7 +343,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_gateway_perform </td>
+          <td class="memname"><a class="el" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> discord_gateway_perform </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *&#160;</td>
           <td class="paramname"><em>gw</em></td><td>)</td>
@@ -350,7 +359,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga78a20c062e3ec52d6b521fd92ae88259">CCORDcode</a> value for how the operation went, <a class="el" href="group__ConcordError.html#gga73d04d4ecf8e63dd1ee4ded3045d1d31a492639788613dde14cac8694a9c3e2a9">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
 </div>
@@ -373,7 +382,7 @@ Functions</h2></td></tr>
 <p>Gracefully shutdown a ongoing Discord connection over WebSockets. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -409,7 +418,7 @@ Functions</h2></td></tr>
 <p>Gracefully reconnect a ongoing Discord connection over WebSockets. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">resume</td><td>true to attempt to resume to previous session, false restart a fresh session </td></tr>
   </table>
   </dd>
@@ -432,7 +441,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct discord_identify *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *&#160;</td>
           <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
@@ -446,7 +455,7 @@ Functions</h2></td></tr>
 <p>Trigger the initial handshake with the gateway. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">event</td><td>provide client identification information </td></tr>
   </table>
   </dd>
@@ -469,7 +478,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct discord_resume *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__resume.html">discord_resume</a> *&#160;</td>
           <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
@@ -483,7 +492,7 @@ Functions</h2></td></tr>
 <p>Replay missed events when a disconnected client resumes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">event</td><td>session resume information </td></tr>
   </table>
   </dd>
@@ -520,7 +529,7 @@ Functions</h2></td></tr>
 <p>Maintain an active gateway connection. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">seq</td><td>the last session sequence number </td></tr>
   </table>
   </dd>
@@ -543,7 +552,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="group__DiscordCommands.html#gad633301a38218a7f70c29ea6af5eb993">discord_request_guild_members</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__request__guild__members.html">discord_request_guild_members</a> *&#160;</td>
           <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
@@ -557,7 +566,7 @@ Functions</h2></td></tr>
 <p>Request all members for a guild or a list of guilds. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">event</td><td>request guild members information </td></tr>
   </table>
   </dd>
@@ -580,7 +589,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="group__DiscordCommands.html#gacb174879d5c775b529d1cae1088db98f">discord_update_voice_state</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__update__voice__state.html">discord_update_voice_state</a> *&#160;</td>
           <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
@@ -594,7 +603,7 @@ Functions</h2></td></tr>
 <p>Sent when a client wants to join, move or disconnect from a voice channel. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">event</td><td>request guild members information </td></tr>
   </table>
   </dd>
@@ -617,7 +626,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct discord_presence_update *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__presence__update.html">discord_presence_update</a> *&#160;</td>
           <td class="paramname"><em>event</em>&#160;</td>
         </tr>
         <tr>
@@ -631,7 +640,7 @@ Functions</h2></td></tr>
 <p>Send client's presence status update payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
     <tr><td class="paramname">event</td><td>the presence to be set </td></tr>
   </table>
   </dd>
@@ -658,7 +667,7 @@ Functions</h2></td></tr>
 <p>Dispatch user callback matched to event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#gac4d7844efeb499366594c95b08e2cf98" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
+    <tr><td class="paramname">gw</td><td>the handle initialized with <a class="el" href="group__DiscordInternalGateway.html#ga81bf0b6f95c142a58c834051d9c5f5ce" title="Initialize a Gateway handle.">discord_gateway_init()</a> </td></tr>
   </table>
   </dd>
 </dl>

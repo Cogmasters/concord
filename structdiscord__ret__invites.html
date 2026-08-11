@@ -97,6 +97,12 @@ $(document).ready(function(){initNavTree('structdiscord__ret__invites.html','');
  <a href="structdiscord__ret__invites.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for discord_ret_invites:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__invites__coll__graph.svg" width="156" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -110,14 +116,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a376f5cb263b3133f91573730281cab2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8185418d25915c58df88b1c927572ffd"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__invites.html#a8185418d25915c58df88b1c927572ffd">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:a8185418d25915c58df88b1c927572ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d6e71c216d41ecf0c49fce7c889c915"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__invites.html#a6d6e71c216d41ecf0c49fce7c889c915">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_invites *ret)</td></tr>
+<tr class="memitem:a6d6e71c216d41ecf0c49fce7c889c915"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__invites.html#a6d6e71c216d41ecf0c49fce7c889c915">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *ret)</td></tr>
 <tr class="separator:a6d6e71c216d41ecf0c49fce7c889c915"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae64934683249d74e4115ba12784a2fe7"><td class="memItemLeft" align="right" valign="top">struct discord_invites *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__invites.html#ae64934683249d74e4115ba12784a2fe7">sync</a></td></tr>
+<tr class="memitem:ae64934683249d74e4115ba12784a2fe7"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__invites.html#ae64934683249d74e4115ba12784a2fe7">sync</a></td></tr>
 <tr class="separator:ae64934683249d74e4115ba12784a2fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#_a11">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#_a33">channel.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a31bd31a085bed267ea030d00b4c01135" name="a31bd31a085bed267ea030d00b4c01135"></a>
@@ -202,12 +208,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_invites::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_invites *ret)</td>
+          <td class="memname">void(* discord_ret_invites::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__invites.html">discord_invites</a> *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >optional callback to be executed on a successful request </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a12">channel.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="channel_8c-example.html#a34">channel.c</a>.</dd>
 </dl>
 
 </div>
@@ -219,7 +225,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct discord_invites* discord_ret_invites::sync</td>
+          <td class="memname">struct <a class="el" href="structdiscord__invites.html">discord_invites</a>* discord_ret_invites::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">

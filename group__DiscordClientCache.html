@@ -114,10 +114,10 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ga6738dc4f4df92683fd6abca620ae3d9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClientCache.html#ga6738dc4f4df92683fd6abca620ae3d9d">discord_cache_enable</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, enum <a class="el" href="group__DiscordClientCache.html#ga81215ef7fe2b84a1082f6639d6761ac7">discord_cache_options</a> options)</td></tr>
 <tr class="separator:ga6738dc4f4df92683fd6abca620ae3d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28acf69d181eb5c1a41e5b8d7c0daa01"><td class="memItemLeft" align="right" valign="top">const struct discord_message *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClientCache.html#ga28acf69d181eb5c1a41e5b8d7c0daa01">discord_cache_get_channel_message</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> channel_id, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> message_id)</td></tr>
+<tr class="memitem:ga28acf69d181eb5c1a41e5b8d7c0daa01"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structdiscord__message.html">discord_message</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClientCache.html#ga28acf69d181eb5c1a41e5b8d7c0daa01">discord_cache_get_channel_message</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> channel_id, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> message_id)</td></tr>
 <tr class="memdesc:ga28acf69d181eb5c1a41e5b8d7c0daa01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a message from cache, only if locally available in RAM.  <a href="group__DiscordClientCache.html#ga28acf69d181eb5c1a41e5b8d7c0daa01">More...</a><br /></td></tr>
 <tr class="separator:ga28acf69d181eb5c1a41e5b8d7c0daa01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadeee69669789bf1a7b2a98ada8570e85"><td class="memItemLeft" align="right" valign="top">const struct discord_guild *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClientCache.html#gadeee69669789bf1a7b2a98ada8570e85">discord_cache_get_guild</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id)</td></tr>
+<tr class="memitem:gadeee69669789bf1a7b2a98ada8570e85"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structdiscord__guild.html">discord_guild</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordClientCache.html#gadeee69669789bf1a7b2a98ada8570e85">discord_cache_get_guild</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__ConcordTypes.html#ga1f90b9a153d0298db01a3bf1eb334471">u64snowflake</a> guild_id)</td></tr>
 <tr class="memdesc:gadeee69669789bf1a7b2a98ada8570e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a guild from cache, only if locally available in RAM.  <a href="group__DiscordClientCache.html#gadeee69669789bf1a7b2a98ada8570e85">More...</a><br /></td></tr>
 <tr class="separator:gadeee69669789bf1a7b2a98ada8570e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -168,7 +168,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a6">cache.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a16">cache.c</a>.</dd>
 </dl>
 
 </div>
@@ -180,7 +180,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const struct discord_message * discord_cache_get_channel_message </td>
+          <td class="memname">const struct <a class="el" href="structdiscord__message.html">discord_message</a> * discord_cache_get_channel_message </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em>, </td>
@@ -209,14 +209,14 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>When done, <a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4" title="Unclaim ownership of a resource provided by Concord.">discord_unclaim()</a> must be called on the message resource</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">channel_id</td><td>the channel id the message is in </td></tr>
     <tr><td class="paramname">message_id</td><td>the id of the message </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NULL</code> if not found, or a cache'd message </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a3">cache.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a9">cache.c</a>.</dd>
 </dl>
 
 </div>
@@ -228,7 +228,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const struct discord_guild * discord_cache_get_guild </td>
+          <td class="memname">const struct <a class="el" href="structdiscord__guild.html">discord_guild</a> * discord_cache_get_guild </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord.html">discord</a> *&#160;</td>
           <td class="paramname"><em>client</em>, </td>
@@ -251,13 +251,13 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>When done, <a class="el" href="group__DiscordClient.html#ga1f34f5e41cb03767910e9ba3f90207d4" title="Unclaim ownership of a resource provided by Concord.">discord_unclaim()</a> must be called on the guild resource</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#ga38eee8c070cf3cda20838b5cfe0fe39f" title="Creates a Discord Client handle from a token.">discord_from_token()</a> </td></tr>
+    <tr><td class="paramname">client</td><td>the client initialized with <a class="el" href="group__DiscordClient.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
     <tr><td class="paramname">guild_id</td><td>the id of the guild </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NULL</code> if not found, or a cache'd guild </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a1">cache.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="cache_8c-example.html#a5">cache.c</a>.</dd>
 </dl>
 
 </div>

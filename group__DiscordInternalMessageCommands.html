@@ -111,9 +111,9 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga28f641213d5274a91c573d2315674dc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7">discord_message_commands_init</a> (struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *cmds)</td></tr>
-<tr class="memdesc:ga28f641213d5274a91c573d2315674dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Message Commands handle.  <a href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7">More...</a><br /></td></tr>
-<tr class="separator:ga28f641213d5274a91c573d2315674dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga913baf962d6d1be5fb5379bfecb7c700"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700">discord_message_commands_init</a> (struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *cmds, struct <a class="el" href="structlogconf.html">logconf</a> *conf)</td></tr>
+<tr class="memdesc:ga913baf962d6d1be5fb5379bfecb7c700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Message Commands handle.  <a href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700">More...</a><br /></td></tr>
+<tr class="separator:ga913baf962d6d1be5fb5379bfecb7c700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf8e3eb1ed19c4d408e3ebfdc9bcfa675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalMessageCommands.html#gaf8e3eb1ed19c4d408e3ebfdc9bcfa675">discord_message_commands_cleanup</a> (struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *cmds)</td></tr>
 <tr class="memdesc:gaf8e3eb1ed19c4d408e3ebfdc9bcfa675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a Message Commands handle.  <a href="group__DiscordInternalMessageCommands.html#gaf8e3eb1ed19c4d408e3ebfdc9bcfa675">More...</a><br /></td></tr>
 <tr class="separator:gaf8e3eb1ed19c4d408e3ebfdc9bcfa675"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,18 +133,28 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >The Message Commands API for registering and parsing user commands. </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga28f641213d5274a91c573d2315674dc7" name="ga28f641213d5274a91c573d2315674dc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga28f641213d5274a91c573d2315674dc7">&#9670;&nbsp;</a></span>discord_message_commands_init()</h2>
+<a id="ga913baf962d6d1be5fb5379bfecb7c700" name="ga913baf962d6d1be5fb5379bfecb7c700"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga913baf962d6d1be5fb5379bfecb7c700">&#9670;&nbsp;</a></span>discord_message_commands_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> discord_message_commands_init </td>
+          <td class="memname">void discord_message_commands_init </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structdiscord__message__commands.html">discord_message_commands</a> *&#160;</td>
-          <td class="paramname"><em>cmds</em></td><td>)</td>
+          <td class="paramname"><em>cmds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">struct <a class="el" href="structlogconf.html">logconf</a> *&#160;</td>
+          <td class="paramname"><em>conf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -153,10 +163,10 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cmds</td><td>the message commands handle to be initialized </td></tr>
+    <tr><td class="paramname">conf</td><td>pointer to <a class="el" href="structdiscord.html">discord</a> logging module </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> value for how the operation went, <a class="el" href="group__CoreError.html#ga0b2454f88baeff7a3d492bb59227ab0f">CCORD_OK</a> means nothing out of the ordinary </dd></dl>
 
 </div>
 </div>
@@ -179,7 +189,7 @@ Functions</h2></td></tr>
 <p>Free a Message Commands handle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
+    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -221,7 +231,7 @@ Functions</h2></td></tr>
 <p>Search for a callback matching the command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
+    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
     <tr><td class="paramname">command</td><td>the command to be searched for </td></tr>
     <tr><td class="paramname">length</td><td>the command length </td></tr>
   </table>
@@ -272,7 +282,7 @@ Functions</h2></td></tr>
 <p>Add a new command/callback pair, or update an existing command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
+    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
     <tr><td class="paramname">command</td><td>the message command to be matched with callback </td></tr>
     <tr><td class="paramname">length</td><td>the command length </td></tr>
     <tr><td class="paramname">callback</td><td>the callback to be triggered when the command is sent </td></tr>
@@ -315,10 +325,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set a mandatory prefix before commands. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordEvents.html#gadf51aba10c17aeee71819b67deb9316e" title="Set command/callback pair.">discord_set_on_command()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__DiscordEvents.html#gac0392213dc717362e121c5ad63a30682" title="Set command/callback pair.">discord_set_on_command()</a></dd></dl>
 <p>Example: If <em>'help'</em> is a command and <em>'!'</em> prefix is set, the command will only be validated if <em>'!help'</em> is sent </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
+    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
     <tr><td class="paramname">prefix</td><td>the mandatory command prefix </td></tr>
     <tr><td class="paramname">length</td><td>the prefix length </td></tr>
   </table>
@@ -356,7 +366,7 @@ Functions</h2></td></tr>
 <p>Read the current <a class="el" href="group__DiscordEvents.html#gga90ebb76de1682ce02a67a08b0510145ba983941db157b3b88a3972d39d03c9a91">DISCORD_EV_MESSAGE_CREATE</a> payload and attempt to perform its matching callback. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga28f641213d5274a91c573d2315674dc7" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
+    <tr><td class="paramname">cmds</td><td>the handle initialized with <a class="el" href="group__DiscordInternalMessageCommands.html#ga913baf962d6d1be5fb5379bfecb7c700" title="Initialize a Message Commands handle.">discord_message_commands_init()</a> </td></tr>
     <tr><td class="paramname">payload</td><td>the event payload to read from (assumes its from <code>MESSAGE_CREATE</code>) </td></tr>
   </table>
   </dd>

@@ -97,6 +97,12 @@ $(document).ready(function(){initNavTree('structdiscord__ret__channels.html','')
  <a href="structdiscord__ret__channels.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="discord-response_8h_source.html">discord-response.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for discord_ret_channels:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__ret__channels__coll__graph.svg" width="170" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -110,14 +116,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:adabfb6509f750edbf3d270a58e66afb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab72bc5b090b70a62bcc6452744169f61"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__channels.html#ab72bc5b090b70a62bcc6452744169f61">fail</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp)</td></tr>
 <tr class="separator:ab72bc5b090b70a62bcc6452744169f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91ddfd3af36c2c77515d17fa3acc01d2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__channels.html#a91ddfd3af36c2c77515d17fa3acc01d2">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_channels *ret)</td></tr>
+<tr class="memitem:a91ddfd3af36c2c77515d17fa3acc01d2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__channels.html#a91ddfd3af36c2c77515d17fa3acc01d2">done</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__channels.html">discord_channels</a> *ret)</td></tr>
 <tr class="separator:a91ddfd3af36c2c77515d17fa3acc01d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e31a34df35861d9aa8244b486ae0bf9"><td class="memItemLeft" align="right" valign="top">struct discord_channels *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__channels.html#a9e31a34df35861d9aa8244b486ae0bf9">sync</a></td></tr>
+<tr class="memitem:a9e31a34df35861d9aa8244b486ae0bf9"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__channels.html">discord_channels</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__ret__channels.html#a9e31a34df35861d9aa8244b486ae0bf9">sync</a></td></tr>
 <tr class="separator:a9e31a34df35861d9aa8244b486ae0bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Request's return context. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a8">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#_a18">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#_a24">fetch-messages.c</a>, and <a class="el" href="guild_8c-example.html#_a57">guild.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a90d11415d5cc99f3874cdace64958ff2" name="a90d11415d5cc99f3874cdace64958ff2"></a>
@@ -202,12 +208,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_ret_channels::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct discord_channels *ret)</td>
+          <td class="memname">void(* discord_ret_channels::done) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__response.html">discord_response</a> *resp, const struct <a class="el" href="structdiscord__channels.html">discord_channels</a> *ret)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >optional callback to be executed on a successful request </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a19">guild.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="guild_8c-example.html#a58">guild.c</a>.</dd>
 </dl>
 
 </div>
@@ -219,12 +225,12 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct discord_channels* discord_ret_channels::sync</td>
+          <td class="memname">struct <a class="el" href="structdiscord__channels.html">discord_channels</a>* discord_ret_channels::sync</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p >if an address is provided, then request will block the thread and perform on-spot. On success the response object will be written to the address, unless enabled with <a class="el" href="discord-response_8h.html#a4763b511d7f8bdca0aa292c1d2ca95f6">DISCORD_SYNC_FLAG</a> </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a13">fetch-messages.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="fetch-messages_8c-example.html#a33">fetch-messages.c</a>.</dd>
 </dl>
 
 </div>

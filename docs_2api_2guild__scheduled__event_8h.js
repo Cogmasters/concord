@@ -1,0 +1,58 @@
+var docs_2api_2guild__scheduled__event_8h =
+[
+    [ "discord_guild_scheduled_event", "structdiscord__guild__scheduled__event.html", "structdiscord__guild__scheduled__event" ],
+    [ "discord_guild_scheduled_event_entity_metadata", "structdiscord__guild__scheduled__event__entity__metadata.html", "structdiscord__guild__scheduled__event__entity__metadata" ],
+    [ "discord_guild_scheduled_events", "structdiscord__guild__scheduled__events.html", "structdiscord__guild__scheduled__events" ],
+    [ "discord_guild_scheduled_event_user", "structdiscord__guild__scheduled__event__user.html", "structdiscord__guild__scheduled__event__user" ],
+    [ "discord_guild_scheduled_event_users", "structdiscord__guild__scheduled__event__users.html", "structdiscord__guild__scheduled__event__users" ],
+    [ "discord_list_guild_scheduled_events", "structdiscord__list__guild__scheduled__events.html", "structdiscord__list__guild__scheduled__events" ],
+    [ "discord_create_guild_scheduled_event", "structdiscord__create__guild__scheduled__event.html", "structdiscord__create__guild__scheduled__event" ],
+    [ "discord_get_guild_scheduled_event", "structdiscord__get__guild__scheduled__event.html", "structdiscord__get__guild__scheduled__event" ],
+    [ "discord_modify_guild_scheduled_event", "structdiscord__modify__guild__scheduled__event.html", "structdiscord__modify__guild__scheduled__event" ],
+    [ "discord_get_guild_scheduled_event_users", "structdiscord__get__guild__scheduled__event__users.html", "structdiscord__get__guild__scheduled__event__users" ],
+    [ "JSMN_STRICT", "docs_2api_2guild__scheduled__event_8h.html#ae9493ed0020a5a9595eb8d0b6870f947", null ],
+    [ "JSMN_HEADER", "docs_2api_2guild__scheduled__event_8h.html#aeef9c3539ffb9ed912a2976b67b43d68", null ],
+    [ "JSONB_HEADER", "docs_2api_2guild__scheduled__event_8h.html#a3cbcbd7c48827141af941f316122fad4", null ],
+    [ "discord_guild_scheduled_event_privacy_level", "docs_2api_2guild__scheduled__event_8h.html#abbea8f61e598def049fba16dc206f31c", [
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_GUILD_ONLY", "docs_2api_2guild__scheduled__event_8h.html#abbea8f61e598def049fba16dc206f31cac9a688aaa4d3e5a2324954cc729dd5eb", null ]
+    ] ],
+    [ "discord_guild_scheduled_event_entity_types", "docs_2api_2guild__scheduled__event_8h.html#ab60815229811d6ee234feb5c884e4d6b", [
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_ENTITY_STAGE_INSTANCE", "docs_2api_2guild__scheduled__event_8h.html#ab60815229811d6ee234feb5c884e4d6baaf13aec1fbbad7acd387d2f4c2985af7", null ],
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_ENTITY_VOICE", "docs_2api_2guild__scheduled__event_8h.html#ab60815229811d6ee234feb5c884e4d6ba4c1b7fc776860262732ddc1cfe14a547", null ],
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_ENTITY_EXTERNAL", "docs_2api_2guild__scheduled__event_8h.html#ab60815229811d6ee234feb5c884e4d6ba7ecd399ae5750084503e8d3e3f471928", null ]
+    ] ],
+    [ "discord_guild_scheduled_event_status", "docs_2api_2guild__scheduled__event_8h.html#a6de0370d9bb32c268ead22c9bead7653", [
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_SCHEDULED", "docs_2api_2guild__scheduled__event_8h.html#a6de0370d9bb32c268ead22c9bead7653a1b2b0f3f72048ed128f17877eb9395eb", null ],
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_ACTIVE", "docs_2api_2guild__scheduled__event_8h.html#a6de0370d9bb32c268ead22c9bead7653ab86a9085be6cbbe3c5358c3d22a79032", null ],
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_COMPLETED", "docs_2api_2guild__scheduled__event_8h.html#a6de0370d9bb32c268ead22c9bead7653a420eb7bba215c070ae8d3eecea268179", null ],
+      [ "DISCORD_GUILD_SCHEDULED_EVENT_CANCELED", "docs_2api_2guild__scheduled__event_8h.html#a6de0370d9bb32c268ead22c9bead7653a6fa8f975030bc97590875a63e8e36948", null ]
+    ] ],
+    [ "discord_guild_scheduled_event_init", "docs_2api_2guild__scheduled__event_8h.html#ab27b35c7c48c6a186ba307b7c5af7106", null ],
+    [ "discord_guild_scheduled_event_cleanup", "docs_2api_2guild__scheduled__event_8h.html#a162e778669ef72870e819a97d6377557", null ],
+    [ "discord_guild_scheduled_events_cleanup", "docs_2api_2guild__scheduled__event_8h.html#a5904e52e21689c910fac01a11cba0f9d", null ],
+    [ "discord_guild_scheduled_event_users_cleanup", "docs_2api_2guild__scheduled__event_8h.html#a97e6305db12102323c12a5e963c3f539", null ],
+    [ "discord_create_guild_scheduled_event_init", "docs_2api_2guild__scheduled__event_8h.html#a5941dc042f54f0900268f088844c494d", null ],
+    [ "discord_create_guild_scheduled_event_cleanup", "docs_2api_2guild__scheduled__event_8h.html#a354269d53a21a3808b1f1a5dd755084a", null ],
+    [ "discord_modify_guild_scheduled_event_init", "docs_2api_2guild__scheduled__event_8h.html#abc654a9fc9e190708ce322bc510536ca", null ],
+    [ "discord_modify_guild_scheduled_event_cleanup", "docs_2api_2guild__scheduled__event_8h.html#a1751a7b46c6233a49b7a8611d703c759", null ],
+    [ "discord_guild_scheduled_event_from_jsmnf", "docs_2api_2guild__scheduled__event_8h.html#a22b66493de4178193d0db341906470f9", null ],
+    [ "discord_guild_scheduled_event_from_json", "docs_2api_2guild__scheduled__event_8h.html#a144bb56b1a106e5197602e1a02ce3f3a", null ],
+    [ "discord_guild_scheduled_events_from_jsmnf", "docs_2api_2guild__scheduled__event_8h.html#aeaa018dadc259541ab4d031bfd1ed5cf", null ],
+    [ "discord_guild_scheduled_events_from_json", "docs_2api_2guild__scheduled__event_8h.html#ae7a06ea45bf8d2d5af138add52476294", null ],
+    [ "discord_guild_scheduled_event_users_from_jsmnf", "docs_2api_2guild__scheduled__event_8h.html#a6e853856fecd984030039a29882f22c8", null ],
+    [ "discord_guild_scheduled_event_users_from_json", "docs_2api_2guild__scheduled__event_8h.html#a58d3afcb127acd5f78b9c9f47382180e", null ],
+    [ "discord_create_guild_scheduled_event_from_jsmnf", "docs_2api_2guild__scheduled__event_8h.html#a8409b6c03bd691a5aedd6fb9795ae00a", null ],
+    [ "discord_create_guild_scheduled_event_from_json", "docs_2api_2guild__scheduled__event_8h.html#aac83660c515f5cdc1e7a6f28631f3963", null ],
+    [ "discord_modify_guild_scheduled_event_from_jsmnf", "docs_2api_2guild__scheduled__event_8h.html#ad2281f93c8bbf324fab809341279c3c3", null ],
+    [ "discord_modify_guild_scheduled_event_from_json", "docs_2api_2guild__scheduled__event_8h.html#a0ec2345be6618435889295ef9617bd8e", null ],
+    [ "discord_guild_scheduled_event_to_jsonb", "docs_2api_2guild__scheduled__event_8h.html#a4ba91ddd51d45101936a2068e8452a12", null ],
+    [ "discord_guild_scheduled_event_to_json", "docs_2api_2guild__scheduled__event_8h.html#af84f7c1a2b2793317c520cec60edcdcc", null ],
+    [ "discord_guild_scheduled_events_to_jsonb", "docs_2api_2guild__scheduled__event_8h.html#a73f7e5f2e0e11759059637f6d6b763d3", null ],
+    [ "discord_guild_scheduled_events_to_json", "docs_2api_2guild__scheduled__event_8h.html#ad26873a1266675687251d22406e051c2", null ],
+    [ "discord_guild_scheduled_event_users_to_jsonb", "docs_2api_2guild__scheduled__event_8h.html#a9e0ac4338118992114528545f84434ce", null ],
+    [ "discord_guild_scheduled_event_users_to_json", "docs_2api_2guild__scheduled__event_8h.html#a6d37e3e2e796b65d3e1afca2851737b0", null ],
+    [ "discord_create_guild_scheduled_event_to_jsonb", "docs_2api_2guild__scheduled__event_8h.html#ac70ea794d3b3e54b7e3b616724e873ed", null ],
+    [ "discord_create_guild_scheduled_event_to_json", "docs_2api_2guild__scheduled__event_8h.html#ab845c0fda3c422d5db972cbee2de5cb8", null ],
+    [ "discord_modify_guild_scheduled_event_to_jsonb", "docs_2api_2guild__scheduled__event_8h.html#a3ef10c514fa572d35bac5ed73ec53438", null ],
+    [ "discord_modify_guild_scheduled_event_to_json", "docs_2api_2guild__scheduled__event_8h.html#a1633e1ee6fceeba638c324d0d9a0a4c8", null ]
+];

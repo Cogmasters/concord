@@ -104,11 +104,11 @@ Data Fields</h2></td></tr>
 <tr class="separator:a63dc4975f2c44da95535e41c8314ff78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0fa2e74b39c5f445a8d22c27cbfe3e6"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#ae0fa2e74b39c5f445a8d22c27cbfe3e6">cleanup</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="separator:ae0fa2e74b39c5f445a8d22c27cbfe3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addac3ee9c4958956de3a13d67c3709af"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#addac3ee9c4958956de3a13d67c3709af">on_shard_disconnected</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_identify *ident, bool resumable)</td></tr>
+<tr class="memitem:addac3ee9c4958956de3a13d67c3709af"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#addac3ee9c4958956de3a13d67c3709af">on_shard_disconnected</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *ident, bool resumable)</td></tr>
 <tr class="separator:addac3ee9c4958956de3a13d67c3709af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11f3f648cae80614fd1ff521e8e0ebeb"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#a11f3f648cae80614fd1ff521e8e0ebeb">on_shard_resumed</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_identify *ident)</td></tr>
+<tr class="memitem:a11f3f648cae80614fd1ff521e8e0ebeb"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#a11f3f648cae80614fd1ff521e8e0ebeb">on_shard_resumed</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *ident)</td></tr>
 <tr class="separator:a11f3f648cae80614fd1ff521e8e0ebeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc315023dec48bde4551c9f74fceb4e2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#afc315023dec48bde4551c9f74fceb4e2">on_shard_reconnected</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_identify *ident)</td></tr>
+<tr class="memitem:afc315023dec48bde4551c9f74fceb4e2"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__cache.html#afc315023dec48bde4551c9f74fceb4e2">on_shard_reconnected</a> )(struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *ident)</td></tr>
 <tr class="separator:afc315023dec48bde4551c9f74fceb4e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -149,7 +149,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_cache::on_shard_disconnected) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_identify *ident, bool resumable)</td>
+          <td class="memname">void(* discord_cache::on_shard_disconnected) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *ident, bool resumable)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -164,7 +164,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_cache::on_shard_resumed) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_identify *ident)</td>
+          <td class="memname">void(* discord_cache::on_shard_resumed) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *ident)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -179,7 +179,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* discord_cache::on_shard_reconnected) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct discord_identify *ident)</td>
+          <td class="memname">void(* discord_cache::on_shard_reconnected) (struct <a class="el" href="structdiscord.html">discord</a> *client, const struct <a class="el" href="structdiscord__identify.html">discord_identify</a> *ident)</td>
         </tr>
       </table>
 </div><div class="memdoc">

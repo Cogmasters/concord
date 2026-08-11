@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Concord - C Discord API library: core/concord-once.h Source File</title>
+<title>Concord - C Discord API library: include/concord-once.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,31 +92,27 @@ $(document).ready(function(){initNavTree('concord-once_8h_source.html',''); init
 <div class="contents">
 <a href="concord-once_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef CONCORD_ONCE_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define CONCORD_ONCE_H</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="concord-error_8h.html">concord-error.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb">   10</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb">ccord_shutdown_async</a>();</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="concord-once_8h.html#a90f7b8e3100607181dcb1732c2cf0887">   13</a></span><span class="keyword">typedef</span> <a class="code hl_typedef" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> (*<a class="code hl_typedef" href="concord-once_8h.html#a90f7b8e3100607181dcb1732c2cf0887">ccord_once_cb</a>)(<span class="keywordtype">long</span> flags);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="concord-once_8h.html#a566923c534892285cbba76034efe9af5">   28</a></span><a class="code hl_typedef" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <a class="code hl_function" href="concord-once_8h.html#a566923c534892285cbba76034efe9af5">ccord_once_set_callback</a>(<a class="code hl_typedef" href="concord-once_8h.html#a90f7b8e3100607181dcb1732c2cf0887">ccord_once_cb</a> callback, <span class="keywordtype">long</span> flags);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="concord-once_8h.html#ac54921f718cb39cc27a9e70fec02b968">   38</a></span><a class="code hl_typedef" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> <a class="code hl_function" href="concord-once_8h.html#ac54921f718cb39cc27a9e70fec02b968">ccord_once</a>(_Bool *once);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="concord-once_8h.html#accb93cf44a462e1f85ffa3283ec39bd9">   47</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="concord-once_8h.html#accb93cf44a462e1f85ffa3283ec39bd9">ccord_once_cleanup</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">/* CONCORD_ONCE_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aconcord-error_8h_html"><div class="ttname"><a href="concord-error_8h.html">concord-error.h</a></div></div>
-<div class="ttc" id="aconcord-once_8h_html_a566923c534892285cbba76034efe9af5"><div class="ttname"><a href="concord-once_8h.html#a566923c534892285cbba76034efe9af5">ccord_once_set_callback</a></div><div class="ttdeci">CCORDcode ccord_once_set_callback(ccord_once_cb callback, long flags)</div><div class="ttdoc">Register a user callback for initialization.</div></div>
-<div class="ttc" id="aconcord-once_8h_html_a90f7b8e3100607181dcb1732c2cf0887"><div class="ttname"><a href="concord-once_8h.html#a90f7b8e3100607181dcb1732c2cf0887">ccord_once_cb</a></div><div class="ttdeci">CCORDcode(* ccord_once_cb)(long flags)</div><div class="ttdef"><b>Definition:</b> concord-once.h:13</div></div>
-<div class="ttc" id="aconcord-once_8h_html_ac54921f718cb39cc27a9e70fec02b968"><div class="ttname"><a href="concord-once_8h.html#ac54921f718cb39cc27a9e70fec02b968">ccord_once</a></div><div class="ttdeci">CCORDcode ccord_once(_Bool *once)</div><div class="ttdoc">Initialize context once.</div></div>
-<div class="ttc" id="aconcord-once_8h_html_accb93cf44a462e1f85ffa3283ec39bd9"><div class="ttname"><a href="concord-once_8h.html#accb93cf44a462e1f85ffa3283ec39bd9">ccord_once_cleanup</a></div><div class="ttdeci">void ccord_once_cleanup(void)</div><div class="ttdoc">Cleanup once context.</div></div>
-<div class="ttc" id="agroup__ConcordError_html_ga4ca5a90a1068552190074f603f68b587"><div class="ttname"><a href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a></div><div class="ttdeci">int CCORDcode</div><div class="ttdoc">Concord error codes.</div><div class="ttdef"><b>Definition:</b> concord-error.h:11</div></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="concord-once_8h.html#a0824a6473f84923cd3a4f7062f3d9ef5">   20</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="concord-once_8h.html#a0824a6473f84923cd3a4f7062f3d9ef5">ccord_shutting_down</a>();</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">   27</a></span><a class="code hl_enumeration" href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a> <a class="code hl_function" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a>();</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">   30</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a>();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif </span><span class="comment">/* CONCORD_ONCE_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aconcord-once_8h_html_a0824a6473f84923cd3a4f7062f3d9ef5"><div class="ttname"><a href="concord-once_8h.html#a0824a6473f84923cd3a4f7062f3d9ef5">ccord_shutting_down</a></div><div class="ttdeci">int ccord_shutting_down()</div><div class="ttdoc">Whether or not concord is currently shutting down.</div></div>
+<div class="ttc" id="aconcord-once_8h_html_a9a5555031ccfdb102424695dfaca0727"><div class="ttname"><a href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a></div><div class="ttdeci">CCORDcode ccord_global_init()</div><div class="ttdoc">Initialize global shared-resources not API-specific.</div></div>
+<div class="ttc" id="aconcord-once_8h_html_ab214960b95e1af11bbfc98f1b310598a"><div class="ttname"><a href="concord-once_8h.html#ab214960b95e1af11bbfc98f1b310598a">ccord_global_cleanup</a></div><div class="ttdeci">void ccord_global_cleanup()</div><div class="ttdoc">Cleanup global shared-resources.</div></div>
+<div class="ttc" id="aconcord-once_8h_html_ac7068cd104a10c013288d16bbe4871bb"><div class="ttname"><a href="concord-once_8h.html#ac7068cd104a10c013288d16bbe4871bb">ccord_shutdown_async</a></div><div class="ttdeci">void ccord_shutdown_async()</div><div class="ttdoc">Asynchronously shutdown all client(s) from their on-going sessions.</div></div>
+<div class="ttc" id="agroup__ConcordError_html_ga73d04d4ecf8e63dd1ee4ded3045d1d31"><div class="ttname"><a href="group__ConcordError.html#ga73d04d4ecf8e63dd1ee4ded3045d1d31">CCORDcode</a></div><div class="ttdeci">CCORDcode</div><div class="ttdef"><b>Definition:</b> error.h:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="concord-once_8h.html">concord-once.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="concord-once_8h.html">concord-once.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
   </ul>
 </div>

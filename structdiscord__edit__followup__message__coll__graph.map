@@ -1,0 +1,7 @@
+<map id="discord_edit_followup_message" name="discord_edit_followup_message">
+<area shape="rect" id="node1" title=" " alt="" coords="267,95,431,136"/>
+<area shape="rect" id="node2" href="$structdiscord__embeds.html" title=" " alt="" coords="5,5,133,32"/>
+<area shape="rect" id="node3" href="$structdiscord__allowed__mention.html" title=" " alt="" coords="158,5,346,32"/>
+<area shape="rect" id="node4" href="$structdiscord__components.html" title=" " alt="" coords="370,5,526,32"/>
+<area shape="rect" id="node5" href="$structdiscord__attachments.html" title=" " alt="" coords="550,5,709,32"/>
+</map>

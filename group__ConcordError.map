@@ -1,5 +1,0 @@
-<map id="Error handling" name="Error handling">
-<area shape="rect" id="node1" title="Concord error codes and meaning." alt="" coords="5,31,119,56"/>
-<area shape="rect" id="node2" href="$group__CoreError.html" title="These codes are used by the core library and should be used by all modules ." alt="" coords="176,5,305,31"/>
-<area shape="rect" id="node3" href="$group__DiscordError.html" title="Error codes triggered from Discord." alt="" coords="167,55,315,80"/>
-</map>

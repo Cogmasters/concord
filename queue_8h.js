@@ -16,5 +16,5 @@ var queue_8h =
     [ "QUEUE_INSERT_HEAD", "queue_8h.html#ac5270c720e32bb836b37b1db24cbeb56", null ],
     [ "QUEUE_INSERT_TAIL", "queue_8h.html#a9df5142606d137a839e921b992efd002", null ],
     [ "QUEUE_REMOVE", "queue_8h.html#acf360ccb04a4e3d3eaef92ea0ee90caf", null ],
-    [ "QUEUE", "queue_8h.html#a487be649aa6d0b7726b0a259f5218729", null ]
+    [ "QUEUE", "queue_8h.html#acc99bd592a75c94fa19277650252e282", null ]
 ];
