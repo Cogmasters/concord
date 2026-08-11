@@ -16,7 +16,7 @@
  * @brief Create a new guild
  * @note Fires a `Guild Create` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param params request parameters
  * @CCORD_ret_obj{ret,guild}
  * @CCORD_return
@@ -32,7 +32,7 @@ CCORDcode discord_create_guild(struct discord *client,
  *        approximate_member_count and approximate_presence_count for the
  *        guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to retrieve
  * @CCORD_ret_obj{ret,guild}
  * @CCORD_return
@@ -45,7 +45,7 @@ CCORDcode discord_get_guild(struct discord *client,
  * @brief Get the preview for the given guild
  * @note If the user is not in the guild, then the guild must be lurkable
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to get preview from
  * @CCORD_ret_obj{ret,guild_preview}
  * @CCORD_return
@@ -59,7 +59,7 @@ CCORDcode discord_get_guild_preview(struct discord *client,
  * @note Requires the MANAGE_GUILD permission
  * @note Fires a `Guild Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to modify
  * @param params request parameters
  * @CCORD_ret_obj{ret,guild}
@@ -74,7 +74,7 @@ CCORDcode discord_modify_guild(struct discord *client,
  * @brief Delete a guild permanently, user must be owner
  * @note Fires a `Guild Delete` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id id of guild to delete
  * @CCORD_ret{ret}
  * @CCORD_return
@@ -86,7 +86,7 @@ CCORDcode discord_delete_guild(struct discord *client,
 /**
  * @brief Fetch channels from given guild. Does not include threads
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id id of guild to fetch channels from
  * @CCORD_ret_obj{ret,channels}
  * @CCORD_return
@@ -103,7 +103,7 @@ CCORDcode discord_get_guild_channels(struct discord *client,
  *       permission in channels is only possible for guild administrators
  * @note Fires a `Channel Create` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id id of the guild to create a channel at
  * @param params request parameters
  * @CCORD_ret_obj{ret,channel}
@@ -119,7 +119,7 @@ CCORDcode discord_create_guild_channel(
  * @brief Modify guild channel positions
  * @note Requires MANAGE_CHANNELS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to change the positions of the
  *       channels in
  * @param params request parameters
@@ -135,7 +135,7 @@ CCORDcode discord_modify_guild_channel_positions(
 /**
  * @brief Get guild member of a guild from given user id
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the member belongs to
  * @param user_id unique user id of member
  * @CCORD_ret_obj{ret,guild_member}
@@ -149,7 +149,7 @@ CCORDcode discord_get_guild_member(struct discord *client,
 /**
  * @brief Get guild members of a guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the members belongs to
  * @param request parameters
  * @CCORD_ret_obj{ret,guild_members}
@@ -164,7 +164,7 @@ CCORDcode discord_list_guild_members(struct discord *client,
  * @brief Get guild members whose username or nickname starts with a provided
  *        string
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the members belongs to
  * @param request parameters
  * @CCORD_ret_obj{ret,guild_members}
@@ -184,7 +184,7 @@ CCORDcode discord_search_guild_members(
  * @note The bot must be a member of the guild with CREATE_INSTANT_INVITE
  *       permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to add the member to
  * @param user_id the user to be added
  * @param request parameters
@@ -202,7 +202,7 @@ CCORDcode discord_add_guild_member(struct discord *client,
  * @note Fires a `Guild Member Update` event
  * @see discord_disconnect_guild_member()
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the member belongs to
  * @param user_id the user id of member
  * @param request parameters
@@ -220,7 +220,7 @@ CCORDcode discord_modify_guild_member(
  * @brief Modifies the current member in the guild
  * @note Fires a `Guild Member Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild where the member exists
  * @param params request parameters
  * @CCORD_ret_obj{ret,guild_member}
@@ -233,27 +233,10 @@ CCORDcode discord_modify_current_member(
     struct discord_ret_guild_member *ret);
 
 /**
- * @deprecated use discord_modify_current_member() instead
- * @brief Modify the nickname of the current user in a guild
- * @note Fires a `Guild Member Update` event
- *
- * @param client the client created with discord_init()
- * @param guild_id guild the member belongs to
- * @param params request parameters
- * @CCORD_ret_obj{ret,guild_member}
- * @CCORD_return
- */
-CCORDcode discord_modify_current_user_nick(
-    struct discord *client,
-    u64snowflake guild_id,
-    struct discord_modify_current_user_nick *params,
-    struct discord_ret_guild_member *ret);
-
-/**
  * @brief Adds a role to a guild member
  * @note Fires a `Guild Member Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild where the member exists
  * @param user_id the unique id of the user
  * @param role_id the unique id of the role to be added
@@ -274,7 +257,7 @@ CCORDcode discord_add_guild_member_role(
  * @note Requires the MANAGE_ROLES permission
  * @note Fires a `Guild Member Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild where the member exists
  * @param user_id the unique id of the user
  * @param role_id the unique id of the role to be removed
@@ -295,7 +278,7 @@ CCORDcode discord_remove_guild_member_role(
  * @note Requires the KICK_MEMBERS permission
  * @note Fires a `Guild Member Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to remove the member from
  * @param user_id the user to be removed
  * @param params request parameters
@@ -313,7 +296,7 @@ CCORDcode discord_remove_guild_member(
  * @brief Fetch banned users for given guild
  * @note Requires the BAN_MEMBERS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to get the list from
  * @CCORD_ret_obj{ret,bans}
  * @CCORD_return
@@ -326,7 +309,7 @@ CCORDcode discord_get_guild_bans(struct discord *client,
  * @brief Fetch banned user from given guild
  * @note Requires the BAN_MEMBERS permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the guild to return the ban from
  * @param user_id the user that is banned
  * @CCORD_ret_obj{ret,ban}
@@ -342,7 +325,7 @@ CCORDcode discord_get_guild_ban(struct discord *client,
  * @note Requires the BAN_MEMBERS permission
  * @note Fires a `Guild Ban Add` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the user belongs to
  * @param user_id the user to be banned
  * @param params request parameters
@@ -360,7 +343,7 @@ CCORDcode discord_create_guild_ban(struct discord *client,
  * @note Requires the BAN_MEMBERS permission
  * @note Fires a `Guild Ban Remove` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild the user belonged to
  * @param user_id the user to have its ban revoked
  * @param params request parameters
@@ -376,7 +359,7 @@ CCORDcode discord_remove_guild_ban(struct discord *client,
 /**
  * @brief Get guild roles
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to get roles from
  * @CCORD_ret_obj{ret,roles}
  * @CCORD_return
@@ -390,7 +373,7 @@ CCORDcode discord_get_guild_roles(struct discord *client,
  * @note Requires MANAGE_ROLES permission
  * @note Fires a `Guild Role Create` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id guild to add a role to
  * @param params request parameters
  * @CCORD_ret_obj{ret,role}
@@ -408,7 +391,7 @@ CCORDcode discord_create_guild_role(struct discord *client,
  * @note By default will not remove users with roles. You can include specific
  *      roles in your prune by providing the `params.include_roles` value
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to be checked
  * @param params request parameters
  * @CCORD_ret_obj{ret,prune_count}
@@ -427,7 +410,7 @@ CCORDcode discord_get_guild_prune_count(
  * @note Requires the KICK_MEMBERS permission
  * @note Fires multiple `Guild Member Remove` events
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to start the prune
  * @param params request parameters
  * @CCORD_ret{ret}
@@ -442,7 +425,7 @@ CCORDcode discord_begin_guild_prune(struct discord *client,
  * @brief Get voice regions (includes VIP servers when the guild is
  *      VIP-enabled)
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get voice regions from
  * @CCORD_ret_obj{ret,voice_regions}
  * @CCORD_return
@@ -456,7 +439,7 @@ CCORDcode discord_get_guild_voice_regions(
  * @brief Get guild invites
  * @note requires the `MANAGE_GUILD` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get invites from
  * @CCORD_ret_obj{ret,invites}
  * @CCORD_return
@@ -469,7 +452,7 @@ CCORDcode discord_get_guild_invites(struct discord *client,
  * @brief Get guild integrations
  * @note requires the `MANAGE_GUILD` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get integrations from
  * @CCORD_ret_obj{ret,integrations}
  * @CCORD_return
@@ -484,7 +467,7 @@ CCORDcode discord_get_guild_integrations(struct discord *client,
  * @note Requires the MANAGE_GUILD permission
  * @note Fires a `Guild Integrations Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to delete the integrations from
  * @param integration_id the id of the integration to delete
  * @param params request parameters
@@ -502,7 +485,7 @@ CCORDcode discord_delete_guild_integrations(
  * @brief Get a guild widget settings
  * @note requires the `MANAGE_GUILD` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get widget settings from
  * @CCORD_ret_obj{ret,guild_widget_settings}
  * @CCORD_return
@@ -516,7 +499,7 @@ CCORDcode discord_get_guild_widget_settings(
  * @brief Modify a guild widget settings
  * @note requires the `MANAGE_GUILD` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to modify the widget settings
  *      from
  * @param param request parameters
@@ -532,7 +515,7 @@ CCORDcode discord_modify_guild_widget(
 /**
  * @brief Get the widget for the guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get the widget from
  * @CCORD_ret_obj{ret,guild_widget}
  * @CCORD_return
@@ -544,7 +527,7 @@ CCORDcode discord_get_guild_widget(struct discord *client,
 /**
  * @brief Get invite from a given guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get vanity url from
  * @CCORD_ret_obj{ret,invite}
  * @CCORD_return
@@ -558,7 +541,7 @@ CCORDcode discord_get_guild_vanity_url(struct discord *client,
 /**
  * @brief Get a PNG image widget for the guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get a PNG widget image from
  * @param params request parameters
  * @CCORD_ret_obj{ret,png}
@@ -574,7 +557,7 @@ CCORDcode discord_get_guild_widget_image(
 /**
  * @brief Get the Welcome Screen for the guild
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get welcome screen of
  * @CCORD_ret_obj{ret,welcome_screen}
  * @CCORD_return
@@ -588,7 +571,7 @@ CCORDcode discord_get_guild_welcome_screen(
  * @brief Modify the Welcome Screen for the guild
  * @note requires the `MANAGE_GUILD` permission
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to modify welcome screen of
  * @param params request parameters
  * @CCORD_ret_obj{ret,welcome_screen}
@@ -605,7 +588,7 @@ CCORDcode discord_modify_guild_welcome_screen(
  * @see Caveats
  * https://discord.com/developers/docs/resources/guild#modify-current-user-voice-state-caveats
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to modify the current user's
  *      voice state
  * @param params request parameters
@@ -623,7 +606,7 @@ CCORDcode discord_modify_current_user_voice_state(
  * @see Caveats
  * https://discord.com/developers/docs/resources/guild#modify-user-voice-state-caveats
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to modify the user's voice state
  * @param user_id the unique id of user to have its voice state modified
  * @param params request parameters
@@ -642,7 +625,7 @@ CCORDcode discord_modify_user_voice_state(
  * @note Requires the MANAGE_ROLES permission
  * @note Fires multiple `Guild Role Update` events
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild to get welcome screen of
  * @param params request parameters
  * @CCORD_ret_obj{ret,roles}
@@ -659,7 +642,7 @@ CCORDcode discord_modify_guild_role_positions(
  * @note Requires the MANAGE_ROLES permission
  * @note Fires a `Guild Role Update` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to modify
  * @param params request parameters
@@ -677,7 +660,7 @@ CCORDcode discord_modify_guild_role(struct discord *client,
  * @note Requires the MANAGE_ROLES permission
  * @note Fires a `Guild Role Delete` event
  *
- * @param client the client created with discord_init()
+ * @param client the client created with discord_from_token()
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to delete
  * @param params request parameters

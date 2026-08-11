@@ -4,21 +4,19 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 void
 print_usage(void)
 {
     printf("\n\nThis bot demonstrates how to embeds"
-           " with three different methods.\n"
+           " with two different methods.\n"
            "1 - Dynamic-approach (type !dynamic): Load the embed from "
            "a JSON string.\n"
            "2 - Static-approach (type !static): A  clean  initialization "
            "approach "
            "using the combination of designated initialization and compound "
            "literals.\n"
-           "3 - Builder-approach (type !builder): A dynamic and flexible "
-           "approach that relies on embed builder functions.\n"
            "\nTYPE ANY KEY TO START BOT\n");
 }
 
@@ -62,8 +60,9 @@ char JSON[] = "{\n"
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Embed-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Embed-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 }
 
 void
@@ -148,47 +147,6 @@ on_static(struct discord *client, const struct discord_message *event)
     discord_create_message(client, event->channel_id, &params, NULL);
 }
 
-void
-on_builder(struct discord *client, const struct discord_message *event)
-{
-    if (event->author->bot) return;
-
-    struct discord_embed embed = {
-        .color = 0x3498DB,
-        .timestamp = discord_timestamp(client),
-    };
-
-    discord_embed_set_title(&embed, "Concord");
-    discord_embed_set_description(&embed, "Discord API library");
-    discord_embed_set_url(&embed, "https://github.com/Cogmasters/concord");
-
-    discord_embed_set_footer(&embed, "github.com/Cogmasters/concord", ICON_URL,
-                             NULL);
-    discord_embed_set_image(&embed, IMAGE_URL, NULL, 0, 0);
-    discord_embed_set_author(&embed, "Cogmasters",
-                             "https://github.com/Cogmasters", NULL, NULL);
-    discord_embed_add_field(
-        &embed, "Want to learn more?",
-        "Read our "
-        "[documentation](https://cogmasters.github.io/concord/)!",
-        false);
-    discord_embed_add_field(
-        &embed, "Looking for support?",
-        "Join our server [here](https://discord.gg/x4hhGQYu)!", false);
-
-    struct discord_create_message params = {
-        .embeds =
-            &(struct discord_embeds){
-                .size = 1,
-                .array = &embed,
-            },
-    };
-    discord_create_message(client, event->channel_id, &params, NULL);
-
-    /* must cleanup 'embed' afterwards */
-    discord_embed_cleanup(&embed);
-}
-
 int
 main(int argc, char *argv[])
 {
@@ -198,8 +156,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     discord_set_on_ready(client, &on_ready);
@@ -207,7 +164,6 @@ main(int argc, char *argv[])
     discord_set_prefix(client, "!");
     discord_set_on_command(client, "dynamic", &on_dynamic);
     discord_set_on_command(client, "static", &on_static);
-    discord_set_on_command(client, "builder", &on_builder);
 
     print_usage();
     fgetc(stdin); // wait for input
@@ -215,5 +171,4 @@ main(int argc, char *argv[])
     discord_run(client);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

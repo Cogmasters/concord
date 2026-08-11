@@ -26,14 +26,26 @@ cmp_timers(const void *a, const void *b)
     return l > r ? 1 : -1;
 }
 
-void
+CCORDcode
 discord_timers_init(struct discord_timers *timers, struct io_poller *io)
 {
-    timers->q = priority_queue_create(
-        sizeof(int64_t), sizeof(struct discord_timer), cmp_timers, 0);
+    if (!(timers->q = priority_queue_create(
+              sizeof(int64_t), sizeof(struct discord_timer), cmp_timers, 0)))
+    {
+        logmod_log(ERROR, NULL, "Couldn't initialize timers priority queue");
+        return CCORD_INTERNAL_ERROR;
+    }
     timers->io = io;
-    pthread_mutex_init(&timers->lock, NULL);
-    pthread_cond_init(&timers->cond, NULL);
+    if (pthread_mutex_init(&timers->lock, NULL)) {
+        logmod_log(ERROR, NULL, "Couldn't initialize timers mutex");
+        return CCORD_ERRNO;
+    }
+    if (pthread_cond_init(&timers->cond, NULL)) {
+        logmod_log(ERROR, NULL,
+                   "Couldn't initialize timers condition variable");
+        return CCORD_ERRNO;
+    }
+    return CCORD_OK;
 }
 
 static void
@@ -50,11 +62,21 @@ discord_timers_cancel_all(struct discord *client,
 void
 discord_timers_cleanup(struct discord *client, struct discord_timers *timers)
 {
-    priority_queue_set_max_capacity(timers->q, 0);
-    discord_timers_cancel_all(client, timers);
-    pthread_cond_destroy(&timers->cond);
-    pthread_mutex_destroy(&timers->lock);
-    priority_queue_destroy(timers->q);
+    if (timers->q) {
+        priority_queue_set_max_capacity(timers->q, 0);
+        discord_timers_cancel_all(client, timers);
+        priority_queue_destroy(timers->q);
+    }
+    if (memcmp(&timers->cond, &(pthread_cond_t){ 0 }, sizeof(pthread_cond_t))
+        != 0)
+    {
+        pthread_cond_destroy(&timers->cond);
+    }
+    if (memcmp(&timers->lock, &(pthread_mutex_t){ 0 }, sizeof(pthread_mutex_t))
+        != 0)
+    {
+        pthread_mutex_destroy(&timers->lock);
+    }
     memset(timers, 0, sizeof *timers);
 }
 

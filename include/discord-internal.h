@@ -20,8 +20,9 @@ extern "C" {
 #define JSMN_HEADER
 #include "jsmn.h"
 #include "jsmn-find.h"
+#define LOGMOD_HEADER
+#include "logmod.h"
 
-#include "logconf.h"
 #include "user-agent.h"
 #include "websockets.h"
 #include "cog-utils.h"
@@ -40,16 +41,13 @@ extern "C" {
  * @param[in] path the path to the field from the container POV
  */
 #define CONTAINEROF(ptr, type, path)                                          \
-    ((type *)((char *)(ptr)-offsetof(type, path)))
+    ((type *)((char *)(ptr) - offsetof(type, path)))
 
 /** @defgroup DiscordInternal Internal implementation details
  * @brief Documentation useful when developing or debugging Concord itself
  *  @{ */
 
-/** @brief dup shutdown fd to listen for ccord_shutdown_async() */
-int discord_dup_shutdown_fd(void);
-
-/** @brief Get client from its nested field */
+/** @brief cet client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
 /**
@@ -64,20 +62,32 @@ int discord_dup_shutdown_fd(void);
 #define CCORD_EXPECT(client, expect, code, reason)                            \
     do {                                                                      \
         if (!(expect)) {                                                      \
-            logconf_error(&(client)->conf, "Expected: " #expect ": " reason); \
+            logmod_log(ERROR, (client)->logger,                               \
+                       "Expected: " #expect " | %s (%s)",                     \
+                       discord_strerror(code, client),                        \
+                       discord_code_as_string(code));                         \
             return code;                                                      \
         }                                                                     \
     } while (0)
 
 /**
- * @brief Shortcut for checking OOB-write attempts
- * @note unsigned values are expected
+ * @brief log and return `code` if function call doesn't returns @ref CCORD_OK
  *
- * @param[in] nbytes amount of bytes to be written
- * @param[in] destsz size of dest in bytes
+ * @param[in] client the Discord client
+ * @param[in] fn the function call that returns CCORDcode
+ * @return the returned @ref CCORDcode `code` parameter
  */
-#define ASSERT_NOT_OOB(nbytes, destsz)                                        \
-    ASSERT_S((size_t)nbytes < (size_t)destsz, "Out of bounds write attempt");
+#define CCORD_EXPECT_OK(client, fn)                                           \
+    do {                                                                      \
+        const CCORDcode code = (fn);                                          \
+        if (code != CCORD_OK) {                                               \
+            logmod_log(ERROR, (client)->logger,                               \
+                       "Expected: CCORD_OK == " #fn " | %s (%s)",             \
+                       discord_strerror(code, client),                        \
+                       discord_code_as_string(code));                         \
+            return code;                                                      \
+        }                                                                     \
+    } while (0)
 
 /** URL endpoint threshold length */
 #define DISCORD_ENDPT_LEN 512
@@ -105,8 +115,10 @@ struct discord_timers {
  * @brief Prepare timers for usage
  *
  * @param timers the 'struct discord_timers' to init
+ * @CCORD_return
  */
-void discord_timers_init(struct discord_timers *timers, struct io_poller *io);
+CCORDcode discord_timers_init(struct discord_timers *timers,
+                              struct io_poller *io);
 
 /**
  * @brief Cleanup timers and call cancel any running ones
@@ -206,7 +218,7 @@ unsigned discord_internal_timer(struct discord *client,
  */
 struct discord_ratelimiter {
     /** `DISCORD_RATELIMIT` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** amount of bucket's routes discovered */
     int length;
     /** route's cap before increase */
@@ -238,10 +250,9 @@ struct discord_ratelimiter {
  *
  * A hashtable shall be used for storage and retrieval of discovered buckets
  * @param rl the ratelimiter handle to be initialized
- * @param conf pointer to @ref discord_rest logging module
+ * @CCORD_return
  */
-void discord_ratelimiter_init(struct discord_ratelimiter *rl,
-                              struct logconf *conf);
+CCORDcode discord_ratelimiter_init(struct discord_ratelimiter *rl);
 
 /**
  * @brief Cleanup all buckets that have been discovered
@@ -448,8 +459,8 @@ struct discord_request {
 
     /** the request's bucket */
     struct discord_bucket *b;
-    /** request body handle @note buffer is kept and reused */
-    struct ccord_szbuf_reusable body;
+    /** request body handle */
+    struct ccord_szbuf body;
     /** the request's http method */
     enum http_method method;
     /** the request's endpoint */
@@ -460,6 +471,8 @@ struct discord_request {
     struct ua_conn *conn;
     /** request's status code */
     CCORDcode code;
+    /** response payload */
+    struct ccord_szbuf_readonly json;
     /** current retry attempt (stop at rest->retry_limit) */
     int retry_attempt;
     /** synchronize synchronous requests */
@@ -471,7 +484,7 @@ struct discord_request {
 /** @brief The handle used for handling asynchronous requests */
 struct discord_requestor {
     /** `DISCORD_REQUEST` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
     /** curl_multi handle for performing asynchronous requests */
@@ -493,7 +506,7 @@ struct discord_requestor {
          *      their callbacks to be called from the main thread
          */
         QUEUE(struct discord_request) finished;
-    } * queues;
+    } *queues;
 
     /** queue locks */
     struct {
@@ -503,7 +516,7 @@ struct discord_requestor {
         pthread_mutex_t pending;
         /** finished queue lock */
         pthread_mutex_t finished;
-    } * qlocks;
+    } *qlocks;
 };
 
 /**
@@ -512,12 +525,11 @@ struct discord_requestor {
  * This shall initialize a `CURLM` multi handle for performing requests
  *      asynchronously, and a queue for storing individual requests
  * @param rqtor the requestor handle to be initialized
- * @param conf pointer to @ref discord_rest logging module
  * @param token the bot token
+ * @CCORD_return
  */
-void discord_requestor_init(struct discord_requestor *rqtor,
-                            struct logconf *conf,
-                            const char token[]);
+CCORDcode discord_requestor_init(struct discord_requestor *rqtor,
+                                 const char token[]);
 
 /**
  * @brief Free the request handler
@@ -572,11 +584,11 @@ void discord_request_cancel(struct discord_requestor *rqtor,
  * @CCORD_return
  */
 CCORDcode discord_request_begin(struct discord_requestor *rqtor,
-                                struct discord_attributes *req,
-                                struct ccord_szbuf *body,
-                                enum http_method method,
-                                char endpoint[DISCORD_ENDPT_LEN],
-                                char key[DISCORD_ROUTE_LEN]);
+                                const struct discord_attributes *req,
+                                const struct ccord_szbuf *body,
+                                const enum http_method method,
+                                const char endpoint[DISCORD_ENDPT_LEN],
+                                const char key[DISCORD_ROUTE_LEN]);
 
 /** @} DiscordInternalRESTRequest */
 
@@ -588,7 +600,7 @@ CCORDcode discord_request_begin(struct discord_requestor *rqtor,
  */
 struct discord_rest {
     /** `DISCORD_HTTP` or `DISCORD_WEBHOOK` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** the requests handler */
     struct discord_requestor requestor;
     /** the timer queue for the rest thread */
@@ -604,12 +616,10 @@ struct discord_rest {
  *
  * Structure used for interfacing with the Discord's REST API
  * @param rest the REST handle to be initialized
- * @param conf pointer to @ref discord logging module
  * @param token the bot token
+ * @CCORD_return
  */
-void discord_rest_init(struct discord_rest *rest,
-                       struct logconf *conf,
-                       const char token[]);
+CCORDcode discord_rest_init(struct discord_rest *rest, const char token[]);
 
 /**
  * @brief Free an REST handle
@@ -634,10 +644,10 @@ void discord_rest_cleanup(struct discord_rest *rest);
  *              immediately
  */
 CCORDcode discord_rest_run(struct discord_rest *rest,
-                           struct discord_attributes *req,
-                           struct ccord_szbuf *body,
-                           enum http_method method,
-                           char endpoint_fmt[],
+                           const struct discord_attributes *req,
+                           const struct ccord_szbuf *body,
+                           const enum http_method method,
+                           const char endpoint_fmt[],
                            ...) PRINTF_LIKE(5, 6);
 
 /**
@@ -705,14 +715,10 @@ struct discord_gateway_payload {
         char *start;
         /** the text length */
         size_t size;
-        /** jsmn tokens */
-        jsmntok_t *tokens;
-        /** amount of jsmn tokens */
-        unsigned ntokens;
-        /** jsmn-find key/value pairs */
-        jsmnf_pair *pairs;
-        /** amount of jsmn-find key/value pairs */
-        unsigned npairs;
+        /** jsmn-find lookup table */
+        jsmnf_table *table;
+        /** lookup table size */
+        size_t ntable;
     } json;
 
     /** field 'op' */
@@ -724,7 +730,7 @@ struct discord_gateway_payload {
     /** field 't' enumerator value */
     enum discord_gateway_events event;
     /** field 'd' */
-    jsmnf_pair *data;
+    const jsmnf_pair *data;
 };
 
 /** A generic event callback for casting */
@@ -736,7 +742,7 @@ typedef void (*discord_ev_message)(struct discord *client,
 /** @brief The handle used for interfacing with Discord's Gateway API */
 struct discord_gateway {
     /** `DISCORD_GATEWAY` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** the websockets handle that connects to Discord */
     struct websockets *ws;
     /** curl_multi handle for non-blocking transfer over websockets */
@@ -752,7 +758,7 @@ struct discord_gateway {
         /**
          * boolean that indicates if the last heartbeat was answered
          * @note used to detect zombie connections
-        */
+         */
         bool hbeat_acknowledged;
         /**
          * Gateway's concept of "now"
@@ -785,7 +791,7 @@ struct discord_gateway {
         int ping_ms;
         /** ping rwlock  */
         pthread_rwlock_t rwlock;
-    } * timer;
+    } *timer;
 
     /** the identify structure for client authentication */
     struct discord_identify id;
@@ -811,12 +817,10 @@ struct discord_gateway {
  *
  * Structure used for interfacing with the Discord's Gateway API
  * @param gw the gateway handle to be initialized
- * @param conf pointer to @ref discord logging module
  * @param token the bot token
+ * @CCORD_return
  */
-void discord_gateway_init(struct discord_gateway *gw,
-                          struct logconf *conf,
-                          const char token[]);
+CCORDcode discord_gateway_init(struct discord_gateway *gw, const char token[]);
 
 /**
  * @brief Free a Gateway handle
@@ -942,7 +946,7 @@ void discord_gateway_dispatch(struct discord_gateway *gw);
  */
 struct discord_refcounter {
     /** `DISCORD_REFCOUNT` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
     /** amount of individual user's data held for automatic cleanup */
     int length;
     /** cap before increase */
@@ -961,10 +965,9 @@ struct discord_refcounter {
  *
  * A hashtable shall be used for storage and retrieval of user data
  * @param rc the reference counter handle to be initialized
- * @param conf pointer to @ref discord logging module
+ * @CCORD_return
  */
-void discord_refcounter_init(struct discord_refcounter *rc,
-                             struct logconf *conf);
+CCORDcode discord_refcounter_init(struct discord_refcounter *rc);
 
 /**
  * @brief Add a new internal reference to the reference counter
@@ -1070,7 +1073,7 @@ CCORDcode discord_refcounter_decr(struct discord_refcounter *rc, void *data);
  */
 struct discord_message_commands {
     /** `DISCORD_MESSAGE_COMMANDS` logging module */
-    struct logconf conf;
+    const struct logmod_logger *logger;
     /** the prefix expected for every command */
     struct ccord_szbuf prefix;
     /** fallback message command @see discord_set_on_command() */
@@ -1090,10 +1093,9 @@ struct discord_message_commands {
  * @brief Initialize a Message Commands handle
  *
  * @param cmds the message commands handle to be initialized
- * @param conf pointer to @ref discord logging module
+ * @CCORD_return
  */
-void discord_message_commands_init(struct discord_message_commands *cmds,
-                                   struct logconf *conf);
+CCORDcode discord_message_commands_init(struct discord_message_commands *cmds);
 
 /**
  * @brief Free a Message Commands handle
@@ -1190,11 +1192,17 @@ struct discord_cache {
  */
 struct discord {
     /** `DISCORD` logging module */
-    struct logconf conf;
+    struct logmod_logger *logger;
+    /** LogMod loggers table */
+    struct logmod_logger table[64];
+    /** LogMod handler */
+    struct logmod logmod;
+    /** the configuration handler */
+    struct discord_config config;
+    /** the id of the process where this modules was created */
+    unsigned pid;
     /** whether this is the original client or a clone */
     bool is_original;
-    /** the bot token */
-    char *token;
     /** the io poller for listening to file descriptors */
     struct io_poller *io_poller;
 
@@ -1212,21 +1220,13 @@ struct discord {
     /** the handle for registering and retrieving Discord data */
     struct discord_cache cache;
 
-    /** fd that gets triggered when ccord_shutdown_async is called */
+    /** fd that gets triggered when discord_shutdown_all() is called */
     int shutdown_fd;
 
     struct {
         struct discord_timers internal;
         struct discord_timers user;
     } timers;
-
-    /** wakeup timer handle */
-    struct {
-        /** callback to be triggered on timer's timeout */
-        void (*cb)(struct discord *client);
-        /** the id of the wake timer */
-        unsigned id;
-    } wakeup_timer;
 
     /** triggers when idle */
     void (*on_idle)(struct discord *client);
@@ -1244,12 +1244,11 @@ struct discord {
         pthread_mutex_t lock;
         /** notify of `count` decrement */
         pthread_cond_t cond;
-    } * workers;
+    } *workers;
 
-#ifdef CCORD_VOICE
-    struct discord_voice *vcs;
-    struct discord_voice_evcallbacks voice_cbs;
-#endif /* CCORD_VOICE */
+    /** config.json file contents if client was initialized with
+     *      discord_from_json() */
+    struct ccord_szbuf file;
 };
 
 /** @} DiscordInternal */

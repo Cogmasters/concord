@@ -6,7 +6,7 @@
 #include <inttypes.h> /* SCNu64, PRIu64 */
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 u64snowflake g_app_id;
 
@@ -24,8 +24,9 @@ print_usage(void)
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL,
+               "Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
+               event->user->username, event->user->discriminator);
 
     g_app_id = event->application->id;
 }
@@ -158,8 +159,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Could not initialize client");
 
     discord_set_on_command(client, "!slash_create", &on_slash_command_create);
@@ -172,5 +172,4 @@ main(int argc, char *argv[])
     discord_run(client);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

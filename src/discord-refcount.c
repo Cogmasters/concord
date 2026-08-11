@@ -92,24 +92,36 @@ _discord_refvalue_delete(struct discord_refcounter *rc, void *data)
     chash_delete(rc, (intptr_t)data, REFCOUNTER_TABLE);
 }
 
-void
-discord_refcounter_init(struct discord_refcounter *rc, struct logconf *conf)
+CCORDcode
+discord_refcounter_init(struct discord_refcounter *rc)
 {
-    logconf_branch(&rc->conf, conf, "DISCORD_REFCOUNT");
+    struct discord *client = CLIENT(rc, refcounter);
 
+    if (!(rc->logger = logmod_get_logger(&client->logmod, "REFCOUNT"))) {
+        logmod_log(FATAL, NULL, "Couldn't create logger for refcounter");
+        return discord_refcounter_cleanup(rc), CCORD_INTERNAL_ERROR;
+    }
     __chash_init(rc, REFCOUNTER_TABLE);
-
-    rc->g_lock = malloc(sizeof *rc->g_lock);
-    ASSERT_S(!pthread_mutex_init(rc->g_lock, NULL),
-             "Couldn't initialize refcounter mutex");
+    if (!(rc->g_lock = malloc(sizeof *rc->g_lock))) {
+        logmod_log(FATAL, rc->logger,
+                   "Couldn't allocate memory for refcounter mutex");
+        return discord_refcounter_cleanup(rc), CCORD_OUT_OF_MEMORY;
+    }
+    if (pthread_mutex_init(rc->g_lock, NULL)) {
+        logmod_log(FATAL, rc->logger, "Couldn't initialize refcounter mutex");
+        return discord_refcounter_cleanup(rc), CCORD_ERRNO;
+    }
+    return CCORD_OK;
 }
 
 void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
     __chash_free(rc, REFCOUNTER_TABLE);
-    pthread_mutex_destroy(rc->g_lock);
-    free(rc->g_lock);
+    if (rc->g_lock) {
+        pthread_mutex_destroy(rc->g_lock);
+        free(rc->g_lock);
+    }
 }
 
 static bool
@@ -127,13 +139,13 @@ _discord_refcounter_incr_no_lock(struct discord_refcounter *rc, void *data)
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (value->visits == INT_MAX) {
-            logconf_error(&rc->conf,
-                          "Can't increment %p any further: Overflow", data);
+            logmod_log(ERROR, rc->logger,
+                       "Can't increment %p any further: Overflow", data);
         }
         else {
             ++value->visits;
-            logconf_trace(&rc->conf, "Increment %p (%d visits)", data,
-                          value->visits);
+            logmod_log(TRACE, rc->logger, "Increment %p (%d visits)", data,
+                       value->visits);
             code = CCORD_OK;
         }
     }
@@ -148,26 +160,27 @@ _discord_refcounter_decr_no_lock(struct discord_refcounter *rc, void *data)
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (value->visits < value->claims) {
-            logconf_error(&rc->conf,
-                          "(Internal Error) There shouldn't be more visits "
-                          "than claims!");
+            logmod_log(ERROR, rc->logger,
+                       "(Internal Error) There shouldn't be more visits "
+                       "than claims!");
         }
         else if (--value->visits > 0) {
             code = CCORD_OK;
-            logconf_trace(&rc->conf, "Decrement %p (%d visits)", data,
-                          value->visits);
+            logmod_log(TRACE, rc->logger, "Decrement %p (%d visits)", data,
+                       value->visits);
         }
         else {
             if (value->claims != 0) {
-                logconf_error(&rc->conf, "(Internal Error) Caught attempt to "
-                                         "cleanup claimed resource!");
+                logmod_log(ERROR, rc->logger,
+                           "(Internal Error) Caught attempt to "
+                           "cleanup claimed resource!");
                 ++value->visits;
                 code = CCORD_RESOURCE_OWNERSHIP;
             }
             else {
                 _discord_refvalue_delete(rc, data);
-                logconf_info(&rc->conf, "Fully decremented and free'd %p",
-                             data);
+                logmod_log(INFO, rc->logger, "Fully decremented and free'd %p",
+                           data);
                 code = CCORD_OK;
             }
         }
@@ -186,8 +199,8 @@ discord_refcounter_claim(struct discord_refcounter *rc, const void *data)
 
         ++value->claims;
         code = _discord_refcounter_incr_no_lock(rc, (void *)data);
-        logconf_trace(&rc->conf, "Claiming %p (claims: %d)", data,
-                      value->claims);
+        logmod_log(TRACE, rc->logger, "Claiming %p (claims: %d)", data,
+                   value->claims);
     }
     pthread_mutex_unlock(rc->g_lock);
     return code;
@@ -203,13 +216,14 @@ discord_refcounter_unclaim(struct discord_refcounter *rc, void *data)
         struct _discord_refvalue *value = _discord_refvalue_find(rc, data);
 
         if (0 == value->claims) {
-            logconf_error(&rc->conf, "Resource hasn't been claimed before, or "
-                                     "it has already been unclaimed");
+            logmod_log(ERROR, rc->logger,
+                       "Resource hasn't been claimed before, or "
+                       "it has already been unclaimed");
         }
         else {
             --value->claims;
-            logconf_trace(&rc->conf, "Unclaiming %p (claims: %d)", data,
-                          value->claims);
+            logmod_log(TRACE, rc->logger, "Unclaiming %p (claims: %d)", data,
+                       value->claims);
             code = _discord_refcounter_decr_no_lock(rc, data);
         }
     }
@@ -231,7 +245,8 @@ discord_refcounter_add_internal(struct discord_refcounter *rc,
                                .cleanup.internal = cleanup,
                                .should_free = should_free,
                            });
-    logconf_info(&rc->conf, "Adding concord's internal resource %p", data);
+    logmod_log(INFO, rc->logger, "Adding concord's internal resource %p",
+               data);
     pthread_mutex_unlock(rc->g_lock);
 }
 
@@ -249,7 +264,7 @@ discord_refcounter_add_client(struct discord_refcounter *rc,
                                .cleanup.client = cleanup,
                                .should_free = should_free,
                            });
-    logconf_info(&rc->conf, "Adding user's custom resource %p", data);
+    logmod_log(INFO, rc->logger, "Adding user's custom resource %p", data);
     pthread_mutex_unlock(rc->g_lock);
 }
 

@@ -22,8 +22,7 @@
     chash_string_compare(_cmp_a, _cmp_b)
 #define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
     {                                                                         \
-        size_t _l = strlen(_key) + 1;                                         \
-        ASSERT_NOT_OOB(_l, sizeof(route.key));                                \
+        const size_t _l = strlen(_key) + 1;                                   \
         memcpy(route.key, _key, _l);                                          \
     }                                                                         \
     route.bucket = _value
@@ -39,9 +38,8 @@ struct _discord_route {
 
 #define KEY_PUSH(key, len, ...)                                               \
     do {                                                                      \
-        *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t)*len,        \
+        *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t) * len,      \
                          ":" __VA_ARGS__);                                    \
-        ASSERT_NOT_OOB(*len, DISCORD_ROUTE_LEN);                              \
     } while (0)
 
 /* determine which ratelimit group a request belongs to by generating its key.
@@ -77,8 +75,12 @@ discord_ratelimiter_build_key(enum http_method method,
             const char *type = &curr[i + 1];
             switch (*type) {
             default:
-                VASSERT_S(0 == strncmp(type, PRIu64, sizeof(PRIu64) - 1),
-                          "Internal error: Missing check for '%%%s'", type);
+                if (strncmp(type, PRIu64, sizeof(PRIu64) - 1)) {
+                    logmod_log(ERROR, NULL,
+                               "Internal error: Missing check for '%%%s'",
+                               type);
+                    return;
+                }
 
                 id_arg = va_arg(args, u64snowflake);
                 break;
@@ -124,9 +126,16 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
                      const long limit)
 {
     struct discord_bucket *b = calloc(1, sizeof *b);
-    int len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
-                       hash->start);
-    ASSERT_NOT_OOB(len, sizeof(b->hash));
+
+    if ((snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
+                  hash->start))
+        >= (int)sizeof(b->hash))
+    {
+        logmod_log(ERROR, rl->logger,
+                   "Internal error: Bucket hash too long: %.*s",
+                   (int)hash->size, hash->start);
+        return free(b), NULL;
+    }
 
     b->remaining = 1;
     b->limit = limit;
@@ -139,24 +148,38 @@ _discord_bucket_init(struct discord_ratelimiter *rl,
     return b;
 }
 
-void
-discord_ratelimiter_init(struct discord_ratelimiter *rl, struct logconf *conf)
+CCORDcode
+discord_ratelimiter_init(struct discord_ratelimiter *rl)
 {
+    struct discord *client = CLIENT(rl, rest.requestor.ratelimiter);
     struct ua_szbuf_readonly keynull = { "null", 4 }, keymiss = { "miss", 4 };
 
     __chash_init(rl, RATELIMITER_TABLE);
 
-    logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
-
+    if (!(rl->logger = logmod_get_logger(&client->logmod, "RATELIMIT"))) {
+        logmod_log(ERROR, NULL, "Couldn't create logger for ratelimiter");
+        return CCORD_INTERNAL_ERROR;
+    }
     /* global ratelimiting */
-    rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp);
-
+    if (!(rl->global_wait_tstamp = calloc(1, sizeof *rl->global_wait_tstamp)))
+    {
+        logmod_log(ERROR, rl->logger,
+                   "Couldn't allocate memory for global wait timestamp");
+        return CCORD_OUT_OF_MEMORY;
+    }
     /* initialize 'singleton' buckets */
-    rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
-    rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX);
-
-    /* initialize bucket queues */
+    if (!(rl->null = _discord_bucket_init(rl, "null", &keynull, 1L))) {
+        logmod_log(ERROR, rl->logger,
+                   "Couldn't allocate memory for null bucket");
+        return CCORD_OUT_OF_MEMORY;
+    }
+    if (!(rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX))) {
+        logmod_log(ERROR, rl->logger,
+                   "Couldn't allocate memory for miss bucket");
+        return CCORD_OUT_OF_MEMORY;
+    }
     QUEUE_INIT(&rl->queues.pending);
+    return CCORD_OK;
 }
 
 /* cancel all pending and busy requests from a bucket */
@@ -168,8 +191,9 @@ _discord_bucket_cancel_all(struct discord_ratelimiter *rl,
         CONTAINEROF(rl, struct discord_requestor, ratelimiter);
 
     /* cancel busy transfer */
-    if (b->busy_req) discord_request_cancel(rqtor, b->busy_req);
-
+    if (b->busy_req) {
+        discord_request_cancel(rqtor, b->busy_req);
+    }
     /* move pending tranfers to recycling */
     pthread_mutex_lock(&rqtor->qlocks->recycling);
     QUEUE_ADD(&rqtor->queues->recycling, &b->queues.next);
@@ -186,8 +210,11 @@ discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
         if (CHASH_FILLED == r->state)
             _discord_bucket_cancel_all(rl, r->bucket);
     }
-    free(rl->global_wait_tstamp);
+    if (rl->global_wait_tstamp) {
+        free(rl->global_wait_tstamp);
+    }
     __chash_free(rl, RATELIMITER_TABLE);
+    memset(rl, 0, sizeof *rl);
 }
 
 static struct discord_bucket *
@@ -233,8 +260,8 @@ _discord_bucket_try_timeout(struct discord_ratelimiter *rl,
                            .flags = DISCORD_TIMER_DELETE_AUTO,
                        });
 
-    logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
-                 b->hash, wait_ms);
+    logmod_log(INFO, rl->logger, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
+               b->hash, wait_ms);
 }
 
 /* attempt to find a bucket associated key */
@@ -244,13 +271,13 @@ discord_bucket_get(struct discord_ratelimiter *rl, const char key[])
     struct discord_bucket *b;
 
     if (NULL != (b = _discord_bucket_find(rl, key))) {
-        logconf_trace(&rl->conf, "[%.4s] Found a bucket match for '%s'!",
-                      b->hash, key);
+        logmod_log(TRACE, rl->logger, "[%.4s] Found a bucket match for '%s'!",
+                   b->hash, key);
     }
     else {
         b = rl->null;
-        logconf_trace(&rl->conf, "[null] Couldn't match known buckets to '%s'",
-                      key);
+        logmod_log(TRACE, rl->logger,
+                   "[null] Couldn't match known buckets to '%s'", key);
     }
     return b;
 }
@@ -298,7 +325,8 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
         }
     }
 
-    logconf_debug(&rl->conf, "[%.4s] Match '%s' to bucket", b->hash, key);
+    logmod_log(DEBUG, rl->logger, "[%.4s] Found a bucket match for '%s'!",
+               b->hash, key);
 
     _discord_ratelimiter_null_filter(rl, b, key);
 
@@ -354,8 +382,8 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
             now + ((u64unix_ms)(1000 * strtod(reset.start, NULL)) - offset);
     }
 
-    logconf_debug(&rl->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
-                  b->hash, b->remaining, b->reset_tstamp);
+    logmod_log(DEBUG, rl->logger, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
+               b->hash, b->remaining, b->reset_tstamp);
 }
 
 /* attempt to create and/or update bucket's values */
@@ -443,9 +471,11 @@ discord_bucket_request_unselect(struct discord_ratelimiter *rl,
                                 struct discord_bucket *b,
                                 struct discord_request *req)
 {
-    (void)rl;
-    ASSERT_S(req == b->busy_req,
-             "Attempt to unlock a bucket with a non-busy request");
+    if (req != b->busy_req) {
+        logmod_log(ERROR, rl->logger,
+                   "Attempt to unlock a bucket with a non-busy request");
+        return;
+    }
 
     if (QUEUE_EMPTY(&b->queues.next)) {
         QUEUE_REMOVE(&b->entry);

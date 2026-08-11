@@ -5,7 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-#define GATEWAY_CB(EV) client->gw.cbs[1][EV]
+#define GATEWAY_CB(EV)    client->gw.cbs[1][EV]
 #define ASSIGN_CB(EV, CB) GATEWAY_CB(EV) = (discord_ev_event)CB
 
 void
@@ -25,8 +25,13 @@ void
 discord_request_guild_members(struct discord *client,
                               struct discord_request_guild_members *request)
 {
-    ASSERT_S(GATEWAY_CB(DISCORD_EV_GUILD_MEMBERS_CHUNK) != NULL,
-             "Missing callback for discord_set_on_guild_members_chunk()");
+
+    if (!GATEWAY_CB(DISCORD_EV_GUILD_MEMBERS_CHUNK)) {
+        logmod_log(
+            ERROR, client->logger,
+            "Missing callback for discord_set_on_guild_members_chunk()");
+        return;
+    }
     discord_gateway_send_request_guild_members(&client->gw, request);
 }
 
@@ -44,19 +49,12 @@ discord_update_presence(struct discord *client,
     discord_gateway_send_presence_update(&client->gw, presence);
 }
 
-/* deprecated, use discord_update_presence() instead */
-void
-discord_set_presence(struct discord *client,
-                     struct discord_presence_update *presence)
-{
-    discord_update_presence(client, presence);
-}
-
 void
 discord_add_intents(struct discord *client, uint64_t code)
 {
+    const struct logmod_logger *logger = client->logger;
     if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
-        logconf_error(&client->conf, "Can't set intents to a running client.");
+        logmod_log(ERROR, logger, "Can't set intents to a running client.");
         return;
     }
 
@@ -66,9 +64,10 @@ discord_add_intents(struct discord *client, uint64_t code)
 void
 discord_remove_intents(struct discord *client, uint64_t code)
 {
+    const struct logmod_logger *logger = client->logger;
     if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
-        logconf_error(&client->conf,
-                      "Can't remove intents from a running client.");
+        logmod_log(ERROR, logger,
+                   "Can't remove intents from a running client.");
         return;
     }
 
@@ -92,7 +91,7 @@ discord_set_event_scheduler(struct discord *client, discord_ev_scheduler cb)
 
 void
 discord_set_on_command(struct discord *client,
-                       char command[],
+                       const char command[],
                        void (*cb)(struct discord *client,
                                   const struct discord_message *event))
 {
@@ -106,7 +105,7 @@ discord_set_on_command(struct discord *client,
 
 void
 discord_set_on_commands(struct discord *client,
-                        char *const commands[],
+                        const char *commands[],
                         int amount,
                         void (*cb)(struct discord *client,
                                    const struct discord_message *event))

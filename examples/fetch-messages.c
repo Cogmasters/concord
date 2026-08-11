@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
 
 void
 print_usage(void)
@@ -129,7 +128,8 @@ fetch_member_msgs(struct discord *client,
 
             for (n_msg = 0; n_msg < msgs.size; ++n_msg) {
                 if (user_id == msgs.array[n_msg].author->id
-                    && *msgs.array[n_msg].content) {
+                    && *msgs.array[n_msg].content)
+                {
                     printf("%s\n", msgs.array[n_msg].content);
                 }
             }
@@ -152,8 +152,7 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    ccord_global_init();
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     print_usage();
@@ -165,5 +164,4 @@ main(int argc, char *argv[])
     fetch_member_msgs(client, guild_id, user_id);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }

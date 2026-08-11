@@ -362,7 +362,7 @@ PUB_STRUCT(discord_message)
     FIELD_STRUCT_PTR(components, discord_components, *)
   /** sent if the message contains stickers */
     FIELD_STRUCT_PTR(sticker_items, discord_sticker_items, *)
-  /** @deprecated use `sticker_items` instead */
+  /** @deprecated by Discord, use `sticker_items` instead */
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
   /** A generally increasing integer that represents the approximate
         position of the message in a thread */

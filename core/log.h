@@ -1,76 +1,46 @@
-/* Edited by Lucas Müller https://github.com/lcsmuller */
 /**
- * Copyright (c) 2020 rxi
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the MIT license. See `log.c` for details.
+ * @file log.h
+ * @author Cogmasters
+ * @brief Maintain support for log.c deprecated functions using logmod.h as a
+ *      wrapper
+ * @attention This file is deprecated and will be removed in future releases
+ * @deprecated since v3.0.0
  */
 
-#ifndef LOG_H
-#define LOG_H
+#ifndef LOG_DEPRECATED_SUPPORT_H
+#define LOG_DEPRECATED_SUPPORT_H
 
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <time.h>
+#include "logmod.h"
 
-#define LOG_VERSION "x.x.x modified"
+/**
+ * @brief Backwards compatible alias for logmod_log()
+ * @deprecated since v3.0.0
+ */
+#define log_trace(...) logmod_log(TRACE, NULL, __VA_ARGS__)
+/**
+ * @brief Backwards compatible alias for logmod_log()
+ * @deprecated since v3.0.0
+ */
+#define log_debug(...) logmod_log(DEBUG, NULL, __VA_ARGS__)
+/**
+ * @brief Backwards compatible alias for logmod_log()
+ * @deprecated since v3.0.0
+ */
+#define log_info(...) logmod_log(INFO, NULL, __VA_ARGS__)
+/**
+ * @brief Backwards compatible alias for logmod_log()
+ * @deprecated since v3.0.0
+ */
+#define log_warn(...) logmod_log(WARN, NULL, __VA_ARGS__)
+/**
+ * @brief Backwards compatible alias for logmod_log()
+ * @deprecated since v3.0.0
+ */
+#define log_error(...) logmod_log(ERROR, NULL, __VA_ARGS__)
+/**
+ * @brief Backwards compatible alias for logmod_log()
+ * @deprecated since v3.0.0
+ */
+#define log_fatal(...) logmod_log(FATAL, NULL, __VA_ARGS__)
 
-typedef struct {
-  va_list ap;
-  const char *fmt;
-  const char *file;
-  struct tm *time;
-  void *udata;
-  int line;
-  int level;
-} log_Event;
-
-typedef void (*log_LogFn)(log_Event *ev);
-typedef void (*log_LockFn)(bool lock, void *udata);
-
-#define LOG_MAX_CALLBACKS 32
-
-typedef struct {
-  log_LogFn fn;
-  void *udata;
-  int level;
-} log_Callback;
-
-typedef struct {
-  void *udata;
-  log_LockFn lock;
-  int level;
-  bool quiet;
-  log_Callback callbacks[LOG_MAX_CALLBACKS];
-} log_Logger;
-
-typedef enum { LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL } log_Level;
-
-#define log_trace(...) log_log(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
-#define log_debug(...) log_log(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
-#define log_info(...)  log_log(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
-#define log_warn(...)  log_log(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
-#define log_error(...) log_log(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
-#define log_fatal(...) log_log(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
-
-const char* log_level_string(int level);
-#define log_set_lock(fn, udata) _log_set_lock(&L, fn, udata);
-#define log_set_level(level) _log_set_level(&L, level);
-#define log_set_quiet(enable) _log_set_quiet(&L, enable)
-#define log_add_callback(fn, udata, level) _log_add_callback(&L, fn, udata, level)
-#define log_add_fp(fn, level) _log_add_fp(&L, fn, level)
-#define log_log(level, file, line, ...) _log_log(&L, level, file, line, __VA_ARGS__)
-
-void _log_set_lock(log_Logger *L, log_LockFn fn, void *udata);
-void _log_set_level(log_Logger *L, int level);
-void _log_set_quiet(log_Logger *L, bool enable);
-int _log_add_callback(log_Logger *L, log_LogFn fn, void *udata, int level);
-int _log_add_fp(log_Logger *L, FILE *fp, int level);
-void _log_log(log_Logger *L, int level, const char *file, int line, const char *fmt, ...);
-
-extern const char *level_strings[];
-extern const char *level_colors[];
-extern log_Logger L;
-
-#endif
+#endif /* LOG_DEPRECATED_SUPPORT_H */

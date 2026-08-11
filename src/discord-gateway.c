@@ -7,7 +7,6 @@
 #include "discord-worker.h"
 #include "osname.h"
 
-/* return enumerator as string in case of a match */
 #define CASE_RETURN_STR(code)                                                 \
     case code:                                                                \
         return #code
@@ -55,21 +54,23 @@ _discord_gateway_close_opcode_print(enum discord_gateway_close_opcodes opcode)
         const char *str = ws_close_opcode_print((enum ws_close_reason)opcode);
         if (str) return str;
 
-        log_warn("Unknown WebSockets close opcode (code: %d)", opcode);
+        logmod_log(WARN, NULL, "Unknown WebSockets close opcode (code: %d)",
+                   opcode);
     }
         return "UNKNOWN_WEBSOCKETS_CLOSE_OPCODE";
     }
 }
 
+#undef CASE_RETURN_STR
+
 static void
 _discord_on_hello(struct discord_gateway *gw)
 {
-    jsmnf_pair *f;
+    const jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
-                        "heartbeat_interval", 18)))
+    if ((f = jsmnf_find(gw->payload.data, "heartbeat_interval", 18)))
         gw->timer->hbeat_interval =
-            strtoll(gw->payload.json.start + f->v.pos, NULL, 10);
+            strtoll(gw->payload.json.start + f->v->start, NULL, 10);
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         discord_gateway_send_resume(gw, &(struct discord_resume){
@@ -171,15 +172,15 @@ _discord_gateway_dispatch_thread(void *p_gw)
 {
     struct discord_gateway *gw = p_gw;
 
-    logconf_info(&gw->conf,
-                 "Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
-                 gw->payload.name);
+    logmod_log(INFO, gw->logger, "Thread %s to serve %s",
+               LML(gw->logger, REGULAR, INTENSITY, GREEN, "START"),
+               gw->payload.name);
 
     discord_gateway_dispatch(gw);
 
-    logconf_info(&gw->conf,
-                 "Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
-                 gw->payload.name);
+    logmod_log(INFO, gw->logger, "Thread %s to serve %s",
+               LML(gw->logger, REGULAR, INTENSITY, RED, "END"),
+               gw->payload.name);
 
     _discord_gateway_clone_cleanup(gw);
 }
@@ -194,8 +195,13 @@ _discord_on_dispatch(struct discord_gateway *gw)
   /* Ratelimit check */
   if (gw->timer->now - gw->timer->event_last < 60000) {
     ++gw->session->event_count;
-    ASSERT_S(gw->session->event_count < 120,
-             "Reach event dispatch threshold (120 every 60 seconds)");
+    if (gw->session->event_count >= 120) {
+      logmod_log(WARN, gw->logger,
+                 "Rate limit reached for event dispatch (120 events in 60 "
+                 "seconds)");
+      gw->session->status = DISCORD_SESSION_SHUTDOWN;
+      return;
+    }
   }
   else {
     gw->timer->event_last = gw->timer->now;
@@ -205,27 +211,36 @@ _discord_on_dispatch(struct discord_gateway *gw)
 
     switch (gw->payload.event) {
     case DISCORD_EV_READY: {
-        jsmnf_pair *f;
+        const jsmnf_pair *f;
 
-        logconf_info(&gw->conf, "Successfully started a Discord session!");
+        logmod_log(INFO, gw->logger,
+                   "Successfully started a Discord session!");
 
-        if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
-                            "session_id", 10)))
+        if ((f = jsmnf_find(gw->payload.data, "session_id", 10)))
             snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
-                     (int)f->v.len, gw->payload.json.start + f->v.pos);
-        ASSERT_S(*gw->session->id, "Missing session_id from READY event");
+                     f->v->end - f->v->start,
+                     gw->payload.json.start + f->v->start);
+        if (!*gw->session->id) {
+            logmod_log(ERROR, gw->logger,
+                       "Missing session_id from READY event");
+            gw->session->status = DISCORD_SESSION_SHUTDOWN;
+            return;
+        }
 
-        if ((f = jsmnf_find(gw->payload.data, gw->payload.json.start,
-                            "resume_gateway_url", 18)))
-        {
-            const char *url = gw->payload.json.start + f->v.pos;
-            int url_len = (int)f->v.len;
-
-            url_len = snprintf(gw->session->resume_url,
-                               sizeof(gw->session->resume_url),
-                               "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len,
-                               url, ('/' == url[url_len - 1]) ? "" : "/");
-            ASSERT_NOT_OOB(url_len, sizeof(gw->session->resume_url));
+        if ((f = jsmnf_find(gw->payload.data, "resume_gateway_url", 18))) {
+            const char *url = gw->payload.json.start + f->v->start;
+            int url_len = f->v->end - f->v->start;
+            if ((url_len = snprintf(
+                     gw->session->resume_url, sizeof(gw->session->resume_url),
+                     "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
+                     ('/' == url[url_len - 1]) ? "" : "/"))
+                < 0)
+            {
+                logmod_log(ERROR, gw->logger,
+                           "Failed to set resume_url from READY event");
+                gw->session->status = DISCORD_SESSION_SHUTDOWN;
+                return;
+            }
         }
 
         gw->session->is_ready = true;
@@ -234,7 +249,8 @@ _discord_on_dispatch(struct discord_gateway *gw)
         discord_gateway_send_heartbeat(gw, gw->payload.seq);
     } break;
     case DISCORD_EV_RESUMED:
-        logconf_info(&gw->conf, "Succesfully resumed a Discord session!");
+        logmod_log(INFO, gw->logger,
+                   "Successfully resumed a Discord session!");
 
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
@@ -248,9 +264,10 @@ _discord_on_dispatch(struct discord_gateway *gw)
     }
 
     /* get dispatch event opcode */
-    enum discord_event_scheduler mode =
-        gw->scheduler(client, gw->payload.json.start + gw->payload.data->v.pos,
-                      gw->payload.data->v.len, gw->payload.event);
+    enum discord_event_scheduler mode = gw->scheduler(
+        client, gw->payload.json.start + gw->payload.data->v->start,
+        (size_t)(gw->payload.data->v->end - gw->payload.data->v->start),
+        gw->payload.event);
 
     switch (mode) {
     case DISCORD_EVENT_IGNORE:
@@ -264,12 +281,14 @@ _discord_on_dispatch(struct discord_gateway *gw)
             client, &_discord_gateway_dispatch_thread, clone);
 
         if (code != CCORD_OK) {
-            log_error("Couldn't start worker-thread (code %d)", code);
+            logmod_log(ERROR, gw->logger,
+                       "Couldn't start worker-thread (code %d)", code);
             _discord_gateway_clone_cleanup(clone);
         }
     } break;
     default:
-        ERR("Unknown event handling mode (code: %d)", mode);
+        logmod_log(ERROR, gw->logger, "Unknown event handling mode (code: %d)",
+                   mode);
     }
 }
 
@@ -282,9 +301,9 @@ _discord_on_invalid_session(struct discord_gateway *gw)
     /* attempt to resume if session isn't invalid */
     gw->session->retry.enable = true;
     gw->session->status = DISCORD_SESSION_SHUTDOWN;
-    if (gw->payload.data->v.len != 5
-        || strncmp("false", gw->payload.json.start + gw->payload.data->v.pos,
-                   5))
+    if (gw->payload.data->v->end - gw->payload.data->v->start != 5
+        || strncmp("false",
+                   gw->payload.json.start + gw->payload.data->v->start, 5))
     {
         gw->session->status |= DISCORD_SESSION_RESUMABLE;
         reason = "Invalid session, will attempt to resume";
@@ -322,41 +341,34 @@ _discord_on_heartbeat_ack(struct discord_gateway *gw)
     gw->timer->hbeat_acknowledged = true;
     pthread_rwlock_unlock(&gw->timer->rwlock);
 
-    logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
+    logmod_log(TRACE, gw->logger, "PING: %d ms", gw->timer->ping_ms);
 }
 
 static void
-_ws_on_connect(void *p_gw,
-               struct websockets *ws,
-               struct ws_info *info,
-               const char *ws_protocols)
+_ws_on_connect(void *p_gw, struct websockets *ws)
 {
     (void)ws;
-    (void)info;
     struct discord_gateway *gw = p_gw;
 
-    logconf_info(&gw->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
+    logmod_log(INFO, gw->logger, "Connected");
 }
 
 static void
 _ws_on_close(void *p_gw,
              struct websockets *ws,
-             struct ws_info *info,
              enum ws_close_reason wscode,
              const char *reason,
              size_t len)
 {
     (void)ws;
-    (void)info;
     struct discord_gateway *gw = p_gw;
     enum discord_gateway_close_opcodes opcode =
         (enum discord_gateway_close_opcodes)wscode;
 
-    logconf_warn(
-        &gw->conf,
-        ANSICOLOR("CLOSE %s", ANSI_FG_RED) " (code: %4d, %zu bytes): '%.*s'",
-        _discord_gateway_close_opcode_print(opcode), opcode, len, (int)len,
-        reason);
+    logmod_log(WARN, gw->logger, "%s %s (code: %4d, %zu bytes): '%.*s'",
+               LML(gw->logger, REGULAR, FOREGROUND, RED, "CLOSE"),
+               _discord_gateway_close_opcode_print(opcode), opcode, len,
+               (int)len, reason);
 
     /* user-triggered shutdown */
     if (gw->session->status & DISCORD_SESSION_SHUTDOWN) {
@@ -380,8 +392,8 @@ _ws_on_close(void *p_gw,
         /* fall-through */
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
     case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
-        logconf_warn(
-            &gw->conf,
+        logmod_log(
+            WARN, gw->logger,
             "Gateway will attempt to reconnect and start a new session");
         gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
         gw->session->retry.enable = true;
@@ -392,7 +404,7 @@ _ws_on_close(void *p_gw,
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
     case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-        logconf_warn(&gw->conf, "Gateway will not attempt to reconnect");
+        logmod_log(WARN, gw->logger, "Gateway will not attempt to reconnect");
         gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
         gw->session->retry.enable = false;
         break;
@@ -402,8 +414,8 @@ _ws_on_close(void *p_gw,
     case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
     case DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
     case DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED:
-        logconf_warn(
-            &gw->conf,
+        logmod_log(
+            WARN, gw->logger,
             "Gateway will attempt to reconnect and resume current session");
         gw->session->status |= DISCORD_SESSION_RESUMABLE;
         gw->session->retry.enable = true;
@@ -420,67 +432,56 @@ _discord_gateway_payload_from_json(struct discord_gateway_payload *payload,
                                    const char text[],
                                    size_t len)
 {
+    jsmnf_loader loader;
+    const jsmnf_pair *f;
+
     payload->json.start = (char *)text;
     payload->json.size = len;
 
-    jsmn_parser parser;
-    jsmn_init(&parser);
-    if (jsmn_parse_auto(&parser, text, len, &payload->json.tokens,
-                        &payload->json.ntokens)
-        <= 0)
-        return false;
-
-    jsmnf_loader loader;
     jsmnf_init(&loader);
-    if (jsmnf_load_auto(&loader, text, payload->json.tokens, parser.toknext,
-                        &payload->json.pairs, &payload->json.npairs)
+    if (jsmnf_load_auto(&loader, text, len, &payload->json.table,
+                        &payload->json.ntable)
         <= 0)
+    {
         return false;
+    }
 
-    jsmnf_pair *f;
-    if ((f = jsmnf_find(payload->json.pairs, text, "t", 1))) {
-        if (JSMN_STRING == f->type)
+    if ((f = jsmnf_find(loader.root, "t", 1))) {
+        if (JSMN_STRING == f->v->type)
             snprintf(payload->name, sizeof(payload->name), "%.*s",
-                     (int)f->v.len, text + f->v.pos);
+                     f->v->end - f->v->start, text + f->v->start);
         else
             *payload->name = '\0';
 
         payload->event = _discord_gateway_event_eval(payload->name);
     }
-    if ((f = jsmnf_find(payload->json.pairs, text, "s", 1))) {
-        int seq = (int)strtol(text + f->v.pos, NULL, 10);
+    if ((f = jsmnf_find(loader.root, "s", 1))) {
+        int seq = (int)strtol(text + f->v->start, NULL, 10);
         if (seq) payload->seq = seq;
     }
-    if ((f = jsmnf_find(payload->json.pairs, text, "op", 2)))
+    if ((f = jsmnf_find(loader.root, "op", 2)))
         payload->opcode =
-            (enum discord_gateway_opcodes)strtol(text + f->v.pos, NULL, 10);
-    payload->data = jsmnf_find(payload->json.pairs, text, "d", 1);
+            (enum discord_gateway_opcodes)strtol(text + f->v->start, NULL, 10);
+    payload->data = jsmnf_find(loader.root, "d", 1);
 
     return true;
 }
 
 static void
-_ws_on_text(void *p_gw,
-            struct websockets *ws,
-            struct ws_info *info,
-            const char *text,
-            size_t len)
+_ws_on_text(void *p_gw, struct websockets *ws, const char *text, size_t len)
 {
     (void)ws;
     struct discord_gateway *gw = p_gw;
 
     if (!_discord_gateway_payload_from_json(&gw->payload, text, len)) {
-        logconf_fatal(&gw->conf, "Couldn't parse Gateway Payload");
+        logmod_log(FATAL, gw->logger, "Couldn't parse Gateway Payload");
         return;
     }
 
-    logconf_trace(
-        &gw->conf,
-        ANSICOLOR("RCV",
-                  ANSI_FG_BRIGHT_YELLOW) " %s%s%s (%zu bytes) [@@@_%zu_@@@]",
-        _discord_gateway_opcode_print(gw->payload.opcode),
-        *gw->payload.name ? " -> " : "", gw->payload.name, len,
-        info->loginfo.counter);
+    logmod_log(TRACE, gw->logger, "%s %s%s%s (%zu bytes)",
+               LML(gw->logger, REGULAR, INTENSITY, YELLOW, "RCV"),
+               _discord_gateway_opcode_print(gw->payload.opcode),
+               *gw->payload.name ? " -> " : "", gw->payload.name, len);
 
     switch (gw->payload.opcode) {
     case DISCORD_GATEWAY_DISPATCH:
@@ -499,9 +500,9 @@ _ws_on_text(void *p_gw,
         _discord_on_heartbeat_ack(gw);
         break;
     default:
-        logconf_error(&gw->conf,
-                      "Not yet implemented Gateway Event (code: %d)",
-                      gw->payload.opcode);
+        logmod_log(ERROR, gw->logger,
+                   "Not yet implemented Gateway Event (code: %d)",
+                   gw->payload.opcode);
         break;
     }
 }
@@ -527,10 +528,8 @@ _discord_on_gateway_perform(struct io_poller *io, CURLM *mhandle, void *p_gw)
     return discord_gateway_perform(p_gw);
 }
 
-void
-discord_gateway_init(struct discord_gateway *gw,
-                     struct logconf *conf,
-                     const char token[])
+CCORDcode
+discord_gateway_init(struct discord_gateway *gw, const char token[])
 {
     struct discord *client = CLIENT(gw, gw);
     /* Web-Sockets callbacks */
@@ -538,25 +537,49 @@ discord_gateway_init(struct discord_gateway *gw,
                                 .on_connect = &_ws_on_connect,
                                 .on_text = &_ws_on_text,
                                 .on_close = &_ws_on_close };
-    /* Web-Sockets custom attributes */
-    struct ws_attr attr = { .conf = conf };
 
     /* Web-Sockets handler */
-    gw->mhandle = curl_multi_init();
-    io_poller_curlm_add(client->io_poller, gw->mhandle,
-                        _discord_on_gateway_perform, gw);
-    gw->ws = ws_init(&cbs, gw->mhandle, &attr);
-    logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
-
-    gw->timer = calloc(1, sizeof *gw->timer);
-    ASSERT_S(!pthread_rwlock_init(&gw->timer->rwlock, NULL),
-             "Couldn't initialize Gateway's rwlock");
+    if (!(gw->mhandle = curl_multi_init())) {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't initialize WebSockets handle");
+        return discord_gateway_cleanup(gw), CCORD_CURLM_INTERNAL;
+    }
+    if (!io_poller_curlm_add(client->io_poller, gw->mhandle,
+                             _discord_on_gateway_perform, gw))
+    {
+        logmod_log(FATAL, client->logger,
+                   "Couldn't add WebSockets handle to IO poller");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
+    if (!(gw->logger = logmod_get_logger(&client->logmod, "GATEWAY"))) {
+        logmod_log(FATAL, NULL, "Couldn't initialize Gateway logger");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
+    if (!(gw->ws = ws_init(&cbs, gw->mhandle, &client->logmod,
+                           client->config.log.ws)))
+    {
+        logmod_log(FATAL, gw->logger, "Couldn't initialize WebSockets handle");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
+    if (!(gw->timer = calloc(1, sizeof *gw->timer))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway timer");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
+    if (pthread_rwlock_init(&gw->timer->rwlock, NULL)) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't initialize pthread rwlock for timer");
+        return discord_gateway_cleanup(gw), CCORD_INTERNAL_ERROR;
+    }
 
     /* mark true to not get reconnected each reconnect */
     gw->timer->hbeat_acknowledged = true;
-
     /* client connection status */
-    gw->session = calloc(1, sizeof *gw->session);
+    if (!(gw->session = calloc(1, sizeof *gw->session))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway session");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     gw->session->retry.enable = true;
     /* default infinite retries TODO: configurable */
     gw->session->retry.limit = -1;
@@ -567,41 +590,67 @@ discord_gateway_init(struct discord_gateway *gw,
     /* connection identify token */
     gw->id.token = (char *)token;
     /* connection identify properties */
-    gw->id.properties = calloc(1, sizeof *gw->id.properties);
+    if (!(gw->id.properties = calloc(1, sizeof *gw->id.properties))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway properties");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     gw->id.properties->os = OSNAME;
     gw->id.properties->browser = "concord";
     gw->id.properties->device = "concord";
     /* the bot initial presence */
-    gw->id.presence = calloc(1, sizeof *gw->id.presence);
+    if (!(gw->id.presence = calloc(1, sizeof *gw->id.presence))) {
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't allocate memory for Gateway presence");
+        return discord_gateway_cleanup(gw), CCORD_OUT_OF_MEMORY;
+    }
     gw->id.presence->status = "online";
     gw->id.presence->since = cog_timestamp_ms();
 
     discord_gateway_send_presence_update(gw, gw->id.presence);
+
+    return CCORD_OK;
 }
 
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-    if (gw->timer->hbeat_timer)
-        discord_internal_timer_ctl(CLIENT(gw, gw),
-                                   &(struct discord_timer){
-                                       .id = gw->timer->hbeat_timer,
-                                       .flags = DISCORD_TIMER_DELETE,
-                                   });
-    /* cleanup WebSockets handle */
-    io_poller_curlm_del(CLIENT(gw, gw)->io_poller, gw->mhandle);
-    curl_multi_cleanup(gw->mhandle);
-    ws_cleanup(gw->ws);
+    struct discord *client = CLIENT(gw, gw);
+
     /* cleanup timers */
-    pthread_rwlock_destroy(&gw->timer->rwlock);
-    free(gw->timer);
+    if (gw->timer) {
+        if (gw->timer->hbeat_timer) {
+            discord_internal_timer_ctl(client,
+                                       &(struct discord_timer){
+                                           .id = gw->timer->hbeat_timer,
+                                           .flags = DISCORD_TIMER_DELETE,
+                                       });
+        }
+        pthread_rwlock_destroy(&gw->timer->rwlock);
+        free(gw->timer);
+    }
+    /* cleanup WebSockets handle */
+    if (gw->mhandle) {
+        io_poller_curlm_del(client->io_poller, gw->mhandle);
+        curl_multi_cleanup(gw->mhandle);
+    }
+    if (gw->ws) {
+        ws_cleanup(gw->ws);
+    }
     /* cleanup bot identification */
-    free(gw->id.properties);
-    free(gw->id.presence);
-    /* cleanup client session */
-    free(gw->session);
-    if (gw->payload.json.pairs) free(gw->payload.json.pairs);
-    if (gw->payload.json.tokens) free(gw->payload.json.tokens);
+    if (gw->id.properties) {
+        free(gw->id.properties);
+    }
+    if (gw->id.presence) {
+        free(gw->id.presence);
+    }
+    if (gw->session) {
+        free(gw->session);
+    }
+    if (gw->payload.json.table) {
+        free(gw->payload.json.table);
+    }
+    memset(gw, 0, sizeof *gw);
 }
 
 #ifdef CCORD_DEBUG_WEBSOCKETS
@@ -632,7 +681,8 @@ _ws_curl_debug_dump(const char *text,
             /* check for 0D0A; if found, skip past and start a new line of
              * output */
             if ((i + c + 1 < size) && ptr[i + c] == 0x0D
-                && ptr[i + c + 1] == 0x0A) {
+                && ptr[i + c + 1] == 0x0A)
+            {
                 i += (c + 2 - width);
                 break;
             }
@@ -641,7 +691,8 @@ _ws_curl_debug_dump(const char *text,
                                                                 : '.');
             /* check again for 0D0A, to avoid an extra \n if it's at width */
             if ((i + c + 2 < size) && ptr[i + c + 1] == 0x0D
-                && ptr[i + c + 2] == 0x0A) {
+                && ptr[i + c + 2] == 0x0A)
+            {
                 i += (c + 3 - width);
                 break;
             }
@@ -696,34 +747,32 @@ _discord_gateway_session_from_json(struct discord_gateway_session *session,
                                    const char text[],
                                    size_t len)
 {
-    jsmn_parser parser;
-    jsmntok_t tokens[32];
-    jsmn_init(&parser);
-    if (jsmn_parse(&parser, text, len, tokens, sizeof(tokens) / sizeof *tokens)
-        <= 0)
-        return false;
-
     jsmnf_loader loader;
-    jsmnf_pair pairs[32];
+    jsmnf_table table[0x20];
     jsmnf_init(&loader);
-    if (jsmnf_load(&loader, text, tokens, parser.toknext, pairs,
-                   sizeof(pairs) / sizeof *pairs)
+    if (jsmnf_load(&loader, text, len, table, sizeof(table) / sizeof *table)
         <= 0)
+    {
         return false;
-
-    jsmnf_pair *f;
-    if ((f = jsmnf_find(pairs, text, "url", 3))) {
-        const char *url = text + f->v.pos;
-        int url_len = (int)f->v.len;
-
-        url_len = snprintf(session->base_url, sizeof(session->base_url),
-                           "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len, url,
-                           ('/' == url[url_len - 1]) ? "" : "/");
-        ASSERT_NOT_OOB(url_len, sizeof(session->base_url));
     }
-    if ((f = jsmnf_find(pairs, text, "shards", 6)))
-        session->shards = (int)strtol(text + f->v.pos, NULL, 10);
-    if ((f = jsmnf_find(pairs, text, "session_start_limit", 19)))
+
+    const jsmnf_pair *f;
+    if ((f = jsmnf_find(loader.root, "url", 3))) {
+        const char *url = text + f->v->start;
+        int url_len = f->v->end - f->v->start;
+        if ((url_len = snprintf(session->base_url, sizeof(session->base_url),
+                                "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX, url_len,
+                                url, ('/' == url[url_len - 1]) ? "" : "/"))
+            < 0)
+        {
+            logmod_log(ERROR, NULL,
+                       "Failed to set base_url from Gateway Bot information");
+            return false;
+        }
+    }
+    if ((f = jsmnf_find(loader.root, "shards", 6)))
+        session->shards = (int)strtol(text + f->v->start, NULL, 10);
+    if ((f = jsmnf_find(loader.root, "session_start_limit", 19)))
         discord_session_start_limit_from_jsmnf(f, text, &session->start_limit);
     return true;
 }
@@ -734,9 +783,9 @@ discord_gateway_start(struct discord_gateway *gw)
     struct ccord_szbuf json = { 0 };
 
     if (gw->session->retry.attempt == gw->session->retry.limit) {
-        logconf_fatal(&gw->conf,
-                      "Failed reconnecting to Discord after %d tries",
-                      gw->session->retry.limit);
+        logmod_log(FATAL, gw->logger,
+                   "Failed reconnecting to Discord after %d tries",
+                   gw->session->retry.limit);
 
         return CCORD_DISCORD_CONNECTION;
     }
@@ -745,7 +794,8 @@ discord_gateway_start(struct discord_gateway *gw)
         || !_discord_gateway_session_from_json(gw->session, json.start,
                                                json.size))
     {
-        logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
+        logmod_log(FATAL, gw->logger,
+                   "Couldn't retrieve Gateway Bot information");
         free(json.start);
 
         return CCORD_DISCORD_BAD_AUTH;
@@ -753,11 +803,11 @@ discord_gateway_start(struct discord_gateway *gw)
     free(json.start);
 
     if (!gw->session->start_limit.remaining) {
-        logconf_fatal(&gw->conf,
-                      "Reach sessions threshold (%d),"
-                      "Please wait %d seconds and try again",
-                      gw->session->start_limit.total,
-                      gw->session->start_limit.reset_after / 1000);
+        logmod_log(FATAL, gw->logger,
+                   "Reach sessions threshold (%d),"
+                   "Please wait %d seconds and try again",
+                   gw->session->start_limit.total,
+                   gw->session->start_limit.reset_after / 1000);
 
         return CCORD_DISCORD_RATELIMIT;
     }
@@ -765,17 +815,18 @@ discord_gateway_start(struct discord_gateway *gw)
     if (gw->session->status & DISCORD_SESSION_RESUMABLE
         && *gw->session->resume_url)
     {
-        ws_set_url(gw->ws, gw->session->resume_url, NULL);
+        ws_set_url(gw->ws, gw->session->resume_url);
         *gw->session->resume_url = '\0';
     }
     else {
-        ws_set_url(gw->ws, gw->session->base_url, NULL);
+        ws_set_url(gw->ws, gw->session->base_url);
     }
 
 #ifndef CCORD_DEBUG_WEBSOCKETS
     ws_start(gw->ws);
 #else
     CURL *ehandle = ws_start(gw->ws);
+    curl_easy_setopt(ehandle, CURLOPT_DEBUGDATA, gw->ws);
     curl_easy_setopt(ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
     curl_easy_setopt(ehandle, CURLOPT_VERBOSE, 1L);
 #endif /* CCORD_DEBUG_WEBSOCKETS */
@@ -793,7 +844,7 @@ discord_gateway_end(struct discord_gateway *gw)
     gw->session->is_ready = false;
 
     if (!gw->session->retry.enable) {
-        logconf_warn(&gw->conf, "Discord Gateway Shutdown");
+        logmod_log(WARN, gw->logger, "Discord Gateway Shutdown");
 
         /* reset for next run */
         gw->session->status = DISCORD_SESSION_OFFLINE;
@@ -806,8 +857,8 @@ discord_gateway_end(struct discord_gateway *gw)
 
     ++gw->session->retry.attempt;
 
-    logconf_info(&gw->conf, "Reconnect attempt #%d",
-                 gw->session->retry.attempt);
+    logmod_log(INFO, gw->logger, "Reconnect attempt #%d",
+               gw->session->retry.attempt);
 
     return false;
 }

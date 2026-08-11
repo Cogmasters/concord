@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "log.h"
 
 static void
 print_usage(char *prog)
@@ -41,8 +40,7 @@ main(int argc, char *argv[])
            "\nTYPE ANY KEY TO START BOT\n");
     fgetc(stdin); // wait for input
 
-    ccord_global_init();
-    struct discord *client = discord_init(NULL);
+    struct discord *client = discord_from_token(NULL);
     assert(NULL != client && "Couldn't initialize client");
 
     /* Get Webhook */
@@ -62,7 +60,6 @@ main(int argc, char *argv[])
 
     free(webhook_token);
     discord_cleanup(client);
-    ccord_global_cleanup();
 
     return EXIT_SUCCESS;
 }

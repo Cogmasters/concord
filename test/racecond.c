@@ -9,7 +9,7 @@
 #include "jsmn-find.h"
 
 #include "discord.h"
-#include "log.h"
+#include "logmod.h"
 
 #define THREADPOOL_SIZE "4"
 #define PREFIX          "!"
@@ -17,8 +17,7 @@
 void
 on_ready(struct discord *client, const struct discord_ready *event)
 {
-    log_info("Succesfully connected to Discord as %s#%s!",
-             event->user->username, event->user->discriminator);
+    logmod_log(INFO, NULL, "Discord Client ID: %" PRIu64, event->user->id);
 }
 
 void
@@ -175,29 +174,18 @@ scheduler(struct discord *client,
 {
     if (event == DISCORD_EV_MESSAGE_CREATE) {
         char cmd[DISCORD_MAX_MESSAGE_LEN] = "";
+        jsmnf_table *table = NULL;
+        size_t ntable = 0;
+        jsmnf_loader loader;
 
-        jsmntok_t *tokens = NULL;
-        unsigned ntokens = 0;
-        jsmn_parser parser;
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load_auto(&loader, data, size, &table, &ntable)) {
+            const jsmnf_pair *f;
 
-        jsmn_init(&parser);
-        if (0 < jsmn_parse_auto(&parser, data, size, &tokens, &ntokens)) {
-            jsmnf_pair *pairs = NULL;
-            unsigned npairs = 0;
-            jsmnf_loader loader;
-
-            jsmnf_init(&loader);
-            if (0 < jsmnf_load_auto(&loader, data, tokens, parser.toknext,
-                                    &pairs, &npairs))
-            {
-                jsmnf_pair *f;
-
-                if ((f = jsmnf_find(pairs, data, "content", 7)))
-                    snprintf(cmd, sizeof(cmd), "%.*s", (int)f->v.len,
-                             data + f->v.pos);
-                free(pairs);
-            }
-            free(tokens);
+            if ((f = jsmnf_find(loader.root, "content", 7)))
+                snprintf(cmd, sizeof(cmd), "%.*s", f->v->end - f->v->start,
+                         data + f->v->start);
+            free(table);
         }
 
         if (0 == strcmp(PREFIX "spam_sync", cmd))
@@ -218,9 +206,7 @@ main(int argc, char *argv[])
     setenv("CCORD_THREADPOOL_SIZE", THREADPOOL_SIZE, 1);
     setenv("CCORD_THREADPOOL_QUEUE_SIZE", "128", 1);
 
-    ccord_global_init();
-
-    struct discord *client = discord_config_init(config_file);
+    struct discord *client = discord_from_json(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     discord_set_event_scheduler(client, &scheduler);
@@ -238,5 +224,4 @@ main(int argc, char *argv[])
     discord_run(client);
 
     discord_cleanup(client);
-    ccord_global_cleanup();
 }
