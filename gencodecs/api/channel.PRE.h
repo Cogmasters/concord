@@ -280,6 +280,8 @@ PP_DEFINE(DISCORD_MESSAGE_HAS_COMPONENTS_V2 1 << 15)
 
 #if GENCODECS_RECIPE & (DATA | JSON)
 STRUCT(discord_message_reference)
+  /** type of reference: 0 = DEFAULT (reply/crosspost/pin), 1 = FORWARD
+    FIELD(type, int, 0)
   /** id of the originating message */
     FIELD_SNOWFLAKE(message_id)
   /** id of the originating message's channel */
