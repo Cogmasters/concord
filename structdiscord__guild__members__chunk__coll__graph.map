@@ -1,6 +1,6 @@
 <map id="discord_guild_members_chunk" name="discord_guild_members_chunk">
-<area shape="rect" id="node1" title=" " alt="" coords="165,95,343,136"/>
-<area shape="rect" id="node2" href="$structdiscord__guild__members.html" title=" " alt="" coords="5,5,183,32"/>
-<area shape="rect" id="node3" href="$structsnowflakes.html" title=" " alt="" coords="207,5,301,32"/>
-<area shape="rect" id="node4" href="$structdiscord__presence__updates.html" title=" " alt="" coords="326,5,521,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="164,99,340,145"/>
+<area shape="rect" id="node2" href="$structdiscord__guild__members.html" title=" " alt="" coords="5,5,182,34"/>
+<area shape="rect" id="node3" href="$structsnowflakes.html" title=" " alt="" coords="206,5,299,34"/>
+<area shape="rect" id="node4" href="$structdiscord__presence__updates.html" title=" " alt="" coords="324,5,517,34"/>
 </map>

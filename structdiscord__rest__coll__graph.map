@@ -1,6 +1,6 @@
 <map id="discord_rest" name="discord_rest">
-<area shape="rect" id="node1" title="The handle used for interfacing with Discord&#39;s REST API." alt="" coords="95,184,197,211"/>
-<area shape="rect" id="node2" href="$structlogconf.html" title="A stackful and modularized wrapper over the popular &#39;log.c&#39; facilities." alt="" coords="5,5,76,32"/>
-<area shape="rect" id="node3" href="$structdiscord__requestor.html" title="The handle used for handling asynchronous requests." alt="" coords="77,95,215,121"/>
-<area shape="rect" id="node4" href="$structdiscord__timers.html" title=" " alt="" coords="240,95,359,121"/>
+<area shape="rect" id="node1" title="The handle used for interfacing with Discord&#39;s REST API." alt="" coords="94,193,194,222"/>
+<area shape="rect" id="node2" href="$structlogconf.html" title="A stackful and modularized wrapper over the popular &#39;log.c&#39; facilities." alt="" coords="5,5,75,34"/>
+<area shape="rect" id="node3" href="$structdiscord__requestor.html" title="The handle used for handling asynchronous requests." alt="" coords="75,99,213,128"/>
+<area shape="rect" id="node4" href="$structdiscord__timers.html" title=" " alt="" coords="237,99,355,128"/>
 </map>
